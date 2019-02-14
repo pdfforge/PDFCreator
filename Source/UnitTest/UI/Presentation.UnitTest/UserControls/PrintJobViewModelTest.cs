@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.UI.Interactions;
@@ -16,15 +17,15 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
-using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using pdfforge.PDFCreator.Utilities.Threading;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 using Translatable;
 
 namespace Presentation.UnitTest.UserControls
@@ -41,16 +42,20 @@ namespace Presentation.UnitTest.UserControls
         private readonly PrintJobViewTranslation _translation = new PrintJobViewTranslation();
         private IFile _file;
         private static string _filepathFromSaveDialog = @"DirectoryFromSaveDialog\FilenameFromSaveDialog.pdf";
-        private readonly string _folderFromSaveDialog = Path.GetDirectoryName(_filepathFromSaveDialog);
-        private readonly string _filenameFromSaveDialog = Path.GetFileName(_filepathFromSaveDialog);
-        private IPathUtil _pathUtil;
+        private readonly string _folderFromSaveDialog = PathSafe.GetDirectoryName(_filepathFromSaveDialog);
+        private readonly string _filenameFromSaveDialog = PathSafe.GetFileName(_filepathFromSaveDialog);
         private IDirectoryHelper _directoryHelper;
         private IInteractiveProfileChecker _interactiveProfileChecker;
+        private ITargetFilePathComposer _targetFilePathComposer;
+
+        private string _expectedFileNamePdf = "expectedFilename.pdf";
+        private string _expectedFileNamePng = "expectedFilename.png";
+        private string _expectedFolder = "X:\\ExpectedFolder";
 
         [SetUp]
         public void Setup()
         {
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _jobInfoQueue = Substitute.For<IJobInfoQueue>();
             _interactionRequest = new UnitTestInteractionRequest();
             _file = Substitute.For<IFile>();
@@ -61,16 +66,16 @@ namespace Presentation.UnitTest.UserControls
             {
                 Name = "PDF Profile",
                 OutputFormat = OutputFormat.Pdf,
-                FileNameTemplate = "X:\\test.pdf",
-                TargetDirectory = "c:\\Test\\"
+                FileNameTemplate = _expectedFileNamePdf,
+                TargetDirectory = _expectedFolder
             };
 
             _pngProfile = new ConversionProfile
             {
-                Name = "PDF Profile",
+                Name = "PNG Profile",
                 OutputFormat = OutputFormat.Png,
-                FileNameTemplate = "X:\\test.png",
-                TargetDirectory = "c:\\Test\\"
+                FileNameTemplate = _expectedFileNamePng,
+                TargetDirectory = _expectedFolder
             };
 
             _settings.ConversionProfiles.Add(_pdfProfile);
@@ -82,26 +87,20 @@ namespace Presentation.UnitTest.UserControls
             MockSaveFileDialog(saveDialogResult);
             var settingsProvider = Substitute.For<ISettingsProvider>();
             settingsProvider.Settings.Returns(_settings);
-            _pathUtil = Substitute.For<IPathUtil>();
 
-            _pathUtil.IsValidRootedPath(Arg.Any<string>()).Returns(true);
-            _pathUtil.MAX_PATH.Returns(259);
-            _pathUtil.GetLongDirectoryName(Arg.Any<string>()).Returns(x => Path.GetDirectoryName(x.Arg<string>()));
-
-            var pathUtil = new PathUtil(new PathWrap(), new DirectoryWrap()); //todo
-            _pathUtil.GetFileName(Arg.Any<string>()).Returns(s => pathUtil.GetFileName(s.Arg<string>()));
-            _pathUtil.Combine(Arg.Any<string>(), Arg.Any<string>()).Returns(s => pathUtil.Combine(s.ArgAt<string>(0), s.ArgAt<string>(1)));
+            _targetFilePathComposer = Substitute.For<ITargetFilePathComposer>();
+            _targetFilePathComposer.ComposeTargetFilePath(Arg.Any<Job>()).ReturnsForAnyArgs(j => j.ArgAt<Job>(0).OutputFileTemplate);
 
             return new PrintJobViewModel(settingsProvider, new TranslationUpdater(new TranslationFactory(), new ThreadManager()),
                 _jobInfoQueue, _saveFileQuery, _interactionRequest, new DesignTimeCommandLocator(),
-                null, null, null, _pathUtil, _file, null, null, _directoryHelper, _interactiveProfileChecker);
+                null, null, null, null, _file, null, null, _directoryHelper, _interactiveProfileChecker, _targetFilePathComposer);
         }
 
         private Job BuildJob(ConversionProfile profile)
         {
-            var job = new Job(new JobInfo(), profile, new JobTranslations(), new Accounts());
+            var job = new Job(new JobInfo(), profile, new Accounts());
 
-            job.OutputFilenameTemplate = profile.FileNameTemplate;
+            job.OutputFileTemplate = @"X:\NotEmpty\ToTrigger\PropertyChanged.pdf";
 
             return job;
         }
@@ -116,14 +115,30 @@ namespace Presentation.UnitTest.UserControls
         }
 
         [Test]
-        public void SetJob_UpdatesJob()
+        public async Task SetJob_UpdatesJob()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
+
+            await AbortStep(vm, task);
 
             Assert.AreSame(vm.Job, job);
+        }
+
+        private async Task AbortStep(PrintJobViewModel viewModel, Task task)
+        {
+            // Ignore further logic in step
+            try
+            {
+                viewModel.CancelCommand.Execute(null);
+            }
+            catch
+            {
+            }
+
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]
@@ -132,7 +147,6 @@ namespace Presentation.UnitTest.UserControls
             var changedProperties = new List<string>();
             var vm = BuildViewModel();
             vm.PropertyChanged += (sender, args) => changedProperties.Add(args.PropertyName);
-
             var job = BuildJob(_pdfProfile);
 
             vm.ExecuteWorkflowStep(job);
@@ -144,10 +158,7 @@ namespace Presentation.UnitTest.UserControls
                 nameof(vm.OutputFilename),
                 nameof(vm.OutputFolder),
                 nameof(vm.OutputFormat),
-                nameof(vm.Title),
-                nameof(vm.Author),
-                nameof(vm.Subject),
-                nameof(vm.Keyword)
+                nameof(vm.Metadata)
             };
 
             CollectionAssert.AreEquivalent(expectedProperties, changedProperties);
@@ -157,55 +168,60 @@ namespace Presentation.UnitTest.UserControls
         public void SetJob_UpdatesFilenameProperties()
         {
             var vm = BuildViewModel();
+            var changedProperties = new List<string>();
+            vm.PropertyChanged += (sender, args) => changedProperties.Add(args.PropertyName);
             var job = BuildJob(_pdfProfile);
+            _targetFilePathComposer.ComposeTargetFilePath(job).Returns(@"X:\FromTargetFilePathComposer\SomeFile.pdf");
 
             vm.SetJob(job);
 
-            Assert.AreEqual("X:\\", vm.OutputFolder);
-            Assert.AreEqual("test.pdf", vm.OutputFilename);
+            Assert.Contains(nameof(vm.OutputFolder), changedProperties);
+            Assert.AreEqual(@"X:\FromTargetFilePathComposer", vm.OutputFolder);
+            Assert.Contains(nameof(vm.OutputFilename), changedProperties);
+            Assert.AreEqual("SomeFile.pdf", vm.OutputFilename);
         }
 
         [Test]
         public void OutputFormat_WhenSet_UpdatesFilename()
         {
             var vm = BuildViewModel();
-            var job = BuildJob(_pdfProfile);
-            vm.SetJob(job);
+            vm.SetJob(BuildJob(_pdfProfile));
+            var oldOutputFileName = vm.OutputFilename;
 
             vm.OutputFormat = OutputFormat.Txt;
 
-            Assert.AreEqual("test.txt", vm.OutputFilename);
+            Assert.AreEqual(PathSafe.ChangeExtension(oldOutputFileName, ".txt"), vm.OutputFilename);
         }
 
         [Test]
-        public void SaveCommand_Execute_JobProfileIsValid_DoesNotThrowException()
+        public async Task SaveCommand_Execute_JobProfileIsValid_DoesNotThrowException()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             Assert.DoesNotThrow(() => vm.SaveCommand.Execute(null));
+
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_JobProfileIsValid_CallsFinishedEvent()
+        public async Task SaveCommand_Execute_JobProfileIsValid_Finishes()
         {
-            var eventWasRaised = false;
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
 
-            vm.StepFinished += (sender, args) => eventWasRaised = true;
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsTrue(eventWasRaised);
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]
-        public void SaveCommand_Execute_JobProfileIsValid_ProfileCheckCopiesJobPasswords()
+        public async Task SaveCommand_Execute_JobProfileIsValid_ProfileCheckCopiesJobPasswords()
         {
             var expectedPassword = "PDF Owner Password";
             var vm = BuildViewModel();
@@ -213,8 +229,10 @@ namespace Presentation.UnitTest.UserControls
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
             job.Profile.PdfSettings.Security.OwnerPassword = expectedPassword;
 
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             vm.SaveCommand.Execute(null);
+
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
 
             Assert.AreEqual(expectedPassword, job.Passwords.PdfOwnerPassword);
         }
@@ -235,91 +253,87 @@ namespace Presentation.UnitTest.UserControls
         }
 
         [Test]
-        public void SaveCommand_Execute_JobProfileIsNotValid_DoesNotCallFinishEvent()
+        public async Task SaveCommand_Execute_JobProfileIsNotValid_DoesNotCallFinish()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
-            var eventWasRaised = false;
-            vm.StepFinished += (sender, args) => eventWasRaised = true;
+            var task = vm.ExecuteWorkflowStep(job);
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsFalse(eventWasRaised);
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathFromSaveDialog_FileDoesNotExist_DoesNotRaiseInteraction_CallsFinishEvent()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathFromSaveDialog_FileDoesNotExist_DoesNotRaiseInteraction_CallsFinishEvent()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(false);
 
             vm.SaveCommand.Execute(null);
 
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
+
             _interactionRequest.AssertWasNotRaised<MessageInteraction>();
-            Assert.IsTrue(stepFinishedRaised);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathFromSaveDialog_FileExists_DoesNotRaiseInteraction_CallsFinishEvent()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathFromSaveDialog_FileExists_DoesNotRaiseInteraction_CallsFinish()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(true);
 
             vm.SaveCommand.Execute(null);
 
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
+
             _interactionRequest.AssertWasNotRaised<MessageInteraction>();
-            Assert.IsTrue(stepFinishedRaised);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileDoesNotExist_DoesNotRaiseInteraction_CallsFinishEvent()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileDoesNotExist_DoesNotRaiseInteraction_CallsFinish()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(false);
             vm.OutputFilename += "not" + _filenameFromSaveDialog;
             vm.OutputFolder += "not" + _folderFromSaveDialog;
 
             vm.SaveCommand.Execute(null);
 
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
+
             _interactionRequest.AssertWasNotRaised<MessageInteraction>();
-            Assert.IsTrue(stepFinishedRaised);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUserWithCorrectInteraction()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUserWithCorrectInteraction()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(true);
             vm.OutputFilename = "not" + _filenameFromSaveDialog;
             vm.OutputFolder = "not" + _folderFromSaveDialog;
-            var expectedDir = Path.Combine(vm.OutputFolder, vm.OutputFilename);
+            var expectedDir = PathSafe.Combine(vm.OutputFolder, vm.OutputFilename);
 
             vm.SaveCommand.Execute(null);
 
@@ -328,20 +342,23 @@ namespace Presentation.UnitTest.UserControls
             Assert.AreEqual(_translation.GetFileAlreadyExists(expectedDir), interaction.Text, "Message");
             Assert.AreEqual(MessageIcon.Exclamation, interaction.Icon, "Icon");
             Assert.AreEqual(MessageOptions.YesNo, interaction.Buttons, "Buttons");
+
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_UserCanceledSaveFileDilaog_FileExist_NotifysUserWithCorrectInteraction()
+        public async Task SaveCommand_Execute_ProfileIsValid_UserCanceledSaveFileDialog_FileExist_NotifysUserWithCorrectInteraction()
         {
             var vm = BuildViewModel(saveDialogResult: false); //User cancels SaveFileDialog
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
             _interactiveProfileChecker.CheckWithErrorResultInOverlay(job).Returns(true);
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(true);
             vm.OutputFilename = _filenameFromSaveDialog;
             vm.OutputFolder = _folderFromSaveDialog;
-            var expectedDir = Path.Combine(vm.OutputFolder, vm.OutputFilename);
+            var expectedDir = PathSafe.Combine(vm.OutputFolder, vm.OutputFilename);
 
             vm.SaveCommand.Execute(null);
 
@@ -350,62 +367,60 @@ namespace Presentation.UnitTest.UserControls
             Assert.AreEqual(_translation.GetFileAlreadyExists(expectedDir), interaction.Text, "Message");
             Assert.AreEqual(MessageIcon.Exclamation, interaction.Icon, "Icon");
             Assert.AreEqual(MessageOptions.YesNo, interaction.Buttons, "Buttons");
+
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUser_UserCancels_DoNotCallFinishEvent()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUser_UserCancels_DoNotCallFinish()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
+            var task = vm.ExecuteWorkflowStep(job);
             _interactionRequest.Raise(Arg.Do<MessageInteraction>(i => i.Response = MessageResponse.No)); //User cancels
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(true);
             vm.OutputFilename = "not" + _filenameFromSaveDialog;
             vm.OutputFolder = "not" + _folderFromSaveDialog;
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsFalse(stepFinishedRaised);
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUser_UserApplies_CallFinishEvent()
+        public async Task SaveCommand_Execute_ProfileIsValid_FilePathNotFromSaveDialog_FileExist_NotifysUser_UserApplies_DoesNotFinish()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
+            var task = vm.ExecuteWorkflowStep(job);
             _interactionRequest.Raise(Arg.Do<MessageInteraction>(i => i.Response = MessageResponse.Yes)); //User applies
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(true);
             vm.OutputFilename = "not" + _filenameFromSaveDialog;
             vm.OutputFolder = "not" + _folderFromSaveDialog;
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsFalse(stepFinishedRaised);
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_ProfileIsValid_Path_Is_Too_Long()
+        public async Task SaveCommand_Execute_ProfileIsValid_Path_Is_Too_Long()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
-
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
+            var task = vm.ExecuteWorkflowStep(job);
 
             _interactionRequest.Raise(Arg.Do<MessageInteraction>(i =>
             {
                 i.Response = MessageResponse.OK;
             }));
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(false);
 
             vm.OutputFilename = "PDFCreatorTesfasdfsdfadsfsdfasdfasdfasdtpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFCreatorTestpageaPDFeaPDFCa.pdf";
@@ -413,80 +428,53 @@ namespace Presentation.UnitTest.UserControls
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsFalse(stepFinishedRaised);
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_FolderPathIsInvalid_MessageInteractionIsRaised()
+        public async Task SaveCommand_Execute_FolderPathIsInvalid_MessageInteractionIsRaised()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
-            vm.ExecuteWorkflowStep(job);
-
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
+            var task = vm.ExecuteWorkflowStep(job);
 
             _interactionRequest.Raise(Arg.Do<MessageInteraction>(i =>
             {
                 i.Response = MessageResponse.OK;
             }));
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
             _file.Exists(Arg.Any<string>()).Returns(false);
 
             vm.OutputFolder = @"c:\<<\";
 
             vm.SaveCommand.Execute(null);
 
-            Assert.IsFalse(stepFinishedRaised);
+            Assert.IsFalse(task.IsCompleted);
+            await AbortStep(vm, task);
         }
 
         [Test]
-        public void SaveCommand_Execute_RootPathIsInvalid_MessageInteractionIsRaised()
+        public async Task CancelCommand_Execute_ThrowsAbortWorkflowException()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.ExecuteWorkflowStep(job);
-
-            var stepFinishedRaised = false;
-            vm.StepFinished += (sender, args) => stepFinishedRaised = true;
-
-            _interactionRequest.Raise(Arg.Do<MessageInteraction>(i =>
-            {
-                i.Response = MessageResponse.OK;
-            }));
-
-            vm.BrowseFileCommand.Execute(null);
-            _file.Exists(Arg.Any<string>()).Returns(false);
-
-            _pathUtil.IsValidRootedPath(Arg.Any<string>()).Returns(false);
-
-            vm.SaveCommand.Execute(null);
-
-            Assert.IsFalse(stepFinishedRaised);
-        }
-
-        [Test]
-        public void CancelCommand_Execute_ThrowsAbortWorkflowException()
-        {
-            var vm = BuildViewModel();
-            var job = BuildJob(_pdfProfile);
-
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             Assert.Throws<AbortWorkflowException>(() => vm.CancelCommand.Execute(null));
+
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]
-        public void CancelCommand_Execute_CallsFinishedEvent()
+        public async Task CancelCommand_Execute_CallsFinished()
         {
-            var eventWasRaised = false;
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.StepFinished += (sender, args) => eventWasRaised = true;
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             try
             {
@@ -494,29 +482,29 @@ namespace Presentation.UnitTest.UserControls
             }
             catch { }
 
-            Assert.IsTrue(eventWasRaised);
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]
-        public void MergeCommand_Execute_ThrowsManagePrintJobsException()
+        public async Task MergeCommand_Execute_ThrowsManagePrintJobsException()
         {
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             Assert.Throws<ManagePrintJobsException>(() => vm.MergeCommand.Execute(null));
+
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [Test]
-        public void MergeCommand_Execute_CallsFinishedEvent()
+        public async Task MergeCommand_Execute_CallsFinished()
         {
-            var eventWasRaised = false;
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            vm.StepFinished += (sender, args) => eventWasRaised = true;
-            vm.ExecuteWorkflowStep(job);
+            var task = vm.ExecuteWorkflowStep(job);
 
             try
             {
@@ -524,7 +512,7 @@ namespace Presentation.UnitTest.UserControls
             }
             catch { }
 
-            Assert.IsTrue(eventWasRaised);
+            await task.TimeoutAfter(TimeSpan.FromMilliseconds(100));
         }
 
         [TestCase(0, "")]
@@ -541,7 +529,7 @@ namespace Presentation.UnitTest.UserControls
         }
 
         [Test]
-        public void BrowseFolderCommand_WhenExecuted_OpensWithCurrentFilename()
+        public async Task BrowseFolderCommand_WhenExecuted_OpensWithCurrentFilename()
         {
             var vm = BuildViewModel();
             vm.SetJob(BuildJob(_pdfProfile));
@@ -550,13 +538,13 @@ namespace Presentation.UnitTest.UserControls
                 .GetFileName(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<OutputFormat>())
                 .Returns(new QueryResult<OutputFilenameResult>(false, new OutputFilenameResult("", OutputFormat.Pdf)));
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
 
             _saveFileQuery.Received().GetFileName(vm.OutputFolder, vm.OutputFilename, vm.OutputFormat);
         }
 
         [Test]
-        public void BrowseFolderCommand_WhenChangingOutputFormat_SetsViewModelOutputFormat()
+        public async Task BrowseFolderCommand_WhenChangingOutputFormat_SetsViewModelOutputFormat()
         {
             var expectedOutputFormat = OutputFormat.Png;
             var vm = BuildViewModel();
@@ -571,14 +559,14 @@ namespace Presentation.UnitTest.UserControls
                     return new QueryResult<OutputFilenameResult>(true, new OutputFilenameResult(Path.Combine(directory, filename), expectedOutputFormat));
                 });
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
 
             Assert.AreEqual(expectedOutputFormat, vm.OutputFormat);
             Assert.AreEqual(expectedOutputFormat, vm.Job.Profile.OutputFormat);
         }
 
         [Test]
-        public void BrowseFolderCommand_WhenExecutedSuccessfully_SetsOutputFolder()
+        public async Task BrowseFolderCommand_WhenExecutedSuccessfully_SetsOutputFolder()
         {
             var expectedPath = @"Z:\Temp\Folder\Name\test.pdf";
             var vm = BuildViewModel();
@@ -587,26 +575,26 @@ namespace Presentation.UnitTest.UserControls
                 .GetFileName(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<OutputFormat>())
                 .Returns(new QueryResult<OutputFilenameResult>(true, new OutputFilenameResult(expectedPath, OutputFormat.Pdf)));
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
 
-            Assert.AreEqual(expectedPath, vm.Job.OutputFilenameTemplate);
-            StringAssert.StartsWith(expectedPath, vm.Job.OutputFilenameTemplate);
+            Assert.AreEqual(expectedPath, vm.Job.OutputFileTemplate);
+            StringAssert.StartsWith(expectedPath, vm.Job.OutputFileTemplate);
         }
 
         [Test]
-        public void BrowseFolderCommand_WhenCancelled_DoesNotSetOutputFolder()
+        public async Task BrowseFolderCommand_WhenCancelled_DoesNotSetOutputFolder()
         {
-            var expectedPath = @"X:\";
             var vm = BuildViewModel();
             vm.SetJob(BuildJob(_pdfProfile));
             _saveFileQuery
                 .GetFileName(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<OutputFormat>())
                 .Returns(new QueryResult<OutputFilenameResult>(false, null));
+            var oldOutputFolder = vm.OutputFolder;
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
 
-            Assert.AreEqual(expectedPath, vm.OutputFolder);
-            StringAssert.StartsWith(expectedPath, vm.Job.OutputFilenameTemplate);
+            Assert.AreEqual(oldOutputFolder, vm.OutputFolder);
+            StringAssert.StartsWith(oldOutputFolder, vm.Job.OutputFileTemplate);
         }
 
         [Test]
@@ -721,37 +709,53 @@ namespace Presentation.UnitTest.UserControls
         [Test]
         public void ExecuteWorkflowStep_SetJob_SetsMetadataProperties()
         {
-            var title = "newtitle";
-            var author = "newauthor";
-            var subject = "newsubject";
-            var keyword = "newkeyword";
-
             var vm = BuildViewModel();
             var job = BuildJob(_pdfProfile);
 
-            job.Profile.TitleTemplate = title;
-            job.Profile.AuthorTemplate = author;
-            job.Profile.SubjectTemplate = subject;
-            job.Profile.KeywordTemplate = keyword;
+            job.Profile.TitleTemplate = "New Title";
+            job.Profile.AuthorTemplate = "New Author";
+            job.Profile.SubjectTemplate = "New Subject";
+            job.Profile.KeywordTemplate = "New Keyword";
 
             vm.ExecuteWorkflowStep(job);
 
-            Assert.AreEqual(vm.Title, title);
-            Assert.AreEqual(vm.Author, author);
-            Assert.AreEqual(vm.Subject, subject);
-            Assert.AreEqual(vm.Keyword, keyword);
+            Assert.AreEqual(job.Profile.TitleTemplate, vm.Metadata.Title);
+            Assert.AreEqual(job.Profile.AuthorTemplate, vm.Metadata.Author);
+            Assert.AreEqual(job.Profile.SubjectTemplate, vm.Metadata.Subject);
+            Assert.AreEqual(job.Profile.KeywordTemplate, vm.Metadata.Keywords);
         }
 
         [Test]
-        public void BrowseFileCommand_CallsDirectoryHelper()
+        public async Task BrowseFileCommand_CallsDirectoryHelper()
         {
             var vm = BuildViewModel(saveDialogResult: false);
             vm.SetJob(BuildJob(_pdfProfile));
             MockSaveFileDialog(false);
 
-            vm.BrowseFileCommand.Execute(null);
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
 
             _directoryHelper.Received(1).CreateDirectory(vm.OutputFolder);
+        }
+
+        [Test]
+        public async Task BrowseFileCommand_PathTooLongException_DoesRetry()
+        {
+            var callCounter = 0;
+            var vm = BuildViewModel(saveDialogResult: false);
+            vm.SetJob(BuildJob(_pdfProfile));
+            _saveFileQuery.WhenForAnyArgs(
+                x => x.GetFileName(null, null, OutputFormat.Pdf)).Do(x =>
+            {
+                MockSaveFileDialog(false);
+                callCounter++;
+
+                if (callCounter == 1)
+                    throw new PathTooLongException();
+            });
+
+            await vm.BrowseFileCommandAsync.ExecuteAsync(null);
+
+            _interactionRequest.AssertWasRaised<MessageInteraction>();
         }
     }
 }

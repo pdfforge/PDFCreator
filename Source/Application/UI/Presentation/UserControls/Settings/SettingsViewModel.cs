@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
             _gpoSettings = gpoSettings;
         }
 
-        public bool ApplicationSetingsIsDisabled
+        public bool ApplicationSettingsIsDisabled
         {
             get { return _gpoSettings != null && _gpoSettings.DisableApplicationSettings; }
         }

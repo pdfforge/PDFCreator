@@ -1,22 +1,21 @@
-﻿using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
+﻿using CommonServiceLocator;
+using NUnit.Framework;
 using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Editions.EditionBase;
-using pdfforge.PDFCreator.Editions.EditionBase.Prism.SimpleInjector;
 using pdfforge.PDFCreator.Editions.PDFCreator;
-using pdfforge.PDFCreator.Editions.PDFCreatorBusiness;
-using pdfforge.PDFCreator.Editions.PDFCreatorCustom;
-using pdfforge.PDFCreator.Editions.PDFCreatorPlus;
-using pdfforge.PDFCreator.Editions.PDFCreatorTerminalServer;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+using pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector;
+using Prism.Events;
+using Prism.Regions;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System;
@@ -24,8 +23,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Translatable;
-using MainShell = pdfforge.PDFCreator.UI.Presentation.MainShell;
-using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
 
 namespace pdfforge.PDFCreator.UnitTest.Editions.PDFCreator
 {
@@ -38,37 +35,38 @@ namespace pdfforge.PDFCreator.UnitTest.Editions.PDFCreator
         {
             typeof(IJobInfoQueueManager),
             typeof(IFileConversionAssistant),
-            typeof(IUpdateAssistant)
+            typeof(IUpdateAssistant),
         };
 
         private static IList<Bootstrapper> AllBootstrappers()
         {
             return new Bootstrapper[]
             {
-                new PDFCreatorBootstrapper(),
-                new PDFCreatorPlusBootstrapper(),
-                new PDFCreatorBusinessBootstrapper(),
-                new PDFCreatorTerminalServerBootstrapper(),
-                new PDFCreatorCustomBootstrapper()
+                new PDFCreatorBootstrapper()
             }.ToList();
         }
 
         private Container BuildContainer(Bootstrapper bootstrapper)
         {
             var container = new Container();
-            bootstrapper.ConfigureContainer(container);
-
+            bootstrapper.RegisterMainApplication(container);
+            bootstrapper.RegisterPrismNavigation(container);
+            //bootstrapper.RegisterObsidianInteractions();
             return container;
         }
 
         private Container BuildPrismContainer(Bootstrapper bootstrapper)
         {
             var container = BuildContainer(bootstrapper);
+            //var prismApplication = new SimpleInjectorPrismApplication(container);
+            //prismApplication.Initialize();
 
-            var prismBootstrapper = new PrismBootstrapper(bootstrapper.DefineProfileSettingsTabs(), bootstrapper.DefineApplicationSettingsTabs());
-            prismBootstrapper.ConfigurePrismDependecies(container);
-            prismBootstrapper.RegisterNavigationViews(container);
+            container.RegisterSingleton<IEventAggregator, EventAggregator>();
+            container.RegisterSingleton<IShellManager, ShellManager>();
+            container.RegisterSingleton<IWhitelistedServiceLocator, WhitelistedServiceLocator>();
+            container.RegisterSingleton<IRegionManager, RegionManager>();
 
+            ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(container));
             return container;
         }
 
@@ -96,34 +94,24 @@ namespace pdfforge.PDFCreator.UnitTest.Editions.PDFCreator
         [TestCaseSource(nameof(AllBootstrappers))]
         public void AllBootstrappers_ProperlyRegisterLicenseCondition(Bootstrapper bootstrapper)
         {
-            var isLicensedEdition = !(bootstrapper is PDFCreatorBootstrapper) && !(bootstrapper is PDFCreatorCustomBootstrapper);
-
             var container = BuildContainer(bootstrapper);
 
             var conditions = container.GetAllInstances<IStartupCondition>();
             var types = conditions.Select(c => c.GetType());
 
-            if (isLicensedEdition)
-                CollectionAssert.Contains(types, typeof(LicenseCondition));
-            else
-                CollectionAssert.DoesNotContain(types, typeof(LicenseCondition));
+            CollectionAssert.DoesNotContain(types, typeof(LicenseCondition));
         }
 
         [Test]
         [TestCaseSource(nameof(AllBootstrappers))]
         public void AllBootstrappers_ProperlyRegisterTerminalServerCondition(Bootstrapper bootstrapper)
         {
-            var isTerminalServerEdition = bootstrapper is PDFCreatorTerminalServerBootstrapper || ((bootstrapper as PDFCreatorCustomBootstrapper)?.ValidOnTerminalServer == true);
-
             var container = BuildContainer(bootstrapper);
 
             var conditions = container.GetAllInstances<IStartupCondition>();
             var types = conditions.Select(c => c.GetType());
 
-            if (isTerminalServerEdition)
-                CollectionAssert.DoesNotContain(types, typeof(TerminalServerNotAllowedCondition));
-            else
-                CollectionAssert.Contains(types, typeof(TerminalServerNotAllowedCondition));
+            CollectionAssert.Contains(types, typeof(TerminalServerNotAllowedCondition));
         }
 
         [Test]
@@ -152,7 +140,7 @@ namespace pdfforge.PDFCreator.UnitTest.Editions.PDFCreator
         public void ConfigurationOfContainer_DoesNotThrowExceptions(Bootstrapper bootstrapper)
         {
             var container = new Container();
-            Assert.DoesNotThrow(() => bootstrapper.ConfigureContainer(container));
+            Assert.DoesNotThrow(() => bootstrapper.RegisterMainApplication(container));
         }
 
         [Test]
@@ -184,61 +172,6 @@ namespace pdfforge.PDFCreator.UnitTest.Editions.PDFCreator
                 message += $"{diagnosticResult.Severity} | {diagnosticResult.DiagnosticType}: {diagnosticResult.Description} {Environment.NewLine}";
 
             Assert.IsFalse(result.Any(), message);
-        }
-
-        [Test]
-        public void AllAppStarts_AreRegistered()
-        {
-            var bootstrapper = new PDFCreatorPlusBootstrapper();
-            var container = BuildPrismContainer(bootstrapper);
-
-            var appStarts = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                             from type in assembly.GetTypes()
-                             where !type.IsAbstract && typeof(IAppStart).IsAssignableFrom(type)
-                             select type).ToList();
-
-            foreach (var appStart in appStarts)
-            {
-                Assert.DoesNotThrow(() => container.GetInstance(appStart));
-            }
-
-            CollectionAssert.IsNotEmpty(appStarts);
-        }
-
-        [Test]
-        [Apartment(ApartmentState.STA)]
-        public void AllWhitelistedClasses_AreRegistered()
-        {
-            var bootstrapper = new PDFCreatorPlusBootstrapper();
-            var container = BuildPrismContainer(bootstrapper);
-
-            var settingsProvider = container.GetInstance<ISettingsProvider>();
-            var builder = new DefaultSettingsBuilder();
-            var settings = builder.CreateDefaultSettings("PDFCreator", new IniStorage(), "en");
-            settingsProvider.UpdateSettings(settings);
-
-            var whitelisted = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                               from type in assembly.GetTypes()
-                               where !type.IsAbstract && typeof(IWhitelisted).IsAssignableFrom(type)
-                               select type).ToList();
-
-            foreach (var type in whitelisted)
-            {
-                Assert.DoesNotThrow(() => container.GetInstance(type), $"Could not create type '{type}'");
-            }
-
-            CollectionAssert.IsNotEmpty(whitelisted);
-        }
-
-        [TestCase(typeof(MainShell))]
-        [TestCase(typeof(PrintJobShell))]
-        [Apartment(ApartmentState.STA)]
-        public void Shells_CanBeResolved(Type type)
-        {
-            var bootstrapper = new PDFCreatorPlusBootstrapper();
-            var container = BuildPrismContainer(bootstrapper);
-
-            Assert.DoesNotThrow(() => container.GetInstance(type));
         }
 
         [Test]

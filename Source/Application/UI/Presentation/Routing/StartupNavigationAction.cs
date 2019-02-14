@@ -1,16 +1,12 @@
-﻿using pdfforge.PDFCreator.Core.Controller.Routing;
-
-namespace pdfforge.PDFCreator.UI.Presentation.Routing
+﻿namespace pdfforge.PDFCreator.UI.Presentation.Routing
 {
-    public class StartupNavigationAction : StartupAction
+    public class StartupNavigationAction : IMainShellStartupAction
     {
-        public readonly string Region;
-        public readonly string Target;
+        public string Region;
+        public string Target;
 
-        public StartupNavigationAction(string region, string target)
+        public void Execute()
         {
-            Region = region;
-            Target = target;
         }
     }
 }

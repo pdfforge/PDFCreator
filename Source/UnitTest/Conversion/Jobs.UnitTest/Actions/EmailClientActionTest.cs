@@ -28,12 +28,13 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             _profile.EmailClientSettings.AddSignature = false;
             _profile.EmailClientSettings.Recipients = "test@local";
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), new Accounts());
+            _job = new Job(new JobInfo(), _profile, new Accounts());
             _job.TokenReplacer = _tokenReplacer;
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
             _job.Profile = _profile;
-            _job.JobTranslations = new JobTranslations();
-            _job.JobTranslations.EmailSignature = SignatureText;
+
+            _mailSignatureHelper = Substitute.For<IMailSignatureHelper>();
+            _mailSignatureHelper.ComposeMailSignature().Returns(SignatureText);
 
             _mockMailClient = new MockMailClient();
 
@@ -46,13 +47,19 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         private IEmailClientFactory _emailClientFactory;
         private MockMailClient _mockMailClient;
         private TokenReplacer _tokenReplacer;
+        private IMailSignatureHelper _mailSignatureHelper;
 
         private const string SignatureText = "Email automatically created by the free PDFCreator";
+
+        private EMailClientAction BuildAction()
+        {
+            return new EMailClientAction(_emailClientFactory, _mailSignatureHelper);
+        }
 
         [Test]
         public void EmailClientAction_BodyWithToken_MailContainsReplacedBody()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Content = "some content \r\nwith line breaks <foo>";
             _tokenReplacer.AddStringToken("foo", "bar");
 
@@ -64,7 +71,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_CouldNotStartClient_ReturnsActionresultWithId100()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _mockMailClient.WillFail = true;
 
             var result = action.ProcessJob(_job);
@@ -77,7 +84,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _emailClientFactory = Substitute.For<IEmailClientFactory>();
             _emailClientFactory.CreateEmailClient().Returns(x => null);
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
 
             var result = action.ProcessJob(_job);
 
@@ -87,7 +94,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_SubjectWithToken_MailContainsReplacedSubject()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Subject = "my subject <foo>";
             _tokenReplacer.AddStringToken("foo", "bar");
 
@@ -99,7 +106,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WhenExceptionIsThrown_ReturnsActionresultWithId999()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _mockMailClient.ExceptionThrown = new Exception();
 
             var result = action.ProcessJob(_job);
@@ -110,7 +117,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithBody_MailContainsBody()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Content = "some content \r\nwith line breaks";
 
             action.ProcessJob(_job);
@@ -121,7 +128,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithEmptyRecipients_OnlyContainsValidInMail()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Recipients = "a@local; ; b@local";
 
             action.ProcessJob(_job);
@@ -133,7 +140,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithMultipleRecipientsSeperatedByCommas_AllRecipientsListedInMail()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Recipients = "a@local, b@local, c@local";
 
             action.ProcessJob(_job);
@@ -145,7 +152,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithMultipleRecipientsSeperatedBySemicolons_AllRecipientsListedInMail()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Recipients = "a@local; b@local; c@local";
 
             action.ProcessJob(_job);
@@ -157,7 +164,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithMultipleRecipientsInCcAndBcc_AllRecipientsListedInMail()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Recipients = "a@local;";
             _profile.EmailClientSettings.RecipientsCc = "b@local";
             _profile.EmailClientSettings.RecipientsBcc = ";c@local";
@@ -172,7 +179,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithoutSignature_MailBodyDoesNotContainSignature()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.AddSignature = false;
 
             action.ProcessJob(_job);
@@ -183,7 +190,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithSignature_MailBodyContainsSignature()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.AddSignature = true;
 
             action.ProcessJob(_job);
@@ -194,7 +201,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithSimpleJob_EmailIsProcessedByClient()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
 
             action.ProcessJob(_job);
 
@@ -204,7 +211,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_WithSubject_MailContainsSubject()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Subject = "my subject";
 
             action.ProcessJob(_job);
@@ -215,7 +222,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_AttachesFiles()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
 
             _profile.EmailClientSettings.Subject = "my subject";
 
@@ -227,7 +234,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_DropboxShareLinks_DoesNotAttachFiles()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.DropboxSettings.Enabled = true;
             _profile.DropboxSettings.CreateShareLink = true;
 
@@ -242,7 +249,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_DropboxEnabledWithoutShareLinks_AttachesFiles()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.DropboxSettings.Enabled = true;
             _profile.DropboxSettings.CreateShareLink = false;
 
@@ -257,7 +264,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void EmailClientAction_DropboxEnabledWithoutToken_AttachesFiles()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.DropboxSettings.Enabled = true;
             _profile.DropboxSettings.CreateShareLink = true;
 
@@ -271,7 +278,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void CheckEmailClientInstalled_ClientCanBeCreated_ReturnsTrue()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
 
             Assert.IsTrue(action.CheckEmailClientInstalled());
         }
@@ -280,7 +287,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         public void CheckEmailClientInstalled_ClientCannotBeCreated_ReturnsFalse()
         {
             _emailClientFactory.CreateEmailClient().Returns(x => null);
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
 
             Assert.IsFalse(action.CheckEmailClientInstalled());
         }
@@ -288,7 +295,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void IsEnabled_WhenEnabled_ReturnsTrue()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Enabled = true;
 
             Assert.IsTrue(action.IsEnabled(_profile));
@@ -297,7 +304,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void IsEnabled_WhenNotEnabled_ReturnsFalse()
         {
-            var action = new EMailClientAction(_emailClientFactory);
+            var action = BuildAction();
             _profile.EmailClientSettings.Enabled = false;
 
             Assert.IsFalse(action.IsEnabled(_profile));

@@ -11,9 +11,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion4_UpgradeRequiredToVersion4_ReturnsTrue()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "4");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "4");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(5));
         }
@@ -22,12 +22,12 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion4_UpgradeToVersion5_SetsVersionTo5()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "4");
-            var upgrader = new SettingsUpgrader(data);
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "4");
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(5);
 
-            Assert.AreEqual("5", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("5", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [SetUp]
@@ -36,7 +36,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             _dataV3 = Data.CreateDataStorage();
             _replacementCount = 0;
 
-            _dataV3.SetValue(SettingsUpgrader.VersionSettingPath, "4");
+            _dataV3.SetValue(@"ApplicationProperties\SettingsVersion", "4");
         }
 
         private Data _dataV3;
@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void OldStartReplacements_AreConvertedToStartType(string expectedStartType)
         {
             AddOldReplacement(expectedStartType, "");
-            var upgrader = new SettingsUpgrader(_dataV3.Clone());
+            var upgrader = new CreatorSettingsUpgrader(_dataV3.Clone());
 
             upgrader.Upgrade(5);
             var data = upgrader.Data;
@@ -82,7 +82,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void OldEndReplacements_AreConvertedToEndType(string expectedEndType)
         {
             AddOldReplacement(expectedEndType, "");
-            var upgrader = new SettingsUpgrader(_dataV3.Clone());
+            var upgrader = new CreatorSettingsUpgrader(_dataV3.Clone());
 
             upgrader.Upgrade(5);
             var data = upgrader.Data;

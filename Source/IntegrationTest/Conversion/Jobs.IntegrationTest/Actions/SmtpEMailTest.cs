@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using PDFCreator.TestUtilities;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using Ploeh.AutoFixture;
@@ -28,6 +30,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
         private string _smtpPassword;
         private int _smtpPort;
         private SmtpServerForUnitTest _smtpServer;
+        private IMailSignatureHelper _mailSignatureHelper;
 
         [SetUp]
         public void SetUp()
@@ -36,6 +39,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
 
             _userName = fixture.Create<string>();
             _smtpPassword = fixture.Create<string>();
+
+            _mailSignatureHelper = Substitute.For<IMailSignatureHelper>();
+            _mailSignatureHelper.ComposeMailSignature().Returns("");
 
             var bootstrapper = new IntegrationTestBootstrapper();
             var container = bootstrapper.ConfigureContainer();
@@ -138,7 +144,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
             _th.Job.TokenReplacer = _tokenReplacer;
             _th.Job.Accounts = _accounts;
 
-            var smtpAction = new SmtpMailAction();
+            var smtpAction = new SmtpMailAction(_mailSignatureHelper);
 
             smtpAction.ProcessJob(_th.Job);
 
@@ -156,7 +162,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
             _th.Job.TokenReplacer = _tokenReplacer;
             _th.Job.Accounts = _accounts;
 
-            var smtpAction = new SmtpMailAction();
+            var smtpAction = new SmtpMailAction(_mailSignatureHelper);
 
             smtpAction.ProcessJob(_th.Job);
 

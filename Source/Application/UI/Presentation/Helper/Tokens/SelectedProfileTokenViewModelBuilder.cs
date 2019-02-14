@@ -1,5 +1,4 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
@@ -7,7 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
     {
         private readonly ISelectedProfileProvider _selectedProfileProvider;
 
-        public SelectedProfileTokenViewModelBuilder(ISelectedProfileProvider selectedProfileProvider, TokenHelper tokenHelper)
+        public SelectedProfileTokenViewModelBuilder(ISelectedProfileProvider selectedProfileProvider, ITokenHelper tokenHelper)
             : base(tokenHelper, selectedProfileProvider.SelectedProfile)
         {
             _selectedProfileProvider = selectedProfileProvider;

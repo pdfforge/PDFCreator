@@ -36,5 +36,13 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.PdfTools
             pdfToolsLicensing._PdfSecureKey = "Invalid PdfSecureKey";
             Assert.IsFalse(pdfToolsLicensing.Apply());
         }
+
+        [Test]
+        public void Apply_InvalidPdfAValidatorKey_ReturnsFalse()
+        {
+            var pdfToolsLicensing = new PdfToolsTestLicensing();
+            pdfToolsLicensing._PdfAValidatorKey = "Invalid PdfAValidatorKey";
+            Assert.IsFalse(pdfToolsLicensing.Apply());
+        }
     }
 }

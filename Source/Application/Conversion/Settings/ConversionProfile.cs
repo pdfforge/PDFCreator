@@ -41,6 +41,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public CoverPage CoverPage { get; set; } = new CoverPage();
 		
 		/// <summary>
+		/// Pre- and postconversion actions calling functions from a custom script
+		/// </summary>
+		public CustomScript CustomScript { get; set; } = new CustomScript();
+		
+		/// <summary>
 		/// Dropbox settings for currently logged user
 		/// </summary>
 		public DropboxSettings DropboxSettings { get; set; } = new DropboxSettings();
@@ -203,6 +208,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			AutoSave.ReadValues(data, path + @"AutoSave\");
 			BackgroundPage.ReadValues(data, path + @"BackgroundPage\");
 			CoverPage.ReadValues(data, path + @"CoverPage\");
+			CustomScript.ReadValues(data, path + @"CustomScript\");
 			DropboxSettings.ReadValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.ReadValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.ReadValues(data, path + @"EmailSmtpSettings\");
@@ -224,25 +230,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { Guid = Data.UnescapeString(data.GetValue(@"" + path + @"Guid")); } catch { Guid = "";}
 			try { KeywordTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"KeywordTemplate")); } catch { KeywordTemplate = "";}
 			try { Name = Data.UnescapeString(data.GetValue(@"" + path + @"Name")); } catch { Name = "NewProfile";}
-			try { OpenViewer = bool.Parse(data.GetValue(@"" + path + @"OpenViewer")); } catch { OpenViewer = true;}
-			try { OpenWithPdfArchitect = bool.Parse(data.GetValue(@"" + path + @"OpenWithPdfArchitect")); } catch { OpenWithPdfArchitect = true;}
-			try { OutputFormat = (OutputFormat) Enum.Parse(typeof(OutputFormat), data.GetValue(@"" + path + @"OutputFormat")); } catch { OutputFormat = OutputFormat.Pdf;}
-			try { ShowAllNotifications = bool.Parse(data.GetValue(@"" + path + @"ShowAllNotifications")); } catch { ShowAllNotifications = true;}
-			try { ShowOnlyErrorNotifications = bool.Parse(data.GetValue(@"" + path + @"ShowOnlyErrorNotifications")); } catch { ShowOnlyErrorNotifications = false;}
-			try { ShowProgress = bool.Parse(data.GetValue(@"" + path + @"ShowProgress")); } catch { ShowProgress = true;}
-			try { ShowQuickActions = bool.Parse(data.GetValue(@"" + path + @"ShowQuickActions")); } catch { ShowQuickActions = true;}
-			try { SkipPrintDialog = bool.Parse(data.GetValue(@"" + path + @"SkipPrintDialog")); } catch { SkipPrintDialog = false;}
+			OpenViewer = bool.TryParse(data.GetValue(@"" + path + @"OpenViewer"), out var tmpOpenViewer) ? tmpOpenViewer : true;
+			OpenWithPdfArchitect = bool.TryParse(data.GetValue(@"" + path + @"OpenWithPdfArchitect"), out var tmpOpenWithPdfArchitect) ? tmpOpenWithPdfArchitect : true;
+			OutputFormat = Enum.TryParse<OutputFormat>(data.GetValue(@"" + path + @"OutputFormat"), out var tmpOutputFormat) ? tmpOutputFormat : OutputFormat.Pdf;
+			ShowAllNotifications = bool.TryParse(data.GetValue(@"" + path + @"ShowAllNotifications"), out var tmpShowAllNotifications) ? tmpShowAllNotifications : true;
+			ShowOnlyErrorNotifications = bool.TryParse(data.GetValue(@"" + path + @"ShowOnlyErrorNotifications"), out var tmpShowOnlyErrorNotifications) ? tmpShowOnlyErrorNotifications : false;
+			ShowProgress = bool.TryParse(data.GetValue(@"" + path + @"ShowProgress"), out var tmpShowProgress) ? tmpShowProgress : true;
+			ShowQuickActions = bool.TryParse(data.GetValue(@"" + path + @"ShowQuickActions"), out var tmpShowQuickActions) ? tmpShowQuickActions : true;
+			SkipPrintDialog = bool.TryParse(data.GetValue(@"" + path + @"SkipPrintDialog"), out var tmpSkipPrintDialog) ? tmpSkipPrintDialog : false;
 			try { SubjectTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"SubjectTemplate")); } catch { SubjectTemplate = "";}
 			try { TargetDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"TargetDirectory")); } catch { TargetDirectory = "";}
 			try { TitleTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"TitleTemplate")); } catch { TitleTemplate = "<PrintJobName>";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			AttachmentPage.StoreValues(data, path + @"AttachmentPage\");
 			AutoSave.StoreValues(data, path + @"AutoSave\");
 			BackgroundPage.StoreValues(data, path + @"BackgroundPage\");
 			CoverPage.StoreValues(data, path + @"CoverPage\");
+			CustomScript.StoreValues(data, path + @"CustomScript\");
 			DropboxSettings.StoreValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.StoreValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.StoreValues(data, path + @"EmailSmtpSettings\");
@@ -276,7 +282,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"TargetDirectory", Data.EscapeString(TargetDirectory));
 			data.SetValue(@"" + path + @"TitleTemplate", Data.EscapeString(TitleTemplate));
 		}
-		
 		public ConversionProfile Copy()
 		{
 			ConversionProfile copy = new ConversionProfile();
@@ -285,6 +290,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AutoSave = AutoSave.Copy();
 			copy.BackgroundPage = BackgroundPage.Copy();
 			copy.CoverPage = CoverPage.Copy();
+			copy.CustomScript = CustomScript.Copy();
 			copy.DropboxSettings = DropboxSettings.Copy();
 			copy.EmailClientSettings = EmailClientSettings.Copy();
 			copy.EmailSmtpSettings = EmailSmtpSettings.Copy();
@@ -317,7 +323,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.SubjectTemplate = SubjectTemplate;
 			copy.TargetDirectory = TargetDirectory;
 			copy.TitleTemplate = TitleTemplate;
-			
 			return copy;
 		}
 		
@@ -330,6 +335,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!AutoSave.Equals(v.AutoSave)) return false;
 			if (!BackgroundPage.Equals(v.BackgroundPage)) return false;
 			if (!CoverPage.Equals(v.CoverPage)) return false;
+			if (!CustomScript.Equals(v.CustomScript)) return false;
 			if (!DropboxSettings.Equals(v.DropboxSettings)) return false;
 			if (!EmailClientSettings.Equals(v.EmailClientSettings)) return false;
 			if (!EmailSmtpSettings.Equals(v.EmailSmtpSettings)) return false;
@@ -362,72 +368,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!SubjectTemplate.Equals(v.SubjectTemplate)) return false;
 			if (!TargetDirectory.Equals(v.TargetDirectory)) return false;
 			if (!TitleTemplate.Equals(v.TitleTemplate)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("[AttachmentPage]");
-			sb.AppendLine(AttachmentPage.ToString());
-			sb.AppendLine("[AutoSave]");
-			sb.AppendLine(AutoSave.ToString());
-			sb.AppendLine("[BackgroundPage]");
-			sb.AppendLine(BackgroundPage.ToString());
-			sb.AppendLine("[CoverPage]");
-			sb.AppendLine(CoverPage.ToString());
-			sb.AppendLine("[DropboxSettings]");
-			sb.AppendLine(DropboxSettings.ToString());
-			sb.AppendLine("[EmailClientSettings]");
-			sb.AppendLine(EmailClientSettings.ToString());
-			sb.AppendLine("[EmailSmtpSettings]");
-			sb.AppendLine(EmailSmtpSettings.ToString());
-			sb.AppendLine("[Ftp]");
-			sb.AppendLine(Ftp.ToString());
-			sb.AppendLine("[Ghostscript]");
-			sb.AppendLine(Ghostscript.ToString());
-			sb.AppendLine("[HttpSettings]");
-			sb.AppendLine(HttpSettings.ToString());
-			sb.AppendLine("[JpegSettings]");
-			sb.AppendLine(JpegSettings.ToString());
-			sb.AppendLine("[PdfSettings]");
-			sb.AppendLine(PdfSettings.ToString());
-			sb.AppendLine("[PngSettings]");
-			sb.AppendLine(PngSettings.ToString());
-			sb.AppendLine("[Printing]");
-			sb.AppendLine(Printing.ToString());
-			sb.AppendLine("[Properties]");
-			sb.AppendLine(Properties.ToString());
-			sb.AppendLine("[Scripting]");
-			sb.AppendLine(Scripting.ToString());
-			sb.AppendLine("[Stamping]");
-			sb.AppendLine(Stamping.ToString());
-			sb.AppendLine("[TextSettings]");
-			sb.AppendLine(TextSettings.ToString());
-			sb.AppendLine("[TiffSettings]");
-			sb.AppendLine(TiffSettings.ToString());
-			sb.AppendLine("[UserTokens]");
-			sb.AppendLine(UserTokens.ToString());
-			sb.AppendLine("AuthorTemplate=" + AuthorTemplate.ToString());
-			sb.AppendLine("FileNameTemplate=" + FileNameTemplate.ToString());
-			sb.AppendLine("Guid=" + Guid.ToString());
-			sb.AppendLine("KeywordTemplate=" + KeywordTemplate.ToString());
-			sb.AppendLine("Name=" + Name.ToString());
-			sb.AppendLine("OpenViewer=" + OpenViewer.ToString());
-			sb.AppendLine("OpenWithPdfArchitect=" + OpenWithPdfArchitect.ToString());
-			sb.AppendLine("OutputFormat=" + OutputFormat.ToString());
-			sb.AppendLine("ShowAllNotifications=" + ShowAllNotifications.ToString());
-			sb.AppendLine("ShowOnlyErrorNotifications=" + ShowOnlyErrorNotifications.ToString());
-			sb.AppendLine("ShowProgress=" + ShowProgress.ToString());
-			sb.AppendLine("ShowQuickActions=" + ShowQuickActions.ToString());
-			sb.AppendLine("SkipPrintDialog=" + SkipPrintDialog.ToString());
-			sb.AppendLine("SubjectTemplate=" + SubjectTemplate.ToString());
-			sb.AppendLine("TargetDirectory=" + TargetDirectory.ToString());
-			sb.AppendLine("TitleTemplate=" + TitleTemplate.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

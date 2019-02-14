@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -36,7 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         public async Task<string> AddPrinter()
         {
-            var newPrinterName = CreateValidPrinterName("PDFCreator");
+            var newPrinterName = _printerHelper.CreateValidPrinterName("PDFCreator");
             var questionText = Translation.EnterPrintername;
             newPrinterName = await RequestPrinternameFromUser(questionText, newPrinterName);
             if (newPrinterName == null)
@@ -45,7 +44,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             while (!_printerHelper.IsValidPrinterName(newPrinterName))
             {
                 questionText = Translation.GetPrinterAlreadyInstalledMessage(newPrinterName);
-                newPrinterName = CreateValidPrinterName(newPrinterName);
+                newPrinterName = _printerHelper.CreateValidPrinterName(newPrinterName);
                 newPrinterName = await RequestPrinternameFromUser(questionText, newPrinterName);
                 if (newPrinterName == null)
                     return null;
@@ -78,7 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             while (!_printerHelper.IsValidPrinterName(newPrinterName))
             {
                 questionText = Translation.GetPrinterAlreadyInstalledMessage(newPrinterName);
-                newPrinterName = CreateValidPrinterName(newPrinterName);
+                newPrinterName = _printerHelper.CreateValidPrinterName(newPrinterName);
                 newPrinterName = await RequestPrinternameFromUser(questionText, newPrinterName);
                 if ((newPrinterName == null) || (newPrinterName == oldPrinterName))
                     return null;
@@ -145,27 +144,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         private InputValidation ValidatePrinterName(string arg)
         {
-            var invalidChars = new[] { "!", @"\", ",", "\"" }; //\" would be valid but causes problems, since it splits input strings
-            if (invalidChars.Any(arg.Contains))
-                return new InputValidation(false, Translation.InvalidCharsInPrinterName);
-
-            if (_printerHelper.IsValidPrinterName(arg.Trim()))
-                return new InputValidation(true, "");
-
-            return new InputValidation(false, Translation.InvalidPrinterName);
-        }
-
-        private string CreateValidPrinterName(string baseName)
-        {
-            var i = 2;
-            var printerName = baseName;
-
-            while (!_printerHelper.IsValidPrinterName(printerName))
+            switch (_printerHelper.ValidatePrinterName(arg))
             {
-                printerName = baseName + i++;
-            }
+                case PrinterNameValidation.Valid:
+                    return new InputValidation(true, "");
 
-            return printerName;
+                case PrinterNameValidation.InvalidName:
+                    return new InputValidation(false, Translation.InvalidCharsInPrinterName);
+
+                case PrinterNameValidation.AlreadyExists:
+                default:
+                    return new InputValidation(false, Translation.InvalidPrinterName);
+            }
         }
     }
 }

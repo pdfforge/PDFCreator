@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public ObservableCollection<SmtpAccount> SmtpAccounts { get; set; } = new ObservableCollection<SmtpAccount>();
 		public ObservableCollection<TimeServerAccount> TimeServerAccounts { get; set; } = new ObservableCollection<TimeServerAccount>();
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			
 			try
@@ -173,7 +173,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				copy.TimeServerAccounts.Add(TimeServerAccounts[i].Copy());
 			}
 			
-			
 			return copy;
 		}
 		
@@ -217,46 +216,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				if (!TimeServerAccounts[i].Equals(v.TimeServerAccounts[i])) return false;
 			}
 			
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			
-			for (int i = 0; i < DropboxAccounts.Count; i++)
-			{
-				sb.AppendLine(DropboxAccounts.ToString());
-			}
-			
-			
-			for (int i = 0; i < FtpAccounts.Count; i++)
-			{
-				sb.AppendLine(FtpAccounts.ToString());
-			}
-			
-			
-			for (int i = 0; i < HttpAccounts.Count; i++)
-			{
-				sb.AppendLine(HttpAccounts.ToString());
-			}
-			
-			
-			for (int i = 0; i < SmtpAccounts.Count; i++)
-			{
-				sb.AppendLine(SmtpAccounts.ToString());
-			}
-			
-			
-			for (int i = 0; i < TimeServerAccounts.Count; i++)
-			{
-				sb.AppendLine(TimeServerAccounts.ToString());
-			}
-			
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

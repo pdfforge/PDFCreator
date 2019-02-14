@@ -8,7 +8,6 @@ using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -27,7 +26,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IAssemblyHelper _assemblyHelper;
         private readonly IPDFCreatorNameProvider _nameProvider;
         private readonly IInteractionInvoker _interactionInvoker;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
         private readonly IPrinterHelper _printerHelper;
         private readonly ApplicationTranslation _translation;
         private readonly IShellExecuteHelper _shellExecuteHelper;
@@ -59,13 +57,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             if (response == MessageResponse.Yes)
             {
                 var applicationPath = _assemblyHelper.GetAssemblyDirectory();
-                var printerHelperPath = _pathSafe.Combine(applicationPath, "PrinterHelper.exe");
+                var printerHelperPath = PathSafe.Combine(applicationPath, "PrinterHelper.exe");
 
                 if (!_file.Exists(printerHelperPath))
                 {
                     Logger.Error("PrinterHelper.exe does not exist!");
                     title = _translation.Error;
-                    message = _translation.GetSetupFileMissingMessage(_pathSafe.GetFileName(printerHelperPath));
+                    message = _translation.GetSetupFileMissingMessage(PathSafe.GetFileName(printerHelperPath));
 
                     ShowMessage(message, title, MessageOptions.OK, MessageIcon.Error);
                     return false;

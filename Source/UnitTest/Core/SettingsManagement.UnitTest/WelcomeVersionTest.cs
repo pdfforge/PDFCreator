@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
-using Rhino.Mocks;
 using System;
 using SystemInterface.Microsoft.Win32;
 
@@ -10,90 +11,84 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
     [TestFixture]
     public class WelcomeVersionTest
     {
+        private IVersionHelper _versionHelper;
+        private IGpoSettings _gpoSettings;
+        private IRegistry _registry;
+
         [SetUp]
         public void Setup()
         {
             _versionHelper = new VersionHelper(new Version(1, 2, 3, 4));
+            _gpoSettings = Substitute.For<IGpoSettings>();
+
+            _registry = Substitute.For<IRegistry>();
         }
 
-        private IVersionHelper _versionHelper;
+        private void SetVersionInRegistryStub(string version)
+        {
+            _registry.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings, WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null).Returns(version);
+        }
 
         [Test]
         public void FirstRunTest_NoWelcomeVersionSet_IsFirstRun()
         {
-            var registryMock = MockRepository.GenerateMock<IRegistry>();
-            registryMock.Stub(x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings, WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null)).Return("");
+            SetVersionInRegistryStub("");
 
-            var welcomeSettingsHelper = new WelcomeSettingsHelper(registryMock, _versionHelper);
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
 
-            Assert.IsTrue(welcomeSettingsHelper.IsFirstRun(), "Empty registry value for WelcomeVersion not detected as FirstRun.");
-
-            registryMock.AssertWasCalled(
-                x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
-                    WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null), options => options.Repeat.Once());
+            Assert.IsTrue(welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion(), "Empty registry value for WelcomeVersion not detected as FirstRun.");
         }
 
         [Test]
-        public void FirstRunTest_WelcomeVersionIsBiggerThanCurrentVersion_IsFirstRun()
+        public void FirstRunTest_WelcomeVersionIsBiggerThanCurrentVersion_IsRequiredReturnsTrue()
         {
-            var registryMock = MockRepository.GenerateMock<IRegistry>();
-            registryMock.Stub(x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings, WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null)).Return("999999999.9.9");
+            SetVersionInRegistryStub("999999999.9.9");
 
-            var welcomeSettingsHelper = new WelcomeSettingsHelper(registryMock, _versionHelper);
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
 
-            Assert.IsTrue(welcomeSettingsHelper.IsFirstRun(), "Bigger WelcomeVersion not detected as FirstRun.");
-
-            registryMock.AssertWasCalled(
-                x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
-                    WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null), options => options.Repeat.Once());
+            Assert.IsTrue(welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion(), "Bigger WelcomeVersion not detected as FirstRun.");
         }
 
         [Test]
-        public void FirstRunTest_WelcomeVersionIsSmallerThanCurrentVersion_IsFirstRun()
+        public void FirstRunTest_WelcomeVersionIsSmallerThanCurrentVersion_IsRequiredReturnsTrue()
         {
-            var registryMock = MockRepository.GenerateMock<IRegistry>();
-            registryMock.Stub(x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings, WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null)).Return("0.0.0");
+            SetVersionInRegistryStub("0.0.0");
 
-            var welcomeSettingsHelper = new WelcomeSettingsHelper(registryMock, _versionHelper);
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
 
-            Assert.IsTrue(welcomeSettingsHelper.IsFirstRun(), "Smaller WelcomeVersion in registry not detected as FirstRun.");
-
-            registryMock.AssertWasCalled(
-                x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
-                    WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null), options => options.Repeat.Once());
+            Assert.IsTrue(welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion(), "Smaller WelcomeVersion in registry not detected as FirstRun.");
         }
 
         [Test]
-        public void FirstRunTest_WelcomeVersionIsTheCurrentVersion_IsNotFirstRun()
+        public void FirstRunTest_WelcomeVersionIsTheCurrentVersion_IsRequiredReturnsFalse()
         {
-            var registryMock = MockRepository.GenerateMock<IRegistry>();
+            SetVersionInRegistryStub(_versionHelper.FormatWithBuildNumber()); //current version
 
-            var welcomeSettingsHelper = new WelcomeSettingsHelper(registryMock, _versionHelper);
-            var currentVersion = _versionHelper.FormatWithBuildNumber();
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
 
-            registryMock.Stub(x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings, WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null)).Return(currentVersion);
+            Assert.IsFalse(welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion(), "Current Version as WelcomeVersion detected as FirstRun.");
+        }
 
-            Assert.IsFalse(welcomeSettingsHelper.IsFirstRun(), "Current Version as WelcomeVersion detected as FirstRun.");
+        [Test]
+        public void FirstRunTestWithEnabledGPO_WelcomeVersionIsSmallerThanCurrentVersion_IsRequiredReturnsTrue()
+        {
+            SetVersionInRegistryStub("Not the current version");
 
-            registryMock.AssertWasCalled(
-                x => x.GetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
-                    WelcomeSettingsHelper.RegistryValueForWelcomeVersion, null), options => options.Repeat.Once());
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
+
+            Assert.IsTrue(welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion(), "Enabled GPO settnig should not hide the Welcome Window");
         }
 
         [Test]
         public void SetCurrentVersionAsWelcomeVersionTest_RegistrySetValueGetsCalled()
         {
-            var registryMock = MockRepository.GenerateMock<IRegistry>();
-
-            var welcomeSettingsHelper = new WelcomeSettingsHelper(registryMock, _versionHelper);
+            var welcomeSettingsHelper = new WelcomeSettingsHelper(_registry, _versionHelper, _gpoSettings);
             var currentVersion = _versionHelper.FormatWithBuildNumber();
 
             welcomeSettingsHelper.SetCurrentApplicationVersionAsWelcomeVersionInRegistry();
 
-            registryMock.AssertWasCalled(
-                x => x.SetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
-                    WelcomeSettingsHelper.RegistryValueForWelcomeVersion, currentVersion),
-                options => options.Repeat.Once());
+            _registry.Received(1).SetValue(WelcomeSettingsHelper.RegistryKeyForWelcomeSettings,
+                WelcomeSettingsHelper.RegistryValueForWelcomeVersion, currentVersion);
         }
     }
 }

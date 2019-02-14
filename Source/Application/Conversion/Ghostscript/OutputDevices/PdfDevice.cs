@@ -31,6 +31,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add("-dCompatibilityLevel=1.4");
             parameters.Add("-dPDFSETTINGS=/default");
             parameters.Add("-dEmbedAllFonts=true");
+            if (Job.Profile.PdfSettings.NoFonts)
+                parameters.Add("-dNoOutputFonts");
 
             /* FastWebView=true causes crashes in Ghostscript 9.20 so it has been removed for now, GS uses fastwebview=false by defrault
 
@@ -52,25 +54,35 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             SetPageOrientation(parameters, DistillerDictonaries);
             SetColorSchemeParameters(parameters);
 
+            GrayAndColorImagesCompressionAndResample(parameters, DistillerDictonaries);
+            MonoImagesCompression(parameters);
+
             //ColorSheme must be defined before adding def files of PdfA/X
             if (Job.Profile.OutputFormat == OutputFormat.PdfX)
                 SetPdfXParameters(parameters);
-            else if ((Job.Profile.OutputFormat == OutputFormat.PdfA1B)
-                     || (Job.Profile.OutputFormat == OutputFormat.PdfA2B))
+            else if (Job.Profile.OutputFormat.IsPdfA())
                 SetPdfAParameters(parameters);
-
-            GrayAndColorImagesCompressionAndResample(parameters, DistillerDictonaries);
-            MonoImagesCompression(parameters);
         }
 
         private void SetPdfAParameters(IList<string> parameters)
         {
             var shortenedTempPath = PathHelper.GetShortPathName(Job.JobTempFolder);
 
-            if (Job.Profile.OutputFormat == OutputFormat.PdfA1B)
-                parameters.Add("-dPDFA=1");
-            else
-                parameters.Add("-dPDFA=2");
+            switch (Job.Profile.OutputFormat)
+            {
+                case OutputFormat.PdfA1B:
+                    parameters.Add("-dPDFA=1");
+                    break;
+
+                case OutputFormat.PdfA2B:
+                    parameters.Add("-dPDFA=2");
+                    break;
+
+                case OutputFormat.PdfA3B:
+                    parameters.Add("-dPDFA=3");
+                    break;
+            }
+
             //parameters.Add("-dNOOUTERSAVE"); //Set in pdf-A example, but is not documented in the distiller parameters
 
             Logger.Debug("Shortened Temppath from\r\n\"" + Job.JobTempFolder + "\"\r\nto\r\n\"" + shortenedTempPath + "\"");
@@ -115,7 +127,16 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
             //Add ICC profile
             var iccFile = PathSafe.Combine(shortenedTempPath, "profile.icc");
-            FileWrap.WriteAllBytes(iccFile, Resources.ISOcoated_v2_300_eci);
+            switch (Job.Profile.PdfSettings.ColorModel)
+            {
+                case ColorModel.Cmyk:
+                    FileWrap.WriteAllBytes(iccFile, Resources.WebCoatedFOGRA28);
+                    break;
+
+                case ColorModel.Gray:
+                    FileWrap.WriteAllBytes(iccFile, Resources.ISOcoated_v2_grey1c_bas);
+                    break;
+            }
             parameters.Add("-sOutputICCProfile=\"" + iccFile + "\"");
             //parameters.Add("-dNOOUTERSAVE"); //Set in pdf-X example, but is not documented in the distiller parameters
 

@@ -1,8 +1,10 @@
 ﻿using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using pdfforge.PDFCreator.UI.Presentation.Commands.IniCommands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
@@ -10,14 +12,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
 {
     public class ExportSettingsViewModel : ADebugSettingsItemControlModel
     {
-        private readonly IIniSettingsAssistant _iniSettingsAssistant;
 
-        public ExportSettingsViewModel(ISettingsManager settingsManager, ITranslationUpdater translationUpdater, IIniSettingsAssistant iniSettingsAssistant, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings) : base(settingsManager, translationUpdater, settingsProvider, gpoSettings)
+        public ExportSettingsViewModel(
+            ITranslationUpdater translationUpdater,
+            ICommandLocator commandLocator,
+            IGpoSettings gpoSettings) : base(translationUpdater, gpoSettings)
         {
-            _iniSettingsAssistant = iniSettingsAssistant;
-
-            LoadIniSettingsCommand = new DelegateCommand(LoadIniSettingsExecute);
-            SaveIniSettingsCommand = new DelegateCommand(SaveIniSettingsExecute);
+            LoadIniSettingsCommand = commandLocator.GetCommand<LoadIniSettingsCommand>();
+            SaveIniSettingsCommand = commandLocator.GetCommand<SaveSettingsToIniCommand>();
         }
 
         public ICommand LoadIniSettingsCommand { get; }
@@ -31,21 +33,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
                     return true;
                 return !GpoSettings.DisableProfileManagement;
             }
-        }
-
-        private void LoadIniSettingsExecute(object o)
-        {
-            var success = _iniSettingsAssistant.LoadIniSettings();
-
-            if (!success)
-                return;
-
-            ApplySettingsProcedure(SettingsProvider.Settings);
-        }
-
-        private void SaveIniSettingsExecute(object o)
-        {
-            _iniSettingsAssistant.SaveIniSettings(SettingsProvider.Settings.ApplicationSettings);
         }
     }
 }

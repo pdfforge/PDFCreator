@@ -1,9 +1,9 @@
 using pdfforge.Obsidian.Trigger;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.Utilities;
 using Prism.Commands;
 using Prism.Events;
 using System.Windows;
@@ -13,9 +13,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
 {
     public class PrintJobShellViewModel : TranslatableViewModelBase<PrintJobShellTranslation>
     {
+        private readonly IVersionHelper _versionHelper;
         private bool _showLockLayer;
 
         public ApplicationNameProvider ApplicationName { get; }
+        public string ApplicationNameAndVersion => ApplicationName.ApplicationName + " " + _versionHelper.FormatWithThreeDigits();
         public IInteractionRequest InteractionRequest { get; }
         public ICommand DragEnterCommand { get; }
 
@@ -31,8 +33,10 @@ namespace pdfforge.PDFCreator.UI.Presentation
             }
         }
 
-        public PrintJobShellViewModel(ApplicationNameProvider applicationNameProvider, IInteractionRequest interactionRequest, ITranslationUpdater updater, IEventAggregator eventAggregator, DragAndDropEventHandler dragAndDrop) : base(updater)
+        public PrintJobShellViewModel(ApplicationNameProvider applicationNameProvider, IInteractionRequest interactionRequest,
+            ITranslationUpdater updater, IEventAggregator eventAggregator, DragAndDropEventHandler dragAndDrop, IVersionHelper versionHelper) : base(updater)
         {
+            _versionHelper = versionHelper;
             ApplicationName = applicationNameProvider;
             InteractionRequest = interactionRequest;
 

@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.Core.Controller;
+﻿using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
 {

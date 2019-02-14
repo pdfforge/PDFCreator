@@ -2,33 +2,51 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class FtpAccountEditCommand : TranslatableCommandBase<FtpActionTranslation>, IWaitableCommand
+    public class FtpAccountEditCommand : TranslatableCommandBase<FtpActionTranslation>, IWaitableCommand, IMountable
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ObservableCollection<FtpAccount> _ftpAccounts;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
         private FtpAccount _currentAccount;
+        private ObservableCollection<FtpAccount> _pointAtAccounts;
 
-        public FtpAccountEditCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public FtpAccountEditCommand(
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
+            _accountsProvider = accountsProvider;
+        }
 
-            _ftpAccounts = currentSettingsProvider.Settings?.ApplicationSettings?.Accounts?.FtpAccounts ?? new ObservableCollection<FtpAccount>();
-            _ftpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaiseCanExecuteChanged();
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs e)
+        {
+            if (_pointAtAccounts != _accountsProvider.Settings.FtpAccounts)
+            {
+                _pointAtAccounts.CollectionChanged -= OnCollectionChanged;
+                _pointAtAccounts = _accountsProvider.Settings.FtpAccounts;
+                _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+            }
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _ftpAccounts.Count > 0;
+            return _accountsProvider.Settings.FtpAccounts.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -36,7 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             _currentAccount = parameter as FtpAccount;
             if (_currentAccount == null)
                 return;
-            if (!_ftpAccounts.Contains(_currentAccount))
+            if (!_accountsProvider.Settings.FtpAccounts.Contains(_currentAccount))
                 return;
 
             var interaction = new FtpAccountInteraction(_currentAccount.Copy(), Translation.EditFtpAccount);
@@ -56,5 +74,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         }
 
         public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
+
+        public void MountView()
+        {
+            _accountsProvider.SettingsChanged += OnSettingsChanged;
+            _pointAtAccounts = _accountsProvider.Settings.FtpAccounts;
+            _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+        }
+
+        public void UnmountView()
+        {
+            _accountsProvider.SettingsChanged -= OnSettingsChanged;
+        }
     }
 }

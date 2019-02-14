@@ -36,17 +36,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public void ReadValues(Data data, string path) {
 			try { Replace = Data.UnescapeString(data.GetValue(@"" + path + @"Replace")); } catch { Replace = "";}
-			try { ReplacementType = (ReplacementType) Enum.Parse(typeof(ReplacementType), data.GetValue(@"" + path + @"ReplacementType")); } catch { ReplacementType = ReplacementType.Replace;}
+			ReplacementType = Enum.TryParse<ReplacementType>(data.GetValue(@"" + path + @"ReplacementType"), out var tmpReplacementType) ? tmpReplacementType : ReplacementType.Replace;
 			try { Search = Data.UnescapeString(data.GetValue(@"" + path + @"Search")); } catch { Search = "";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"Replace", Data.EscapeString(Replace));
 			data.SetValue(@"" + path + @"ReplacementType", ReplacementType.ToString());
 			data.SetValue(@"" + path + @"Search", Data.EscapeString(Search));
 		}
-		
 		public TitleReplacement Copy()
 		{
 			TitleReplacement copy = new TitleReplacement();
@@ -54,7 +52,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Replace = Replace;
 			copy.ReplacementType = ReplacementType;
 			copy.Search = Search;
-			
 			return copy;
 		}
 		
@@ -66,19 +63,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Replace.Equals(v.Replace)) return false;
 			if (!ReplacementType.Equals(v.ReplacementType)) return false;
 			if (!Search.Equals(v.Search)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Replace=" + Replace.ToString());
-			sb.AppendLine("ReplacementType=" + ReplacementType.ToString());
-			sb.AppendLine("Search=" + Search.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

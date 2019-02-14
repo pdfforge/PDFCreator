@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.ConversionTests
 
         private void CheckOutputFiles()
         {
-            Assert.True(_th.Job.OutputFiles.Count > 0, "Did not create output files.");
+            Assert.IsTrue(_th.Job.OutputFiles.Count > 0, "Did not create output files.");
 
             foreach (var file in _th.Job.OutputFiles)
             {

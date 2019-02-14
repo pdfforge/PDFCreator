@@ -3,7 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Interface
 {
-    public interface IDefaultViewerAction : IAction
+    public interface IDefaultViewerAction : IPostConversionAction
     {
         ActionResult OpenWithArchitect(string filePath);
 

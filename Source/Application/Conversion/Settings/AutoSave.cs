@@ -30,10 +30,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool EnsureUniqueFilenames { get; set; } = true;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { EnsureUniqueFilenames = bool.Parse(data.GetValue(@"" + path + @"EnsureUniqueFilenames")); } catch { EnsureUniqueFilenames = true;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : true;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -48,7 +48,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
-			
 			return copy;
 		}
 		
@@ -59,18 +58,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("EnsureUniqueFilenames=" + EnsureUniqueFilenames.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

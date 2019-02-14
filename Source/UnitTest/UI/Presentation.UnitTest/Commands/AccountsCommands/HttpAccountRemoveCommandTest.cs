@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -28,13 +28,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<ConversionProfile> _profiles;
         private ConversionProfile _profileWithHttpAccountEnabled;
         private ConversionProfile _profileWithHttpAccountDisabled;
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
         {
             _interactionRequest = new UnitTestInteractionRequest();
             _translation = new HttpTranslation();
-
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
             _httpAccounts = new ObservableCollection<HttpAccount>();
 
             _usedAccount = new HttpAccount();
@@ -63,16 +65,16 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _profileWithHttpAccountDisabled.HttpSettings.AccountId = _usedAccount.AccountId;
             _profiles.Add(_profileWithHttpAccountDisabled);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.HttpAccounts = _httpAccounts;
             settings.ConversionProfiles = _profiles;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
-            currentSettingsProvider.Profiles.Returns(_profiles);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
+            _profilesProvider.Settings.Returns(_profiles);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _httpAccountRemoveCommand = new HttpAccountRemoveCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _httpAccountRemoveCommand = new HttpAccountRemoveCommand(_interactionRequest, _accountsProvider, _profilesProvider, translationUpdater);
         }
 
         [Test]
@@ -199,19 +201,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             Assert.AreEqual("", _profileWithHttpAccountEnabled.HttpSettings.AccountId);
             Assert.IsFalse(_profileWithHttpAccountDisabled.HttpSettings.Enabled);
             Assert.AreEqual("", _profileWithHttpAccountDisabled.HttpSettings.AccountId);
-        }
-
-        [Test]
-        public void ChangeHttpAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var newAccount = new HttpAccount();
-            _httpAccounts.Add(newAccount);
-            var wasRaised = false;
-            _httpAccountRemoveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _httpAccounts.Remove(newAccount);
-
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

@@ -1,6 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,7 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
     {
         public DesignTimeCurrentSettingsProvider()
         {
-            Settings = new PdfCreatorSettings(null);
+            Settings = new PdfCreatorSettings();
             Settings.ConversionProfiles.Add(new ConversionProfile());
 
             Settings.ApplicationSettings.TitleReplacement.AddRange(new[]
@@ -52,6 +51,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         }
 
         public PdfCreatorSettings Settings { get; }
+        public Accounts Accounts => Settings.ApplicationSettings.Accounts;
+        public ObservableCollection<TitleReplacement> TitleReplacements => Settings.ApplicationSettings.TitleReplacement;
+        public ObservableCollection<DefaultViewer> DefaultViewers => Settings.DefaultViewers;
+        public ObservableCollection<PrinterMapping> PrinterMappings => Settings.ApplicationSettings.PrinterMappings;
+
+        public void StoreCurrentSettings()
+        {
+        }
 
         public void Reset()
         {

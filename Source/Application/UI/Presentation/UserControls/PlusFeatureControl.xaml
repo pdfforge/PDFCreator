@@ -8,7 +8,7 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance designTime:DesignTimePlusFeatureControlViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance designTime:DesignTimeBusinessFeatureControlViewModel, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <Style TargetType="local:PlusFeatureControl">
@@ -18,11 +18,11 @@
     </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="UserControl">
-            <Setter Property="Visibility" Value="{Binding ShowPlusHint, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Setter Property="Visibility" Value="{Binding ShowBusinessHint, Converter={StaticResource BoolToVisibilityConverter}}" />
         </Style>
     </UserControl.Style>
 
-    <Button Cursor="{x:Static Cursors.Hand}" Command="{Binding ShowEditionWebsiteCommand}" IsEnabled="{Binding ShowPlusHint}">
+    <Button Cursor="{x:Static Cursors.Hand}" Command="{Binding ShowEditionWebsiteCommand}" IsEnabled="{Binding ShowBusinessHint}">
         <Button.Template>
             <ControlTemplate TargetType="{x:Type ContentControl}">
                 <ContentPresenter Content="{TemplateBinding Content}" />

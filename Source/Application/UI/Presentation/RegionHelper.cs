@@ -16,6 +16,6 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _regionManager = regionManager;
         }
 
-        public string CurrentRegionName => _regionManager.Regions[RegionNames.MainRegion].NavigationService.Journal.CurrentEntry.Uri.OriginalString;
+        public string CurrentRegionName => _regionManager.Regions[RegionNames.MainRegion].NavigationService.Journal?.CurrentEntry?.Uri?.OriginalString;
     }
 }

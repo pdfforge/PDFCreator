@@ -5,56 +5,132 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:update="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Assistants.Update"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeUpdateHintViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <converter:EmptyListToVisibilityConverter x:Key="EmptyListToVisibilityConverter" EmptyValue="Collapsed" FilledValue="Visible" />
+
+        <DataTemplate x:Key="UpdateChangeDataTemplate" DataType="update:ChangeLogItem">
+            <Grid Margin="0 5 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin=" 0 0 0 0" Text="‒  " />
+                <TextBlock Grid.Column="1" Margin="0 0 0 0" Text="{Binding Text}" TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+        <Style TargetType="ItemsControl" x:Key="UpdateChangeItemsControl">
+            <Setter Property="ItemTemplate" Value="{StaticResource UpdateChangeDataTemplate}" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                        TextWrapping="Wrap"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontWeight="DemiBold"
-                        FontSize="17"
-                        Text="{Binding Translation.NewUpdateIsAvailable}" />
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
-                <ContentControl VerticalAlignment="Center" Margin="20,20,0,20" Width="100"
+            <DockPanel Grid.Row="0" HorizontalAlignment="Left"
+                        VerticalAlignment="Top" Width="Auto">
+                <ContentControl VerticalAlignment="Center" Margin="20,20,0,0" Width="50" Focusable="False" IsTabStop="False"
                                 Height="64"
                                 Content="{DynamicResource PDFCreatorLogo}" />
-                <StackPanel Margin="10,20,20,20"  Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock TextWrapping="Wrap"
-                               MinWidth="200" MaxWidth="450" Text="{Binding AvailabeVersionText}" />
-                    <TextBlock Margin="0 10 0 0">
-                        <Hyperlink NavigateUri="{Binding WhatsNewUrl}" Command="{Binding WhatsNewCommand}">
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Translation.WhatsNew}" />
-                        </Hyperlink>
-                    </TextBlock>
+                <StackPanel Margin="10,20,20,0"  Orientation="Vertical" VerticalAlignment="Center">
+
+                    <TextBlock
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               FontSize="17"
+                               Text="{Binding Translation.NewUpdateIsAvailable}" Margin="0 0 0 10" />
+
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                               MinWidth="200" MaxWidth="450"  Text="{Binding AvailabeVersionText}" />
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Grid.Row="2" FlowDirection="RightToLeft" Orientation="Horizontal"
+            </DockPanel>
+
+            <Border Margin="20 0 20 0" Grid.Row="1" BorderThickness="0 0 0 0" BorderBrush="#7F7F7F" Padding=" 0 10 0 10" MinWidth="400" MaxWidth="400" MaxHeight="400">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0 0 0 0">
+
+                        <ItemsControl ItemsSource="{Binding UpdateVersions}" Focusable="False">
+                            <ItemsControl.Resources>
+                                <Style TargetType="TextBlock" x:Key="TypeHeadline">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                    <Setter Property="Margin" Value="0 10 0 0" />
+                                </Style>
+                            </ItemsControl.Resources>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="update:Release">
+                                    <StackPanel Margin="0 10 0 0" Visibility="{Binding Changes, Converter={StaticResource EmptyListToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <TextBlock FontSize="15" FontWeight="Bold">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="Version: {0}">
+                                                        <Binding Path="Version" />
+                                                        <Binding  Path="ReleaseDate" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                            <TextBlock FontSize="15" Foreground="Gray" FontWeight="bold" Text="{Binding ReleaseDate, StringFormat={} ({0})}">
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <StackPanel Visibility="{Binding Features, Converter={StaticResource EmptyListToVisibilityConverter}}" MaxWidth="350" HorizontalAlignment="Left">
+
+                                            <TextBlock Style="{StaticResource TypeHeadline}" FontSize="13" Margin="0 10 0 10"
+                                                       Text="{Binding Path=DataContext.Translation.Features, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl} }" />
+
+                                            <ItemsControl ItemsSource="{Binding Features}" Style="{StaticResource UpdateChangeItemsControl}" />
+                                        </StackPanel>
+
+                                        <StackPanel Visibility="{Binding Bugfixes, Converter={StaticResource EmptyListToVisibilityConverter}}" MaxWidth="350" HorizontalAlignment="Left">
+
+                                            <TextBlock Style="{StaticResource TypeHeadline}" FontSize="13" Margin="0 10 0 10"
+                                                       Text="{Binding Path=DataContext.Translation.Fixes, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl} }" />
+
+                                            <ItemsControl ItemsSource="{Binding Bugfixes}" Style="{StaticResource UpdateChangeItemsControl}" />
+                                        </StackPanel>
+
+                                        <StackPanel Visibility="{Binding Tasks, Converter={StaticResource EmptyListToVisibilityConverter}}" MaxWidth="350" HorizontalAlignment="Left">
+
+                                            <TextBlock Style="{StaticResource TypeHeadline}" FontSize="13" Margin="0 10 0 10"
+                                                       Text="{Binding Path=DataContext.Translation.MiscChanges, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl} }" />
+
+                                            <ItemsControl ItemsSource="{Binding Tasks}" Style="{StaticResource UpdateChangeItemsControl}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <StackPanel Grid.Row="2" FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0 0 10 0"
                         Background="Transparent">
                 <Button
                     Command="{Binding AskLaterCommand}"
-                    Margin="10,10,5,10"
+                    Margin="10 10 5 10"
                     Padding="10"
                     MinWidth="60">
                     <TextBlock TextWrapping="Wrap" Text="{Binding Translation.AskLater}" />
                 </Button>
                 <Button
                     Command="{Binding SkipVersionCommand}"
-                    Margin="5,10,5,10"
+                    Margin="5 10 5 10"
                     Padding="10"
                     MinWidth="60">
                     <TextBlock TextWrapping="Wrap" Text="{Binding Translation.SkipVersion}" />
                 </Button>
                 <Button
                     Command="{Binding InstallUpdateCommand}"
-                    Margin="5,10,20,10"
+                    Margin="5 10 20 10"
                     IsDefault="True"
                     Padding="10"
                     MinWidth="60">

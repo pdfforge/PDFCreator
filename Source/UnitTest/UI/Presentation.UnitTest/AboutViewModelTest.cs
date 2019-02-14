@@ -4,7 +4,6 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
-using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -42,23 +41,9 @@ namespace Presentation.UnitTest
         private ITranslationUpdater _translationUpdater;
         private ICommandLocator _commandLocator;
 
-        private void InitAboutViewModel(ButtonDisplayOptions buttonDisplayOptions = null)
+        private void InitAboutViewModel()
         {
-            if (buttonDisplayOptions == null)
-                buttonDisplayOptions = new ButtonDisplayOptions(false, false);
-
-            _aboutViewModel = new AboutViewModel(_versionHelper, buttonDisplayOptions, _translationUpdater, _commandLocator, new DesignTimeApplicationNameProvider(), null);
-        }
-
-        [Test]
-        public void Initialize_ButtonDisplayOptionHidesSocialMediaButton_HideSocialsMediaButtonIsTrue()
-        {
-            //todo: Wie testen?
-            InitAboutViewModel(new ButtonDisplayOptions(true, true));
-            Assert.IsTrue(_aboutViewModel.HideSocialMediaButtons);
-
-            InitAboutViewModel(new ButtonDisplayOptions(false, true));
-            Assert.IsFalse(_aboutViewModel.HideSocialMediaButtons);
+            _aboutViewModel = new AboutViewModel(_versionHelper, _translationUpdater, _commandLocator, new DesignTimeApplicationNameProvider(), null);
         }
 
         [Test]
@@ -100,6 +85,7 @@ namespace Presentation.UnitTest
             Assert.AreSame(pdfforgeWebsiteCommand, _aboutViewModel.PdfforgeWebsiteCommand);
         }
 
+        /* Remove when it's is really removed
         [Test]
         public void Initialize_CommandLocatorSetsFacebookCommandWithCorrectUrls()
         {
@@ -108,15 +94,7 @@ namespace Presentation.UnitTest
             InitAboutViewModel();
             Assert.AreSame(facebookCommand, _aboutViewModel.FacebookCommand);
         }
-
-        [Test]
-        public void Initialize_CommandLocatorSetsGooglePlusCommandWithCorrectUrls()
-        {
-            var googlePlusCommand = Substitute.For<ICommand>();
-            _commandLocator.GetInitializedCommand<UrlOpenCommand, String>(Urls.GooglePlus).Returns(googlePlusCommand);
-            InitAboutViewModel();
-            Assert.AreSame(googlePlusCommand, _aboutViewModel.GooglePlusCommand);
-        }
+        */
 
         [Test]
         public void Initialize_CommandLocatorSetsPrioritySupportCommand()

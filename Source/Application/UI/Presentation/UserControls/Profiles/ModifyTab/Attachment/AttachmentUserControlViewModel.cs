@@ -19,7 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.At
 
         public AttachmentUserControlViewModel(IOpenFileInteractionHelper openFileInteractionHelper, ITranslationUpdater translationUpdater,
                                               ISelectedProfileProvider selectedProfile,
-                                              TokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
+            ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
             : base(translationUpdater, selectedProfile, dispatcher)
         {
             _openFileInteractionHelper = openFileInteractionHelper;

@@ -1,11 +1,9 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -18,12 +16,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IMailSignatureHelper _mailSignatureHelper;
-        private readonly IParametersManager _parametersManager;
+        private readonly IVersionHelper _versionHelper;
+        private readonly ApplicationNameProvider _applicationNameProvider;
 
-        public JobBuilder(IMailSignatureHelper mailSignatureHelper, IParametersManager parametersManager)
+        public JobBuilder(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
         {
             _mailSignatureHelper = mailSignatureHelper;
-            _parametersManager = parametersManager;
+            _versionHelper = versionHelper;
+            _applicationNameProvider = applicationNameProvider;
         }
 
         public abstract Job SkipPrintDialog(Job job);
@@ -36,9 +36,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             _logger.Debug("Profile: {0} (GUID {1})", preselectedProfile.Name, preselectedProfile.Guid);
 
-            var jobTranslations = new JobTranslations { EmailSignature = _mailSignatureHelper.ComposeMailSignature() };
-
-            var job = new Job(jobInfo, preselectedProfile, jobTranslations, settings.ApplicationSettings.Accounts);
+            var producer = _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
+            var job = new Job(jobInfo, preselectedProfile, settings.ApplicationSettings.Accounts, producer);
 
             SkipPrintDialog(job);
 
@@ -53,68 +52,37 @@ namespace pdfforge.PDFCreator.Core.Workflow
         /// <returns>The profile that is associated with the printer or the default profile</returns>
         private ConversionProfile PreselectedProfile(JobInfo jobInfo, PdfCreatorSettings settings)
         {
-            ConversionProfile profile = null;
-            foreach (var mapping in settings.ApplicationSettings.PrinterMappings)
-            {
-                if (mapping.PrinterName.Equals(jobInfo.SourceFiles[0].PrinterName, StringComparison.OrdinalIgnoreCase))
-                {
-                    profile = settings.GetProfileByGuid(mapping.ProfileGuid);
+            // Check for a printer via Parameter
+            var profile = settings.GetProfileByMappedPrinter(jobInfo.PrinterParameter);
 
-                    if (mapping.ProfileGuid == ProfileGuids.LAST_USED_PROFILE_GUID)
-                        profile = settings.GetLastUsedProfile();
+            // Check for a profile via Parameter
+            if (profile == null)
+                profile = settings.GetProfileByNameOrGuid(jobInfo.ProfileParameter);
 
-                    if (profile != null)
-                        break;
-                }
-            }
+            // Check for a printer via Driver
+            if (profile == null)
+                profile = settings.GetProfileByMappedPrinter(jobInfo.PrinterName);
 
-            //consider LastUsedProfile
-            //todo: Do not relate to empty string and use own GUID to request LastUsedProfile (see above)
-            if (jobInfo.SourceFiles.Count > 0 && string.IsNullOrEmpty(jobInfo.SourceFiles[0].PrinterName))
-            {
-                var lastUsedProfile = settings.GetLastUsedProfile();
-                if (lastUsedProfile != null)
-                    profile = lastUsedProfile;
-            }
-
-            //Consider commandline paramaters
-            if (_parametersManager.HasPredefinedParameters())
-            {
-                var parameters = _parametersManager.GetAndResetParameters();
-                var profileParameter = parameters.Profile;
-                if (!string.IsNullOrEmpty(profileParameter))
-                {
-                    profile = settings.GetProfileByName(profileParameter);
-                    if (profile == null)
-                        profile = settings.GetProfileByGuid(profileParameter);
-                }
-
-                var outputFile = parameters.Outputfile;
-                if (outputFile != null)
-                    jobInfo.OutputFileParameter = outputFile;
-            }
-
-            if (profile != null)
-                return profile;
+            // try profile from primary printer
+            if (profile == null)
+                profile = settings.GetProfileByMappedPrinter(settings.CreatorAppSettings.PrimaryPrinter);
 
             // try default profile
-            var defaultProfile = GetDefaultProfile(settings.ConversionProfiles);
-            if (defaultProfile != null)
-                return defaultProfile;
+            if (profile == null)
+                profile = settings.GetProfileByGuid(ProfileGuids.DEFAULT_PROFILE_GUID);
 
             // last resort: first profile from the list
-            return settings.ConversionProfiles[0];
-        }
+            if (profile == null)
+                profile = settings.ConversionProfiles[0];
 
-        private ConversionProfile GetDefaultProfile(IList<ConversionProfile> conversionProfiles)
-        {
-            return conversionProfiles.FirstOrDefault(p => p.Guid == ProfileGuids.DEFAULT_PROFILE_GUID);
+            return profile;
         }
     }
 
     public class JobBuilderFree : JobBuilder
     {
-        public JobBuilderFree(IMailSignatureHelper mailSignatureHelper, IParametersManager parametersManager) : base(mailSignatureHelper, parametersManager)
+        public JobBuilderFree(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
         {
         }
 
@@ -127,7 +95,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
     public class JobBuilderPlus : JobBuilder
     {
-        public JobBuilderPlus(IMailSignatureHelper mailSignatureHelper, IParametersManager parametersManager) : base(mailSignatureHelper, parametersManager)
+        public JobBuilderPlus(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
         {
         }
 

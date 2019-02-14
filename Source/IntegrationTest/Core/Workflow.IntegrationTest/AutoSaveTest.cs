@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -87,7 +87,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -124,7 +124,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = true;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -178,7 +178,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = true;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -220,7 +220,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -255,7 +255,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Jpeg);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = true;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -290,7 +290,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -317,7 +317,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = true;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -349,7 +349,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;
@@ -373,7 +373,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = true;
             _settings.ConversionProfiles[0].TargetDirectory = _th.TmpTestFolder;

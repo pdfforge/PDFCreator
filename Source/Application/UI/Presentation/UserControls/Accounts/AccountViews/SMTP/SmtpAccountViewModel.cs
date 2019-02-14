@@ -91,8 +91,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(Ssl));
             AskForPasswordLater = string.IsNullOrWhiteSpace(Password);
             RaisePropertyChanged(nameof(AskForPasswordLater));
-            SetPasswordAction(_smtpAccount.Password);
             SaveCommand.RaiseCanExecuteChanged();
+        }
+
+        public void SetAdressForEmptyUsername()
+        {
+            if (string.IsNullOrEmpty(Username))
+            {
+                Username = Address;
+                RaisePropertyChanged(nameof(Username));
+            }
         }
     }
 }

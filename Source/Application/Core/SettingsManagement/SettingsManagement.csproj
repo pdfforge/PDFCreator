@@ -45,21 +45,24 @@
     <Reference Include="System.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicDefaultSettingsBuilder.cs" />
     <Compile Include="DataStorageFactory.cs" />
     <Compile Include="DataUpgrader.cs" />
-    <Compile Include="DefaultSettingsBuilder.cs" />
+    <Compile Include="CreatorDefaultSettingsBuilder.cs" />
     <Compile Include="IInstallationPathProvider.cs" />
     <Compile Include="IniSettingsLoader.cs" />
     <Compile Include="IPDFCreatorNameProvider.cs" />
-    <Compile Include="IParametersManager.cs" />
+    <Compile Include="IDefaultSettingsBuilder.cs" />
     <Compile Include="ISettingsManager.cs" />
     <Compile Include="ISettingsProvider.cs" />
+    <Compile Include="ISettingsUpgrader.cs" />
+    <Compile Include="CreatorSettingsUpgrader.cs" />
+    <Compile Include="MigrationStorageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CreatorSettingsMigrationStorage.cs" />
     <Compile Include="SettingsMover.cs" />
     <Compile Include="SettingsProvider.cs" />
-    <Compile Include="SettingsUpgradeHelper.cs" />
     <Compile Include="SettingsUpgrader.cs" />
-    <Compile Include="SettingsTitleReplacerProvider.cs" />
     <Compile Include="UpdateIntervalHelper.cs" />
     <Compile Include="WelcomeSettingsHelper.cs" />
   </ItemGroup>
@@ -68,10 +71,6 @@
     <None Include="pdfforge.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
-      <Project>{18354054-45F6-4F51-8730-D05643A400A3}</Project>
-      <Name>Jobs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
@@ -93,7 +92,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -104,7 +103,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Utilities.IO
 {
@@ -10,7 +9,6 @@ namespace pdfforge.PDFCreator.Utilities.IO
         private readonly string _directory;
         private readonly string _extension;
         private readonly string _fileBody;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
 
         private readonly IPathUtil _pathUtil;
 
@@ -31,9 +29,9 @@ namespace pdfforge.PDFCreator.Utilities.IO
 
             OriginalFilename = originalFilename;
             LastUniqueFilename = originalFilename;
-            _directory = _pathUtil.GetLongDirectoryName(OriginalFilename) ?? "";
-            _fileBody = _pathSafe.GetFileNameWithoutExtension(OriginalFilename);
-            _extension = _pathSafe.GetExtension(OriginalFilename);
+            _directory = PathSafe.GetDirectoryName(OriginalFilename) ?? "";
+            _fileBody = PathSafe.GetFileNameWithoutExtension(OriginalFilename);
+            _extension = PathSafe.GetExtension(OriginalFilename);
         }
 
         public string OriginalFilename { get; }
@@ -48,7 +46,7 @@ namespace pdfforge.PDFCreator.Utilities.IO
         {
             while (UniqueCondition(LastUniqueFilename))
             {
-                LastUniqueFilename = _pathSafe.Combine(_directory, _fileBody + "_" + _appendix + _extension);
+                LastUniqueFilename = PathSafe.Combine(_directory, _fileBody + "_" + _appendix + _extension);
                 _appendix++;
                 if (LastUniqueFilename.Length > _pathUtil.MAX_PATH)
                 {

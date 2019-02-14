@@ -2,7 +2,6 @@
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
-using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -18,24 +17,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
         public ApplicationNameProvider ApplicationNameProvider { get; }
 
         public AboutViewModel(IVersionHelper versionHelper
-            , ButtonDisplayOptions buttonDisplayOptions, ITranslationUpdater translationUpdater
-            , ICommandLocator commandLocator, ApplicationNameProvider applicationNameProvider, EditionHintOptionProvider editionHintOptionProvider) : base(translationUpdater)
+            , ITranslationUpdater translationUpdater
+            , ICommandLocator commandLocator, ApplicationNameProvider applicationNameProvider, EditionHelper editionHelper) : base(translationUpdater)
         {
             ApplicationNameProvider = applicationNameProvider;
-            HideSocialMediaButtons = buttonDisplayOptions.HideSocialMediaButtons;
             VersionText = versionHelper.FormatWithBuildNumber();
 
             ShowManualCommand = commandLocator.GetInitializedCommand<ShowUserGuideCommand, HelpTopic>(HelpTopic.General);
             ShowLicenseCommand = commandLocator.GetInitializedCommand<ShowUserGuideCommand, HelpTopic>(HelpTopic.License);
 
             PdfforgeWebsiteCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.PdfforgeWebsiteUrl);
-            FacebookCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.Facebook);
-            GooglePlusCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.GooglePlus);
-            AllowPrioritySupport = !editionHintOptionProvider?.ShowOnlyForPlusAndBusinessHint ?? true;
+            IsLicensedVersion = !editionHelper?.ShowOnlyForPlusAndBusiness ?? true;
             PrioritySupportCommand = commandLocator.GetCommand<PrioritySupportUrlOpenCommand>();
         }
 
-        public Boolean AllowPrioritySupport { get; }
+        public Boolean IsLicensedVersion { get; }
 
         public bool HideSocialMediaButtons { get; }
         public ICommand PrioritySupportCommand { get; }
@@ -44,7 +40,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
         public ICommand ShowManualCommand { get; }
         public ICommand ShowLicenseCommand { get; }
         public ICommand PdfforgeWebsiteCommand { get; }
-        public ICommand FacebookCommand { get; }
-        public ICommand GooglePlusCommand { get; }
     }
 }

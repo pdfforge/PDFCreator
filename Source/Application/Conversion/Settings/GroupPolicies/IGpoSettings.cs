@@ -12,6 +12,13 @@
 
         bool DisableTitleTab { get; }
 
+        bool DisableAccountsTab { get; }
+        bool DisableUsageStatistics { get; }
+
+        bool DisableRssFeed { get; }
+
+        bool DisableTips { get; }
+
         bool HideLicenseTab { get; }
 
         bool HidePdfArchitectInfo { get; }
@@ -19,5 +26,9 @@
         string Language { get; }
 
         string UpdateInterval { get; }
+
+        bool LoadSharedAppSettings { get; }
+        bool LoadSharedProfiles { get; }
+        bool AllowUserDefinedProfiles { get; }
     }
 }

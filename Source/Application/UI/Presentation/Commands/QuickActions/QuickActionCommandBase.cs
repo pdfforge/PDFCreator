@@ -42,21 +42,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
             }
             return files;
         }
-
-        protected string GetSignature(object obj)
-        {
-            string signature;
-            switch (obj)
-            {
-                case Job job:
-                    signature = job.JobTranslations.EmailSignature;
-                    break;
-
-                default:
-                    signature = "";
-                    break;
-            }
-            return signature;
-        }
     }
 }

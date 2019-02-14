@@ -13,19 +13,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public SmtpAccountView(SmtpAccountViewModel viewModel)
         {
             _viewModel = viewModel;
-            _viewModel.SetPasswordAction = SetPassword;
             DataContext = _viewModel;
             InitializeComponent();
         }
 
-        private void ServerPasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            _viewModel.Password = ServerPasswordBox.Password;
-        }
-
-        private void SetPassword(string password)
-        {
-            ServerPasswordBox.Password = password;
+            _viewModel.SetAdressForEmptyUsername();
+            UsernameTextbox.CaretIndex = _viewModel.Username.Length;
         }
     }
 }

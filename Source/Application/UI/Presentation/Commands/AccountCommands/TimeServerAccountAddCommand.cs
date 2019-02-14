@@ -4,22 +4,24 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
+using System.Windows.Data;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class TimeServerAccountAddCommand : TranslatableCommandBase<TimeServerTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
 
-        public TimeServerAccountAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public TimeServerAccountAddCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _currentSettingsProvider = currentSettingsProvider;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -44,8 +46,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
-            var timeServerAccounts = _currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.TimeServerAccounts;
+            var timeServerAccounts = _accountsProvider?.Settings.TimeServerAccounts;
             timeServerAccounts?.Add(interaction.TimeServerAccount);
+
+            var collectionView = CollectionViewSource.GetDefaultView(timeServerAccounts);
+            collectionView.MoveCurrentTo(interaction.TimeServerAccount);
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }

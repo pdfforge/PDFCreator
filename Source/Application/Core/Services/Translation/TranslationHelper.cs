@@ -1,6 +1,4 @@
 ﻿using NGettext;
-using pdfforge.DataStorage;
-using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -101,28 +99,6 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
                 return language;
 
             return LanguageLoader.FindBestLanguage(new CultureInfo("en"));
-        }
-
-        private Stream GenerateStreamFromString(string s)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(s);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
-        }
-
-        private Data ReadEnglishTranslation()
-        {
-            using (var stream = GenerateStreamFromString(TranslationResources.English))
-            {
-                var data = Data.CreateDataStorage();
-                var iniStorage = new IniStorage();
-                iniStorage.Data = data;
-                iniStorage.ReadData(stream, clear: true);
-                return data;
-            }
         }
 
         /// <summary>

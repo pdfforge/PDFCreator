@@ -2,8 +2,8 @@
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using System.Collections.ObjectModel;
@@ -13,7 +13,7 @@ namespace Presentation.UnitTest.Commands.TitleReplacements
     [TestFixture]
     public class TitleReplacementsAddCommandUnitTest
     {
-        private ICurrentSettingsProvider _settingsProvider;
+        private ICurrentSettings<ObservableCollection<TitleReplacement>> _settingsProvider;
         private UnitTestInteractionRequest _interactionRequest;
         private TitleReplacementAddCommand _command;
         private PdfCreatorSettings _settings;
@@ -23,13 +23,13 @@ namespace Presentation.UnitTest.Commands.TitleReplacements
         [SetUp]
         public void Setup()
         {
-            _settingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            _settings = new PdfCreatorSettings(null);
-            _settingsProvider.Settings.Returns(_settings);
+            _settings = new PdfCreatorSettings();
             _applicationSettings = new ApplicationSettings();
             _settings.ApplicationSettings = _applicationSettings;
             _titleReplacements = new ObservableCollection<TitleReplacement>();
             _applicationSettings.TitleReplacement = _titleReplacements;
+            _settingsProvider = Substitute.For<ICurrentSettings<ObservableCollection<TitleReplacement>>>();
+            _settingsProvider.Settings.Returns(_titleReplacements);
 
             _interactionRequest = new UnitTestInteractionRequest();
 
@@ -63,7 +63,7 @@ namespace Presentation.UnitTest.Commands.TitleReplacements
             Assert.IsTrue(string.IsNullOrEmpty(titleReplacementEditInteraction.Replacement.Search));
             Assert.IsTrue(string.IsNullOrEmpty(titleReplacementEditInteraction.Replacement.Replace));
             Assert.AreEqual(ReplacementType.Replace, titleReplacementEditInteraction.Replacement.ReplacementType);
-            Assert.Greater(_settingsProvider.Settings.ApplicationSettings.TitleReplacement.Count, 0);
+            Assert.Greater(_settingsProvider.Settings.Count, 0);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Presentation.UnitTest.Commands.TitleReplacements
             Assert.IsTrue(string.IsNullOrEmpty(titleReplacementEditInteraction.Replacement.Search));
             Assert.IsTrue(string.IsNullOrEmpty(titleReplacementEditInteraction.Replacement.Replace));
             Assert.AreEqual(ReplacementType.Replace, titleReplacementEditInteraction.Replacement.ReplacementType);
-            Assert.AreEqual(_settingsProvider.Settings.ApplicationSettings.TitleReplacement.Count, 0);
+            Assert.AreEqual(_settingsProvider.Settings.Count, 0);
         }
     }
 }

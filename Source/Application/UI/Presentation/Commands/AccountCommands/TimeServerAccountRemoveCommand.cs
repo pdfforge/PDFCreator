@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -18,21 +17,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class TimeServerAccountRemoveCommand : TranslatableCommandBase<TimeServerTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
-        private ObservableCollection<TimeServerAccount> TimeServerAccounts => _currentSettingsProvider.Settings?.ApplicationSettings?.Accounts?.TimeServerAccounts ?? new ObservableCollection<TimeServerAccount>();
-        private readonly ObservableCollection<ConversionProfile> _profiles;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private ObservableCollection<TimeServerAccount> TimeServerAccounts => _accountsProvider?.Settings.TimeServerAccounts;
+        private ObservableCollection<ConversionProfile> Profiles => _profilesProvider.Settings;
         private TimeServerAccount _currentAccount;
         private List<ConversionProfile> _usedInProfilesList;
 
-        public TimeServerAccountRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider,
-            ITranslationUpdater translationUpdater)
+        public TimeServerAccountRemoveCommand
+            (
+                IInteractionRequest interactionRequest,
+                ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+                ICurrentSettings<Accounts> accountsProvider,
+                ITranslationUpdater translationUpdater
+            )
            : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _currentSettingsProvider = currentSettingsProvider;
-            _profiles = currentSettingsProvider?.Profiles;
-
-            TimeServerAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+            _profilesProvider = profilesProvider;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -46,7 +49,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            _usedInProfilesList = _profiles.Where(p => p.PdfSettings.Signature.TimeServerAccountId.Equals(_currentAccount.AccountId)).ToList();
+            _usedInProfilesList = Profiles.Where(p => p.PdfSettings.Signature.TimeServerAccountId.Equals(_currentAccount.AccountId)).ToList();
 
             var title = Translation.RemoveTimeServerAccount;
 

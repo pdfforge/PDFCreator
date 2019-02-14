@@ -5,10 +5,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -24,6 +24,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private IInteractionInvoker _interactionInvoker;
         private UnitTestInteractionRequest _interactionRequest;
         private ObservableCollection<DropboxAccount> _dropboxAccounts;
+        private ICurrentSettings<Accounts> _accountsProvider;
         private DropboxTranslation _translation;
 
         [SetUp]
@@ -32,14 +33,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _interactionInvoker = Substitute.For<IInteractionInvoker>();
             _interactionRequest = new UnitTestInteractionRequest();
             _dropboxAccounts = new ObservableCollection<DropboxAccount>();
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.DropboxAccounts = _dropboxAccounts;
             var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _dropboxAccountAddCommand = new DropboxAccountAddCommand(_interactionInvoker, _interactionRequest, currentSettingsProvider, translationUpdater);
+            _dropboxAccountAddCommand = new DropboxAccountAddCommand(_interactionInvoker, _interactionRequest, _accountsProvider, translationUpdater);
 
             _translation = new DropboxTranslation();
         }

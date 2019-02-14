@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.EventLogSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="520"
+             d:DataContext="{d:DesignInstance debugSettings:EventLogSettingsViewModel}">
+
+    <Grid>
+        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}"
+                                Header="{Binding Translation.LoggingControlHeader}">
+
+            <StackPanel Margin="0 5 0 5" HorizontalAlignment="Left">
+                <TextBlock TextWrapping="Wrap" Text="{Binding Translation.LoggingLevelLabelText}" Margin="0 5 0 5" />
+                <ComboBox Margin="0 5 0 10" HorizontalAlignment="Left"
+                          SelectedValue="{Binding ApplicationSettings.Settings.LoggingLevel}"
+                          ItemsSource="{Binding LoggingValues}" />
+
+                <Button Command="{Binding ShowLogFileCommand}" Margin="0 5 5 0" Style="{DynamicResource LightGreyButton}">
+                    <TextBlock Text="{Binding Translation.ShowEventLogButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </HeaderedContentControl>
+    </Grid>
+</UserControl>

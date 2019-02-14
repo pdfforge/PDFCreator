@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.Core.Workflow;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
 

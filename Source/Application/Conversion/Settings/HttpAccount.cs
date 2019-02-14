@@ -50,13 +50,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public void ReadValues(Data data, string path) {
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
-			try { IsBasicAuthentication = bool.Parse(data.GetValue(@"" + path + @"IsBasicAuthentication")); } catch { IsBasicAuthentication = false;}
+			IsBasicAuthentication = bool.TryParse(data.GetValue(@"" + path + @"IsBasicAuthentication"), out var tmpIsBasicAuthentication) ? tmpIsBasicAuthentication : false;
 			_password = data.GetValue(@"" + path + @"Password");
-			try { Timeout = int.Parse(data.GetValue(@"" + path + @"Timeout"), System.Globalization.CultureInfo.InvariantCulture); } catch { Timeout = 60;}
+			Timeout = int.TryParse(data.GetValue(@"" + path + @"Timeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpTimeout) ? tmpTimeout : 60;
 			try { Url = Data.UnescapeString(data.GetValue(@"" + path + @"Url")); } catch { Url = "";}
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
@@ -66,7 +65,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Url", Data.EscapeString(Url));
 			data.SetValue(@"" + path + @"UserName", Data.EscapeString(UserName));
 		}
-		
 		public HttpAccount Copy()
 		{
 			HttpAccount copy = new HttpAccount();
@@ -77,7 +75,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Timeout = Timeout;
 			copy.Url = Url;
 			copy.UserName = UserName;
-			
 			return copy;
 		}
 		
@@ -92,22 +89,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Timeout.Equals(v.Timeout)) return false;
 			if (!Url.Equals(v.Url)) return false;
 			if (!UserName.Equals(v.UserName)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("IsBasicAuthentication=" + IsBasicAuthentication.ToString());
-			sb.AppendLine("Password=" + Password.ToString());
-			sb.AppendLine("Timeout=" + Timeout.ToString());
-			sb.AppendLine("Url=" + Url.ToString());
-			sb.AppendLine("UserName=" + UserName.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

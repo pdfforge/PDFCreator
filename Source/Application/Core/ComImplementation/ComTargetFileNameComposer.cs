@@ -1,18 +1,18 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Core.Workflow.Queries;
+using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 
-namespace pdfforge.PDFCreator.UI.COM
+namespace pdfforge.PDFCreator.Core.ComImplementation
 {
-    public class ComTargetFileNameComposer : ITargetFileNameComposer
+    public class ComTargetFilePathComposer : ITargetFilePathComposer
     {
         private readonly string _targetFilename;
 
-        public ComTargetFileNameComposer(string targetFilename)
+        public ComTargetFilePathComposer(string targetFilename)
         {
             _targetFilename = targetFilename;
         }
 
-        public string ComposeTargetFileName(Job job)
+        public string ComposeTargetFilePath(Job job)
         {
             return _targetFilename;
         }

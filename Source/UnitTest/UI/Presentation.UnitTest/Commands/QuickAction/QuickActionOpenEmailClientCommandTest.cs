@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -19,13 +20,16 @@ namespace Presentation.UnitTest.Commands.QuickAction
         private Job _job;
         private IEMailClientAction _emailClientAction;
         private List<string> _fileList;
+        private IMailSignatureHelper _mailSignatureHelper;
+
+        private const string SignatureText = "Signature!";
 
         [SetUp]
         public void Setup()
         {
             _profile = new ConversionProfile();
 
-            _job = new Job(null, null, null, null)
+            _job = new Job(null, null, null)
             {
                 Profile = _profile,
                 OutputFiles = new List<string> { "FirstFile.pdf" }
@@ -37,11 +41,13 @@ namespace Presentation.UnitTest.Commands.QuickAction
             _fileList.Add("ghi");
 
             _emailClientAction = Substitute.For<IEMailClientAction>();
+            _mailSignatureHelper = Substitute.For<IMailSignatureHelper>();
+            _mailSignatureHelper.ComposeMailSignature().Returns(SignatureText);
         }
 
         private QuickActionOpenMailClientCommand build()
         {
-            return new QuickActionOpenMailClientCommand(new UnitTestTranslationUpdater(), _emailClientAction);
+            return new QuickActionOpenMailClientCommand(new UnitTestTranslationUpdater(), _emailClientAction, _mailSignatureHelper);
         }
 
         private bool ListsAreEqual(IEnumerable<string> list1, IEnumerable<string> list2)
@@ -61,8 +67,6 @@ namespace Presentation.UnitTest.Commands.QuickAction
         public void SendValidJobIntoCommand_ExecuteCommand_RunsAction()
         {
             var command = build();
-            _job.JobTranslations = new JobTranslations();
-            _job.JobTranslations.EmailSignature = "";
             _job.OutputFiles = _fileList;
 
             command.Execute(_job);
@@ -72,7 +76,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
                         "",
                         false,
                         true,
-                        _job.JobTranslations.EmailSignature,
+                        SignatureText,
                         "",
                         "",
                         "",
@@ -104,7 +108,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
                         "",
                         false,
                         true,
-                        "",
+                        SignatureText,
                         "",
                         "",
                         "",
@@ -127,7 +131,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
                     "",
                     false,
                     true,
-                    "",
+                    SignatureText,
                     "",
                     "",
                     "",

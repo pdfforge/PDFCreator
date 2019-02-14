@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System;
@@ -29,13 +30,13 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             if (settings == null)
                 return ExitCode.InvalidSettingsFile;
 
-            if (!_settingsProvider.CheckValidSettings(settings))
+            if (!_settingsProvider.CheckValidSettings(settings as PdfCreatorSettings))
                 return ExitCode.InvalidSettingsInGivenFile;
 
             try
             {
                 var storage = _storageFactory.BuildRegistryStorage(RegistryHive.Users, ".Default\\" + _pathProvider.SettingsRegistryPath);
-                settings.SaveData(storage, "");
+                settings.SaveData(storage);
             }
             catch (Exception)
             {

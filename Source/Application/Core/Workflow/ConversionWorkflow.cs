@@ -1,8 +1,11 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -24,6 +27,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
     /// </summary>
     public abstract class ConversionWorkflow : IConversionWorkflow
     {
+        protected abstract IJobEventsManager JobEventsManager { get; }
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -37,6 +41,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public event EventHandler JobFinished;
 
+        private Stopwatch _stopwatch;
+
         /// <summary>
         ///     Runs all steps and user interaction that is required during the conversion
         /// </summary>
@@ -44,6 +50,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
         {
             try
             {
+                _stopwatch = new Stopwatch();
+                _stopwatch.Start();
+                JobEventsManager.RaiseJobStarted(job, Thread.CurrentThread.ManagedThreadId.ToString());
+
                 PrepareAndRun(job);
             }
             catch (AbortWorkflowException ex)
@@ -51,11 +61,15 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 // we need to clean up the job when it was cancelled
                 _logger.Warn(ex.Message + " No output will be created.");
                 WorkflowResult = WorkflowResult.AbortedByUser;
+
+                SendJobEvents(job);
             }
             catch (WorkflowException ex)
             {
                 _logger.Error(ex.Message);
                 WorkflowResult = WorkflowResult.Error;
+
+                SendJobEvents(job);
             }
             catch (ProcessingException ex)
             {
@@ -64,8 +78,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 HandleError(ex.ErrorCode);
                 WorkflowResult = WorkflowResult.Error;
+
+                SendJobEvents(job);
             }
             catch (ManagePrintJobsException)
+            {
+                throw;
+            }
+            catch (InterruptWorkflowException)
             {
                 throw;
             }
@@ -73,10 +93,33 @@ namespace pdfforge.PDFCreator.Core.Workflow
             {
                 _logger.Error(ex);
                 WorkflowResult = WorkflowResult.Error;
+                SendJobEvents(job);
+
                 throw;
             }
 
             return WorkflowResult;
+        }
+
+        private void SendJobEvents(Job job)
+        {
+            _stopwatch.Stop();
+            var elapsedTime = TimeSpan.FromTicks(_stopwatch.ElapsedMilliseconds);
+
+            switch (WorkflowResult)
+            {
+                case WorkflowResult.AbortedByUser:
+                    JobEventsManager.RaiseJobFailed(job, elapsedTime, FailureReason.AbortedByUser);
+                    break;
+
+                case WorkflowResult.Error:
+                    JobEventsManager.RaiseJobFailed(job, elapsedTime, FailureReason.Error);
+                    break;
+
+                case WorkflowResult.Finished:
+                    JobEventsManager.RaiseJobCompleted(job, elapsedTime);
+                    break;
+            }
         }
 
         protected abstract void DoWorkflowWork(Job job);
@@ -88,7 +131,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _logger.Debug("Starting conversion...");
 
             var originalMetadata = job.JobInfo.Metadata.Copy();
-            job.InitMetadataWithTemplates();
+            job.InitMetadataWithTemplatesFromProfile();
 
             JobDataUpdater.UpdateTokensAndMetadata(job);
 
@@ -97,6 +140,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 DoWorkflowWork(job);
 
                 WorkflowResult = WorkflowResult.Finished;
+
+                SendJobEvents(job);
             }
             catch (ManagePrintJobsException)
             {

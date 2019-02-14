@@ -4,8 +4,11 @@ namespace pdfforge.PDFCreator.UI.Interactions
 {
     public class RecommendPdfArchitectInteraction : IInteraction
     {
-        public RecommendPdfArchitectInteraction(bool showViewerWarning)
+        public bool IsUpdate { get; private set; }
+
+        public RecommendPdfArchitectInteraction(bool showViewerWarning, bool isUpdate)
         {
+            IsUpdate = isUpdate;
             ShowViewerWarning = showViewerWarning;
         }
 

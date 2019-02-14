@@ -37,7 +37,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [SetUp]
         public void SetUp()
         {
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _fileAssoc = Substitute.For<IFileAssoc>();
             _recommendArchitect = Substitute.For<IRecommendArchitect>();
             _pdfArchitectCheck = Substitute.For<IPdfArchitectCheck>();
@@ -50,8 +50,8 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             _defaultViewer = new DefaultViewer();
             _defaultViewer.OutputFormat = OutputFormat.Pdf;
             _defaultViewer.Path = DefaultViewerPath;
-            _settings.ApplicationSettings.DefaultViewers.Add(_defaultViewer);
-            _job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
+            _settings.DefaultViewers.Add(_defaultViewer);
+            _job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
 
             _profile = new ConversionProfile();
 

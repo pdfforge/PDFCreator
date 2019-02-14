@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities.IO;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow
@@ -18,7 +19,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         /// <summary>
         ///     Runs the job and all actions
         /// </summary>
-        void RunJob(Job abstractJob, IOutputFileMover outputFileMover);
+        Task RunJob(Job abstractJob, IOutputFileMover outputFileMover);
     }
 
     public class JobRunner : IJobRunner
@@ -50,24 +51,25 @@ namespace pdfforge.PDFCreator.Core.Workflow
         /// <summary>
         ///     Runs the job and all actions
         /// </summary>
-        public void RunJob(Job job, IOutputFileMover outputFileMover) //todo: Store OutputFileMover somewhere workflow dependant
+        public async Task RunJob(Job job, IOutputFileMover outputFileMover) //todo: Store OutputFileMover somewhere workflow dependant
         {
             _logger.Trace("Starting job");
 
-            _logger.Debug("Output filename template is: {0}", job.OutputFilenameTemplate);
+            _logger.Debug("Output filename template is: {0}", job.OutputFileTemplate);
             _logger.Debug("Output format is: {0}", job.Profile.OutputFormat);
-            _logger.Info("Converting " + job.OutputFilenameTemplate);
+            _logger.Info("Converting " + job.OutputFileTemplate);
 
             SetTempFolders(job);
 
             try
             {
                 _processor.Init(job);
-                var actions = SetUpActions(job);
 
+                CallPreConversionActions(job);
                 Convert(job);
                 Process(job);
-                outputFileMover.MoveOutputFiles(job);
+
+                await outputFileMover.MoveOutputFiles(job);
 
                 if (job.OutputFiles.Count == 0)
                 {
@@ -79,7 +81,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithOutputfiles(job);
 
-                CallActions(job, actions);
+                CallPostConversionActions(job);
+
                 CleanUp(job);
 
                 job.IsSuccessful = true;
@@ -145,13 +148,37 @@ namespace pdfforge.PDFCreator.Core.Workflow
         }
 
         /// <summary>
-        ///     Apply all Actions according to the configuration
+        ///     Call all pre conversion actions according to the configuration
         /// </summary>
         /// <param name="job"></param>
-        private IEnumerable<IAction> SetUpActions(Job job)
+        private void CallPreConversionActions(Job job)
         {
-            _logger.Trace("Setting up actions");
-            var actions = _actionManager.GetAllApplicableActions(job);
+            _logger.Trace("Setting up pre conversion actions");
+            var preConversionActions = _actionManager.GetApplicablePreConversionActions(job);
+
+            CallActions(job, preConversionActions);
+        }
+
+        /// <summary>
+        ///     Call all post conversion actions according to the configuration
+        /// </summary>
+        /// <param name="job"></param>
+        private void CallPostConversionActions(Job job)
+        {
+            _logger.Trace("Setting up post conversion actions");
+            var postConversionActions = _actionManager.GetApplicablePostConversionActions(job);
+
+            CallActions(job, postConversionActions);
+        }
+
+        /// <summary>
+        ///     Apply all post conversion actions according to the configuration
+        /// </summary>
+        /// <param name="job"></param>
+        private IEnumerable<IAction> SetUpPostConversionActions(Job job)
+        {
+            _logger.Trace("Setting up post conversion actions");
+            var actions = _actionManager.GetApplicablePostConversionActions(job);
             return actions;
         }
 
@@ -161,6 +188,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
             converter.OnReportProgress += (sender, args) => job.ReportProgress(args.Progress);
 
             converter.DoConversion(job);
+
+            _logger.Debug(converter.ConverterOutput);
         }
 
         private void Process(Job job)

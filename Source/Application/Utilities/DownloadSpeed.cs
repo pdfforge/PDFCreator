@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
 
 namespace pdfforge.PDFCreator.Utilities
 {
@@ -19,11 +17,9 @@ namespace pdfforge.PDFCreator.Utilities
             _lastProgressEvent = startTime;
         }
 
-        public DownloadSpeed(WebClient webClient)
+        public DownloadSpeed()
             : this(DateTime.Now)
         {
-            webClient.DownloadProgressChanged += DownloadProgressChanged;
-            webClient.DownloadFileCompleted += webClient_DownloadFileCompleted;
         }
 
         public int Capacity
@@ -72,12 +68,12 @@ namespace pdfforge.PDFCreator.Utilities
             }
         }
 
-        private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        public void DownloadProgressChanged(object sender, UpdateProgressChangedEventArgs e)
         {
             ReportProgress(DateTime.Now, e.TotalBytesToReceive, e.BytesReceived);
         }
 
-        private void webClient_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        public void webClient_DownloadFileCompleted(object sender, UpdateProgressChangedEventArgs e)
         {
             Reset();
         }

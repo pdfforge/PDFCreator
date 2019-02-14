@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -19,34 +20,36 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
 {
     public class TitleReplacementsViewModel : TranslatableViewModelBase<TitleReplacementsTranslation>, ITabViewModel
     {
+        private readonly ICurrentSettings<ObservableCollection<TitleReplacement>> _titleReplacementProvider;
+        private ObservableCollection<TitleReplacement> _titleReplacements => _titleReplacementProvider?.Settings;
         private readonly ICurrentSettingsProvider _settingsProvider;
         public IGpoSettings GpoSettings { get; }
 
         private string _replacedSampleText;
+
         //private string _replacementTypeText;
         private string _sampleText = "Microsoft Word - Sample Text.doc";
         
-        private ObservableCollection<TitleReplacement> _titleReplacements = new ObservableCollection<TitleReplacement>();
-
-        public TitleReplacementsViewModel(ITranslationUpdater transalationUpdater, ICurrentSettingsProvider settingsProvider, ICommandLocator commandLocator, IGpoSettings gpoSettings):base(transalationUpdater)
+        public TitleReplacementsViewModel(ITranslationUpdater transalationUpdater, ICurrentSettings<ObservableCollection<TitleReplacement>> titleReplacementProvider, ICurrentSettingsProvider settingsProvider, ICommandLocator commandLocator, IGpoSettings gpoSettings) : base(transalationUpdater)
         {
+            _titleReplacementProvider = titleReplacementProvider;
             _settingsProvider = settingsProvider;
             GpoSettings = gpoSettings;
             TitleAddCommand = commandLocator.GetCommand<TitleReplacementAddCommand>();
             TitleDeleteCommand = commandLocator.GetCommand<TitleReplacementRemoveCommand>();
             TitleEditCommand = commandLocator.GetCommand<TitleReplacementEditCommand>();
 
-            if (_settingsProvider.Settings != null)
+            if (_titleReplacements != null)
                 UpdateTitleReplacements();
 
             _settingsProvider.SettingsChanged += (sender, args) => UpdateTitleReplacements();
 
-            TitleReplacements.CollectionChanged += TitleReplacementsOnCollectionChanged;
+            if(TitleReplacements != null)
+                TitleReplacements.CollectionChanged += TitleReplacementsOnCollectionChanged;
         }
 
         private void UpdateTitleReplacements()
         {
-            TitleReplacements = _settingsProvider.Settings.ApplicationSettings.TitleReplacement;
             UpdateReplacedText();
         }
 
@@ -84,21 +87,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         public ObservableCollection<TitleReplacement> TitleReplacements
         {
             get { return _titleReplacements; }
-            set
-            {
-                _titleReplacements = value;
-                var view = CollectionViewSource.GetDefaultView(_titleReplacements);
-                view.SortDescriptions.Add(new SortDescription("ReplacementType", ListSortDirection.Ascending));
-                view.SortDescriptions.Add(new SortDescription("Search", ListSortDirection.Descending));
-                
-                RaisePropertyChanged(nameof(TitleReplacements));
-            }
         }
 
         public string Title { get; set; } = "Title Replacements";
         public IconList Icon { get; set; } = IconList.TitleReplacementSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => GpoSettings.DisableTitleTab;
+        public bool HasNotSupportedFeatures => false;
 
         protected override void OnTranslationChanged()
         {
@@ -107,19 +102,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged();
         }
-        
+
         private void UpdateReplacedText()
         {
             var titleReplacer = new TitleReplacer();
             titleReplacer.AddReplacements(TitleReplacements);
             ReplacedSampleText = titleReplacer.Replace(SampleText);
+
+            var view = CollectionViewSource.GetDefaultView(_titleReplacements);
+            view.SortDescriptions.Add(new SortDescription("ReplacementType", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Search", ListSortDirection.Descending));
+
+            RaisePropertyChanged(nameof(TitleReplacements));
         }
 
         public bool TitleIsEnabled
         {
             get
             {
-                if (_settingsProvider.Settings.ApplicationSettings == null)
+                if (_titleReplacements == null)
                     return true;
 
                 return GpoSettings != null ? !GpoSettings.DisableTitleTab : true;
@@ -131,7 +132,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
     {
         private static readonly ICurrentSettingsProvider CurrentSettingsProvider = new DesignTimeCurrentSettingsProvider();
 
-        public DesignTimeTitleReplacementsViewModel() : base(new DesignTimeTranslationUpdater(), CurrentSettingsProvider, new DesignTimeCommandLocator(),null)
+        public DesignTimeTitleReplacementsViewModel() : base(new DesignTimeTranslationUpdater(), null, CurrentSettingsProvider, new DesignTimeCommandLocator(), null)
         {
         }
     }

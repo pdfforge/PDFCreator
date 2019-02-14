@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
@@ -16,6 +17,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         private ConversionProfile _profile;
         private Accounts _accounts;
         private SmtpAccount _smtpTestAccount;
+        private IMailSignatureHelper _mailSignatureHelper;
 
         [SetUp]
         public void SetUp()
@@ -40,7 +42,10 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             _accounts = new Accounts();
             _accounts.SmtpAccounts.Add(_smtpTestAccount);
 
-            _smtpAction = new SmtpMailAction();
+            _mailSignatureHelper = Substitute.For<IMailSignatureHelper>();
+            _mailSignatureHelper.ComposeMailSignature().Returns("Signature!");
+
+            _smtpAction = new SmtpMailAction(_mailSignatureHelper);
         }
 
         [Test]
@@ -66,7 +71,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             _profile.EmailSmtpSettings.Recipients = givenRecipients;
             _profile.EmailSmtpSettings.RecipientsCc = givenRecipients;
             _profile.EmailSmtpSettings.RecipientsBcc = givenRecipients;
-            var job = new Job(null, _profile, null, _accounts);
+            var job = new Job(null, _profile, _accounts);
             job.TokenReplacer = tokenReplacer;
 
             _smtpAction.ApplyPreSpecifiedTokens(job);

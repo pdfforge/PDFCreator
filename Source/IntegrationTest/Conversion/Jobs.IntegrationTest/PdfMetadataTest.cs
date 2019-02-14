@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs
 
             _th.Job.JobInfo.Metadata.Title = "Title with äüößéèê€";
             _th.Job.JobInfo.Metadata.Subject = "Subject @";
-            _th.Job.JobInfo.Metadata.Keywords = "";
+            _th.Job.JobInfo.Metadata.Keywords = "Key1 Key2 Key3";
             _th.Job.JobInfo.Metadata.Author = "Author";
 
             _th.RunGsJob();
@@ -43,7 +43,8 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs
                 Assert.AreEqual(_th.Job.JobInfo.Metadata.Subject, pdf.Info["Subject"], "Wrong Subject in Metadata");
                 Assert.AreEqual(_th.Job.JobInfo.Metadata.Keywords, pdf.Info["Keywords"], "Wrong Keywords in Metadata");
                 Assert.AreEqual(_th.Job.JobInfo.Metadata.Author, pdf.Info["Author"], "Wrong Author in Metadata");
-                Assert.AreEqual(_th.Job.JobInfo.Metadata.Producer, pdf.Info["Producer"], "Wrong Producer in Metadata");
+                Assert.AreEqual(_th.Job.Producer, pdf.Info["Producer"], "Wrong Producer in Metadata");
+                Assert.AreEqual(_th.Job.Producer, pdf.Info["Creator"], "Wrong Creator in Metadata");
             }
         }
     }

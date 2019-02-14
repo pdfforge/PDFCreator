@@ -21,7 +21,7 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
 
         public FileLogger(string applicationName, LogLevel logLevel, string logFilePath = null)
         {
-            var config = new LoggingConfiguration();
+            var config = LogManager.Configuration ?? new LoggingConfiguration();
 
             _fileTarget = new FileTarget();
             _fileTarget.Layout = ShortLogLayout;

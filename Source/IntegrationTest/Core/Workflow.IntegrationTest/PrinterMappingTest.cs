@@ -17,12 +17,12 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             var container = bootstrapper.ConfigureContainer();
             _jobBuilder = container.GetInstance<IJobBuilder>();
 
-            var ini = new IniStorage();
+            var ini = new IniStorage("");
 
             _testHelper = container.GetInstance<TestHelper>();
             _testHelper.InitTempFolder("MappingTest");
 
-            _settings = new PdfCreatorSettings(ini);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(new ConversionProfile { Guid = "Profile0", Name = "Profile0" });
             _settings.ConversionProfiles.Add(new ConversionProfile { Guid = "Profile1", Name = "Profile1" });
 

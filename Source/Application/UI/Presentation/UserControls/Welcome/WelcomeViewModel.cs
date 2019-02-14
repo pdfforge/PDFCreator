@@ -1,36 +1,46 @@
-﻿using pdfforge.PDFCreator.Core.Controller;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Welcome
 {
-    public class WelcomeViewModel : OverlayViewModelBase<WelcomeInteraction, WelcomeWindowTranslation>, IWhitelisted
+    public class WelcomeViewModel : TranslatableViewModelBase<WelcomeWindowTranslation>, IWhitelisted
     {
-        public WelcomeViewModel(ICommandLocator commandLocator, ITranslationUpdater translationUpdater, EditionHintOptionProvider editionHintOptionProvider)
+        private readonly IVersionHelper _versionHelper;
+        private readonly ApplicationNameProvider _applicationNameProvider;
+        private string _editionWithVersion => _applicationNameProvider?.EditionName + " " + _versionHelper?.FormatWithThreeDigits();
+
+        public WelcomeViewModel(ICommandLocator commandLocator, ITranslationUpdater translationUpdater,
+                                EditionHelper editionHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
             : base(translationUpdater)
         {
-            AllowPrioritySupport = !editionHintOptionProvider?.ShowOnlyForPlusAndBusinessHint ?? true;
+            _versionHelper = versionHelper;
+            _applicationNameProvider = applicationNameProvider;
+            AllowPrioritySupport = !editionHelper?.ShowOnlyForPlusAndBusiness ?? true;
 
             WhatsNewCommand = commandLocator.GetInitializedCommand<ShowUserGuideCommand, HelpTopic>(HelpTopic.WhatsNew);
-            BlogCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.Blog);
             PrioritySupportCommand = commandLocator.GetCommand<PrioritySupportUrlOpenCommand>();
+        }
+
+        protected override void OnTranslationChanged()
+        {
+            RaisePropertyChanged(nameof(WelcomeText));
         }
 
         public Boolean AllowPrioritySupport { get; }
 
         public ICommand WhatsNewCommand { get; }
-        public ICommand BlogCommand { get; }
+
         public ICommand PrioritySupportCommand { get; }
 
-        public override string Title => Translation.Title;
+        public string WelcomeText => Translation?.GetWelcomeText(_editionWithVersion);
     }
 }

@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.UsageStatistics;
 using pdfforge.PDFCreator.Editions.EditionBase;
 using pdfforge.PDFCreator.Utilities;
 using SimpleInjector;
@@ -50,11 +51,13 @@ namespace pdfforge.PDFCreator.UI.COM
         {
             var bootstrapper = CreateBootstrapper();
             var container = new Container();
-            bootstrapper.ConfigureContainer(container);
+            bootstrapper.RegisterMainApplication(container);
             container.Register<PrintFileHelperComFactory>();
             container.Register<IComWorkflowFactory>(() => new ComWorkflowFactory(container));
             container.RegisterSingleton(() => new ThreadPool());
             container.Register<IPrintJobAdapterFactory, PrintJobAdapterFactory>();
+
+            container.RegisterInitializer<PdfCreatorUsageStatisticsManager>(m => m.IsComMode = true);
 
             DoModifyRegistrations(container);
 

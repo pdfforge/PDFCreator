@@ -16,7 +16,7 @@ namespace Presentation.UnitTest.Workflow.Steps
         public void Setup()
         {
             _step = new QuickActionStep();
-            _job = new Job(null, null, null, null);
+            _job = new Job(null, null, null);
             _job.Profile = new ConversionProfile();
         }
 

@@ -4,23 +4,23 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
-using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class FtpAccountAddCommand : TranslatableCommandBase<FtpActionTranslation>, IWaitableCommand
     {
-        private readonly ObservableCollection<FtpAccount> _ftpAccounts;
         private readonly IInteractionRequest _interactionRequest;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
 
-        public FtpAccountAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public FtpAccountAddCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _ftpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.FtpAccounts;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -45,7 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
-            _ftpAccounts.Add(interaction.FtpAccount);
+            _accountsProvider.Settings.FtpAccounts.Add(interaction.FtpAccount);
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }

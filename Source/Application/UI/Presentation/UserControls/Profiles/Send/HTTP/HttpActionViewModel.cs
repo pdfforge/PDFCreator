@@ -1,6 +1,7 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
@@ -21,12 +22,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP
         public IMacroCommand EditAccountCommand { get; }
         public IMacroCommand AddAccountCommand { get; }
 
-        public HttpActionViewModel(ITranslationUpdater translationUpdater, ICurrentSettingsProvider currentSettingsProvider, ICommandLocator commandLocator, IDispatcher dispatcher)
+        private readonly IGpoSettings _gpoSettings;
+        public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
+
+        public HttpActionViewModel(ITranslationUpdater translationUpdater,
+            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ICommandLocator commandLocator,
+            IDispatcher dispatcher,
+            IGpoSettings gpoSettings)
             : base(translationUpdater, currentSettingsProvider, dispatcher)
         {
-            if (currentSettingsProvider?.Settings != null)
+            _gpoSettings = gpoSettings;
+            _httpAccounts = accountsProvider?.Settings.HttpAccounts;
+            if (_httpAccounts != null)
             {
-                _httpAccounts = currentSettingsProvider.Settings.ApplicationSettings.Accounts.HttpAccounts;
                 HttpAccountsView = new ListCollectionView(_httpAccounts);
                 HttpAccountsView.SortDescriptions.Add(new SortDescription(nameof(HttpAccount.AccountInfo), ListSortDirection.Ascending));
             }

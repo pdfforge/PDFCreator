@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<FtpAccount> _ftpAccounts;
         private FtpAccount _currentFtpAccount;
         private FtpActionTranslation _translation;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -31,15 +32,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _currentFtpAccount.UserName = "CurrentUserName";
             _ftpAccounts = new ObservableCollection<FtpAccount>();
             _ftpAccounts.Add(_currentFtpAccount);
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.FtpAccounts = _ftpAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             _translation = new FtpActionTranslation();
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _ftpAccountEditCommand = new FtpAccountEditCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _ftpAccountEditCommand = new FtpAccountEditCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]
@@ -171,17 +172,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _ftpAccountEditCommand.Execute(_currentFtpAccount);
 
             Assert.IsTrue(wasCalled);
-        }
-
-        [Test]
-        public void ChangeAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var wasRaised = false;
-            _ftpAccountEditCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _ftpAccounts.Add(new FtpAccount());
-
-            Assert.IsTrue(wasRaised);
         }
     }
 }

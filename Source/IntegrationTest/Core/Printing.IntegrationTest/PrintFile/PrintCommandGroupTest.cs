@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using PDFCreator.TestUtilities;
+using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Printing.Printing;
 using pdfforge.PDFCreator.Utilities;
 using System;
@@ -10,6 +11,16 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
     [TestFixture]
     internal class PrintCommandGroupTest
     {
+        private IPrinterHelper _printerHelper;
+        private TimeSpan _timeout;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _printerHelper = new PrinterHelper(new SystemPrinterProvider());
+            _timeout = TimeSpan.FromSeconds(60);
+        }
+
         [TearDown]
         public void CleanUp()
         {
@@ -21,7 +32,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var printCommandGroup = new PrintCommandGroup();
 
-            Assert.IsTrue(printCommandGroup.PrintAll());
+            Assert.IsTrue(printCommandGroup.PrintAll(_timeout));
         }
 
         [Test]
@@ -33,11 +44,11 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
 
             const string printer = "SomePrinter";
 
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test1.txt"), printer, new FileAssoc()));
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test2.txt"), printer, new FileAssoc()));
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test3.txt"), printer, new FileAssoc()));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test1.txt"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test2.txt"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test3.txt"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
 
-            printCommandGroup.PrintAll();
+            printCommandGroup.PrintAll(_timeout);
 
             foreach (var mock in factory.CreatedMocks)
             {
@@ -56,12 +67,12 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
 
             const string printer = "SomePrinter";
 
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.txt"), printer, new FileAssoc()));
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.invalid"), printer, new FileAssoc()));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.txt"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.invalid"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
 
             try
             {
-                printCommandGroup.PrintAll();
+                printCommandGroup.PrintAll(_timeout);
             }
             catch (InvalidOperationException)
             {
@@ -78,9 +89,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
 
             const string printer = "SomePrinter";
 
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.txt"), printer, new FileAssoc()));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.txt"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
 
-            Assert.IsTrue(printCommandGroup.PrintAll());
+            Assert.IsTrue(printCommandGroup.PrintAll(_timeout));
         }
 
         [Test]
@@ -91,9 +102,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
 
             const string printer = "SomePrinter";
 
-            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.invalid"), printer, new FileAssoc()));
+            printCommandGroup.Add(new PrintCommand(TempFileHelper.CreateTempFile("PrintCommandGroup", "test.invalid"), printer, new FileAssoc(), _printerHelper, _timeout.Seconds));
 
-            Assert.Throws<InvalidOperationException>(() => printCommandGroup.PrintAll());
+            Assert.Throws<InvalidOperationException>(() => printCommandGroup.PrintAll(_timeout));
         }
     }
 }

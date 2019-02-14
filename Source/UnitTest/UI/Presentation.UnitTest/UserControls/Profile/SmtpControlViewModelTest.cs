@@ -1,15 +1,16 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
@@ -31,8 +32,9 @@ namespace Presentation.UnitTest.UserControls.Profile
         private ICommand _editCommand;
         private UnitTestInteractionRequest _interactionRequest;
         private ISmtpTest _smtpTest;
-        private TokenHelper _tokenHelper;
+        private ITokenHelper _tokenHelper;
         private TokenReplacer _tokenReplacer;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         private readonly IFixture _fixture = new Fixture();
 
@@ -49,10 +51,11 @@ namespace Presentation.UnitTest.UserControls.Profile
             var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
             currentSettingsProvider.SelectedProfile.Returns(_profile);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             _smtpAccounts = new ObservableCollection<SmtpAccount>();
             settings.ApplicationSettings.Accounts.SmtpAccounts = _smtpAccounts;
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var commandLocator = Substitute.For<ICommandLocator>();
             commandLocator.CreateMacroCommand().Returns(x => new MacroCommandBuilder(commandLocator));
@@ -65,7 +68,7 @@ namespace Presentation.UnitTest.UserControls.Profile
             _tokenHelper = new TokenHelper(new DesignTimeTranslationUpdater());
             _tokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
 
-            _viewModel = new SmtpActionViewModel(_interactionRequest, _smtpTest, translationUpdater, currentSettingsProvider, commandLocator, new TokenViewModelFactory(currentSettingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null);
+            _viewModel = new SmtpActionViewModel(_interactionRequest, _smtpTest, translationUpdater, currentSettingsProvider, _accountsProvider, commandLocator, new TokenViewModelFactory(currentSettingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null, new GpoSettingsDefaults());
         }
 
         [Test]

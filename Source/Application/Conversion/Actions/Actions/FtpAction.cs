@@ -13,7 +13,7 @@ using System.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public class FtpAction : RetypePasswordActionBase, ICheckable
+    public class FtpAction : RetypePasswordActionBase, IPostConversionAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IFtpConnectionFactory _ftpConnectionFactory;

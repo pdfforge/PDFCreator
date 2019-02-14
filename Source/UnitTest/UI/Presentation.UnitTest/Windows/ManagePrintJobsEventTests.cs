@@ -46,7 +46,7 @@ namespace Presentation.UnitTest.Windows
 
             _jobInfoQueue.OnNewJobInfo += Raise.EventWith(null, new NewJobInfoEventArgs(_jobInfoStub));
 
-            Assert.True(_eventWasRaised);
+            Assert.IsTrue(_eventWasRaised);
         }
 
         [Test]

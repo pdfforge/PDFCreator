@@ -61,7 +61,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             var tokenReplacer = new TokenReplacer();
             tokenReplacer.AddStringToken(tokenKey, tokenValue);
             _profile.DropboxSettings.SharedFolder = token;
-            var job = new Job(null, _profile, null, _accounts);
+            var job = new Job(null, _profile, _accounts);
             job.TokenReplacer = tokenReplacer;
 
             _dropboxAction.ApplyPreSpecifiedTokens(job);
@@ -96,7 +96,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             _dropboxAccount.AccountId = _accountId;
             _dropboxAccount.AccessToken = string.Empty;
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
 
             var result = _dropboxAction.Check(_profile, _accounts, CheckLevel.Profile);
             Assert.AreEqual(ErrorCode.Dropbox_AccessTokenNotSpecified, result.FirstOrDefault());
@@ -157,7 +157,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         [Test]
         public void UploadFile_ReturnsActionResult()
         {
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
 
             _dropboxAction.ProcessJob(_job);
@@ -170,7 +170,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         public void UploadFile_WithBackslash_ConvertsToforwardSlash()
         {
             _profile.DropboxSettings.SharedFolder += "\\test";
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
 
             _dropboxAction.ProcessJob(_job);
@@ -186,8 +186,8 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _profile.DropboxSettings.CreateShareLink = true;
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
-            _dropboxService.UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, false, _job.OutputFilenameTemplate).Returns(
+            _job = new Job(new JobInfo(), _profile, _accounts);
+            _dropboxService.UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, false, _job.OutputFileTemplate).Returns(
                 new DropboxFileMetaData
                 {
                     Filename = "/File1.pdf",
@@ -204,8 +204,8 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _profile.DropboxSettings.CreateShareLink = true;
             var shareUrl = "htttps://dropbox.com/File1.pdf";
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
-            _dropboxService.UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, false, _job.OutputFilenameTemplate).Returns(
+            _job = new Job(new JobInfo(), _profile, _accounts);
+            _dropboxService.UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, false, _job.OutputFileTemplate).Returns(
                 new DropboxFileMetaData
                 {
                     Filename = "/File1.pdf",
@@ -222,12 +222,12 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _profile.DropboxSettings.CreateShareLink = true;
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
 
             _dropboxAction.ProcessJob(_job);
 
-            _dropboxService.Received().UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, _profile.DropboxSettings.EnsureUniqueFilenames, _job.OutputFilenameTemplate);
+            _dropboxService.Received().UploadFileWithSharing(_accessToken, _profile.DropboxSettings.SharedFolder, _job.OutputFiles, _profile.DropboxSettings.EnsureUniqueFilenames, _job.OutputFileTemplate);
         }
 
         [Test]
@@ -235,7 +235,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _profile.DropboxSettings.CreateShareLink = true;
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
 
             _dropboxService.UploadFileWithSharing("", _profile.DropboxSettings.SharedFolder, _job.OutputFiles, _profile.DropboxSettings.EnsureUniqueFilenames, string.Empty).Returns(new DropboxFileMetaData());
@@ -248,7 +248,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         {
             _profile.DropboxSettings.CreateShareLink = false;
 
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.OutputFiles = new[] { @"C:\Temp\file1.pdf" }.ToList();
 
             _dropboxService.UploadFiles("", _profile.DropboxSettings.SharedFolder, _job.OutputFiles, _profile.DropboxSettings.EnsureUniqueFilenames, string.Empty).Returns(false);

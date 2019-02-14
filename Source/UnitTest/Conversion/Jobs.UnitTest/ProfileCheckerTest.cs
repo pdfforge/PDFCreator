@@ -63,7 +63,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs
                 _actionCheckList[i].Check(Arg.Any<ConversionProfile>(), _accounts, Arg.Any<CheckLevel>()).Returns(new ActionResult());
             }
 
-            _profileChecker = new ProfileChecker(_pathUtil, _file, _actionCheckList, new OutputFormatHelper());
+            _profileChecker = new ProfileChecker(_pathUtil, _file, _actionCheckList);
         }
 
         private ActionResult GetFirstCheckProfileListResult()
@@ -75,8 +75,8 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs
 
         private ActionResult GetCheckJobResult(string outputFilenameTemplate = "")
         {
-            var job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
-            job.OutputFilenameTemplate = outputFilenameTemplate;
+            var job = new Job(new JobInfo(), _profile, _accounts);
+            job.OutputFileTemplate = outputFilenameTemplate;
             var tokenReplacer = new TokenReplacer();
             tokenReplacer.AddStringToken(Token.Replace("<", "").Replace(">", ""), TokenValue);
             job.TokenReplacer = tokenReplacer;
@@ -150,7 +150,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs
                 expectedCodes[action] = expectedCode;
             }
 
-            var job = new Job(null, _profile, null, _accounts);
+            var job = new Job(null, _profile, _accounts);
 
             var result = _profileChecker.CheckJob(job);
 
@@ -372,7 +372,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs
         [Test]
         public void JobOutputFilenameTemplate_CheckLevelJob_ValidRootedPath_ResultIsTrue()
         {
-            var outputFilenameTemplate = "OutputFilenameTemplate";
+            var outputFilenameTemplate = "OutputFileTemplate";
             _pathUtil.IsValidRootedPathWithResponse(outputFilenameTemplate).Returns(PathUtilStatus.Success);
 
             var result = GetCheckJobResult(outputFilenameTemplate);

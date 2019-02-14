@@ -28,9 +28,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Deletable { get; set; } = true;
 		
 		/// <summary>
-		/// Can users edit this profile?
+		/// True for shrared profiles
 		/// </summary>
-		public bool Editable { get; set; } = true;
+		public bool IsShared { get; set; } = false;
 		
 		/// <summary>
 		/// Can users rename this profile?
@@ -38,17 +38,17 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Renamable { get; set; } = true;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Deletable = bool.Parse(data.GetValue(@"" + path + @"Deletable")); } catch { Deletable = true;}
-			try { Editable = bool.Parse(data.GetValue(@"" + path + @"Editable")); } catch { Editable = true;}
-			try { Renamable = bool.Parse(data.GetValue(@"" + path + @"Renamable")); } catch { Renamable = true;}
+			Deletable = bool.TryParse(data.GetValue(@"" + path + @"Deletable"), out var tmpDeletable) ? tmpDeletable : true;
+			IsShared = bool.TryParse(data.GetValue(@"" + path + @"IsShared"), out var tmpIsShared) ? tmpIsShared : false;
+			Renamable = bool.TryParse(data.GetValue(@"" + path + @"Renamable"), out var tmpRenamable) ? tmpRenamable : true;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"Deletable", Deletable.ToString());
-			data.SetValue(@"" + path + @"Editable", Editable.ToString());
+			data.SetValue(@"" + path + @"IsShared", IsShared.ToString());
 			data.SetValue(@"" + path + @"Renamable", Renamable.ToString());
 		}
 		
@@ -57,9 +57,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Properties copy = new Properties();
 			
 			copy.Deletable = Deletable;
-			copy.Editable = Editable;
+			copy.IsShared = IsShared;
 			copy.Renamable = Renamable;
-			
 			return copy;
 		}
 		
@@ -69,21 +68,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Properties v = o as Properties;
 			
 			if (!Deletable.Equals(v.Deletable)) return false;
-			if (!Editable.Equals(v.Editable)) return false;
+			if (!IsShared.Equals(v.IsShared)) return false;
 			if (!Renamable.Equals(v.Renamable)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Deletable=" + Deletable.ToString());
-			sb.AppendLine("Editable=" + Editable.ToString());
-			sb.AppendLine("Renamable=" + Renamable.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

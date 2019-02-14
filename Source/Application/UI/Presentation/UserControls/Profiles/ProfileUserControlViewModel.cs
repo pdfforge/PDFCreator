@@ -10,18 +10,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class ProfileUserControlViewModel<TTranslation> : TranslatableViewModelBase<TTranslation> where TTranslation : ITranslatable, new()
     {
-        private readonly ISelectedProfileProvider _selectedProfileProvider;
         private readonly IDispatcher _dispatcher;
+        private readonly ISelectedProfileProvider _selectedProfileProvider;
         public ConversionProfile CurrentProfile => _selectedProfileProvider.SelectedProfile;
 
         public event EventHandler CurrentProfileChanged;
 
-        public ProfileUserControlViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider selectedProfile, IDispatcher dispatcher) : base(translationUpdater)
+        public ProfileUserControlViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider selectedProfileProvider, IDispatcher dispatcher) : base(translationUpdater)
         {
-            _selectedProfileProvider = selectedProfile;
+            _selectedProfileProvider = selectedProfileProvider;
             _dispatcher = dispatcher;
-            selectedProfile.SelectedProfileChanged += OnCurrentProfileChanged;
-            selectedProfile.SettingsChanged += OnCurrentSettingsChanged;
+            selectedProfileProvider.SelectedProfileChanged += OnCurrentProfileChanged;
+            selectedProfileProvider.SettingsChanged += OnCurrentSettingsChanged;
         }
 
         private void OnCurrentSettingsChanged(object sender, EventArgs e)

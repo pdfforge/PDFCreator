@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
             _pipeServerManager = Substitute.For<IPipeServerManager>();
             _pipeServerManager.StartServer().Returns(true);
             _threadManager = Substitute.For<IThreadManager>();
-            _cleanUp = Substitute.For<IPdfCreatorCleanUp>();
+            _folderCleanUp = Substitute.For<IPdfCreatorFolderCleanUp>();
             _updateAssistant = Substitute.For<IUpdateAssistant>();
             _startupConditions = Substitute.For<ICheckAllStartupConditions>();
             _notificationService = Substitute.For<INotificationService>();
@@ -35,7 +35,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
         private IPipeServerManager _pipeServerManager;
         private ISettingsManager _settingsManager;
         private IThreadManager _threadManager;
-        private IPdfCreatorCleanUp _cleanUp;
+        private IPdfCreatorFolderCleanUp _folderCleanUp;
         private IUpdateAssistant _updateAssistant;
         private ICheckAllStartupConditions _startupConditions;
         private IJobInfoQueueManager _jobInfoQueueManager;
@@ -51,7 +51,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
             _jobHistoryManager = Substitute.For<IJobHistoryManager>();
 
             var starter = new MaybePipedApplicationStarter(_settingsManager, _updateAssistant, _startupConditions,
-                _threadManager, _pipeServerManager, _jobInfoQueueManager, jobInfoQueue, staticPropertiesHack, _cleanUp,
+                _threadManager, _pipeServerManager, _jobInfoQueueManager, jobInfoQueue, staticPropertiesHack, _folderCleanUp,
                 spooledJobFinder, _notificationService, _jobHistoryManager);
 
             starter.Retries = retries;
@@ -150,8 +150,8 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
 
             _threadManager.DidNotReceiveWithAnyArgs().StartSynchronizedThread(Arg.Any<ISynchronizedThread>());
             _threadManager.DidNotReceiveWithAnyArgs().StartSynchronizedThread(Arg.Any<ThreadStart>(), Arg.Any<string>());
-            _cleanUp.DidNotReceive().CleanSpoolFolder();
-            _cleanUp.DidNotReceive().CleanTempFolder();
+            _folderCleanUp.DidNotReceive().CleanSpoolFolder(TimeSpan.FromDays(1));
+            _folderCleanUp.DidNotReceive().CleanTempFolder(TimeSpan.FromDays(1));
         }
 
         [Test]
@@ -182,8 +182,8 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
 
             starter.SendMessageOrStartApplication(() => "", () => true, false);
 
-            _cleanUp.Received(1).CleanSpoolFolder();
-            _cleanUp.Received(1).CleanTempFolder();
+            _folderCleanUp.Received(1).CleanSpoolFolder(TimeSpan.FromDays(1));
+            _folderCleanUp.Received(1).CleanTempFolder(TimeSpan.FromDays(1));
         }
 
         [Test]

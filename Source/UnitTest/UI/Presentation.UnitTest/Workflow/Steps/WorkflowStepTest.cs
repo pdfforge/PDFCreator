@@ -3,6 +3,7 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Presentation.UnitTest.Workflow.Steps
@@ -17,13 +18,11 @@ namespace Presentation.UnitTest.Workflow.Steps
         public void Setup()
         {
             _workflowViewModel = Substitute.For<IWorkflowViewModel>();
-            _workflowViewModel
-                .When(x => x.ExecuteWorkflowStep(Arg.Any<Job>()))
-                .Do(x =>
-                {
-                    _handleJobAction(x.Arg<Job>());
-                    _workflowViewModel.StepFinished += Raise.EventWith(new object(), new EventArgs());
-                });
+            _workflowViewModel.ExecuteWorkflowStep(Arg.Any<Job>()).Returns(x =>
+            {
+                _handleJobAction(x.Arg<Job>());
+                return Task.FromResult((object)null);
+            });
         }
 
         [Test]
@@ -52,13 +51,13 @@ namespace Presentation.UnitTest.Workflow.Steps
         }
 
         [Test]
-        public void ExecuteStep_ExecutesViewModelStep()
+        public async Task ExecuteStep_ExecutesViewModelStep()
         {
             var stepWasExecuted = false;
             _handleJobAction = job => stepWasExecuted = true;
             var step = WorkflowStep.Create<UserControl>();
 
-            step.ExecuteStep(null, _workflowViewModel);
+            await step.ExecuteStep(null, _workflowViewModel);
 
             Assert.IsTrue(stepWasExecuted);
         }

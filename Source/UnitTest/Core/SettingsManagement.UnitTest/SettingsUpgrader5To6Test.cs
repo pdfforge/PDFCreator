@@ -11,9 +11,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion5_UpgradeRequiredToVersion6_ReturnsTrue()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "5");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "5");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(6));
         }
@@ -22,19 +22,19 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion5_UpgradeToVersion6_SetsVersionTo6()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "5");
-            var upgrader = new SettingsUpgrader(data);
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "5");
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(6);
 
-            Assert.AreEqual("6", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("6", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [Test]
         public void Test_MoveEMailClientSectionToEmailClientSettings()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "5");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "5");
 
             data.SetValue(@"ConversionProfiles\numClasses", "2");
 
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\EmailClient\Recipients", "Recipients");
             data.SetValue(@"ConversionProfiles\0\EmailClient\Subject", "Subject");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(6);
 
@@ -59,7 +59,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void Test_MoveEMailSmtpSectionToEmailSmtpSettings()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "5");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "5");
 
             data.SetValue(@"ConversionProfiles\numClasses", "2");
 
@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\EmailSmtp\Subject", "Subject");
             data.SetValue(@"ConversionProfiles\0\EmailSmtp\UserName", "UserName");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(6);
 

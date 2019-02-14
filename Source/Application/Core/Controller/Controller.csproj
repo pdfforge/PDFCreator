@@ -44,21 +44,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationNameProvider.cs" />
     <Compile Include="IFileConversionAssistant.cs" />
     <Compile Include="IMainWindowThreadLauncher.cs" />
     <Compile Include="NewPipeJobHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\IDataStartupAction.cs" />
+    <Compile Include="Routing\IStartupAction.cs" />
+    <Compile Include="Routing\IViewStartupAction.cs" />
     <Compile Include="Routing\StartupAction.cs" />
     <Compile Include="Routing\StartupRoutine.cs" />
-    <Compile Include="ServiceLocator\IWhitelisted.cs" />
-    <Compile Include="ServiceLocator\IWhitelistedServiceLocator.cs" />
-    <Compile Include="ServiceLocator\RestrictedServiceLocator.cs" />
     <Compile Include="Testpage.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Testpage.resx</DependentUpon>
     </Compile>
+    <Compile Include="TestPageCreator.cs" />
     <Compile Include="TestPageHelper.cs" />
     <Compile Include="URLs.cs" />
   </ItemGroup>
@@ -74,6 +74,10 @@
     <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceLocator\ServiceLocator.csproj">
+      <Project>{4b9272be-2f52-48cd-93d9-8880f509b304}</Project>
+      <Name>ServiceLocator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Workflow\Workflow.csproj">
       <Project>{e4f2f7aa-5a58-44a4-905d-09536cb81ea1}</Project>
@@ -118,7 +122,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -129,7 +133,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

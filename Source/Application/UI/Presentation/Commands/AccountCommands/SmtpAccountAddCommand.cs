@@ -4,7 +4,6 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
@@ -13,13 +12,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class SmtpAccountAddCommand : TranslatableCommandBase<AccountsTranslation>, IWaitableCommand
     {
-        private readonly ObservableCollection<SmtpAccount> _smtpAccounts;
+        private ObservableCollection<SmtpAccount> SmtpAccounts => _accountsProvider?.Settings.SmtpAccounts;
         private readonly IInteractionRequest _interactionRequest;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
 
-        public SmtpAccountAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater) : base(translationUpdater)
+        public SmtpAccountAddCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _smtpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.SmtpAccounts;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -43,7 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Cancel));
                 return;
             }
-            _smtpAccounts.Add(interaction.SmtpAccount);
+            SmtpAccounts.Add(interaction.SmtpAccount);
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }

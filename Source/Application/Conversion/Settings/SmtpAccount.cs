@@ -57,12 +57,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
 			try { Address = Data.UnescapeString(data.GetValue(@"" + path + @"Address")); } catch { Address = "";}
 			_password = data.GetValue(@"" + path + @"Password");
-			try { Port = int.Parse(data.GetValue(@"" + path + @"Port"), System.Globalization.CultureInfo.InvariantCulture); } catch { Port = 25;}
+			Port = int.TryParse(data.GetValue(@"" + path + @"Port"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpPort) ? tmpPort : 25;
 			try { Server = Data.UnescapeString(data.GetValue(@"" + path + @"Server")); } catch { Server = "";}
-			try { Ssl = bool.Parse(data.GetValue(@"" + path + @"Ssl")); } catch { Ssl = false;}
+			Ssl = bool.TryParse(data.GetValue(@"" + path + @"Ssl"), out var tmpSsl) ? tmpSsl : false;
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
@@ -73,7 +72,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Ssl", Ssl.ToString());
 			data.SetValue(@"" + path + @"UserName", Data.EscapeString(UserName));
 		}
-		
 		public SmtpAccount Copy()
 		{
 			SmtpAccount copy = new SmtpAccount();
@@ -85,7 +83,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Server = Server;
 			copy.Ssl = Ssl;
 			copy.UserName = UserName;
-			
 			return copy;
 		}
 		
@@ -101,23 +98,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Server.Equals(v.Server)) return false;
 			if (!Ssl.Equals(v.Ssl)) return false;
 			if (!UserName.Equals(v.UserName)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("Address=" + Address.ToString());
-			sb.AppendLine("Password=" + Password.ToString());
-			sb.AppendLine("Port=" + Port.ToString());
-			sb.AppendLine("Server=" + Server.ToString());
-			sb.AppendLine("Ssl=" + Ssl.ToString());
-			sb.AppendLine("UserName=" + UserName.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

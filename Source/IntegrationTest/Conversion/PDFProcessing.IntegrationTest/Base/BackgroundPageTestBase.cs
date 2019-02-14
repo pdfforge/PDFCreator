@@ -1186,8 +1186,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.Base
             Assert.IsFalse(pageText.Contains("Background"), "Unwanted background on 3. attachment page.");
         }
 
-        [Test]
-        [Category("Manual")]
+        [Test, Explicit("This has to be checked manually")]
         public void OnlyForManualTesting()
         {
             if (!Debugger.IsAttached)

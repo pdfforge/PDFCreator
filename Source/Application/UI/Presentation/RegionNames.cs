@@ -34,6 +34,12 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string LicenseSettingsContentRegion = "LicenseSettingsContentRegion";
 
         public static string StatusBarPlusHintRegion = "StatusBarPlusHintRegion";
+
+        public static string UsageStatisticsTabContentRegion = "UsageStatisticsTabContentRegion";
+
+        public static string RssFeedRegion = "RssService";
+
+        public static string HomeViewBannerRegion = "HomeViewBannerRegion";
     }
 
     public class PrintJobRegionNames : RegionNameCollection

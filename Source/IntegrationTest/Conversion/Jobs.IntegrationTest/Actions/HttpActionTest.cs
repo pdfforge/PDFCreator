@@ -96,7 +96,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
             _account.IsBasicAuthentication = true;
 
             var actionResult = _httpAction.ProcessJob(_th.Job);
-            Assert.True(actionResult.IsSuccess);
+            Assert.IsTrue(actionResult.IsSuccess);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
         {
             _account.Url = GetUrl() + "authTest1/";
             var actionResult = _httpAction.ProcessJob(_th.Job);
-            Assert.True(actionResult.Contains(ErrorCode.PasswordAction_Login_Error));
+            Assert.IsTrue(actionResult.Contains(ErrorCode.PasswordAction_Login_Error));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\test\NUnit\build\NUnit.props" Condition="Exists('..\..\..\..\packages\test\NUnit\build\NUnit.props')" Label="Paket" />
   <Import Project="..\..\..\packages\MSTest.TestAdapter.1.1.11\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\..\..\packages\MSTest.TestAdapter.1.1.11\build\net45\MSTest.TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,20 +45,23 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Translatable, Version=0.1.23.0, Culture=neutral, PublicKeyToken=b8f79a42dd8d813f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\CreatorIniSettingsAssistantHelperTest.cs" />
     <Compile Include="Assistant\FileConversionAssistantTest.cs" />
     <Compile Include="Assistant\IniSettingsAssistantTest.cs" />
     <Compile Include="Assistant\RepairPrinterAssistantTest.cs" />
     <Compile Include="Assistant\RepairSpoolFolderAssistantTest.cs" />
     <Compile Include="Assistant\PrinterActionAssitantTest.cs" />
     <Compile Include="Assistant\SmtpTestEmailAssistantTest.cs" />
+    <Compile Include="Banner\FrequentTipsControlViewModelTest.cs" />
     <Compile Include="Commands\AccountsCommands\TimeServerAccountEditCommandTest.cs" />
     <Compile Include="Commands\AccountsCommands\TimeServerAccountRemoveCommandTest.cs" />
     <Compile Include="Commands\AccountsCommands\TimeServerAccountAddCommandTest.cs" />
@@ -69,23 +73,27 @@
     <Compile Include="Commands\AccountsCommands\SmtpAccountRemoveCommandTest.cs" />
     <Compile Include="Commands\AccountsCommands\SmtpAccountEditCommandTest.cs" />
     <Compile Include="Commands\AccountsCommands\SmtpAccountAddCommandTest.cs" />
-    <Compile Include="Commands\EvaluateSettingsAndNotifyUserCommandTest.cs" />
+    <Compile Include="Commands\EvaluateSettingsCommands\EvaluateSavingRelevantSettingsAndNotifyUserCommandTest.cs" />
     <Compile Include="Commands\CopyToClipboardCommandTest.cs" />
     <Compile Include="Commands\DeleteHistoricFilesCommandTest.cs" />
+    <Compile Include="Commands\EvaluateSettingsCommands\EvaluateTabSwitchRelevantSettingsAndNotifyUserCommandTest.cs" />
     <Compile Include="Commands\Macros\MacroCommandTest.cs" />
     <Compile Include="Commands\PrioritySupportUrlOpenCommandTest.cs" />
     <Compile Include="Commands\QuickAction\QuickActionOpenEmailClientCommandTest.cs" />
     <Compile Include="Commands\QuickAction\QuickActionOpenWithDefaultCommandTest.cs" />
     <Compile Include="Converter\AreEqualConverterTest.cs" />
+    <Compile Include="Converter\SigningPositionToUnitConverterFactoryTest.cs" />
     <Compile Include="Helper\ClientTestEmailTest.cs" />
-    <Compile Include="Helper\LastSaveDirectoryHelperTest.cs" />
     <Compile Include="Helper\ParameterPreviewTokenTest.cs" />
     <Compile Include="Helper\PlusHintHelperTest.cs" />
+    <Compile Include="Helper\ServiceControllerWrapperUnitTest.cs" />
+    <Compile Include="Helper\SharedSettingsLoaderTest.cs" />
     <Compile Include="Helper\SynchronizedCollectionTest.cs" />
     <Compile Include="Helper\Tokens\SelectedProfileTokenViewModelBuilderTest.cs" />
     <Compile Include="Helper\Tokens\TokenViewModelBuilderTest.cs" />
     <Compile Include="Helper\Tokens\TokenViewModelTest.cs" />
     <Compile Include="Helper\UserGuideHelperTest.cs" />
+    <Compile Include="Navigation\RelevantRegionCheckTest.cs" />
     <Compile Include="Overlay\Encryption\EncryptionPasswordOverlayViewModelTest.cs" />
     <Compile Include="Overlay\Password\PasswordOverlayViewModelTest.cs" />
     <Compile Include="UnitTestTranslationUpdater.cs" />
@@ -97,14 +105,15 @@
     <Compile Include="UserControls\AccountViewModels\FtpAccountViewModelTest.cs" />
     <Compile Include="UserControls\Dialogs\InputBoxWindowViewModelTest.cs" />
     <Compile Include="UserControls\Dialogs\MessageViewModelTest.cs" />
-    <Compile Include="UserControls\Misc\PlusHintLinkViewModelTest.cs" />
+    <Compile Include="UserControls\Misc\BusinessHintLinkViewModelTest.cs" />
     <Compile Include="Commands\SkipPrintDialogCommandTest.cs" />
+    <Compile Include="UserControls\Misc\TokenHintPanelViewModelTest.cs" />
     <Compile Include="UserControls\Profile\CurrentSettingsProviderTest.cs" />
     <Compile Include="UserControls\DropboxShareLinkViewModelTest.cs" />
     <Compile Include="UserControls\Profile\EditEmailTextViewModelTest.cs" />
     <Compile Include="UserControls\Profile\HttpControlViewModelTest.cs" />
     <Compile Include="UserControls\Profile\MailClientControlViewModelTest.cs" />
-    <Compile Include="UserControls\Profile\SignUserControlViewModelTest.cs" />
+    <Compile Include="UserControls\Profile\SignatureUserControlViewModelTest.cs" />
     <Compile Include="UserControls\QuickActionViewModelTest.cs" />
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowViewModelTest.cs" />
     <Compile Include="UserControls\Welcome\WelcomeWindowViewModelTest.cs" />
@@ -169,6 +178,7 @@
     <Compile Include="Workflow\Steps\PdfPasswordStepTest.cs" />
     <Compile Include="Workflow\Steps\PlusHintStepTest.cs" />
     <Compile Include="Workflow\Steps\WorkflowStepTest.cs" />
+    <Compile Include="Workflow\ComposeTargetFilePath\TargetFilePathComposerTest.cs" />
     <Compile Include="Wrapper\PrinterMappingWrapperTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +213,10 @@
       <Project>{FD68EB7E-2AE8-4C8E-BA9C-71F9AD98E33E}</Project>
       <Name>Printing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Application\Core\ServiceLocator\ServiceLocator.csproj">
+      <Project>{4b9272be-2f52-48cd-93d9-8880f509b304}</Project>
+      <Name>ServiceLocator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Application\Core\Services\Services.csproj">
       <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
       <Name>Services</Name>
@@ -227,6 +241,10 @@
       <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\UI\Server.Presentation\Server.Presentation.csproj">
+      <Project>{D461CC28-E819-408B-B6F5-1F2FF0A4B0E1}</Project>
+      <Name>Server.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\UnitTestHelper\UnitTestHelper.csproj">
       <Project>{913290B0-952B-4EF5-8839-1CC84CAF0048}</Project>
       <Name>UnitTestHelper</Name>
@@ -238,8 +256,8 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
-        <Reference Include="Microsoft.Practices.ServiceLocation">
-          <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+        <Reference Include="CommonServiceLocator">
+          <HintPath>..\..\..\..\lib\CommonServiceLocator.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -250,7 +268,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -261,7 +279,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="HtmlAgilityPack">
-          <HintPath>..\..\..\..\packages\HtmlAgilityPack\lib\Net45\HtmlAgilityPack.dll</HintPath>
+          <HintPath>..\..\..\..\lib\HtmlAgilityPack.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -272,7 +290,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="LicenseValidator">
-          <HintPath>..\..\..\..\packages\LicenseValidator\lib\LicenseValidator.dll</HintPath>
+          <HintPath>..\..\..\..\lib\LicenseValidator.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -283,7 +301,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="LicenseValidator.Interface">
-          <HintPath>..\..\..\..\packages\LicenseValidator.Interface\lib\LicenseValidator.Interface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\LicenseValidator.Interface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -294,12 +312,12 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="MahApps.Metro">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\MahApps.Metro.dll</HintPath>
+          <HintPath>..\..\..\..\lib\MahApps.Metro.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Windows.Interactivity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -310,7 +328,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="MahApps.Metro.SimpleChildWindow">
-          <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
+          <HintPath>..\..\..\..\lib\MahApps.Metro.SimpleChildWindow.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -321,7 +339,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -332,7 +350,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Obsidian">
-          <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Obsidian.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -343,7 +361,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Optional">
-          <HintPath>..\..\..\..\packages\Optional.StrongNamed\lib\net451\Optional.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Optional.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -354,7 +372,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="pdfforge.Mail">
-          <HintPath>..\..\..\..\packages\pdfforge.Mail\lib\pdfforge.Mail.dll</HintPath>
+          <HintPath>..\..\..\..\lib\pdfforge.Mail.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -365,7 +383,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Prism">
-          <HintPath>..\..\..\..\packages\Prism.Core\lib\net45\Prism.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Prism.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -376,12 +394,12 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Prism.Wpf">
-          <HintPath>..\..\..\..\packages\Prism.Wpf\lib\net45\Prism.Wpf.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Prism.Wpf.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\Prism.Wpf\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Windows.Interactivity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -392,7 +410,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -403,7 +421,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -414,7 +432,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Ploeh.AutoFixture">
-          <HintPath>..\..\..\..\packages\test\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Ploeh.AutoFixture.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -425,7 +443,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NSubstitute">
-          <HintPath>..\..\..\..\packages\test\NSubstitute\lib\net45\NSubstitute.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NSubstitute.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -436,7 +454,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="nunit.framework">
-          <HintPath>..\..\..\..\packages\test\NUnit\lib\net45\nunit.framework.dll</HintPath>
+          <HintPath>..\..\..\..\lib\nunit.framework.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

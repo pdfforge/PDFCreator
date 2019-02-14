@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
 using pdfforge.PDFCreator.Conversion.Jobs;
@@ -38,7 +37,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
         {
             _profile = new ConversionProfile();
 
-            _job = new Job(null, null, null, null)
+            _job = new Job(null, null, null)
             {
                 Profile = _profile,
                 OutputFiles = new List<string> { "FirstFile.pdf" }
@@ -52,13 +51,14 @@ namespace Presentation.UnitTest.Commands.QuickAction
             _defaultViewerAction = Substitute.For<IDefaultViewerAction>();
             _commandLocator = Substitute.For<ICommandLocator>();
             _settingsProvider = Substitute.For<ISettingsProvider>();
-            var pdfCreatorSettings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var pdfCreatorSettings = new PdfCreatorSettings();
             pdfCreatorSettings.ApplicationSettings = new ApplicationSettings();
+            pdfCreatorSettings.DefaultViewers.Add(new DefaultViewer { IsActive = true, OutputFormat = OutputFormat.Pdf });
             _settingsProvider.Settings.Returns(pdfCreatorSettings);
             _interactionInvoker = Substitute.For<IInteractionInvoker>();
         }
 
-        private QuickActionOpenWithDefaultCommand build()
+        private QuickActionOpenWithDefaultCommand BuildCommand()
         {
             return new QuickActionOpenWithDefaultCommand(
                 new UnitTestTranslationUpdater(),
@@ -72,15 +72,15 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void CreateCommand_CallCanExecute_ReturnsTrue()
         {
-            var command = build();
+            var command = BuildCommand();
             Assert.IsTrue(command.CanExecute(new Object()));
         }
 
         [Test]
         public void SendValidPDFJob_CallExecute_CallOpenOutputFile()
         {
-            var command = build();
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var command = BuildCommand();
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = true;
             _job.OutputFiles.Add(_fileList.First());
             _fileAssoc.HasOpen(Arg.Any<string>()).Returns(false);
@@ -93,8 +93,8 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SendValidPDFPath_CallExecute_CallOpenOutputFile()
         {
-            var command = build();
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var command = BuildCommand();
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = true;
 
             _fileAssoc.HasOpen(Arg.Any<string>()).Returns(false);
@@ -110,8 +110,8 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SendValidPDFButNoViewerFound_CallExecute_TryCallQuickActionOpenWithPdfArchitectCommand()
         {
-            var command = build();
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var command = BuildCommand();
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = false;
 
             _fileAssoc.HasOpen(Arg.Any<string>()).Returns(false);
@@ -129,8 +129,8 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SendValidPDFPathNonPDF_CallExecute_CallOpenOutputFile()
         {
-            var command = build();
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var command = BuildCommand();
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = true;
 
             _fileAssoc.HasOpen(Arg.Any<string>()).Returns(false);
@@ -144,7 +144,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SendValidPDFJobHistory_CallExecute_CallOpenOutputFile()
         {
-            var command = build();
+            var command = BuildCommand();
             var historicFiles = new List<HistoricFile>
             {
                 new HistoricFile("C:\\kartoffel.pdf", "kartoffel.pdf", "C:\\", "wtf1"),
@@ -154,7 +154,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
 
             var historicJob = new HistoricJob(historicFiles, OutputFormat.Pdf, DateTime.Now, new Metadata(), 3, false);
 
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = true;
 
             _fileAssoc.HasOpen(Arg.Any<string>()).Returns(false);
@@ -168,7 +168,7 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SendInvalidObject_CallExecute_ThrowsNotSupportedException()
         {
-            var command = build();
+            var command = BuildCommand();
 
             Assert.Throws<NotSupportedException>(() => command.Execute(new Object()));
         }
@@ -176,9 +176,9 @@ namespace Presentation.UnitTest.Commands.QuickAction
         [Test]
         public void SetupDefaultViewerNotFoundError_RunExecute_TryToShowMessage()
         {
-            var command = build();
+            var command = BuildCommand();
 
-            var defaultViewerByOutputFormat = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
+            var defaultViewerByOutputFormat = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf);
             defaultViewerByOutputFormat.IsActive = true;
 
             var actionResult = new ActionResult();

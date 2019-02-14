@@ -1,4 +1,6 @@
-﻿using pdfforge.PDFCreator.Utilities.Tokens;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Utilities.Tokens;
+using pdfforge.PsParser;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
 {
@@ -11,9 +13,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
             _psParserFactory = psParserFactory;
         }
 
-        public UserToken ExtractUserTokenFromPsFile(string psFile)
+        public UserToken ExtractUserTokenFromPsFile(string psFile, UserTokenSeperator seperator)
         {
-            var psParser = _psParserFactory.BuildPsParser(psFile);
+            var psParser = BuildPsParser(psFile, seperator);
             psParser.Analyse();
             psParser.RemoveParameterLinesFromPSFile();
             psParser.CloseStream();
@@ -26,6 +28,38 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
                 userToken.AddKeyValuePair(ut.Key, ut.Value);
 
             return userToken;
+        }
+
+        private IPsParser BuildPsParser(string psfile, UserTokenSeperator seperator)
+        {
+            string parameterOpenSequence;
+            string parameterCloseSequence;
+
+            switch (seperator)
+            {
+                case UserTokenSeperator.AngleBrackets:
+                    parameterOpenSequence = "<<<";
+                    parameterCloseSequence = ">>>";
+                    break;
+
+                case UserTokenSeperator.CurlyBrackets:
+                    parameterOpenSequence = "{{{";
+                    parameterCloseSequence = "}}}";
+                    break;
+
+                case UserTokenSeperator.RoundBrackets:
+                    parameterOpenSequence = "(((";
+                    parameterCloseSequence = ")))";
+                    break;
+
+                case UserTokenSeperator.SquareBrackets:
+                default:
+                    parameterOpenSequence = "[[[";
+                    parameterCloseSequence = "]]]";
+                    break;
+            }
+
+            return _psParserFactory.BuildPsParser(psfile, parameterOpenSequence, parameterCloseSequence);
         }
     }
 }

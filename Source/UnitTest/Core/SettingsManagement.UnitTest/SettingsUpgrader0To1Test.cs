@@ -11,12 +11,12 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion0_UpgradeToVersion1_SetsVersionTo1()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "0");
-            var upgrader = new SettingsUpgrader(data);
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "0");
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(1);
 
-            Assert.AreEqual("1", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("1", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\PdfSettings\Security\EncryptionLevel", "Low40Bit");
             data.SetValue(@"ConversionProfiles\1\PdfSettings\Security\EncryptionLevel", "Medium128Bit");
             data.SetValue(@"ConversionProfiles\2\PdfSettings\Security\EncryptionLevel", "High128BitAes");
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(1);
 
@@ -41,7 +41,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         {
             var data = Data.CreateDataStorage();
             data.SetValue(@"ConversionProfiles\numClasses", "2");
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(1);
 
@@ -56,7 +56,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\numClasses", "2");
             data.SetValue(@"ConversionProfiles\0\DefaultFormat", "Pdf");
             data.SetValue(@"ConversionProfiles\1\DefaultFormat", "Png");
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(1);
 
@@ -71,7 +71,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\numClasses", "2");
             data.SetValue(@"ConversionProfiles\0\DefaultFormat", "Pdf");
             data.SetValue(@"ConversionProfiles\1\DefaultFormat", "Png");
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(1);
 

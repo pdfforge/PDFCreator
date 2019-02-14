@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
         public PlusFeatureControl()
         {
             if (RestrictedServiceLocator.IsLocationProviderSet)
-                DataContext = RestrictedServiceLocator.Current.GetInstance<PlusFeatureControlViewModel>();
+                DataContext = RestrictedServiceLocator.Current.GetInstance<BusinessFeatureControlViewModel>();
 
             InitializeComponent();
         }

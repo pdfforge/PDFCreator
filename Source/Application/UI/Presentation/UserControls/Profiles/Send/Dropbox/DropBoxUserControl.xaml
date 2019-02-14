@@ -22,9 +22,12 @@
         <Label Content="{Binding Translation.DropboxAccountSelectContent}" Grid.Row="0" Grid.Column="0"></Label>
 
         <DockPanel>
-            <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddDropboxAccountCommand}" Height="25" Width="25"  Style="{DynamicResource SmallLightGreyButton}">
-                <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
-            </Button>
+            <StackPanel Style="{DynamicResource GpoStyle}"
+                        IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddDropboxAccountCommand}" Height="25" Width="25"  Style="{DynamicResource SmallLightGreyButton}">
+                    <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
+                </Button>
+            </StackPanel>
             <Grid>
                 <ComboBox Name="DropboxAccountsComboBox"
                           DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"

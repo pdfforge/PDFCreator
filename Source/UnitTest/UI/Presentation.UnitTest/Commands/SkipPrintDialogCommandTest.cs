@@ -8,7 +8,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
-using SystemWrapper.IO;
+using SystemInterface.IO;
 
 namespace Presentation.UnitTest.UserControls
 {
@@ -46,44 +46,42 @@ namespace Presentation.UnitTest.UserControls
 
         private Job BuildJob(ConversionProfile profile)
         {
-            var job = new Job(new JobInfo(), profile, new JobTranslations(), new Accounts());
-            job.OutputFilenameTemplate = profile.FileNameTemplate;
+            var job = new Job(new JobInfo(), profile, new Accounts());
+            job.OutputFileTemplate = profile.FileNameTemplate;
             return job;
         }
 
         [Test]
         public void ShowSaveFileDialog_SetValuesFromUserInput_SetFilepathAndOutputFormatInJob()
         {
-            var pathSafe = new PathWrapSafe();
             var skipPrintDialogCommand = BuildCommand();
             var job = BuildJob(_pdfProfile);
             skipPrintDialogCommand.Execute(job);
 
             var result = _saveFileQuery
-                .GetFileName(pathSafe.GetDirectoryName(job.OutputFilenameTemplate),
-                    pathSafe.GetFileName(job.OutputFilenameTemplate), job.Profile.OutputFormat);
+                .GetFileName(PathSafe.GetDirectoryName(job.OutputFileTemplate),
+                    PathSafe.GetFileName(job.OutputFileTemplate), job.Profile.OutputFormat);
 
-            Assert.AreEqual(result.Data.Filepath, job.OutputFilenameTemplate);
+            Assert.AreEqual(result.Data.Filepath, job.OutputFileTemplate);
             Assert.AreEqual(result.Data.OutputFormat, job.Profile.OutputFormat);
         }
 
         [Test]
         public void ShowSaveFileDialog_SetValuesFromUserInput_FilepathAndOutputFormatHasChanged()
         {
-            var pathSafe = new PathWrapSafe();
             var skipPrintDialogCommand = BuildCommand();
             var job = BuildJob(_pdfProfile);
 
-            var diffFilenameTemplate = job.OutputFilenameTemplate;
+            var diffFilenameTemplate = job.OutputFileTemplate;
             var diffOutputFormat = job.Profile.OutputFormat;
 
             skipPrintDialogCommand.Execute(job);
 
             _saveFileQuery
-                .GetFileName(pathSafe.GetDirectoryName(job.OutputFilenameTemplate),
-                    pathSafe.GetFileName(job.OutputFilenameTemplate), job.Profile.OutputFormat);
+                .GetFileName(PathSafe.GetDirectoryName(job.OutputFileTemplate),
+                    PathSafe.GetFileName(job.OutputFileTemplate), job.Profile.OutputFormat);
 
-            Assert.AreNotEqual(job.OutputFilenameTemplate, diffFilenameTemplate);
+            Assert.AreNotEqual(job.OutputFileTemplate, diffFilenameTemplate);
             Assert.AreNotEqual(job.Profile.OutputFormat, diffOutputFormat);
         }
 

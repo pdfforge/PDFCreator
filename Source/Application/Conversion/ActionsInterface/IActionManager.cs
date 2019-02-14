@@ -5,6 +5,8 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 {
     public interface IActionManager
     {
-        IEnumerable<IAction> GetAllApplicableActions(Job job);
+        IEnumerable<IPreConversionAction> GetApplicablePreConversionActions(Job job);
+
+        IEnumerable<IPostConversionAction> GetApplicablePostConversionActions(Job job);
     }
 }

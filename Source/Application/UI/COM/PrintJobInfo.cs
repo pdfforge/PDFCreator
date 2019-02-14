@@ -12,7 +12,6 @@ namespace pdfforge.PDFCreator.UI.COM
         string PrintJobAuthor { get; set; }
         string Subject { get; set; }
         string Keywords { get; set; }
-        string Producer { get; }
     }
 
     [ComVisible(true)]
@@ -60,14 +59,6 @@ namespace pdfforge.PDFCreator.UI.COM
         {
             get { return _metadata.Keywords; }
             set { _metadata.Keywords = value; }
-        }
-
-        /// <summary>
-        ///     Name of the application that produced the document
-        /// </summary>
-        public string Producer
-        {
-            get { return _metadata.Producer; }
         }
     }
 }

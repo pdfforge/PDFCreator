@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Translatable;
@@ -18,7 +19,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         bool RemoveExplorerIntegration();
 
-        bool AddPrinter(string printerName);
+        bool AddPrinter(string printerName, bool singlePort = true);
+
+        bool AddPrinters(string[] printerNames, bool singlePort = true);
 
         bool RenamePrinter(string oldPrinterName, string newPrinterName);
 
@@ -53,9 +56,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return CallSetupHelper("/FileExtensions=Remove");
         }
 
-        public bool AddPrinter(string printerName)
+        public bool AddPrinter(string printerName, bool singlePort = true)
         {
-            return CallPrinterHelper("/AddPrinter \"" + printerName + "\"");
+            return AddPrinters(new[] { printerName }, singlePort);
+        }
+
+        public bool AddPrinters(string[] printerNames, bool singlePort = true)
+        {
+            var escapedPrinterList = printerNames
+                .Select(p => $"\"{p}\"");
+
+            var args = "/AddPrinter " + string.Join(" ", escapedPrinterList);
+
+            if (singlePort)
+                args += " /SinglePort";
+
+            return CallPrinterHelper(args);
         }
 
         public bool RenamePrinter(string oldPrinterName, string newPrinterName)

@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Architect;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using pdfforge.PDFCreator.Utilities.Threading;
+using SystemInterface.IO;
 using Translatable;
 
 namespace Presentation.UnitTest
@@ -15,17 +16,21 @@ namespace Presentation.UnitTest
     {
         private IProcessStarter _processStarter;
         private IPdfArchitectCheck _pdfArchitectCheck;
+        private IFile _file;
+        private TranslationUpdater _translationUpdater;
 
         [SetUp]
         public void Setup()
         {
             _processStarter = Substitute.For<IProcessStarter>();
             _pdfArchitectCheck = Substitute.For<IPdfArchitectCheck>();
+            _file = Substitute.For<IFile>();
+            _translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
         }
 
         private ArchitectViewModel BuildArchitectViewModel()
         {
-            return new ArchitectViewModel(_pdfArchitectCheck, _processStarter, new TranslationUpdater(new TranslationFactory(), new ThreadManager()));
+            return new ArchitectViewModel(_pdfArchitectCheck, _processStarter, _translationUpdater, _file);
         }
 
         [Test]

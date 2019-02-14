@@ -43,6 +43,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             {
                 case OutputFormat.PdfA1B: return Tuple.Create(1, "B");
                 case OutputFormat.PdfA2B: return Tuple.Create(2, "B");
+                case OutputFormat.PdfA3B: return Tuple.Create(3, "B");
                 default: throw new NotImplementedException($"Determining conformance for {outputFormat} was not implemented");
             }
         }

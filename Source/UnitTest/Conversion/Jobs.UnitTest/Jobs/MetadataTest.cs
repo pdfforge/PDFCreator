@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Utilities;
-using Rhino.Mocks;
-using System;
 
 namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
 {
@@ -133,17 +130,6 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
             clone.Title = "Title2";
 
             Assert.AreNotEqual(metadata.Title, clone.Title);
-        }
-
-        [Test]
-        public void ProducerProperty_ReturnsCorrectProducerString()
-        {
-            var versionHelper = MockRepository.GenerateStub<IVersionHelper>();
-            versionHelper.Stub(v => v.ApplicationVersion).Return(new Version("1.1.0"));
-
-            var metadata = new Metadata(versionHelper);
-
-            Assert.AreEqual("PDFCreator 1.1.0", metadata.Producer);
         }
     }
 }

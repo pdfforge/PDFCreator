@@ -11,10 +11,14 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
     [TestFixture]
     internal class FolderCleanerTest
     {
+        private FolderCleaner _folderCleaner;
+        private string _tempFolder;
+
         [SetUp]
         public void SetUp()
         {
             _tempFolder = TempFileHelper.CreateTempFolder("FolderCleanerTest");
+            _folderCleaner = new FolderCleaner();
         }
 
         [TearDown]
@@ -22,8 +26,6 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
         {
             TempFileHelper.CleanUp();
         }
-
-        private string _tempFolder;
 
         private IList<string> CreateSubFolderWithSomeFiles(int numberOfFiles, TimeSpan age)
         {
@@ -58,8 +60,7 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
         {
             CreateTempFiles(_tempFolder, 6, TimeSpan.Zero);
 
-            var cleaner = new FolderCleaner(_tempFolder);
-            cleaner.Clean();
+            _folderCleaner.Clean(_tempFolder);
 
             Assert.IsTrue(Directory.Exists(_tempFolder), "The directory did not exist after cleaning up: " + _tempFolder);
         }
@@ -69,8 +70,7 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
         {
             Directory.Delete(_tempFolder);
 
-            var cleaner = new FolderCleaner(@"C:\SomeFolderThatDoesnotExist\With\Some\Sub\Folder");
-            cleaner.Clean();
+            _folderCleaner.Clean(@"C:\SomeFolderThatDoesnotExist\With\Some\Sub\Folder");
         }
 
         [Test]
@@ -78,8 +78,7 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
         {
             CreateTempFiles(_tempFolder, 4, TimeSpan.Zero);
 
-            var cleaner = new FolderCleaner(_tempFolder);
-            cleaner.Clean();
+            _folderCleaner.Clean(_tempFolder);
 
             Assert.IsTrue(Directory.Exists(_tempFolder), "The directory did not exist after cleaning up: " + _tempFolder);
             Assert.IsFalse(Directory.EnumerateFileSystemEntries(_tempFolder).Any(), "The directory is not empty after cleaning up: " + _tempFolder);
@@ -93,8 +92,7 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
             Directory.CreateDirectory(subFolder);
             CreateTempFiles(subFolder, 6, TimeSpan.Zero);
 
-            var cleaner = new FolderCleaner(_tempFolder);
-            cleaner.Clean();
+            _folderCleaner.Clean(_tempFolder);
 
             Assert.IsTrue(Directory.Exists(_tempFolder), "The directory did not exist after cleaning up: " + _tempFolder);
             Assert.IsFalse(Directory.EnumerateFileSystemEntries(_tempFolder).Any(), "The directory is not empty after cleaning up: " + _tempFolder);
@@ -107,8 +105,7 @@ namespace PDFCreator.Utilities.IntegrationTest.IO
             CreateSubFolderWithSomeFiles(6, TimeSpan.FromDays(2));
             var files = CreateSubFolderWithSomeFiles(1, TimeSpan.Zero);
 
-            var cleaner = new FolderCleaner(_tempFolder);
-            cleaner.Clean(TimeSpan.FromDays(1));
+            _folderCleaner.Clean(_tempFolder, TimeSpan.FromDays(1));
 
             Assert.IsTrue(Directory.Exists(_tempFolder), "The directory did not exist after cleaning up: " + _tempFolder);
             Assert.AreEqual(1, Directory.GetDirectories(_tempFolder).Count(), "There was more than one folder left");

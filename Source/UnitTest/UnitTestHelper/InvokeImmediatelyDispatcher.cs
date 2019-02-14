@@ -12,6 +12,11 @@ namespace pdfforge.PDFCreator.UnitTest.UnitTestHelper
             action();
         }
 
+        public void BeginInvoke<T>(Action<T> action, T payload)
+        {
+            Task.Run(() => action.Invoke(payload));
+        }
+
         public void BeginInvoke(Action<JobInfo> addMethod, JobInfo jobInfo)
         {
             addMethod(jobInfo);
@@ -25,6 +30,14 @@ namespace pdfforge.PDFCreator.UnitTest.UnitTestHelper
         public Task InvokeAsync(Action action)
         {
             return Task.Run(action);
+        }
+    }
+
+    public class InvokeImmediatelyDispatcherFactory : IDispatcherFactory
+    {
+        public IDispatcher CreateDispatcher()
+        {
+            return new InvokeImmediatelyDispatcher();
         }
     }
 }

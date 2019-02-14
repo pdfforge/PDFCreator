@@ -1,7 +1,8 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Core.Services.JobEvents;
+using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Output;
-using pdfforge.PDFCreator.Core.Workflow.Queries;
 using System;
 using System.IO;
 using System.Linq;
@@ -12,21 +13,24 @@ namespace pdfforge.PDFCreator.Core.Workflow
     {
         private readonly IJobRunner _jobRunner;
         private readonly IProfileChecker _profileChecker;
-        private readonly ITargetFileNameComposer _targetFileNameComposer;
+        private readonly ITargetFilePathComposer _targetFilePathComposer;
         private readonly AutosaveOutputFileMover _outputFileMover;
         private readonly INotificationService _notificationService;
 
         public AutoSaveWorkflow(IJobDataUpdater jobDataUpdater, IJobRunner jobRunner, IProfileChecker profileChecker,
-            ITargetFileNameComposer targetFileNameComposer, AutosaveOutputFileMover outputFileMover, INotificationService notificationService)
+            ITargetFilePathComposer targetFilePathComposer, AutosaveOutputFileMover outputFileMover,
+            INotificationService notificationService, IJobEventsManager jobEventsManager)
         {
             JobDataUpdater = jobDataUpdater;
+            JobEventsManager = jobEventsManager;
             _jobRunner = jobRunner;
             _profileChecker = profileChecker;
-            _targetFileNameComposer = targetFileNameComposer;
+            _targetFilePathComposer = targetFilePathComposer;
             _outputFileMover = outputFileMover;
             _notificationService = notificationService;
         }
 
+        protected override IJobEventsManager JobEventsManager { get; }
         protected override IJobDataUpdater JobDataUpdater { get; }
 
         protected override void DoWorkflowWork(Job job)
@@ -36,7 +40,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             try
             {
-                job.OutputFilenameTemplate = _targetFileNameComposer.ComposeTargetFileName(job);
+                job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(job);
 
                 var result = _profileChecker.CheckJob(job);
                 if (!result)
@@ -45,7 +49,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 job.Passwords = JobPasswordHelper.GetJobPasswords(job.Profile, job.Accounts);
 
                 // Can throw ProcessingException
-                _jobRunner.RunJob(job, _outputFileMover);
+                _jobRunner.RunJob(job, _outputFileMover).Wait();
 
                 WorkflowResult = WorkflowResult.Finished;
                 OnJobFinished(EventArgs.Empty);

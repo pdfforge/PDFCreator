@@ -4,12 +4,13 @@ using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Presentation.UnitTest.UserControls
@@ -24,6 +25,9 @@ namespace Presentation.UnitTest.UserControls
         private ICurrentSettingsProvider _currentSettingsProvider;
         private ConversionProfile _profile;
 
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ICurrentSettings<Accounts> _accountsProvider;
+
         [SetUp]
         public void Setup()
         {
@@ -31,21 +35,23 @@ namespace Presentation.UnitTest.UserControls
             _testCommand = Substitute.For<ICommand>();
             _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>().Returns(_testCommand);
             _fileSizeFormater = Substitute.For<IReadableFileSizeFormatter>();
-            _job = new Job(null, null, null, null);
+            _job = new Job(null, null, null);
             _currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
             _profile = new ConversionProfile();
             _profile.Guid = "SomeGuid";
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ConversionProfiles.Add(_profile);
-            _currentSettingsProvider.Profiles.Returns(settings.ConversionProfiles);
-            _currentSettingsProvider.Settings.Returns(settings);
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
+            _profilesProvider.Settings.Returns(settings.ConversionProfiles);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
             _job.Profile = _profile;
             _job.OutputFiles = new List<string> { "FirstFile.pdf" };
         }
 
         public QuickActionViewModel build()
         {
-            var quickActionViewModel = new QuickActionViewModel(new DesignTimeTranslationUpdater(), _commandLocator, _fileSizeFormater, _currentSettingsProvider);
+            var quickActionViewModel = new QuickActionViewModel(new DesignTimeTranslationUpdater(), _commandLocator, _fileSizeFormater, _profilesProvider, _currentSettingsProvider);
 
             quickActionViewModel.ExecuteWorkflowStep(_job);
             return quickActionViewModel;
@@ -68,9 +74,9 @@ namespace Presentation.UnitTest.UserControls
         {
             var model = build();
             model.IsActive = true;
-            Assert.False(_job.Profile.ShowQuickActions);
+            Assert.IsFalse(_job.Profile.ShowQuickActions);
             model.IsActive = false;
-            Assert.True(_job.Profile.ShowQuickActions);
+            Assert.IsTrue(_job.Profile.ShowQuickActions);
             // _commandLocator.Received(2).GetCommand<SaveChangedSettingsCommand>();
         }
 

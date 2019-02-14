@@ -6,26 +6,29 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class DropboxAccountAddCommand : TranslatableCommandBase<DropboxTranslation>, IWaitableCommand
     {
-        private readonly ObservableCollection<DropboxAccount> _droboxAccounts;
         private readonly IInteractionInvoker _interactionInvoker;
         private readonly IInteractionRequest _interactionRequest;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
 
-        public DropboxAccountAddCommand(IInteractionInvoker interactionInvoker, IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public DropboxAccountAddCommand(
+            IInteractionInvoker interactionInvoker,
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater
+            )
             : base(translationUpdater)
         {
             _interactionInvoker = interactionInvoker;
             _interactionRequest = interactionRequest;
-            _droboxAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts.DropboxAccounts;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -62,11 +65,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
             var newAccount = interaction.DropboxAccount;
 
-            var accountWithSameID = _droboxAccounts.FirstOrDefault(a => a.AccountId == newAccount.AccountId);
+            var accountWithSameID = _accountsProvider.Settings.DropboxAccounts.FirstOrDefault(a => a.AccountId == newAccount.AccountId);
             if (accountWithSameID != null)
-                _droboxAccounts.Remove(accountWithSameID);
+                _accountsProvider.Settings.DropboxAccounts.Remove(accountWithSameID);
 
-            _droboxAccounts.Add(newAccount);
+            _accountsProvider.Settings.DropboxAccounts.Add(newAccount);
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }

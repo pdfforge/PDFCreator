@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class DesignTimeProfilesViewModel : ProfilesViewModel
     {
-        public DesignTimeProfilesViewModel() : base(new CurrentSettingsProvider(new DefaultSettingsProvider()), new TranslationUpdater(new TranslationFactory(), new ThreadManager()), new DesignTimeCommandLocator(), null, null)
+        public DesignTimeProfilesViewModel() : base(new CurrentSettingsProvider(new DefaultSettingsProvider()), new TranslationUpdater(new TranslationFactory(), new ThreadManager()), new DesignTimeCommandLocator(), null, null, null)
         {
         }
     }

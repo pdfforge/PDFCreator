@@ -26,46 +26,35 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public Accounts Accounts { get; set; } = new Accounts();
 		
-		public ObservableCollection<DefaultViewer> DefaultViewers { get; set; } = new ObservableCollection<DefaultViewer>();
 		public JobHistory JobHistory { get; set; } = new JobHistory();
 		
 		public ObservableCollection<PrinterMapping> PrinterMappings { get; set; } = new ObservableCollection<PrinterMapping>();
+		public RssFeed RssFeed { get; set; } = new RssFeed();
+		
 		public ObservableCollection<TitleReplacement> TitleReplacement { get; set; } = new ObservableCollection<TitleReplacement>();
-		public bool AskSwitchDefaultPrinter { get; set; } = true;
+		public UsageStatistics UsageStatistics { get; set; } = new UsageStatistics();
+		
+		public int ConversionTimeout { get; set; } = 60;
+		
+		public bool EnableTips { get; set; } = true;
 		
 		public string Language { get; set; } = "";
 		
-		public string LastLoginVersion { get; set; } = "";
-		
-		/// <summary>
-		/// The last directory the user during interactive job (if no target directory was set in profile)
-		/// </summary>
-		public string LastSaveDirectory { get; set; } = "";
-		
-		public string LastUsedProfileGuid { get; set; } = "DefaultGuid";
-		
 		public LoggingLevel LoggingLevel { get; set; } = LoggingLevel.Error;
 		
-		public string PrimaryPrinter { get; set; } = "PDFCreator";
+		public DateTime NextUpdate { get; set; } = DateTime.Now;
+		
+		/// <summary>
+		/// Defines the unit of measurement for the signature position.
+		/// </summary>
+		public UnitOfMeasurement UnitOfMeasurement { get; set; } = UnitOfMeasurement.Centimeter;
 		
 		public UpdateInterval UpdateInterval { get; set; } = UpdateInterval.Weekly;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			Accounts.ReadValues(data, path + @"Accounts\");
-			
-			try
-			{
-				int numClasses = int.Parse(data.GetValue(@"" + path + @"DefaultViewers\numClasses"));
-				for (int i = 0; i < numClasses; i++)
-				{
-					DefaultViewer tmp = new DefaultViewer();
-					tmp.ReadValues(data, @"" + path + @"DefaultViewers\" + i + @"\");
-					DefaultViewers.Add(tmp);
-				}
-			} catch {}
-			
 			JobHistory.ReadValues(data, path + @"JobHistory\");
 			
 			try
@@ -79,6 +68,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				}
 			} catch {}
 			
+			RssFeed.ReadValues(data, path + @"RssFeed\");
 			
 			try
 			{
@@ -91,27 +81,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				}
 			} catch {}
 			
-			try { AskSwitchDefaultPrinter = bool.Parse(data.GetValue(@"" + path + @"AskSwitchDefaultPrinter")); } catch { AskSwitchDefaultPrinter = true;}
+			UsageStatistics.ReadValues(data, path + @"UsageStatistics\");
+			ConversionTimeout = int.TryParse(data.GetValue(@"" + path + @"ConversionTimeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpConversionTimeout) ? tmpConversionTimeout : 60;
+			EnableTips = bool.TryParse(data.GetValue(@"" + path + @"EnableTips"), out var tmpEnableTips) ? tmpEnableTips : true;
 			try { Language = Data.UnescapeString(data.GetValue(@"" + path + @"Language")); } catch { Language = "";}
-			try { LastLoginVersion = Data.UnescapeString(data.GetValue(@"" + path + @"LastLoginVersion")); } catch { LastLoginVersion = "";}
-			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
-			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
-			try { LoggingLevel = (LoggingLevel) Enum.Parse(typeof(LoggingLevel), data.GetValue(@"" + path + @"LoggingLevel")); } catch { LoggingLevel = LoggingLevel.Error;}
-			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
-			try { UpdateInterval = (UpdateInterval) Enum.Parse(typeof(UpdateInterval), data.GetValue(@"" + path + @"UpdateInterval")); } catch { UpdateInterval = UpdateInterval.Weekly;}
+			LoggingLevel = Enum.TryParse<LoggingLevel>(data.GetValue(@"" + path + @"LoggingLevel"), out var tmpLoggingLevel) ? tmpLoggingLevel : LoggingLevel.Error;
+			NextUpdate = DateTime.TryParse(data.GetValue(@"" + path + @"NextUpdate"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpNextUpdate) ? tmpNextUpdate : DateTime.Now;
+			UnitOfMeasurement = Enum.TryParse<UnitOfMeasurement>(data.GetValue(@"" + path + @"UnitOfMeasurement"), out var tmpUnitOfMeasurement) ? tmpUnitOfMeasurement : UnitOfMeasurement.Centimeter;
+			UpdateInterval = Enum.TryParse<UpdateInterval>(data.GetValue(@"" + path + @"UpdateInterval"), out var tmpUpdateInterval) ? tmpUpdateInterval : UpdateInterval.Weekly;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			Accounts.StoreValues(data, path + @"Accounts\");
-			
-			for (int i = 0; i < DefaultViewers.Count; i++)
-			{
-				DefaultViewer tmp = DefaultViewers[i];
-				tmp.StoreValues(data, @"" + path + @"DefaultViewers\" + i + @"\");
-			}
-			data.SetValue(@"" + path + @"DefaultViewers\numClasses", DefaultViewers.Count.ToString());
-			
 			JobHistory.StoreValues(data, path + @"JobHistory\");
 			
 			for (int i = 0; i < PrinterMappings.Count; i++)
@@ -121,6 +103,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			data.SetValue(@"" + path + @"PrinterMappings\numClasses", PrinterMappings.Count.ToString());
 			
+			RssFeed.StoreValues(data, path + @"RssFeed\");
 			
 			for (int i = 0; i < TitleReplacement.Count; i++)
 			{
@@ -129,13 +112,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			data.SetValue(@"" + path + @"TitleReplacement\numClasses", TitleReplacement.Count.ToString());
 			
-			data.SetValue(@"" + path + @"AskSwitchDefaultPrinter", AskSwitchDefaultPrinter.ToString());
+			UsageStatistics.StoreValues(data, path + @"UsageStatistics\");
+			data.SetValue(@"" + path + @"ConversionTimeout", ConversionTimeout.ToString(System.Globalization.CultureInfo.InvariantCulture));
+			data.SetValue(@"" + path + @"EnableTips", EnableTips.ToString());
 			data.SetValue(@"" + path + @"Language", Data.EscapeString(Language));
-			data.SetValue(@"" + path + @"LastLoginVersion", Data.EscapeString(LastLoginVersion));
-			data.SetValue(@"" + path + @"LastSaveDirectory", Data.EscapeString(LastSaveDirectory));
-			data.SetValue(@"" + path + @"LastUsedProfileGuid", Data.EscapeString(LastUsedProfileGuid));
 			data.SetValue(@"" + path + @"LoggingLevel", LoggingLevel.ToString());
-			data.SetValue(@"" + path + @"PrimaryPrinter", Data.EscapeString(PrimaryPrinter));
+			data.SetValue(@"" + path + @"NextUpdate", NextUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
+			data.SetValue(@"" + path + @"UnitOfMeasurement", UnitOfMeasurement.ToString());
 			data.SetValue(@"" + path + @"UpdateInterval", UpdateInterval.ToString());
 		}
 		
@@ -144,13 +127,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			ApplicationSettings copy = new ApplicationSettings();
 			
 			copy.Accounts = Accounts.Copy();
-			
-			copy.DefaultViewers = new ObservableCollection<DefaultViewer>();
-			for (int i = 0; i < DefaultViewers.Count; i++)
-			{
-				copy.DefaultViewers.Add(DefaultViewers[i].Copy());
-			}
-			
 			copy.JobHistory = JobHistory.Copy();
 			
 			copy.PrinterMappings = new ObservableCollection<PrinterMapping>();
@@ -159,6 +135,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				copy.PrinterMappings.Add(PrinterMappings[i].Copy());
 			}
 			
+			copy.RssFeed = RssFeed.Copy();
 			
 			copy.TitleReplacement = new ObservableCollection<TitleReplacement>();
 			for (int i = 0; i < TitleReplacement.Count; i++)
@@ -166,15 +143,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				copy.TitleReplacement.Add(TitleReplacement[i].Copy());
 			}
 			
-			copy.AskSwitchDefaultPrinter = AskSwitchDefaultPrinter;
+			copy.UsageStatistics = UsageStatistics.Copy();
+			copy.ConversionTimeout = ConversionTimeout;
+			copy.EnableTips = EnableTips;
 			copy.Language = Language;
-			copy.LastLoginVersion = LastLoginVersion;
-			copy.LastSaveDirectory = LastSaveDirectory;
-			copy.LastUsedProfileGuid = LastUsedProfileGuid;
 			copy.LoggingLevel = LoggingLevel;
-			copy.PrimaryPrinter = PrimaryPrinter;
+			copy.NextUpdate = NextUpdate;
+			copy.UnitOfMeasurement = UnitOfMeasurement;
 			copy.UpdateInterval = UpdateInterval;
-			
 			return copy;
 		}
 		
@@ -184,13 +160,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			ApplicationSettings v = o as ApplicationSettings;
 			
 			if (!Accounts.Equals(v.Accounts)) return false;
-			
-			if (DefaultViewers.Count != v.DefaultViewers.Count) return false;
-			for (int i = 0; i < DefaultViewers.Count; i++)
-			{
-				if (!DefaultViewers[i].Equals(v.DefaultViewers[i])) return false;
-			}
-			
 			if (!JobHistory.Equals(v.JobHistory)) return false;
 			
 			if (PrinterMappings.Count != v.PrinterMappings.Count) return false;
@@ -199,6 +168,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				if (!PrinterMappings[i].Equals(v.PrinterMappings[i])) return false;
 			}
 			
+			if (!RssFeed.Equals(v.RssFeed)) return false;
 			
 			if (TitleReplacement.Count != v.TitleReplacement.Count) return false;
 			for (int i = 0; i < TitleReplacement.Count; i++)
@@ -206,54 +176,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				if (!TitleReplacement[i].Equals(v.TitleReplacement[i])) return false;
 			}
 			
-			if (!AskSwitchDefaultPrinter.Equals(v.AskSwitchDefaultPrinter)) return false;
+			if (!UsageStatistics.Equals(v.UsageStatistics)) return false;
+			if (!ConversionTimeout.Equals(v.ConversionTimeout)) return false;
+			if (!EnableTips.Equals(v.EnableTips)) return false;
 			if (!Language.Equals(v.Language)) return false;
-			if (!LastLoginVersion.Equals(v.LastLoginVersion)) return false;
-			if (!LastSaveDirectory.Equals(v.LastSaveDirectory)) return false;
-			if (!LastUsedProfileGuid.Equals(v.LastUsedProfileGuid)) return false;
 			if (!LoggingLevel.Equals(v.LoggingLevel)) return false;
-			if (!PrimaryPrinter.Equals(v.PrimaryPrinter)) return false;
+			if (!NextUpdate.Equals(v.NextUpdate)) return false;
+			if (!UnitOfMeasurement.Equals(v.UnitOfMeasurement)) return false;
 			if (!UpdateInterval.Equals(v.UpdateInterval)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("[Accounts]");
-			sb.AppendLine(Accounts.ToString());
-			
-			for (int i = 0; i < DefaultViewers.Count; i++)
-			{
-				sb.AppendLine(DefaultViewers.ToString());
-			}
-			
-			sb.AppendLine("[JobHistory]");
-			sb.AppendLine(JobHistory.ToString());
-			
-			for (int i = 0; i < PrinterMappings.Count; i++)
-			{
-				sb.AppendLine(PrinterMappings.ToString());
-			}
-			
-			
-			for (int i = 0; i < TitleReplacement.Count; i++)
-			{
-				sb.AppendLine(TitleReplacement.ToString());
-			}
-			
-			sb.AppendLine("AskSwitchDefaultPrinter=" + AskSwitchDefaultPrinter.ToString());
-			sb.AppendLine("Language=" + Language.ToString());
-			sb.AppendLine("LastLoginVersion=" + LastLoginVersion.ToString());
-			sb.AppendLine("LastSaveDirectory=" + LastSaveDirectory.ToString());
-			sb.AppendLine("LastUsedProfileGuid=" + LastUsedProfileGuid.ToString());
-			sb.AppendLine("LoggingLevel=" + LoggingLevel.ToString());
-			sb.AppendLine("PrimaryPrinter=" + PrimaryPrinter.ToString());
-			sb.AppendLine("UpdateInterval=" + UpdateInterval.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

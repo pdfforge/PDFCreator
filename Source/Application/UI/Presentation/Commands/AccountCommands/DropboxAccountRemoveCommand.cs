@@ -6,7 +6,6 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -19,26 +18,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class DropboxAccountRemoveCommand : TranslatableCommandBase<DropboxTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private readonly IDropboxService _dropboxService;
-        private readonly ObservableCollection<DropboxAccount> _dropboxAccounts;
-        private readonly ObservableCollection<ConversionProfile> _profiles;
+        private ObservableCollection<ConversionProfile> _profiles => _profilesProvider.Settings;
         private DropboxAccount _currentAccount;
         private List<ConversionProfile> _usedInProfilesList;
 
-        public DropboxAccountRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, IDropboxService dropboxService, ITranslationUpdater translationUpdater)
+        public DropboxAccountRemoveCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            IDropboxService dropboxService,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
+            _accountsProvider = accountsProvider;
+            _profilesProvider = profilesProvider;
             _dropboxService = dropboxService;
-            _profiles = currentSettingsProvider?.Profiles;
-
-            _dropboxAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.DropboxAccounts ?? new ObservableCollection<DropboxAccount>();
-            _dropboxAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _dropboxAccounts?.Count > 0;
+            return _accountsProvider.Settings.DropboxAccounts?.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -81,8 +83,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
-            if (_dropboxAccounts.Contains(_currentAccount))
-                _dropboxAccounts.Remove(_currentAccount);
+            if (_accountsProvider.Settings.DropboxAccounts.Contains(_currentAccount))
+                _accountsProvider.Settings.DropboxAccounts.Remove(_currentAccount);
 
             foreach (var profile in _usedInProfilesList)
             {

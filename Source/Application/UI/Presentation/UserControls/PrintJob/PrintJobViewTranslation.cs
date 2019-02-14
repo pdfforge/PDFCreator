@@ -38,5 +38,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string TitleLabel { get; private set; } = "_Title:";
         public string FilenameText { get; private set; } = "File_name:";
         public string FoldernameText { get; private set; } = "_Folder:";
+        public string PathTooLongTitle { get; private set; } = "The selected path is too long";
+        public string PathTooLongText { get; private set; } = "The selected path is too long. Please select a valid path.";
     }
 }

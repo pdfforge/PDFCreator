@@ -1,17 +1,27 @@
 ﻿using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
 {
     public class ProfileAddCommand : ProfileCommandBase, ICommand
     {
-        public ProfileAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
-            : base(interactionRequest, currentSettingsProvider, translationUpdater)
-        { }
+        public ProfileAddCommand(
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ITranslationUpdater translationUpdater)
+            : base(
+                  interactionRequest,
+                  currentSettingsProvider,
+                  profilesProvider,
+                  translationUpdater)
+        {
+        }
 
         public void Execute(Object obj)
         {
@@ -36,10 +46,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
             newProfile.Guid = Guid.NewGuid().ToString();
             newProfile.Name = name;
             newProfile.Properties.Deletable = true;
-            newProfile.Properties.Editable = true;
             newProfile.Properties.Renamable = true;
+            newProfile.Properties.IsShared = false;
 
-            CurrentSettingsProvider.Profiles.Add(newProfile);
+            _profilesProvider.Settings.Add(newProfile);
             CurrentSettingsProvider.SelectedProfile = newProfile;
         }
 

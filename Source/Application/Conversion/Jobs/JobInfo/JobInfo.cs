@@ -9,6 +9,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
     /// </summary>
     public class JobInfo
     {
+        public JobInfo()
+        {
+            Metadata = new Metadata();
+        }
+
         public string InfFile { get; set; }
 
         public bool ShowMergedFiles => SourceFiles.Count > 1;
@@ -23,8 +28,14 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         public Metadata Metadata { get; set; }
         public JobType JobType { get; set; }
         public DateTime PrintDateTime { get; set; }
-        public string OutputFileParameter { get; set; }
+
+        public string PrinterName { get; set; }
+
+        public string PrinterParameter { get; set; }
         public string ProfileParameter { get; set; }
+        public string OutputFileParameter { get; set; }
+
+        public string OriginalFilePath { get; set; }
 
         private int CalculateTotalPages()
         {

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
 {
-    public class DropboxAction : IAction, ICheckable
+    public class DropboxAction : IPostConversionAction, ICheckable
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IDropboxService _dropboxService;
@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
                     var shareLink = _dropboxService.UploadFileWithSharing(
                         currentDropBoxAccount.AccessToken,
                         shareFolder, job.OutputFiles,
-                        job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFilenameTemplate);
+                        job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFileTemplate);
                     if (shareLink == null)
                     {
                         return new ActionResult(ErrorCode.Dropbox_Upload_And_Share_Error);
@@ -58,7 +58,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
             }
             else
             {
-                var result = _dropboxService.UploadFiles(currentDropBoxAccount.AccessToken, shareFolder, job.OutputFiles, job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFilenameTemplate);
+                var result = _dropboxService.UploadFiles(currentDropBoxAccount.AccessToken, shareFolder, job.OutputFiles, job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFileTemplate);
                 if (result == false)
                 {
                     return new ActionResult(ErrorCode.Dropbox_Upload_Error);

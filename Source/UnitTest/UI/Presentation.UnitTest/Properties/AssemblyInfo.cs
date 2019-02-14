@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Redesign.UnitTest")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2018")]
+[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

@@ -53,6 +53,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         /// </summary>
         public string DocumentTitle { get; set; } = "";
 
+        /// <summary>
+        ///     The path to the original file
+        /// </summary>
+        public string OriginalFilePath { get; set; } = "";
+
         public JobType Type { get; set; }
 
         /// <summary>
@@ -75,7 +80,19 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         /// </summary>
         public UserToken UserToken { get; set; }
 
-        public string OutputFile { get; set; }
-        public string Profile { get; set; }
+        /// <summary>
+        /// Printer set via commandline for direct conversion
+        /// </summary>
+        public string PrinterParameter { get; set; }
+
+        /// <summary>
+        /// Profile set via commandline for direct conversion
+        /// </summary>
+        public string ProfileParameter { get; set; }
+
+        /// <summary>
+        /// Outputfile set via commandline for direct conversion
+        /// </summary>
+        public string OutputFileParameter { get; set; }
     }
 }

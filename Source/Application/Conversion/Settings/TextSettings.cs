@@ -25,9 +25,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public int Format { get; set; } = 2;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Format = int.Parse(data.GetValue(@"" + path + @"Format"), System.Globalization.CultureInfo.InvariantCulture); } catch { Format = 2;}
+			Format = int.TryParse(data.GetValue(@"" + path + @"Format"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFormat) ? tmpFormat : 2;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -40,7 +40,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			TextSettings copy = new TextSettings();
 			
 			copy.Format = Format;
-			
 			return copy;
 		}
 		
@@ -50,17 +49,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			TextSettings v = o as TextSettings;
 			
 			if (!Format.Equals(v.Format)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Format=" + Format.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

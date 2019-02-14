@@ -12,7 +12,7 @@
             <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Translation.ChangeDefaultPrinterLabelText, Mode=OneWay}" />
             
             <ComboBox Width="300" HorizontalAlignment="Left"
-                      SelectedValue="{Binding SettingsProvider.Settings.ApplicationSettings.AskSwitchDefaultPrinter}"
+                      SelectedValue="{Binding CreatorSettingsProvider.Settings.AskSwitchDefaultPrinter}"
                       SelectedValuePath="Value" DisplayMemberPath="Name"
                       ItemsSource="{Binding AskSwitchPrinterValues}" />
         </StackPanel>

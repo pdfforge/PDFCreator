@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<TimeServerAccount> _timeServerAccounts;
         private TimeServerAccount _currentTimeServerAccount;
         private TimeServerTranslation _translation;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -33,13 +34,13 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _timeServerAccounts = new ObservableCollection<TimeServerAccount>();
             _timeServerAccounts.Add(_currentTimeServerAccount);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.TimeServerAccounts = _timeServerAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
-            _timeServerAccountEditCommand = new TimeServerAccountEditCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _timeServerAccountEditCommand = new TimeServerAccountEditCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]
@@ -156,17 +157,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             var interaction = _interactionRequest.AssertWasRaised<TimeServerAccountInteraction>();
             Assert.AreEqual(_currentTimeServerAccount, interaction.TimeServerAccount);
             Assert.AreEqual("Changed Username", _currentTimeServerAccount.UserName);
-        }
-
-        [Test]
-        public void ChangeTimeServerAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var wasRaised = false;
-            _timeServerAccountEditCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _timeServerAccounts.Add(new TimeServerAccount());
-
-            Assert.IsTrue(wasRaised);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Events;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using Prism.Events;
 using System;
 

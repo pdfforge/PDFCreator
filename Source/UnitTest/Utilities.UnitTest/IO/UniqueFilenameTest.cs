@@ -4,7 +4,6 @@ using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Utilities.UnitTest.IO
 {
@@ -18,18 +17,6 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.IO
             _file = Substitute.For<IFile>();
             _pathUtil = Substitute.For<IPathUtil>();
             _pathUtil.MAX_PATH.Returns(259);
-            _pathUtil.GetLongDirectoryName(Arg.Any<string>()).ReturnsForAnyArgs(x =>
-            {
-                var str = x[0] as string;
-                try
-                {
-                    return str.Substring(0, str.LastIndexOf('\\')) + "\\";
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            });
         }
 
         private IDirectory _directory;
@@ -41,9 +28,8 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.IO
         {
             const string dir245Chars = @"C:\ThisIsAVeryLongFileNameBecauseItHasMoreThan150CharactersAndToReachThatIHaveToWriteALotMoreTextThanICanThinkAboutRightNowIfYouReadThisUpToHereIOwnYouALittleSnackAndIStillNeedAFewMoreCharactersLetsSimplyCountOneTwoThreeFourFiveSixSevenEightNine";
             const string fileName13Chars = "File12345.pdf";
-            var pathWrapSafe = new PathWrapSafe();
             //Combine adds a "\" so the result is the max path lengh of 260
-            var tooLongPath = pathWrapSafe.Combine(dir245Chars, fileName13Chars);
+            var tooLongPath = PathSafe.Combine(dir245Chars, fileName13Chars);
 
             _file.Exists("").ReturnsForAnyArgs(x => true, x => false);
             _directory.Exists("").ReturnsForAnyArgs(false);

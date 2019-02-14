@@ -104,6 +104,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.Actions
             var scriptDir = Path.Combine(_th.TmpTestFolder, "TestScriptDirectory");
             _th.Profile.Scripting.ParameterString = "\"" + scriptDir + "\"";
             _th.Profile.Scripting.ScriptFile = _scriptFile;
+            _th.Profile.Scripting.Visible = false;
 
             _th.GenerateGsJob(PSfiles.EmptyPage, OutputFormat.Png);
             _th.RunGsJob();

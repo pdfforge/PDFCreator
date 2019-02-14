@@ -47,6 +47,28 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             {
                 _soundPlayer.Play(SystemSounds.Hand);
             }
+            RaisePropertyChanged(nameof(RecommendedText));
+            RaisePropertyChanged(nameof(ErrorText));
+        }
+
+        public string RecommendedText
+        {
+            get
+            {
+                if (Interaction == null)
+                    return "";
+                return Interaction.IsUpdate ? Translation.RecommendTextUpdate : Translation.RecommendTextInstall;
+            }
+        }
+
+        public string ErrorText
+        {
+            get
+            {
+                if (Interaction == null)
+                    return "";
+                return Interaction.IsUpdate ? Translation.ErrorTextUpdate : Translation.ErrorTextInstall;
+            }
         }
 
         public override string Title => "PDFCreator";

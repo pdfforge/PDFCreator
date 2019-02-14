@@ -123,7 +123,7 @@ namespace PDFCreator.Utilities.IntegrationTest
         {
             var file = @"C:\" + new string('a', 293) + ".txt";
 
-            var shortFile = _pathUtil.EllipsisForPath(file, 200);
+            var shortFile = _pathUtil.EllipsisForFilename(file, 200);
 
             Assert.AreNotEqual(file, shortFile);
             StringAssert.Contains(_pathUtil.ELLIPSIS, shortFile);
@@ -133,43 +133,13 @@ namespace PDFCreator.Utilities.IntegrationTest
         [Test]
         public void EllipsisWithLength_GivenLength261_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => _pathUtil.EllipsisForPath(@"C:\test.txt", _pathUtil.MAX_PATH + 1));
+            Assert.Throws<ArgumentException>(() => _pathUtil.EllipsisForFilename(@"C:\test.txt", _pathUtil.MAX_PATH + 1));
         }
 
         [Test]
         public void EllipsisWithLength_GivenLength9_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() => _pathUtil.EllipsisForPath(@"C:\test.txt", 9));
-        }
-
-        [Test]
-        public void GetLongDirectoryName_GivenDriveRootWithFile_ReturnsDriveRoot()
-        {
-            var folder = @"C:\";
-            var file = folder + "\\test.txt";
-
-            Assert.AreEqual(folder, _pathUtil.GetLongDirectoryName(file));
-        }
-
-        [Test]
-        public void GetLongDirectoryName_GivenEmptyPath_ReturnsNull()
-        {
-            Assert.IsNull(_pathUtil.GetLongDirectoryName(""));
-        }
-
-        [Test]
-        public void GetLongDirectoryName_GivenNull_ThrowsArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => _pathUtil.GetLongDirectoryName(null));
-        }
-
-        [Test]
-        public void GetLongDirectoryName_GivenShortPath_ReturnsSamePath()
-        {
-            var folder = @"C:\folder";
-            var file = folder + "\\test.txt";
-
-            Assert.AreEqual(folder, _pathUtil.GetLongDirectoryName(file));
+            Assert.Throws<ArgumentException>(() => _pathUtil.EllipsisForFilename(@"C:\test.txt", 9));
         }
 
         [Test]

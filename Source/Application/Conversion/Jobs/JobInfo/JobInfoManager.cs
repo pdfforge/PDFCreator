@@ -41,10 +41,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
     public class JobInfoManager : IJobInfoManager
     {
         private readonly ITitleReplacerProvider _titleReplacerProvider;
+        private readonly IStoredParametersManager _storedParametersManager;
 
-        public JobInfoManager(ITitleReplacerProvider titleReplacerProvider)
+        public JobInfoManager(ITitleReplacerProvider titleReplacerProvider, IStoredParametersManager storedParametersManager)
         {
             _titleReplacerProvider = titleReplacerProvider;
+            _storedParametersManager = storedParametersManager;
         }
 
         public JobInfo ReadFromInfFile(string infFile)
@@ -61,8 +63,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             }
 
             var infData = Data.CreateDataStorage();
-            var ini = new IniStorage(Encoding.GetEncoding("Unicode"));
-            ini.Data = infData;
+            var ini = new IniStorage(jobInfo.InfFile, Encoding.GetEncoding("Unicode"));
 
             var sourceFileReader = new SourceFileInfoDataReader();
 
@@ -74,7 +75,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
                 sectionId++;
             }
 
-            ini.WriteData(jobInfo.InfFile);
+            ini.WriteData(infData);
         }
 
         public void SaveToInfFile(JobInfo jobInfo, string filename)
@@ -131,9 +132,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
             jobInfo.InfFile = infFile;
             var infData = Data.CreateDataStorage();
-            var ini = new IniStorage(Encoding.GetEncoding("Unicode"));
-            ini.Data = infData;
-            ini.ReadData(infFile);
+            var ini = new IniStorage(jobInfo.InfFile, Encoding.GetEncoding("Unicode"));
+            ini.ReadData(infData);
 
             var sourceFiles = new ObservableCollection<SourceFileInfo>();
             var sourceFileReader = new SourceFileInfoDataReader();
@@ -151,16 +151,41 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
                 metadata.PrintJobAuthor = sourceFiles[0].Author;
                 metadata.PrintJobName = titleReplacer.Replace(sourceFiles[0].DocumentTitle);
 
-                jobInfo.OutputFileParameter = sourceFiles[0].OutputFile;
-                jobInfo.ProfileParameter = sourceFiles[0].Profile;
+                jobInfo.OriginalFilePath = sourceFiles[0].OriginalFilePath;
+                jobInfo.PrinterName = sourceFiles[0].PrinterName;
+                jobInfo.PrinterParameter = sourceFiles[0].PrinterParameter;
+                jobInfo.ProfileParameter = sourceFiles[0].ProfileParameter;
+                jobInfo.OutputFileParameter = sourceFiles[0].OutputFileParameter;
 
                 jobInfo.JobType = sourceFiles[0].Type;
             }
+
+            ConsiderStoredParameters(jobInfo);
+
             jobInfo.Metadata = metadata;
 
             jobInfo.PrintDateTime = File.GetCreationTime(infFile);
 
             return jobInfo;
+        }
+
+        private void ConsiderStoredParameters(JobInfo jobInfo)
+        {
+            //Required null check for server
+            if (_storedParametersManager == null)
+                return;
+
+            //Check for PrintJob (PrinterName remains empty for DirectConversion)
+            if (string.IsNullOrWhiteSpace(jobInfo.PrinterName))
+                return;
+
+            if (!_storedParametersManager.HasPredefinedParameters())
+                return;
+
+            var storedParameters = _storedParametersManager.GetAndResetParameters();
+            jobInfo.ProfileParameter = storedParameters.Profile;
+            jobInfo.OutputFileParameter = storedParameters.Outputfile;
+            jobInfo.OriginalFilePath = storedParameters.OriginalFilePath;
         }
     }
 }

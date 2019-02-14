@@ -5,7 +5,35 @@ using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
-    public class TokenHelper
+    public interface ITokenHelper
+    {
+        TokenReplacer TokenReplacerWithPlaceHolders { get; }
+
+        List<string> GetTokenListWithFormatting();
+
+        List<string> GetTokenListForMetadata();
+
+        List<string> GetTokenListForFilename();
+
+        List<string> GetTokenListForDirectory();
+
+        List<string> GetTokenListForExternalFiles();
+
+        List<string> GetTokenListForStamp();
+
+        List<string> GetTokenListForEmail();
+
+        List<string> GetTokenListForEmailRecipients();
+
+        /// <summary>
+        ///     Detection if string contains insecure tokens, like NumberOfPages, InputFilename or InputFilePath/InputDirectory
+        /// </summary>
+        bool ContainsInsecureTokens(string textWithTokens);
+
+        bool ContainsUserToken(string textWithToken);
+    }
+
+    public class TokenHelper : ITokenHelper
     {
         private TokenPlaceHoldersTranslation _translation;
         private TokenReplacer _tokenReplacer;
@@ -13,7 +41,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         public TokenHelper(ITranslationUpdater translationUpdater)
         {
-            translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
+            translationUpdater.RegisterAndSetTranslation(tf =>
+            {
+                _translation = tf.UpdateOrCreateTranslation(_translation);
+                _tokenReplacer = null;
+            });
         }
 
         public TokenReplacer TokenReplacerWithPlaceHolders
@@ -32,7 +64,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new NumberToken("Counter", 1234));
             tr.AddToken(new DateToken("DateTime", DateTime.Now));
             tr.AddToken(new StringToken("InputFilename", _translation.MyFileDocx));
-            tr.AddToken(new StringToken("InputFilePath", @"C:\Temp"));
+            tr.AddToken(new StringToken("InputDirectory", @"C:\Temp"));
             tr.AddToken(new NumberToken("JobID", 1));
             tr.AddToken(new NumberToken("NumberOfCopies", 1));
             tr.AddToken(new NumberToken("NumberOfPages", 1));
@@ -55,6 +87,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new StringToken("DropboxFullLinks", "File.pdf ( https://dropbox.com/link1 )"));
             tr.AddToken(new EnvironmentToken());
             tr.AddToken(new ParameterPreviewToken("User", _translation.FormatTokenPreviewText));
+            tr.AddToken(new StringToken("Desktop", Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
+            tr.AddToken(new StringToken("MyDocuments", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            tr.AddToken(new StringToken("MyPictures", Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
 
             return tr;
         }
@@ -86,7 +121,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<Author>");
             tokenList.Remove("<Title>");
             tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<InputFilePath>");
+            tokenList.Remove("<InputDirectory>");
             tokenList.Remove("<OutputFilePath>");
             tokenList.Remove("<OutputFilenames>");
             tokenList.Remove("<Subject>");
@@ -102,7 +137,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             var tokenList = GetTokenListWithFormatting();
 
             tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<InputFilePath>");
+            tokenList.Remove("<InputDirectory>");
             tokenList.Remove("<OutputFilePath>");
             tokenList.Remove("<DropboxHtmlLinks>");
             tokenList.Remove("<DropboxFullLinks>");
@@ -182,7 +217,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         }
 
         /// <summary>
-        ///     Detection if string contains insecure tokens, like NumberOfPages, InputFilename or InputFilePath
+        ///     Detection if string contains insecure tokens, like NumberOfPages, InputFilename, InputFilePath/InputDirectory
         /// </summary>
         public bool ContainsInsecureTokens(string textWithTokens)
         {
@@ -192,7 +227,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
                 return true;
             if (Contains_IgnoreCase(textWithTokens, "<InputFilePath>"))
                 return true;
+            if (Contains_IgnoreCase(textWithTokens, "<InputDirectory>"))
+                return true;
+            return false;
+        }
 
+        public bool ContainsUserToken(string textWithToken)
+        {
+            if (Contains_IgnoreCase(textWithToken, "<User:"))
+                return true;
             return false;
         }
 

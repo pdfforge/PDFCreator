@@ -1,14 +1,18 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Controller.Routing;
-using pdfforge.PDFCreator.Editions.EditionBase.Tab;
+using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.Editions.EditionBase.CreatorTab;
 using pdfforge.PDFCreator.UI.Presentation;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+using pdfforge.PDFCreator.UI.Presentation.Banner;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Home;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
+using pdfforge.PDFCreator.UI.RssFeed;
 using Prism.Regions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
@@ -18,35 +22,52 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         private readonly IRegionManager _regionManager;
         private readonly IWhitelistedServiceLocator _serviceLocator;
         private readonly IWpfTopMostHelper _topMostHelper;
-        private readonly TabRegion _profileSettingsTabs;
-        private readonly TabRegion _applicationSettingsTabs;
+        private readonly IProfileSettingsTabs _profileSettingsTabs;
+        private readonly IApplicationSettingsTabs _applicationSettingsTabs;
+        private readonly StartupRoutine _startupRoutine;
         private bool _registeredMainShellViews;
         private bool _registeredPrintJobShellViews;
         private DateTime _lastOpenWindowTime;
+        private bool wasStarted = false;
 
-        public ShellManager(IWhitelistedServiceLocator serviceLocator, IRegionManager regionManager, IWpfTopMostHelper topMostHelper, TabRegion profileSettingsTabs, TabRegion applicationSettingsTabs)
+        public ShellManager(IWhitelistedServiceLocator serviceLocator, IRegionManager regionManager, IWpfTopMostHelper topMostHelper, IProfileSettingsTabs profileSettingsTabs, IApplicationSettingsTabs applicationSettingsTabs, IEnumerable<IStartupAction> startupActions)
         {
             _regionManager = regionManager;
             _serviceLocator = serviceLocator;
             _topMostHelper = topMostHelper;
             _profileSettingsTabs = profileSettingsTabs;
             _applicationSettingsTabs = applicationSettingsTabs;
+            _startupRoutine = new StartupRoutine(startupActions);
+        }
+
+        private void RunStartup()
+        {
+            var startupActions = _startupRoutine.GetAllActions().Where(action => action is IDataStartupAction);
+            foreach (var startupAction in startupActions)
+            {
+                startupAction.Execute();
+            }
+
+            wasStarted = true;
         }
 
         private MainShell MainShell { get; set; }
         private PrintJobShell PrintJobShell { get; set; }
 
-        public void ShowMainShell(StartupRoutine routine)
+        public void ShowMainShell()
         {
             lock (this)
             {
+                if (!wasStarted)
+                    RunStartup();
+
                 if (MainShell == null)
                 {
                     MainShell = _serviceLocator.GetInstance<MainShell>();
                     RegionManager.SetRegionManager(MainShell, _regionManager);
                     RegionManager.UpdateRegions();
                     RegisterStartingViewsInMainShellRegions();
-                    MainShell.ViewModel.MainShellStartupAction(routine);
+                    MainShell.ViewModel.MainShellStartupAction(_startupRoutine);
                 }
             }
 
@@ -78,6 +99,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         {
             lock (this)
             {
+                if (!wasStarted)
+                    RunStartup();
+
                 if (PrintJobShell == null)
                 {
                     PrintJobShell = _serviceLocator.GetInstance<PrintJobShell>();
@@ -136,9 +160,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             _registeredMainShellViews = true;
             _regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(HomeView));
-
+            _regionManager.RegisterViewWithRegion(RegionNames.HomeViewBannerRegion, typeof(BannerView));
             _regionManager.RegisterViewWithRegion(RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SettingControlsView));
             _regionManager.RegisterViewWithRegion(RegionNames.ProfileSaveCancelButtonsRegion, typeof(SettingControlsView));
+            _regionManager.RegisterViewWithRegion(RegionNames.RssFeedRegion, typeof(RssFeedView));
             _profileSettingsTabs.RegisterTabs(_regionManager, _serviceLocator);
             _applicationSettingsTabs.RegisterTabs(_regionManager, _serviceLocator);
         }

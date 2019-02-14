@@ -1,5 +1,7 @@
-﻿using NSubstitute;
+﻿using Microsoft.Win32;
+using NSubstitute;
 using NUnit.Framework;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
@@ -12,8 +14,8 @@ using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.COM;
 using pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Settings;
-using pdfforge.PDFCreator.UI.ViewModels;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
@@ -42,25 +44,39 @@ namespace pdfforge.PDFCreator.IntegrationTest.UI.COM
 
             LoggingHelper.InitConsoleLogger("PDFCreatorTest", LoggingLevel.Off);
 
-            var installationPathProvider = new InstallationPathProvider(@"Software\pdfforge\PDFCreator\Settings", @"Software\pdfforge\PDFCreator", "{00000000-0000-0000-0000-000000000000}");
+            var installationPathProvider = new InstallationPathProvider(@"Software\pdfforge\PDFCreator\Settings", @"Software\pdfforge\PDFCreator", "{00000000-0000-0000-0000-000000000000}", RegistryHive.CurrentUser);
 
             var settingsProvider = new DefaultSettingsProvider();
 
             var translationHelper = new TranslationHelper(settingsProvider, new AssemblyHelper(GetType().Assembly), new TranslationFactory(), null);
             translationHelper.InitTranslator("None");
 
-            var settingsLoader = new SettingsLoader(translationHelper, Substitute.For<ISettingsMover>(), installationPathProvider, Substitute.For<IPrinterHelper>());
+            var defaultSettingsBuilder = Substitute.For<IDefaultSettingsBuilder>();
+            defaultSettingsBuilder.
+                CreateEmptySettings().
+                Returns(new PdfCreatorSettings());
+
+            defaultSettingsBuilder.
+                CreateDefaultSettings(Arg.Any<string>(), Arg.Any<string>()).
+                Returns(new PdfCreatorSettings());
+
+            defaultSettingsBuilder.
+                CreateDefaultProfile().
+                Returns(new ConversionProfile());
+
+            var migrationStorageFactory = Substitute.For<IMigrationStorageFactory>();
+            var settingsLoader = new SettingsLoader(translationHelper, Substitute.For<ISettingsMover>(), installationPathProvider, Substitute.For<IPrinterHelper>(), new EditionHelper(false, false), defaultSettingsBuilder, migrationStorageFactory);
 
             var settingsManager = new SettingsManager(settingsProvider, settingsLoader, installationPathProvider, new VersionHelper(Assembly.GetExecutingAssembly()), new List<IFirstTimeCommand>());
             settingsManager.LoadAllSettings();
 
-            var folderProvider = new FolderProvider(new PrinterPortReader(new RegistryWrap(), new PathWrapSafe()), new PathWrap());
+            var folderProvider = new FolderProvider(new PrinterPortReader(new RegistryWrap()), new PathWrap());
 
             _queue = new Queue();
             _queue.Initialize();
 
-            _testPageHelper = new TestPageHelper(new VersionHelper(GetType().Assembly), new OsHelper(), folderProvider,
-                dependencies.QueueAdapter.JobInfoQueue, new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>())), new ApplicationNameProvider("FREE"));
+            var testPageCreator = new TestPageCreator(new ApplicationNameProvider("FREE"), new VersionHelper(new Version(1, 0, 0, 0)), new OsHelper());
+            _testPageHelper = new TestPageHelper(folderProvider, dependencies.QueueAdapter.JobInfoQueue, new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>()), null), testPageCreator);
         }
 
         [TearDown]
@@ -86,7 +102,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.UI.COM
         {
             CreateTestPages(1);
 
-            const string filename = "basdeead\\aokdeaad.pdf";
+            const string filename = "Y:\\Temp\\DoesNotExist\\basdeead\\aokdeaad.pdf";
             var comJob = _queue.NextJob;
 
             var ex = Assert.Throws<COMException>(() => comJob.ConvertTo(filename));

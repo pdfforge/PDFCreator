@@ -11,9 +11,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion3_UpgradeRequiredToVersion4_ReturnsTrue()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "3");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "3");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(4));
         }
@@ -22,23 +22,23 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion3_UpgradeToVersion4_SetsVersionTo4()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "3");
-            var upgrader = new SettingsUpgrader(data);
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "3");
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(4);
 
-            Assert.AreEqual("4", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("4", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [Test]
         public void Test_RenameTiffColorBlackWhiteAsBlackWhiteG4Fax()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "3");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "3");
             data.SetValue(@"ConversionProfiles\numClasses", "1");
             data.SetValue(@"ConversionProfiles\0\TiffSettings\Color", "BlackWhite");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(4);
 

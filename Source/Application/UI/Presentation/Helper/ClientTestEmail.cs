@@ -1,11 +1,10 @@
 ﻿using NLog;
 using pdfforge.Mail;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using System;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
@@ -20,12 +19,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         private readonly IMailSignatureHelper _mailSignatureHelper;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IPath _path;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
         private readonly IDirectory _directory;
         private readonly IFile _file;
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenHelper _tokenHelper;
 
-        public ClientTestEmail(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper, IPath path, IDirectory directory, IFile file, TokenHelper tokenHelper)
+        public ClientTestEmail(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper, IPath path, IDirectory directory, IFile file, ITokenHelper tokenHelper)
         {
             _emailClientFactory = emailClientFactory;
             _mailSignatureHelper = mailSignatureHelper;
@@ -69,9 +67,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             try
             {
                 var tempFolder = _path.GetTempPath();
-                var tmpTestFolder = _pathSafe.Combine(tempFolder, "PDFCreator-Test\\SendSmtpTestmail");
+                var tmpTestFolder = PathSafe.Combine(tempFolder, "PDFCreator-Test\\SendSmtpTestmail");
                 _directory.CreateDirectory(tmpTestFolder);
-                var tmpFile = _pathSafe.Combine(tmpTestFolder, "PDFCreator Mail Client Test.pdf");
+                var tmpFile = PathSafe.Combine(tmpTestFolder, "PDFCreator Mail Client Test.pdf");
                 _file.WriteAllText(tmpFile, "");
                 eMail.Attachments.Add(new Attachment(tmpFile));
 

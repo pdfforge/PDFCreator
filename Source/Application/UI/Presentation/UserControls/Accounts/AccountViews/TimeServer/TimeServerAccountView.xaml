@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              mc:Ignorable="d"
              Width="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeTimeServerAccountViewModel, IsDesignTimeCreatable=True}">
@@ -25,10 +26,7 @@
                 <Label>
                     <TextBlock Text="{Binding Translation.PasswordLabel}" />
                 </Label>
-                <PasswordBox Name="TimeServerPasswordBox"
-                             PasswordChar="•"
-                             PasswordChanged="TimeServerPasswordBox_OnPasswordChanged"
-                             Margin=" 0 0 0 10" />
+                <controls:PreviewPasswordField Margin="0 0 0 10" PasswordText="{Binding Password}" />
             </StackPanel>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom">

@@ -263,8 +263,8 @@ namespace Presentation.UnitTest.UserControls
 
             var translation = typeof(LicenseSettingsTranslation).GetProperty(propName).GetValue(viewModel.Translation);
 
-            Assert.True(translation.Equals(licenseText));
-            Assert.True(viewStatus.Equals(status));
+            Assert.IsTrue(translation.Equals(licenseText));
+            Assert.IsTrue(viewStatus.Equals(status));
         }
 
         [Test]
@@ -402,8 +402,8 @@ namespace Presentation.UnitTest.UserControls
 
             var translation = typeof(LicenseSettingsTranslation).GetProperty(propName).GetValue(viewModel.Translation);
 
-            Assert.True(translation.Equals(licenseText));
-            Assert.True(viewStatus.Equals(status));
+            Assert.IsTrue(translation.Equals(licenseText));
+            Assert.IsTrue(viewStatus.Equals(status));
         }
 
         [Test]
@@ -427,8 +427,8 @@ namespace Presentation.UnitTest.UserControls
 
             var translation = typeof(LicenseSettingsTranslation).GetProperty(propName).GetValue(viewModel.Translation);
 
-            Assert.True(translation.Equals(licenseText));
-            Assert.True(viewStatus.Equals(status));
+            Assert.IsTrue(translation.Equals(licenseText));
+            Assert.IsTrue(viewStatus.Equals(status));
         }
 
         [Test]
@@ -779,21 +779,6 @@ namespace Presentation.UnitTest.UserControls
         }
 
         [Test]
-        public async Task OnlineActivationCommand_IsNotExecutableWhileExecuting()
-        {
-            _expectedLicenseKey = "given-key";
-            CreateLicenseKeyEnteredInteraction(_expectedLicenseKey);
-            var enterLicenseCommandIsExecutable = true;
-            var viewModel = BuildViewModel();
-            _licenseChecker.When(x => x.ActivateWithoutSaving(Arg.Any<string>())).Do(
-                x => { enterLicenseCommandIsExecutable = viewModel.OnlineActivationAsyncCommand.CanExecute(null); });
-
-            await viewModel.OnlineActivationAsyncCommand.ExecuteAsync(null);
-
-            Assert.IsFalse(enterLicenseCommandIsExecutable);
-        }
-
-        [Test]
         public async Task OnlineActivationCommand_WhenExecuted_CallsLicenseChecker()
         {
             _expectedLicenseKey = "ABCDEF";
@@ -945,7 +930,7 @@ namespace Presentation.UnitTest.UserControls
             var licenseText = viewModel.LicenseStatusText;
             var translationLicenseStatusValid = viewModel.Translation.LicenseStatusValid;
 
-            Assert.True(licenseText.Equals(translationLicenseStatusValid));
+            Assert.IsTrue(licenseText.Equals(translationLicenseStatusValid));
         }
 
         [Test]
@@ -968,8 +953,8 @@ namespace Presentation.UnitTest.UserControls
 
             var translation = typeof(LicenseSettingsTranslation).GetProperty(propName).GetValue(viewModel.Translation);
 
-            Assert.True(translation.Equals(licenseText));
-            Assert.True(viewStatus.Equals(status));
+            Assert.IsTrue(translation.Equals(licenseText));
+            Assert.IsTrue(viewStatus.Equals(status));
         }
     }
 }

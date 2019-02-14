@@ -1,26 +1,26 @@
 ﻿using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using pdfforge.PDFCreator.UI.ViewModels;
 using System;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class SaveChangedSettingsCommand : ICommand
+    public interface ISaveChangedSettingsCommand : ICommand
+    {
+    }
+
+    public class SaveChangedSettingsCommand : ISaveChangedSettingsCommand
     {
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
-        private readonly ISettingsProvider _settingsProvider;
-        private readonly ISettingsLoader _settingsLoader;
+        private readonly ISettingsManager _settingsManager;
         private readonly ISettingsChanged _settingsChanged;
 
         public SaveChangedSettingsCommand(ICurrentSettingsProvider currentSettingsProvider,
-            ISettingsProvider settingsProvider, ISettingsLoader settingsLoader,
-            ISettingsChanged settingsChanged)
+            ISettingsManager settingsManager, ISettingsChanged settingsChanged)
         {
             _currentSettingsProvider = currentSettingsProvider;
-            _settingsProvider = settingsProvider;
-            _settingsLoader = settingsLoader;
+            _settingsManager = settingsManager;
             _settingsChanged = settingsChanged;
         }
 
@@ -33,8 +33,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         {
             if (_settingsChanged.HaveChanged())
             {
-                _settingsProvider.UpdateSettings(_currentSettingsProvider.Settings);
-                _settingsLoader.SaveSettingsInRegistry(_currentSettingsProvider.Settings);
+                _currentSettingsProvider.StoreCurrentSettings();
+                _settingsManager.SaveCurrentSettings();
             }
         }
 

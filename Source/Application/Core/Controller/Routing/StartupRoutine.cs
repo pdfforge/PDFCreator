@@ -1,30 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Core.Controller.Routing
 {
     public class StartupRoutine
     {
-        private List<StartupAction> _startupActions = new List<StartupAction>();
+        private List<IStartupAction> _startupActions = new List<IStartupAction>();
 
         public StartupRoutine()
         {
         }
 
-        public void AddAction(StartupAction action)
+        public StartupRoutine(params IStartupAction[] startupActions)
+        {
+            _startupActions = startupActions.ToList();
+        }
+
+        public StartupRoutine(IEnumerable<IStartupAction> startupActions)
+        {
+            _startupActions = startupActions.ToList();
+        }
+
+        public void AddAction(IStartupAction action)
         {
             _startupActions.Add(action);
         }
 
         public void OverrideRoutine(StartupRoutine routine)
         {
-            _startupActions = new List<StartupAction>();
+            _startupActions = new List<IStartupAction>();
             for (int i = 0; i < routine._startupActions.Count; i++)
             {
                 _startupActions.Add(routine._startupActions[i]);
             }
         }
 
-        public List<TType> GetActionByType<TType>() where TType : StartupAction
+        public List<TType> GetActionByType<TType>() where TType : class, IStartupAction
         {
             var actionByType = new List<TType>();
             foreach (var startupRoutine in _startupActions)
@@ -35,6 +46,11 @@ namespace pdfforge.PDFCreator.Core.Controller.Routing
                 }
             }
             return actionByType;
+        }
+
+        public IEnumerable<IStartupAction> GetAllActions()
+        {
+            return _startupActions;
         }
     }
 }

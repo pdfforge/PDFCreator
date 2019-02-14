@@ -49,13 +49,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Resampling { get; set; } = false;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Compression = (CompressionColorAndGray) Enum.Parse(typeof(CompressionColorAndGray), data.GetValue(@"" + path + @"Compression")); } catch { Compression = CompressionColorAndGray.Automatic;}
-			try { Dpi = int.Parse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.CultureInfo.InvariantCulture); } catch { Dpi = 300;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = true;}
-			try { JpegCompressionFactor = double.Parse(data.GetValue(@"" + path + @"JpegCompressionFactor"), System.Globalization.CultureInfo.InvariantCulture); } catch { JpegCompressionFactor = 0.66;}
-			try { Resampling = bool.Parse(data.GetValue(@"" + path + @"Resampling")); } catch { Resampling = false;}
+			Compression = Enum.TryParse<CompressionColorAndGray>(data.GetValue(@"" + path + @"Compression"), out var tmpCompression) ? tmpCompression : CompressionColorAndGray.Automatic;
+			Dpi = int.TryParse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpDpi) ? tmpDpi : 300;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : true;
+			JpegCompressionFactor = double.TryParse(data.GetValue(@"" + path + @"JpegCompressionFactor"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpJpegCompressionFactor) ? tmpJpegCompressionFactor : 0.66;
+			Resampling = bool.TryParse(data.GetValue(@"" + path + @"Resampling"), out var tmpResampling) ? tmpResampling : false;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -76,7 +76,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.JpegCompressionFactor = JpegCompressionFactor;
 			copy.Resampling = Resampling;
-			
 			return copy;
 		}
 		
@@ -90,21 +89,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!JpegCompressionFactor.Equals(v.JpegCompressionFactor)) return false;
 			if (!Resampling.Equals(v.Resampling)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Compression=" + Compression.ToString());
-			sb.AppendLine("Dpi=" + Dpi.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("JpegCompressionFactor=" + JpegCompressionFactor.ToString());
-			sb.AppendLine("Resampling=" + Resampling.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

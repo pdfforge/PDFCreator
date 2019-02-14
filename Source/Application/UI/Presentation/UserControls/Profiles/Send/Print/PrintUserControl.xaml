@@ -24,7 +24,7 @@
                 <TextBlock Text="{Binding Translation.SelectPrinterText}"></TextBlock>
             </Label>
             <ComboBox Name="SelectPrinterComboBox" DisplayMemberPath="Translation"
-                  ItemsSource="{Binding Translation.SelectPrinterValues}"
+                  ItemsSource="{Binding SelectPrinterValues}"
                   SelectedValue="{Binding CurrentProfile.Printing.SelectPrinter}" SelectedValuePath="Value"
                   Margin="0 0 0 5" />
             <ComboBox Margin="50 0 0 10"

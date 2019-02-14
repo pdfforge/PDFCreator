@@ -16,6 +16,12 @@ namespace pdfforge.PDFCreator.Utilities
             return _args.ContainsKey(key.ToLowerInvariant());
         }
 
+        public bool HasArgumentWithValue(string key)
+        {
+            var normalizedKey = key.ToLowerInvariant();
+            return _args.ContainsKey(normalizedKey) && !string.IsNullOrEmpty(_args[normalizedKey]);
+        }
+
         public string GetArgument(string key)
         {
             return _args[key.ToLowerInvariant()];

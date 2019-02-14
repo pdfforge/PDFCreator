@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.ServiceLocation;
+﻿using CommonServiceLocator;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;

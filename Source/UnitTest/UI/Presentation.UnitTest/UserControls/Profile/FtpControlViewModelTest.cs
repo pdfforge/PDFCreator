@@ -1,14 +1,15 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -24,6 +25,7 @@ namespace Presentation.UnitTest.UserControls.Profile
         private ObservableCollection<FtpAccount> _ftpAccounts;
         private ICommand _addCommand;
         private ICommand _editCommand;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [Test]
         public void DesignTimeViewModelIsNewable()
@@ -35,15 +37,15 @@ namespace Presentation.UnitTest.UserControls.Profile
         [SetUp]
         public void SetUp()
         {
-            var tokenHelper = new TokenHelper(new DesignTimeTranslationUpdater());
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
             var settingsProvider = Substitute.For<ICurrentSettingsProvider>();
             settingsProvider.SelectedProfile.Returns(new ConversionProfile());
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             _ftpAccounts = new ObservableCollection<FtpAccount>();
             settings.ApplicationSettings.Accounts.FtpAccounts = _ftpAccounts;
-            settingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var commandLocator = Substitute.For<ICommandLocator>();
             commandLocator.CreateMacroCommand().Returns(x => new MacroCommandBuilder(commandLocator));
@@ -54,7 +56,7 @@ namespace Presentation.UnitTest.UserControls.Profile
             _editCommand = Substitute.For<ICommand>();
             commandLocator.GetCommand<FtpAccountEditCommand>().Returns(_editCommand);
 
-            _viewModel = new FtpActionViewModel(tokenHelper, translationUpdater, settingsProvider, commandLocator, new TokenViewModelFactory(settingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null);
+            _viewModel = new FtpActionViewModel(translationUpdater, _accountsProvider, settingsProvider, commandLocator, new TokenViewModelFactory(settingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null, new GpoSettingsDefaults());
         }
 
         [Test]

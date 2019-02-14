@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Banner"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="700"
+             d:DataContext="{d:DesignInstance local:DesignTimeFrequentTipsControlViewModel, IsDesignTimeCreatable=true}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/Colors.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Button VerticalAlignment="Center"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                Padding="0"
+                Margin="10 0"
+                Cursor="Hand"
+                Command="{Binding CurrentBannerCommand}"
+                Background="{DynamicResource NavigationLightGrey}"
+                BorderBrush="Transparent">
+            <Grid Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Background="{DynamicResource PdfCreator.DarkGreyBrush}" VerticalAlignment="Top" Height="40">
+                    <ContentControl Content="{StaticResource TipBulbIcon}" Width="50" Margin="0 7" HorizontalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10 10" VerticalAlignment="Stretch">
+                    <TextBlock FontWeight="Medium" FontSize="17" Text="{Binding CurrentBannerTitle}"
+                               Foreground="{DynamicResource PdfCreator.DarkGreyBrush}" />
+                    <TextBlock VerticalAlignment="Center" MaxHeight="40" Margin="0 5 40 0" LineHeight="20"
+                               FontSize="13" Text="{Binding CurrentBannerText}" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                </StackPanel>
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>

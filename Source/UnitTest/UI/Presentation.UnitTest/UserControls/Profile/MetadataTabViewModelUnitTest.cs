@@ -1,10 +1,11 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
@@ -36,8 +37,13 @@ namespace Presentation.UnitTest.UserControls.Profile
             _currentSettingsProvider.SelectedProfile.Returns(_profile);
 
             var translationUpdater = new TranslationUpdater(_translationFactory, Substitute.For<IThreadManager>());
+            var dispatcher = Substitute.For<IDispatcher>();
 
-            return new MetadataViewModel(translationUpdater, new TokenHelper(new DesignTimeTranslationUpdater()), new TokenViewModelFactory(_currentSettingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())));
+            return new MetadataViewModel(translationUpdater,
+                new TokenHelper(new DesignTimeTranslationUpdater()),
+                new TokenViewModelFactory(_currentSettingsProvider,
+                new TokenHelper(new DesignTimeTranslationUpdater())),
+                _currentSettingsProvider, dispatcher);
         }
 
         [Test]

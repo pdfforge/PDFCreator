@@ -6,6 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
     {
         public string DownloadPdfArchitectButtonContent { get; private set; } = "Download PDF Architect now";
         public string GetPdfArchitectButtonContent { get; private set; } = "More on PDF Architect";
+        public string InstallPdfArchitectButtonContent { get; private set; } = "Install PDF Architect now";
         public string LaunchPdfArchitectButtonContent { get; private set; } = "Launch PDF Architect";
         public string PdfArchitectInstalledText { get; private set; } = "You already have PDF Architect on your computer";
         public string FullFeatured { get; private set; } = "Our full-featured PDF Editor";

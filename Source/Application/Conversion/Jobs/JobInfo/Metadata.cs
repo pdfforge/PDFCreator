@@ -1,17 +1,12 @@
-﻿using pdfforge.PDFCreator.Utilities;
-
-namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
+﻿namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 {
     /// <summary>
     ///     The Metadata class holds information about the printed document
     /// </summary>
     public class Metadata
     {
-        private readonly IVersionHelper _versionHelper;
-
-        public Metadata(IVersionHelper versionHelper = null)
+        public Metadata()
         {
-            _versionHelper = versionHelper ?? new VersionHelper(GetType().Assembly);
         }
 
         /// <summary>
@@ -43,14 +38,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         ///     Keywords that describe the document
         /// </summary>
         public string Keywords { get; set; } = "";
-
-        /// <summary>
-        ///     Name of the application that produced the document
-        /// </summary>
-        public string Producer
-        {
-            get { return "PDFCreator " + _versionHelper.ApplicationVersion; }
-        }
 
         /// <summary>
         ///     Create an exact copy of this object. Changes to the copy will not affect the original and vice versa

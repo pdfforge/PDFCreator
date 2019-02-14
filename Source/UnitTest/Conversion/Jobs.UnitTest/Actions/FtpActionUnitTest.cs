@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
 
             var jobPws = new JobPasswords();
             jobPws.FtpPassword = JobFtpPassword;
-            _job = new Job(new JobInfo(), _profile, new JobTranslations(), _accounts);
+            _job = new Job(new JobInfo(), _profile, _accounts);
             _job.Accounts = _accounts;
             _job.Passwords = jobPws;
             _job.TokenReplacer = new TokenReplacer();
@@ -94,7 +94,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
             var tokenReplacer = new TokenReplacer();
             tokenReplacer.AddStringToken(tokenKey, tokenValue);
             _profile.Ftp.Directory = token + "?*";
-            var job = new Job(null, _profile, null, _accounts);
+            var job = new Job(null, _profile, _accounts);
             job.TokenReplacer = tokenReplacer;
 
             _ftpAction.ApplyPreSpecifiedTokens(job);

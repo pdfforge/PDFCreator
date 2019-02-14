@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SystemInterface;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs
 {
@@ -23,7 +22,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         private readonly IEnvironment _environmentWrap;
         private readonly IPathUtil _pathUtil;
         private readonly IPath _pathWrap;
-        private readonly PathWrapSafe _pathWrapSafe = new PathWrapSafe();
         private TokenReplacer _tokenReplacer;
 
         public TokenReplacerFactory(IDateTimeProvider dateTime, IEnvironment environment, IPath path, IPathUtil pathUtil)
@@ -41,7 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
             AddEnvironmentTokens();
             AddDateToken();
             AddSourceFileTokens(jobInfo.SourceFiles[0]);
-            AddTokensForDocumentTitle(jobInfo.SourceFiles[0], jobInfo.Metadata);
+            AddTokensFromOriginalFilePath(jobInfo.SourceFiles[0], jobInfo.Metadata, jobInfo);
             AddUserTokens(jobInfo.SourceFiles);
 
             // AddMetaDataTokens should be called last
@@ -79,6 +77,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         {
             _tokenReplacer.AddToken(new SingleEnvironmentToken(EnvironmentVariable.ComputerName, _environmentWrap));
             _tokenReplacer.AddToken(new SingleEnvironmentToken(EnvironmentVariable.Username, _environmentWrap));
+            _tokenReplacer.AddToken(new SingleEnvironmentToken(EnvironmentVariable.Desktop, _environmentWrap));
+            _tokenReplacer.AddToken(new SingleEnvironmentToken(EnvironmentVariable.MyDocuments, _environmentWrap));
+            _tokenReplacer.AddToken(new SingleEnvironmentToken(EnvironmentVariable.MyPictures, _environmentWrap));
 
             _tokenReplacer.AddToken(new EnvironmentToken(_environmentWrap, "Environment"));
         }
@@ -112,23 +113,25 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
             _tokenReplacer.AddStringToken("Title", title);
         }
 
-        private void AddTokensForDocumentTitle(SourceFileInfo sfi, Metadata metadata)
+        private void AddTokensFromOriginalFilePath(SourceFileInfo sfi, Metadata metadata, JobInfo.JobInfo jobInfo)
         {
-            var titleFilename = "";
-            var titleFolder = "";
+            var originalFileName = metadata.PrintJobName;
+            var originalDirectory = "";
 
-            if (_pathUtil.IsValidRootedPath(sfi.DocumentTitle))
+            if (!string.IsNullOrEmpty(jobInfo.OriginalFilePath))
             {
-                titleFilename = _pathWrapSafe.GetFileNameWithoutExtension(sfi.DocumentTitle);
-                titleFolder = _pathWrapSafe.GetDirectoryName(sfi.DocumentTitle);
+                originalFileName = PathSafe.GetFileNameWithoutExtension(jobInfo.OriginalFilePath);
+                originalDirectory = PathSafe.GetDirectoryName(jobInfo.OriginalFilePath);
             }
-            else
+            else if (_pathUtil.IsValidRootedPath(sfi.DocumentTitle))
             {
-                titleFilename = metadata.PrintJobName;
+                originalFileName = PathSafe.GetFileNameWithoutExtension(sfi.DocumentTitle);
+                originalDirectory = PathSafe.GetDirectoryName(sfi.DocumentTitle);
             }
 
-            _tokenReplacer.AddStringToken("InputFilename", titleFilename);
-            _tokenReplacer.AddStringToken("InputFilePath", titleFolder);
+            _tokenReplacer.AddStringToken("InputFilename", originalFileName);
+            _tokenReplacer.AddStringToken("InputDirectory", originalDirectory);
+            _tokenReplacer.AddStringToken("InputFilePath", originalDirectory);
         }
 
         private void AddUserTokens(IList<SourceFileInfo> sourceFileInfos)

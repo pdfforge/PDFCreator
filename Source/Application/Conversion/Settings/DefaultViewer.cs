@@ -30,12 +30,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		
 		public void ReadValues(Data data, string path) {
-			try { IsActive = bool.Parse(data.GetValue(@"" + path + @"IsActive")); } catch { IsActive = false;}
-			try { OutputFormat = (OutputFormat) Enum.Parse(typeof(OutputFormat), data.GetValue(@"" + path + @"OutputFormat")); } catch { OutputFormat = OutputFormat.Pdf;}
+			IsActive = bool.TryParse(data.GetValue(@"" + path + @"IsActive"), out var tmpIsActive) ? tmpIsActive : false;
+			OutputFormat = Enum.TryParse<OutputFormat>(data.GetValue(@"" + path + @"OutputFormat"), out var tmpOutputFormat) ? tmpOutputFormat : OutputFormat.Pdf;
 			try { Parameters = Data.UnescapeString(data.GetValue(@"" + path + @"Parameters")); } catch { Parameters = "";}
 			try { Path = Data.UnescapeString(data.GetValue(@"" + path + @"Path")); } catch { Path = "";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"IsActive", IsActive.ToString());
@@ -43,7 +42,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Parameters", Data.EscapeString(Parameters));
 			data.SetValue(@"" + path + @"Path", Data.EscapeString(Path));
 		}
-		
 		public DefaultViewer Copy()
 		{
 			DefaultViewer copy = new DefaultViewer();
@@ -52,7 +50,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.OutputFormat = OutputFormat;
 			copy.Parameters = Parameters;
 			copy.Path = Path;
-			
 			return copy;
 		}
 		
@@ -65,20 +62,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!OutputFormat.Equals(v.OutputFormat)) return false;
 			if (!Parameters.Equals(v.Parameters)) return false;
 			if (!Path.Equals(v.Path)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("IsActive=" + IsActive.ToString());
-			sb.AppendLine("OutputFormat=" + OutputFormat.ToString());
-			sb.AppendLine("Parameters=" + Parameters.ToString());
-			sb.AppendLine("Path=" + Path.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

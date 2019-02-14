@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
     public class TokenViewModelBuilder<T>
     {
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenHelper _tokenHelper;
         private Expression<Func<T, string>> _selector;
         private IList<string> _tokenList = new List<string>();
         private Func<string, string> _previewFunc;
@@ -17,13 +17,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         protected IList<Action<TokenViewModel<T>>> ViewModelDecorators { get; } = new List<Action<TokenViewModel<T>>>();
 
-        public TokenViewModelBuilder(TokenHelper tokenHelper)
+        public TokenViewModelBuilder(ITokenHelper tokenHelper)
         {
             _tokenHelper = tokenHelper;
             _initialValue = default(T);
         }
 
-        public TokenViewModelBuilder(TokenHelper tokenHelper, T initialValue)
+        public TokenViewModelBuilder(ITokenHelper tokenHelper, T initialValue)
         {
             _tokenHelper = tokenHelper;
             _initialValue = initialValue;
@@ -53,7 +53,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             return this;
         }
 
-        public TokenViewModelBuilder<T> WithDefaultTokenReplacerPreview(Func<TokenHelper, IList<string>> tokenListSelector)
+        public TokenViewModelBuilder<T> WithDefaultTokenReplacerPreview(Func<ITokenHelper, IList<string>> tokenListSelector)
         {
             var tokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
             return WithTokenList(tokenListSelector(_tokenHelper)).WithTokenReplacerPreview(tokenReplacer);

@@ -64,7 +64,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string StampText { get; set; } = "Confidential";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try
 			{
@@ -72,11 +72,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				if (value.Length == 0) Color = ColorTranslator.FromHtml("#CCCCCC"); else Color = ColorTranslator.FromHtml(value);
 			}
 			catch { Color =  ColorTranslator.FromHtml("#CCCCCC");}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { FontAsOutline = bool.Parse(data.GetValue(@"" + path + @"FontAsOutline")); } catch { FontAsOutline = true;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			FontAsOutline = bool.TryParse(data.GetValue(@"" + path + @"FontAsOutline"), out var tmpFontAsOutline) ? tmpFontAsOutline : true;
 			try { FontName = Data.UnescapeString(data.GetValue(@"" + path + @"FontName")); } catch { FontName = "Arial";}
-			try { FontOutlineWidth = int.Parse(data.GetValue(@"" + path + @"FontOutlineWidth"), System.Globalization.CultureInfo.InvariantCulture); } catch { FontOutlineWidth = 2;}
-			try { FontSize = float.Parse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.CultureInfo.InvariantCulture); } catch { FontSize = 48;}
+			FontOutlineWidth = int.TryParse(data.GetValue(@"" + path + @"FontOutlineWidth"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontOutlineWidth) ? tmpFontOutlineWidth : 2;
+			FontSize = float.TryParse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontSize) ? tmpFontSize : 48;
 			try { PostScriptFontName = Data.UnescapeString(data.GetValue(@"" + path + @"PostScriptFontName")); } catch { PostScriptFontName = "Arial";}
 			try { StampText = Data.UnescapeString(data.GetValue(@"" + path + @"StampText")); } catch { StampText = "Confidential";}
 		}
@@ -105,7 +105,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.FontSize = FontSize;
 			copy.PostScriptFontName = PostScriptFontName;
 			copy.StampText = StampText;
-			
 			return copy;
 		}
 		
@@ -122,24 +121,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!FontSize.Equals(v.FontSize)) return false;
 			if (!PostScriptFontName.Equals(v.PostScriptFontName)) return false;
 			if (!StampText.Equals(v.StampText)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Color=" + Color.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("FontAsOutline=" + FontAsOutline.ToString());
-			sb.AppendLine("FontName=" + FontName.ToString());
-			sb.AppendLine("FontOutlineWidth=" + FontOutlineWidth.ToString());
-			sb.AppendLine("FontSize=" + FontSize.ToString());
-			sb.AppendLine("PostScriptFontName=" + PostScriptFontName.ToString());
-			sb.AppendLine("StampText=" + StampText.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

@@ -30,7 +30,6 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _ftpAccountInteraction = new FtpAccountInteraction(_ftpAccount, "FtpAccountTestTitle");
 
             _viewModel = new FtpAccountViewModel(translationUpdater);
-            _viewModel.SetPasswordAction = s => { };
         }
 
         [Test]
@@ -172,10 +171,13 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
         }
 
         [Test]
-        public void SetInteraction_AskForPasswordLaterIsTrueIfPasswordIsEmpty()
+        public void SetInteraction_AllowConversionInterruptsEnabled_AskForPasswordLaterIsTrueIfPasswordIsEmpty()
         {
+            _viewModel.AllowConversionInterrupts = true;
+
             _ftpAccountInteraction.FtpAccount.Password = "Not empty";
             _viewModel.SetInteraction(_ftpAccountInteraction);
+
             Assert.IsFalse(_viewModel.AskForPasswordLater, "AskForPasswordLater should be false for set password");
 
             _ftpAccountInteraction.FtpAccount.Password = "";
@@ -184,21 +186,25 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
         }
 
         [Test]
+        public void SetInteraction_AllowConversionInterruptsDisabled_AskForPasswordLaterIsAlwaysFalse()
+        {
+            _viewModel.AllowConversionInterrupts = false;
+
+            _ftpAccountInteraction.FtpAccount.Password = "Not empty";
+            _viewModel.SetInteraction(_ftpAccountInteraction);
+
+            Assert.IsFalse(_viewModel.AskForPasswordLater);
+
+            _ftpAccountInteraction.FtpAccount.Password = "";
+            _viewModel.SetInteraction(_ftpAccountInteraction);
+            Assert.IsFalse(_viewModel.AskForPasswordLater);
+        }
+
+        [Test]
         public void SetInteraction_TriggersSaveCommandCanExecuteChanged()
         {
             var wasRaised = false;
             _viewModel.SaveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _viewModel.SetInteraction(_ftpAccountInteraction);
-
-            Assert.IsTrue(wasRaised);
-        }
-
-        [Test]
-        public void SetInteraction_CallsSetPasswordAction()
-        {
-            var wasRaised = false;
-            _viewModel.SetPasswordAction += s => wasRaised = true;
 
             _viewModel.SetInteraction(_ftpAccountInteraction);
 

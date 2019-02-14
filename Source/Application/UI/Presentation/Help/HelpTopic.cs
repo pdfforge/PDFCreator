@@ -73,6 +73,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] PdfOutput,
 
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] Convert,
+
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/security")] PdfSecurity,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/security")] PdfSignature,
@@ -92,11 +94,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/queue-settings")] ServerQueueSettings,
 
+        [HelpTopic("pdfcreator-server/cs-script")] ServerCsScript,
+
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/errors")] ServerErrorReportList,
+
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/index")] ServerGeneralSettings,
 
-        [HelpTopic("pdfcreator-server/performance-test")] ServerPerformanceTest,
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/general")] ServerGeneralSettingsTab,
 
-        [HelpTopic("pdfcreator-server/license/index")] ServerLicense,
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/header")] ServerHeader,
+
+        [HelpTopic("pdfcreator-server/performance-test")] ServerPerformanceTest,
 
         [HelpTopic("pdfcreator/license/index")] License
     }

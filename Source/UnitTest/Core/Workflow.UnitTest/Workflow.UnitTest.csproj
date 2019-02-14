@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\test\NUnit\build\NUnit.props" Condition="Exists('..\..\..\..\packages\test\NUnit\build\NUnit.props')" Label="Paket" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -38,12 +39,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataStorage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fc6825f92a0342e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="Translatable">
-      <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -62,6 +67,7 @@
     <Compile Include="JobPasswordHelperTest.cs" />
     <Compile Include="JobUpdaterTest.cs" />
     <Compile Include="JobRunnerTest.cs" />
+    <Compile Include="LastSaveDirectoryHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +125,14 @@
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Application\Core\Services\Services.csproj">
+      <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Application\Core\SettingsManagement\SettingsManagement.csproj">
+      <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
+      <Name>SettingsManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Application\Core\Workflow\Workflow.csproj">
       <Project>{e4f2f7aa-5a58-44a4-905d-09536cb81ea1}</Project>
       <Name>Workflow</Name>
@@ -126,6 +140,10 @@
     <ProjectReference Include="..\..\..\Application\Utilities\Utilities.csproj">
       <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\Service\ServiceCore\ServiceCore.csproj">
+      <Project>{D5AB09B2-A713-4011-ACA9-D8143502197E}</Project>
+      <Name>ServiceCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UnitTestHelper\UnitTestHelper.csproj">
       <Project>{913290B0-952B-4EF5-8839-1CC84CAF0048}</Project>
@@ -136,7 +154,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -147,7 +165,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NSubstitute">
-          <HintPath>..\..\..\..\packages\test\NSubstitute\lib\net45\NSubstitute.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NSubstitute.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -158,7 +176,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="nunit.framework">
-          <HintPath>..\..\..\..\packages\test\NUnit\lib\net45\nunit.framework.dll</HintPath>
+          <HintPath>..\..\..\..\lib\nunit.framework.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -11,9 +11,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion2_UpgradeRequiredToVersion3_ReturnsTrue()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "2");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "2");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(3));
         }
@@ -22,24 +22,24 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion2_UpgradeToVersion3_SetsVersionTo3()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "2");
-            var upgrader = new SettingsUpgrader(data);
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "2");
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(3);
 
-            Assert.AreEqual("3", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("3", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [Test]
         public void Test_RenamePdfAasPdfA2b()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "2");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "2");
             data.SetValue(@"ConversionProfiles\numClasses", "2");
             data.SetValue(@"ConversionProfiles\0\OutputFormat", "PdfA");
             data.SetValue(@"ConversionProfiles\1\OutputFormat", "PdfA");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(3);
 
@@ -51,7 +51,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void Test_OutputformatNamesExceptPdfARemainUnchanged()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "2");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "2");
             data.SetValue(@"ConversionProfiles\numClasses", "5");
             data.SetValue(@"ConversionProfiles\0\OutputFormat", "Pdf");
             data.SetValue(@"ConversionProfiles\1\OutputFormat", "PdfX");
@@ -59,7 +59,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\3\OutputFormat", "Png");
             data.SetValue(@"ConversionProfiles\4\OutputFormat", "Tif");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(3);
 

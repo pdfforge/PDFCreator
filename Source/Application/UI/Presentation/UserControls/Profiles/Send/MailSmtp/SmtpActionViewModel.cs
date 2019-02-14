@@ -2,6 +2,7 @@
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
@@ -29,7 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
 
         private readonly IInteractionRequest _interactionRequest;
         private readonly ISmtpTest _smtpTest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
+        private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountsProvider;
 
         public IMacroCommand EditAccountCommand { get; }
         public IMacroCommand AddAccountCommand { get; }
@@ -38,18 +39,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
 
         private EmailSmtpSettings EmailSmtpSettings => CurrentProfile?.EmailSmtpSettings;
 
-        public SmtpActionViewModel(IInteractionRequest interactionRequest, ISmtpTest smtpTest, ITranslationUpdater updater, ICurrentSettingsProvider currentSettingsProvider,
-            ICommandLocator commandLocator, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher) : base(updater, currentSettingsProvider, dispatcher)
+        private readonly IGpoSettings _gpoSettings;
+        public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
+
+        public SmtpActionViewModel(IInteractionRequest interactionRequest,
+            ISmtpTest smtpTest,
+            ITranslationUpdater updater,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ICommandLocator commandLocator,
+            ITokenViewModelFactory tokenViewModelFactory,
+            IDispatcher dispatcher,
+            IGpoSettings gpoSettings) : base(updater, currentSettingsProvider, dispatcher)
         {
             _interactionRequest = interactionRequest;
             _smtpTest = smtpTest;
-            _currentSettingsProvider = currentSettingsProvider;
+            _accountsProvider = accountsProvider;
+            _gpoSettings = gpoSettings;
 
             SetTokenViewModel(tokenViewModelFactory);
 
-            if (currentSettingsProvider?.Settings != null)
+            _smtpAccounts = _accountsProvider?.Settings.SmtpAccounts;
+
+            if (_smtpAccounts != null)
             {
-                _smtpAccounts = currentSettingsProvider.Settings.ApplicationSettings.Accounts.SmtpAccounts;
                 SmtpAccountsView = new ListCollectionView(_smtpAccounts);
                 SmtpAccountsView.SortDescriptions.Add(new SortDescription(nameof(SmtpAccount.AccountInfo), ListSortDirection.Ascending));
             }
@@ -101,7 +114,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
 
         private void TextSmtpExecute(object obj)
         {
-            _smtpTest.SendTestMail(CurrentProfile, _currentSettingsProvider.Settings.ApplicationSettings.Accounts);
+            _smtpTest.SendTestMail(CurrentProfile, _accountsProvider.Settings);
         }
 
         private void EditMailTextExecute(object obj)

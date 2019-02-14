@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using Prism.Commands;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using DelegateCommand = pdfforge.Obsidian.DelegateCommand;
 
@@ -17,6 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PlusHint
     public class PlusHintViewModel : TranslatableViewModelBase<PlusHintViewTranslation>, IWorkflowViewModel
     {
         private readonly IPlusHintHelper _plusHintHelper;
+        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
 
         public PlusHintViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IPlusHintHelper plusHintHelper) : base(translationUpdater)
         {
@@ -41,13 +43,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PlusHint
 
         public string ThankYouText => Translation.GetThankYouMessage(_plusHintHelper.CurrentJobCounter);
 
-        public void ExecuteWorkflowStep(Job job)
+        public Task ExecuteWorkflowStep(Job job)
         {
+            return _taskCompletionSource.Task;
         }
 
         private void InvokeStepFinished()
         {
             StepFinished?.Invoke(this, EventArgs.Empty);
+            _taskCompletionSource.SetResult(null);
         }
 
         private void CancelExecute()

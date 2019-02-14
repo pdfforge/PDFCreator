@@ -30,6 +30,15 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
 
                 case EnvironmentVariable.ComputerName:
                     return _environment.MachineName;
+
+                case EnvironmentVariable.Desktop:
+                    return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                case EnvironmentVariable.MyDocuments:
+                    return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                case EnvironmentVariable.MyPictures:
+                    return Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
 
             throw new ArgumentOutOfRangeException();
@@ -49,6 +58,9 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
     public enum EnvironmentVariable
     {
         Username,
-        ComputerName
+        ComputerName,
+        Desktop,
+        MyDocuments,
+        MyPictures
     }
 }

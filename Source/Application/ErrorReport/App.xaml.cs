@@ -8,18 +8,20 @@ namespace pdfforge.PDFCreator.ErrorReport
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            if (e.Args.Length != 1)
-                return;
+            var errorFile = "";
+            if (e.Args.Length == 1)
+            {
+                errorFile = e.Args[0];
 
-            var errorFile = e.Args[0];
-
-            if (!File.Exists(errorFile))
-                return;
+                if (!File.Exists(errorFile))
+                    return;
+            }
 
             ShowReportWindow(errorFile);
+            Environment.Exit(0);
         }
 
-        private bool ShowReportWindow(string errorFile)
+        private void ShowReportWindow(string errorFile)
         {
             try
             {
@@ -30,12 +32,10 @@ namespace pdfforge.PDFCreator.ErrorReport
                 err.ShowDialog();
 
                 File.Delete(errorFile);
-
-                return true;
             }
-            catch
+            catch (Exception e)
             {
-                return false;
+                Environment.Exit(-1);
             }
         }
     }

@@ -4,7 +4,6 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Windows.Data;
@@ -14,13 +13,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class HttpAccountAddCommand : TranslatableCommandBase<HttpTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
 
-        public HttpAccountAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public HttpAccountAddCommand(
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _currentSettingsProvider = currentSettingsProvider;
+            _accountsProvider = accountsProvider;
         }
 
         public override bool CanExecute(object parameter)
@@ -45,7 +47,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
-            var httpAccounts = _currentSettingsProvider.Settings.ApplicationSettings.Accounts.HttpAccounts;
+            var httpAccounts = _accountsProvider.Settings.HttpAccounts;
             httpAccounts.Add(interaction.HttpAccount);
 
             var collectionView = CollectionViewSource.GetDefaultView(httpAccounts);

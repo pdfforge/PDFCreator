@@ -7,29 +7,68 @@
     xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken"
     xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
+    d:DesignHeight="600"
+    d:DesignWidth="600"
     d:DataContext="{d:DesignInstance local:DesignTimeUserTokenUserControlViewModel, IsDesignTimeCreatable=True}"
     Style="{DynamicResource TabUserControl}"
     help:HelpProvider.HelpTopic="UserTokens">
-
+    <UserControl.Resources>
+        <converter:DebugConverter x:Key="DebugConverter" />
+        <local:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
+    </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
         <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
                 <Label Margin="-5"  IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}">
                     <TextBlock Style="{DynamicResource HeaderTextStyle}" Text="{Binding Translation.UserTokenTitle}" />
                 </Label>
-                <userControls:PlusFeatureControl Edition="BusinessOrTerminalServer" Margin="20 0 0 0" />
+                <userControls:PlusFeatureControl Edition="AllLicensed" Margin="20 0 0 0" />
             </StackPanel>
         </HeaderedContentControl.Header>
-        <StackPanel IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}">
-            <Label>
-                <TextBlock Text="{Binding Translation.DescriptionText}" TextWrapping="Wrap" />
+
+        <StackPanel IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}" MaxWidth="500" HorizontalAlignment="Left">
+            <Label Padding="0" Margin="0 10 0 0">
+                <TextBlock Text="{Binding Translation.UserTokenIntroduction}" TextWrapping="Wrap" />
             </Label>
-            <Button Width="150" Padding="5" Margin="0 10" Command="{Binding OpenUserGuideCommand}">
-                <TextBlock Text="{Binding Translation.UserGuideButtonText}" TextWrapping="Wrap" />
-            </Button>
+            <Label Content="{Binding Translation.UserTokenInDocumentText}" Margin="0 20 0 0" Padding="0" />
+            <Label  FontSize="13" FontWeight="DemiBold" Padding="0" Margin="0 5 0 0" Foreground="{DynamicResource PdfCreator.DarkGreyBrush}">
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource SeparatorToExampleStringConverter}">
+                        <Binding Path="Translation" />
+                        <Binding Path="CurrentProfile.UserTokens.Seperator" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <Label Padding="0" Margin="0 20 0 0">
+                <TextBlock Text="{Binding Translation.UserTokenInSettingsText}" MaxWidth="420" TextWrapping="Wrap" />
+            </Label>
+            <Label VerticalAlignment="Center" FontSize="13" FontWeight="DemiBold" Padding="0" Margin="0 5 0 0" Foreground="{DynamicResource PdfCreator.DarkGreyBrush}">
+                <TextBlock Text="{Binding Translation.UserTokenSettingsExample}" TextWrapping="Wrap" />
+            </Label>
+            <Label VerticalAlignment="Center" Padding="0" Margin="0 20 0 0">
+                <TextBlock Text="{Binding Translation.DefaultValueExplanation}" TextWrapping="Wrap" />
+            </Label>
+            <DockPanel HorizontalAlignment="Stretch" Margin="0 15 0 0">
+                <StackPanel VerticalAlignment="Center">
+                    <Label Content="{Binding Translation.SelectSeparator}" Padding="0 5" />
+                    <ComboBox
+                        Margin="0 5 0 0"
+                        Width="100"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        SelectedValue="{Binding CurrentProfile.UserTokens.Seperator}"
+                        SelectedValuePath="Value"
+                        DisplayMemberPath="Translation"
+                        ItemsSource="{Binding Translation.UserTokenSeperatorValues}" />
+                </StackPanel>
+
+                <Button Command="{Binding OpenUserGuideCommand}" DockPanel.Dock="Right"
+                        Content="{Binding Translation.UserGuideButtonText}"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right" />
+            </DockPanel>
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

@@ -30,6 +30,10 @@
         <ResourceDictionary Source="../Styles/MainResourceDict.xaml" />
     </controls:MetroWindow.Resources>
 
+    <controls:MetroWindow.WindowButtonCommands>
+        <controls:WindowButtonCommands Style="{DynamicResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
+    </controls:MetroWindow.WindowButtonCommands>
+
     <i:Interaction.Behaviors>
         <!-- The first two behaviors are needed by MahApps. They are added by default, but as we overwrite behaviors, we have to add them again -->
         <behaviours:BorderlessWindowBehavior />

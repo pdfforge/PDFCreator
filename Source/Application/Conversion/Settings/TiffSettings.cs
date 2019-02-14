@@ -34,10 +34,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public int Dpi { get; set; } = 150;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Color = (TiffColor) Enum.Parse(typeof(TiffColor), data.GetValue(@"" + path + @"Color")); } catch { Color = TiffColor.Color24Bit;}
-			try { Dpi = int.Parse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.CultureInfo.InvariantCulture); } catch { Dpi = 150;}
+			Color = Enum.TryParse<TiffColor>(data.GetValue(@"" + path + @"Color"), out var tmpColor) ? tmpColor : TiffColor.Color24Bit;
+			Dpi = int.TryParse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpDpi) ? tmpDpi : 150;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -52,7 +52,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.Color = Color;
 			copy.Dpi = Dpi;
-			
 			return copy;
 		}
 		
@@ -63,18 +62,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!Color.Equals(v.Color)) return false;
 			if (!Dpi.Equals(v.Dpi)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Color=" + Color.ToString());
-			sb.AppendLine("Dpi=" + Dpi.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Actions.Actions;
+﻿using System.Collections.Generic;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 
@@ -6,7 +7,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 {
     public interface IAppSettingsChecker
     {
-        ActionResult CheckDefaultViewers(ApplicationSettings appSettings);
+        ActionResult CheckDefaultViewers(IEnumerable<DefaultViewer> defaultViewers);
     }
 
     public class AppSettingsChecker : IAppSettingsChecker
@@ -18,11 +19,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _defaultViewerCheck = defaultViewerCheck;
         }
 
-        public ActionResult CheckDefaultViewers(ApplicationSettings appSettings)
+        public ActionResult CheckDefaultViewers(IEnumerable<DefaultViewer> defaultViewers)
         {
             var result = new ActionResult();
 
-            foreach (var defaultViewer in appSettings.DefaultViewers)
+            foreach (var defaultViewer in defaultViewers)
             {
                 result.AddRange(_defaultViewerCheck.Check(defaultViewer));
             }

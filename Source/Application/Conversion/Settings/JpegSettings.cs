@@ -39,11 +39,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public int Quality { get; set; } = 75;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Color = (JpegColor) Enum.Parse(typeof(JpegColor), data.GetValue(@"" + path + @"Color")); } catch { Color = JpegColor.Color24Bit;}
-			try { Dpi = int.Parse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.CultureInfo.InvariantCulture); } catch { Dpi = 150;}
-			try { Quality = int.Parse(data.GetValue(@"" + path + @"Quality"), System.Globalization.CultureInfo.InvariantCulture); } catch { Quality = 75;}
+			Color = Enum.TryParse<JpegColor>(data.GetValue(@"" + path + @"Color"), out var tmpColor) ? tmpColor : JpegColor.Color24Bit;
+			Dpi = int.TryParse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpDpi) ? tmpDpi : 150;
+			Quality = int.TryParse(data.GetValue(@"" + path + @"Quality"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpQuality) ? tmpQuality : 75;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -60,7 +60,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Color = Color;
 			copy.Dpi = Dpi;
 			copy.Quality = Quality;
-			
 			return copy;
 		}
 		
@@ -72,19 +71,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Color.Equals(v.Color)) return false;
 			if (!Dpi.Equals(v.Dpi)) return false;
 			if (!Quality.Equals(v.Quality)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Color=" + Color.ToString());
-			sb.AppendLine("Dpi=" + Dpi.ToString());
-			sb.AppendLine("Quality=" + Quality.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

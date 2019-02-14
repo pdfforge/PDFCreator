@@ -20,7 +20,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
             _ghostscriptVersion = ghostscriptVersion;
         }
 
-        private string GhostscriptOutput => _ghostscriptOutput.ToString();
+        public string ConverterOutput => _ghostscriptOutput.ToString();
 
         private int NumberOfPages { get; set; }
 
@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
                 if (!success)
                 {
-                    var errorMessage = ExtractGhostscriptErrors(GhostscriptOutput);
+                    var errorMessage = ExtractGhostscriptErrors(ConverterOutput);
                     _logger.Error("Ghostscript execution failed: " + errorMessage);
                     if (errorMessage.Contains("Redistilling encrypted PDF is not permitted"))
                     {
@@ -86,6 +86,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
             {
                 case OutputFormat.PdfA1B:
                 case OutputFormat.PdfA2B:
+                case OutputFormat.PdfA3B:
                 case OutputFormat.PdfX:
                 case OutputFormat.Pdf:
                     device = new PdfDevice(job);
@@ -156,8 +157,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
         private void Ghostscript_Logging(object sender, OutputEventArgs e)
         {
             _ghostscriptOutput.Append(e.Output);
-
-            _logger.Debug(e.Output.TrimEnd('\r', '\n'));
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
@@ -29,7 +28,7 @@ namespace Presentation.UnitTest.Helper
             _fileWrap = Substitute.For<IFile>();
             _userGuideLauncher = Substitute.For<IUserGuideLauncher>();
             _settingsProvider = Substitute.For<ISettingsProvider>();
-            _settingsProvider.Settings.Returns(new PdfCreatorSettings(Substitute.For<IStorage>()));
+            _settingsProvider.Settings.Returns(new PdfCreatorSettings());
             _assemblyHelper = Substitute.For<IAssemblyHelper>();
 
             _languageProvider = Substitute.For<ILanguageProvider>();

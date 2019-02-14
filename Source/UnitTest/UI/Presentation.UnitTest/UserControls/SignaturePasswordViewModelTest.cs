@@ -36,7 +36,7 @@ namespace Presentation.UnitTest.UserControls
             _conversionProfile.PdfSettings.Signature.Enabled = true;
             _conversionProfile.PdfSettings.Signature.CertificateFile = certificateFile;
 
-            _job = new Job(new JobInfo(), _conversionProfile, new JobTranslations(), null);
+            _job = new Job(new JobInfo(), _conversionProfile, null);
 
             _viewModel = BuildViewModel();
             _viewModel.ExecuteWorkflowStep(_job);

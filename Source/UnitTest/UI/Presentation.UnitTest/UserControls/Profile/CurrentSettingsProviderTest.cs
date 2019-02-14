@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
+using pdfforge.PDFCreator.UI.Presentation;
 
 namespace Presentation.UnitTest.UserControls.Profile
 {
@@ -14,7 +14,7 @@ namespace Presentation.UnitTest.UserControls.Profile
         [SetUp]
         public void Setup()
         {
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(new ConversionProfile());
         }
 
@@ -35,7 +35,7 @@ namespace Presentation.UnitTest.UserControls.Profile
             Assert.AreNotSame(_settings, currentSettingsProvider.Settings);
 
             Assert.AreSame(_settings.ApplicationSettings, currentSettingsProvider.Settings.ApplicationSettings);
-            Assert.AreSame(_settings.ApplicationProperties, currentSettingsProvider.Settings.ApplicationProperties);
+            Assert.AreSame(_settings.CreatorAppSettings, currentSettingsProvider.Settings.CreatorAppSettings);
         }
     }
 }

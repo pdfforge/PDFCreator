@@ -1,11 +1,11 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.COM;
+using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.Collections.Generic;
@@ -19,10 +19,10 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IDirectory _directory;
+        private readonly IPathUtil _pathUtil;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
-        private readonly IPathSafe _pathSafe;
 
         private readonly ISettingsProvider _settingsProvider;
         private readonly ThreadPool _threadPool;
@@ -37,15 +37,15 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         private readonly IComWorkflowFactory _workflowFactory;
 
-        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IPathSafe pathSafe, IDirectory directory)
+        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil)
         {
             _settingsProvider = settingsProvider;
             _workflowFactory = workflowFactory;
             _threadPool = threadPool;
             _jobInfoQueue = jobInfoQueue;
             _errorCodeInterpreter = errorCodeInterpreter;
-            _pathSafe = pathSafe;
             _directory = directory;
+            _pathUtil = pathUtil;
         }
 
         public Job Job { get; set; }
@@ -68,6 +68,9 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         public void ConvertTo(string fullFileName)
         {
+            if (!_pathUtil.IsValidRootedPath(fullFileName))
+                throw new ArgumentException("Invalid path", nameof(fullFileName));
+
             Logger.Trace("COM: Starting the conversion process.");
             DoConversion(Job, DetermineOutputFilename(fullFileName));
         }
@@ -179,6 +182,8 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         private void DisableIrrelevantProfileSettings(ConversionProfile profile)
         {
             profile.AutoSave.Enabled = false;
+
+            profile.OpenViewer = false;
         }
 
         /// <summary>
@@ -203,7 +208,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             if (fileName == null)
                 throw new COMException("The output filename was not set");
 
-            var tmpPath = _pathSafe.GetDirectoryName(fileName);
+            var tmpPath = PathSafe.GetDirectoryName(fileName);
 
             if (tmpPath == null || !_directory.Exists(tmpPath))
                 throw new COMException("Invalid path. Please check if the directory exists.");

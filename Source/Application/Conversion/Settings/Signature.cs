@@ -46,22 +46,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Signature location: Top left corner (X part)
 		/// </summary>
-		public int LeftX { get; set; } = 100;
+		public float LeftX { get; set; } = 100;
 		
 		/// <summary>
 		/// Signature location: Top left corner (Y part)
 		/// </summary>
-		public int LeftY { get; set; } = 100;
+		public float LeftY { get; set; } = 100;
 		
 		/// <summary>
 		/// Signature location: Bottom right corner (X part)
 		/// </summary>
-		public int RightX { get; set; } = 200;
+		public float RightX { get; set; } = 200;
 		
 		/// <summary>
 		/// Signature location: Bottom right corner (Y part)
 		/// </summary>
-		public int RightY { get; set; } = 200;
+		public float RightY { get; set; } = 200;
 		
 		/// <summary>
 		/// Contact name of the signature
@@ -100,21 +100,21 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string TimeServerAccountId { get; set; } = "";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { AllowMultiSigning = bool.Parse(data.GetValue(@"" + path + @"AllowMultiSigning")); } catch { AllowMultiSigning = false;}
+			AllowMultiSigning = bool.TryParse(data.GetValue(@"" + path + @"AllowMultiSigning"), out var tmpAllowMultiSigning) ? tmpAllowMultiSigning : false;
 			try { CertificateFile = Data.UnescapeString(data.GetValue(@"" + path + @"CertificateFile")); } catch { CertificateFile = "";}
-			try { DisplaySignatureInDocument = bool.Parse(data.GetValue(@"" + path + @"DisplaySignatureInDocument")); } catch { DisplaySignatureInDocument = false;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { LeftX = int.Parse(data.GetValue(@"" + path + @"LeftX"), System.Globalization.CultureInfo.InvariantCulture); } catch { LeftX = 100;}
-			try { LeftY = int.Parse(data.GetValue(@"" + path + @"LeftY"), System.Globalization.CultureInfo.InvariantCulture); } catch { LeftY = 100;}
-			try { RightX = int.Parse(data.GetValue(@"" + path + @"RightX"), System.Globalization.CultureInfo.InvariantCulture); } catch { RightX = 200;}
-			try { RightY = int.Parse(data.GetValue(@"" + path + @"RightY"), System.Globalization.CultureInfo.InvariantCulture); } catch { RightY = 200;}
+			DisplaySignatureInDocument = bool.TryParse(data.GetValue(@"" + path + @"DisplaySignatureInDocument"), out var tmpDisplaySignatureInDocument) ? tmpDisplaySignatureInDocument : false;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			LeftX = float.TryParse(data.GetValue(@"" + path + @"LeftX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftX) ? tmpLeftX : 100;
+			LeftY = float.TryParse(data.GetValue(@"" + path + @"LeftY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftY) ? tmpLeftY : 100;
+			RightX = float.TryParse(data.GetValue(@"" + path + @"RightX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightX) ? tmpRightX : 200;
+			RightY = float.TryParse(data.GetValue(@"" + path + @"RightY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightY) ? tmpRightY : 200;
 			try { SignContact = Data.UnescapeString(data.GetValue(@"" + path + @"SignContact")); } catch { SignContact = "";}
 			try { SignLocation = Data.UnescapeString(data.GetValue(@"" + path + @"SignLocation")); } catch { SignLocation = "";}
 			try { SignReason = Data.UnescapeString(data.GetValue(@"" + path + @"SignReason")); } catch { SignReason = "";}
-			try { SignatureCustomPage = int.Parse(data.GetValue(@"" + path + @"SignatureCustomPage"), System.Globalization.CultureInfo.InvariantCulture); } catch { SignatureCustomPage = 1;}
-			try { SignaturePage = (SignaturePage) Enum.Parse(typeof(SignaturePage), data.GetValue(@"" + path + @"SignaturePage")); } catch { SignaturePage = SignaturePage.FirstPage;}
+			SignatureCustomPage = int.TryParse(data.GetValue(@"" + path + @"SignatureCustomPage"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSignatureCustomPage) ? tmpSignatureCustomPage : 1;
+			SignaturePage = Enum.TryParse<SignaturePage>(data.GetValue(@"" + path + @"SignaturePage"), out var tmpSignaturePage) ? tmpSignaturePage : SignaturePage.FirstPage;
 			_signaturePassword = data.GetValue(@"" + path + @"SignaturePassword");
 			try { TimeServerAccountId = Data.UnescapeString(data.GetValue(@"" + path + @"TimeServerAccountId")); } catch { TimeServerAccountId = "";}
 		}
@@ -157,7 +157,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.SignaturePage = SignaturePage;
 			copy.SignaturePassword = SignaturePassword;
 			copy.TimeServerAccountId = TimeServerAccountId;
-			
 			return copy;
 		}
 		
@@ -181,31 +180,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!SignaturePage.Equals(v.SignaturePage)) return false;
 			if (!SignaturePassword.Equals(v.SignaturePassword)) return false;
 			if (!TimeServerAccountId.Equals(v.TimeServerAccountId)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AllowMultiSigning=" + AllowMultiSigning.ToString());
-			sb.AppendLine("CertificateFile=" + CertificateFile.ToString());
-			sb.AppendLine("DisplaySignatureInDocument=" + DisplaySignatureInDocument.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("LeftX=" + LeftX.ToString());
-			sb.AppendLine("LeftY=" + LeftY.ToString());
-			sb.AppendLine("RightX=" + RightX.ToString());
-			sb.AppendLine("RightY=" + RightY.ToString());
-			sb.AppendLine("SignContact=" + SignContact.ToString());
-			sb.AppendLine("SignLocation=" + SignLocation.ToString());
-			sb.AppendLine("SignReason=" + SignReason.ToString());
-			sb.AppendLine("SignatureCustomPage=" + SignatureCustomPage.ToString());
-			sb.AppendLine("SignaturePage=" + SignaturePage.ToString());
-			sb.AppendLine("SignaturePassword=" + SignaturePassword.ToString());
-			sb.AppendLine("TimeServerAccountId=" + TimeServerAccountId.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

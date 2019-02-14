@@ -15,13 +15,7 @@ namespace pdfforge.PDFCreator.Utilities
 
         string ELLIPSIS { get; }
 
-        string GetFileName(string path);
-
-        string GetFileNameWithoutExtension(string path);
-
-        string GetLongDirectoryName(string givenPath);
-
-        string EllipsisForPath(string filePath, int maxLength);
+        string EllipsisForFilename(string filePath, int maxLength);
 
         string EllipsisForTooLongPath(string filePath);
 
@@ -34,14 +28,6 @@ namespace pdfforge.PDFCreator.Utilities
         PathUtilStatus IsValidRootedPathWithResponse(string path);
 
         bool IsValidFilename(string fileName);
-
-        string Combine(string path1, string path2);
-
-        bool HasExtension(string path);
-
-        string GetExtension(string path);
-
-        string ChangeExtension(string path, string extension);
     }
 
     public class PathUtil : IPathUtil
@@ -59,53 +45,13 @@ namespace pdfforge.PDFCreator.Utilities
 
         public string ELLIPSIS => "__";
 
-        public string GetLongDirectoryName(string givenPath)
-        {
-            if (givenPath == null)
-                throw new ArgumentNullException(nameof(givenPath));
-
-            var pos = givenPath.LastIndexOf('\\');
-
-            // if pos == 0, the path starts with a backslash and has no further backslashes
-            if (pos <= 0)
-                return null;
-
-            var folder = givenPath.Substring(0, pos);
-
-            if (folder.Length == 2 && folder[1] == ':')
-                folder += "\\";
-
-            return folder;
-        }
-
-        public string GetFileName(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-                return "";
-
-            if (!path.Contains(@"\"))
-                return path;
-
-            var pos = path.LastIndexOf(@"\");
-
-            var fileName = path.Substring(pos + 1);
-
-            return fileName;
-        }
-
-        public string GetFileNameWithoutExtension(string path)
-        {
-            var fileName = GetFileName(path);
-            return ChangeExtension(fileName, "");
-        }
-
         /// <summary>
         ///     Adds ellipsis to a path with a length longer than 255.
         /// </summary>
         /// <param name="filePath">full path to file</param>
         /// <param name="maxLength">maximum length of the string. This must be between 10 and MAX_PATH (260)</param>
         /// <returns>file path with ellipsis to ensure length under the max length </returns>
-        public string EllipsisForPath(string filePath, int maxLength)
+        public string EllipsisForFilename(string filePath, int maxLength)
         {
             if (filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
@@ -120,9 +66,9 @@ namespace pdfforge.PDFCreator.Utilities
             {
                 int minUsefulFileLength = 4;
 
-                var directory = GetLongDirectoryName(filePath) ?? "";
-                var file = GetFileNameWithoutExtension(filePath);
-                var extension = GetExtension(filePath);
+                var directory = PathSafe.GetDirectoryName(filePath) ?? "";
+                var file = PathSafe.GetFileNameWithoutExtension(filePath);
+                var extension = PathSafe.GetExtension(filePath);
 
                 var remainingLengthForFile = maxLength - directory.Length - extension.Length - ELLIPSIS.Length - 1; // substract -1 to account for the slash between path and filename
                 if (remainingLengthForFile < minUsefulFileLength)
@@ -133,7 +79,7 @@ namespace pdfforge.PDFCreator.Utilities
                 var partLength = remainingLengthForFile / 2;
 
                 file = file.Substring(0, partLength) + ELLIPSIS + file.Substring(file.Length - partLength, partLength);
-                filePath = Combine(directory, file + extension);
+                filePath = PathSafe.Combine(directory, file + extension);
             }
 
             return filePath;
@@ -146,7 +92,7 @@ namespace pdfforge.PDFCreator.Utilities
         /// <returns>file path with ellipsis to ensure length under 255 </returns>
         public string EllipsisForTooLongPath(string filePath)
         {
-            return EllipsisForPath(filePath, MAX_PATH);
+            return EllipsisForFilename(filePath, MAX_PATH);
         }
 
         /// <summary>
@@ -232,72 +178,6 @@ namespace pdfforge.PDFCreator.Utilities
                 return false;
 
             return true;
-        }
-
-        public string Combine(string path1, string path2)
-        {
-            if (string.IsNullOrWhiteSpace(path1) && string.IsNullOrWhiteSpace(path2))
-                return "";
-            if (!string.IsNullOrWhiteSpace(path1) && string.IsNullOrWhiteSpace(path2))
-                return path1;
-            if (string.IsNullOrWhiteSpace(path1) && !string.IsNullOrWhiteSpace(path2))
-                return path2;
-
-            path1 = path1.Trim();
-            path2 = path2.Trim();
-
-            while (path1.EndsWith(@"\") && path1.Length > 0)
-            {
-                path1 = path1.Remove(path1.Length - 1).Trim();
-            }
-
-            while (path2.StartsWith(@"\") && path2.Length > 0)
-            {
-                path2 = path2.Remove(0, 1).Trim();
-            }
-
-            return path1 + @"\" + path2;
-        }
-
-        public bool HasExtension(string path)
-        {
-            if (path == null)
-                return false;
-
-            path = path.Trim();
-            var lastIndexOfPeriod = path.LastIndexOf(".", StringComparison.Ordinal);
-            if (lastIndexOfPeriod == path.Length - 1)
-                return false;
-
-            var lastIndexOfBackslash = path.LastIndexOf(@"\", StringComparison.Ordinal);
-
-            return lastIndexOfPeriod > lastIndexOfBackslash;
-        }
-
-        public string GetExtension(string path)
-        {
-            if (!HasExtension(path))
-                return "";
-            if (path == null)
-                return "";
-            path = path.Trim();
-            var spiltByPeriod = path.Split('.');
-            return "." + spiltByPeriod.LastOrDefault();
-        }
-
-        public string ChangeExtension(string path, string extension)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-                path = "";
-
-            if (string.IsNullOrWhiteSpace(extension))
-                extension = "";
-
-            var currentExtension = GetExtension(path);
-            if (!string.IsNullOrWhiteSpace(currentExtension))
-                path = path.Substring(0, path.LastIndexOf(currentExtension));
-
-            return path + extension;
         }
     }
 

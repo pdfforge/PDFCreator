@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -50,10 +51,14 @@ namespace pdfforge.PDFCreator.Utilities
         /// <param name="verb">The shell verb to query, i.e. print or printto</param>
         /// <returns></returns>
         ShellCommand GetShellCommand(string assoc, string verb);
+
+        void RegisterSpecialFileTypes(List<SpecialShellCommand> specialFileTypes);
     }
 
     public class FileAssoc : IFileAssoc
     {
+        private List<SpecialShellCommand> _specialFileTypes;
+
         /// <inheritdoc />
         public bool HasPrint(string assoc)
         {
@@ -87,13 +92,26 @@ namespace pdfforge.PDFCreator.Utilities
             var command = filetypeRegKey?.GetValue("") as string;
 
             if (string.IsNullOrWhiteSpace(command))
-                return null;
+            {
+                if (fileType == null || _specialFileTypes == null || _specialFileTypes.Count == 0)
+                    return null;
+
+                var specialCommand = _specialFileTypes.FirstOrDefault(x => x.FileType == fileType && x.ShellVerb == verb);
+                if (specialCommand == null)
+                    return null;
+
+                return new ShellCommand(specialCommand.CommandLine, specialCommand.Arguments, verb);
+            }
 
             var commandArgs = CommandLineToArgs(command);
-
             var commandParams = commandArgs.Skip(1).ToArray();
 
             return new ShellCommand(commandArgs[0], commandParams, verb);
+        }
+
+        public void RegisterSpecialFileTypes(List<SpecialShellCommand> specialFileTypes)
+        {
+            _specialFileTypes = specialFileTypes;
         }
 
         private string[] GetVerbsByExtension(string assoc)
@@ -220,5 +238,21 @@ namespace pdfforge.PDFCreator.Utilities
 
             return string.Join(" ", argList);
         }
+    }
+
+    public class SpecialShellCommand
+    {
+        public SpecialShellCommand(string fileType, string shellVerb, string commandLine, string[] arguments)
+        {
+            FileType = fileType;
+            CommandLine = commandLine;
+            Arguments = arguments;
+            ShellVerb = shellVerb;
+        }
+
+        public string FileType { get; }
+        public string CommandLine { get; }
+        public string[] Arguments { get; }
+        public string ShellVerb { get; }
     }
 }

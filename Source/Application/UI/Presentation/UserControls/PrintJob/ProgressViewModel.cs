@@ -18,53 +18,49 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
     public class ProgressViewModel : TranslatableViewModelBase<ProgressViewTranslation>, IWorkflowViewModel
     {
         private readonly IJobRunner _jobRunner;
-        private readonly IProfileChecker _profileChecker;
         private readonly IInteractionRequest _interactionRequest;
         private readonly IDispatcher _dispatcher;
         private readonly InteractiveOutputFileMover _outputFileMover;
-        private readonly AutoResetEvent _finishedEvent = new AutoResetEvent(false);
+        private TaskCompletionSource<JobCompletedEventArgs> _taskCompletionSource = new TaskCompletionSource<JobCompletedEventArgs>();
         private PasswordOverlayTranslation _passwordOverlayTranslation;
 
         public int ProgressPercentage { get; set; } = 0;
 
-        public ProgressViewModel(IJobRunner jobRunner, IProfileChecker profileChecker, IInteractionRequest interactionRequest, IDispatcher dispatcher,
+        public ProgressViewModel(IJobRunner jobRunner, IInteractionRequest interactionRequest, IDispatcher dispatcher,
             ITranslationUpdater translationUpdater, InteractiveOutputFileMover outputFileMover)
             : base(translationUpdater)
         {
             _jobRunner = jobRunner;
-            _profileChecker = profileChecker;
             _interactionRequest = interactionRequest;
             _dispatcher = dispatcher;
             _outputFileMover = outputFileMover;
             translationUpdater.RegisterAndSetTranslation(tf => _passwordOverlayTranslation = tf.UpdateOrCreateTranslation(_passwordOverlayTranslation));
         }
 
-        public async void ExecuteWorkflowStep(Job job)
+        public async Task ExecuteWorkflowStep(Job job)
         {
             ProgressPercentage = 0;
 
-            await Task.Run(() =>
+            try
             {
-                try
-                {
-                    job.OnJobCompleted += OnJobCompleted;
-                    job.OnJobProgressChanged += OnJobProgressChanged;
+                _taskCompletionSource = new TaskCompletionSource<JobCompletedEventArgs>();
+                job.OnJobCompleted += OnJobCompleted;
+                job.OnJobProgressChanged += OnJobProgressChanged;
 
-                    job.OnJobHasError += OnAnErrorOccurredInJob;
+                job.OnJobHasError += OnAnErrorOccurredInJob;
 
-                    _jobRunner.RunJob(job, _outputFileMover);
+                await _jobRunner.RunJob(job, _outputFileMover);
 
-                    _finishedEvent.WaitOne();
+                await _taskCompletionSource.Task;
 
-                    StepFinished?.Invoke(this, EventArgs.Empty);
-                }
-                finally
-                {
-                    job.OnJobCompleted -= OnJobCompleted;
-                    job.OnJobProgressChanged -= OnJobProgressChanged;
-                    job.OnJobHasError -= OnAnErrorOccurredInJob;
-                }
-            });
+                StepFinished?.Invoke(this, EventArgs.Empty);
+            }
+            finally
+            {
+                job.OnJobCompleted -= OnJobCompleted;
+                job.OnJobProgressChanged -= OnJobProgressChanged;
+                job.OnJobHasError -= OnAnErrorOccurredInJob;
+            }
         }
 
         private void OnAnErrorOccurredInJob(object sender, JobLoginFailedEventArgs args)
@@ -99,7 +95,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void OnJobCompleted(object sender, JobCompletedEventArgs args)
         {
-            _finishedEvent.Set();
+            _taskCompletionSource.SetResult(args);
         }
 
         private void OnJobProgressChanged(object sender, JobProgressChangedEventArgs args)

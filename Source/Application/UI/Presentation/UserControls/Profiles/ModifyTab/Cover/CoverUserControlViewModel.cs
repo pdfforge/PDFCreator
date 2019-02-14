@@ -18,7 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Co
         public TokenViewModel<ConversionProfile> CoverPageTokenViewModel { get; set; }
 
         public CoverUserControlViewModel(IOpenFileInteractionHelper openFileInteractionHelper, ITranslationUpdater translationUpdater,
-            ISelectedProfileProvider selectedProfile, TokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher) : base(translationUpdater, selectedProfile, dispatcher)
+            ISelectedProfileProvider selectedProfile, ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher) : base(translationUpdater, selectedProfile, dispatcher)
         {
             _openFileInteractionHelper = openFileInteractionHelper;
 

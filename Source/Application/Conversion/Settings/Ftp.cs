@@ -43,12 +43,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool EnsureUniqueFilenames { get; set; } = false;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
 			try { Directory = Data.UnescapeString(data.GetValue(@"" + path + @"Directory")); } catch { Directory = "";}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { EnsureUniqueFilenames = bool.Parse(data.GetValue(@"" + path + @"EnsureUniqueFilenames")); } catch { EnsureUniqueFilenames = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : false;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -67,7 +67,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Directory = Directory;
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
-			
 			return copy;
 		}
 		
@@ -80,20 +79,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Directory.Equals(v.Directory)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("Directory=" + Directory.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("EnsureUniqueFilenames=" + EnsureUniqueFilenames.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

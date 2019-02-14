@@ -39,12 +39,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string SharedFolder { get; set; } = "PDFCreator";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
-			try { CreateShareLink = bool.Parse(data.GetValue(@"" + path + @"CreateShareLink")); } catch { CreateShareLink = false;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { EnsureUniqueFilenames = bool.Parse(data.GetValue(@"" + path + @"EnsureUniqueFilenames")); } catch { EnsureUniqueFilenames = false;}
+			CreateShareLink = bool.TryParse(data.GetValue(@"" + path + @"CreateShareLink"), out var tmpCreateShareLink) ? tmpCreateShareLink : false;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : false;
 			try { SharedFolder = Data.UnescapeString(data.GetValue(@"" + path + @"SharedFolder")); } catch { SharedFolder = "PDFCreator";}
 		}
 		
@@ -66,7 +66,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			copy.SharedFolder = SharedFolder;
-			
 			return copy;
 		}
 		
@@ -80,21 +79,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
 			if (!SharedFolder.Equals(v.SharedFolder)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("CreateShareLink=" + CreateShareLink.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("EnsureUniqueFilenames=" + EnsureUniqueFilenames.ToString());
-			sb.AppendLine("SharedFolder=" + SharedFolder.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

@@ -8,11 +8,11 @@ using pdfforge.PDFCreator.Utilities.Process;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using SystemInterface.Diagnostics;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -20,13 +20,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     ///     Executes a script or executable after the conversion process.
     ///     The script receives the full paths to all created files and a string with user-configurable parameters as arguments
     /// </summary>
-    public class ScriptAction : IAction, ICheckable, IScriptActionHelper
+    public class ScriptAction : IPostConversionAction, ICheckable, IScriptActionHelper
     {
         private readonly IFile _file;
         private readonly IPathUtil _pathUtil;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IPath _path;
-        private readonly IPathSafe _pathSafe;
         private readonly IProcessStarter _processStarter;
 
         public ScriptAction(IPath path, IProcessStarter processStarter, IFile file, IPathUtil pathUtil)
@@ -35,7 +34,6 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             _processStarter = processStarter;
             _file = file;
             _pathUtil = pathUtil;
-            _pathSafe = new PathWrapSafe();
         }
 
         /// <summary>
@@ -60,9 +58,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var parameters = ComposeScriptParameters(job.Profile.Scripting.ParameterString, job.OutputFiles, job.TokenReplacer);
 
             process.StartInfo.Arguments = parameters;
+            if (job.Profile.Scripting.Visible == false)
+                process.StartInfo.ProcessStartInfoInstance.WindowStyle = ProcessWindowStyle.Hidden;
             _logger.Debug("Script-Parameters: " + parameters);
 
-            var scriptDir = _pathSafe.GetDirectoryName(scriptFile);
+            var scriptDir = PathSafe.GetDirectoryName(scriptFile);
             if (scriptDir != null)
                 process.StartInfo.WorkingDirectory = scriptDir;
 

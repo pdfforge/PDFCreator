@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Core.StartupInterface;
+﻿using pdfforge.PDFCreator.Core.DirectConversion;
+using pdfforge.PDFCreator.Core.StartupInterface;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {
@@ -12,11 +13,17 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             _maybePipedApplicationStarter = maybePipedApplicationStarter;
         }
 
-        public bool StartManagePrintJobs { get; protected internal set; }
+        private AppStartParameters _appStartParameters;
+
+        public AppStartParameters AppStartParameters
+        {
+            get => _appStartParameters ?? (_appStartParameters = new AppStartParameters());
+            protected internal set => _appStartParameters = value;
+        }
 
         public override ExitCode Run()
         {
-            var success = _maybePipedApplicationStarter.SendMessageOrStartApplication(ComposePipeMessage, StartApplication, StartManagePrintJobs);
+            var success = _maybePipedApplicationStarter.SendMessageOrStartApplication(ComposePipeMessage, StartApplication, AppStartParameters.ManagePrintJobs);
             if (!success)
                 return ExitCode.ErrorWhileManagingPrintJobs;
 

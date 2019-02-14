@@ -49,13 +49,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public BackgroundRepetition Repetition { get; set; } = BackgroundRepetition.RepeatLastPage;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			try { File = Data.UnescapeString(data.GetValue(@"" + path + @"File")); } catch { File = "";}
-			try { OnAttachment = bool.Parse(data.GetValue(@"" + path + @"OnAttachment")); } catch { OnAttachment = false;}
-			try { OnCover = bool.Parse(data.GetValue(@"" + path + @"OnCover")); } catch { OnCover = false;}
-			try { Repetition = (BackgroundRepetition) Enum.Parse(typeof(BackgroundRepetition), data.GetValue(@"" + path + @"Repetition")); } catch { Repetition = BackgroundRepetition.RepeatLastPage;}
+			OnAttachment = bool.TryParse(data.GetValue(@"" + path + @"OnAttachment"), out var tmpOnAttachment) ? tmpOnAttachment : false;
+			OnCover = bool.TryParse(data.GetValue(@"" + path + @"OnCover"), out var tmpOnCover) ? tmpOnCover : false;
+			Repetition = Enum.TryParse<BackgroundRepetition>(data.GetValue(@"" + path + @"Repetition"), out var tmpRepetition) ? tmpRepetition : BackgroundRepetition.RepeatLastPage;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -76,7 +76,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.OnAttachment = OnAttachment;
 			copy.OnCover = OnCover;
 			copy.Repetition = Repetition;
-			
 			return copy;
 		}
 		
@@ -90,21 +89,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!OnAttachment.Equals(v.OnAttachment)) return false;
 			if (!OnCover.Equals(v.OnCover)) return false;
 			if (!Repetition.Equals(v.Repetition)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("File=" + File.ToString());
-			sb.AppendLine("OnAttachment=" + OnAttachment.ToString());
-			sb.AppendLine("OnCover=" + OnCover.ToString());
-			sb.AppendLine("Repetition=" + Repetition.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

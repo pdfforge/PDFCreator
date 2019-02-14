@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow.Output
@@ -29,16 +30,16 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         protected override IPathUtil PathUtil { get; }
         private IRetypeFileNameQuery RetypeFileNameQuery { get; }
 
-        protected override QueryResult<string> HandleInvalidRootedPath(string filename, OutputFormat outputFormat)
+        protected override Task<QueryResult<string>> HandleInvalidRootedPath(string filename, OutputFormat outputFormat)
         {
             var result = _dispatcher.InvokeAsync(() => RetypeFileNameQuery.RetypeFileNameQuery(filename, outputFormat, RetypeReason.InvalidRootedPath));
-            return result.Result;
+            return result;
         }
 
-        protected override QueryResult<string> HandleFirstFileFailed(string filename, OutputFormat outputFormat)
+        protected override Task<QueryResult<string>> HandleFirstFileFailed(string filename, OutputFormat outputFormat)
         {
             var result = _dispatcher.InvokeAsync(() => RetypeFileNameQuery.RetypeFileNameQuery(filename, outputFormat, RetypeReason.CopyError));
-            return result.Result;
+            return result;
         }
 
         protected override HandleCopyErrorResult QueryHandleCopyError(int fileNumber)

@@ -11,14 +11,20 @@ using Attachment = System.Net.Mail.Attachment;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public interface ISmtpMailAction : IAction, ICheckable
+    public interface ISmtpMailAction : IPostConversionAction, ICheckable
     { }
 
     public class SmtpMailAction : RetypePasswordActionBase, ISmtpMailAction
     {
+        private readonly IMailSignatureHelper _mailSignatureHelper;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected override string PasswordText => "SMTP";
+
+        public SmtpMailAction(IMailSignatureHelper mailSignatureHelper)
+        {
+            _mailSignatureHelper = mailSignatureHelper;
+        }
 
         public override void ApplyPreSpecifiedTokens(Job job)
         {
@@ -127,8 +133,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             if (job.Profile.EmailSmtpSettings.AddSignature)
             {
+                var mailSignature = _mailSignatureHelper.ComposeMailSignature();
+
                 // if html option is checked replace newLine with <br />
-                mail.Body += job.Profile.EmailSmtpSettings.Html ? job.JobTranslations.EmailSignature.Replace(Environment.NewLine, "<br>") : job.JobTranslations.EmailSignature;
+                if (job.Profile.EmailSmtpSettings.Html)
+                    mailSignature = mailSignature.Replace(Environment.NewLine, "<br>");
+
+                mail.Body += mailSignature;
             }
 
             Logger.Debug("Created new Mail"

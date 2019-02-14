@@ -12,7 +12,7 @@ namespace PDFCreator.TestUtilities
         public Container ConfigureContainer()
         {
             var container = new Container();
-            _bootstrapper.ConfigureContainer(container);
+            _bootstrapper.RegisterMainApplication(container);
 
             AddIntegrationTestRegistrations(container);
             OverrideRegistrations(container);

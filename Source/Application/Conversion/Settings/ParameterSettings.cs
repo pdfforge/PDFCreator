@@ -13,58 +13,36 @@ using System;
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
 	[ImplementPropertyChanged]
-	public partial class ParameterSettings : INotifyPropertyChanged {
+	public partial class ParameterSettings : INotifyPropertyChanged, ISettings {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
 		#pragma warning restore 67
 		
-		private Data data = Data.CreateDataStorage();
-		private IStorage _storage = null;
 		
 		public Parameters Parameters { get; set; } = new Parameters();
 		
-		public ParameterSettings(IStorage storage)
-		{
-			_storage = storage;
-		}
-		
-		public bool LoadData(IStorage storage, string path)
+		public bool LoadData(IStorage storage)
 		{
 			try {
-				data.Clear();
-				storage.Data = data;
-				storage.ReadData(path);
-				ReadValues(data, "");
+				var data = Data.CreateDataStorage();
+				storage.ReadData(data);
+				ReadValues(data);
 				return true;
 			} catch { return false; }
 			
 		}
 		
-		public bool LoadData(string path)
-		{
-			return LoadData(_storage, path);
-			
-		}
-		
-		public bool SaveData(IStorage storage, string path)
+		public bool SaveData(IStorage storage)
 		{
 			try {
-				data.Clear();
-				StoreValues(data, "");
-				storage.Data = data;
-				storage.WriteData(path);
+				var data = StoreValues();
+				storage.WriteData(data);
 				return true;
 			} catch { return false; }
 			
 		}
 		
-		public bool SaveData(string path)
-		{
-			return SaveData(_storage, path);
-			
-		}
-		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			Parameters.ReadValues(data, path + @"Parameters\");
 		}
@@ -74,12 +52,18 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Parameters.StoreValues(data, path + @"Parameters\");
 		}
 		
+		public Data StoreValues(string path = "")
+		{
+			var data = Data.CreateDataStorage();
+			StoreValues(data, "");
+			return data;
+		}
+		
 		public ParameterSettings Copy()
 		{
-			ParameterSettings copy = new ParameterSettings(_storage);
+			ParameterSettings copy = new ParameterSettings();
 			
 			copy.Parameters = Parameters.Copy();
-			
 			return copy;
 		}
 		
@@ -89,18 +73,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			ParameterSettings v = o as ParameterSettings;
 			
 			if (!Parameters.Equals(v.Parameters)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("[Parameters]");
-			sb.AppendLine(Parameters.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

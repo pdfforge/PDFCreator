@@ -2,7 +2,6 @@
 using pdfforge.PDFCreator.Core.Printing.Port;
 using Rhino.Mocks;
 using SystemInterface.Microsoft.Win32;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UnitTest.Core.Printing
 {
@@ -17,7 +16,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Printing
             _registry = MockRepository.GenerateStub<IRegistry>();
             _registry.Stub(x => x.LocalMachine).Return(_hklmKey);
 
-            _printerPortReader = new PrinterPortReader(_registry, new PathWrapSafe());
+            _printerPortReader = new PrinterPortReader(_registry);
         }
 
         private IRegistry _registry;

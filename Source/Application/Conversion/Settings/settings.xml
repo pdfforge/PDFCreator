@@ -3,32 +3,26 @@
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
     <addRaisePropertyChanged>True</addRaisePropertyChanged>
-    <generatorVersion>1.0.1.0</generatorVersion>
+    <generatorVersion>1.4.1.0</generatorVersion>
   </options>
   <classes>
     <class name="ParameterSettings" propertyName="ParameterSettings" readonly="False" classtype="Class">
       <comment />
       <class name="Parameters" propertyName="Parameters" readonly="False" classtype="Class">
         <comment />
+        <value name="OriginalFilePath" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <comment>OriginalFilePath from command line parameter</comment>
+        </value>
         <value name="Outputfile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment>The outputfile path</comment>
+          <comment>Outputfile path from command line paramter</comment>
         </value>
         <value name="Profile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment>Parameter for profile</comment>
+          <comment>Profile from command line paramter</comment>
         </value>
       </class>
     </class>
     <class name="PdfCreatorSettings" propertyName="PdfCreatorSettings" readonly="False" classtype="Class">
       <comment>Container class for PDFCreator settings and profiles</comment>
-      <class name="ApplicationProperties" propertyName="ApplicationProperties" readonly="False" classtype="Class">
-        <comment />
-        <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
-          <comment />
-        </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="7" islist="False">
-          <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
-        </value>
-      </class>
       <class name="ApplicationSettings" propertyName="ApplicationSettings" readonly="False" classtype="Class">
         <comment>PDFCreator application settings</comment>
         <class name="Accounts" propertyName="Accounts" readonly="False" classtype="Class">
@@ -124,28 +118,25 @@
             </value>
           </classarray>
         </class>
-        <classarray name="DefaultViewer" propertyName="DefaultViewers" readonly="False" classtype="Class">
-          <comment />
-          <value name="IsActive" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
-            <comment />
-          </value>
-          <value name="Parameters" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment />
-          </value>
-          <value name="Path" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment />
-          </value>
-          <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
-            <comment />
-          </value>
-        </classarray>
         <class name="JobHistory" propertyName="JobHistory" readonly="False" classtype="Class">
           <comment />
           <value name="Capacity" type="value" datatype="Int" enumname="" defaultvalue="30" islist="False">
             <comment>Max number of jobs tracked in history</comment>
           </value>
+          <value name="Column" type="value" datatype="Enum" enumname="TableColumns" defaultvalue="TableColumns.Author" islist="False">
+            <comment>Selected column in search options</comment>
+          </value>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>If enabled PDFCreator tracks latest converted files in history</comment>
+          </value>
+          <value name="LastDateFrom" type="value" datatype="DateTime" enumname="" defaultvalue="" islist="False">
+            <comment>Last DateFrom in search options</comment>
+          </value>
+          <value name="LastDateTo" type="value" datatype="DateTime" enumname="" defaultvalue="" islist="False">
+            <comment>Last DateTo in search options</comment>
+          </value>
+          <value name="LastSearchText" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>Last searched text in search options</comment>
           </value>
         </class>
         <classarray name="PrinterMapping" propertyName="PrinterMappings" readonly="False" classtype="Class">
@@ -157,6 +148,15 @@
             <comment />
           </value>
         </classarray>
+        <class name="RssFeed" propertyName="RssFeed" readonly="False" classtype="Class">
+          <comment />
+          <value name="Enable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>Enables the RSS news feed</comment>
+          </value>
+          <value name="LatestRssUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="" islist="False">
+            <comment>Date of last RSS feed content</comment>
+          </value>
+        </class>
         <classarray name="TitleReplacement" propertyName="TitleReplacement" readonly="False" classtype="Class">
           <comment>
             TitleReplacements are used to automatically replace text in the print job name for the final document's title.
@@ -172,26 +172,32 @@
             <comment />
           </value>
         </classarray>
-        <value name="AskSwitchDefaultPrinter" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+        <class name="UsageStatistics" propertyName="UsageStatistics" readonly="False" classtype="Class">
+          <comment />
+          <value name="Enable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>Enable usage statistics</comment>
+          </value>
+          <value name="UsageStatsInfo" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>Show or hide the usage statisticss info on first start</comment>
+          </value>
+        </class>
+        <value name="ConversionTimeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
+          <comment />
+        </value>
+        <value name="EnableTips" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
           <comment />
         </value>
         <value name="Language" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment />
         </value>
-        <value name="LastLoginVersion" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment />
-        </value>
-        <value name="LastSaveDirectory" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment>The last directory the user during interactive job (if no target directory was set in profile)</comment>
-        </value>
-        <value name="LastUsedProfileGuid" type="value" datatype="String" enumname="" defaultvalue="DefaultGuid" islist="False">
-          <comment />
-        </value>
         <value name="LoggingLevel" type="value" datatype="Enum" enumname="LoggingLevel" defaultvalue="LoggingLevel.Error" islist="False">
           <comment />
         </value>
-        <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
+        <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
           <comment />
+        </value>
+        <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
+          <comment>Defines the unit of measurement for the signature position.</comment>
         </value>
         <value name="UpdateInterval" type="value" datatype="Enum" enumname="UpdateInterval" defaultvalue="UpdateInterval.Weekly" islist="False">
           <comment />
@@ -242,6 +248,15 @@
           </value>
           <value name="File" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Filename of the PDF that will be inserted</comment>
+          </value>
+        </class>
+        <class name="CustomScript" propertyName="CustomScript" readonly="False" classtype="Class">
+          <comment>Pre- and postconversion actions calling functions from a custom script</comment>
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>Enables the custom script pre- and postconversion action</comment>
+          </value>
+          <value name="ScriptFilename" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>Filename of the custom script in application directory 'Cs-Scripts' folder</comment>
           </value>
         </class>
         <class name="DropboxSettings" propertyName="DropboxSettings" readonly="False" classtype="Class">
@@ -452,16 +467,16 @@
             <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>If true, the signature will be displayed in the PDF document</comment>
             </value>
-            <value name="LeftX" type="value" datatype="Int" enumname="" defaultvalue="100" islist="False">
+            <value name="LeftX" type="value" datatype="Float" enumname="" defaultvalue="100" islist="False">
               <comment>Signature location: Top left corner (X part)</comment>
             </value>
-            <value name="LeftY" type="value" datatype="Int" enumname="" defaultvalue="100" islist="False">
+            <value name="LeftY" type="value" datatype="Float" enumname="" defaultvalue="100" islist="False">
               <comment>Signature location: Top left corner (Y part)</comment>
             </value>
-            <value name="RightX" type="value" datatype="Int" enumname="" defaultvalue="200" islist="False">
+            <value name="RightX" type="value" datatype="Float" enumname="" defaultvalue="200" islist="False">
               <comment>Signature location: Bottom right corner (X part)</comment>
             </value>
-            <value name="RightY" type="value" datatype="Int" enumname="" defaultvalue="200" islist="False">
+            <value name="RightY" type="value" datatype="Float" enumname="" defaultvalue="200" islist="False">
               <comment>Signature location: Bottom right corner (Y part)</comment>
             </value>
             <value name="SignContact" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -491,6 +506,12 @@
           </value>
           <value name="DocumentView" type="value" datatype="Enum" enumname="DocumentView" defaultvalue="DocumentView.NoOutLineNoThumbnailImages" islist="False">
             <comment>Defines which controls will be opened in the reader.</comment>
+          </value>
+          <value name="EnablePdfAValidation" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>Enable PDF/A validation</comment>
+          </value>
+          <value name="NoFonts" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>If enabled, no fonts will be embedded into the output.</comment>
           </value>
           <value name="PageOrientation" type="value" datatype="Enum" enumname="PageOrientation" defaultvalue="PageOrientation.Automatic" islist="False">
             <comment>Define how pages are automatically rotated.</comment>
@@ -531,8 +552,8 @@
           <value name="Deletable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Can users delete this profile?</comment>
           </value>
-          <value name="Editable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-            <comment>Can users edit this profile?</comment>
+          <value name="IsShared" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>True for shrared profiles</comment>
           </value>
           <value name="Renamable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Can users rename this profile?</comment>
@@ -548,6 +569,9 @@
           </value>
           <value name="ScriptFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Path to the script or application</comment>
+          </value>
+          <value name="Visible" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>If false, the given script or application will be executed in a hidden window</comment>
           </value>
           <value name="WaitForScript" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Wait until the script excution has ended</comment>
@@ -600,6 +624,9 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Activate parsing ps files for user tokens (Only available in PDFCreator Business)</comment>
           </value>
+          <value name="Seperator" type="value" datatype="Enum" enumname="UserTokenSeperator" defaultvalue="UserTokenSeperator.SquareBrackets" islist="False">
+            <comment>UserToken seperator in the document</comment>
+          </value>
         </class>
         <value name="AuthorTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobAuthor&gt;" islist="False">
           <comment>Template for the Author field. This may contain tokens.</comment>
@@ -648,6 +675,42 @@
         </value>
         <value name="TitleTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobName&gt;" islist="False">
           <comment>Template for the Title field. This may contain tokens.</comment>
+        </value>
+      </classarray>
+      <class name="CreatorAppSettings" propertyName="CreatorAppSettings" readonly="False" classtype="Class">
+        <comment />
+        <value name="AskSwitchDefaultPrinter" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+          <comment />
+        </value>
+        <value name="LastLoginVersion" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <comment />
+        </value>
+        <value name="LastSaveDirectory" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <comment>The last directory the user during interactive job (if no target directory was set in profile)</comment>
+        </value>
+        <value name="LastUsedProfileGuid" type="value" datatype="String" enumname="" defaultvalue="DefaultGuid" islist="False">
+          <comment />
+        </value>
+        <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
+          <comment />
+        </value>
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="8" islist="False">
+          <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
+        </value>
+      </class>
+      <classarray name="DefaultViewer" propertyName="DefaultViewers" readonly="False" classtype="Class">
+        <comment />
+        <value name="IsActive" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+          <comment />
+        </value>
+        <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
+          <comment />
+        </value>
+        <value name="Parameters" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <comment />
+        </value>
+        <value name="Path" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <comment />
         </value>
       </classarray>
     </class>

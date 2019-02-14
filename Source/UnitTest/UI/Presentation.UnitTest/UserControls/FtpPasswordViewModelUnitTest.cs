@@ -25,7 +25,7 @@ namespace Presentation.UnitTest.UserControls
             var accounts = new Accounts();
             accounts.FtpAccounts.Add(_ftpAccount);
 
-            _job = new Job(null, new ConversionProfile(), new JobTranslations(), accounts);
+            _job = new Job(null, new ConversionProfile(), accounts);
 
             _job.Profile.Ftp.AccountId = _ftpAccount.AccountId;
 

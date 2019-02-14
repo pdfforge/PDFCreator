@@ -14,6 +14,7 @@ using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
@@ -37,7 +38,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         public void Setup()
         {
             var jobInfo = new JobInfo();
-            _job = new Job(jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts());
+            _job = new Job(jobInfo, new ConversionProfile(), new Accounts());
 
             _singleTempOutputfile = new[] { @"output1.pdf" };
             _multipleTempOutputFiles = new[] { @"output1.png", @"output2.png", @"output3.png" };
@@ -81,12 +82,12 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             var invalidRootedPath = "XX:\\File.pdf";
             var format = OutputFormat.PdfX;
             _pathUtil.IsValidRootedPath(invalidRootedPath).Returns(false);
-            _job.OutputFilenameTemplate = invalidRootedPath;
+            _job.OutputFileTemplate = invalidRootedPath;
             _job.Profile.OutputFormat = format;
 
             _retypeQuery.RetypeFileNameQuery(invalidRootedPath, format, RetypeReason.InvalidRootedPath).Returns(new QueryResult<string>(false, ""));
 
-            Assert.Throws<AbortWorkflowException>(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.ThrowsAsync<AbortWorkflowException>(() => _outputFileMover.MoveOutputFiles(_job));
         }
 
         [Test]
@@ -95,14 +96,14 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             var invalidRootedPath = "XXXXXXXXXXXXXXXXX:\\InvalidRootedPath.pdf";
             var format = OutputFormat.PdfX;
             _pathUtil.IsValidRootedPath(invalidRootedPath).Returns(false);
-            _job.OutputFilenameTemplate = invalidRootedPath;
+            _job.OutputFileTemplate = invalidRootedPath;
             _job.Profile.OutputFormat = format;
             var pathFromUser = "Y:\\ValidRootedPath.pdf";
             _retypeQuery.RetypeFileNameQuery(invalidRootedPath, format, RetypeReason.InvalidRootedPath).Returns(new QueryResult<string>(true, pathFromUser));
 
-            Assert.DoesNotThrow(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.DoesNotThrowAsync(() => _outputFileMover.MoveOutputFiles(_job));
 
-            Assert.AreEqual(pathFromUser, _job.OutputFilenameTemplate);
+            Assert.AreEqual(pathFromUser, _job.OutputFileTemplate);
         }
 
         [Test]
@@ -119,7 +120,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _retypeQuery.RetypeFileNameQuery(Arg.Any<string>(), Arg.Any<OutputFormat>(), Arg.Any<RetypeReason>()).Returns(new QueryResult<string>(false, null));
 
-            Assert.Throws<AbortWorkflowException>(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.ThrowsAsync<AbortWorkflowException>(() => _outputFileMover.MoveOutputFiles(_job));
 
             Assert.AreEqual(1, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was not called exactly once");
             Assert.IsEmpty(_job.OutputFiles, "Outputfiles are not empty.");
@@ -138,7 +139,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _job.TempOutputFiles = _multipleTempOutputFiles;
 
-            Assert.Throws<ProcessingException>(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.ThrowsAsync<ProcessingException>(() => _outputFileMover.MoveOutputFiles(_job));
 
             Assert.AreEqual(0, _retypeQuery.ReceivedCalls().Count(), "RetypeQuery mut not be called.");
         }
@@ -156,13 +157,13 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _job.TempOutputFiles = _multipleTempOutputFiles;
 
-            Assert.Throws<ProcessingException>(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.ThrowsAsync<ProcessingException>(() => _outputFileMover.MoveOutputFiles(_job));
 
             Assert.AreEqual(0, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called.");
         }
 
         [Test]
-        public void MoveOutFiles_MultipleFilesInteractive_FirstThreeAttemptsToCopyFirstFileFail_OnRetypeOutputFilenameGetsCalledTriple_NewValueForOutputFilenameTemplateAndOutputfile()
+        public async Task MoveOutFiles_MultipleFilesInteractive_FirstThreeAttemptsToCopyFirstFileFail_OnRetypeOutputFilenameGetsCalledTriple_NewValueForOutputFilenameTemplateAndOutputfile()
         {
             _file = new FailingFileCopy(3);
             _job.Profile.AutoSave.Enabled = false;
@@ -170,11 +171,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _job.TempOutputFiles = _multipleTempOutputFiles;
             BuildOutputFileMover();
 
-            _outputFileMover.MoveOutputFiles(_job);
+            await _outputFileMover.MoveOutputFiles(_job);
 
             Assert.AreEqual(3, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called more than once");
-            Assert.AreEqual($"{RetypedFilename}3.png", _job.OutputFilenameTemplate,
-                "OutputFilenameTemplate is not the one from RetypeOutputFilename");
+            Assert.AreEqual($"{RetypedFilename}3.png", _job.OutputFileTemplate,
+                "OutputFileTemplate is not the one from RetypeOutputFilename");
             Assert.AreEqual($"{RetypedFilename}3" + "1" + ".png", _job.OutputFiles[0],
                 "First outputfile is not the one from RetypeOutputFilename");
             Assert.AreEqual($"{RetypedFilename}3" + "2" + ".png", _job.OutputFiles[1],
@@ -184,7 +185,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         }
 
         [Test]
-        public void FirstAttemptToCopyFirstFileFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfiles()
+        public async Task FirstAttemptToCopyFirstFileFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfiles()
         {
             _file = new FailingFileCopy(1);
             _job.Profile.AutoSave.Enabled = false;
@@ -192,11 +193,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _job.TempOutputFiles = _multipleTempOutputFiles;
             BuildOutputFileMover();
 
-            _outputFileMover.MoveOutputFiles(_job);
+            await _outputFileMover.MoveOutputFiles(_job);
 
             Assert.AreEqual(1, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called more than once");
-            Assert.AreEqual(RetypedFilename + "1.png", _job.OutputFilenameTemplate,
-                "OutputFilenameTemplate is not the one from RetypeOutputFilename");
+            Assert.AreEqual(RetypedFilename + "1.png", _job.OutputFileTemplate,
+                "OutputFileTemplate is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "1" + "1" + ".png", _job.OutputFiles[0],
                 "First outputfile is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "1" + "2" + ".png", _job.OutputFiles[1],
@@ -215,14 +216,14 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _job.TempOutputFiles = _singleTempOutputfile;
             BuildOutputFileMover();
 
-            Assert.Throws<AbortWorkflowException>(() => _outputFileMover.MoveOutputFiles(_job));
+            Assert.ThrowsAsync<AbortWorkflowException>(async () => await _outputFileMover.MoveOutputFiles(_job));
 
             Assert.AreEqual(1, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called more than once");
             Assert.IsEmpty(_job.OutputFiles, "Outputfiles are not empty.");
         }
 
         [Test]
-        public void SingleFile_FirstAttemptToCopyFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfile()
+        public async Task SingleFile_FirstAttemptToCopyFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfile()
         {
             _file = new FailingFileCopy(1);
             _job.Profile.AutoSave.Enabled = false;
@@ -230,17 +231,17 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _job.TempOutputFiles = _singleTempOutputfile;
             BuildOutputFileMover();
 
-            _outputFileMover.MoveOutputFiles(_job);
+            await _outputFileMover.MoveOutputFiles(_job);
 
             Assert.AreEqual(1, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called more than once");
-            Assert.AreEqual(RetypedFilename + "1.pdf", _job.OutputFilenameTemplate,
-                "OutputFilenameTemplate is not the one from RetypeOutputFilename");
+            Assert.AreEqual(RetypedFilename + "1.pdf", _job.OutputFileTemplate,
+                "OutputFileTemplate is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "1" + ".pdf", _job.OutputFiles[0],
                 "First outputfile is not the one from RetypeOutputFilename");
         }
 
         [Test]
-        public void SingleFile_ThreeAttemptsToCopyFail_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfile()
+        public async Task SingleFile_ThreeAttemptsToCopyFail_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfile()
         {
             _file = new FailingFileCopy(3);
             _job.Profile.AutoSave.Enabled = false;
@@ -248,11 +249,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _job.TempOutputFiles = _singleTempOutputfile;
             BuildOutputFileMover();
 
-            _outputFileMover.MoveOutputFiles(_job);
+            await _outputFileMover.MoveOutputFiles(_job);
 
             Assert.AreEqual(3, _retypeQuery.ReceivedCalls().Count(), "RetypeOutputFilename was called more than once");
-            Assert.AreEqual(RetypedFilename + "3.pdf", _job.OutputFilenameTemplate,
-                "OutputFilenameTemplate is not the one from RetypeOutputFilename");
+            Assert.AreEqual(RetypedFilename + "3.pdf", _job.OutputFileTemplate,
+                "OutputFileTemplate is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "3" + ".pdf", _job.OutputFiles[0],
                 "First outputfile is not the one from RetypeOutputFilename");
         }

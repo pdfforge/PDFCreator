@@ -35,7 +35,7 @@ namespace Presentation.UnitTest.Workflow.Steps
 
             _interactiveProfileChecker = new InteractiveProfileChecker(_profileChecker, _interactionRequest, _interactionInvoker, translationFactory);
 
-            _job = new Job(null, new ConversionProfile { Name = ProfileName }, null, null);
+            _job = new Job(null, new ConversionProfile { Name = ProfileName }, null);
         }
 
         private void ValidateMessageInteraction(MessageInteraction interaction, ActionResult faultyResult)

@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Printer;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities;
@@ -52,7 +52,7 @@ namespace Presentation.UnitTest.UserControls
 
             _applicationSettings.PrinterMappings = new ObservableCollection<PrinterMapping>(mappings);
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ApplicationSettings = _applicationSettings;
             _settings.ConversionProfiles.Add(_profile1);
             _settings.ConversionProfiles.Add(_profile2);
@@ -69,19 +69,38 @@ namespace Presentation.UnitTest.UserControls
         private IPrinterProvider _printerProvider;
         private IPrinterActionsAssistant _printerActionAssistant;
         private PdfCreatorSettings _settings;
+        private ICurrentSettings<ObservableCollection<PrinterMapping>> _printerMappingsProvider;
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
 
         private PrinterViewModel BuildViewModel(IList<ConversionProfile> profiles = null)
         {
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(_settings);
+            _printerMappingsProvider = Substitute.For<ICurrentSettings<ObservableCollection<PrinterMapping>>>();
+
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
+            _printerMappingsProvider.Settings.Returns(_ => _settings.ApplicationSettings.PrinterMappings);
+            _profilesProvider.Settings.Returns(_ => _settings.ConversionProfiles);
+
+            var settingsProvider = Substitute.For<ISettingsProvider>();
+            settingsProvider.Settings.Returns(_ => _settings);
 
             var printerHelper = Substitute.For<IPrinterHelper>();
             printerHelper.GetApplicablePDFCreatorPrinter(Arg.Any<string>(), Arg.Any<string>()).Returns("PDFCreator");
 
-            if (profiles != null)
-                _settings.ConversionProfiles = new ObservableCollection<ConversionProfile>(profiles);
+            var list = new ObservableCollection<ConversionProfile>();
 
-            var viewModel = new PrinterViewModel(_printerProvider, _printerActionAssistant, null, null, new DesignTimeTranslationUpdater(), printerHelper, currentSettingsProvider, null);
+            if (profiles != null && profiles.Count > 0)
+            {
+                foreach (var conversionProfile in profiles)
+                {
+                    list.Add(conversionProfile);
+                }
+            }
+
+            _profilesProvider.Settings.Returns(list);
+
+            var viewModel = new PrinterViewModel(_printerProvider, settingsProvider, _printerMappingsProvider, _profilesProvider, _printerActionAssistant, null, new DesignTimeTranslationUpdater(), printerHelper, null);
+
+            viewModel.MountView();
 
             return viewModel;
         }
@@ -97,7 +116,7 @@ namespace Presentation.UnitTest.UserControls
                 }
             };
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
 
             var newPrinterName = "New printer for testing";
             _printerProvider.GetPDFCreatorPrinters().Returns(new[] { newPrinterName });

@@ -33,7 +33,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IOsHelper _osHelper;
-        protected readonly IPathSafe PathSafe = new PathWrapSafe();
 
         /// <summary>
         ///     A list of Distiller dictionary strings. They will be added after all parameters are set.
@@ -82,8 +81,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add("-dNOPAUSE");
             parameters.Add("-dBATCH");
 
-            if (!outputFormatHelper.HasValidExtension(Job.OutputFilenameTemplate, Job.Profile.OutputFormat))
-                outputFormatHelper.EnsureValidExtension(Job.OutputFilenameTemplate, Job.Profile.OutputFormat);
+            if (!outputFormatHelper.HasValidExtension(Job.OutputFileTemplate, Job.Profile.OutputFormat))
+                outputFormatHelper.EnsureValidExtension(Job.OutputFileTemplate, Job.Profile.OutputFormat);
 
             AddOutputfileParameter(parameters);
 
@@ -185,8 +184,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             metadataContent.Append("\n/Author " + EncodeGhostscriptParametersHex(Job.JobInfo.Metadata.Author));
             metadataContent.Append("\n/Subject " + EncodeGhostscriptParametersHex(Job.JobInfo.Metadata.Subject));
             metadataContent.Append("\n/Keywords " + EncodeGhostscriptParametersHex(Job.JobInfo.Metadata.Keywords));
-            metadataContent.Append("\n/Creator " + EncodeGhostscriptParametersHex(Job.JobInfo.Metadata.Producer));
-            metadataContent.Append("\n/Producer " + EncodeGhostscriptParametersHex(Job.JobInfo.Metadata.Producer));
+            metadataContent.Append("\n/Creator " + EncodeGhostscriptParametersHex(Job.Producer));
+            metadataContent.Append("\n/Producer " + EncodeGhostscriptParametersHex(Job.Producer));
             metadataContent.Append("\n/DOCINFO pdfmark");
 
             AddViewerSettingsToMetadataContent(metadataContent);

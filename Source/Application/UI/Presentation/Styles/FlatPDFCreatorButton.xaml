@@ -4,6 +4,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
+        <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Color x:Key="CustomButton.Foreground.Color">White</Color>
@@ -18,80 +19,6 @@
     <SolidColorBrush x:Key="CustomButton.Background.MouseOver.Brush" Color="White" />
     <SolidColorBrush x:Key="CustomButton.Background.IsPressed.Brush" Color="#FFF6F6F6" />
     <Thickness x:Key="CustomButton.Border.Thickness" >1</Thickness>
-
-    <Style x:Key="CustomColoredButton" BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type ButtonBase}">
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="Foreground" Value="{DynamicResource CustomButton.Foreground.Brush}" />
-        <Setter Property="Padding" Value="{DynamicResource CustomButton.Padding}" />
-        <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
-
-        <Setter Property="BorderThickness" Value="{DynamicResource CustomButton.Border.Thickness}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource CustomButton.Background.MouseOver}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource CustomButton.Background.IsPressed}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="ExtendedCustomColoredButton" BasedOn="{StaticResource CustomColoredButton}" TargetType="{x:Type ButtonBase}">
-        <Style.Resources>
-        </Style.Resources>
-        <Setter Property="Background" Value="{StaticResource BackgroundColor}" />
-        <Setter Property="BorderBrush" Value="{StaticResource BackgroundColor}" />
-
-        <Style.Triggers>
-            <EventTrigger RoutedEvent="MouseEnter">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                        From="{StaticResource BackgroundColor}"
-                                        To="{StaticResource InvertedBackgroundColor}"
-                                        Duration="0:0:0.15" />
-                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                        From="{StaticResource ForegroundColor}"
-                                        To="{StaticResource InvertedForegroundColor}"
-                                        Duration="0:0:0.15" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-
-            <EventTrigger RoutedEvent="MouseLeave">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
-                                        From="{StaticResource InvertedBackgroundColor}"
-                                        To="{StaticResource BackgroundColor}"
-                                        Duration="0:0:0.1" />
-                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
-                                        From="{StaticResource InvertedForegroundColor}"
-                                        To="{StaticResource ForegroundColor}"
-                                        Duration="0:0:0.1" />
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground">
-                    <Setter.Value>
-                        <SolidColorBrush Color="{StaticResource PressedForegroundColor}" />
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <SolidColorBrush Color="{StaticResource PressedBackgroundColor}" />
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
 
     <Style x:Key="WhiteForegroundColoredButton" BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type ButtonBase}">
         <Setter Property="FontWeight" Value="Normal" />

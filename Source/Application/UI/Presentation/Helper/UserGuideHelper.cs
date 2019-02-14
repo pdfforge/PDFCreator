@@ -7,7 +7,6 @@ using pdfforge.PDFCreator.Utilities.UserGuide;
 using System;
 using System.Linq;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
@@ -15,7 +14,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     {
         private readonly IAssemblyHelper _assemblyHelper;
         private readonly IFile _fileWrap;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
         private readonly IUserGuideLauncher _userGuideLauncher;
         private readonly IApplicationLanguageProvider _applicationLanguageProvider;
         private readonly ILanguageProvider _languageProvider;
@@ -57,11 +55,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             var language = GetLanguage();
 
             var applicationDir = _assemblyHelper.GetAssemblyDirectory();
+            var applicationUserGuideDir = PathSafe.Combine(applicationDir, "UserGuide");
 
             var candidates = new[]
             {
-                _pathSafe.Combine(applicationDir, $"PDFCreator_{language.CommonName}.chm"),
-                _pathSafe.Combine(applicationDir, "PDFCreator_english.chm")
+                PathSafe.Combine(applicationDir, $"PDFCreator_{language.CommonName}.chm"),
+                PathSafe.Combine(applicationUserGuideDir, $"PDFCreator_{language.CommonName}.chm"),
+                PathSafe.Combine(applicationDir, "PDFCreator_english.chm"),
+                PathSafe.Combine(applicationUserGuideDir, "PDFCreator_english.chm")
             };
 
             foreach (var candidate in candidates)

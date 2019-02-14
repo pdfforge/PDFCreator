@@ -388,10 +388,31 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The folder path is not valid or empty. Please enter a valid path. \nThe folder path must not contain any of the following characters: \n" + @" \ / : * ? \" + "< >")]
         FilePath_InvalidCharacters = 42001,
 
-        //todo: Better translation
+        //todo: better translation
         //Replace {0} with fix value for _pathUtil.MAX_PATH or find a way to set it dynamically
         //[Translation("The path to the file is longer than the maximum of {0} characters allowed, please choose a shorter file path.")]
         [Translation("File path too long")]
         FilePath_TooLong = 42002,
+
+        [Translation("No CS-script file is specified.")]
+        CustomScript_NoScriptFileSpecified = 43001,
+
+        [Translation("CS-script file does not exist in the program directory 'CS-Scripts' folder.")]
+        CustomScript_FileDoesNotExistInScriptFolder = 43002,
+
+        [Translation("Could not compile the CS-Script.")]
+        CustomScript_ErrorDuringCompilation = 43004,
+
+        [Translation("The pre-conversion CS-script aborted the print job.")]
+        CustomScriptPreConversion_ScriptResultAbort = 44001,
+
+        [Translation("Exception during pre-conversion CS-Script.")]
+        CustomScriptPreConversion_Exception = 44002,
+
+        [Translation("The post-conversion CS-script aborted the print job.")]
+        CustomScriptPostConversion_ScriptResultAbort = 45001,
+
+        [Translation("Exception during post-conversion CS-Script.")]
+        CustomScriptPostConversion_Exception = 45002,
     }
 }

@@ -1,11 +1,9 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
-using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
+﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Communication;
 using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.Workflow;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using SystemInterface.IO;
 
@@ -13,27 +11,34 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 {
     public class PdfCreatorAdapter
     {
-        private readonly IDirectConversionProvider _directConversionProvider;
+        private readonly IDirectConversionInfFileHelper _directConversionInfFileHelper;
         private readonly IFile _file;
         private readonly IJobInfoManager _jobInfoManager;
+        private readonly IDirectConversionHelper _directConversionHelper;
         private readonly IJobInfoQueue _jobInfoQueue;
-        private readonly IPathSafe _pathSafe;
         private readonly IPipeServerManager _pipeServerManager;
         private readonly PrintFileHelperComFactory _printFileHelperComFactory;
-        private readonly ISpoolerProvider _spoolerProvider;
         private readonly ISpoolFolderAccess _spoolFolderAccess;
 
-        public PdfCreatorAdapter(IFile file, IPathSafe pathSafe, PrintFileHelperComFactory printFileHelperComFactory, IJobInfoQueue jobInfoQueue, ISpoolerProvider spoolerProvider, ISpoolFolderAccess spoolFolderAccess, IJobInfoManager jobInfoManager, IDirectConversionProvider directConversionProvider, IPrinterHelper printerHelper, IPipeServerManager pipeServerManager)
+        public PdfCreatorAdapter(
+            IFile file,
+            PrintFileHelperComFactory printFileHelperComFactory,
+            IJobInfoQueue jobInfoQueue,
+            ISpoolFolderAccess spoolFolderAccess,
+            IJobInfoManager jobInfoManager,
+            IDirectConversionHelper directConversionHelper,
+            IDirectConversionInfFileHelper directConversionInfFileHelper,
+            IPrinterHelper printerHelper,
+            IPipeServerManager pipeServerManager)
         {
             PrinterHelper = printerHelper;
             _file = file;
-            _pathSafe = pathSafe;
             _printFileHelperComFactory = printFileHelperComFactory;
             _jobInfoQueue = jobInfoQueue;
-            _spoolerProvider = spoolerProvider;
             _spoolFolderAccess = spoolFolderAccess;
             _jobInfoManager = jobInfoManager;
-            _directConversionProvider = directConversionProvider;
+            _directConversionHelper = directConversionHelper;
+            _directConversionInfFileHelper = directConversionInfFileHelper;
             _pipeServerManager = pipeServerManager;
         }
 
@@ -61,22 +66,13 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         {
             PathCheck(path);
 
-            var fileExtension = _pathSafe.GetExtension(path) ?? string.Empty;
-            var legalFileTypes = new List<string> { ".ps", ".pdf" };
-
-            fileExtension = fileExtension.ToLowerInvariant();
-            if (!legalFileTypes.Contains(fileExtension))
+            if (!_directConversionHelper.CanConvertDirectly(path))
                 throw new COMException("Only .ps and .pdf files can be directly added to the queue.");
-
-            var spoolFolder = _spoolerProvider.SpoolFolder;
 
             if (!_spoolFolderAccess.CanAccess())
                 throw new COMException("Accessing the spool folder failed.");
 
-            var isPdf = fileExtension.EndsWith(".pdf");
-            var fileHelper = isPdf ? _directConversionProvider.GetPdfConversion() : _directConversionProvider.GetPsConversion();
-
-            var infFile = fileHelper.TransformToInfFile(path, spoolFolder);
+            var infFile = _directConversionInfFileHelper.TransformToInfFile(path, new AppStartParameters());
 
             _jobInfoQueue.Add(_jobInfoManager.ReadFromInfFile(infFile));
         }

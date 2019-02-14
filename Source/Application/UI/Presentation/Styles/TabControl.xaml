@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:regions="http://prismlibrary.com/"
                     xmlns:tabHelper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper"
+                    xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
                     xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
                     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help">
 
@@ -13,12 +14,14 @@
 
     <converter:IconConverter x:Key="IconConverter" />
     <converter:DebugConverter x:Key="DebugConverter" />
+    <converter:AreEqualConverter x:Key="CollapsedToVisibleConverter" Reference="{x:Static Visibility.Collapsed}" EqualValue="{x:Static Visibility.Visible}" NotEqualValue="{x:Static Visibility.Hidden}" />
+    <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrueConverter" TrueValue="Visible" FalseValue="Hidden" />
 
-    <SolidColorBrush x:Key="TabIconBackgroundBrush" Color="#FF333333" />
-    <SolidColorBrush x:Key="TabIconHighlightedBackgroundBrush" Color="#FFDA2126" />
-    <SolidColorBrush x:Key="TabContentBackgroundBrush" Color="#FFF5F5F5" />
-    <SolidColorBrush x:Key="TabBorderBrush" Color="#FF333333" />
-    <SolidColorBrush x:Key="TabTextBrush" Color="#FF333333" />
+    <SolidColorBrush x:Key="TabIconBackgroundBrush" Color="{StaticResource PdfforgeDarkGreyColor}" />
+    <SolidColorBrush x:Key="TabIconHighlightedBackgroundBrush" Color="{StaticResource PdfforgeRedColor}" />
+    <SolidColorBrush x:Key="TabContentBackgroundBrush" Color="{StaticResource PdfforgeLightGreyColor}" />
+    <SolidColorBrush x:Key="TabBorderBrush" Color="{StaticResource PdfforgeDarkGreyColor}" />
+    <SolidColorBrush x:Key="TabTextBrush" Color="{StaticResource PdfforgeDarkGreyColor}" />
 
     <Style TargetType="TextBlock" x:Key="TabTextStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -90,7 +93,7 @@
 
     <DataTemplate DataType="{x:Type tabHelper:IconTabHeader}">
         <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0 0 0 1" Style="{StaticResource HoverBorderStyle}">
-            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Grid Height="48" Width="48">
                     <Rectangle Height="48" Width="48" x:Name="BackgroundRectangle" />
                     <ContentControl HorizontalAlignment="Center"
@@ -103,6 +106,9 @@
                 <TextBlock Style="{StaticResource TabTextStyle}"
                             Name="TabText"
                             Text="{Binding DataContext.Title}" />
+                <StackPanel VerticalAlignment="Center" Margin="-7 0 7 0" Visibility="{Binding DataContext.HasNotSupportedFeatures, Converter={StaticResource VisibleWhenTrueConverter}}">
+                    <misc:NotSupportedFeaturesControl />
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -131,9 +137,23 @@
                 </Grid>
 
                 <StackPanel>
-                    <TextBlock Style="{StaticResource MasterTabTextStyle}"
-                               Text="{Binding DataContext.Title}"
-                               Name="TabText" />
+
+                    <Grid HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource MasterTabTextStyle}"
+                                   Text="{Binding DataContext.Title}"
+                                   Name="TabText" />
+                        <StackPanel Grid.Column="1" Visibility="{Binding ElementName=SubItemsControl, Path=Visibility, Converter={StaticResource CollapsedToVisibleConverter}}"
+                                    VerticalAlignment="Center">
+                            <StackPanel  VerticalAlignment="Center" Margin="-7 4 7 0"
+                                    Visibility="{Binding DataContext.HasNotSupportedFeatures, Converter={StaticResource VisibleWhenTrueConverter}}">
+                                <misc:NotSupportedFeaturesControl />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
 
                     <ListBox x:Name="SubItemsControl"
                              Visibility="Collapsed"
@@ -147,10 +167,15 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock VerticalAlignment="Center" FontSize="16" Margin="10 0 5 0" Text="{Binding DataContext.Title}" Foreground="{StaticResource TabTextBrush}" />
-
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding DataContext.IsChecked}" />
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="16" Margin="10 0 0 0"
+                                               Text="{Binding DataContext.Title}" Foreground="{StaticResource TabTextBrush}" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="4 0 4 0"
+                                                Visibility="{Binding DataContext.HasNotSupportedFeatures, Converter={StaticResource VisibleWhenTrueConverter}}">
+                                        <misc:NotSupportedFeaturesControl />
+                                    </StackPanel>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding DataContext.IsChecked}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

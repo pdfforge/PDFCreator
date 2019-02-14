@@ -6,7 +6,14 @@ using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Controls
 {
-    public class TokenButtonFunctionProvider
+    public interface ITokenButtonFunctionProvider
+    {
+        Func<string, Option<string>> GetBrowseFolderFunction(string description);
+
+        Func<string, Option<string>> GetBrowseFileFunction(string title, string filter);
+    }
+
+    public class TokenButtonFunctionProvider : ITokenButtonFunctionProvider
     {
         private readonly IInteractionInvoker _interactionInvoker;
         private readonly IOpenFileInteractionHelper _openFileInteractionHelper;

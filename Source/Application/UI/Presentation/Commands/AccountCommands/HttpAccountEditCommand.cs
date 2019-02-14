@@ -2,41 +2,50 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class HttpAccountEditCommand : TranslatableCommandBase<HttpTranslation>, IWaitableCommand
+    public class HttpAccountEditCommand : TranslatableCommandBase<HttpTranslation>, IWaitableCommand, IMountable
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
         private HttpAccount _currentAccount;
+        private ObservableCollection<HttpAccount> _pointAtAccounts;
 
-        public HttpAccountEditCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public HttpAccountEditCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _currentSettingsProvider = currentSettingsProvider;
+            _accountsProvider = accountsProvider;
+        }
 
-            if (_currentSettingsProvider.Settings != null)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaiseCanExecuteChanged();
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs e)
+        {
+            if (_pointAtAccounts != _accountsProvider.Settings.HttpAccounts)
             {
-                var httpAccounts = _currentSettingsProvider.Settings.ApplicationSettings.Accounts.HttpAccounts;
-                httpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+                _pointAtAccounts.CollectionChanged -= OnCollectionChanged;
+                _pointAtAccounts = _accountsProvider.Settings.HttpAccounts;
+                _pointAtAccounts.CollectionChanged += OnCollectionChanged;
             }
         }
 
         public override bool CanExecute(object parameter)
         {
-            if (_currentSettingsProvider.Settings == null)
-                return false;
-
-            var httpAccounts = _currentSettingsProvider.Settings.ApplicationSettings.Accounts.HttpAccounts;
-
-            return httpAccounts.Count > 0;
+            return _accountsProvider?.Settings.HttpAccounts.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -45,7 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            var httpAccounts = _currentSettingsProvider.Settings.ApplicationSettings.Accounts.HttpAccounts;
+            var httpAccounts = _accountsProvider?.Settings.HttpAccounts;
             if (!httpAccounts.Contains(_currentAccount))
                 return;
 
@@ -66,5 +75,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         }
 
         public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
+
+        public void MountView()
+        {
+            _accountsProvider.SettingsChanged += OnSettingsChanged;
+            _pointAtAccounts = _accountsProvider.Settings.HttpAccounts;
+            _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+        }
+
+        public void UnmountView()
+        {
+            _accountsProvider.SettingsChanged -= OnSettingsChanged;
+        }
     }
 }

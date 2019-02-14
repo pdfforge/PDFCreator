@@ -7,14 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Core.Services.JobHistory
 {
     public class JobHistoryManager : IJobHistoryManager
     {
         private IList<HistoricJob> _history;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
 
         public IList<HistoricJob> History
         {
@@ -116,7 +114,7 @@ namespace pdfforge.PDFCreator.Core.Services.JobHistory
 
         private bool IsTemp(Job job)
         {
-            return job.OutputFilenameTemplate.StartsWith(_tempFolderProvider.TempFolder);
+            return job.OutputFileTemplate.StartsWith(_tempFolderProvider.TempFolder);
         }
 
         public void Add(Job job)
@@ -149,8 +147,8 @@ namespace pdfforge.PDFCreator.Core.Services.JobHistory
 
             foreach (var file in job.OutputFiles)
             {
-                var fileName = _pathSafe.GetFileName(file);
-                var directory = _pathSafe.GetDirectoryName(file);
+                var fileName = PathSafe.GetFileName(file);
+                var directory = PathSafe.GetDirectoryName(file);
                 var hash = BuildHash(file);
                 var historicFile = new HistoricFile(file, fileName, directory, hash);
                 historicFiles.Add(historicFile);

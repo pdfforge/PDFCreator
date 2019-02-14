@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PDFCreator.TestUtilities
@@ -56,7 +57,7 @@ namespace PDFCreator.TestUtilities
         /// <returns>The full path to the file</returns>
         public static string CreateTempFile(string folderPrefix, string filename)
         {
-            return CreateTempFile(folderPrefix, filename, "test");
+            return CreateTempFile(folderPrefix, filename, "test" + Guid.NewGuid());
         }
 
         public static string CreateTempFile(string folderPrefix, string filename, string contents)

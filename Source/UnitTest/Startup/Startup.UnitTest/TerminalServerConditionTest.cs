@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Core.Startup.Translations;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using System.Linq;
 using Translatable;

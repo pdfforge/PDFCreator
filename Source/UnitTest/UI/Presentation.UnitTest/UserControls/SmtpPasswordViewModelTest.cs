@@ -23,7 +23,7 @@ namespace Presentation.UnitTest.UserControls
             var accounts = new Accounts();
             accounts.SmtpAccounts.Add(_smtpAccout);
 
-            _job = new Job(null, new ConversionProfile(), new JobTranslations(), accounts);
+            _job = new Job(null, new ConversionProfile(), accounts);
             _job.Profile.EmailSmtpSettings.AccountId = _smtpAccout.AccountId;
         }
 

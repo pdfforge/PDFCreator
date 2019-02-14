@@ -11,7 +11,7 @@ namespace SettingsUnitTest
         public void Settings_ImplementPropertyChanged()
         {
             var wasRaised = false;
-            var settings = new ApplicationProperties();
+            var settings = new ApplicationSettings();
             settings.PropertyChanged += (sender, args) => wasRaised = true;
 
             settings.NextUpdate = DateTime.Today;
@@ -25,7 +25,7 @@ namespace SettingsUnitTest
             // This test ansures that Fody.PropertyChanged does not suppress assignments,
             // when assigned value equals the old one (as it does with a copy)
             // we want the same reference here!
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             var appSettingsCopy = settings.ApplicationSettings.Copy();
 
             settings.ApplicationSettings = appSettingsCopy;

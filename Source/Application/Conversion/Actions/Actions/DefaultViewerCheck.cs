@@ -13,12 +13,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     public class DefaultViewerCheck : IDefaultViewerCheck
     {
         private readonly IFile _file;
-        private readonly OutputFormatHelper _outputFormatHelper;
 
-        public DefaultViewerCheck(IFile file, OutputFormatHelper outputFormatHelper)
+        public DefaultViewerCheck(IFile file)
         {
             _file = file;
-            _outputFormatHelper = outputFormatHelper;
         }
 
         public ActionResult Check(DefaultViewer defaultViewer)
@@ -38,7 +36,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         private void AddMissingPathError(ActionResult result, OutputFormat format)
         {
-            if (_outputFormatHelper.IsPdfFormat(format))
+            if (format.IsPdf())
                 result.Add(ErrorCode.DefaultViewer_PathIsEmpty_for_Pdf);
             switch (format)
             {
@@ -65,7 +63,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         private void AddNotExistingFileError(ActionResult result, OutputFormat format)
         {
-            if (_outputFormatHelper.IsPdfFormat(format))
+            if (format.IsPdf())
                 result.Add(ErrorCode.DefaultViewer_FileDoesNotExist_For_Pdf);
 
             switch (format)

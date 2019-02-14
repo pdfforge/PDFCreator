@@ -4,9 +4,9 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,11 +16,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
 {
     public class ProfileRemoveCommand : ProfileCommandBase, ICommand
     {
+        private readonly ICurrentSettings<ObservableCollection<PrinterMapping>> _printerMappingProvider;
         private readonly IDispatcher _dispatcher;
 
-        public ProfileRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater, IDispatcher dispatcher)
-            : base(interactionRequest, currentSettingsProvider, translationUpdater)
+        public ProfileRemoveCommand(
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profileProvider,
+            ICurrentSettings<ObservableCollection<PrinterMapping>> printerMappingProvider,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ITranslationUpdater translationUpdater,
+            IDispatcher dispatcher)
+            : base(interactionRequest, currentSettingsProvider, profileProvider, translationUpdater)
         {
+            _printerMappingProvider = printerMappingProvider;
             _dispatcher = dispatcher;
 
             CurrentSettingsProvider.SelectedProfileChanged += CurrentSettingsProviderOnSelectedProfileChanged;
@@ -36,7 +44,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
         public void Execute(object parameter)
         {
             var currentId = CurrentSettingsProvider.SelectedProfile.Guid;
-            var printerMappings = CurrentSettingsProvider.Settings.ApplicationSettings.PrinterMappings;
+            var printerMappings = _printerMappingProvider.Settings;
             _usedPrintersMappings = printerMappings.Where(pm => pm.ProfileGuid.Equals(currentId)).ToList();
 
             var title = Translation.RemoveProfile;
@@ -66,7 +74,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
             if (interaction.Response != MessageResponse.Yes)
                 return;
 
-            CurrentSettingsProvider.Profiles.Remove(CurrentSettingsProvider.SelectedProfile);
+            _profilesProvider.Settings.Remove(CurrentSettingsProvider.SelectedProfile);
 
             foreach (var pm in _usedPrintersMappings)
             {

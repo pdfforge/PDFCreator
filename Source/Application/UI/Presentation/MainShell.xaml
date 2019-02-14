@@ -16,7 +16,7 @@
                    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
                    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                    mc:Ignorable="d"
-                   Title="{Binding ApplicationName.ApplicationName}"
+                   Title="{Binding ApplicationNameAndVersion}"
                    Height="800" Width="1200"
                    MinHeight="600"
                    MinWidth="800"
@@ -29,8 +29,13 @@
                    help:HelpProvider.HelpTopic="General"
                    x:Name="MainView"
                    d:DataContext="{d:DesignInstance designTime:DesignTimeMainShellViewModel, IsDesignTimeCreatable=True}"
+
                    Loaded="MainShell_OnLoaded"
                    Closing="MainShell_OnClosing">
+
+    <controls:MetroWindow.WindowButtonCommands>
+        <controls:WindowButtonCommands Style="{DynamicResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
+    </controls:MetroWindow.WindowButtonCommands>
 
     <metro:MetroWindow.Resources>
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
@@ -53,6 +58,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <i:Interaction.Behaviors>
@@ -63,8 +69,10 @@
         <Grid Grid.Row="0" Background="{StaticResource PdfforgeDarkGreyColorBrush}" ZIndex="100">
             <Grid.Resources>
                 <converter:CaseConverter x:Key="UpperCaseConverter" Case="Upper" />
+                <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityCollapsedConverter" TrueValue="Visible" FalseValue="Collapsed" />
             </Grid.Resources>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -129,7 +137,7 @@
                         Command="{Binding NavigateCommand}"
                         CommandParameter="{x:Static constants:MainRegionViewNames.AboutView}"
                         FontSize="25">
-                    <ContentControl Content="{StaticResource AboutIcon}" Height="22" />
+                    <ContentControl Content="{StaticResource AboutIcon}" Height="25" />
                 </Button>
 
                 <Button DockPanel.Dock="Right"
@@ -153,9 +161,37 @@
                     </StackPanel>
                 </Button>
             </DockPanel>
+
+            <Border Grid.Row="2" BorderThickness="3" BorderBrush="{DynamicResource BlackBrush}"
+                    Background="{DynamicResource WhiteBrush}"
+                Visibility="{Binding ShowUsageStatsInfo,  Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
+                <DockPanel   HorizontalAlignment="Left">
+                    <ContentControl  Height="16" Margin="5" Content="{DynamicResource InfoIcon}" />
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Padding="5"
+                               Text="{Binding UsageStatisticsInfoText}" />
+                    <Button DockPanel.Dock="Right" Margin="5" Padding="5" MinWidth="80" MaxWidth="100"
+                            Style="{DynamicResource FlatGreyButton}"  Command="{Binding DismissUsageStatsInfoCommand}" Content="{Binding Translation.UsageStatsDismiss}" />
+                    <Button DockPanel.Dock="Right" Margin="5" Padding="5" MinWidth="80" MaxWidth="100"
+                            Style="{DynamicResource FlatGreyButton}" Command="{Binding ReadMoreUsageStatsCommand}"
+                            CommandParameter="{x:Static constants:MainRegionViewNames.SettingsView}"
+                            Content="{Binding Translation.UsageStatsMore}" />
+                </DockPanel>
+            </Border>
         </Grid>
 
-        <ContentControl Grid.Row="1" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.MainRegion}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.MainRegion}" />
+        </Grid>
 
         <StatusBar Grid.Row="2">
             <StatusBarItem Margin="10 0" Height="24">

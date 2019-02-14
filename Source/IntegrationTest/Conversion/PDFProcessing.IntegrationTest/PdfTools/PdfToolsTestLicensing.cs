@@ -22,7 +22,12 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.PdfTools
             set { PdfSecureKey = value; }
         }
 
-        public PdfToolsTestLicensing() : base(ParameterHelper.GetPassword("pdftoolbox_key"), ParameterHelper.GetPassword("pdfa_converter_key"), ParameterHelper.GetPassword("pdfsecure_key"))
+        public string _PdfAValidatorKey
+        {
+            set { PdfAValidatorKey = value; }
+        }
+
+        public PdfToolsTestLicensing() : base(ParameterHelper.GetPassword("pdftoolbox_key"), ParameterHelper.GetPassword("pdfa_converter_key"), ParameterHelper.GetPassword("pdfsecure_key"), ParameterHelper.GetPassword("pdfa_validator_key"))
         {
             var assemblyHelper = new AssemblyHelper(Assembly.GetExecutingAssembly());
             var libPath = assemblyHelper.GetAssemblyDirectory() + "\\lib\\";

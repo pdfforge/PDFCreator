@@ -12,26 +12,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
 {
     public class SaveTabViewModel : ProfileUserControlViewModel<SaveTabTranslation>, ITabViewModel
     {
-        private readonly TokenButtonFunctionProvider _buttonFunctionProvider;
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenButtonFunctionProvider _buttonFunctionProvider;
+        private readonly ITokenHelper _tokenHelper;
         private readonly ITokenViewModelFactory _tokenViewModelFactory;
 
         public string Title => Translation.SaveTabText;
         public IconList Icon => IconList.SaveSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public bool HasNotSupportedFeatures => false;
 
         private TokenReplacer _tokenReplacer = new TokenReplacer();
         public TokenViewModel<ConversionProfile> FileNameViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> FolderViewModel { get; private set; }
         public bool AllowSkipPrintDialog { get; }
 
-        public SaveTabViewModel(TokenButtonFunctionProvider buttonFunctionProvider, ISelectedProfileProvider selectedProfileProvider,
-            ITranslationUpdater translationUpdater, EditionHintOptionProvider editionHintOptionProvider, TokenHelper tokenHelper,
+        public SaveTabViewModel(ITokenButtonFunctionProvider buttonFunctionProvider, ISelectedProfileProvider selectedProfileProvider,
+            ITranslationUpdater translationUpdater, EditionHelper editionHelper, ITokenHelper tokenHelper,
             ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
             : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
-            AllowSkipPrintDialog = !editionHintOptionProvider.ShowOnlyForPlusAndBusinessHint;
+            AllowSkipPrintDialog = !editionHelper.ShowOnlyForPlusAndBusiness;
             _buttonFunctionProvider = buttonFunctionProvider;
             _tokenHelper = tokenHelper;
             _tokenViewModelFactory = tokenViewModelFactory;

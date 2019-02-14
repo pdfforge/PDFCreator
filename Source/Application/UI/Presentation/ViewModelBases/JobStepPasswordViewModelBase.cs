@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
+using System.Threading.Tasks;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
@@ -14,7 +15,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
     {
         protected Job Job;
 
-        protected readonly string SettingPropertyName;
+        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
+
+        private readonly string SettingPropertyName;
         public PasswordButtonController PasswordButtonController { get; }
 
         public string Password
@@ -29,11 +32,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
             PasswordButtonController = new PasswordButtonController(translationUpdater, this, true, false);
         }
 
-        public void ExecuteWorkflowStep(Job job)
+        public Task ExecuteWorkflowStep(Job job)
         {
             Job = job;
             ReadPassword();
             ExecuteWorkflow();
+
+            return _taskCompletionSource.Task;
         }
 
         protected abstract void ExecuteWorkflow();
@@ -90,6 +95,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
         public virtual void FinishedHook()
         {
             StepFinished?.Invoke(this, EventArgs.Empty);
+            _taskCompletionSource.SetResult(null);
         }
     }
 }

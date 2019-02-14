@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,15 +28,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// </summary>
 		public bool Enabled { get; set; } = false;
 		
+		/// <summary>
+		/// UserToken seperator in the document
+		/// </summary>
+		public UserTokenSeperator Seperator { get; set; } = UserTokenSeperator.SquareBrackets;
 		
-		public void ReadValues(Data data, string path)
+		
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			Seperator = Enum.TryParse<UserTokenSeperator>(data.GetValue(@"" + path + @"Seperator"), out var tmpSeperator) ? tmpSeperator : UserTokenSeperator.SquareBrackets;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
+			data.SetValue(@"" + path + @"Seperator", Seperator.ToString());
 		}
 		
 		public UserTokens Copy()
@@ -43,7 +51,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			UserTokens copy = new UserTokens();
 			
 			copy.Enabled = Enabled;
-			
+			copy.Seperator = Seperator;
 			return copy;
 		}
 		
@@ -53,17 +61,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			UserTokens v = o as UserTokens;
 			
 			if (!Enabled.Equals(v.Enabled)) return false;
-			
+			if (!Seperator.Equals(v.Seperator)) return false;
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

@@ -32,10 +32,9 @@
                 <TextBlock Text="{Binding Translation.SelectFtpAccount}" />
             </Label>
             <DockPanel>
-                <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddAccountCommand}"  Height="25" Width="25" Style="{DynamicResource LightGreyButton}">
-                    <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
-                </Button>
-                <Button DockPanel.Dock="Right" Margin="5 0 0 0"
+                <StackPanel Style="{DynamicResource GpoStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right" Margin="5 0 0 0"
                         Height="25" Width="25"
                         IsEnabled="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
                         Command="{Binding EditAccountCommand}"
@@ -43,7 +42,11 @@
                         Style="{StaticResource LightGreyButton}"
                         Padding="7"
                         Content="{StaticResource EditButtonIcon}">
-                </Button>
+                    </Button>
+                    <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddAccountCommand}"  Height="25" Width="25" Style="{DynamicResource LightGreyButton}">
+                        <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
+                    </Button>
+                </StackPanel>
                 <Grid>
                     <ComboBox Name="FtpAccountsComboBox"
                               DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"

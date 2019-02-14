@@ -24,7 +24,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
         public void Execute(object parameter)
         {
             var startup = new StartupRoutine();
-            startup.AddAction(new StartupNavigationAction(RegionNames.MainRegion, MainRegionViewNames.ProfilesView));
+            var startupNavigationAction = new StartupNavigationAction { Region = RegionNames.MainRegion, Target = MainRegionViewNames.ProfilesView };
+
+            startup.AddAction(startupNavigationAction);
             _mainWindowThreadLauncher.LaunchMainWindow(startup);
         }
 

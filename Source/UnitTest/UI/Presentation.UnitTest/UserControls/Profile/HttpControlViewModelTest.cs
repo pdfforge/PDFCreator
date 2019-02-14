@@ -1,12 +1,13 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace Presentation.UnitTest.UserControls.Profile
         private ObservableCollection<HttpAccount> _httpAccounts;
         private ICommand _addCommand;
         private ICommand _editCommand;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [Test]
         public void DesignTimeViewModelIsNewable()
@@ -37,10 +39,11 @@ namespace Presentation.UnitTest.UserControls.Profile
             var settingsProvider = Substitute.For<ICurrentSettingsProvider>();
             settingsProvider.SelectedProfile.Returns(new ConversionProfile());
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             _httpAccounts = new ObservableCollection<HttpAccount>();
             settings.ApplicationSettings.Accounts.HttpAccounts = _httpAccounts;
-            settingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var commandLocator = Substitute.For<ICommandLocator>();
             commandLocator.CreateMacroCommand().Returns(x => new MacroCommandBuilder(commandLocator));
@@ -50,7 +53,7 @@ namespace Presentation.UnitTest.UserControls.Profile
             _editCommand = Substitute.For<ICommand>();
             commandLocator.GetCommand<HttpAccountEditCommand>().Returns(_editCommand);
 
-            _viewModel = new HttpActionViewModel(translationUpdater, settingsProvider, commandLocator, null);
+            _viewModel = new HttpActionViewModel(translationUpdater, _accountsProvider, settingsProvider, commandLocator, null, new GpoSettingsDefaults());
         }
 
         [Test]

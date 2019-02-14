@@ -17,7 +17,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
     public abstract class SettingsProvider : ISettingsProvider
     {
         protected string CurrentLanguage { get; private set; } = "en";
-        public PdfCreatorSettings Settings { get; private set; }
+        public PdfCreatorSettings Settings => _settings ?? new PdfCreatorSettings();
+        private PdfCreatorSettings _settings;
 
         public event EventHandler<LanguageChangedEventArgs> LanguageChanged;
 
@@ -42,13 +43,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
         public void UpdateSettings(PdfCreatorSettings settings)
         {
-            if (!settings.ApplicationSettings.Language.Equals(CurrentLanguage) || Settings == null)
+            if (!settings.ApplicationSettings.Language.Equals(CurrentLanguage) || _settings == null)
             {
                 CurrentLanguage = settings.ApplicationSettings.Language;
                 RaiseLanguageChanged(settings);
             }
 
-            Settings = settings.CopyAndPreserveApplicationSettings();
+            _settings = settings.CopyAndPreserveApplicationSettings();
 
             SettingsChanged?.Invoke(this, EventArgs.Empty);
         }

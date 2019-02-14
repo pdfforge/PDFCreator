@@ -35,7 +35,6 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _timeServerAccountInteraction = new TimeServerAccountInteraction(_timeServerAccount, "TimeServerAccountTestTitle");
 
             _viewModel = new TimeServerAccountViewModel(translationUpdater);
-            _viewModel.SetPasswordAction = s => { };
         }
 
         [Test]
@@ -224,17 +223,6 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
         {
             var wasTriggered = false;
             _viewModel.SaveCommand.CanExecuteChanged += (sender, args) => wasTriggered = true;
-            _viewModel.SetInteraction(_timeServerAccountInteraction);
-
-            Assert.IsTrue(wasTriggered);
-        }
-
-        [Test]
-        public void SetInteraction_TriggersSetPassword()
-        {
-            var wasTriggered = false;
-            _viewModel.SetPasswordAction += s => wasTriggered = true;
-
             _viewModel.SetInteraction(_timeServerAccountInteraction);
 
             Assert.IsTrue(wasTriggered);

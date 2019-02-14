@@ -30,10 +30,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enabled { get; set; } = false;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -48,7 +48,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.AccountId = AccountId;
 			copy.Enabled = Enabled;
-			
 			return copy;
 		}
 		
@@ -59,18 +58,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!AccountId.Equals(v.AccountId)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

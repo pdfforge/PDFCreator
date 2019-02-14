@@ -1,30 +1,26 @@
 ﻿using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.Core.Workflow;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoNSubstitute;
-using System.Linq;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
+using System;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.DirectConversion.UnitTest
 {
     [TestFixture]
     public class DirectConversionHelperTest
     {
-        private IFixture _fixture;
-        private IDirectConversionProvider _directConversionProvider;
-        private IJobInfoQueue _jobInfoQueue;
+        private IDirectConversionHelper _directConversionHelper;
+        private IPdfProcessor _pdfProcessor;
+        private IFile _file;
 
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            _fixture = new Fixture().Customize(new AutoNSubstituteCustomization());
-            _directConversionProvider = _fixture.Freeze<IDirectConversionProvider>();
-            _jobInfoQueue = _fixture.Freeze<IJobInfoQueue>();
-            var settingsProvider = _fixture.Freeze<ISettingsProvider>();
-            settingsProvider.Settings.Returns(new PdfCreatorSettings(null));
+            _pdfProcessor = Substitute.For<IPdfProcessor>();
+            _file = Substitute.For<IFile>();
+
+            _directConversionHelper = new DirectConversionHelper(_pdfProcessor, _file);
         }
 
         [TestCase(@"C:\Test.pdf")]
@@ -34,9 +30,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion.UnitTest
         [TestCase(@"C:\Some weird folder name\WithDot.doc\Test.PS")]
         public void CanConvertDirectly_WithAppropriateFilenames_IsTrue(string filename)
         {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
-
-            Assert.IsTrue(directConversionHelper.CanConvertDirectly(filename));
+            Assert.IsTrue(_directConversionHelper.CanConvertDirectly(filename));
         }
 
         [TestCase(@"C:\Test.doc")]
@@ -44,69 +38,36 @@ namespace pdfforge.PDFCreator.Core.DirectConversion.UnitTest
         [TestCase(@"C:\Some weird folder name\WithDot.doc\Test")]
         public void CanConvertDirectly_WithInappropriateFilenames_IsFalse(string filename)
         {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
-
-            Assert.IsFalse(directConversionHelper.CanConvertDirectly(filename));
+            Assert.IsFalse(_directConversionHelper.CanConvertDirectly(filename));
         }
 
         [Test]
-        public void ConvertDirectly_WithInvalidFile_DoesNothing()
+        public void GetNumberOfPages_InputIsPdfFile_ReturnsNumberOfPagesFromPdfProcessor()
         {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
+            var expectedNumberOfPages = 12345;
+            var filename = "pdffile.pdf";
+            _pdfProcessor.GetNumberOfPages(filename).Returns(expectedNumberOfPages);
 
-            directConversionHelper.ConvertDirectly(@"C:\InvalidFile.docx");
-
-            Assert.IsFalse(_directConversionProvider.ReceivedCalls().Any(), "The DirectConversionProvider was called though it should not have been!");
-            Assert.IsFalse(_jobInfoQueue.ReceivedCalls().Any(), "The JobInfoQueue was called though it should not have been!");
+            Assert.AreEqual(expectedNumberOfPages, _directConversionHelper.GetNumberOfPages(filename));
         }
 
         [Test]
-        public void ConvertDirectly_WithValidFile_AddsJobToJobInfoQueue()
+        public void GetNumberOfPages_InputIsPsFile_DoesNotCallPdfProcessor()
         {
-            const string expectedInfFile = "X:\\MyFile.inf";
+            var filename = "pdffile.ps";
 
-            var pdfDirectConversion = _fixture.Freeze<IDirectConversion>();
-            pdfDirectConversion.TransformToInfFile(Arg.Any<string>(), Arg.Any<string>()).Returns(expectedInfFile);
-            _directConversionProvider.GetPdfConversion().Returns(pdfDirectConversion);
+            _directConversionHelper.GetNumberOfPages(filename);
 
-            var jobInfoManager = _fixture.Freeze<IJobInfoManager>();
-            jobInfoManager.ReadFromInfFile(Arg.Any<string>()).Returns(x => new JobInfo { InfFile = x.Arg<string>() });
-
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
-
-            directConversionHelper.ConvertDirectly(@"C:\InvalidFile.pdf");
-
-            _jobInfoQueue.Received(1).Add(Arg.Is<JobInfo>(jobInfo => jobInfo.InfFile == expectedInfFile));
+            _pdfProcessor.DidNotReceive().GetNumberOfPages(Arg.Any<string>());
         }
 
         [Test]
-        public void ConvertDirectly_WhenInfFileIsNull_DoesNothing()
+        public void GetNumberOfPages_InputIsPsFile_FileOpenReadThrowsExcpetion_Returns1()
         {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
+            var filename = "pdffile.ps";
+            _file.OpenRead(filename).Throws(new Exception());
 
-            directConversionHelper.ConvertDirectly(@"C:\InvalidFile.pdf");
-
-            Assert.IsFalse(_jobInfoQueue.ReceivedCalls().Any(), "The JobInfoQueue was called though it should not have been!");
-        }
-
-        [Test]
-        public void ConvertDirectly_WithPdfFile_UsesPdfConverter()
-        {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
-
-            directConversionHelper.ConvertDirectly(@"C:\InvalidFile.pdf");
-
-            _directConversionProvider.Received(1).GetPdfConversion();
-        }
-
-        [Test]
-        public void ConvertDirectly_WithPsFile_UsesPsConverter()
-        {
-            var directConversionHelper = _fixture.Create<DirectConversionHelper>();
-
-            directConversionHelper.ConvertDirectly(@"C:\InvalidFile.ps");
-
-            _directConversionProvider.Received(1).GetPsConversion();
+            Assert.AreEqual(1, _directConversionHelper.GetNumberOfPages(filename));
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs
 {
-    public class ConvertTabViewModel : ProfileUserControlViewModel<ConvertTabTranslation>, ITabViewModel
+    public class ConvertTabViewModel : ProfileNotSupportedFeaturesUserControlViewModel<ConvertTabTranslation>, ITabViewModel
     {
         public ConvertTabViewModel(ITranslationUpdater updater, ISelectedProfileProvider selectedProfile, IDispatcher dispatcher) : base(updater, selectedProfile, dispatcher)
         {
@@ -24,6 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         public IconList Icon => IconList.ConversionSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public override bool HasNotSupportedFeatures => CurrentProfile.HasNotSupportedConvert();
 
         public DelegateCommand<OutputFormat> SetOutputFormatCommand { get; }
 

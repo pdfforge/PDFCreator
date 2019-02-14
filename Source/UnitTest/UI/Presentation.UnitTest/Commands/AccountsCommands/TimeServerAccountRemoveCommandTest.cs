@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -29,12 +29,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ConversionProfile _profileWithTimeServerAccountEnabled;
         private ConversionProfile _profileWithTimeServerAccountDisabled;
 
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ICurrentSettings<Accounts> _accountsProvider;
+
         [SetUp]
         public void SetUp()
         {
             _interactionRequest = new UnitTestInteractionRequest();
             _translation = new TimeServerTranslation();
-
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
             _timeServerAccounts = new ObservableCollection<TimeServerAccount>();
 
             _usedAccount = new TimeServerAccount();
@@ -63,16 +66,17 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _profileWithTimeServerAccountDisabled.PdfSettings.Signature.TimeServerAccountId = _usedAccount.AccountId;
             _profiles.Add(_profileWithTimeServerAccountDisabled);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.TimeServerAccounts = _timeServerAccounts;
             settings.ConversionProfiles = _profiles;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
-            currentSettingsProvider.Profiles.Returns(_profiles);
+
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
+            _profilesProvider.Settings.Returns(_profiles);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _timeServerAccountRemoveCommand = new TimeServerAccountRemoveCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _timeServerAccountRemoveCommand = new TimeServerAccountRemoveCommand(_interactionRequest, _profilesProvider, _accountsProvider, translationUpdater);
         }
 
         [Test]
@@ -205,19 +209,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             Assert.AreEqual("", _profileWithTimeServerAccountEnabled.PdfSettings.Signature.TimeServerAccountId);
             Assert.IsFalse(_profileWithTimeServerAccountDisabled.PdfSettings.Signature.Enabled);
             Assert.AreEqual("", _profileWithTimeServerAccountDisabled.PdfSettings.Signature.TimeServerAccountId);
-        }
-
-        [Test]
-        public void ChangeTimeServerAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var newAccount = new TimeServerAccount();
-            _timeServerAccounts.Add(newAccount);
-            var wasRaised = false;
-            _timeServerAccountRemoveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _timeServerAccounts.Remove(newAccount);
-
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

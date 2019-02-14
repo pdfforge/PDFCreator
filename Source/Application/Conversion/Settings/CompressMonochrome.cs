@@ -44,12 +44,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Resampling { get; set; } = false;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Compression = (CompressionMonochrome) Enum.Parse(typeof(CompressionMonochrome), data.GetValue(@"" + path + @"Compression")); } catch { Compression = CompressionMonochrome.CcittFaxEncoding;}
-			try { Dpi = int.Parse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.CultureInfo.InvariantCulture); } catch { Dpi = 1200;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = true;}
-			try { Resampling = bool.Parse(data.GetValue(@"" + path + @"Resampling")); } catch { Resampling = false;}
+			Compression = Enum.TryParse<CompressionMonochrome>(data.GetValue(@"" + path + @"Compression"), out var tmpCompression) ? tmpCompression : CompressionMonochrome.CcittFaxEncoding;
+			Dpi = int.TryParse(data.GetValue(@"" + path + @"Dpi"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpDpi) ? tmpDpi : 1200;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : true;
+			Resampling = bool.TryParse(data.GetValue(@"" + path + @"Resampling"), out var tmpResampling) ? tmpResampling : false;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -68,7 +68,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Dpi = Dpi;
 			copy.Enabled = Enabled;
 			copy.Resampling = Resampling;
-			
 			return copy;
 		}
 		
@@ -81,20 +80,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Dpi.Equals(v.Dpi)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!Resampling.Equals(v.Resampling)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Compression=" + Compression.ToString());
-			sb.AppendLine("Dpi=" + Dpi.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("Resampling=" + Resampling.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

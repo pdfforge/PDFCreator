@@ -18,15 +18,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// Container class for PDFCreator settings and profiles
 	/// </summary>
 	[ImplementPropertyChanged]
-	public partial class PdfCreatorSettings : INotifyPropertyChanged {
+	public partial class PdfCreatorSettings : INotifyPropertyChanged, ISettings {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
 		#pragma warning restore 67
 		
-		private Data data = Data.CreateDataStorage();
-		private IStorage _storage = null;
-		
-		public ApplicationProperties ApplicationProperties { get; set; } = new ApplicationProperties();
 		
 		/// <summary>
 		/// PDFCreator application settings
@@ -34,50 +30,32 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings();
 		
 		public ObservableCollection<ConversionProfile> ConversionProfiles { get; set; } = new ObservableCollection<ConversionProfile>();
-		public PdfCreatorSettings(IStorage storage)
-		{
-			_storage = storage;
-		}
+		public CreatorAppSettings CreatorAppSettings { get; set; } = new CreatorAppSettings();
 		
-		public bool LoadData(IStorage storage, string path)
+		public ObservableCollection<DefaultViewer> DefaultViewers { get; set; } = new ObservableCollection<DefaultViewer>();
+		public bool LoadData(IStorage storage)
 		{
 			try {
-				data.Clear();
-				storage.Data = data;
-				storage.ReadData(path);
-				ReadValues(data, "");
+				var data = Data.CreateDataStorage();
+				storage.ReadData(data);
+				ReadValues(data);
 				return true;
 			} catch { return false; }
 			
 		}
 		
-		public bool LoadData(string path)
-		{
-			return LoadData(_storage, path);
-			
-		}
-		
-		public bool SaveData(IStorage storage, string path)
+		public bool SaveData(IStorage storage)
 		{
 			try {
-				data.Clear();
-				StoreValues(data, "");
-				storage.Data = data;
-				storage.WriteData(path);
+				var data = StoreValues();
+				storage.WriteData(data);
 				return true;
 			} catch { return false; }
 			
 		}
 		
-		public bool SaveData(string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			return SaveData(_storage, path);
-			
-		}
-		
-		public void ReadValues(Data data, string path)
-		{
-			ApplicationProperties.ReadValues(data, path + @"ApplicationProperties\");
 			ApplicationSettings.ReadValues(data, path + @"ApplicationSettings\");
 			
 			try
@@ -91,11 +69,23 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				}
 			} catch {}
 			
+			CreatorAppSettings.ReadValues(data, path + @"CreatorAppSettings\");
+			
+			try
+			{
+				int numClasses = int.Parse(data.GetValue(@"" + path + @"DefaultViewers\numClasses"));
+				for (int i = 0; i < numClasses; i++)
+				{
+					DefaultViewer tmp = new DefaultViewer();
+					tmp.ReadValues(data, @"" + path + @"DefaultViewers\" + i + @"\");
+					DefaultViewers.Add(tmp);
+				}
+			} catch {}
+			
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
-			ApplicationProperties.StoreValues(data, path + @"ApplicationProperties\");
 			ApplicationSettings.StoreValues(data, path + @"ApplicationSettings\");
 			
 			for (int i = 0; i < ConversionProfiles.Count; i++)
@@ -105,13 +95,28 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			data.SetValue(@"" + path + @"ConversionProfiles\numClasses", ConversionProfiles.Count.ToString());
 			
+			CreatorAppSettings.StoreValues(data, path + @"CreatorAppSettings\");
+			
+			for (int i = 0; i < DefaultViewers.Count; i++)
+			{
+				DefaultViewer tmp = DefaultViewers[i];
+				tmp.StoreValues(data, @"" + path + @"DefaultViewers\" + i + @"\");
+			}
+			data.SetValue(@"" + path + @"DefaultViewers\numClasses", DefaultViewers.Count.ToString());
+			
+		}
+		
+		public Data StoreValues(string path = "")
+		{
+			var data = Data.CreateDataStorage();
+			StoreValues(data, "");
+			return data;
 		}
 		
 		public PdfCreatorSettings Copy()
 		{
-			PdfCreatorSettings copy = new PdfCreatorSettings(_storage);
+			PdfCreatorSettings copy = new PdfCreatorSettings();
 			
-			copy.ApplicationProperties = ApplicationProperties.Copy();
 			copy.ApplicationSettings = ApplicationSettings.Copy();
 			
 			copy.ConversionProfiles = new ObservableCollection<ConversionProfile>();
@@ -120,6 +125,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				copy.ConversionProfiles.Add(ConversionProfiles[i].Copy());
 			}
 			
+			copy.CreatorAppSettings = CreatorAppSettings.Copy();
+			
+			copy.DefaultViewers = new ObservableCollection<DefaultViewer>();
+			for (int i = 0; i < DefaultViewers.Count; i++)
+			{
+				copy.DefaultViewers.Add(DefaultViewers[i].Copy());
+			}
 			
 			return copy;
 		}
@@ -129,7 +141,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PdfCreatorSettings)) return false;
 			PdfCreatorSettings v = o as PdfCreatorSettings;
 			
-			if (!ApplicationProperties.Equals(v.ApplicationProperties)) return false;
 			if (!ApplicationSettings.Equals(v.ApplicationSettings)) return false;
 			
 			if (ConversionProfiles.Count != v.ConversionProfiles.Count) return false;
@@ -138,26 +149,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				if (!ConversionProfiles[i].Equals(v.ConversionProfiles[i])) return false;
 			}
 			
+			if (!CreatorAppSettings.Equals(v.CreatorAppSettings)) return false;
 			
-			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("[ApplicationProperties]");
-			sb.AppendLine(ApplicationProperties.ToString());
-			sb.AppendLine("[ApplicationSettings]");
-			sb.AppendLine(ApplicationSettings.ToString());
-			
-			for (int i = 0; i < ConversionProfiles.Count; i++)
+			if (DefaultViewers.Count != v.DefaultViewers.Count) return false;
+			for (int i = 0; i < DefaultViewers.Count; i++)
 			{
-				sb.AppendLine(ConversionProfiles.ToString());
+				if (!DefaultViewers[i].Equals(v.DefaultViewers[i])) return false;
 			}
 			
-			
-			return sb.ToString();
+			return true;
 		}
 		
 		public override int GetHashCode()

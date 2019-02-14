@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\test\NUnit\build\NUnit.props" Condition="Exists('..\..\..\..\packages\test\NUnit\build\NUnit.props')" Label="Paket" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -82,10 +84,6 @@
       <Project>{f7126398-bb4f-49af-ad90-0f23d2eddcfe}</Project>
       <Name>PdfProcessingInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Application\Conversion\Processing\PdfToolsProcessing\PdfToolsProcessing.csproj">
-      <Project>{a80fba8d-683c-4622-8c0b-5ab66c2a8968}</Project>
-      <Name>PdfToolsProcessing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Application\Conversion\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
@@ -93,6 +91,10 @@
     <ProjectReference Include="..\..\..\Application\Conversion\Jobs\Jobs.csproj">
       <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
       <Name>Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Application\Core\Controller\Controller.csproj">
+      <Project>{BE1A6F7D-6439-4361-8E96-DF90B4BFE000}</Project>
+      <Name>Controller</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Application\Editions\PDFCreator\PDFCreator.csproj">
       <Project>{df164150-d813-496f-b1b9-def0b0f79f72}</Project>
@@ -125,7 +127,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="itextsharp">
-          <HintPath>..\..\..\..\packages\iTextSharp\lib\itextsharp.dll</HintPath>
+          <HintPath>..\..\..\..\lib\itextsharp.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -136,7 +138,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="libpdfNET">
-          <HintPath>..\..\..\..\packages\PdfTools.LibPdf\lib\libpdfNET.dll</HintPath>
+          <HintPath>..\..\..\..\lib\libpdfNET.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -147,7 +149,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="PdfValidatorNET">
-          <HintPath>..\..\..\..\packages\PdfTools.PdfAValidator\lib\PdfValidatorNET.dll</HintPath>
+          <HintPath>..\..\..\..\lib\PdfValidatorNET.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -158,7 +160,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SimpleInjector">
-          <HintPath>..\..\..\..\packages\SimpleInjector\lib\net45\SimpleInjector.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SimpleInjector.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -169,7 +171,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -180,7 +182,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -191,7 +193,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="nunit.framework">
-          <HintPath>..\..\..\..\packages\test\NUnit\lib\net45\nunit.framework.dll</HintPath>
+          <HintPath>..\..\..\..\lib\nunit.framework.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -1,3 +1,4 @@
+using System;
 using pdfforge.PDFCreator.Conversion.Settings;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
@@ -11,5 +12,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         void ApplyAndSaveSettings(PdfCreatorSettings settings);
 
         void LoadAllSettings();
+
+        event EventHandler SettingsSaved;
     }
 }

@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +32,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             job.NumberOfCopies = GetNumberOfCopies(job);
             job.NumberOfPages = _pageNumberCalculator.GetNumberOfPages(job);
             if (job.Profile.UserTokens.Enabled) //must be done before tokenreplacer is build
-                SetUserTokensInSourceFileInfos(job.JobInfo.SourceFiles);
+                SetUserTokensInSourceFileInfos(job.JobInfo.SourceFiles, job.Profile.UserTokens);
             job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(job);
             job.ReplaceTokensInMetadata();
         }
@@ -56,13 +57,13 @@ namespace pdfforge.PDFCreator.Core.Workflow
             return copies;
         }
 
-        private void SetUserTokensInSourceFileInfos(IList<SourceFileInfo> sourceFileInfos)
+        private void SetUserTokensInSourceFileInfos(IList<SourceFileInfo> sourceFileInfos, UserTokens userTokensSettings)
         {
             foreach (var sfi in sourceFileInfos)
             {
                 if (!sfi.UserTokenEvaluated)
                 {
-                    sfi.UserToken = _userTokenExtractor.ExtractUserTokenFromPsFile(sfi.Filename);
+                    sfi.UserToken = _userTokenExtractor.ExtractUserTokenFromPsFile(sfi.Filename, userTokensSettings.Seperator);
                     sfi.UserTokenEvaluated = true;
                 }
             }

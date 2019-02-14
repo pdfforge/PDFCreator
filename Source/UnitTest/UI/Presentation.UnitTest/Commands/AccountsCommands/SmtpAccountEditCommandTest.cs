@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<SmtpAccount> _smtpAccounts;
         private SmtpAccount _currentSmtpAccount;
         private SmtpTranslation _translation;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -31,14 +32,14 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _currentSmtpAccount = new SmtpAccount { UserName = "CurrentUserName" };
             _smtpAccounts = new ObservableCollection<SmtpAccount>();
             _smtpAccounts.Add(_currentSmtpAccount);
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.SmtpAccounts = _smtpAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _smtpAccountEditCommand = new SmtpAccountEditCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _smtpAccountEditCommand = new SmtpAccountEditCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]
@@ -125,17 +126,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             var interaction = _interactionRequest.AssertWasRaised<SmtpAccountInteraction>();
             Assert.AreEqual(_currentSmtpAccount, interaction.SmtpAccount);
             Assert.AreEqual("Changed Username", _currentSmtpAccount.UserName);
-        }
-
-        [Test]
-        public void ChangeSmtpAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var wasRaised = false;
-            _smtpAccountEditCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _smtpAccounts.Add(new SmtpAccount());
-
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

@@ -3,29 +3,35 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using SystemInterface.IO;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using pdfforge.PDFCreator.Utilities.Process;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings
 {
     public class LoggingSettingViewModel : ADebugSettingsItemControlModel
     {
         private readonly IFile _fileWrap;
+        public ICurrentSettings<ApplicationSettings> ApplicationSettings { get; }
         private readonly IInteractionInvoker _invoker;
-        private readonly IProcessStarter _processStarter;
+        private readonly ICommand _quickActionOpenExplorerLocationCommand;
 
-        public LoggingSettingViewModel(IInteractionInvoker invoker, IFile fileWrap, IProcessStarter processStarter, ISettingsManager settingsManager, ITranslationUpdater translationUpdater, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings) : base(settingsManager, translationUpdater, settingsProvider, gpoSettings)
+        public LoggingSettingViewModel(IInteractionInvoker invoker, IFile fileWrap,
+            ITranslationUpdater translationUpdater, IGpoSettings gpoSettings, ICommandLocator commandLocator,ICurrentSettings<ApplicationSettings> applicationSettings)
+            : base(translationUpdater, gpoSettings)
         {
             _fileWrap = fileWrap;
-            _processStarter = processStarter;
+            ApplicationSettings = applicationSettings;
+            _quickActionOpenExplorerLocationCommand = commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>();
             _invoker = invoker;
+
             ShowLogFileCommand = new DelegateCommand(ShowLogFileExecute);
             ClearLogFileCommand = new DelegateCommand(ClearLogFileExecute);
         }
@@ -47,7 +53,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         {
             if (_fileWrap.Exists(LoggingHelper.LogFile))
             {
-                _processStarter.Start(LoggingHelper.LogFile);
+                _quickActionOpenExplorerLocationCommand.Execute(LoggingHelper.LogFile);
             }
             else
             {

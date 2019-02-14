@@ -13,21 +13,19 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
     public class NewPrintJobStart : MaybePipedStart
     {
         private readonly IJobInfoManager _jobInfoManager;
-        private readonly IParametersManager _parametersManager;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ISettingsProvider _settingsProvider;
         private readonly ISpoolerProvider _spoolerProvider;
 
         public NewPrintJobStart(ISettingsProvider settingsProvider, IJobInfoQueue jobInfoQueue, ISpoolerProvider spoolerProvider,
-            IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager, IParametersManager parametersManager)
+            IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager)
             : base(maybePipedApplicationStarter)
         {
             _settingsProvider = settingsProvider;
             _jobInfoQueue = jobInfoQueue;
             _spoolerProvider = spoolerProvider;
             _jobInfoManager = jobInfoManager;
-            _parametersManager = parametersManager;
         }
 
         public string NewJobInfoFile { get; internal set; }
@@ -54,17 +52,6 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             try
             {
                 var jobInfo = _jobInfoManager.ReadFromInfFile(NewJobInfoFile);
-
-                if (string.IsNullOrWhiteSpace(jobInfo.ProfileParameter) && string.IsNullOrWhiteSpace(jobInfo.OutputFileParameter))
-                {
-                    if (_parametersManager.HasPredefinedParameters())
-                    {
-                        var parameters = _parametersManager.GetAndResetParameters();
-                        jobInfo.OutputFileParameter = parameters.Outputfile;
-                        jobInfo.ProfileParameter = parameters.Profile;
-                    }
-                }
-
                 _jobInfoQueue.Add(jobInfo);
             }
             catch (Exception ex)

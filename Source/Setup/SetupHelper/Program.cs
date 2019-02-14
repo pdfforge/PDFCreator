@@ -15,7 +15,7 @@ namespace pdfforge.SetupHelper
 
             var clp = new CommandLineParser(args);
 
-            if (clp.HasArgument("FileExtensions"))
+            if (clp.HasArgumentWithValue("FileExtensions"))
             {
                 showUsage = false;
                 try
@@ -42,7 +42,7 @@ namespace pdfforge.SetupHelper
                 }
             }
 
-            if (clp.HasArgument("ComInterface"))
+            if (clp.HasArgumentWithValue("ComInterface"))
             {
                 showUsage = false;
                 try

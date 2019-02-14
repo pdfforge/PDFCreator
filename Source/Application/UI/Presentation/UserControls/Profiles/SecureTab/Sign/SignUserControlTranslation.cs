@@ -16,10 +16,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
         public string SelectTimeServerLabel { get; private set; } = "Select Time Server:";
         public string DisplaySignatureCheckBox { get; private set; } = "Display signature in document";
         public string SignaturePageLabel { get; private set; } = "Page:";
-        public string LeftXLabel { get; private set; } = "Left X:";
-        public string RightXLabel { get; private set; } = "Right X:";
-        public string LeftYLabel { get; private set; } = "Left Y:";
-        public string RightYLabel { get; private set; } = "Right Y:";
+        public string UnitOfMeasurementLabel { get; private set; } = "Unit of measurement:";
+        public string LeftXLabel { get; private set; } = "From left:";
+        public string RightXLabel { get; private set; } = "Width:";
+        public string LeftYLabel { get; private set; } = "From bottom:";
+        public string RightYLabel { get; private set; } = "Height:";
         public string PDFSignature { get; private set; } = "PDF Signature";
         public string SelectCertFile { get; private set; } = "Select certificate file";
         public string PfxP12Files { get; private set; } = "PFX/P12 files";
@@ -28,5 +29,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
         public string SelectOrAddTimeServerAccount { get; protected set; } = "Select account or create a new one ->";
 
         public EnumTranslation<SignaturePage>[] SignaturePageValues { get; private set; } = EnumTranslation<SignaturePage>.CreateDefaultEnumTranslation();
+        public EnumTranslation<UnitOfMeasurement>[] UnitOfMeasurementValues { get; private set; } = EnumTranslation<UnitOfMeasurement>.CreateDefaultEnumTranslation();
     }
 }

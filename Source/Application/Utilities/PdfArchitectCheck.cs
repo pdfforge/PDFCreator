@@ -19,6 +19,10 @@ namespace pdfforge.PDFCreator.Utilities
         /// </summary>
         /// <returns>Returns true, if PDF Architect is installed</returns>
         bool IsInstalled();
+
+        bool IsDownloaded();
+
+        string GetInstallerPath();
     }
 
     public class PdfArchitectCheck : IPdfArchitectCheck
@@ -27,6 +31,7 @@ namespace pdfforge.PDFCreator.Utilities
         private bool _wasSearched;
 
         private readonly IFile _file;
+        private readonly IAssemblyHelper _assemblyHelper;
 
         // Tuple format: Item1: DisplayName in Registry, Item2: name of the exe file that has to exist in the InstallLocation
         private readonly Tuple<string, string>[] _pdfArchitectCandidates =
@@ -48,10 +53,11 @@ namespace pdfforge.PDFCreator.Utilities
             @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
         };
 
-        public PdfArchitectCheck(IRegistry registry, IFile file)
+        public PdfArchitectCheck(IRegistry registry, IFile file, IAssemblyHelper assemblyHelper)
         {
             _registry = registry;
             _file = file;
+            _assemblyHelper = assemblyHelper;
         }
 
         /// <summary>
@@ -96,6 +102,17 @@ namespace pdfforge.PDFCreator.Utilities
         public bool IsInstalled()
         {
             return GetInstallationPath() != null;
+        }
+
+        public bool IsDownloaded()
+        {
+            var path = GetInstallerPath();
+            return _file.Exists(path) || IsInstalled();
+        }
+
+        public string GetInstallerPath()
+        {
+            return Path.Combine(_assemblyHelper.GetAssemblyDirectory(), "PDF Architect", "architect-setup.exe");
         }
 
         private string TryFindInstallationPath(string msiDisplayName, string applicationExeName)

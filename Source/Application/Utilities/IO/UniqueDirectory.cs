@@ -12,7 +12,6 @@ namespace pdfforge.PDFCreator.Utilities.IO
     {
         private readonly IDirectory _directoryWrap;
         private readonly IFile _fileWrap;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
         private string _path;
 
         public UniqueDirectory(string path) : this(path, new DirectoryWrap(), new FileWrap())
@@ -22,7 +21,10 @@ namespace pdfforge.PDFCreator.Utilities.IO
         public UniqueDirectory(string path, IDirectory directory, IFile fileWrap)
         {
             if (path == null)
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
+
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("Argument may not be empty string", nameof(path));
 
             _path = path;
 
@@ -37,14 +39,14 @@ namespace pdfforge.PDFCreator.Utilities.IO
         /// <returns>The uniqified directory path</returns>
         public string MakeUniqueDirectory()
         {
-            var directory = _pathSafe.GetDirectoryName(_path) ?? "";
-            var fileBody = _pathSafe.GetFileName(_path);
+            var directory = PathSafe.GetDirectoryName(_path) ?? "";
+            var fileBody = PathSafe.GetFileName(_path);
 
             var i = 2;
 
             while (_directoryWrap.Exists(_path) || _fileWrap.Exists(_path))
             {
-                _path = _pathSafe.Combine(directory, fileBody + "_" + i);
+                _path = PathSafe.Combine(directory, fileBody + "_" + i);
                 i++;
             }
 

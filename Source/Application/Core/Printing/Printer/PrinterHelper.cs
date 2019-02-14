@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Printing;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace pdfforge.PDFCreator.Core.Printing.Printer
 {
+    public enum PrinterNameValidation
+    {
+        Valid,
+        InvalidName,
+        AlreadyExists
+    }
+
     public interface IPrinterProvider
     {
         /// <summary>
@@ -35,7 +43,16 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
 
         bool SetDefaultPrinter(string printerName);
 
+        PrinterNameValidation ValidatePrinterName(string printerName);
+
         bool IsValidPrinterName(string printerName);
+
+        /// <summary>
+        /// Create a printer name that does not exist yet. If the base name already exists, we add a counter (starting with 2)
+        /// </summary>
+        /// <param name="printerBaseName">The desired printer name</param>
+        /// <returns>The baseName, maybe with an appended counter</returns>
+        string CreateValidPrinterName(string printerBaseName);
     }
 
     public class PrinterHelper : IPrinterHelper
@@ -43,23 +60,33 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         // ReSharper disable once InconsistentNaming
         private const int ERROR_INSUFFICIENT_BUFFER = 122;
 
+        private static string InvalidCharsRegex => "[\\\\,\"]+"; //\" would be valid but causes problems, since it splits input strings
+
+        private readonly ISystemPrinterProvider _systemPrinterProvider;
+
+        public PrinterHelper(ISystemPrinterProvider systemPrinterProvider)
+        {
+            _systemPrinterProvider = systemPrinterProvider;
+        }
+
+        private IList<string> GetPorts(string monitorName)
+        {
+            return GetInstalledPorts()
+                .Where(p => p.pMonitorName.Equals(monitorName, StringComparison.OrdinalIgnoreCase))
+                .Select(p => p.pPortName)
+                .ToList();
+        }
+
         public IList<string> GetPrinters(string portName)
         {
             try
             {
                 var printerInfos = EnumPrinters(PrinterEnumFlags.PRINTER_ENUM_LOCAL);
 
-                var printers = new List<string>();
-
-                foreach (var printer in printerInfos)
-                {
-                    if (printer.pPortName.Equals(portName, StringComparison.OrdinalIgnoreCase))
-                        printers.Add(printer.pPrinterName);
-                }
-
-                printers.Sort();
-
-                return printers;
+                return printerInfos
+                    .Where(pi => pi.pPortName.Equals(portName, StringComparison.OrdinalIgnoreCase))
+                    .Select(pi => pi.pPrinterName)
+                    .ToList();
             }
             catch (Win32Exception)
             {
@@ -73,7 +100,17 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         /// <returns>A Collection of PDFCreator printers</returns>
         public IList<string> GetPDFCreatorPrinters()
         {
-            return GetPrinters("pdfcmon");
+            var ports = GetPorts("pdfcmon");
+            var printers = new List<string>();
+
+            foreach (var port in ports)
+            {
+                printers.AddRange(GetPrinters(port));
+            }
+
+            printers.Sort();
+
+            return printers;
         }
 
         /// <summary>
@@ -82,13 +119,30 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         /// <param name="printerName">Name of the printer to use</param>
         public void PrintWindowsTestPage(string printerName)
         {
-            var settings = new PrinterSettings();
-            var defaultPrinter = settings.PrinterName;
-            var printer = GetApplicablePDFCreatorPrinter(printerName, defaultPrinter);
+            var printer = GetApplicablePDFCreatorPrinter(printerName, _systemPrinterProvider.GetDefaultPrinter());
 
-            var psi = new ProcessStartInfo("RUNDLL32.exe", "PRINTUI.DLL,PrintUIEntry /k /n \"" + printer + "\"");
-            psi.CreateNoWindow = true;
+            var psi = new ProcessStartInfo("RUNDLL32.exe", "PRINTUI.DLL,PrintUIEntry /k /n \"" + printer + "\"")
+            {
+                CreateNoWindow = true
+            };
             Process.Start(psi);
+        }
+
+        public PrinterNameValidation ValidatePrinterName(string printerName)
+        {
+            if (string.IsNullOrWhiteSpace(printerName))
+                return PrinterNameValidation.InvalidName;
+
+            if (Regex.IsMatch(printerName, InvalidCharsRegex))
+                return PrinterNameValidation.InvalidName;
+
+            foreach (string installedPrinter in _systemPrinterProvider.GetInstalledPrinterNames())
+            {
+                if (installedPrinter.Equals(printerName, StringComparison.OrdinalIgnoreCase))
+                    return PrinterNameValidation.AlreadyExists;
+            }
+
+            return PrinterNameValidation.Valid;
         }
 
         /// <summary>
@@ -98,16 +152,27 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         /// <returns>true if printerName is unique or false if the name is already in use</returns>
         public bool IsValidPrinterName(string printerName)
         {
-            if (string.IsNullOrWhiteSpace(printerName))
-                return false;
+            return ValidatePrinterName(printerName) == PrinterNameValidation.Valid;
+        }
 
-            foreach (string installedPrinter in PrinterSettings.InstalledPrinters)
+        /// <summary>
+        /// Create a printer name that does not exist yet. If the base name already exists, we add a counter (starting with 2)
+        /// </summary>
+        /// <param name="printerBaseName">The desired printer name</param>
+        /// <returns>The baseName, maybe with an appended counter</returns>
+        public string CreateValidPrinterName(string printerBaseName)
+        {
+            var i = 2;
+
+            printerBaseName = Regex.Replace(printerBaseName, InvalidCharsRegex, "_");
+            var printerName = printerBaseName;
+
+            while (!IsValidPrinterName(printerName))
             {
-                if (installedPrinter.Equals(printerName, StringComparison.OrdinalIgnoreCase))
-                    return false;
+                printerName = printerBaseName + i++;
             }
 
-            return true;
+            return printerName;
         }
 
         /// <summary>
@@ -118,7 +183,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         /// <param name="requestedPrinter">Name of the primary PDFCreator printer</param>
         /// <param name="defaultPrinter">Name of the current default printer</param>
         /// <returns>null if no PDFCreator printer is installed, else the name of the most applicable PDFCreator printer</returns>
-        public string GetApplicablePDFCreatorPrinter(string requestedPrinter, string defaultPrinter)
+        public string GetApplicablePDFCreatorPrinter(string requestedPrinter, string defaultPrinter) //todo: DefaultPrinter intern??????????????????????????????????
         {
             var printers = GetPDFCreatorPrinters();
 
@@ -158,7 +223,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
 
         public string GetDefaultPrinter()
         {
-            return new PrinterSettings().PrinterName;
+            return _systemPrinterProvider.GetDefaultPrinter();
         }
 
         public bool SetDefaultPrinter(string printerName)
@@ -209,6 +274,53 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true, EntryPoint = "SetDefaultPrinter")]
         private static extern bool SetDefaultPrinterWin32(string printerName);
 
+        [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool EnumPorts(string pName, uint level, IntPtr lpbPorts, uint cbBuf, ref uint pcbNeeded, ref uint pcReturned);
+
+        public PORT_INFO_2[] GetInstalledPorts()
+        {
+            uint pcbNeeded = 0;
+            uint pcReturned = 0;
+
+            if (EnumPorts(null, 2, IntPtr.Zero, 0, ref pcbNeeded, ref pcReturned))
+            {
+                //succeeds, but must not, because buffer is zero (too small)!
+                throw new Exception("EnumPorts should fail!");
+            }
+
+            int lastWin32Error = Marshal.GetLastWin32Error();
+            //ERROR_INSUFFICIENT_BUFFER = 122 expected, if not -> Exception
+            if (lastWin32Error != 122)
+            {
+                throw new Win32Exception(lastWin32Error);
+            }
+
+            IntPtr pPorts = Marshal.AllocHGlobal((int)pcbNeeded);
+
+            if (!EnumPorts(null, 2, pPorts, pcbNeeded, ref pcbNeeded, ref pcReturned))
+            {
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            }
+
+            var portInfoList = new List<PORT_INFO_2>();
+            IntPtr currentPort = pPorts;
+            for (int i = 0; i < pcReturned; i++)
+            {
+                var currentPortInfo = (PORT_INFO_2)Marshal.PtrToStructure(currentPort, typeof(PORT_INFO_2));
+
+                if (!string.IsNullOrEmpty(currentPortInfo.pMonitorName) &&
+                    !string.IsNullOrEmpty(currentPortInfo.pPortName))
+                {
+                    portInfoList.Add(currentPortInfo);
+                }
+
+                currentPort = currentPort + Marshal.SizeOf(typeof(PORT_INFO_2));
+            }
+
+            Marshal.FreeHGlobal(pPorts);
+            return portInfoList.ToArray();
+        }
+
         // ReSharper disable once InconsistentNaming
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         // ReSharper disable MemberCanBePrivate.Local
@@ -220,6 +332,25 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
             public uint Attributes;
             public uint DeviceNotSelectedTimeout;
             public uint TransmissionRetryTimeout;
+        }
+
+        [Flags]
+        public enum PortType
+        {
+            Write = 0x1,
+            Read = 0x2,
+            Redirected = 0x4,
+            NetAttached = 0x8
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct PORT_INFO_2
+        {
+            [MarshalAs(UnmanagedType.LPTStr)] public string pPortName;
+            [MarshalAs(UnmanagedType.LPTStr)] public string pMonitorName;
+            [MarshalAs(UnmanagedType.LPTStr)] public string pDescription;
+            public PortType fPortType;
+            public uint Reserved;
         }
 
         // ReSharper restore FieldCanBeMadeReadOnly.Local

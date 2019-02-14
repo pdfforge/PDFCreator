@@ -1,4 +1,4 @@
-﻿using iTextSharp.text;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.security;
 using NLog;
@@ -141,7 +141,8 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             appearance.Reason = signing.SignReason;
             appearance.Contact = signing.SignContact;
             appearance.Location = signing.SignLocation;
-
+            var arial = BaseFont.CreateFont(Environment.GetEnvironmentVariable("WINDIR") + "\\Fonts\\Arial.ttf", BaseFont.CP1252, true);
+            appearance.Layer2Font = new Font(arial, 12);
             if (!signing.AllowMultiSigning)
                 //Lock PDF, except for form filling (irrelevant for PDFCreator)
                 appearance.CertificationLevel = PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS;
@@ -164,6 +165,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var pk = GetPrivateKey(store, certificateAlias);
 
             var appearance = BuildSignatureAppearance(stamper, signing);
+
             // Creating the signature
             IExternalSignature pks = new PrivateKeySignature(pk, DigestAlgorithms.SHA512);
             var chain = GetCertificateChain(store, certificateAlias);

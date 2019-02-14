@@ -8,7 +8,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeWelcomeViewModel : WelcomeViewModel
     {
         public DesignTimeWelcomeViewModel()
-            : base(new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), new EditionHintOptionProvider(true, true))
+            : base(new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(),
+                new EditionHelper(true, true), new DesignTimeVersionHelper(), new DesignTimeApplicationNameProvider())
         {
         }
     }

@@ -9,6 +9,8 @@ using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow.Output
@@ -20,23 +22,26 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         ///     the FilenameTemplate and stores them in the OutputFiles list.
         ///     For multiple files the FilenameTemplate gets an appendix.
         /// </summary>
-        void MoveOutputFiles(Job job);
+        Task MoveOutputFiles(Job job);
     }
 
     public abstract class OutputFileMoverBase : IOutputFileMover
     {
-        private static readonly object LockObject = new object();
+        private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
 
         protected abstract IDirectory Directory { get; }
         protected abstract IDirectoryHelper DirectoryHelper { get; }
         protected abstract IFile File { get; }
-        protected readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected abstract IPathUtil PathUtil { get; }
+
         private string _outfilebody;
 
-        protected abstract QueryResult<string> HandleInvalidRootedPath(string filename, OutputFormat outputFormat);
+        protected abstract Task<QueryResult<string>> HandleInvalidRootedPath(string filename, OutputFormat outputFormat);
 
-        protected abstract QueryResult<string> HandleFirstFileFailed(string filename, OutputFormat outputFormat);
+        protected abstract Task<QueryResult<string>> HandleFirstFileFailed(string filename, OutputFormat outputFormat);
 
         protected abstract HandleCopyErrorResult QueryHandleCopyError(int fileNumber);
 
@@ -47,23 +52,23 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         ///     the FilenameTemplate and stores them in the OutputFiles list.
         ///     For multiple files the FilenameTemplate gets an appendix.
         /// </summary>
-        public void MoveOutputFiles(Job job)
+        public async Task MoveOutputFiles(Job job)
         {
-            _logger.Trace("Moving output files to final location");
+            Logger.Trace("Moving output files to final location");
 
-            if (!PathUtil.IsValidRootedPath(job.OutputFilenameTemplate))
+            if (!PathUtil.IsValidRootedPath(job.OutputFileTemplate))
             {
-                var result = HandleInvalidRootedPath(job.OutputFilenameTemplate, job.Profile.OutputFormat);
+                var result = await HandleInvalidRootedPath(job.OutputFileTemplate, job.Profile.OutputFormat);
                 if (result.Success == false)
                 {
                     throw new AbortWorkflowException("User cancelled retyping invalid rooted path.");
                 }
-                job.OutputFilenameTemplate = result.Data;
+                job.OutputFileTemplate = result.Data;
             }
 
-            _outfilebody = DetermineOutfileBody(job.OutputFilenameTemplate);
+            _outfilebody = DetermineOutfileBody(job.OutputFileTemplate);
 
-            var outputDirectory = PathUtil.GetLongDirectoryName(job.OutputFilenameTemplate);
+            var outputDirectory = PathSafe.GetDirectoryName(job.OutputFileTemplate);
 
             DirectoryHelper.CreateDirectory(outputDirectory);
 
@@ -80,7 +85,8 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 
                 var currentOutputFile = _outfilebody + numberSuffix + extension;
 
-                lock (LockObject)
+                await SemaphoreSlim.WaitAsync();
+                try
                 {
                     var uniqueFilename = new UniqueFilename(currentOutputFile, Directory, File, PathUtil);
                     if (ApplyUniqueFilename(job))
@@ -95,7 +101,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
                         switch (action)
                         {
                             case HandleCopyErrorResult.Requery:
-                                currentOutputFile = RequeryFilename(job, tempOutputFile, numberSuffix, extension);
+                                currentOutputFile = await RequeryFilename(job, tempOutputFile, numberSuffix, extension);
                                 break;
 
                             default:
@@ -109,6 +115,10 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
                         }
                     }
                 }
+                finally
+                {
+                    SemaphoreSlim.Release();
+                }
 
                 DeleteFile(tempOutputFile);
                 job.OutputFiles.Add(currentOutputFile);
@@ -116,18 +126,18 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             job.OutputFiles = job.OutputFiles.OrderBy(x => x).ToList();
         }
 
-        private string RequeryFilename(Job job, string tempOutputFile, string numWithDigits, string extension)
+        private async Task<string> RequeryFilename(Job job, string tempOutputFile, string numWithDigits, string extension)
         {
             while (true)
             {
-                var result = HandleFirstFileFailed(job.OutputFilenameTemplate, job.Profile.OutputFormat);
+                var result = await HandleFirstFileFailed(job.OutputFileTemplate, job.Profile.OutputFormat);
 
                 if (result.Success == false)
                 {
                     throw new AbortWorkflowException("User cancelled during retype filename");
                 }
-                job.OutputFilenameTemplate = result.Data;
-                _outfilebody = DetermineOutfileBody(job.OutputFilenameTemplate);
+                job.OutputFileTemplate = result.Data;
+                _outfilebody = DetermineOutfileBody(job.OutputFileTemplate);
                 var currentOutputFile = _outfilebody + numWithDigits + extension;
 
                 if (CopyFile(tempOutputFile, currentOutputFile))
@@ -144,9 +154,9 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         {
             try
             {
-                _logger.Debug("Ensuring unique filename for: " + uniqueFilename.OriginalFilename);
+                Logger.Debug("Ensuring unique filename for: " + uniqueFilename.OriginalFilename);
                 var newFilename = uniqueFilename.CreateUniqueFileName();
-                _logger.Debug("Unique filename result: " + newFilename);
+                Logger.Debug("Unique filename result: " + newFilename);
                 return newFilename;
             }
             catch (PathTooLongException ex)
@@ -163,7 +173,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             }
             catch (IOException)
             {
-                _logger.Warn("Could not delete temporary file \"" + tempfile + "\"");
+                Logger.Warn("Could not delete temporary file \"" + tempfile + "\"");
             }
         }
 
@@ -176,12 +186,12 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             try
             {
                 File.Copy(tempFile, outputFile, true);
-                _logger.Debug("Copied output file \"{0}\" \r\nto \"{1}\"", tempFile, outputFile);
+                Logger.Debug("Copied output file \"{0}\" \r\nto \"{1}\"", tempFile, outputFile);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.Warn("Error while copying to target file.\r\nfrom\"{0}\" \r\nto \"{1}\"\r\n{2}", tempFile, outputFile, ex.Message);
+                Logger.Warn("Error while copying to target file.\r\nfrom\"{0}\" \r\nto \"{1}\"\r\n{2}", tempFile, outputFile, ex.Message);
             }
             return false;
         }

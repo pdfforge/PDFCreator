@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeProgressViewModel : ProgressViewModel
     {
         public DesignTimeProgressViewModel()
-            : base(null, null, new InteractionRequest(), new DispatcherWrapper(), new DesignTimeTranslationUpdater(), null)
+            : base(null, new InteractionRequest(), new DispatcherWrapper(), new DesignTimeTranslationUpdater(), null)
         {
         }
     }

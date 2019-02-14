@@ -18,19 +18,28 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             : base(new DesignTimeSettingsProvider(),
                   new TranslationUpdater(new TranslationFactory(), new ThreadManager()),
                   new DesignTimeJobInfoQueue(),
-                  null,
+                  null,//IFileNameQuery
                   new InteractionRequest(),
                   new DesignTimeCommandLocator(),
-                  null, null, null, null, null, null, null, null, null)
+                  null,//IEventAggregator
+                  null,//ISelectedProfileProvider
+                  null,//ICurrentSettings<ObservableCollection<ConversionProfile>>
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null)
         {
             var jobInfo = new JobInfo()
             {
                 Metadata = new Metadata() { Author = "Max Mustermann", Keywords = "keywords...", PrintJobAuthor = "print job author", PrintJobName = "My Print Job", Subject = "This is the subject line", Title = "My Document Title" }
             };
 
-            var job = new Job(jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts())
+            var job = new Job(jobInfo, new ConversionProfile(), new Accounts())
             {
-                OutputFilenameTemplate = @"C:\My Documents\MyFile.pdf"
+                OutputFileTemplate = @"C:\My Documents\MyFile.pdf"
             };
 
             job.Profile = Profiles.First();

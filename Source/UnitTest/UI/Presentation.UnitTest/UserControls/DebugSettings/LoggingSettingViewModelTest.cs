@@ -5,14 +5,15 @@ using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
+using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using pdfforge.PDFCreator.Utilities.Process;
 using System;
 using SystemInterface.IO;
 using Translatable;
@@ -23,19 +24,17 @@ namespace Presentation.UnitTest.UserControls.DebugSettings
     public class LoggingSettingViewModelTest
     {
         private IInteractionInvoker _invoker;
-        private ISettingsManager _settingsManager;
         private ITranslationUpdater _translationUpdater;
-        private ICurrentSettingsProvider _currentSettingsProvider;
+        private ISettingsProvider _settingsProvider;
         private IGpoSettings _gpoSettings;
         private IFile _fileWrap;
-        private IProcessStarter _processStarter;
-        private PdfCreatorSettings _ApplicationSettings;
+        private ICommandLocator _commandLocator;
+        private PdfCreatorSettings _applicationSettings;
 
         [SetUp]
         public void Setup()
         {
             _invoker = Substitute.For<IInteractionInvoker>();
-            _settingsManager = Substitute.For<ISettingsManager>();
             _translationUpdater = Substitute.For<ITranslationUpdater>();
             _translationUpdater
                 .When(x => x.RegisterAndSetTranslation(Arg.Any<ITranslatableViewModel<DebugSettingsTranslation>>()))
@@ -46,18 +45,18 @@ namespace Presentation.UnitTest.UserControls.DebugSettings
                 });
 
             IStorage storage = Substitute.For<IStorage>();
-            _ApplicationSettings = Substitute.For<PdfCreatorSettings>(storage);
-            _currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            _currentSettingsProvider.Settings.Returns(_ApplicationSettings);
+            _applicationSettings = Substitute.For<PdfCreatorSettings>();
+            _settingsProvider = Substitute.For<ISettingsProvider>();
+            _settingsProvider.Settings.Returns(_applicationSettings);
 
             _gpoSettings = Substitute.For<IGpoSettings>();
             _fileWrap = Substitute.For<IFile>();
-            _processStarter = Substitute.For<IProcessStarter>();
+            _commandLocator = Substitute.For<ICommandLocator>();
         }
 
         private LoggingSettingViewModel BuildViewModel()
         {
-            return new LoggingSettingViewModel(_invoker, _fileWrap, _processStarter, _settingsManager, _translationUpdater, _currentSettingsProvider, _gpoSettings);
+            return new LoggingSettingViewModel(_invoker, _fileWrap, _translationUpdater, _gpoSettings, _commandLocator, new DesignTimeCurrentSettings<ApplicationSettings>());
         }
 
         [Test]
@@ -110,8 +109,8 @@ namespace Presentation.UnitTest.UserControls.DebugSettings
 
             Received.InOrder(() =>
             {
+                _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>();
                 _fileWrap.Exists(Arg.Any<string>());
-                _processStarter.Start(Arg.Any<string>());
             });
         }
 

@@ -45,14 +45,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
 		}
 		
-		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
 			data.SetValue(@"" + path + @"Password", _password);
 			data.SetValue(@"" + path + @"Server", Data.EscapeString(Server));
 			data.SetValue(@"" + path + @"UserName", Data.EscapeString(UserName));
 		}
-		
 		public FtpAccount Copy()
 		{
 			FtpAccount copy = new FtpAccount();
@@ -61,7 +59,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Password = Password;
 			copy.Server = Server;
 			copy.UserName = UserName;
-			
 			return copy;
 		}
 		
@@ -74,20 +71,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Password.Equals(v.Password)) return false;
 			if (!Server.Equals(v.Server)) return false;
 			if (!UserName.Equals(v.UserName)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("Password=" + Password.ToString());
-			sb.AppendLine("Server=" + Server.ToString());
-			sb.AppendLine("UserName=" + UserName.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

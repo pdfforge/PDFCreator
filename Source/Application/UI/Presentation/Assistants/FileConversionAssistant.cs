@@ -1,5 +1,6 @@
 ﻿using NLog;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printing;
@@ -16,22 +17,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
     public class FileConversionAssistant : IFileConversionAssistant
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly IDirectConversionHelper _directConversionHelper;
+        private readonly IDirectConversion _directConversion;
         private readonly IFile _file;
         private readonly IDirectory _directory;
         private readonly IInteractionInvoker _interactionInvoker;
+        private readonly IStoredParametersManager _storedParametersManager;
         private readonly IPrintFileHelper _printFileHelper;
         private FileConversionAssistantTranslation _translation = new FileConversionAssistantTranslation();
 
         private const int LargeListWarningLimit = 100;
 
-        public FileConversionAssistant(IDirectConversionHelper directConversionHelper, IPrintFileHelper printFileHelper, IFile file, IDirectory directory, IInteractionInvoker interactionInvoker, ITranslationUpdater translationUpdater)
+        public FileConversionAssistant(IDirectConversion directConversion,
+            IPrintFileHelper printFileHelper,
+            IFile file,
+            IDirectory directory,
+            IInteractionInvoker interactionInvoker,
+            ITranslationUpdater translationUpdater,
+            IStoredParametersManager storedParametersManager)
         {
-            _directConversionHelper = directConversionHelper;
+            _directConversion = directConversion;
             _printFileHelper = printFileHelper;
             _file = file;
             _directory = directory;
             _interactionInvoker = interactionInvoker;
+            _storedParametersManager = storedParametersManager;
 
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
         }
@@ -79,48 +88,51 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 }
             }
 
-            return validFiles.Distinct().ToList();
+            return validFiles.ToList();
         }
 
         /// <summary>
         ///     Launches a print job for all dropped files that can be printed.
         ///     Return false if cancelled because of unprintable files
         /// </summary>
-        private void PrintPrintableFiles(IEnumerable<string> printFiles)
+        private void PrintPrintableFiles(IList<string> printFiles)
         {
             if (!_printFileHelper.AddFiles(printFiles))
                 return;
-
+            _storedParametersManager.SaveParameterSettings("", "", printFiles.FirstOrDefault());
             _printFileHelper.PrintAll();
         }
 
-        private void HandleFiles(IEnumerable<string> droppedFiles)
+        private void HandleFiles(IList<string> droppedFiles)
         {
-            var filesToPrint = new List<string>();
+            var directConversionFiles = new List<string>();
+            var printFiles = new List<string>();
             foreach (var file in droppedFiles)
             {
-                if (_directConversionHelper.CanConvertDirectly(file))
-                {
-                    _directConversionHelper.ConvertDirectly(file);
-                    continue;
-                }
-
-                filesToPrint.Add(file);
+                if (_directConversion.CanConvertDirectly(file))
+                    directConversionFiles.Add(file);
+                else
+                    printFiles.Add(file);
             }
 
-            if (filesToPrint.Any())
-                PrintPrintableFiles(filesToPrint);
+            foreach (var directConversionFile in directConversionFiles)
+            {
+                _directConversion.ConvertDirectly(directConversionFile);
+            }
+
+            if (printFiles.Any())
+                PrintPrintableFiles(printFiles);
         }
     }
+}
 
-    public class FileConversionAssistantTranslation : ITranslatable
+public class FileConversionAssistantTranslation : ITranslatable
+{
+    private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
+    private string[] MoreThanXFilesQuestion { get; set; } = { "Do you want to convert the {0} selected file?", "Do you want to convert the {0} selected files?" };
+
+    public string GetFormattedMoreThanXFilesQuestion(int numberOfFiles)
     {
-        private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
-        private string[] MoreThanXFilesQuestion { get; set; } = { "Do you want to convert the {0} selected file?", "Do you want to convert the {0} selected files?" };
-
-        public string GetFormattedMoreThanXFilesQuestion(int numberOfFiles)
-        {
-            return PluralBuilder.GetFormattedPlural(numberOfFiles, MoreThanXFilesQuestion);
-        }
+        return PluralBuilder.GetFormattedPlural(numberOfFiles, MoreThanXFilesQuestion);
     }
 }

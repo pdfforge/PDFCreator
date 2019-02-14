@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Helper.Gpo;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Gpo;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
 using System;
 using System.Globalization;
 using System.Windows.Data;

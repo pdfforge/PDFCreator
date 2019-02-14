@@ -23,7 +23,7 @@ namespace Presentation.UnitTest
         [SetUp]
         public void Setup()
         {
-            _job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
+            _job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
             _regionManager = Substitute.For<IRegionManager>();
             _workflowNavigationHelper = Substitute.For<IWorkflowNavigationHelper>();
             _viewModelMapping = new Dictionary<IWorkflowStep, IWorkflowViewModel>();

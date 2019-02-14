@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using pdfforge.DataStorage;
-using pdfforge.DataStorage.Storage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
@@ -12,7 +11,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         {
             var copy = Copy();
 
-            copy.ApplicationProperties = ApplicationProperties;
+            copy.CreatorAppSettings = CreatorAppSettings;
             copy.ApplicationSettings = ApplicationSettings;
 
             return copy;
@@ -25,10 +24,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         /// <returns>(First) Conversionprofile with the given guid. Returns null, if no profile with given guid exists.</returns>
         public ConversionProfile GetProfileByGuid(string guid)
         {
-            if (ConversionProfiles.Count <= 0)
-                return null;
-
-            return ConversionProfiles.FirstOrDefault(p => p.Guid == guid);
+            return SettingsHelper.GetProfileByGuid(ConversionProfiles, guid);
         }
 
         /// <summary>
@@ -38,10 +34,45 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         /// <returns>(First) Conversionprofile with the given name. Returns null, if no profile with given name exists.</returns>
         public ConversionProfile GetProfileByName(string name)
         {
-            if (ConversionProfiles.Count <= 0)
+            return SettingsHelper.GetProfileByName(ConversionProfiles, name);
+        }
+
+        /// <summary>
+        ///     Function that returns a profile from the inner Conversionprofiles(list) by a given name or guid.
+        /// </summary>
+        /// <param name="nameOrGuid">Profilename or Guid</param>
+        /// <returns>The first Conversionprofile with the given name or first with Guid. Returns null, if no profile with given name/guid exists.</returns>
+
+        public ConversionProfile GetProfileByNameOrGuid(string nameOrGuid)
+        {
+            //Ignore empty names 
+            if (string.IsNullOrWhiteSpace(nameOrGuid))
                 return null;
 
-            return ConversionProfiles.FirstOrDefault(p => p.Name == name);
+            var profile = GetProfileByName(nameOrGuid) ?? GetProfileByGuid(nameOrGuid);
+            return profile;
+        }
+
+        public ConversionProfile GetProfileByMappedPrinter(string printerName)
+        {
+            //Ignore empty names
+            if (string.IsNullOrWhiteSpace(printerName))
+                return null;
+
+            foreach (var mapping in ApplicationSettings.PrinterMappings)
+            {
+                if (mapping.PrinterName.Equals(printerName, StringComparison.OrdinalIgnoreCase))
+                {
+                    var profile = GetProfileByGuid(mapping.ProfileGuid);
+
+                    if (mapping.ProfileGuid == ProfileGuids.LAST_USED_PROFILE_GUID)
+                        profile = GetLastUsedProfile();
+
+                    if (profile != null)
+                        return profile;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -52,34 +83,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         /// <returns>Returns last used profile. Returns null if ConversionProfiles is empty or no last profile is known.</returns>
         public ConversionProfile GetLastUsedProfile()
         {
-            if (ConversionProfiles.Count <= 0)
+            if (CreatorAppSettings.LastUsedProfileGuid == null)
                 return null;
 
-            if (ApplicationSettings.LastUsedProfileGuid == null)
-                return null;
-
-            return GetProfileByGuid(ApplicationSettings.LastUsedProfileGuid);
-        }
-
-        /// <summary>
-        ///     Function that returns the last used profile, according to the LastUsedProfileGuid of the ApplicationSettings.
-        ///     If the Conversionprofiles(list) does not contain a profile with the LastUsedProfileGuid (because it was deleted)
-        ///     or the last guid is null the function will return the first profile.
-        /// </summary>
-        /// <returns>Returns last used or first profile. Returns null if ConversionProfiles is empty.</returns>
-        public ConversionProfile GetLastUsedOrFirstProfile()
-        {
-            if (ConversionProfiles.Count <= 0)
-                return null;
-
-            if (ApplicationSettings.LastUsedProfileGuid == null)
-                return ConversionProfiles[0];
-
-            var p = GetProfileByGuid(ApplicationSettings.LastUsedProfileGuid);
-            if (p == null)
-                return ConversionProfiles[0];
-
-            return p;
+            return GetProfileByGuid(CreatorAppSettings.LastUsedProfileGuid);
         }
 
         /// <summary>
@@ -93,43 +100,49 @@ namespace pdfforge.PDFCreator.Conversion.Settings
             profiles.Sort(new ProfileSorter().Compare);
             ConversionProfiles = new ObservableCollection<ConversionProfile>(profiles);
         }
-
-        /// <summary>
-        ///     Find the first printer mapping for this profile
-        /// </summary>
-        /// <param name="profile">The profile to look for</param>
-        /// <returns>The first printer mapping that is found or null.</returns>
-        public PrinterMapping GetPrinterByProfile(ConversionProfile profile)
+        
+        public DefaultViewer GetDefaultViewerByOutputFormat(OutputFormat format)
         {
-            foreach (var pm in ApplicationSettings.PrinterMappings)
+            //Same default viewer for all pdf types
+            if (format == OutputFormat.PdfA1B || format == OutputFormat.PdfA2B || format == OutputFormat.PdfX)
+                format = OutputFormat.Pdf;
+
+            foreach (var defaultViewer in DefaultViewers)
             {
-                if (pm.ProfileGuid.Equals(profile.Guid))
-                    return pm;
+                if (defaultViewer.OutputFormat == format)
+                {
+                    return defaultViewer;
+                }
             }
 
-            return null;
+            return new DefaultViewer
+            {
+                IsActive = false,
+                OutputFormat = format
+            };
         }
 
-        public IStorage GetStorage()
+        public static OutputFormat[] GetDefaultViewerFormats()
         {
-            return _storage;
+            return new[]
+            {
+                OutputFormat.Pdf,
+                OutputFormat.Png,
+                OutputFormat.Jpeg,
+                OutputFormat.Tif,
+                OutputFormat.Txt,
+            };
         }
 
-        public bool LoadData(IStorage storage, string path, Action<Data> dataValidation)
+        public ObservableCollection<DefaultViewer> DefaultViewerList
         {
-            try
+            get
             {
-                data.Clear();
-                storage.Data = data;
-                storage.ReadData(path);
-                dataValidation(data);
-                ReadValues(data, "");
-                return true;
+                var viewers = GetDefaultViewerFormats().Select(GetDefaultViewerByOutputFormat);
+
+                return new ObservableCollection<DefaultViewer>(viewers);
             }
-            catch
-            {
-                return false;
-            }
+            set { throw new InvalidOperationException("It's not possible to set the list of default viewers");}
         }
     }
 }

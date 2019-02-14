@@ -45,12 +45,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public void ReadValues(Data data, string path) {
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
-			try { IsSecured = bool.Parse(data.GetValue(@"" + path + @"IsSecured")); } catch { IsSecured = false;}
+			IsSecured = bool.TryParse(data.GetValue(@"" + path + @"IsSecured"), out var tmpIsSecured) ? tmpIsSecured : false;
 			_password = data.GetValue(@"" + path + @"Password");
 			try { Url = Data.UnescapeString(data.GetValue(@"" + path + @"Url")); } catch { Url = "https://freetsa.org/tsr";}
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
 		}
-		
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
@@ -59,7 +58,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Url", Data.EscapeString(Url));
 			data.SetValue(@"" + path + @"UserName", Data.EscapeString(UserName));
 		}
-		
 		public TimeServerAccount Copy()
 		{
 			TimeServerAccount copy = new TimeServerAccount();
@@ -69,7 +67,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Password = Password;
 			copy.Url = Url;
 			copy.UserName = UserName;
-			
 			return copy;
 		}
 		
@@ -83,21 +80,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Password.Equals(v.Password)) return false;
 			if (!Url.Equals(v.Url)) return false;
 			if (!UserName.Equals(v.UserName)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("IsSecured=" + IsSecured.ToString());
-			sb.AppendLine("Password=" + Password.ToString());
-			sb.AppendLine("Url=" + Url.ToString());
-			sb.AppendLine("UserName=" + UserName.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

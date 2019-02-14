@@ -170,15 +170,15 @@
                     </Border>
 
                     <StackPanel Margin="10 20 0 0" Orientation="Horizontal" HorizontalAlignment="Center"
-                            Visibility="{Binding IsPdfArchitectInstalled, Converter={StaticResource VisibleWhenFalse}}">
+                                Visibility="{Binding IsPdfArchitectInstalled, Converter={StaticResource VisibleWhenFalse}}">
                         <Button HorizontalAlignment="Center" Padding="10" Margin="5" MinWidth="150"
-                            Command="{Binding LaunchWebsiteCommand}"
-                            Content="{Binding Translation.GetPdfArchitectButtonContent}"
-                            Style="{DynamicResource LargeGreyButton}" />
+                                Command="{Binding LaunchWebsiteCommand}"
+                                Content="{Binding Translation.GetPdfArchitectButtonContent}"
+                                Style="{DynamicResource LargeGreyButton}" />
                         <Button HorizontalAlignment="Center" Padding="10" Margin="5" MinWidth="150"
-                            Command="{Binding DownloadPdfArchitectCommand}"
-                            Content="{Binding Translation.DownloadPdfArchitectButtonContent}"
-                            Style="{DynamicResource LargeGreenButton}" />
+                                Command="{Binding DownloadPdfArchitectCommand}"
+                                Content="{Binding DownloadPdfArchitectButtonText}"
+                                Style="{DynamicResource LargeGreenButton}" />
                     </StackPanel>
 
                     <StackPanel Margin="10 20 0 0"

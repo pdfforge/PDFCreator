@@ -29,19 +29,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { ProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"ProfileGuid")); } catch { ProfileGuid = "";}
 		}
 		
-		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"PrinterName", Data.EscapeString(PrinterName));
 			data.SetValue(@"" + path + @"ProfileGuid", Data.EscapeString(ProfileGuid));
 		}
-		
 		public PrinterMapping Copy()
 		{
 			PrinterMapping copy = new PrinterMapping();
 			
 			copy.PrinterName = PrinterName;
 			copy.ProfileGuid = ProfileGuid;
-			
 			return copy;
 		}
 		
@@ -52,18 +49,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!PrinterName.Equals(v.PrinterName)) return false;
 			if (!ProfileGuid.Equals(v.ProfileGuid)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("PrinterName=" + PrinterName.ToString());
-			sb.AppendLine("ProfileGuid=" + ProfileGuid.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

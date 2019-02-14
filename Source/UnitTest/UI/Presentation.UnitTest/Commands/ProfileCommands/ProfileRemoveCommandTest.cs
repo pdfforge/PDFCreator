@@ -4,6 +4,7 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
@@ -22,6 +23,9 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
         private ProfileMangementTranslation _translation;
         private PdfCreatorSettings _settings;
         private ConversionProfile _currentProfile;
+        private ICurrentSettings<ObservableCollection<PrinterMapping>> _printerMappingsProvider;
+
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
 
         [SetUp]
         public void SetUp()
@@ -31,15 +35,19 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
             _currentProfile = new ConversionProfile();
             _currentProfile.Name = "CurrentProfileName";
             _currentSettingsProvider.SelectedProfile = _currentProfile;
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_currentProfile);
             _settings.ConversionProfiles.Add(new ConversionProfile());
-            _currentSettingsProvider.Settings.Returns(_settings);
-            _currentSettingsProvider.Profiles.Returns(_settings.ConversionProfiles);
+
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
+            _profilesProvider.Settings.Returns(_settings.ConversionProfiles);
+
+            _printerMappingsProvider = Substitute.For<ICurrentSettings<ObservableCollection<PrinterMapping>>>();
+            _printerMappingsProvider.Settings.Returns(_ => _settings.ApplicationSettings.PrinterMappings);
 
             _translation = new ProfileMangementTranslation();
 
-            _profileRemoveCommand = new ProfileRemoveCommand(_interactionRequest, _currentSettingsProvider, new DesignTimeTranslationUpdater(), new InvokeImmediatelyDispatcher());
+            _profileRemoveCommand = new ProfileRemoveCommand(_interactionRequest, _profilesProvider, _printerMappingsProvider, _currentSettingsProvider, new DesignTimeTranslationUpdater(), new InvokeImmediatelyDispatcher());
         }
 
         [Test]
@@ -80,8 +88,8 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
 
             _profileRemoveCommand.Execute(null);
 
-            Assert.AreEqual(2, _currentSettingsProvider.Profiles.Count);
-            Assert.Contains(_currentProfile, _currentSettingsProvider.Profiles);
+            Assert.AreEqual(2, _profilesProvider.Settings.Count);
+            Assert.Contains(_currentProfile, _profilesProvider.Settings);
         }
 
         [Test]
@@ -91,8 +99,8 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
 
             _profileRemoveCommand.Execute(null);
 
-            Assert.AreEqual(1, _currentSettingsProvider.Profiles.Count);
-            Assert.IsFalse(_currentSettingsProvider.Profiles.Contains(_currentProfile));
+            Assert.AreEqual(1, _profilesProvider.Settings.Count);
+            Assert.IsFalse(_profilesProvider.Settings.Contains(_currentProfile));
         }
 
         [Test]
@@ -152,8 +160,8 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
 
             _profileRemoveCommand.Execute(null);
 
-            Assert.AreEqual(1, _currentSettingsProvider.Profiles.Count);
-            Assert.IsFalse(_currentSettingsProvider.Profiles.Contains(_currentProfile));
+            Assert.AreEqual(1, _profilesProvider.Settings.Count);
+            Assert.IsFalse(_profilesProvider.Settings.Contains(_currentProfile));
 
             Assert.AreEqual(pm1.ProfileGuid, ProfileGuids.DEFAULT_PROFILE_GUID);
             Assert.AreEqual(pm3.ProfileGuid, ProfileGuids.DEFAULT_PROFILE_GUID);

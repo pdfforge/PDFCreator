@@ -12,9 +12,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void NumberOfUpdateMethodEqualsVersionInSettingsHelper()
         {
             var data = Data.CreateDataStorage();
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
-            var settingsVersion = new ApplicationProperties().SettingsVersion;
+            var settingsVersion = CreatorAppSettings.ApplicationSettingsVersion;
 
             Assert.AreEqual(settingsVersion, upgrader.NumberOfUpgradeMethods());
         }
@@ -23,18 +23,18 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void VersionInDefaultPdfCreatorSettingsEqualsVersionInSettingsHelper()
         {
             var data = Data.CreateDataStorage();
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
-            var pdfCreatorSettings = new PdfCreatorSettings(null);
+            var pdfCreatorSettings = new PdfCreatorSettings();
 
-            Assert.AreEqual(pdfCreatorSettings.ApplicationProperties.SettingsVersion, upgrader.NumberOfUpgradeMethods());
+            Assert.AreEqual(pdfCreatorSettings.CreatorAppSettings.SettingsVersion, upgrader.NumberOfUpgradeMethods());
         }
 
         [Test]
         public void EmptyData_GetVersion_Returns0()
         {
             var data = Data.CreateDataStorage();
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.AreEqual(0, upgrader.SettingsVersion);
         }
@@ -43,9 +43,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithNonIntVersion_GetVersion_Returns0()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "xyz");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "xyz");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.AreEqual(0, upgrader.SettingsVersion);
         }
@@ -54,9 +54,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion0_GetVersion_Returns0()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "0");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "0");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.AreEqual(0, upgrader.SettingsVersion);
         }
@@ -65,9 +65,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion1_GetVersion_Returns1()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "1");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "1");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.AreEqual(1, upgrader.SettingsVersion);
         }
@@ -76,9 +76,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion0_UpgradeRequiredToVersion0_ReturnsFalse()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "0");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "0");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsFalse(upgrader.RequiresUpgrade(0));
         }
@@ -87,9 +87,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion1_UpgradeRequiredToVersion0_ReturnsFalse()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "1");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "1");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsFalse(upgrader.RequiresUpgrade(0));
         }
@@ -98,9 +98,9 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion0_UpgradeRequiredToVersion1_ReturnsTrue()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "0");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "0");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(1));
         }

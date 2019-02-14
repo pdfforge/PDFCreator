@@ -10,12 +10,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
     /// </summary>
     public class Job
     {
-        public Job(JobInfo.JobInfo jobInfo, ConversionProfile profile, JobTranslations jobTranslations, Accounts accounts)
+        public Job(JobInfo.JobInfo jobInfo, ConversionProfile profile, Accounts accounts, string producer = null)
         {
-            JobTranslations = jobTranslations;
             JobInfo = jobInfo;
             Profile = profile;
             Accounts = accounts;
+            Producer = producer ?? "PDFCreator";
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public ConversionProfile Profile { get; set; }
 
         /// <summary>
-        ///     All currently available accounts (Dropbox, FTP, )
+        ///     All currently available accounts (Dropbox, FTP, ...)
         /// </summary>
         public Accounts Accounts { get; set; }
 
@@ -39,11 +39,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         ///     Holds passwords for encryption etc.
         /// </summary>
         public JobPasswords Passwords { get; set; } = new JobPasswords();
-
-        /// <summary>
-        ///     Holds translations required during the job
-        /// </summary>
-        public JobTranslations JobTranslations { get; set; }
 
         /// <summary>
         ///     The number of copies requested for the print job
@@ -61,10 +56,10 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public IList<string> OutputFiles { get; set; } = new List<string>();
 
         /// <summary>
-        ///     The template for the output files. This may contain a wildcard to create multiple files, i.e. a file per page. The
-        ///     template is used to construct the final output filename.
+        ///     The template for the output files.
+        ///     The template is used to construct the final output file path.
         /// </summary>
-        public string OutputFilenameTemplate { get; set; }
+        public string OutputFileTemplate { get; set; }
 
         /// <summary>
         ///     The folder in which the job can store temporary data
@@ -97,6 +92,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public bool IsSuccessful { get; set; }
 
         /// <summary>
+        ///     The current application name with version
+        /// </summary>
+        public string Producer { get; }
+
+        /// <summary>
         ///     A list of output files produced during the conversion
         /// </summary>
         public IList<string> TempOutputFiles { get; set; } = new List<string>();
@@ -107,12 +107,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
 
         public event EventHandler<JobLoginFailedEventArgs> OnJobHasError;
 
-        public void InitMetadataWithTemplates()
+        public void InitMetadataWithTemplatesFromProfile()
         {
-            JobInfo.Metadata.Author = Profile.AuthorTemplate;
-            JobInfo.Metadata.Title = Profile.TitleTemplate;
-            JobInfo.Metadata.Subject = Profile.SubjectTemplate;
-            JobInfo.Metadata.Keywords = Profile.KeywordTemplate;
+            JobInfo.Metadata.Author = Profile?.AuthorTemplate;
+            JobInfo.Metadata.Title = Profile?.TitleTemplate;
+            JobInfo.Metadata.Subject = Profile?.SubjectTemplate;
+            JobInfo.Metadata.Keywords = Profile?.KeywordTemplate;
         }
 
         public void ReplaceTokensInMetadata()

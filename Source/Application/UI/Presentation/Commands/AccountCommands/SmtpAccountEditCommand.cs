@@ -2,32 +2,50 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class SmtpAccountEditCommand : TranslatableCommandBase<SmtpTranslation>, IWaitableCommand
+    public class SmtpAccountEditCommand : TranslatableCommandBase<SmtpTranslation>, IWaitableCommand, IMountable
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ObservableCollection<SmtpAccount> _smtpAccounts;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private ObservableCollection<SmtpAccount> SmtpAccounts => _accountsProvider.Settings.SmtpAccounts;
         private SmtpAccount _currentAccount;
+        private ObservableCollection<SmtpAccount> _pointAtAccounts;
 
-        public SmtpAccountEditCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater) : base(translationUpdater)
+        public SmtpAccountEditCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
+            _accountsProvider = accountsProvider;
+        }
 
-            _smtpAccounts = currentSettingsProvider.Settings?.ApplicationSettings?.Accounts?.SmtpAccounts ?? new ObservableCollection<SmtpAccount>();
-            _smtpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaiseCanExecuteChanged();
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs e)
+        {
+            if (_pointAtAccounts != _accountsProvider.Settings.SmtpAccounts)
+            {
+                _pointAtAccounts.CollectionChanged -= OnCollectionChanged;
+                _pointAtAccounts = _accountsProvider.Settings.SmtpAccounts;
+                _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+            }
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _smtpAccounts?.Count > 0;
+            return SmtpAccounts?.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -35,7 +53,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             _currentAccount = parameter as SmtpAccount;
             if (_currentAccount == null)
                 return;
-            if (!_smtpAccounts.Contains(_currentAccount))
+            if (!SmtpAccounts.Contains(_currentAccount))
                 return;
 
             var interaction = new SmtpAccountInteraction(_currentAccount.Copy(), Translation.EditSmtpAccount);
@@ -55,5 +73,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         }
 
         public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
+
+        public void MountView()
+        {
+            _accountsProvider.SettingsChanged += OnSettingsChanged;
+            _pointAtAccounts = _accountsProvider.Settings.SmtpAccounts;
+            _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+        }
+
+        public void UnmountView()
+        {
+            _accountsProvider.SettingsChanged -= OnSettingsChanged;
+        }
     }
 }

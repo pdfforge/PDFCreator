@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
@@ -7,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public ProfilesView(ProfilesViewModel vm)
         {
             DataContext = vm;
+            TransposerHelper.Register(this, vm);
             InitializeComponent();
         }
     }

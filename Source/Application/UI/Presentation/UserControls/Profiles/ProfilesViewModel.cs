@@ -3,35 +3,53 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
-    public class ProfilesViewModel : TranslatableViewModelBase<ProfileMangementTranslation>
+    public class ProfilesViewModel : TranslatableViewModelBase<ProfileMangementTranslation>, IMountable
     {
         private readonly ISettingsProvider _settingsProvider;
-        public IGpoSettings GpoSettings { get; }
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profileProvider;
+        private IGpoSettings GpoSettings { get; }
 
-        public ProfilesViewModel(ISelectedProfileProvider selectedProfileProvider, ITranslationUpdater translationUpdater, ICommandLocator commandLocator, ISettingsProvider settingsProvider, IGpoSettings gpoSettings)
+        public ProfilesViewModel(ISelectedProfileProvider selectedProfileProvider, ITranslationUpdater translationUpdater, ICommandLocator commandLocator, ISettingsProvider settingsProvider, ICurrentSettings<ObservableCollection<ConversionProfile>> profileProvider, IGpoSettings gpoSettings)
             : base(translationUpdater)
         {
             _settingsProvider = settingsProvider;
+            _profileProvider = profileProvider;
             GpoSettings = gpoSettings;
             SelectedProfileProvider = selectedProfileProvider;
 
             ProfileAddCommand = commandLocator.GetCommand<ProfileAddCommand>();
             ProfileRenameCommand = commandLocator.GetCommand<ProfileRenameCommand>();
             ProfileRemoveCommand = commandLocator.GetCommand<ProfileRemoveCommand>();
+        }
 
-            if (selectedProfileProvider != null)
+        public void MountView()
+        {
+            if (SelectedProfileProvider != null)
             {
-                selectedProfileProvider.SettingsChanged += OnProfilesChanged;
-                selectedProfileProvider.SelectedProfileChanged += (s, args) => RaisePropertyChanged(nameof(SelectedProfile));
+                SelectedProfileProvider.SettingsChanged += OnProfilesChanged;
+                SelectedProfileProvider.SelectedProfileChanged += RaiseChanges;
+            }
+            OnProfilesChanged(this, null);
+            RaiseChanges(this, null);
+        }
+
+        public void UnmountView()
+        {
+            if (SelectedProfileProvider != null)
+            {
+                SelectedProfileProvider.SettingsChanged -= OnProfilesChanged;
+                SelectedProfileProvider.SelectedProfileChanged -= RaiseChanges;
             }
         }
 
@@ -44,7 +62,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 ?? Profiles.FirstOrDefault();
 
             SelectedProfileProvider.SelectedProfile = selectedProfile;
+            RaiseChanges(this, null);
+        }
+
+        private void RaiseChanges(object sender, PropertyChangedEventArgs e)
+        {
             RaisePropertyChanged(nameof(SelectedProfile));
+            RaisePropertyChanged(nameof(EditProfileIsGpoDisabled));
+            RaisePropertyChanged(nameof(RenameProfileButtonIsGpoEnabled));
+            RaisePropertyChanged(nameof(RemoveProfileButtonIsGpoEnabled));
         }
 
         public ConversionProfile SelectedProfile
@@ -55,19 +81,35 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public ObservableCollection<ConversionProfile> Profiles
         {
-            get { return SelectedProfileProvider?.Profiles; }
+            get { return _profileProvider?.Settings; }
             set { }
         }
 
-        public bool ProfileIsDisabled
-        {
-            get
-            {
-                if (_settingsProvider.Settings?.ApplicationSettings == null)
-                    return false;
+        public bool EditProfileIsGpoDisabled => ProfileManagementIsDisabledOrProfileIsShared();
 
-                return GpoSettings != null ? GpoSettings.DisableProfileManagement : false;
+        public bool RenameProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
+        public bool AddProfileButtonIsGpoEnabled => GpoSettings == null || !LoadSharedProfilesAndDenyUserDefinedProfiles() && !GpoSettings.DisableProfileManagement;
+        public bool RemoveProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
+
+        private bool ProfileManagementIsDisabledOrProfileIsShared()
+        {
+            if (GpoSettings != null && GpoSettings.DisableProfileManagement)
+                return true;
+
+            if (SelectedProfile != null && SelectedProfile.Properties.IsShared)
+                return true;
+
+            return false;
+        }
+
+        private bool LoadSharedProfilesAndDenyUserDefinedProfiles()
+        {
+            if (GpoSettings != null)
+            {
+                return GpoSettings.LoadSharedProfiles && !GpoSettings.AllowUserDefinedProfiles;
             }
+
+            return false;
         }
 
         public ISelectedProfileProvider SelectedProfileProvider { get; }

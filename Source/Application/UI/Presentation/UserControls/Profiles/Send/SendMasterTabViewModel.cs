@@ -27,5 +27,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send
         public IconList Icon { get; set; } = IconList.ShareSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public bool HasNotSupportedFeatures => false;
     }
 }

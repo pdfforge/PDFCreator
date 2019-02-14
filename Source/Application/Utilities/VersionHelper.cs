@@ -68,4 +68,25 @@ namespace pdfforge.PDFCreator.Utilities
             return currentVersionString;
         }
     }
+
+    public static class VersionExtensions
+    {
+        public static bool IsEqualToCurrentVersion(this Version version, Version versionToCompare)
+        {
+            var versionArray = version.ToString().Split('.');
+            var versionToCompareArray = versionToCompare.ToString().Split('.');
+
+            var minlength = Math.Min(versionArray.Length, versionToCompareArray.Length);
+
+            for (var i = 0; i < minlength; i++)
+            {
+                if (int.Parse(versionArray[i]) > int.Parse(versionToCompareArray[i]))
+                    return false;
+                if (int.Parse(versionArray[i]) < int.Parse(versionToCompareArray[i]))
+                    return false;
+            }
+
+            return true;
+        }
+    }
 }

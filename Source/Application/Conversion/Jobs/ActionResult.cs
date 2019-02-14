@@ -39,5 +39,22 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         {
             return actionResultDict.Success;
         }
+
+        public void Merge(ActionResultDict actionResultDict)
+        {
+            foreach (var key in actionResultDict.Keys)
+            {
+                if (this.ContainsKey(key))
+                {
+                    foreach (var actionResult in actionResultDict[key])
+                    {
+                        if (!this[key].Contains(actionResult))
+                            this[key].Add(actionResult);
+                    }
+                }
+                else
+                    this.Add(key, actionResultDict[key]);
+            }
+        }
     }
 }

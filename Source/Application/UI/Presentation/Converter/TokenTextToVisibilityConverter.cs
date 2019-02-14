@@ -18,11 +18,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
                 return DependencyProperty.UnsetValue;
             //throw new NotImplementedException($"This converter needs a string. current is:{values[0].GetType()}");
 
-            var tokenHelper = values[1] as TokenHelper;
+            var tokenHelper = values[1] as ITokenHelper;
             if (tokenHelper == null)
                 throw new NotImplementedException("This converter needs a TokenHelper");
 
-            if (tokenHelper.ContainsInsecureTokens(stringvalue))
+            bool userTokenHintRequired = tokenHelper.ContainsUserToken(stringvalue) && values[2].Equals(false);
+
+            if (tokenHelper.ContainsInsecureTokens(stringvalue) || userTokenHintRequired)
                 return Visibility.Visible;
             return Visibility.Collapsed;
         }

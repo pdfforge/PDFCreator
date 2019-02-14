@@ -47,9 +47,10 @@
     <Compile Include="Accounts.cs" />
     <Compile Include="Accounts.Custom.cs" />
     <Compile Include="ApplicationProperties.cs" />
+    <Compile Include="ApplicationProperties.Custom.cs" />
     <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="ApplicationSettings.Custom.cs" />
     <Compile Include="AttachmentPage.cs" />
-    <Compile Include="ApplicationSettingsCustom.cs" />
     <Compile Include="AttachmentPageCustom.cs" />
     <Compile Include="AutoSave.cs" />
     <Compile Include="AutoSaveCustom.cs" />
@@ -63,6 +64,9 @@
     <Compile Include="ConversionProfile.Custom.cs" />
     <Compile Include="CoverPage.cs" />
     <Compile Include="CoverPageCustom.cs" />
+    <Compile Include="CreatorAppSettings.cs" />
+    <Compile Include="CustomScript.cs" />
+    <Compile Include="CustomScriptCustom.cs" />
     <Compile Include="DefaultViewer.cs" />
     <Compile Include="DropboxAccount.cs" />
     <Compile Include="DropboxSettings.cs" />
@@ -88,15 +92,22 @@
     <Compile Include="Enums\SelectPrinter.cs" />
     <Compile Include="Enums\SignaturePage.cs" />
     <Compile Include="Enums\TiffColor.cs" />
+    <Compile Include="Enums\UnitOfMeasurement.cs" />
     <Compile Include="Enums\UpdateInterval.cs" />
+    <Compile Include="Enums\UserTokenSeperator.cs" />
+    <Compile Include="Extensions\ProfileHasNotSupportedFeatures.cs" />
     <Compile Include="Ftp.cs" />
     <Compile Include="FtpCustom.cs" />
     <Compile Include="FtpAccount.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ParameterSettings.cs" />
     <Compile Include="JobHistory.cs" />
+    <Compile Include="CreatorAppSettings.Custom.cs" />
     <Compile Include="PdfCreatorSettings.Custom.cs" />
     <Compile Include="PrinterMapping.Custom.cs" />
+    <Compile Include="RssFeed.cs" />
+    <Compile Include="SettingsHelper.cs" />
+    <Compile Include="TableColumns.cs" />
     <Compile Include="TimeServerAccount.Custom.cs" />
     <Compile Include="HttpAccount.Custom.cs" />
     <Compile Include="FtpAccount.Custom.cs" />
@@ -134,6 +145,7 @@
     <Compile Include="TimeServerAccount.cs" />
     <Compile Include="TitleReplacement.cs" />
     <Compile Include="TitleReplacement.Custom.cs" />
+    <Compile Include="UsageStatistics.cs" />
     <Compile Include="UserTokens.cs" />
     <Compile Include="UserTokensCustom.cs" />
   </ItemGroup>
@@ -168,7 +180,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -179,7 +191,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="PropertyChanged">
-          <HintPath>..\..\..\..\packages\PropertyChanged.Fody\Lib\netstandard10\PropertyChanged.dll</HintPath>
+          <HintPath>..\..\..\..\lib\PropertyChanged.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -190,7 +202,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -84,7 +84,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(Username));
             RaisePropertyChanged(nameof(Password));
             RaisePropertyChanged(nameof(IsSecured));
-            SetPasswordAction(_timeServerAccount.Password);
             SaveCommand.RaiseCanExecuteChanged();
         }
     }

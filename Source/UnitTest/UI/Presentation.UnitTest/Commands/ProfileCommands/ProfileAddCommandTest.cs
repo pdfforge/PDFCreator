@@ -2,10 +2,12 @@
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
+using System.Collections.ObjectModel;
 
 namespace Presentation.UnitTest.Commands.ProfileCommands
 {
@@ -19,6 +21,8 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
         private PdfCreatorSettings _settings;
         private ConversionProfile _presentProfile;
 
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+
         [SetUp]
         public void SetUp()
         {
@@ -27,14 +31,14 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
             _presentProfile = new ConversionProfile();
             _presentProfile.AuthorTemplate = "Example settings to check copied profile later";
             _currentSettingsProvider.SelectedProfile = _presentProfile;
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_presentProfile);
-            _currentSettingsProvider.Settings.Returns(_settings);
-            _currentSettingsProvider.Profiles.Returns(_settings.ConversionProfiles);
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
+            _profilesProvider.Settings.Returns(_settings.ConversionProfiles);
 
             _translation = new ProfileMangementTranslation();
 
-            _profileAddCommand = new ProfileAddCommand(_interactionRequest, _currentSettingsProvider, new DesignTimeTranslationUpdater());
+            _profileAddCommand = new ProfileAddCommand(_interactionRequest, _profilesProvider, _currentSettingsProvider, new DesignTimeTranslationUpdater());
         }
 
         [Test]
@@ -69,6 +73,7 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
         [Test]
         public void Execute_UserAppliesInteraction_NewProfileGetsAddedIsCurrentProfileAndHasCorretProperties()
         {
+            _presentProfile.Properties.IsShared = true;
             _interactionRequest.RegisterInteractionHandler<InputInteraction>(i =>
             {
                 i.Success = true;
@@ -81,12 +86,10 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
             Assert.AreEqual("NewProfileName", _currentSettingsProvider.SelectedProfile.Name, "Current Profile is not new profile");
             var newProfile = _currentSettingsProvider.SelectedProfile;
             Assert.Contains(newProfile, _settings.ConversionProfiles, "New Profile was not added to Profiles");
-            Assert.False(string.IsNullOrWhiteSpace(newProfile.Guid), "NewProfile GUID was not set");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(newProfile.Guid), "NewProfile GUID was not set");
             Assert.AreNotEqual(_presentProfile.Guid, newProfile.Guid, "NewProfile GUID is same as present profile");
             Assert.AreEqual(_presentProfile.AuthorTemplate, newProfile.AuthorTemplate, "NewProfile is no copy of present profile");
-            Assert.IsTrue(newProfile.Properties.Deletable, "Properties.Deletable");
-            Assert.IsTrue(newProfile.Properties.Editable, "Properties.Editable");
-            Assert.IsTrue(newProfile.Properties.Renamable, "Properties.Renameable");
+            Assert.IsFalse(newProfile.Properties.IsShared, "NewProfile must not have shared flag");
         }
     }
 }

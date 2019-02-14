@@ -4,14 +4,12 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
 {
-    //todo transfer missing Unit test
     public class EncryptionPasswordUserControlViewModel : OverlayViewModelBase<EncryptionPasswordInteraction, EncryptionPasswordsUserControlTranslation>
     {
-        public Action<string, string> SetPasswordInUi;
+        public bool AllowConversionInterrupts { get; set; } = true;
 
         public EncryptionPasswordUserControlViewModel(ITranslationUpdater updater) : base(updater)
         {
@@ -28,26 +26,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
 
         public string OwnerPassword
         {
+            get => Interaction.OwnerPassword;
             set
             {
                 Interaction.OwnerPassword = value;
                 OkCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(OwnerPassword));
             }
         }
 
         public string UserPassword
         {
+            get => Interaction.UserPassword;
             set
             {
                 Interaction.UserPassword = value;
                 OkCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(UserPassword));
             }
         }
 
         protected override void HandleInteractionObjectChanged()
         {
-            SetPasswordInUi?.Invoke(Interaction.OwnerPassword, Interaction.UserPassword);
-            OkCommand.RaiseCanExecuteChanged();
+            OwnerPassword = Interaction.OwnerPassword;
+            UserPassword = Interaction.UserPassword;
         }
 
         public override string Title => Translation.Title;
@@ -63,7 +65,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
             if (Interaction == null)
                 return false;
 
-            if (!Interaction.Skip)
+            if (!Interaction.Skip && AllowConversionInterrupts)
                 return true;
 
             if (Interaction.AskOwnerPassword)

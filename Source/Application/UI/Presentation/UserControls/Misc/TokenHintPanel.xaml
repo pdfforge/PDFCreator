@@ -5,19 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance misc:DesignTimeTokenHintPanelViewModel, IsDesignTimeCreatable=True}"
              x:Name="This">
     <UserControl.Resources>
         <converter:TokenTextToVisibilityConverter x:Key="TokenTextToVisibilityConverter" />
     </UserControl.Resources>
-    <DockPanel LastChildFill="False">
-        <DockPanel.Visibility>
-            <MultiBinding Converter="{StaticResource TokenTextToVisibilityConverter}">
-                <Binding  Path="TextWrapper" />
-                <Binding  Path="TokenHelper" />
-            </MultiBinding>
-        </DockPanel.Visibility>
+    <DockPanel Visibility="Visible" LastChildFill="False">
         <DockPanel.Style>
             <Style>
                 <Setter Property="DockPanel.Visibility" Value="Hidden" />
@@ -35,14 +30,14 @@
                 </Style.Triggers>
             </Style>
         </DockPanel.Style>
-        <DockPanel LastChildFill="False" Margin="0 2">
-            <ContentControl DockPanel.Dock="Left" Content="{DynamicResource InfoIcon}" Width="12" Height="12"
-                            VerticalAlignment="Center" />
-            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2 0">
-                <Hyperlink Command="{Binding UserGuideCommand}">
-                    <TextBlock Text="{Binding Translation.InsecureTokenText}" TextWrapping="Wrap" />
-                </Hyperlink>
-            </TextBlock>
-        </DockPanel>
+        <misc:WarningIconControl help:HelpProvider.HelpTopic="Tokens" ToolTipText="{Binding HintText}">
+            <misc:WarningIconControl.Visibility>
+                <MultiBinding Converter="{StaticResource TokenTextToVisibilityConverter}">
+                    <Binding  Path="TextWrapper" />
+                    <Binding  Path="TokenHelper" />
+                    <Binding  Path ="UserTokenProfile.UserTokens.Enabled" />
+                </MultiBinding>
+            </misc:WarningIconControl.Visibility>
+        </misc:WarningIconControl>
     </DockPanel>
 </UserControl>

@@ -4,7 +4,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 {
     public class DisabledUpdateAssistant : IUpdateAssistant
     {
-        public ApplicationVersion OnlineVersion => new ApplicationVersion(new Version(0, 0, 0, 0), "", "");
+        public IApplicationVersion OnlineVersion => new ApplicationVersion(new Version(0, 0, 0, 0), "", "", null);
+
+        public event EventHandler TryShowUpdateInteraction;
+
         public bool UpdateProcedureIsRunning => false;
         public bool UpdatesEnabled => false;
 
@@ -13,10 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         }
 
         public bool ShowUpdate => false;
-
-        public void InstallNewUpdate()
-        {
-        }
+        public Release CurrentReleaseVersion { get; set; }
 
         public void SkipVersion()
         {
@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         {
         }
 
-        public bool IsOnlineUpdateAvailable()
+        public bool IsOnlineUpdateAvailable(bool checkNecessity)
         {
             return false;
         }
@@ -34,6 +34,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         public bool IsUpdateAvailable()
         {
             return false;
+        }
+
+        public void DownloadUpdate()
+        {
         }
     }
 }

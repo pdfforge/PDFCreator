@@ -44,6 +44,9 @@ namespace PDFCreator.TestUtilities
                 case OutputFormat.PdfA2B:
                     return PDFCompliance.ePDFA2b;
 
+                case OutputFormat.PdfA3B:
+                    return PDFCompliance.ePDFA3b;
+
                 case OutputFormat.Pdf:
                     return PDFCompliance.ePDF17; //todo: Is highest ok?
                 default:

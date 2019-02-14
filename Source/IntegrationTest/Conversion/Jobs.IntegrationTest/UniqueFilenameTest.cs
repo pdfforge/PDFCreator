@@ -41,12 +41,12 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
 
             var outputFile = Path.Combine(tempFolder, "doc.pdf");
-            _th.Job.OutputFilenameTemplate = outputFile;
+            _th.Job.OutputFileTemplate = outputFile;
             _th.RunGsJob();
 
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
 
-            _th.Job.OutputFilenameTemplate = outputFile;
+            _th.Job.OutputFileTemplate = outputFile;
             _th.RunGsJob();
 
             Assert.IsTrue(File.Exists(outputFile), "Outputfile does not exist!");

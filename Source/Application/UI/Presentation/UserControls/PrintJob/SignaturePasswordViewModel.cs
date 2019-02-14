@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
@@ -14,7 +13,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private readonly ISignaturePasswordCheck _signaturePasswordCheck;
         protected Job Job { get; set; }
         private string _password;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
 
         public abstract PrintJobPasswordButtonViewModel PrintJobPasswordButtonViewModel { get; }
 
@@ -33,7 +31,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
         }
 
-        public string CertificateFile => _pathSafe.GetFileName(CertificatePath);
+        public string CertificateFile => PathSafe.GetFileName(CertificatePath);
 
         public string Password
         {

@@ -5,18 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              mc:Ignorable="d"
              Width="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSmtpAccountViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converter:BoolNegationConverter x:Key="NegationConverter" />
     </UserControl.Resources>
     <DockPanel Margin ="10 5 10 10" HorizontalAlignment="Stretch">
         <StackPanel DockPanel.Dock="Top">
             <Label Content="{Binding Translation.EmailAddressLabel}" />
-            <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" LostFocus="UIElement_OnLostFocus" />
             <Label Content="{Binding Translation.UserNameLabel}" />
-            <TextBox Text="{Binding Username,  UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="UsernameTextbox" Text="{Binding Username,  UpdateSourceTrigger=PropertyChanged}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -39,14 +41,13 @@
             </Grid>
             <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource NegationConverter}}">
                 <Label Content="{Binding Translation.PasswordLabel, UpdateSourceTrigger=PropertyChanged}" />
-                <PasswordBox Name="ServerPasswordBox" PasswordChar="•"
-                             PasswordChanged="ServerPasswordBox_OnPasswordChanged" />
+                <controls:PreviewPasswordField PasswordText="{Binding Password}" />
             </StackPanel>
-            <CheckBox Margin="0 5 0 20" IsChecked="{Binding AskForPasswordLater}">
+            <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalseConverter}}">
                 <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
             </CheckBox>
         </StackPanel>
-        <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom">
+        <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom" Margin="0 15 0 0">
             <Button Content="{Binding Translation.Save}" Command="{Binding SaveCommand}" Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}" />
             <Button Content="{Binding Translation.Cancel}" Command="{Binding CancelCommand}" Margin ="5 0 0 0" Style="{DynamicResource LightGreyButton}" />
         </UniformGrid>

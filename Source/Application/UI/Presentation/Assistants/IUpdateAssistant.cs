@@ -1,10 +1,13 @@
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
+using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
     public interface IUpdateAssistant
     {
-        ApplicationVersion OnlineVersion { get; }
+        IApplicationVersion OnlineVersion { get; }
+
+        event EventHandler TryShowUpdateInteraction;
 
         bool UpdateProcedureIsRunning { get; }
         bool UpdatesEnabled { get; }
@@ -25,15 +28,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         void UpdateProcedure(bool checkNecessity);
 
         bool ShowUpdate { get; }
-
-        void InstallNewUpdate();
+        Release CurrentReleaseVersion { get; }
 
         void SkipVersion();
 
         void SetNewUpdateTime();
 
-        bool IsOnlineUpdateAvailable();
+        bool IsOnlineUpdateAvailable(bool checkNecessity);
 
         bool IsUpdateAvailable();
+
+        void DownloadUpdate();
     }
 }

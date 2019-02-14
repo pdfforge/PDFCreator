@@ -23,6 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         private readonly IFileConversionAssistant _fileConversionAssistant;
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
+        private readonly ICommandLocator _commandLocator;
         private readonly IInteractionInvoker _interactionInvoker;
 
         public HomeViewModel(IInteractionInvoker interactionInvoker, IFileConversionAssistant fileConversionAssistant, ITranslationUpdater translationUpdater,
@@ -34,6 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             _fileConversionAssistant = fileConversionAssistant;
             _printerHelper = printerHelper;
             _settingsProvider = settingsProvider;
+            _commandLocator = commandLocator;
 
             JobHistory = CollectionViewSource.GetDefaultView(jobHistoryManager.History);
             jobHistoryManager.HistoryChanged += (sender, args) =>
@@ -59,11 +61,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 
             QuickActionOpenList = new List<QuickActionListItemVo>
             {
-                new QuickActionListItemVo(Translation.OpenPDFArchitect, commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>(), StartQuickActionCommand),
-                new QuickActionListItemVo(Translation.OpenDefaultProgram, commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>(), StartQuickActionCommand),
-                new QuickActionListItemVo(Translation.OpenExplorer, commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>(), StartQuickActionCommand),
-                new QuickActionListItemVo(Translation.OpenMailClient, commandLocator.GetCommand<QuickActionOpenMailClientCommand>(), StartQuickActionCommand)
+                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(Translation.OpenPDFArchitect),
+                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(Translation.OpenDefaultProgram),
+                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(Translation.OpenExplorer),
+                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(Translation.PrintWithPDFArchitect),
+                GetQuickActionItem<QuickActionOpenMailClientCommand>(Translation.OpenMailClient)
             };
+        }
+
+        private QuickActionListItemVo GetQuickActionItem<TCommand>(string text) where TCommand : class, ICommand
+        {
+            return new QuickActionListItemVo(text, _commandLocator.GetCommand<TCommand>(), StartQuickActionCommand);
         }
 
         public DelegateCommand StartQuickActionCommand { get; }
@@ -102,7 +110,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             }
         }
 
-        public string CallToActionText => Translation.FormatCallToAction(_printerHelper.GetApplicablePDFCreatorPrinter(_settingsProvider.Settings?.ApplicationSettings?.PrimaryPrinter ?? ""));
+        public string CallToActionText => Translation.FormatCallToAction(_printerHelper.GetApplicablePDFCreatorPrinter(_settingsProvider.Settings?.CreatorAppSettings?.PrimaryPrinter ?? ""));
 
         private void StartQuickActionCommandExecute(object obj)
         {

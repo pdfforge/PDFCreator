@@ -35,7 +35,6 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _smtpAccountInteraction = new SmtpAccountInteraction(_smtpAccount, "SmtpAccountTestTitle");
 
             _viewModel = new SmtpAccountViewModel(translationUpdater);
-            _viewModel.SetPasswordAction = s => { };
         }
 
         [Test]
@@ -229,36 +228,63 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
         }
 
         [Test]
-        public void SetInteraction_TriggersSetPassword()
+        public void SetInteraction_AllowConversionInterruptsEnabled_AskForPasswordLaterIsTrueIfPasswordIsEmpty()
         {
-            var wasTriggered = false;
-            _viewModel.SetPasswordAction += s => wasTriggered = true;
+            _viewModel.AllowConversionInterrupts = true;
 
+            _smtpAccountInteraction.SmtpAccount.Password = "Not empty";
             _viewModel.SetInteraction(_smtpAccountInteraction);
 
-            Assert.IsTrue(wasTriggered);
+            Assert.IsFalse(_viewModel.AskForPasswordLater, "AskForPasswordLater should be false for set password");
+
+            _smtpAccountInteraction.SmtpAccount.Password = "";
+            _viewModel.SetInteraction(_smtpAccountInteraction);
+            Assert.IsTrue(_viewModel.AskForPasswordLater, "AskForPasswordLater should be true for empty password");
         }
 
         [Test]
-        public void SetInteraction_PasswordIsEmpty_SetsAskForPasswordLaterToTrue()
+        public void SetInteraction_AllowConversionInterruptsDisabled_AskForPasswordLaterIsAlwaysFalse()
         {
-            _viewModel.AskForPasswordLater = false;
-            _smtpAccount.Password = "";
+            _viewModel.AllowConversionInterrupts = false;
 
-            _viewModel.SetInteraction(_smtpAccountInteraction);
-
-            Assert.IsTrue(_viewModel.AskForPasswordLater);
-        }
-
-        [Test]
-        public void SetInteraction_PasswordNotEmpty_SetsAskForPasswordLaterToFalse()
-        {
-            _viewModel.AskForPasswordLater = true;
-            _smtpAccount.Password = "Not Empty";
-
+            _smtpAccountInteraction.SmtpAccount.Password = "Not empty";
             _viewModel.SetInteraction(_smtpAccountInteraction);
 
             Assert.IsFalse(_viewModel.AskForPasswordLater);
+
+            _smtpAccountInteraction.SmtpAccount.Password = "";
+            _viewModel.SetInteraction(_smtpAccountInteraction);
+            Assert.IsFalse(_viewModel.AskForPasswordLater);
+        }
+
+        [Test]
+        public void SetAdressForEmptyUsername_UsernameIsEmpty_UsernameIsAdressAndRaisesRaisedPorpertyChanged()
+        {
+            var changedPropertyList = new List<string>();
+            _viewModel.PropertyChanged += (sender, args) => changedPropertyList.Add(args.PropertyName);
+
+            _viewModel.SetInteraction(_smtpAccountInteraction);
+            var expectedUsername = "From Address";
+            _viewModel.Address = expectedUsername;
+            _viewModel.Username = "";
+
+            _viewModel.SetAdressForEmptyUsername();
+
+            Assert.AreEqual(expectedUsername, _viewModel.Username);
+            Assert.Contains(nameof(_viewModel.Username), changedPropertyList, "Username raise poperty changed");
+        }
+
+        [Test]
+        public void SetAdressForEmptyUsername_UsernameIsNotEmpty_UsernameRemains()
+        {
+            _viewModel.SetInteraction(_smtpAccountInteraction);
+            var expectedUsername = "not empty";
+            _viewModel.Address = "Some adress";
+            _viewModel.Username = expectedUsername;
+
+            _viewModel.SetAdressForEmptyUsername();
+
+            Assert.AreEqual(expectedUsername, _viewModel.Username);
         }
     }
 }

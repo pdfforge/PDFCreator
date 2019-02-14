@@ -86,15 +86,6 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         }
 
         /// <summary>
-        ///     Prints all items with a default Process timeout (60 seconds)
-        /// </summary>
-        /// <returns>true, if all items were converted successfully</returns>
-        public bool PrintAll()
-        {
-            return PrintAll(TimeSpan.FromSeconds(60));
-        }
-
-        /// <summary>
         ///     Prints all items.
         /// </summary>
         /// <param name="processTimeout">The timeout the process will wait for the print job to succeed</param>
@@ -113,6 +104,16 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
                     return false;
             }
             return true;
+        }
+
+        /// <summary>
+        ///     Prints all items.
+        /// </summary>
+        /// <param name="processTimeout">The timeout in seconds the process will wait for the print job to succeed</param>
+        /// <returns>true, if all items were converted successfully</returns>
+        public bool PrintAll(int processTimeout)
+        {
+            return PrintAll(TimeSpan.FromSeconds(processTimeout));
         }
 
         /// <summary>

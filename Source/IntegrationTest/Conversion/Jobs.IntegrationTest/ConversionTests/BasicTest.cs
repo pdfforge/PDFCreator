@@ -50,7 +50,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.ConversionTests
                 _th.JobInfo.SourceFiles.Add(sourceFile);
             }
 
-            var jobInfoReader = new JobInfoManager(null);
+            var jobInfoReader = new JobInfoManager(null, null);
             jobInfoReader.SaveToInfFile(_th.JobInfo);
         }
 

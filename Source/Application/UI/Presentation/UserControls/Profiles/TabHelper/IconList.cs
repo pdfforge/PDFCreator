@@ -16,6 +16,8 @@
         GeneralSettings,
         TitleReplacementSettings,
         LicenseSettings,
+        RssFeedArrowIcon,
+        RssFeedIcon,
         DefaultViewerSettings
     }
 }

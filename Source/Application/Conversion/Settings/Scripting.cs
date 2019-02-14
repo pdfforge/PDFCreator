@@ -38,17 +38,23 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string ScriptFile { get; set; } = "";
 		
 		/// <summary>
+		/// If false, the given script or application will be executed in a hidden window
+		/// </summary>
+		public bool Visible { get; set; } = true;
+		
+		/// <summary>
 		/// Wait until the script excution has ended
 		/// </summary>
 		public bool WaitForScript { get; set; } = true;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			try { ParameterString = Data.UnescapeString(data.GetValue(@"" + path + @"ParameterString")); } catch { ParameterString = "";}
 			try { ScriptFile = Data.UnescapeString(data.GetValue(@"" + path + @"ScriptFile")); } catch { ScriptFile = "";}
-			try { WaitForScript = bool.Parse(data.GetValue(@"" + path + @"WaitForScript")); } catch { WaitForScript = true;}
+			Visible = bool.TryParse(data.GetValue(@"" + path + @"Visible"), out var tmpVisible) ? tmpVisible : true;
+			WaitForScript = bool.TryParse(data.GetValue(@"" + path + @"WaitForScript"), out var tmpWaitForScript) ? tmpWaitForScript : true;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -56,6 +62,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
 			data.SetValue(@"" + path + @"ParameterString", Data.EscapeString(ParameterString));
 			data.SetValue(@"" + path + @"ScriptFile", Data.EscapeString(ScriptFile));
+			data.SetValue(@"" + path + @"Visible", Visible.ToString());
 			data.SetValue(@"" + path + @"WaitForScript", WaitForScript.ToString());
 		}
 		
@@ -66,8 +73,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.ParameterString = ParameterString;
 			copy.ScriptFile = ScriptFile;
+			copy.Visible = Visible;
 			copy.WaitForScript = WaitForScript;
-			
 			return copy;
 		}
 		
@@ -79,21 +86,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!ParameterString.Equals(v.ParameterString)) return false;
 			if (!ScriptFile.Equals(v.ScriptFile)) return false;
+			if (!Visible.Equals(v.Visible)) return false;
 			if (!WaitForScript.Equals(v.WaitForScript)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("ParameterString=" + ParameterString.ToString());
-			sb.AppendLine("ScriptFile=" + ScriptFile.ToString());
-			sb.AppendLine("WaitForScript=" + WaitForScript.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

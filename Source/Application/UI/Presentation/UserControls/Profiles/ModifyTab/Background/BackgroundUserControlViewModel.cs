@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Ba
         public TokenViewModel<ConversionProfile> BackgroundTokenViewModel { get; set; }
 
         public BackgroundUserControlViewModel(IOpenFileInteractionHelper openFileInteractionHelper, ITranslationUpdater translationUpdater,
-                                              ISelectedProfileProvider selectedProfile, TokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
+                                              ISelectedProfileProvider selectedProfile, ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
             : base(translationUpdater, selectedProfile, null)
         {
             _openFileInteractionHelper = openFileInteractionHelper;

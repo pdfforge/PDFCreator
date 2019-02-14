@@ -10,6 +10,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using SystemInterface;
 using SystemInterface.IO;
 using SystemWrapper;
@@ -53,7 +54,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
             var dateTime = MockRepository.GenerateStub<IDateTimeProvider>();
             dateTime.Stub(dt => dt.Now()).Return(new DateTime(2000, 1, 1, 1, 1, 1));
 
-            _job = new Job(_jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts());
+            _job = new Job(_jobInfo, new ConversionProfile(), new Accounts());
             _job.NumberOfCopies = 5;
             _job.NumberOfPages = 14;
 
@@ -106,7 +107,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
         [TestCase("PrintJobAuthor")]
         [TestCase("PrintJobName")]
         [TestCase("InputFilename")]
-        [TestCase("InputFilePath")]
+        [TestCase("InputDirectory")]
         public void BuildTokenReplacerWithoutOutputfiles_ReturnsTokenReplacerWithJobTokens(string tokenName)
         {
             var tokenreplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(_job);
@@ -157,9 +158,10 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
         public void BuildTokenReplacerFromJobInfo_ISubjectContainsTokens_ReturnsTokenReplacerWithCorrectTitleToken()
         {
             _jobInfo.Metadata.Subject = "<PrinterName>";
-            var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
-            var token = tokenReplacer.GetToken("Subject");
 
+            var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
+
+            var token = tokenReplacer.GetToken("Subject");
             Assert.AreEqual(_jobInfo.SourceFiles[0].PrinterName, token.GetValue());
         }
 
@@ -174,51 +176,94 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
         }
 
         [Test]
-        public void BuildTokenReplacerFromJobInfo_IfDocTitelIsNoPath_ReturnsTokenReplacerWithEmptyInputFilePath()
+        public void BuildTokenReplacerFromJobInfo_EmptyOriginalFilePathDocumentInfoIsNoValidRootedPath_InputFilenameTokenHasPrintJobName()
         {
-            _jobInfo.SourceFiles[0].DocumentTitle = "titelThatIsNoPath";
-            _pathUtil.IsValidRootedPath("").ReturnsForAnyArgs(false);
+            _jobInfo.OriginalFilePath = "";
+            _jobInfo.SourceFiles[0].DocumentTitle = "InvalidPath";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(false);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
 
             var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
-            var token = tokenReplacer.GetToken("InputFilePath");
 
-            Assert.AreEqual("", token.GetValue());
+            var inputFilenameToken = tokenReplacer.GetToken("InputFilename");
+            Assert.AreEqual(_jobInfo.Metadata.PrintJobName, inputFilenameToken.GetValue(), "Wrong value for InputFilename");
         }
 
         [Test]
-        public void BuildTokenReplacerFromJobInfo_IfDocTitelIsNoPath_ReturnsTokenReplacerWithsomePrintJobNameAsInputFileName()
+        public void BuildTokenReplacerFromJobInfo_EmptyOriginalFilePathDocumentInfoIsNoValidRootedPath_InputDirectoryTokenIsEmpty()
         {
-            _jobInfo.SourceFiles[0].DocumentTitle = "titelThatIsNoPath";
-            _pathUtil.IsValidRootedPath("").ReturnsForAnyArgs(false);
+            _jobInfo.OriginalFilePath = "";
+            _jobInfo.SourceFiles[0].DocumentTitle = "InvalidPath";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(false);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
 
             var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
-            var token = tokenReplacer.GetToken("InputFilename");
 
-            Assert.AreEqual("somePrintJobName", token.GetValue());
+            var inputDirectoryToken = tokenReplacer.GetToken("InputDirectory");
+            Assert.AreEqual("", inputDirectoryToken.GetValue(), "Wrong value for InputDirectory");
+            var inputFilePathToken = tokenReplacer.GetToken("InputFilePath");
+            Assert.AreEqual(inputDirectoryToken.GetValue(), inputFilePathToken.GetValue(), "Values of InputDirectory- and InputFilePath-Token must be equal");
         }
 
         [Test]
-        public void BuildTokenReplacerFromJobInfo_IfDocTitelIsPath_ReturnsTokenReplacerWithInputFileName()
+        public void BuildTokenReplacerFromJobInfo_OriginalFilePathIsSetDocumentInfoIsValidRootedPath_InputFilenameTokenHasOriginalFilenameWithoutExtension()
         {
-            _jobInfo.SourceFiles[0].DocumentTitle = "C:\\thedir\\thefile.txt";
-            _pathUtil.IsValidRootedPath("").ReturnsForAnyArgs(true);
+            _jobInfo.OriginalFilePath = @"\\OriginalDirectory\OriginalFilename.jpg";
+            _jobInfo.SourceFiles[0].DocumentTitle = "InvalidPath";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(true);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
 
             var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
-            var token = tokenReplacer.GetToken("InputFilename");
 
-            Assert.AreEqual("thefile", token.GetValue());
+            var inputFilenameToken = tokenReplacer.GetToken("InputFilename");
+            Assert.AreEqual(Path.GetFileNameWithoutExtension(_jobInfo.OriginalFilePath), inputFilenameToken.GetValue(), "Wrong value for InputFilename");
         }
 
         [Test]
-        public void BuildTokenReplacerFromJobInfo_IfDocTitelIsPath_ReturnsTokenReplacerWithInputFilePath()
+        public void BuildTokenReplacerFromJobInfo_OriginalFilePathIsSetDocumentInfoIsValidRootedPath_InputDirectoryTokenHasOriginalDirectory()
         {
-            _jobInfo.SourceFiles[0].DocumentTitle = "C:\\thedir\\thefile.txt";
-            _pathUtil.IsValidRootedPath("").ReturnsForAnyArgs(true);
+            _jobInfo.OriginalFilePath = @"\\Network\OriginalDirectory\OriginalFilename.jpg";
+            _jobInfo.SourceFiles[0].DocumentTitle = "InvalidPath";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(true);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
 
             var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
-            var token = tokenReplacer.GetToken("InputFilePath");
 
-            Assert.AreEqual("C:\\thedir", token.GetValue());
+            var inputDirectoryToken = tokenReplacer.GetToken("InputDirectory");
+            Assert.AreEqual(Path.GetDirectoryName(_jobInfo.OriginalFilePath), inputDirectoryToken.GetValue(), "Wrong value for InputDirectory");
+            var inputFilePathToken = tokenReplacer.GetToken("InputFilePath");
+            Assert.AreEqual(inputDirectoryToken.GetValue(), inputFilePathToken.GetValue(), "Values of InputDirectory- and InputFilePath-Token must be equal");
+        }
+
+        [Test]
+        public void BuildTokenReplacerFromJobInfo_OriginalFilePathIsNotSetDocumentInfoIsValidRootedPath_InputFilenameTokenHasCocumentTitleFilenameWithoutExtension()
+        {
+            _jobInfo.OriginalFilePath = "";
+            _jobInfo.SourceFiles[0].DocumentTitle = @"\\DocumentTitleDirectory\DocumentTitleFilename.jpg";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(true);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
+
+            var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
+
+            var inputFilenameToken = tokenReplacer.GetToken("InputFilename");
+            Assert.AreEqual(Path.GetFileNameWithoutExtension(_jobInfo.SourceFiles[0].DocumentTitle), inputFilenameToken.GetValue(), "Wrong value for InputFilename");
+        }
+
+        [Test]
+        public void BuildTokenReplacerFromJobInfo_OriginalFilePathIsNotSetDocumentInfoIsValidRootedPath_InputDirectoryTokenHasDocumentTitleDirectory()
+        {
+            _jobInfo.OriginalFilePath = "";
+            _jobInfo.SourceFiles[0].DocumentTitle = @"\\Network\DocumentTitleDirectory\DocumentTitleFilename.jpg";
+            _pathUtil.IsValidRootedPath(_jobInfo.SourceFiles[0].DocumentTitle).Returns(true);
+            _jobInfo.Metadata.PrintJobName = "PrintJobName";
+
+            var tokenReplacer = _tokenReplacerFactory.BuildTokenReplacerFromJobInfo(_jobInfo);
+
+            var inputDirectoryToken = tokenReplacer.GetToken("InputDirectory");
+            var expectedDirectory = Path.GetDirectoryName(_jobInfo.SourceFiles[0].DocumentTitle);
+            Assert.AreEqual(expectedDirectory, inputDirectoryToken.GetValue(), "Wrong value for InputDirectory");
+            var inputFilePathToken = tokenReplacer.GetToken("InputFilePath");
+            Assert.AreEqual(inputDirectoryToken.GetValue(), inputFilePathToken.GetValue(), "Values of InputDirectory- and InputFilePath-Token must be equal");
         }
 
         [Test]

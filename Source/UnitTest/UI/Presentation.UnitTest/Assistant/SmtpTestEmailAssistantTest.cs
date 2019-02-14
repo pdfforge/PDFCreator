@@ -7,7 +7,6 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
@@ -34,9 +33,7 @@ namespace Presentation.UnitTest.Assistant
         private Accounts _accounts;
         private IPath _path;
         private ConversionProfile _profile;
-        private IMailSignatureHelper _mailSignatureHelper;
         private SmtpTranslation _translation;
-        private readonly string _mailSignature = "___ " + Environment.NewLine + "Signature";
         private IInteractionInvoker _interactionInvoker;
         private ITokenReplacerFactory _tokenReplacerFactory;
         private TokenReplacer _tokenReplacer;
@@ -50,7 +47,7 @@ namespace Presentation.UnitTest.Assistant
             _profile = new ConversionProfile();
             //Attention
             _profile.EmailSmtpSettings.AccountId = _smtpTestAccount.AccountId;
-            //The AccountAssosiation is mocked below. The _smtpTestAccount is always used.
+            //The AccountAssociation is mocked below. The _smtpTestAccount is always used.
 
             _accounts = new Accounts();
             _accounts.SmtpAccounts.Add(_smtpTestAccount);
@@ -66,10 +63,6 @@ namespace Presentation.UnitTest.Assistant
             _smtpAction = Substitute.For<ISmtpMailAction>();
             _smtpAction.Check(Arg.Any<ConversionProfile>(), _accounts, Arg.Any<CheckLevel>()).Returns(x => new ActionResult());
             _smtpAction.ProcessJob(Arg.Any<Job>()).Returns(x => new ActionResult());
-            //_smtpAction.GetSmtpAccount(_profile, _accounts).Returns(_smtpTestAccount);
-
-            _mailSignatureHelper = Substitute.For<IMailSignatureHelper>();
-            _mailSignatureHelper.ComposeMailSignature().Returns(_mailSignature);
 
             _tokenReplacer = new TokenReplacer();
             _tokenReplacerFactory = Substitute.For<ITokenReplacerFactory>();
@@ -80,7 +73,7 @@ namespace Presentation.UnitTest.Assistant
 
         private SmtpTestEmailAssistant BuildAssistant()
         {
-            return new SmtpTestEmailAssistant(new DesignTimeTranslationUpdater(), _interactionRequest, _file, _smtpAction, _path, _mailSignatureHelper, new ErrorCodeInterpreter(new TranslationFactory()), _interactionInvoker, new TokenHelper(new DesignTimeTranslationUpdater()));
+            return new SmtpTestEmailAssistant(new DesignTimeTranslationUpdater(), _interactionRequest, _file, _smtpAction, _path, new ErrorCodeInterpreter(new TranslationFactory()), _interactionInvoker, new TokenHelper(new DesignTimeTranslationUpdater()));
         }
 
         [Test]

@@ -1,7 +1,7 @@
 ﻿using Optional;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;

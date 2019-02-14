@@ -173,23 +173,12 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             {
                 var currentJobInfo = JobInfoQueue.JobInfos[id];
 
-                var jobTranslations = new JobTranslations();
-                jobTranslations.EmailSignature = ComposeMailSignature();
-
-                return new Job(currentJobInfo, _settingsProvider.GetDefaultProfile(), jobTranslations, _settingsProvider.Settings.ApplicationSettings.Accounts);
+                return new Job(currentJobInfo, _settingsProvider.GetDefaultProfile(), _settingsProvider.Settings.ApplicationSettings.Accounts);
             }
             catch (ArgumentOutOfRangeException)
             {
                 throw new COMException("Invalid index. Please check the index parameter.");
             }
-        }
-
-        //todo Why is it implemented like this ?
-        private string ComposeMailSignature()
-        {
-            return "\r\n\r\n______________________________\r\n\r\n"
-                   + "Created with PDFCreator"
-                   + "\r\nwww.pdfforge.org";
         }
     }
 }

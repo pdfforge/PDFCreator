@@ -1,6 +1,7 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
@@ -20,15 +21,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox
         public IMacroCommand AddDropboxAccountCommand { get; set; }
         public ObservableCollection<DropboxAccount> DropboxAccounts { get; set; }
 
-        public DropboxUserControlViewModel(ITranslationUpdater translationUpdater, ICurrentSettingsProvider currentSettingsProvider, ICommandLocator commandLocator, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
+        private readonly IGpoSettings _gpoSettings;
+        public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
+
+        public DropboxUserControlViewModel(ITranslationUpdater translationUpdater,
+            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ICommandLocator commandLocator,
+            ITokenViewModelFactory tokenViewModelFactory,
+            IDispatcher dispatcher,
+            IGpoSettings gpoSettings)
             : base(translationUpdater, currentSettingsProvider, dispatcher)
         {
+            _gpoSettings = gpoSettings;
             AddDropboxAccountCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<DropboxAccountAddCommand>()
                 .AddCommand(new DelegateCommand(SelectNewAccountInView))
                 .Build();
 
-            DropboxAccounts = currentSettingsProvider?.Settings?.ApplicationSettings.Accounts.DropboxAccounts;
+            DropboxAccounts = accountsProvider?.Settings.DropboxAccounts;
 
             translationUpdater.RegisterAndSetTranslation(tf => SetTokenViewModels(tokenViewModelFactory));
         }

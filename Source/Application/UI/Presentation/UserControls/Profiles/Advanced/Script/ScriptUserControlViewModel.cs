@@ -10,7 +10,7 @@ using pdfforge.PDFCreator.Utilities.Threading;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.ComponentModel;
-using System.IO;
+using SystemInterface.IO;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script
@@ -20,7 +20,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Scr
         private readonly IOpenFileInteractionHelper _openFileInteractionHelper;
         private readonly IScriptActionHelper _scriptActionHelper;
 
-        public ScriptUserControlViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider provider, IOpenFileInteractionHelper openFileInteractionHelper, IScriptActionHelper scriptActionHelper, TokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
+        public ScriptUserControlViewModel(
+            ITranslationUpdater translationUpdater,
+            ISelectedProfileProvider provider,
+            IOpenFileInteractionHelper openFileInteractionHelper,
+            IScriptActionHelper scriptActionHelper,
+            ITokenHelper tokenHelper,
+            ITokenViewModelFactory tokenViewModelFactory,
+            IDispatcher dispatcher)
             : base(translationUpdater, provider, dispatcher)
         {
             _openFileInteractionHelper = openFileInteractionHelper;
@@ -87,7 +94,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Scr
             if (string.IsNullOrEmpty(scriptPath) || (scriptPath.Trim().Length == 0))
                 return "";
 
-            var scriptCall = Path.GetFileName(_scriptActionHelper.ComposeScriptPath(scriptPath, TokenReplacer));
+            var scriptCall = PathSafe.GetFileName(_scriptActionHelper.ComposeScriptPath(scriptPath, TokenReplacer));
 
             if (!string.IsNullOrEmpty(additionalParams))
             {

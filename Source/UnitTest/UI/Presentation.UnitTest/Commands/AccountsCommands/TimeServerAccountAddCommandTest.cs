@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private UnitTestInteractionRequest _interactionRequest;
         private ObservableCollection<TimeServerAccount> _timeServerAccounts;
         private TimeServerTranslation _translation;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -29,15 +30,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _interactionRequest = new UnitTestInteractionRequest();
 
             _timeServerAccounts = new ObservableCollection<TimeServerAccount>();
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.TimeServerAccounts = _timeServerAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             _translation = new TimeServerTranslation();
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _timeServerAccountAddCommand = new TimeServerAccountAddCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _timeServerAccountAddCommand = new TimeServerAccountAddCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]

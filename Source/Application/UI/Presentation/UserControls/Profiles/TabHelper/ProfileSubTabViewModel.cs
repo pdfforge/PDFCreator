@@ -1,5 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
 using pdfforge.PDFCreator.UI.Presentation.Controls.Tab;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -14,10 +14,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper
     {
         private readonly ITranslationUpdater _translationUpdater;
         protected readonly ISelectedProfileProvider Profile;
-        private readonly ICommandLocator _commandLocator;
         private ITranslatable _translation;
         private PrismNavigationValueObject _navigationObject;
         private Func<ConversionProfile, IProfileSetting> _setting;
+        private Func<ConversionProfile, bool> _hasNotSupportedFeatures;
 
         public ITranslatable Translation
         {
@@ -30,23 +30,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper
             }
         }
 
-        public ProfileSubTabViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider profile, ICommandLocator commandLocator)
+        public ProfileSubTabViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider profile)
         {
             _translationUpdater = translationUpdater;
             Profile = profile;
-            _commandLocator = commandLocator;
-
-            profile.SelectedProfileChanged += OnProfileOnSelectedProfileChanged;
+            Profile.SelectedProfileChanged += OnSelectedProfileChanged;
+            Profile.SelectedProfile.SetRaiseConditionsForNotSupportedFeatureSections(OnProfileChanged);
         }
 
-        private void OnProfileOnSelectedProfileChanged(object sender, PropertyChangedEventArgs args)
+        private void OnSelectedProfileChanged(object sender, PropertyChangedEventArgs args)
+        {
+            OnProfileChanged(sender, args);
+            Profile.SelectedProfile.SetRaiseConditionsForNotSupportedFeatureSections(OnProfileChanged);
+        }
+
+        private void OnProfileChanged(object sender, PropertyChangedEventArgs args)
         {
             RaisePropertyChanged(nameof(IsChecked));
+            RaisePropertyChanged(nameof(HasNotSupportedFeatures));
         }
 
-        public void Init<TTranslation>(Func<TTranslation, string> titleId, Func<ConversionProfile, IProfileSetting> setting, PrismNavigationValueObject navigationObject) where TTranslation : ITranslatable, new()
+        public void Init<TTranslation>(Func<TTranslation, string> titleId, Func<ConversionProfile, IProfileSetting> setting, PrismNavigationValueObject navigationObject, Func<ConversionProfile, bool> hasNotSupportedFeatures = null) where TTranslation : ITranslatable, new()
         {
             _setting = setting;
+
+            _hasNotSupportedFeatures = hasNotSupportedFeatures ?? (p => false);
             _navigationObject = navigationObject;
 
             _translationUpdater.RegisterAndSetTranslation(tf =>
@@ -62,6 +70,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper
             var setting = _setting(Profile.SelectedProfile);
             setting.Enabled = value;
             _navigationObject.Activate.Invoke();
+            RaisePropertyChanged(nameof(HasNotSupportedFeatures));
         }
 
         public bool GetIsChecked()
@@ -77,6 +86,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper
                 SetIsChecked(value);
             }
         }
+
+        public bool HasNotSupportedFeatures => _hasNotSupportedFeatures(Profile.SelectedProfile);
 
         protected void OnTranslationChanged()
         {

@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Windows;
+using pdfforge.PDFCreator.UI.Presentation;
 using Translatable;
 
 namespace Presentation.UnitTest.UserControls.GeneralSettings

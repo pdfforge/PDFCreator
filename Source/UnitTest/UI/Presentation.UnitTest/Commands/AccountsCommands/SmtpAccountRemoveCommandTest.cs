@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -28,13 +28,15 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<ConversionProfile> _profiles;
         private ConversionProfile _profileWithSmtpAccountEnabled;
         private ConversionProfile _profileWithSmtpAccountDisabled;
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
         {
             _interactionRequest = new UnitTestInteractionRequest();
             _translation = new SmtpTranslation();
-
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
             _smtpAccounts = new ObservableCollection<SmtpAccount>();
 
             _usedAccount = new SmtpAccount();
@@ -63,16 +65,16 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _profileWithSmtpAccountDisabled.EmailSmtpSettings.AccountId = _usedAccount.AccountId;
             _profiles.Add(_profileWithSmtpAccountDisabled);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.SmtpAccounts = _smtpAccounts;
             settings.ConversionProfiles = _profiles;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
-            currentSettingsProvider.Profiles.Returns(_profiles);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
+            _profilesProvider.Settings.Returns(_profiles);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _smtpAccountRemoveCommand = new SmtpAccountRemoveCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _smtpAccountRemoveCommand = new SmtpAccountRemoveCommand(_interactionRequest, _accountsProvider, _profilesProvider, translationUpdater);
         }
 
         [Test]
@@ -205,19 +207,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             Assert.AreEqual("", _profileWithSmtpAccountEnabled.EmailSmtpSettings.AccountId);
             Assert.IsFalse(_profileWithSmtpAccountDisabled.EmailSmtpSettings.Enabled);
             Assert.AreEqual("", _profileWithSmtpAccountDisabled.EmailSmtpSettings.AccountId);
-        }
-
-        [Test]
-        public void ChangeSmtpAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var newAccount = new SmtpAccount();
-            _smtpAccounts.Add(newAccount);
-            var wasRaised = false;
-            _smtpAccountRemoveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _smtpAccounts.Remove(newAccount);
-
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

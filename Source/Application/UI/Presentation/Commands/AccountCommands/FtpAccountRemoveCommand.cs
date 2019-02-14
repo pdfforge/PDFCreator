@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -18,25 +17,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class FtpAccountRemoveCommand : TranslatableCommandBase<FtpActionTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ObservableCollection<FtpAccount> _ftpAccounts;
-        private readonly ObservableCollection<ConversionProfile> _profiles;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ObservableCollection<ConversionProfile> Profiles => _profilesProvider.Settings;
         private FtpAccount _currentAccount;
         private List<ConversionProfile> _usedInProfilesList;
 
-        public FtpAccountRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public FtpAccountRemoveCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _ftpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.FtpAccounts;
-            _profiles = currentSettingsProvider?.Profiles;
-
-            _ftpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.FtpAccounts ?? new ObservableCollection<FtpAccount>();
-            _ftpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+            _accountsProvider = accountsProvider;
+            _profilesProvider = profilesProvider;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _ftpAccounts?.Count > 0;
+            return _accountsProvider?.Settings?.FtpAccounts.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -45,7 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            _usedInProfilesList = _profiles.Where(p => p.Ftp.AccountId.Equals(_currentAccount.AccountId)).ToList();
+            _usedInProfilesList = Profiles.Where(p => p.Ftp.AccountId.Equals(_currentAccount.AccountId)).ToList();
 
             var title = Translation.RemoveFtpAccount;
 
@@ -79,8 +79,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
-            if (_ftpAccounts.Contains(_currentAccount))
-                _ftpAccounts.Remove(_currentAccount);
+            if (_accountsProvider?.Settings?.FtpAccounts != null && _accountsProvider.Settings.FtpAccounts.Contains(_currentAccount))
+                _accountsProvider?.Settings?.FtpAccounts.Remove(_currentAccount);
 
             foreach (var profile in _usedInProfilesList)
             {

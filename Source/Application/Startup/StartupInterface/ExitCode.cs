@@ -7,6 +7,7 @@
         NoTranslations = 11,
         GhostScriptNotFound = 12,
         PrintersBroken = 13,
+        StartupConditionFailed = 14,
         NotValidOnTerminalServer = 21,
         LicenseInvalidAndNotReactivated = 22,
         LicenseInvalidAfterReactivation = 23,
@@ -27,5 +28,6 @@
         InvalidPdfToolsSecureLicense = 81,
         InvalidPdfToolsPdf2PdfLicense = 82,
         InvalidPdfToolsDocumentLicense = 83,
+        InvalidPdfAValidatorLicense = 84
     }
 }

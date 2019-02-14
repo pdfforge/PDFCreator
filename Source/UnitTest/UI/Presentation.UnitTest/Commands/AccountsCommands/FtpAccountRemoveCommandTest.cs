@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -28,6 +28,9 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<ConversionProfile> _profiles;
         private ConversionProfile _profileWithFtpAccountEnabled;
         private ConversionProfile _profileWithFtpAccountDisabled;
+        private ICurrentSettings<Accounts> _accountsProvider;
+
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
 
         [SetUp]
         public void SetUp()
@@ -36,6 +39,8 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _translation = new FtpActionTranslation();
 
             _ftpAccounts = new ObservableCollection<FtpAccount>();
+
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
 
             _usedAccount = new FtpAccount();
             _usedAccount.AccountId = nameof(_usedAccount);
@@ -63,16 +68,16 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _profileWithFtpAccountDisabled.Ftp.AccountId = _usedAccount.AccountId;
             _profiles.Add(_profileWithFtpAccountDisabled);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.FtpAccounts = _ftpAccounts;
             settings.ConversionProfiles = _profiles;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
-            currentSettingsProvider.Profiles.Returns(_profiles);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
+            _profilesProvider.Settings.Returns(_profiles);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _ftpAccountRemoveCommand = new FtpAccountRemoveCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _ftpAccountRemoveCommand = new FtpAccountRemoveCommand(_interactionRequest, _accountsProvider, _profilesProvider, translationUpdater);
         }
 
         [Test]
@@ -203,17 +208,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             Assert.AreEqual("", _profileWithFtpAccountEnabled.Ftp.AccountId);
             Assert.IsFalse(_profileWithFtpAccountDisabled.Ftp.Enabled);
             Assert.AreEqual("", _profileWithFtpAccountDisabled.Ftp.AccountId);
-        }
-
-        [Test]
-        public void ChangeAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var newAccount = new FtpAccount();
-            _ftpAccounts.Add(newAccount);
-            var wasRaised = false;
-            _ftpAccountRemoveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-            _ftpAccounts.Remove(newAccount);
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

@@ -1,11 +1,38 @@
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken
 {
     public class UserTokenTranslation : ITranslatable
     {
-        public string UserTokenTitle { get; private set; } = "Extract UserTokens";
-        public string DescriptionText { get; private set; } = "Define your own tokens directly in the original document with the following pattern: \"[[[UserTokenName: User token value]]]\". Afterwards the definied value can be called via the following token: \"<User:UserTokenName>\". The original pattern will be removed from the created document. You can define any number of user tokens. You can find more information in the user guide:";
-        public string UserGuideButtonText { get; private set; } = "More on user tokens";
+        public string UserTokenTitle { get; private set; } = "Extract User Tokens";
+        public string UserTokenIntroduction { get; private set; } = "User tokens allow you to define your own place holders for settings and set the values directly in your document.";
+        public string UserTokenInDocumentText { get; private set; } = "Place a pattern like this on a separate line in your document";
+        private string UserTokenDocumentExample { get; set; } = "NameDefinedByUser:Example Value";
+        public string UserTokenInSettingsText { get; private set; } = "Use the value in the Profile Settings (e.g. for title or e-mail recipient) via the following token pattern";
+        public string UserTokenSettingsExample { get; private set; } = "<User:NameDefinedByUser:Default Value>";
+        public string DefaultValueExplanation { get; private set; } = "The default value will be used in case the user token is not defined in your document.";
+        public string SelectSeparator { get; private set; } = "Select Separator:";
+        public string UserGuideButtonText { get; private set; } = "More On User Tokens";
+        public EnumTranslation<UserTokenSeperator>[] UserTokenSeperatorValues { get; set; } = EnumTranslation<UserTokenSeperator>.CreateDefaultEnumTranslation();
+
+        public string GetUserTokenDocumentExample(UserTokenSeperator userTokenSeperator)
+        {
+            switch (userTokenSeperator)
+            {
+                case UserTokenSeperator.AngleBrackets:
+                    return "<<<" + UserTokenDocumentExample + ">>>";
+
+                case UserTokenSeperator.CurlyBrackets:
+                    return "{{{" + UserTokenDocumentExample + "}}}";
+
+                case UserTokenSeperator.RoundBrackets:
+                    return "(((" + UserTokenDocumentExample + ")))";
+
+                case UserTokenSeperator.SquareBrackets:
+                default:
+                    return "[[[" + UserTokenDocumentExample + "]]]";
+            }
+        }
     }
 }

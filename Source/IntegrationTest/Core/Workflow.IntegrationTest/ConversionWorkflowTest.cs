@@ -38,7 +38,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th = container.GetInstance<TestHelper>();
             _th.InitTempFolder("ConversionWorklowTest");
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Pdf);
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
         }
 
         [TearDown]
@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             _th.JobInfo.Metadata.PrintJobAuthor = "Author from Job";
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.Enabled = true;
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;
@@ -93,7 +93,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         [Test]
         public void CreateConversionWorkflowTest_NoMapping_TwoProfiles_NoneIsDefault_NoneIsLastUsedProfile_ReturnWorkflowWithFirstProfile()
         {
-            _settings.ApplicationSettings.LastUsedProfileGuid = "NoneOfTheProfileGuids";
+            _settings.CreatorAppSettings.LastUsedProfileGuid = "NoneOfTheProfileGuids";
 
             _settings.ConversionProfiles.Add(_autosaveProfile);
             _settings.ConversionProfiles.Add(_interactiveProfile);
@@ -104,7 +104,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         [Test]
         public void CreateConversionWorkflowTest_NoMapping_TwoProfiles_OneIsDefault_NoneIsLastUsedProfile_ReturnWorkflowWithDefaultProfile()
         {
-            _settings.ApplicationSettings.LastUsedProfileGuid = "NoneOfTheProfileGuids";
+            _settings.CreatorAppSettings.LastUsedProfileGuid = "NoneOfTheProfileGuids";
 
             _settings.ConversionProfiles.Add(_autosaveProfile); //For this test the default profile must not be the first in list!
             _interactiveProfile.Guid = "DefaultGuid";
@@ -167,7 +167,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.JobInfo.Metadata.PrintJobName = "Title from Job";
             _th.JobInfo.Metadata.PrintJobAuthor = "Author from Job";
 
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ConversionProfiles.Add(_th.Job.Profile);
             _settings.ConversionProfiles[0].AutoSave.Enabled = true;
             _settings.ConversionProfiles[0].AutoSave.EnsureUniqueFilenames = false;

@@ -1,7 +1,6 @@
-﻿using NSubstitute;
-using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
+﻿using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 
 namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
 {
@@ -16,7 +15,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void GetProfileByGuid_WithExistingProfile_ReturnsProfile()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             var p1 = new ConversionProfile { Guid = "g1", Name = "p1" };
             var p2 = new ConversionProfile { Guid = "g2", Name = "p2" };
 
@@ -29,7 +28,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void GetProfileByGuid_WithNonexistantProfile_ReturnsProfile()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             var p1 = new ConversionProfile { Guid = "g1", Name = "p1" };
             var p2 = new ConversionProfile { Guid = "g2", Name = "p2" };
 
@@ -42,7 +41,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void GetProfileByName_WithExistingProfile_ReturnsProfile()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             var p1 = new ConversionProfile { Guid = "g1", Name = "p1" };
             var p2 = new ConversionProfile { Guid = "g2", Name = "p2" };
 
@@ -55,7 +54,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void GetProfileByName_WithNonexistantProfile_ReturnsProfile()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             var p1 = new ConversionProfile { Guid = "g1", Name = "p1" };
             var p2 = new ConversionProfile { Guid = "g2", Name = "p2" };
 
@@ -68,7 +67,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void Settings_Copy_EqualsOriginal()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             settings.ConversionProfiles.Add(new ConversionProfile { Guid = "p1" });
             settings.ConversionProfiles.Add(new ConversionProfile { Guid = "p2" });
 
@@ -82,11 +81,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         [Test]
         public void Settings_Save_ExpectsNothing()
         {
-            var settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            var settings = new PdfCreatorSettings();
             settings.ConversionProfiles.Add(new ConversionProfile { Guid = "p1" });
             settings.ConversionProfiles.Add(new ConversionProfile { Guid = "p2" });
-
-            settings.SaveData("");
+            var storage = new DataStorageFactory().BuildIniStorage("");
+            settings.SaveData(storage);
         }
     }
 }

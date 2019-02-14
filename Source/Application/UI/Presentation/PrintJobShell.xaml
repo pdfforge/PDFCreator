@@ -13,7 +13,7 @@
                    xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
                    xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
                    mc:Ignorable="d"
-                   Title="{Binding ApplicationName.ApplicationName}"
+                   Title="{Binding ApplicationNameAndVersion}"
                    Height="700" Width="500"
                    BorderThickness="1"
                    BorderBrush="{DynamicResource AccentColorBrush}"
@@ -23,6 +23,10 @@
                    Loaded="PrintJobShell_OnLoaded"
                    d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobShellViewModel, IsDesignTimeCreatable=True}"
                    help:HelpProvider.HelpTopic="ConvertDocuments">
+
+    <metro:MetroWindow.WindowButtonCommands>
+        <metro:WindowButtonCommands Style="{DynamicResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
+    </metro:MetroWindow.WindowButtonCommands>
 
     <metro:MetroWindow.Resources>
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />

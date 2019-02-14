@@ -3,8 +3,8 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,11 +22,13 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
             _commandLocator = Substitute.For<ICommandLocator>();
 
             _settingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            _settings = new PdfCreatorSettings(null);
-            _settingsProvider.Settings.Returns(_settings);
+            _settings = new PdfCreatorSettings();
+
             _applicationSettings = new ApplicationSettings();
             _settings.ApplicationSettings = _applicationSettings;
             _titleReplacements = new ObservableCollection<TitleReplacement>();
+            _titleReplacementsSettingsProvider = Substitute.For<ICurrentSettings<ObservableCollection<TitleReplacement>>>();
+            _titleReplacementsSettingsProvider.Settings.Returns(_titleReplacements);
             _applicationSettings.TitleReplacement = _titleReplacements;
         }
 
@@ -42,10 +44,11 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         private ICurrentSettingsProvider _settingsProvider;
         private PdfCreatorSettings _settings;
         private ApplicationSettings _applicationSettings;
+        private ICurrentSettings<ObservableCollection<TitleReplacement>> _titleReplacementsSettingsProvider;
 
         private TitleReplacementsViewModel BuildViewModel()
         {
-            var viewModel = new TitleReplacementsViewModel(_translationUpdater, _settingsProvider, _commandLocator, null);
+            var viewModel = new TitleReplacementsViewModel(_translationUpdater, _titleReplacementsSettingsProvider, _settingsProvider, _commandLocator, null);
             return viewModel;
         }
 
@@ -54,7 +57,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         [TestCase("Ei", "xcyxc", ReplacementType.Replace, "KartEiofEifelSEialaEit", "KartoffelSalat")]
         public void SetupFilter_SetSearchText_ProperlyFiltered(string search, string replace, ReplacementType type, string sample, string result)
         {
-            _settingsProvider.Settings.ApplicationSettings.TitleReplacement.Add(new TitleReplacement(type, search, replace));
+            _titleReplacementsSettingsProvider.Settings.Add(new TitleReplacement(type, search, replace));
             var viewModel = BuildViewModel();
             viewModel.SampleText = sample;
             Assert.AreEqual(result, viewModel.ReplacedSampleText);

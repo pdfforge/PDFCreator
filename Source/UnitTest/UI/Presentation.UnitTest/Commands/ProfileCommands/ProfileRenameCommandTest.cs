@@ -3,10 +3,12 @@ using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
+using System.Collections.ObjectModel;
 
 namespace Presentation.UnitTest.Commands.ProfileCommands
 {
@@ -17,6 +19,7 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
         private UnitTestInteractionRequest _interactionRequest;
         private ICurrentSettingsProvider _currentSettingsProvider;
         private ProfileMangementTranslation _translation;
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private string _currentName;
 
         [SetUp]
@@ -31,7 +34,9 @@ namespace Presentation.UnitTest.Commands.ProfileCommands
 
             _translation = new ProfileMangementTranslation();
 
-            _profileRenameCommand = new ProfileRenameCommand(_interactionRequest, _currentSettingsProvider, new DesignTimeTranslationUpdater(), new InvokeImmediatelyDispatcher());
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
+
+            _profileRenameCommand = new ProfileRenameCommand(_interactionRequest, _profilesProvider, _currentSettingsProvider, new DesignTimeTranslationUpdater(), new InvokeImmediatelyDispatcher());
         }
 
         [Test]

@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.UI.COM
         public void SetUp()
         {
             // TODO add own initialization?
-            _printerDevices = new Printers(new PrinterHelper());
+            _printerDevices = new Printers(new PrinterHelper(new SystemPrinterProvider()));
         }
 
         [TearDown]

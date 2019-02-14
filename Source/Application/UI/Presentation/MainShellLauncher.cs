@@ -1,7 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Controller.Routing;
-using pdfforge.PDFCreator.UI.Presentation.Routing;
-using pdfforge.PDFCreator.UI.Presentation.UserControls;
 using pdfforge.PDFCreator.Utilities.Threading;
 
 namespace pdfforge.PDFCreator.UI.Presentation
@@ -37,10 +35,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
                 if (_routine == null)
                 {
                     _routine = new StartupRoutine();
-                    _routine.AddAction(new StartupNavigationAction(RegionNames.MainRegion, MainRegionViewNames.HomeView));
                 }
 
-                _shellManager.ShowMainShell(_routine);
+                _shellManager.ShowMainShell();
             }
             finally
             {

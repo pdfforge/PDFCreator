@@ -117,7 +117,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             HasBasicAuthentication = _httpAccount.IsBasicAuthentication;
             RaisePropertyChanged(nameof(HasBasicAuthentication));
             RaisePropertyChanged(nameof(Timeout));
-            SetPasswordAction(_httpAccount.Password);
             SaveCommand.RaiseCanExecuteChanged();
         }
     }

@@ -1,8 +1,8 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements
@@ -10,9 +10,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements
     public class TitleReplacementAddCommand : ICommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _settingsProvider;
+        private readonly ICurrentSettings<ObservableCollection<TitleReplacement>> _settingsProvider;
 
-        public TitleReplacementAddCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider settingsProvider)
+        public TitleReplacementAddCommand(IInteractionRequest interactionRequest, ICurrentSettings<ObservableCollection<TitleReplacement>> settingsProvider)
         {
             _interactionRequest = interactionRequest;
             _settingsProvider = settingsProvider;
@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements
         {
             if (titleReplacementEditInteraction.Success)
             {
-                var applicationSettingsTitleReplacement = _settingsProvider.Settings.ApplicationSettings.TitleReplacement;
+                var applicationSettingsTitleReplacement = _settingsProvider.Settings;
                 applicationSettingsTitleReplacement.Add(titleReplacementEditInteraction.Replacement);
             }
         }

@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 using Translatable;
 using ThreadPool = pdfforge.PDFCreator.Core.ComImplementation.ThreadPool;
 
@@ -29,6 +28,7 @@ namespace ComImplementation.UnitTest
         private IConversionWorkflow _conversionWorkflow;
         private WorkflowResult _workflowResult;
         private IJobInfoQueue _jobInfoQueue;
+        private IPathUtil _pathUtil;
 
         [SetUp]
         public void Setup()
@@ -63,7 +63,7 @@ namespace ComImplementation.UnitTest
 
         private PrintJobAdapter BuildPrintJobAdapter()
         {
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ConversionProfiles = _profiles;
             var settingsProvider = Substitute.For<ISettingsProvider>();
             settingsProvider.Settings.Returns(settings);
@@ -75,17 +75,20 @@ namespace ComImplementation.UnitTest
 
             var jobInfo = new JobInfo
             {
-                Metadata = new Metadata(Substitute.For<IVersionHelper>())
+                Metadata = new Metadata()
                 {
                     Title = "Test"
                 }
             };
             jobInfo.SourceFiles.Add(new SourceFileInfo());
-            _job = new Job(jobInfo, _profiles[0], new JobTranslations(), new Accounts());
+            _job = new Job(jobInfo, _profiles[0], new Accounts());
 
             _directory = Substitute.For<IDirectory>();
 
-            var printJobAdapter = new PrintJobAdapter(settingsProvider, comWorkflowFactory, new ThreadPool(), _jobInfoQueue, new ErrorCodeInterpreter(new TranslationFactory()), new PathWrapSafe(), _directory);
+            _pathUtil = Substitute.For<IPathUtil>();
+            _pathUtil.IsValidRootedPath(Arg.Any<string>()).Returns(true);
+
+            var printJobAdapter = new PrintJobAdapter(settingsProvider, comWorkflowFactory, new ThreadPool(), _jobInfoQueue, new ErrorCodeInterpreter(new TranslationFactory()), _directory, _pathUtil);
             printJobAdapter.Job = _job;
 
             return printJobAdapter;

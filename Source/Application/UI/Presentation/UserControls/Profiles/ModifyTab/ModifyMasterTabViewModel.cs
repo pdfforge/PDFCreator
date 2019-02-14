@@ -1,14 +1,16 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
-using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab
 {
-    public class ModifyMasterTabViewModel : TranslatableViewModelBase<ProfileModifyTranslation>, ITabViewModel
+    public class ModifyMasterTabViewModel : ProfileNotSupportedFeaturesUserControlViewModel<ProfileModifyTranslation>, ITabViewModel
     {
         private string _title;
 
-        public ModifyMasterTabViewModel(ITranslationUpdater translationUpdater) : base(translationUpdater)
+        public ModifyMasterTabViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider selectedProfileProvider, IDispatcher dispatcher)
+            : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
         }
 
@@ -27,5 +29,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab
         public IconList Icon { get; set; } = IconList.ModifySettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public override bool HasNotSupportedFeatures => CurrentProfile.HasNotSupportedModify();
     }
 }

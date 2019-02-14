@@ -1,9 +1,10 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -13,8 +14,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
     {
         private readonly IDispatcher _dispatcher;
 
-        public ProfileRenameCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater, IDispatcher dispatcher)
-            : base(interactionRequest, currentSettingsProvider, translationUpdater)
+        public ProfileRenameCommand(
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            ICurrentSettingsProvider currentSettingsProvider,
+            ITranslationUpdater translationUpdater,
+            IDispatcher dispatcher)
+            : base(interactionRequest, currentSettingsProvider, profilesProvider, translationUpdater)
         {
             _dispatcher = dispatcher;
             CurrentSettingsProvider.SelectedProfileChanged += CurrentSettingsProviderOnSelectedProfileChanged;

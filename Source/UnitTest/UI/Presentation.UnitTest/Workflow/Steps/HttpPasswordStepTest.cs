@@ -23,7 +23,7 @@ namespace Presentation.UnitTest.Workflow.Steps
             var accounts = new Accounts();
             accounts.HttpAccounts.Add(_account);
 
-            _job = new Job(null, profile, new JobTranslations(), accounts);
+            _job = new Job(null, profile, accounts);
         }
 
         [Test]

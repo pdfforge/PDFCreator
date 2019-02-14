@@ -7,6 +7,8 @@ namespace pdfforge.PDFCreator.Conversion.ConverterInterface
     {
         void DoConversion(Job job);
 
+        string ConverterOutput { get; }
+
         event EventHandler<ConversionProgressChangedEventArgs> OnReportProgress;
     }
 

@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using System.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
@@ -25,8 +26,8 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         public void Setup()
         {
             var jobInfo = new JobInfo();
-            _job = new Job(jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts());
-            _job.OutputFilenameTemplate = @"X:\temp\test.pdf";
+            _job = new Job(jobInfo, new ConversionProfile(), new Accounts());
+            _job.OutputFileTemplate = @"X:\temp\test.pdf";
 
             _singleTempOutputfile = new[] { @"output1.pdf" };
 
@@ -44,12 +45,12 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         [Test]
         public void MoveOutPutFiles_InvalidRootedPath_ThrowsAbortWorkflowException()
         {
-            _job.OutputFilenameTemplate = @"test.pdf";
-            Assert.Throws<AbortWorkflowException>(() => _autosaveOutputFileMover.MoveOutputFiles(_job));
+            _job.OutputFileTemplate = @"test.pdf";
+            Assert.ThrowsAsync<AbortWorkflowException>(() => _autosaveOutputFileMover.MoveOutputFiles(_job));
         }
 
         [Test]
-        public void SingleFile_WhenOutputFileExists_UsesEnsureUniqueFilename()
+        public async Task SingleFile_WhenOutputFileExists_UsesEnsureUniqueFilename()
         {
             var outputFile = _singleTempOutputfile[0];
 
@@ -60,21 +61,21 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _job.TempOutputFiles = _singleTempOutputfile;
 
-            _autosaveOutputFileMover.MoveOutputFiles(_job);
+            await _autosaveOutputFileMover.MoveOutputFiles(_job);
 
             _job.TempOutputFiles = _singleTempOutputfile;
 
-            _autosaveOutputFileMover.MoveOutputFiles(_job);
+            await _autosaveOutputFileMover.MoveOutputFiles(_job);
 
             Assert.AreNotEqual(outputFile, _job.OutputFiles[0], "EnsureUniqueFilename was not applied");
         }
 
         [Test]
-        public void SingleFile_Calls_DirectoryHelper()
+        public async Task SingleFile_Calls_DirectoryHelper()
         {
-            _autosaveOutputFileMover.MoveOutputFiles(_job);
+            await _autosaveOutputFileMover.MoveOutputFiles(_job);
 
-            _directoryHelper.Received(1).CreateDirectory(Path.GetDirectoryName(_job.OutputFilenameTemplate));
+            _directoryHelper.Received(1).CreateDirectory(Path.GetDirectoryName(_job.OutputFileTemplate));
         }
     }
 }

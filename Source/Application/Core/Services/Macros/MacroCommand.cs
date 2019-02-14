@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -130,19 +129,13 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
 
                 if (waitableCommand != null)
                 {
-                    var resetEvent = new ManualResetEventSlim();
+                    var taskCompletionSource = new TaskCompletionSource<ResponseStatus>();
 
-                    waitableCommand.IsDone += (sender, args) =>
-                    {
-                        status = args.ResponseStatus;
-                        resetEvent.Set();
-                    };
+                    waitableCommand.IsDone += (sender, args) => taskCompletionSource.SetResult(args.ResponseStatus);
+
                     waitableCommand.Execute(parameter);
 
-                    await Task.Run(() =>
-                    {
-                        resetEvent.Wait();
-                    });
+                    status = await taskCompletionSource.Task;
                 }
                 else
                 {

@@ -41,9 +41,10 @@
             <HeaderedContentControl Grid.Column="1" Grid.Row="1"
                                     Template="{DynamicResource BorderlessHeaderPanelTemplate}"
                                     Header="{Binding Translation.ManageAccounts}">
-                <StackPanel>
+                <DockPanel>
                     <TextBlock Margin="0 0 0 10" Text="{Binding Translation.ManageAccountsDescription}"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap"
+                               DockPanel.Dock="Top" />
                     <ListBox
                         ItemsSource="{Binding AllAccounts}"
                         HorizontalAlignment="Stretch"
@@ -194,7 +195,7 @@
                             </DataTemplate>
                         </ListBox.Resources>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </HeaderedContentControl>
 
             <StackPanel Grid.Column="1" Grid.Row="2"

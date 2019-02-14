@@ -1,21 +1,21 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Startup.AppStarts;
 using pdfforge.PDFCreator.Core.Workflow;
+using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UnitTest.Startup.AppStarts
 {
-    internal class NewDirectConversionJobStartTestClass : NewDirectConversionJobStart
+    internal class DirectConversionStartTestClass : DirectConversionStart
     {
-        public NewDirectConversionJobStartTestClass(IDirectConversion directConversion)
-            : this(Substitute.For<IJobInfoQueue>(), Substitute.For<IMaybePipedApplicationStarter>(), Substitute.For<IJobInfoManager>(), directConversion)
+        public DirectConversionStartTestClass(IDirectConversionInfFileHelper directConversionInfFileHelper)
+            : this(Substitute.For<IJobInfoQueue>(), Substitute.For<IMaybePipedApplicationStarter>(), Substitute.For<IJobInfoManager>(), directConversionInfFileHelper)
         { }
 
-        public NewDirectConversionJobStartTestClass(IJobInfoQueue jobInfoQueue, IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager, IDirectConversion directConversion)
-            : base(jobInfoQueue, maybePipedApplicationStarter, jobInfoManager, directConversion)
+        public DirectConversionStartTestClass(IJobInfoQueue jobInfoQueue, IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager, IDirectConversionInfFileHelper directConversionInfFileHelper)
+            : base(jobInfoQueue, maybePipedApplicationStarter, jobInfoManager, directConversionInfFileHelper)
         { }
 
         public string PublicComposePipeMessage()
@@ -32,44 +32,85 @@ namespace pdfforge.PDFCreator.UnitTest.Startup.AppStarts
     [TestFixture]
     public class NewDirectConversionJobStartTest
     {
-        private NewDirectConversionJobStartTestClass _newDirectConversionJobStart;
-        private IDirectConversion _directConversion;
+        private DirectConversionStartTestClass _directConversionStart;
+        private IDirectConversionInfFileHelper _directConversionInfFileHelper;
 
         [SetUp]
         public void SetUp()
         {
-            _directConversion = Substitute.For<IDirectConversion>();
-            _newDirectConversionJobStart = new NewDirectConversionJobStartTestClass(_directConversion);
+            _directConversionInfFileHelper = Substitute.For<IDirectConversionInfFileHelper>();
+            _directConversionStart = new DirectConversionStartTestClass(_directConversionInfFileHelper);
         }
 
         [Test]
-        public void NewDirectConversionJobStart_CallTransformToInfFile_ReutrnsSameNewInfFile()
+        public void PublicComposePipeMessage_SingleDirectConversionFile_NoMerge_ReturnsMessageWithNewInfFile()
         {
-            _directConversion.TransformToInfFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("someNewInfFile");
+            _directConversionStart.AppStartParameters.Merge = false;
+            _directConversionStart.DirectConversionFiles.Add("somefile.pdf");
+            _directConversionInfFileHelper.TransformToInfFile("somefile.pdf", Arg.Any<AppStartParameters>()).Returns("someNewInfFile");
 
-            var newInfFile = _newDirectConversionJobStart.PublicComposePipeMessage();
+            var pipeMessage = _directConversionStart.PublicComposePipeMessage();
 
-            Assert.AreEqual("NewJob|someNewInfFile", newInfFile);
+            Assert.AreEqual("NewJob|someNewInfFile", pipeMessage);
         }
 
         [Test]
-        public void NewDirecConversionJobStart_TransformToInfFile_StartApplicationReturnsTrue()
+        public void PublicComposePipeMessage_SingleDirectConversionFile_MergeEnabled_ReturnsMessageWithNewInfFile()
         {
-            _directConversion.TransformToInfFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("someNewInfFile");
+            _directConversionStart.AppStartParameters.Merge = true;
+            _directConversionStart.DirectConversionFiles.Add("somefile.pdf");
+            _directConversionInfFileHelper.TransformToInfFileWithMerge(_directConversionStart.DirectConversionFiles, Arg.Any<AppStartParameters>()).Returns("someNewInfFile");
 
-            _newDirectConversionJobStart.PublicComposePipeMessage();
-            var resultOfStartApplication = _newDirectConversionJobStart.PublicStartApplication();
+            var pipeMessage = _directConversionStart.PublicComposePipeMessage();
+
+            Assert.AreEqual("NewJob|someNewInfFile", pipeMessage);
+        }
+
+        [Test]
+        public void PublicComposePipeMessage_MultipleDirectConversionFiles_MergeEnabled_ReturnsMessageWithNewInfFile()
+        {
+            _directConversionStart.AppStartParameters.Merge = false;
+            _directConversionStart.DirectConversionFiles.Add("somefile1.pdf");
+            _directConversionInfFileHelper.TransformToInfFile("somefile1.pdf", Arg.Any<AppStartParameters>()).Returns("someNewInfFile1.inf");
+            _directConversionStart.DirectConversionFiles.Add("somefile2.pdf");
+            _directConversionInfFileHelper.TransformToInfFile("somefile2.pdf", Arg.Any<AppStartParameters>()).Returns("someNewInfFile2.inf");
+
+            var pipeMessage = _directConversionStart.PublicComposePipeMessage();
+
+            Assert.AreEqual("NewJob|someNewInfFile1.inf|someNewInfFile2.inf", pipeMessage);
+        }
+
+        [Test]
+        public void PublicComposePipeMessage_MergeIsEnabledCallTransformToInfFile_ReturnsMessageWithSingleNewInfFiles()
+        {
+            _directConversionStart.AppStartParameters.Merge = true;
+            _directConversionStart.DirectConversionFiles.Add("somefile.pdf");
+            _directConversionStart.DirectConversionFiles.Add("somefile.pdf");
+            _directConversionInfFileHelper.TransformToInfFileWithMerge(Arg.Any<List<string>>(), Arg.Any<AppStartParameters>()).Returns("someNewInfFile");
+
+            var pipeMessage = _directConversionStart.PublicComposePipeMessage();
+
+            Assert.AreEqual("NewJob|someNewInfFile", pipeMessage);
+        }
+
+        [Test]
+        public void NewDirectConversionJobStart_TransformToInfFile_StartApplicationReturnsTrue()
+        {
+            _directConversionStart.DirectConversionFiles.Add("someFile.ps");
+            _directConversionInfFileHelper.TransformToInfFile("someFile.ps", Arg.Any<AppStartParameters>()).Returns("someNewInfFile");
+
+            var resultOfStartApplication = _directConversionStart.PublicStartApplication();
 
             Assert.IsTrue(resultOfStartApplication);
         }
 
         [Test]
-        public void NewDirecConversionJobStart_TransformToInfFileReturnsEmptyString_StartApplicationReturnsFalse()
+        public void NewDirectConversionJobStart_TransformToInfFileReturnsEmptyString_StartApplicationReturnsFalse()
         {
-            _directConversion.TransformToInfFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns("");
+            _directConversionStart.DirectConversionFiles.Add("someFile.ps");
+            _directConversionInfFileHelper.TransformToInfFile("someFile.ps", Arg.Any<AppStartParameters>()).Returns("");
 
-            _newDirectConversionJobStart.PublicComposePipeMessage();
-            var resultOfStartApplication = _newDirectConversionJobStart.PublicStartApplication();
+            var resultOfStartApplication = _directConversionStart.PublicStartApplication();
 
             Assert.IsFalse(resultOfStartApplication);
         }

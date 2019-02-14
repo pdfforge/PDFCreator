@@ -72,21 +72,9 @@ namespace Presentation.UnitTest.ViewModelBases
         }
 
         [Test]
-        public void SetNoPasswordChecked_ValueIsTrue_SetPasswordActionCalledWithEmptyString()
-        {
-            var passwordActionArg = "not empty";
-            _accountViewModel.SetPasswordAction = s => passwordActionArg = s;
-
-            _accountViewModel.AskForPasswordLater = true;
-
-            Assert.AreEqual("", passwordActionArg, "SetPasswordAction Argument");
-        }
-
-        [Test]
         public void SetNoPasswordChecked_ValueIsFalse_SetPasswordActionWasNotCalled()
         {
             var wasCalled = false;
-            _accountViewModel.SetPasswordAction = s => wasCalled = true;
 
             _accountViewModel.AskForPasswordLater = false;
 
@@ -116,12 +104,24 @@ namespace Presentation.UnitTest.ViewModelBases
         }
 
         [Test]
-        public void NoPasswordChecked_ValueIsSetInProperty()
+        public void AskForPasswordLater_AllowConversionInterruptsEnabled_ValueIsSetInProperty()
         {
-            _accountViewModel.SetPasswordAction = s => { };
+            _accountViewModel.AllowConversionInterrupts = true;
 
             _accountViewModel.AskForPasswordLater = true;
             Assert.IsTrue(_accountViewModel.AskForPasswordLater);
+
+            _accountViewModel.AskForPasswordLater = false;
+            Assert.IsFalse(_accountViewModel.AskForPasswordLater);
+        }
+
+        [Test]
+        public void AskForPasswordLater_AllowConversionInterruptsEnabled_PropertyIsAlwaysFalse()
+        {
+            _accountViewModel.AllowConversionInterrupts = false;
+
+            _accountViewModel.AskForPasswordLater = true;
+            Assert.IsFalse(_accountViewModel.AskForPasswordLater);
 
             _accountViewModel.AskForPasswordLater = false;
             Assert.IsFalse(_accountViewModel.AskForPasswordLater);

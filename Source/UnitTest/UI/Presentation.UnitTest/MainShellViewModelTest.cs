@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
@@ -8,6 +9,8 @@ using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.Routing;
+using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
 using Prism.Events;
 using System.Windows.Input;
@@ -21,10 +24,13 @@ namespace Presentation.UnitTest
         private IMacroCommand _navigateMainTabCommand;
         private IEventAggregator _eventAggregator;
         private IUpdateAssistant _updateAssistant;
+        private ICurrentSettings<UsageStatistics> _usageStatisticsProvider;
+        private IVersionHelper _versionHelper;
 
         [SetUp]
         public void Setup()
         {
+            _versionHelper = Substitute.For<IVersionHelper>();
             _navigateMainTabCommand = Substitute.For<IMacroCommand>();
 
             var macroBuilder = Substitute.For<IMacroCommandBuilder>();
@@ -37,8 +43,11 @@ namespace Presentation.UnitTest
             _eventAggregator = new EventAggregator();
             _updateAssistant = Substitute.For<IUpdateAssistant>();
 
+            _usageStatisticsProvider = Substitute.For<ICurrentSettings<UsageStatistics>>();
+
             ViewModel = new MainShellViewModel(new DragAndDropEventHandler(Substitute.For<IFileConversionAssistant>()), new TranslationUpdater(new TranslationFactory(),
-                new ThreadManager()), new ApplicationNameProvider("Free"), new InteractionRequest(), new EventAggregator(), commandLocator, null, null, null, null, _updateAssistant, _eventAggregator);
+                new ThreadManager()), new ApplicationNameProvider("Free"), new InteractionRequest(), new EventAggregator(), commandLocator, null, null, null,
+                _updateAssistant, _eventAggregator, Substitute.For<IStartupActionHandler>(), _usageStatisticsProvider, _versionHelper);
         }
 
         private MainShellViewModel ViewModel { get; set; }

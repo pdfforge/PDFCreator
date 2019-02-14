@@ -1,30 +1,37 @@
 ﻿using System.Windows.Input;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Printing.Printer;
+using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings
 {
     public class TestPageSettingsViewModel : ADebugSettingsItemControlModel
     {
-        private readonly IInteractionInvoker _invoker;
         private readonly IPrinterHelper _printerHelper;
         private readonly ITestPageHelper _testPageHelper;
+        private readonly ICurrentSettings<CreatorAppSettings> _settingsProvider;
+        private readonly ICurrentSettings<ApplicationSettings> _applicationSettingsProvider;
 
-        public TestPageSettingsViewModel(ITestPageHelper testPageHelper, IPrinterHelper printerHelper, ISettingsManager settingsManager, ITranslationUpdater translationUpdater, IInteractionInvoker invoker, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings) :
-            base(settingsManager, translationUpdater, settingsProvider, gpoSettings)
+        public TestPageSettingsViewModel(
+            ITestPageHelper testPageHelper,
+            ICurrentSettings<CreatorAppSettings> settingsProvider,
+            ICurrentSettings<ApplicationSettings> applicationSettingsProvider,
+            IPrinterHelper printerHelper,
+            ITranslationUpdater translationUpdater,
+            IGpoSettings gpoSettings) :
+            base(translationUpdater, gpoSettings)
         {
             PrintPdfCreatorTestpageCommand = new DelegateCommand(PdfCreatorTestpageExecute);
             PrintWindowsTestpageCommand = new DelegateCommand(WindowsTestpageExecute);
             _printerHelper = printerHelper;
             _testPageHelper = testPageHelper;
-            _invoker = invoker;
+            _settingsProvider = settingsProvider;
+            _applicationSettingsProvider = applicationSettingsProvider;
         }
 
         public ICommand PrintPdfCreatorTestpageCommand { get; }
@@ -32,12 +39,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
 
         private void PdfCreatorTestpageExecute(object o)
         {
+            LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
             _testPageHelper.CreateTestPage();
         }
 
         private void WindowsTestpageExecute(object o)
         {
-            _printerHelper.PrintWindowsTestPage(SettingsProvider.Settings.ApplicationSettings.PrimaryPrinter);
+            LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
+            _printerHelper.PrintWindowsTestPage(_settingsProvider.Settings.PrimaryPrinter);
         }
     }
 }

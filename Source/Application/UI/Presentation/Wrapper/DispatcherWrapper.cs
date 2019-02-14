@@ -20,6 +20,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Wrapper
             _dispatcher.BeginInvoke(action);
         }
 
+        public void BeginInvoke<T>(Action<T> action, T payload)
+        {
+            _dispatcher.BeginInvoke(action, payload);
+        }
+
         public void BeginInvoke(Action<JobInfo> addMethod, JobInfo jobInfo)
         {
             _dispatcher.BeginInvoke(addMethod, jobInfo);

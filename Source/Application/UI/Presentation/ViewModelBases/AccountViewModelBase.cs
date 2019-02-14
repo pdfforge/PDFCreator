@@ -1,7 +1,6 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using System;
 using System.Windows.Input;
 using Translatable;
 
@@ -20,14 +19,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
 
         private bool _askForPasswordLater;
 
+        public bool AllowConversionInterrupts { get; set; } = true;
+
         public bool AskForPasswordLater
         {
             get { return _askForPasswordLater; }
             set
             {
-                _askForPasswordLater = value;
-                if (value)
-                    SetPasswordAction("");
+                _askForPasswordLater = value && AllowConversionInterrupts;
                 SaveCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(AskForPasswordLater));
             }
@@ -48,7 +47,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
             Interaction.Success = false;
             FinishInteraction();
         }
-
-        public Action<string> SetPasswordAction { get; set; }
     }
 }

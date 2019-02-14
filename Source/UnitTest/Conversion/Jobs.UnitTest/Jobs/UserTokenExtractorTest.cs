@@ -2,6 +2,7 @@
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PsParser;
 using PsParser;
 using System.Collections.Generic;
@@ -14,22 +15,55 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
         private const string PsFile = "file.ps";
         private UserTokenExtractor _userTokenExtractor;
         private IPsParser _psParser;
+        private IPsParserFactory _psParserFactory;
 
         [SetUp]
         public void SetUp()
         {
             _psParser = Substitute.For<IPsParser>();
             _psParser.UserTokens.Returns(new List<UserToken>());
-            var psParserFactory = Substitute.For<IPsParserFactory>();
-            psParserFactory.BuildPsParser(PsFile).Returns(_psParser);
+            _psParserFactory = Substitute.For<IPsParserFactory>();
+            _psParserFactory.BuildPsParser(PsFile, Arg.Any<string>(), Arg.Any<string>()).Returns(_psParser);
 
-            _userTokenExtractor = new UserTokenExtractor(psParserFactory);
+            _userTokenExtractor = new UserTokenExtractor(_psParserFactory);
+        }
+
+        [Test]
+        public void ExtractUserTokenFromPsFileTest_SeperatorSquareBrakets_CallsPsParserFactoryWithSquareBrackets()
+        {
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.SquareBrackets);
+
+            _psParserFactory.Received(1).BuildPsParser(PsFile, "[[[", "]]]");
+        }
+
+        [Test]
+        public void ExtractUserTokenFromPsFileTest_SeperatorAngleBrakets_CallsPsParserFactoryWithAngleBrackets()
+        {
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.AngleBrackets);
+
+            _psParserFactory.Received(1).BuildPsParser(PsFile, "<<<", ">>>");
+        }
+
+        [Test]
+        public void ExtractUserTokenFromPsFileTest_SeperatorCurlyBrakets_CallsPsParserFactoryWithCurlyBrackets()
+        {
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.CurlyBrackets);
+
+            _psParserFactory.Received(1).BuildPsParser(PsFile, "{{{", "}}}");
+        }
+
+        [Test]
+        public void ExtractUserTokenFromPsFileTest_SeperatorRoundBrakets_CallsPsParserFactoryWithRoundBrackets()
+        {
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.RoundBrackets);
+
+            _psParserFactory.Received(1).BuildPsParser(PsFile, "(((", ")))");
         }
 
         [Test]
         public void ExtractUserTokenFromPsFileTest_CorrectUseOfPsParser()
         {
-            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile);
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.SquareBrackets);
 
             Received.InOrder(() =>
             {
@@ -44,7 +78,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
         {
             _psParser.UserTokens.ReturnsNull();
 
-            var userToken = _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile);
+            var userToken = _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.SquareBrackets);
 
             Assert.IsEmpty(userToken.KeyValueDict);
         }
@@ -59,7 +93,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Jobs
             userTokensList.Add(ut2);
             _psParser.UserTokens.Returns(userTokensList);
 
-            var userToken = _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile);
+            var userToken = _userTokenExtractor.ExtractUserTokenFromPsFile(PsFile, UserTokenSeperator.SquareBrackets);
 
             Assert.AreEqual(2, userToken.KeyValueDict.Count, "Wrong number of key value pairs in user token");
             Assert.AreEqual(ut1.Value, userToken.KeyValueDict[ut1.Key], "Wrong value for user token key");

@@ -14,6 +14,7 @@ using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
@@ -101,50 +102,64 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
                 WinStation = "WinStation"
             });
 
-            var job = new Job(jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts());
+            var job = new Job(jobInfo, new ConversionProfile(), new Accounts());
 
             return job;
         }
 
-        private IAction BuildAction(ErrorCode? errorCode = null)
+        private IPreConversionAction BuildPreConversionAction(ErrorCode? errorCode = null)
         {
             var result = new ActionResult();
 
             if (errorCode != null)
                 result.Add(errorCode.Value);
 
-            var action = Substitute.For<IAction>();
+            var action = Substitute.For<IPreConversionAction>();
+            action.ProcessJob(Arg.Any<Job>()).Returns(result);
+
+            return action;
+        }
+
+        private IPostConversionAction BuildPostConversionAction(ErrorCode? errorCode = null)
+        {
+            var result = new ActionResult();
+
+            if (errorCode != null)
+                result.Add(errorCode.Value);
+
+            var action = Substitute.For<IPostConversionAction>();
             action.ProcessJob(Arg.Any<Job>()).Returns(result);
 
             return action;
         }
 
         [Test]
-        public void RunJob_CallsActionManager()
+        public async Task RunJob_CallsActionManager()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
-            _actionManager.Received().GetAllApplicableActions(job);
+            _actionManager.Received().GetApplicablePreConversionActions(job);
+            _actionManager.Received().GetApplicablePostConversionActions(job);
         }
 
         [Test]
-        public void RunJob_CallsAllActions()
+        public async Task RunJob_CallsAllPreConversionActions()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
             var actions = new[]
             {
-                BuildAction(),
-                BuildAction()
+                BuildPreConversionAction(),
+                BuildPreConversionAction()
             };
 
-            _actionManager.GetAllApplicableActions(job).Returns(actions);
+            _actionManager.GetApplicablePreConversionActions(job).Returns(actions);
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
             foreach (var action in actions)
             {
@@ -153,56 +168,78 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         }
 
         [Test]
-        public void RunJob_CallsCleanUp()
+        public async Task RunJob_CallsAllPostConversionActions()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
-            jobRunner.RunJob(job, _outputFileMover);
+            var actions = new[]
+            {
+                BuildPostConversionAction(),
+                BuildPostConversionAction()
+            };
+
+            _actionManager.GetApplicablePostConversionActions(job).Returns(actions);
+
+            await jobRunner.RunJob(job, _outputFileMover);
+
+            foreach (var action in actions)
+            {
+                action.Received().ProcessJob(job);
+            }
+        }
+
+        [Test]
+        public async Task RunJob_CallsCleanUp()
+        {
+            var jobRunner = BuildJobRunner();
+            var job = BuildJob();
+
+            await jobRunner.RunJob(job, _outputFileMover);
 
             _jobCleanUp.Received().DoCleanUp(job.JobTempFolder, job.JobInfo.SourceFiles, job.JobInfo.InfFile);
             _directoryHelper.Received().DeleteCreatedDirectories();
         }
 
         [Test]
-        public void RunJob_CallsOutputFileMover()
+        public async Task RunJob_CallsOutputFileMover()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
-            _outputFileMover.Received().MoveOutputFiles(job);
+            await _outputFileMover.Received().MoveOutputFiles(job);
         }
 
         [Test]
-        public void RunJob_CallsProcessPdf_IfRequired()
+        public async Task RunJob_CallsProcessPdf_IfRequired()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
             _pdfProcessor.ProcessingRequired(Arg.Any<ConversionProfile>()).Returns(true);
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
             _pdfProcessor.Received().ProcessPdf(job);
         }
 
         [Test]
-        public void RunJob_DoesNotProcessPdf_IfNotRequired()
+        public async Task RunJob_DoesNotProcessPdf_IfNotRequired()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
             _pdfProcessor.ProcessingRequired(Arg.Any<ConversionProfile>()).Returns(false);
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
             _pdfProcessor.DidNotReceive().ProcessPdf(job);
         }
 
         [Test]
-        public void RunJob_InitializesProcessorBeforeConversion()
+        public async Task RunJob_InitializesProcessorBeforeConversion()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
@@ -216,13 +253,13 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
                 if (!isInitialized) throw new Exception();
             });
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
             _converter.Received().DoConversion(job);
         }
 
         [Test]
-        public void RunJob_OnFailingAction_ThrowsProcessingException()
+        public void RunJob_OnFailingPreConversionAction_ThrowsProcessingException()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
@@ -231,24 +268,45 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             var actions = new[]
             {
-                BuildAction(),
-                BuildAction(errorCode)
+                BuildPreConversionAction(),
+                BuildPreConversionAction(errorCode)
             };
 
-            _actionManager.GetAllApplicableActions(job).Returns(actions);
+            _actionManager.GetApplicablePreConversionActions(job).Returns(actions);
 
-            var exception = Assert.Throws<ProcessingException>(() => jobRunner.RunJob(job, _outputFileMover));
+            var exception = Assert.ThrowsAsync<ProcessingException>(() => jobRunner.RunJob(job, _outputFileMover));
 
             Assert.AreEqual(errorCode, exception.ErrorCode);
         }
 
         [Test]
-        public void RunJob_StartsConversion()
+        public void RunJob_OnFailingPostConversionAction_ThrowsProcessingException()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
-            jobRunner.RunJob(job, _outputFileMover);
+            const ErrorCode errorCode = ErrorCode.MailClient_GenericError;
+
+            var actions = new[]
+            {
+                BuildPostConversionAction(),
+                BuildPostConversionAction(errorCode)
+            };
+
+            _actionManager.GetApplicablePostConversionActions(job).Returns(actions);
+
+            var exception = Assert.ThrowsAsync<ProcessingException>(() => jobRunner.RunJob(job, _outputFileMover));
+
+            Assert.AreEqual(errorCode, exception.ErrorCode);
+        }
+
+        [Test]
+        public async Task RunJob_StartsConversion()
+        {
+            var jobRunner = BuildJobRunner();
+            var job = BuildJob();
+
+            await jobRunner.RunJob(job, _outputFileMover);
 
             _converter.Received().DoConversion(job);
         }
@@ -261,7 +319,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _outputFileMover.When(x => x.MoveOutputFiles(job)).Do(x => { throw new AbortWorkflowException(""); });
 
-            Assert.Throws<AbortWorkflowException>(() => jobRunner.RunJob(job, _outputFileMover));
+            Assert.ThrowsAsync<AbortWorkflowException>(() => jobRunner.RunJob(job, _outputFileMover));
         }
 
         [Test]
@@ -272,16 +330,16 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _outputFileMover.When(x => x.MoveOutputFiles(job)).Do(x => { job.OutputFiles.Clear(); });
 
-            Assert.Throws<ProcessingException>(() => jobRunner.RunJob(job, _outputFileMover));
+            Assert.ThrowsAsync<ProcessingException>(() => jobRunner.RunJob(job, _outputFileMover));
         }
 
         [Test]
-        public void RunJob_WithoutProblems_Succeeds()
+        public async Task RunJob_WithoutProblems_Succeeds()
         {
             var jobRunner = BuildJobRunner();
             var job = BuildJob();
 
-            jobRunner.RunJob(job, _outputFileMover);
+            await jobRunner.RunJob(job, _outputFileMover);
 
             Assert.IsTrue(job.Completed);
         }

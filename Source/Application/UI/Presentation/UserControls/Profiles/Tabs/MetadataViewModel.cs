@@ -1,27 +1,30 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
-using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
 {
-    public class MetadataViewModel : TranslatableViewModelBase<MetadataTabTranslation>, ITabViewModel
+    public class MetadataViewModel : ProfileNotSupportedFeaturesUserControlViewModel<MetadataTabTranslation>, ITabViewModel
     {
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenHelper _tokenHelper;
         private readonly ITokenViewModelFactory _tokenViewModelFactory;
 
         public string Title => Translation.Title;
         public IconList Icon => IconList.MetadataSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public override bool HasNotSupportedFeatures => CurrentProfile.HasNotSupportedMetadata();
 
         public TokenViewModel<ConversionProfile> TitleTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> AuthorTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> SubjectTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> KeywordsTokenViewModel { get; private set; }
 
-        public MetadataViewModel(ITranslationUpdater translationUpdater, TokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory) : base(translationUpdater)
+        public MetadataViewModel(ITranslationUpdater translationUpdater, ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory,
+            ISelectedProfileProvider selectedProfileProvider, IDispatcher dispatcher) : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
             _tokenHelper = tokenHelper;
             _tokenViewModelFactory = tokenViewModelFactory;

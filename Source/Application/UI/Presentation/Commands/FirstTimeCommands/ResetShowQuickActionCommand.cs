@@ -1,15 +1,15 @@
 ﻿using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands
 {
     public class ResetShowQuickActionCommand : IFirstTimeCommand
     {
-        private readonly ICurrentSettingsProvider _settingsProvider;
+        private readonly ISettingsProvider _settingsProvider;
         private readonly ICommandLocator _commandLocator;
 
-        public ResetShowQuickActionCommand(ICurrentSettingsProvider settingsProvider, ICommandLocator commandLocator)
+        public ResetShowQuickActionCommand(ISettingsProvider settingsProvider, ICommandLocator commandLocator)
         {
             _settingsProvider = settingsProvider;
             _commandLocator = commandLocator;
@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands
 
             var hasChanges = false;
 
-            var lastLoginVersion = _settingsProvider.Settings.ApplicationSettings.LastLoginVersion;
+            var lastLoginVersion = _settingsProvider.Settings.CreatorAppSettings.LastLoginVersion;
             var numberOfVersionPosition = lastLoginVersion.Split('.').Length;
             if (numberOfVersionPosition == 2)
             {
@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands
             }
             if (hasChanges)
             {
-                _commandLocator.GetCommand<SaveChangedSettingsCommand>().Execute(null);
+                _commandLocator.GetCommand<ISaveChangedSettingsCommand>().Execute(null);
             }
         }
 

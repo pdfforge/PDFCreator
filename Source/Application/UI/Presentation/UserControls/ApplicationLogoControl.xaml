@@ -16,26 +16,27 @@
                         Height="55" IsTabStop="False" />
         <TextBlock DockPanel.Dock="Top"
                    FontSize="32"
-                   FontFamily="{DynamicResource Yorkten-Regular}"
+                   FontFamily="{DynamicResource YorktenRegular}"
                    Margin="-3">
             <Run Text="{Binding ApplicationName, FallbackValue=PDFCreator, Mode=OneWay}" />
             <Run x:Name="TrialText" FontSize="26" />
         </TextBlock>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="17">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="16">
             <Border
                 Background="{DynamicResource {x:Static helper:HightlightColorRegistration.HighlightColorName}}"
                 SnapsToDevicePixels="True">
-                <TextBlock FontFamily="{DynamicResource Yorkten-Regular}"
+                <TextBlock FontFamily="{DynamicResource YorktenRegular}"
                            FontSize="14"
                            FontWeight="Regular"
                            Foreground="White"
-                           Padding="7 2 7 0"
+                           Padding="3 0 16 0"
+
                            VerticalAlignment="Center"
                            Text="{Binding EditionName, Converter={StaticResource UpperCaseConverter}, FallbackValue=FREE}" />
             </Border>
             <Viewbox>
-                <Polygon DockPanel.Dock="Right" SnapsToDevicePixels="True" Points="0,0 25,0 0,25"
+                <Polygon DockPanel.Dock="Right" SnapsToDevicePixels="True" Points="0,0 20,0 0,20"
                          Fill="{DynamicResource {x:Static helper:HightlightColorRegistration.HighlightColorName}}" />
             </Viewbox>
             <TextBlock Margin="10 0 0 0" x:Name="CustomEditionText" />

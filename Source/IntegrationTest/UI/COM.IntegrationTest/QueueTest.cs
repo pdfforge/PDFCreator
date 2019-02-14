@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
@@ -10,6 +11,7 @@ using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.COM;
 using pdfforge.PDFCreator.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using SystemWrapper.IO;
@@ -41,10 +43,10 @@ namespace pdfforge.PDFCreator.IntegrationTest.UI.COM
             var translationHelper = new TranslationHelper(new DefaultSettingsProvider(), new AssemblyHelper(GetType().Assembly), new TranslationFactory(), null);
             translationHelper.InitTranslator("None");
 
-            var folderProvider = new FolderProvider(new PrinterPortReader(new RegistryWrap(), new PathWrapSafe()), new PathWrap());
+            var folderProvider = new FolderProvider(new PrinterPortReader(new RegistryWrap()), new PathWrap());
 
-            _testPageHelper = new TestPageHelper(new VersionHelper(GetType().Assembly), new OsHelper(), folderProvider,
-                dependencies.QueueAdapter.JobInfoQueue, new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>())), new ApplicationNameProvider("FREE"));
+            var testPageCreator = new TestPageCreator(new ApplicationNameProvider("FREE"), new VersionHelper(new Version(1, 0, 0, 0)), new OsHelper());
+            _testPageHelper = new TestPageHelper(folderProvider, dependencies.QueueAdapter.JobInfoQueue, new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>()), null), testPageCreator);
         }
 
         [TearDown]

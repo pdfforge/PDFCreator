@@ -8,17 +8,17 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
     internal class ConsoleLogger : ILogger
     {
         public static string TraceLogLayout =
-            "${shortdate} ${date:format=HH\\:mm\\:ss.ffff} [${level}] ${processid}-${threadid} (${threadname}) ${callsite}: ${message}";
+            "${shortdate} ${date:format=HH\\:mm\\:ss.ffff} [${level}] ${processid}-${threadid} (${threadname}) ${callsite}: ${message} ${exception:innerFormat=type,message:maxInnerExceptionLevel=1:format=tostring}";
 
         public static string ShortLogLayout =
-            "${shortdate} ${date:format=HH\\:mm\\:ss.ffff} [${level}] ${callsite}: ${message}";
+            "${shortdate} ${date:format=HH\\:mm\\:ss.ffff} [${level}] ${callsite}: ${message} ${exception:innerFormat=type,message:maxInnerExceptionLevel=1:format=tostring}";
 
         private readonly ConsoleTarget _consoleLogTarget;
         private LoggingRule _loggingRule;
 
         public ConsoleLogger(string applicationName, LogLevel logLevel)
         {
-            var config = new LoggingConfiguration();
+            var config = LogManager.Configuration ?? new LoggingConfiguration();
 
             _consoleLogTarget = new ConsoleTarget();
             _consoleLogTarget.Name = "ConsoleLogTarget";

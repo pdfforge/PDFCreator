@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private void StartArchitectThread()
         {
             _isRunning = true;
-            _interactionInvoker.Invoke(new RecommendPdfArchitectInteraction(true));
+            _interactionInvoker.Invoke(new RecommendPdfArchitectInteraction(true, false));
         }
     }
 }

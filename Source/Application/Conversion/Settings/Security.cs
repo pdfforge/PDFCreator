@@ -91,20 +91,20 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string UserPassword { get { try { return Data.Decrypt(_userPassword); } catch { return ""; } } set { _userPassword = Data.Encrypt(value); } }
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { AllowPrinting = bool.Parse(data.GetValue(@"" + path + @"AllowPrinting")); } catch { AllowPrinting = true;}
-			try { AllowScreenReader = bool.Parse(data.GetValue(@"" + path + @"AllowScreenReader")); } catch { AllowScreenReader = true;}
-			try { AllowToCopyContent = bool.Parse(data.GetValue(@"" + path + @"AllowToCopyContent")); } catch { AllowToCopyContent = false;}
-			try { AllowToEditAssembly = bool.Parse(data.GetValue(@"" + path + @"AllowToEditAssembly")); } catch { AllowToEditAssembly = false;}
-			try { AllowToEditComments = bool.Parse(data.GetValue(@"" + path + @"AllowToEditComments")); } catch { AllowToEditComments = false;}
-			try { AllowToEditTheDocument = bool.Parse(data.GetValue(@"" + path + @"AllowToEditTheDocument")); } catch { AllowToEditTheDocument = false;}
-			try { AllowToFillForms = bool.Parse(data.GetValue(@"" + path + @"AllowToFillForms")); } catch { AllowToFillForms = true;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { EncryptionLevel = (EncryptionLevel) Enum.Parse(typeof(EncryptionLevel), data.GetValue(@"" + path + @"EncryptionLevel")); } catch { EncryptionLevel = EncryptionLevel.Aes256Bit;}
+			AllowPrinting = bool.TryParse(data.GetValue(@"" + path + @"AllowPrinting"), out var tmpAllowPrinting) ? tmpAllowPrinting : true;
+			AllowScreenReader = bool.TryParse(data.GetValue(@"" + path + @"AllowScreenReader"), out var tmpAllowScreenReader) ? tmpAllowScreenReader : true;
+			AllowToCopyContent = bool.TryParse(data.GetValue(@"" + path + @"AllowToCopyContent"), out var tmpAllowToCopyContent) ? tmpAllowToCopyContent : false;
+			AllowToEditAssembly = bool.TryParse(data.GetValue(@"" + path + @"AllowToEditAssembly"), out var tmpAllowToEditAssembly) ? tmpAllowToEditAssembly : false;
+			AllowToEditComments = bool.TryParse(data.GetValue(@"" + path + @"AllowToEditComments"), out var tmpAllowToEditComments) ? tmpAllowToEditComments : false;
+			AllowToEditTheDocument = bool.TryParse(data.GetValue(@"" + path + @"AllowToEditTheDocument"), out var tmpAllowToEditTheDocument) ? tmpAllowToEditTheDocument : false;
+			AllowToFillForms = bool.TryParse(data.GetValue(@"" + path + @"AllowToFillForms"), out var tmpAllowToFillForms) ? tmpAllowToFillForms : true;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			EncryptionLevel = Enum.TryParse<EncryptionLevel>(data.GetValue(@"" + path + @"EncryptionLevel"), out var tmpEncryptionLevel) ? tmpEncryptionLevel : EncryptionLevel.Aes256Bit;
 			_ownerPassword = data.GetValue(@"" + path + @"OwnerPassword");
-			try { RequireUserPassword = bool.Parse(data.GetValue(@"" + path + @"RequireUserPassword")); } catch { RequireUserPassword = false;}
-			try { RestrictPrintingToLowQuality = bool.Parse(data.GetValue(@"" + path + @"RestrictPrintingToLowQuality")); } catch { RestrictPrintingToLowQuality = false;}
+			RequireUserPassword = bool.TryParse(data.GetValue(@"" + path + @"RequireUserPassword"), out var tmpRequireUserPassword) ? tmpRequireUserPassword : false;
+			RestrictPrintingToLowQuality = bool.TryParse(data.GetValue(@"" + path + @"RestrictPrintingToLowQuality"), out var tmpRestrictPrintingToLowQuality) ? tmpRestrictPrintingToLowQuality : false;
 			_userPassword = data.GetValue(@"" + path + @"UserPassword");
 		}
 		
@@ -142,7 +142,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.RequireUserPassword = RequireUserPassword;
 			copy.RestrictPrintingToLowQuality = RestrictPrintingToLowQuality;
 			copy.UserPassword = UserPassword;
-			
 			return copy;
 		}
 		
@@ -164,29 +163,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!RequireUserPassword.Equals(v.RequireUserPassword)) return false;
 			if (!RestrictPrintingToLowQuality.Equals(v.RestrictPrintingToLowQuality)) return false;
 			if (!UserPassword.Equals(v.UserPassword)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AllowPrinting=" + AllowPrinting.ToString());
-			sb.AppendLine("AllowScreenReader=" + AllowScreenReader.ToString());
-			sb.AppendLine("AllowToCopyContent=" + AllowToCopyContent.ToString());
-			sb.AppendLine("AllowToEditAssembly=" + AllowToEditAssembly.ToString());
-			sb.AppendLine("AllowToEditComments=" + AllowToEditComments.ToString());
-			sb.AppendLine("AllowToEditTheDocument=" + AllowToEditTheDocument.ToString());
-			sb.AppendLine("AllowToFillForms=" + AllowToFillForms.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("EncryptionLevel=" + EncryptionLevel.ToString());
-			sb.AppendLine("OwnerPassword=" + OwnerPassword.ToString());
-			sb.AppendLine("RequireUserPassword=" + RequireUserPassword.ToString());
-			sb.AppendLine("RestrictPrintingToLowQuality=" + RestrictPrintingToLowQuality.ToString());
-			sb.AppendLine("UserPassword=" + UserPassword.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

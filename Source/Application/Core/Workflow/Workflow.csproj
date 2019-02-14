@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,23 +42,30 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataStorage, Version=2.0.1.0, Culture=neutral, PublicKeyToken=fc6825f92a0342e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComposeTargetFilePath\TargetFilePathComposerBase.cs" />
     <Compile Include="AutoSaveWorkflow.cs" />
     <Compile Include="Exceptions\AbortWorkflowException.cs" />
     <Compile Include="ConversionWorkflow.cs" />
     <Compile Include="Exceptions\ErrorCodeException.cs" />
+    <Compile Include="Exceptions\InterruptWorkflowExcpetion.cs" />
     <Compile Include="Exceptions\ManagePrintJobsException.cs" />
     <Compile Include="IConversionWorkflow.cs" />
     <Compile Include="IJobInfoQueue.cs" />
-    <Compile Include="IMailSignatureHelper.cs" />
     <Compile Include="IManagePrintJobExceptionHandler.cs" />
     <Compile Include="INotificationService.cs" />
     <Compile Include="JobCleanUp.cs" />
     <Compile Include="JobBuilder.cs" />
     <Compile Include="JobPasswordHelper.cs" />
+    <Compile Include="LastSaveDirectoryHelper.cs" />
     <Compile Include="Output\AutosaveOutputFileMover.cs" />
     <Compile Include="Output\InteractiveOutputFileMover.cs" />
     <Compile Include="Output\OutputFileMoverBase.cs" />
@@ -64,7 +73,6 @@
     <Compile Include="ProfileChecker.cs" />
     <Compile Include="Queries\IFileNameQuery.cs" />
     <Compile Include="Queries\IRetypeFileNameQuery.cs" />
-    <Compile Include="Queries\ITargetFileNameComposer.cs" />
     <Compile Include="IWorkflowFactory.cs" />
     <Compile Include="JobInfoQueue.cs" />
     <Compile Include="JobInfoQueueManager.cs" />
@@ -75,6 +83,7 @@
     <Compile Include="JobDataUpdater.cs" />
     <Compile Include="Queries\IErrorNotifier.cs" />
     <Compile Include="AppSettingsChecker.cs" />
+    <Compile Include="ComposeTargetFilePath\TargetFilePathComposer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Conversion\ActionsInterface\ActionsInterface.csproj">
@@ -130,7 +139,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -141,7 +150,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

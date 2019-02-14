@@ -1,4 +1,5 @@
 ﻿using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
@@ -13,7 +14,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     {
         public DesignTimeMainShellViewModel() : base(new DragAndDropEventHandler(null), new TranslationUpdater(new TranslationFactory(),
             new ThreadManager()), new DesignTimeApplicationNameProvider(), new InteractionRequest(),
-            new EventAggregator(), new DesignTimeCommandLocator(), null, null, null, null, null, null)
+            new EventAggregator(), new DesignTimeCommandLocator(), null, null, null, null, null, null,
+            new DesignTimeCurrentSettings<UsageStatistics>(), new DesignTimeVersionHelper())
         {
         }
     }

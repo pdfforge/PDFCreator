@@ -13,19 +13,17 @@ namespace pdfforge.PDFCreator.Core.Printing.Port
     {
         private const string DefaultTempFolderName = "PDFCreator";
         private const string RegistryBaseKey = @"SYSTEM\CurrentControlSet\Control\Print\Monitors\pdfcmon\Ports\";
-        private readonly IPathSafe _pathSafe;
 
         private readonly IRegistry _registry;
 
-        public PrinterPortReader(IRegistry registry, IPathSafe pathSafe)
+        public PrinterPortReader(IRegistry registry)
         {
             _registry = registry;
-            _pathSafe = pathSafe;
         }
 
         public PrinterPort ReadPrinterPort(string portName)
         {
-            var subKey = _pathSafe.Combine(RegistryBaseKey, portName);
+            var subKey = PathSafe.Combine(RegistryBaseKey, portName);
             var key = _registry.LocalMachine.OpenSubKey(subKey);
 
             if (key == null)

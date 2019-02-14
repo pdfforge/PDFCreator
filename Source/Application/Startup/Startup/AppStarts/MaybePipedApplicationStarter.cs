@@ -22,7 +22,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
     public class MaybePipedApplicationStarter : IMaybePipedApplicationStarter
     {
-        private readonly IPdfCreatorCleanUp _cleanUp;
+        private readonly IPdfCreatorFolderCleanUp _folderCleanUp;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly IJobInfoQueueManager _jobInfoQueueManager;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -37,12 +37,12 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         public MaybePipedApplicationStarter(ISettingsManager settingsManager, IUpdateAssistant updateAssistant,
             ICheckAllStartupConditions startupConditions, IThreadManager threadManager,
             IPipeServerManager pipeServerManager, IJobInfoQueueManager jobInfoQueueManager, IJobInfoQueue jobInfoQueue,
-            IStaticPropertiesHack staticPropertiesHack, IPdfCreatorCleanUp cleanUp, ISpooledJobFinder spooledJobFinder,
+            IStaticPropertiesHack staticPropertiesHack, IPdfCreatorFolderCleanUp folderCleanUp, ISpooledJobFinder spooledJobFinder,
             INotificationService notificationService, IJobHistoryManager jobHistoryManager)
         {
             StartupConditions = startupConditions;
             _jobInfoQueue = jobInfoQueue;
-            _cleanUp = cleanUp;
+            _folderCleanUp = folderCleanUp;
             _spooledJobFinder = spooledJobFinder;
             _notificationService = notificationService;
             _jobHistoryManager = jobHistoryManager;
@@ -174,8 +174,8 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         private void CleanUp()
         {
-            _cleanUp.CleanSpoolFolder();
-            _cleanUp.CleanTempFolder();
+            _folderCleanUp.CleanSpoolFolder(TimeSpan.FromDays(1));
+            _folderCleanUp.CleanTempFolder(TimeSpan.FromDays(1));
         }
 
         private void StartUpdateCheck()

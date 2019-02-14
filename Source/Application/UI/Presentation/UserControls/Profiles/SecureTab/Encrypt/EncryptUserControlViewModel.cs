@@ -4,24 +4,20 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
-using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.ComponentModel;
-using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt
 {
     public class EncryptUserControlViewModel : ProfileUserControlViewModel<EncryptUserControlTranslation>
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly IUserGuideHelper _userGuideHelper;
 
         public EncryptUserControlViewModel
             (
                 IInteractionRequest interactionRequest,
-                EditionHintOptionProvider editionHintOptionProvider,
-                IUserGuideHelper userGuideHelper,
+                EditionHelper editionHelper,
                 ITranslationUpdater translationUpdater,
                 ISelectedProfileProvider selectedProfile,
                 IDispatcher dispatcher
@@ -29,11 +25,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
         : base(translationUpdater, selectedProfile, dispatcher)
         {
             _interactionRequest = interactionRequest;
-            _userGuideHelper = userGuideHelper;
 
-            if (editionHintOptionProvider != null)
+            if (editionHelper != null)
             {
-                OnlyForPlusAndBusiness = editionHintOptionProvider.ShowOnlyForPlusAndBusinessHint;
+                OnlyForPlusAndBusiness = editionHelper.ShowOnlyForPlusAndBusiness;
             }
 
             SecurityPasswordCommand = new DelegateCommand(SecurityPasswordExecute);
@@ -161,13 +156,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
         {
             base.OnCurrentProfileChanged(sender, propertyChangedEventArgs);
             RaisePropertyChangedForEncryptionProperties();
-        }
-
-        public ICommand OpenPdfToolsUserGuideCommand => new DelegateCommand(OpenPdfToolsUserGuide);
-
-        private void OpenPdfToolsUserGuide(object o)
-        {
-            _userGuideHelper.ShowHelp(HelpTopic.PdfTools);
         }
 
         private void RaisePropertyChangedForEncryptionProperties()

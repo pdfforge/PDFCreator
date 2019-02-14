@@ -1,13 +1,13 @@
 ﻿using NLog;
 using pdfforge.Obsidian;
 using pdfforge.Obsidian.Interaction.DialogInteractions;
-using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Query;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
@@ -144,6 +144,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
 
                 case OutputFormat.PdfA2B:
                     return _translation.PdfA2bFile + @" (*.pdf)|*.pdf";
+
+                case OutputFormat.PdfA3B:
+                    return _translation.PdfA3bFile + @" (*.pdf)|*.pdf";
 
                 case OutputFormat.PdfX:
                     return _translation.PdfXFile + @" (*.pdf)|*.pdf";

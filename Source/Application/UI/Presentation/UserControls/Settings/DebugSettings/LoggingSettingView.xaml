@@ -31,7 +31,7 @@
                 </StackPanel.Triggers>
                 <TextBlock TextWrapping="Wrap" Text="{Binding Translation.LoggingLevelLabelText}" Margin="0 5 0 5" />
                 <ComboBox Margin="0 5 0 10" Width="510" HorizontalAlignment="Left"
-                          SelectedValue="{Binding SettingsProvider.Settings.ApplicationSettings.LoggingLevel}"
+                          SelectedValue="{Binding ApplicationSettings.Settings.LoggingLevel}"
                           ItemsSource="{Binding LoggingValues}" />
                 <UniformGrid Columns="2" Margin="0 5 0 5" Width="510">
                     <Button Command="{Binding ShowLogFileCommand}" Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}">

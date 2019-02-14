@@ -3,14 +3,12 @@ using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.IO;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace PDFCreator.TestUtilities
 {
     public class PaketGhostscriptDiscovery : IGhostscriptDiscovery
     {
         private readonly IAssemblyHelper _assemblyHelper;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
 
         public PaketGhostscriptDiscovery(IAssemblyHelper assemblyHelper)
         {
@@ -33,11 +31,11 @@ namespace PDFCreator.TestUtilities
         {
             foreach (var path in GetPathCandidates())
             {
-                var testPath = _pathSafe.Combine(path, @"packages\setup\Ghostscript");
+                var testPath = PathSafe.Combine(path, @"packages\Ghostscript");
 
-                var exePath = _pathSafe.Combine(testPath, @"Bin\gswin32c.exe");
-                var libPath = _pathSafe.Combine(testPath, @"Bin") + ';' + _pathSafe.Combine(testPath, @"Lib") + ';' +
-                              _pathSafe.Combine(testPath, @"Fonts");
+                var exePath = PathSafe.Combine(testPath, @"Bin\gswin32c.exe");
+                var libPath = PathSafe.Combine(testPath, @"Bin") + ';' + PathSafe.Combine(testPath, @"Lib") + ';' +
+                              PathSafe.Combine(testPath, @"Fonts");
 
                 if (File.Exists(exePath))
                 {

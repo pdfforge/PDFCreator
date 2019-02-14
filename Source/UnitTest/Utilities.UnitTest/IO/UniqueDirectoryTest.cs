@@ -10,12 +10,6 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.IO
     public class UniqueDirectoryTest
     {
         [Test]
-        public void EnsureUniqueDirectory_GivenEmptyPath_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() => new UniqueDirectory("").MakeUniqueDirectory());
-        }
-
-        [Test]
         public void EnsureUniqueDirectory_GivenExisting_ReturnsUniquifiedDirectory()
         {
             const string path = @"C:\TestFolder\FileNameAsSubFolder.xx";
@@ -66,6 +60,12 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.IO
         public void EnsureUniqueDirectory_GivenNull_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => new UniqueDirectory(null));
+        }
+
+        [Test]
+        public void EnsureUniqueDirectory_GivenEmptyString_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => new UniqueDirectory(""));
         }
     }
 }

@@ -9,6 +9,8 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance designTime:DesignTimeConvertPdfViewModel, IsDesignTimeCreatable=True}"
@@ -17,6 +19,10 @@
         <system:Boolean x:Key="True">True</system:Boolean>
         <system:Boolean x:Key="False">False</system:Boolean>
         <converter:BoolToVisibilityConverter x:Key="ShowIfTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
+        <converter:BoolToVisibilityConverter x:Key="ShowIfPdfXTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
+        <converter:BoolToVisibilityConverter x:Key="ShowValidationCheckboxIfTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
+        <converter:BoolNegationConverter x:Key="EnableValidationIfTrueconverter" />
+        <converter:DebugConverter x:Key="DebugConverter" />
         <converter:AreEqualConverter Reference="{x:Static enums:CompressionColorAndGray.JpegManual}"
                                      EqualValue="{StaticResource True}" NotEqualValue="{StaticResource False}"
                                      x:Key="CompressionColorAndGrayIsJpegManualConverter" />
@@ -40,11 +46,20 @@
                           ItemsSource="{Binding Translation.PageOrientationValues}" />
 
                 <Label Content="{Binding Translation.ColorModelLabel}" />
-                <ComboBox MinWidth="200"
-                          SelectedValue="{Binding CurrentProfile.PdfSettings.ColorModel}"
-                          SelectedValuePath="Value" DisplayMemberPath="Translation"
-                          ItemsSource="{Binding Translation.ColorModelValues}" />
 
+                <DockPanel LastChildFill="False">
+                    <ComboBox DockPanel.Dock="Top"
+                              MinWidth="200"
+                              SelectedValue="{Binding CurrentProfile.PdfSettings.ColorModel}"
+                              SelectedValuePath="Value" DisplayMemberPath="Translation"
+                              ItemsSource="{Binding Translation.ColorModelValues}">
+                    </ComboBox>
+                    <misc:WarningIconControl DockPanel.Dock="Right"
+                                          help:HelpProvider.HelpTopic="Convert"
+                                          Margin="0 2 0 0"
+                                          Visibility="{Binding Path=HasNotSupportedColorModel, Converter={StaticResource ShowIfPdfXTrueconverter}}"
+                                          ToolTipText="{Binding Translation.NotSupportedHintInfo}" />
+                </DockPanel>
                 <Label Content="{Binding Translation.CompressionLabel}" />
                 <StackPanel Orientation="Horizontal">
                     <StackPanel>
@@ -97,6 +112,14 @@
                     <Label Content="{Binding Translation.ViewerStartsOnPageLabel}" />
                     <TextBox Text="{Binding CurrentProfile.PdfSettings.ViewerStartsOnPage, Mode=TwoWay}"
                              Margin="5,0,0,0" Width="35" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding Path=IsPdfAOutput, Converter={StaticResource ShowValidationCheckboxIfTrueconverter}}">
+                    <CheckBox VerticalAlignment="Center"
+                              IsChecked="{Binding CurrentProfile.PdfSettings.EnablePdfAValidation}"
+                              IsEnabled="{Binding AllowForPlusAndBusiness, Converter={StaticResource EnableValidationIfTrueconverter}}"
+                              Margin="0,0,5,0"
+                              Content="{Binding Translation.EnableValidationReport}" />
+                    <userControls:PlusFeatureControl Margin="10 0" Edition="AllLicensed" />
                 </StackPanel>
             </StackPanel>
         </HeaderedContentControl>

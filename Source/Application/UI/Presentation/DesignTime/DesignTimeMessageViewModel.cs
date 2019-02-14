@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     // ReSharper disable once ClassNeverInstantiated.Global
     public class DesignTimeMessageViewModel : MessageViewModel
     {
-        public DesignTimeMessageViewModel() : this(true) //<<<<<<<<<<<<<<<<<<<<<< Set true to view Errors in Designer
+        public DesignTimeMessageViewModel() : this(true) //Set true to view Errors in Designer
         { }
 
         public DesignTimeMessageViewModel(bool withErrors) : base(new DesignTimeTranslationUpdater(), new DesignTimeSoundPlayer(), new ErrorCodeInterpreter(new TranslationFactory()), null)

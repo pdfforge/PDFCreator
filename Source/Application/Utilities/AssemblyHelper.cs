@@ -1,6 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
-using SystemWrapper.IO;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Utilities
 {
@@ -11,7 +12,6 @@ namespace pdfforge.PDFCreator.Utilities
 
     public class AssemblyHelper : IAssemblyHelper
     {
-        private readonly PathWrapSafe _pathWrapSafe = new PathWrapSafe();
         private readonly Assembly _assembly;
 
         public AssemblyHelper(Assembly assembly)
@@ -21,7 +21,9 @@ namespace pdfforge.PDFCreator.Utilities
 
         public string GetAssemblyDirectory()
         {
-            return _pathWrapSafe.GetDirectoryName(GetAssemblyPath(_assembly));
+            var assemblyPath = GetAssemblyPath(_assembly);
+            var dir = Path.GetDirectoryName(assemblyPath);
+            return PathSafe.GetDirectoryName(assemblyPath);
         }
 
         private string GetAssemblyPath(Assembly assembly)

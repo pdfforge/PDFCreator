@@ -23,7 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.St
         private TokenReplacer _tokenReplacer;
         public TokenViewModel<ConversionProfile> StampUserControlTokenViewModel { get; set; }
 
-        public StampUserControlViewModel(IInteractionInvoker interactionInvoker, IFontHelper fontHelper, TokenHelper tokenHelper,
+        public StampUserControlViewModel(IInteractionInvoker interactionInvoker, IFontHelper fontHelper, ITokenHelper tokenHelper,
                         ITranslationUpdater translationUpdater, ISelectedProfileProvider profile, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher)
             : base(translationUpdater, profile, dispatcher)
         {

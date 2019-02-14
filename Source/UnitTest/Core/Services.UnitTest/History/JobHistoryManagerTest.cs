@@ -34,8 +34,8 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Services.UnitTest.History
         [SetUp]
         public void SetUp()
         {
-            _job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
-            _job.OutputFilenameTemplate = "MayNotStartWithTempfolder.pdf";
+            _job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
+            _job.OutputFileTemplate = "MayNotStartWithTempfolder.pdf";
             _job.OutputFiles.Add("NotEmpty.pdf");
             _storedHistoryFullCapacity = new List<HistoricJob>();
 
@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Services.UnitTest.History
             _jobHistoryStorage.Load().Returns(_storedHistoryFullCapacity);
 
             var settingsProvider = Substitute.For<ISettingsProvider>();
-            _settings = new PdfCreatorSettings(null);
+            _settings = new PdfCreatorSettings();
             _settings.ApplicationSettings.JobHistory.Enabled = true;
             _settings.ApplicationSettings.JobHistory.Capacity = _capacity;
             settingsProvider.Settings.Returns(_settings);
@@ -207,7 +207,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Services.UnitTest.History
         [Test]
         public void Add_JobIsTemporary_HistoryRemainsEmpty()
         {
-            _job.OutputFilenameTemplate = Path.Combine(TempFolder, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()), "file.pdf");
+            _job.OutputFileTemplate = Path.Combine(TempFolder, Path.GetFileNameWithoutExtension(Path.GetRandomFileName()), "file.pdf");
 
             _jobHistoryManager.Add(_job);
 
@@ -265,7 +265,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Services.UnitTest.History
             _job.Profile.OutputFormat = expectedFormat;
             var expectedCreationTime = DateTime.Now;
             _job.JobInfo.PrintDateTime = expectedCreationTime;
-            var expectedMetaData = new Metadata(Substitute.For<IVersionHelper>());
+            var expectedMetaData = new Metadata();
             expectedMetaData.Author = "Some Author";
             expectedMetaData.Title = "Some Title";
             expectedMetaData.Subject = "Some Subject";

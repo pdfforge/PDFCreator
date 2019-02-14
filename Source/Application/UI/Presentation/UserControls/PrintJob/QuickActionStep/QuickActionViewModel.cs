@@ -1,17 +1,20 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep
 {
@@ -20,17 +23,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         private readonly ICommandLocator _commandLocator;
         private readonly IReadableFileSizeFormatter _readableFileSizeHelper;
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
+
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private OutputFormat _outputFormat = OutputFormat.Pdf;
         private Job _job;
 
         private string _fileDirectory;
         private string _fileName;
         private string _fileSize;
+        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
 
-        public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper, ICurrentSettingsProvider currentSettingsProvider) : base(translationUpdater)
+        public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider) : base(translationUpdater)
         {
             _commandLocator = commandLocator;
             _readableFileSizeHelper = readableFileSizeHelper;
+            _profilesProvider = profilesProvider;
             _currentSettingsProvider = currentSettingsProvider;
             StartQuickActionCommand = new DelegateCommand(StartQuickActionCommandExecute);
             FinishCommand = new DelegateCommand(OnFinish);
@@ -39,23 +47,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
 
         private void OnFinish(object obj)
         {
-            _commandLocator.GetCommand<SaveChangedSettingsCommand>().Execute(null);
+            _commandLocator.GetCommand<ISaveChangedSettingsCommand>().Execute(null);
             StepFinished?.Invoke(this, EventArgs.Empty);
+            _taskCompletionSource.SetResult(null);
         }
 
         private void InitList()
         {
             QuickActionOpenList = new List<QuickActionListItemVo>
             {
-                new QuickActionListItemVo(Translation.OpenPDFArchitect, _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>(), StartQuickActionCommand),
-                new QuickActionListItemVo(Translation.OpenDefaultProgram, _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>(),StartQuickActionCommand),
-                new QuickActionListItemVo(Translation.OpenExplorer, _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>(),StartQuickActionCommand)
+                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(Translation.OpenPDFArchitect),
+                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(Translation.OpenDefaultProgram),
+                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(Translation.OpenExplorer)
             };
 
             QuickActionSendList = new List<QuickActionListItemVo>
             {
-                new QuickActionListItemVo(Translation.SendEmail, _commandLocator.GetCommand<QuickActionOpenMailClientCommand>(), StartQuickActionCommand)
+                GetQuickActionItem<QuickActionOpenMailClientCommand>(Translation.SendEmail),
+                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(Translation.PrintFileWithArchitect)
             };
+        }
+
+        private QuickActionListItemVo GetQuickActionItem<TCommand>(string text) where TCommand : class, ICommand
+        {
+            return new QuickActionListItemVo(text, _commandLocator.GetCommand<TCommand>(), StartQuickActionCommand);
         }
 
         public void StartQuickActionCommandExecute(object obj)
@@ -67,7 +82,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             }
         }
 
-        public void ExecuteWorkflowStep(Job job)
+        public Task ExecuteWorkflowStep(Job job)
         {
             _job = job;
             OutputFormat = job.Profile.OutputFormat;
@@ -77,6 +92,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             FileDirectory = System.IO.Path.GetDirectoryName(firstFile);
             FileSize = _readableFileSizeHelper.GetFileSizeString(firstFile);
             RaisePropertyChanged(nameof(IsActive));
+            return _taskCompletionSource.Task;
         }
 
         public event EventHandler StepFinished;
@@ -127,7 +143,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             {
                 if (_job != null && _currentSettingsProvider != null)
                 {
-                    var conversionProfile = _currentSettingsProvider.Settings.GetProfileByGuid(_job.Profile.Guid);
+                    var conversionProfile = SettingsHelper.GetProfileByGuid(_profilesProvider.Settings, _job.Profile.Guid);
                     conversionProfile.ShowQuickActions = !value;
                     _job.Profile.ShowQuickActions = !value;
                     RaisePropertyChanged(nameof(IsActive));

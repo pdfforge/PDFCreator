@@ -1,7 +1,4 @@
-﻿using pdfforge.DataStorage;
-using pdfforge.PDFCreator.Conversion.Settings;
-
-namespace pdfforge.PDFCreator.Core.SettingsManagement
+﻿namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
     public class SettingsUpgradeHelper
     {
@@ -12,16 +9,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             _targetVersion = targetVersion;
         }
 
-        public SettingsUpgradeHelper()
+        public void UpgradeSettings<TSettingsUpgrader>(TSettingsUpgrader upgrader) where TSettingsUpgrader : ISettingsUpgrader
         {
-            _targetVersion = new ApplicationProperties().SettingsVersion;
-        }
-
-        public void UpgradeSettings(Data settingsData)
-        {
-            var upgrader = new SettingsUpgrader(settingsData);
-
-            if (upgrader.RequiresUpgrade(_targetVersion))
+            if (upgrader != null && upgrader.RequiresUpgrade(_targetVersion))
                 upgrader.Upgrade(_targetVersion);
         }
     }

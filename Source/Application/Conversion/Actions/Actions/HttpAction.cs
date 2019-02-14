@@ -14,7 +14,7 @@ using System.Web;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public class HttpAction : RetypePasswordActionBase, ICheckable
+    public class HttpAction : RetypePasswordActionBase, IPostConversionAction, ICheckable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

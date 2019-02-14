@@ -11,7 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     {
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register("IsActive", typeof(bool), typeof(DesignTimeQuickActionViewModel), new PropertyMetadata(default(bool)));
 
-        public DesignTimeQuickActionViewModel() : base(new TranslationUpdater(new TranslationFactory(), new ThreadManager()), new DesignTimeCommandLocator(), null, null)
+        public DesignTimeQuickActionViewModel() : base(new TranslationUpdater(new TranslationFactory(), new ThreadManager()), new DesignTimeCommandLocator(), null, null, null)
         {
         }
     }

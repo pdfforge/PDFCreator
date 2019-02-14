@@ -6,16 +6,16 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
     public interface IDataStorageFactory
     {
-        IStorage BuildIniStorage();
+        IStorage BuildIniStorage(string file);
 
         IStorage BuildRegistryStorage(RegistryHive registryHive, string baseKey, bool clearOnWrite = false);
     }
 
     public class DataStorageFactory : IDataStorageFactory
     {
-        public IStorage BuildIniStorage()
+        public IStorage BuildIniStorage(string file)
         {
-            return new IniStorage(Encoding.UTF8);
+            return new IniStorage(file ?? "", Encoding.UTF8);
         }
 
         public IStorage BuildRegistryStorage(RegistryHive registryHive, string baseKey, bool clearOnWrite = false)

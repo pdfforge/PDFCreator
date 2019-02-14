@@ -4,7 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
-using pdfforge.PDFCreator.UI.ViewModels;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System.Collections.Generic;
 using Translatable;
 
@@ -36,7 +36,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
             repairPrinterAssitant.TryRepairPrinter(Arg.Any<IEnumerable<string>>()).Returns(false);
 
             var settingsLoader = Substitute.For<ISettingsLoader>();
-            settingsLoader.LoadPdfCreatorSettings().Returns(new PdfCreatorSettings(null));
+            settingsLoader.LoadPdfCreatorSettings().Returns(new PdfCreatorSettings());
 
             var printerInstalledCondition = new PrinterInstalledCondition(repairPrinterAssitant, settingsLoader, new TranslationFactory());
 
@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
             repairPrinterAssitant.TryRepairPrinter(Arg.Any<IEnumerable<string>>()).Returns(true);
 
             var settingsLoader = Substitute.For<ISettingsLoader>();
-            settingsLoader.LoadPdfCreatorSettings().Returns(new PdfCreatorSettings(null));
+            settingsLoader.LoadPdfCreatorSettings().Returns(new PdfCreatorSettings());
 
             var printerInstalledCondition = new PrinterInstalledCondition(repairPrinterAssitant, settingsLoader, new TranslationFactory());
 
@@ -66,7 +66,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup
         [Test]
         public void DuringRepair_AllMappedPrintersArePassedToRepairAssistant()
         {
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.PrinterMappings.Add(new PrinterMapping("Printer1", ""));
             settings.ApplicationSettings.PrinterMappings.Add(new PrinterMapping("Printer2", ""));
 

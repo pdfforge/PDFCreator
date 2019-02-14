@@ -86,7 +86,7 @@ namespace Presentation.UnitTest.WorkflowQuery
             {
                 interaction.Success = true;
                 interaction.FileName = expectedFilename;
-                interaction.FilterIndex = 5; // JPEG
+                interaction.FilterIndex = 6; // JPEG
             });
             var query = BuildFileNameQuery();
 
@@ -107,7 +107,7 @@ namespace Presentation.UnitTest.WorkflowQuery
             {
                 interaction.Success = true;
                 interaction.FileName = parameterFilename;
-                interaction.FilterIndex = 5; // JPEG
+                interaction.FilterIndex = 6; // JPEG
             });
             var query = BuildFileNameQuery();
 

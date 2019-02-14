@@ -1,25 +1,27 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Startup.AppStarts;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.Utilities;
+using System.Collections.Generic;
 using System.Linq;
-using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Core.Startup
 {
     public class AppStartFactory
     {
-        private readonly IAppStartResolver _appStartResolver;
-        private readonly IParametersManager _parametersManager;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
+        private readonly IAppStartResolver _appStartResolver;
+        private readonly IPathUtil _pathUtil;
+        private readonly IDirectConversionHelper _directConversionHelper;
 
-        public AppStartFactory(IAppStartResolver appStartResolver, IParametersManager parametersManager)
+        public AppStartFactory(IAppStartResolver appStartResolver,
+            IPathUtil pathUtil,
+            IDirectConversionHelper directConversionHelper)
         {
             _appStartResolver = appStartResolver;
-            _parametersManager = parametersManager;
+            _pathUtil = pathUtil;
+            _directConversionHelper = directConversionHelper;
         }
 
         public IAppStart CreateApplicationStart(string[] commandLineArgs)
@@ -36,6 +38,18 @@ namespace pdfforge.PDFCreator.Core.Startup
 
             var commandLineParser = new CommandLineParser(commandLineArgs);
 
+            var appStartParameters = new AppStartParameters();
+            appStartParameters.ManagePrintJobs = commandLineParser.HasArgument("ManagePrintJobs");
+
+            if (commandLineParser.HasArgumentWithValue("InfoDataFile"))
+            {
+                var infFile = commandLineParser.GetArgument("InfoDataFile");
+                var newPrintJobStart = _appStartResolver.ResolveAppStart<NewPrintJobStart>();
+                newPrintJobStart.NewJobInfoFile = infFile;
+                newPrintJobStart.AppStartParameters = appStartParameters;
+                return newPrintJobStart;
+            }
+
             if (commandLineParser.HasArgument("InitializeDefaultSettings"))
             {
                 var defaultSettingsStart = _appStartResolver.ResolveAppStart<InitializeDefaultSettingsStart>();
@@ -43,54 +57,61 @@ namespace pdfforge.PDFCreator.Core.Startup
                 return defaultSettingsStart;
             }
 
-            if (commandLineParser.HasArgument("StoreLicenseForAllUsers"))
-            {
-                var storeLicenseForAllUsers = _appStartResolver.ResolveAppStart<StoreLicenseForAllUsersStart>();
-
-                if (commandLineParser.HasArgument("LicenseServerCode"))
-                    storeLicenseForAllUsers.LicenseServerCode = commandLineParser.GetArgument("LicenseServerCode");
-
-                if (commandLineParser.HasArgument("LicenseKey"))
-                    storeLicenseForAllUsers.LicenseKey = commandLineParser.GetArgument("LicenseKey");
-
-                return storeLicenseForAllUsers;
-            }
-
-            if (commandLineParser.HasArgument("PrintFile"))
-            {
-                var printFile = FindPrintFile(commandLineParser);
-                var printerName = FindPrinterName(commandLineParser);
-                var outputFileParameter = FindOutputfileParameter(commandLineParser);
-
-                // Ignore profileParameter if printerName is set to ensure that the printer has priority.
-                // Later we can't distinguish, if the printer was requested or set by default.
-                var profileParameter = "";
-                if (string.IsNullOrWhiteSpace(printerName))
-                    profileParameter = FindProfileParameter(commandLineParser);
-
-                var printFileStart = _appStartResolver.ResolveAppStart<PrintFileStart>();
-                printFileStart.PrintFile = printFile;
-                printFileStart.PrinterName = printerName;
-
-                if (!string.IsNullOrWhiteSpace(outputFileParameter) || !string.IsNullOrWhiteSpace(profileParameter))
-                    _parametersManager.SaveParameterSettings(outputFileParameter, profileParameter);
-
-                return printFileStart;
-            }
-
-            if (ShouldCallInitialize(commandLineParser))
+            if (commandLineParser.HasArgument("InitializeSettings"))
             {
                 return _appStartResolver.ResolveAppStart<InitializeSettingsStart>();
             }
 
-            var appStart = DetermineAppStart(commandLineParser, _appStartResolver);
-
-            if (commandLineParser.HasArgument("ManagePrintJobs"))
+            if (commandLineParser.HasArgument("StoreLicenseForAllUsers"))
             {
-                appStart.StartManagePrintJobs = true;
+                var storeLicenseForAllUsersStart = _appStartResolver.ResolveAppStart<StoreLicenseForAllUsersStart>();
+
+                if (commandLineParser.HasArgumentWithValue("LicenseServerCode"))
+                    storeLicenseForAllUsersStart.LicenseServerCode = commandLineParser.GetArgument("LicenseServerCode");
+
+                if (commandLineParser.HasArgumentWithValue("LicenseKey"))
+                    storeLicenseForAllUsersStart.LicenseKey = commandLineParser.GetArgument("LicenseKey");
+
+                return storeLicenseForAllUsersStart;
             }
 
-            return appStart;
+            appStartParameters.Merge = commandLineParser.HasArgument("Merge");
+            appStartParameters.Printer = FindPrinterName(commandLineParser);
+            appStartParameters.Profile = FindProfileParameter(commandLineParser);
+            appStartParameters.OutputFile = FindOutputfileParameter(commandLineParser);
+
+            var files = new List<string>();
+            if (commandLineParser.HasArgumentWithValue("PrintFile"))
+            {
+                var printFile = commandLineParser.GetArgument("PrintFile");
+                if (_directConversionHelper.CanConvertDirectly(printFile))
+                    files.Add(printFile); //Add file and proceed with directConversion see below
+                else
+                {
+                    var printFileStart = _appStartResolver.ResolveAppStart<PrintFileStart>();
+                    printFileStart.PrintFile = printFile;
+                    printFileStart.AppStartParameters = appStartParameters;
+                    return printFileStart;
+                }
+            }
+
+            AddDirectConversionFiles(files, commandLineParser);
+            var parameterlessFiles = commandLineArgs.Where(x => _pathUtil.IsValidRootedPath(x)).ToList();
+            files.AddRange(parameterlessFiles);
+            if (files.Count > 0)
+            {
+                _logger.Debug("Launched DirectConversionStart");
+                var directConversionStart = _appStartResolver.ResolveAppStart<DirectConversionStart>();
+                directConversionStart.DirectConversionFiles = files;
+                directConversionStart.AppStartParameters = appStartParameters;
+                return directConversionStart;
+            }
+
+            // ... else we have a MainWindowStart
+            var mainWindowStart = _appStartResolver.ResolveAppStart<MainWindowStart>();
+            mainWindowStart.AppStartParameters = appStartParameters;
+
+            return mainWindowStart;
         }
 
         private void LogCommandLineParameters(string[] commandLineArguments)
@@ -112,123 +133,35 @@ namespace pdfforge.PDFCreator.Core.Startup
             if (args.Any(x => x.StartsWith("/") || x.StartsWith("-")))
                 return false;
 
-            if (!args.All(x => _pathSafe.IsPathRooted(x) && _pathSafe.HasExtension(x)))
+            if (!args.All(x => _pathUtil.IsValidRootedPath(x)))
                 return false;
 
             return true;
         }
 
-        private bool ShouldCallInitialize(CommandLineParser commandLineParser)
+        private void AddDirectConversionFiles(List<string> files, CommandLineParser commandLineParser)
         {
-            if (!commandLineParser.HasArgument("InitializeSettings"))
-                return false;
-
-            var excludingArguments = new[] { "ManagePrintJobs", "InfoDataFile", "PsFile", "PdfFile" };
-
-            return excludingArguments.All(argument => !commandLineParser.HasArgument(argument));
-        }
-
-        private MaybePipedStart DetermineAppStart(CommandLineParser commandLineParser, IAppStartResolver appStartResolver)
-        {
-            // let's see if we have a new JobInfo passed as command line argument
-            var newJob = FindJobInfoFile(commandLineParser);
-            if (newJob != null)
+            if (commandLineParser.HasArgumentWithValue("PdfFile"))
             {
-                var newPrintJobStart = appStartResolver.ResolveAppStart<NewPrintJobStart>();
-                newPrintJobStart.NewJobInfoFile = newJob;
-                return newPrintJobStart;
+                var pdfFile = commandLineParser.GetArgument("PdfFile");
+                if (!string.IsNullOrWhiteSpace(pdfFile))
+                    files.Add(pdfFile);
             }
 
-            // or a PSFile?
-            newJob = FindPSFile(commandLineParser);
-            if (newJob != null)
+            if (commandLineParser.HasArgumentWithValue("PsFile"))
             {
-                var printerName = FindPrinterName(commandLineParser);
-                var profileParameter = "";
-
-                if (string.IsNullOrWhiteSpace(printerName))
-                    profileParameter = FindProfileParameter(commandLineParser);
-
-                var outputFileParameter = FindOutputfileParameter(commandLineParser);
-                var newPsJobStart = appStartResolver.ResolveAppStart<NewPsJobStart>();
-                newPsJobStart.NewDirectConversionFile = newJob;
-                newPsJobStart.PrinterName = printerName;
-                newPsJobStart.OutputFileParameter = outputFileParameter;
-                newPsJobStart.ProfileParameter = profileParameter;
-
-                return newPsJobStart;
+                var psFile = commandLineParser.GetArgument("PsFile");
+                if (!string.IsNullOrWhiteSpace(psFile))
+                    files.Add(psFile);
             }
-
-            // or a PdfFile?
-            newJob = FindPdfFile(commandLineParser);
-            if (newJob != null)
-            {
-                var printerName = FindPrinterName(commandLineParser);
-                var outputFileParameter = FindOutputfileParameter(commandLineParser);
-                var profileParameter = "";
-
-                if (string.IsNullOrWhiteSpace(printerName))
-                    profileParameter = FindProfileParameter(commandLineParser);
-
-                var newPdfJobStart = appStartResolver.ResolveAppStart<NewPdfJobStart>();
-                newPdfJobStart.NewDirectConversionFile = newJob;
-                newPdfJobStart.PrinterName = printerName;
-                newPdfJobStart.OutputFileParameter = outputFileParameter;
-                newPdfJobStart.ProfileParameter = profileParameter;
-
-                return newPdfJobStart;
-            }
-
-            // ...nope!? We have a MainWindowStart
-            return appStartResolver.ResolveAppStart<MainWindowStart>();
-        }
-
-        private string FindPrintFile(CommandLineParser commandLineParser)
-        {
-            return commandLineParser.GetArgument("PrintFile");
-        }
-
-        private string FindJobInfoFile(CommandLineParser commandLineParser)
-        {
-            string infFile = null;
-
-            if (!commandLineParser.HasArgument("InfoDataFile"))
-                return null;
-
-            infFile = commandLineParser.GetArgument("InfoDataFile");
-
-            return infFile;
-        }
-
-        private string FindPSFile(CommandLineParser commandlineParser)
-        {
-            string psFile = null;
-
-            if (!commandlineParser.HasArgument("PsFile"))
-                return null;
-
-            psFile = commandlineParser.GetArgument("PsFile");
-
-            return psFile;
-        }
-
-        private string FindPdfFile(CommandLineParser commandlineParser)
-        {
-            string pdfFile = null;
-
-            if (!commandlineParser.HasArgument("PdfFile"))
-                return null;
-
-            pdfFile = commandlineParser.GetArgument("PdfFile");
-
-            return pdfFile;
         }
 
         private string FindPrinterName(CommandLineParser commandLineParser)
         {
-            if (commandLineParser.HasArgument("PrinterName"))
+            if (commandLineParser.HasArgumentWithValue("PrinterName"))
                 return commandLineParser.GetArgument("PrinterName");
-
+            if (commandLineParser.HasArgumentWithValue("Printer"))
+                return commandLineParser.GetArgument("Printer");
             return "";
         }
 

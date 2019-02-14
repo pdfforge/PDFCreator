@@ -12,6 +12,7 @@ using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using Rhino.Mocks;
 using System.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 using SystemWrapper.IO;
 using Arg = NSubstitute.Arg;
@@ -89,9 +90,8 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
 
         private string RemoveExtension(string filePath)
         {
-            var pathSafe = new PathWrapSafe();
-            var directory = pathSafe.GetDirectoryName(filePath);
-            var fileWithoutExtension = pathSafe.GetFileNameWithoutExtension(filePath);
+            var directory = PathSafe.GetDirectoryName(filePath);
+            var fileWithoutExtension = PathSafe.GetFileNameWithoutExtension(filePath);
             return Path.Combine(directory, fileWithoutExtension);
         }
 
@@ -106,7 +106,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_FirstFileExists_FirstAttemptToCopyFails_FileExists_FirstOutputfileHasContinuedAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_FirstFileExists_FirstAttemptToCopyFails_FileExists_FirstOutputfileHasContinuedAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -123,9 +123,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(4));
@@ -145,7 +145,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_FirstFileExists_FirstOutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_FirstFileExists_FirstOutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -158,9 +158,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(3)); //Three times, once for each file
@@ -179,7 +179,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_ThirdFileExists_FirstAttemptToCopyFails_FileExists_ThirdOutputfileHasContinuedAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_ThirdFileExists_FirstAttemptToCopyFails_FileExists_ThirdOutputfileHasContinuedAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -195,9 +195,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(4));
@@ -217,7 +217,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_ThirdFileExists_ThirdOutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithEnsureUniqueFilenames_ThirdFileExists_ThirdOutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -231,9 +231,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(3)); //Three times, once for each file
@@ -252,7 +252,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithoutEnsureUniqueFilenames_FirstFileExists_OutputfileMustNotHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithoutEnsureUniqueFilenames_FirstFileExists_OutputfileMustNotHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -265,9 +265,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = false;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(3)); //Three times, once for each file
@@ -286,7 +286,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_AutoSaveWithoutEnsureUniqueFilenames_ThirdFileExists_ThirdOutputfileMustNotHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_AutoSaveWithoutEnsureUniqueFilenames_ThirdFileExists_ThirdOutputfileMustNotHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -300,9 +300,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = false;
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(3)); //Three times, once for each file
@@ -321,16 +321,16 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_FileAppendixIncrements()
+        public async Task MoveOutputFiles_MultipleFiles_FileAppendixIncrements()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Png);
             var outputFileMover = BuildAutosaveOutputFileMover(fileStub);
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
             _th.Job.Profile.AutoSave.Enabled = true;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(3)); //Three times, once for each file
@@ -350,7 +350,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_FirstAttemptToCopyFirstFileFailsSecondIsSuccessful_FirstOutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_FirstAttemptToCopyFirstFileFailsSecondIsSuccessful_FirstOutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -362,10 +362,10 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Png);
             var outputFileMover = BuildAutosaveOutputFileMover(fileStub);
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(4));
@@ -385,7 +385,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFiles_FirstAttemptToCopyThirdFileFailsSecondIsSuccessful_FirstOutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_MultipleFiles_FirstAttemptToCopyThirdFileFailsSecondIsSuccessful_FirstOutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -399,9 +399,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Png);
             var outputFileMover = BuildInteractiveOutputFileMover(fileStub);
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(4));
@@ -432,7 +432,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.TempOutputFiles = _multipleTempOutputFiles;
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            var ex = Assert.Throws<ProcessingException>(() => outputFileMover.MoveOutputFiles(_th.Job));
+            var ex = Assert.ThrowsAsync<ProcessingException>(() => outputFileMover.MoveOutputFiles(_th.Job));
             Assert.AreEqual(ErrorCode.Conversion_ErrorWhileCopyingOutputFile, ex.ErrorCode);
 
             fileStub.AssertWasCalled(x => x.Copy("", "", true), options => options.IgnoreArguments().Repeat.Twice());
@@ -442,7 +442,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFilesWithTwoDigits_FirstAttemptToCopyFirstFileFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfiles()
+        public async Task MoveOutputFiles_MultipleFilesWithTwoDigits_FirstAttemptToCopyFirstFileFails_OnRetypeOutputFilenameGetsCalled_NewValueForOutputFilenameTemplateAndOutputfiles()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -454,11 +454,11 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
 
             _th.Job.TempOutputFiles = _multipleTempOutputFilesWithTwoDigits;
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             Assert.AreEqual(1, _countRetypeOutputFilename, "RetypeOutputFilename was called more than once");
-            Assert.AreEqual(RetypedFilename + "1", _th.Job.OutputFilenameTemplate,
-                "OutputFilenameTemplate is not the one from RetypeOutputFilename");
+            Assert.AreEqual(RetypedFilename + "1", _th.Job.OutputFileTemplate,
+                "OutputFileTemplate is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "1" + "01" + ".png", _th.Job.OutputFiles[0],
                 "First outputfile is not the one from RetypeOutputFilename");
             Assert.AreEqual(RetypedFilename + "1" + "02" + ".png", _th.Job.OutputFiles[1],
@@ -468,16 +468,16 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_MultipleFilesWithTwoDigits_OutputfileAppendixMustHaveTwoDigits()
+        public async Task MoveOutputFiles_MultipleFilesWithTwoDigits_OutputfileAppendixMustHaveTwoDigits()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Pdf);
             var outputFileMover = BuildAutosaveOutputFileMover(fileStub);
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.TempOutputFiles = _multipleTempOutputFilesWithTwoDigits;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Times(10)); //Ten times, once for each file
@@ -518,7 +518,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_SingleFile_AutoSaveWithEnsureUniqueFilenames_FileExists_FirstAttemptToCopyFails_FileExists_OutputfileHasContinuedAppendix()
+        public async Task MoveOutputFiles_SingleFile_AutoSaveWithEnsureUniqueFilenames_FileExists_FirstAttemptToCopyFails_FileExists_OutputfileHasContinuedAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -535,9 +535,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _singleTempOutputfile;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore", false),
                 options => options.IgnoreArguments().Repeat.Twice()); //Copy should be caled twice
@@ -550,7 +550,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_SingleFile_AutoSaveWithEnsureUniqueFilenames_FileExists_OutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_SingleFile_AutoSaveWithEnsureUniqueFilenames_FileExists_OutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Exists(Arg<string>.Is.Anything)).Return(true).Repeat.Once();
@@ -561,9 +561,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = true;
             _th.Job.TempOutputFiles = _singleTempOutputfile;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore", false),
                 options => options.IgnoreArguments().Repeat.Once()); //Copy must only be called once
@@ -576,7 +576,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_SingleFile_AutoSaveWithoutEnsureUniqueFilenames_FileExists_OutputfileMustNotHaveAppendix()
+        public async Task MoveOutputFiles_SingleFile_AutoSaveWithoutEnsureUniqueFilenames_FileExists_OutputfileMustNotHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Exists(Arg<string>.Is.Anything)).Return(true).Repeat.Once();
@@ -587,9 +587,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.Profile.AutoSave.Enabled = true;
             _th.Job.Profile.AutoSave.EnsureUniqueFilenames = false;
             _th.Job.TempOutputFiles = _singleTempOutputfile;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore", false),
                 options => options.IgnoreArguments().Repeat.Once()); //Copy must only be called once
@@ -600,15 +600,15 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_SingleFile_EverythingSuccessful()
+        public async Task MoveOutputFiles_SingleFile_EverythingSuccessful()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             _th.GenerateGsJob(PSfiles.PDFCreatorTestpage, OutputFormat.Pdf);
             var outputFileMover = BuildInteractiveOutputFileMover(fileStub);
             _th.Job.TempOutputFiles = _singleTempOutputfile;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Copy("ignore", "ignore2", true),
                 options => options.IgnoreArguments().Repeat.Once());
@@ -620,7 +620,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
         }
 
         [Test]
-        public void MoveOutputFiles_SingleFile_FirstAttemptToCopyFailsSecondIsSuccessful_OutputfileMustHaveAppendix()
+        public async Task MoveOutputFiles_SingleFile_FirstAttemptToCopyFailsSecondIsSuccessful_OutputfileMustHaveAppendix()
         {
             var fileStub = MockRepository.GenerateStub<IFile>();
             fileStub.Stub(x => x.Copy(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything))
@@ -635,9 +635,9 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             var outputFileMover = BuildAutosaveOutputFileMover(fileStub);
 
             _th.Job.TempOutputFiles = _singleTempOutputfile;
-            var filenameTemplate = _th.Job.OutputFilenameTemplate; //Save it, because it can change in MoveOutputFiles
+            var filenameTemplate = _th.Job.OutputFileTemplate; //Save it, because it can change in MoveOutputFiles
 
-            outputFileMover.MoveOutputFiles(_th.Job);
+            await outputFileMover.MoveOutputFiles(_th.Job);
 
             fileStub.AssertWasCalled(x => x.Delete("ignore"), options => options.IgnoreArguments().Repeat.Once());
             //Delete must only be called once
@@ -658,7 +658,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Workflow
             _th.Job.TempOutputFiles = _singleTempOutputfile;
             _th.Job.Profile.AutoSave.Enabled = true;
 
-            var ex = Assert.Throws<ProcessingException>(() => outputFileMover.MoveOutputFiles(_th.Job));
+            var ex = Assert.ThrowsAsync<ProcessingException>(() => outputFileMover.MoveOutputFiles(_th.Job));
 
             Assert.AreEqual(ErrorCode.Conversion_ErrorWhileCopyingOutputFile, ex.ErrorCode);
 

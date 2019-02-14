@@ -2,13 +2,16 @@
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
+using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Jobs.Query;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.UI.Interactions;
@@ -16,48 +19,42 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using Prism.Events;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class PrintJobViewModel : TranslatableViewModelBase<PrintJobViewTranslation>, IWorkflowViewModel
     {
+        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
         public IGpoSettings GpoSettings { get; }
         private readonly ISettingsProvider _settingsProvider;
         private readonly IFileNameQuery _saveFileQuery;
         private readonly IInteractionRequest _interactionRequest;
         private readonly ISelectedProfileProvider _selectedProfileProvider;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private readonly IFile _file;
         private readonly ITempFolderProvider _tempFolderProvider;
-        private readonly IPathUtil _pathUtil;
         private readonly IDispatcher _dispatcher;
         private readonly IDirectoryHelper _directoryHelper;
         private readonly IInteractiveProfileChecker _interactiveProfileChecker;
-        private readonly PathWrapSafe _pathSafe = new PathWrapSafe();
-        private Job _job;
+        private readonly ITargetFilePathComposer _targetFilePathComposer;
         private string _outputFolder = "";
         private string _outputFilename = "";
         private string _latestDialogFilePath = "";
-        private string _title;
-        private string _author;
-        private string _keyword;
-        private string _subject;
-        private readonly OutputFormatHelper _outputFormatHelper;
+        private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
 
         public PrintJobViewModel(
             ISettingsProvider settingsProvider,
@@ -68,13 +65,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             ICommandLocator commandsLocator,
             IEventAggregator eventAggregator,
             ISelectedProfileProvider selectedProfileProvider,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
             ITempFolderProvider tempFolderProvider,
-            IPathUtil pathUtil,
             IFile file,
             IGpoSettings gpoSettings,
             IDispatcher dispatcher,
             IDirectoryHelper directoryHelper,
-            IInteractiveProfileChecker interactiveProfileChecker)
+            IInteractiveProfileChecker interactiveProfileChecker,
+            ITargetFilePathComposer targetFilePathComposer)
+
             : base(translationUpdater)
         {
             GpoSettings = gpoSettings;
@@ -82,21 +81,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _saveFileQuery = saveFileQuery;
             _interactionRequest = interactionRequest;
             _selectedProfileProvider = selectedProfileProvider;
+            _profilesProvider = profilesProvider;
             _file = file;
             _tempFolderProvider = tempFolderProvider;
-            _pathUtil = pathUtil;
             _dispatcher = dispatcher;
             _directoryHelper = directoryHelper;
             _interactiveProfileChecker = interactiveProfileChecker;
-
-            SaveCommand = new DelegateCommand(SaveExecute, CanExecute);
+            _targetFilePathComposer = targetFilePathComposer;
+            SaveCommand = new DelegateCommand(SaveExecute);
             SendByEmailCommand = new DelegateCommand(EmailExecute);
             MergeCommand = new DelegateCommand(MergeExecute);
             CancelCommand = new DelegateCommand(CancelExecute);
             SetOutputFormatCommand = new DelegateCommand<OutputFormat>(SetOutputFormatExecute);
-            BrowseFileCommand = new DelegateCommand(BrowseFileExecute);
-
-            _outputFormatHelper = new OutputFormatHelper();
+            BrowseFileCommandAsync = new AsyncCommand(BrowseFileExecute);
 
             SetupEditProfileCommand(commandsLocator, eventAggregator);
 
@@ -115,11 +112,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                         OutputFormat = ((ConversionProfile)profileListView.CurrentItem).OutputFormat;
                 };
             }
-        }
-
-        private bool CanExecute(object obj)
-        {
-            return true;
         }
 
         private void SetupEditProfileCommand(ICommandLocator commandsLocator, IEventAggregator eventAggregator)
@@ -153,7 +145,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void SetProfileForSelection(object o)
         {
-            _selectedProfileProvider.SelectedProfile = _selectedProfileProvider.Profiles.First(profile => profile.Name == Job.Profile.Name);
+            _selectedProfileProvider.SelectedProfile = _profilesProvider.Settings.First(profile => profile.Name == Job.Profile.Name);
         }
 
         private void SetOutputFormatExecute(OutputFormat parameter)
@@ -161,26 +153,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             OutputFormat = parameter;
         }
 
-        private void ChangeOutputFormat()
+        private void EnsureValidExtensionInFilename()
         {
             if (Job?.Profile?.OutputFormat == null)
                 return;
 
             var outputFormat = Job.Profile.OutputFormat;
-
             OutputFilename = _outputFormatHelper.EnsureValidExtension(OutputFilename, outputFormat);
         }
 
-        private void ComposeOutputFilename()
+        private void SetOutputFilePathInJob()
         {
-            _job.OutputFilenameTemplate = _pathUtil.Combine(OutputFolder, OutputFilename);
+            Job.OutputFileTemplate = PathSafe.Combine(OutputFolder, OutputFilename);
         }
 
-        private void BrowseFileExecute(object parameter)
+        private async Task BrowseFileExecute(object parameter)
         {
             _directoryHelper.CreateDirectory(OutputFolder);
 
-            var result = _saveFileQuery.GetFileName(OutputFolder, OutputFilename, OutputFormat);
+            var result = await GetFileOrRetry();
 
             if (result.Success)
             {
@@ -190,37 +181,36 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
         }
 
-        public void SetJob(Job job)
+        private async Task<QueryResult<OutputFilenameResult>> GetFileOrRetry()
         {
-            if (job == null)
-                return;
-
-            _job = job;
-
-            SetMetadata();
-            SetOutputFilenameAndFolder(_job.OutputFilenameTemplate);
-            OutputFormat = job.Profile.OutputFormat;
-            RaisePropertyChanged(nameof(SelectedProfile));
-            RaisePropertyChanged(nameof(Job));
+            // Retry while there is a PathTooLongException
+            while (true)
+            {
+                try
+                {
+                    return _saveFileQuery.GetFileName(OutputFolder, OutputFilename, OutputFormat);
+                }
+                catch (PathTooLongException)
+                {
+                    var interaction = new MessageInteraction(Translation.PathTooLongText, Translation.PathTooLongTitle, MessageOptions.OK, MessageIcon.Exclamation);
+                    await _interactionRequest.RaiseAsync(interaction);
+                }
+            }
         }
 
-        private void SetMetadata()
-        {
-            Title = Job.TokenReplacer.ReplaceTokens(Job.Profile.TitleTemplate);
-            Author = Job.TokenReplacer.ReplaceTokens(Job.Profile.AuthorTemplate);
-            Subject = Job.TokenReplacer.ReplaceTokens(Job.Profile.SubjectTemplate);
-            Keyword = Job.TokenReplacer.ReplaceTokens(Job.Profile.KeywordTemplate);
+        public Metadata Metadata => Job?.JobInfo?.Metadata;
 
-            RaisePropertyChanged(nameof(Title));
-            RaisePropertyChanged(nameof(Author));
-            RaisePropertyChanged(nameof(Subject));
-            RaisePropertyChanged(nameof(Keyword));
+        private void UpdateMetadata()
+        {
+            Job.InitMetadataWithTemplatesFromProfile();
+            Job.ReplaceTokensInMetadata();
+            RaisePropertyChanged(nameof(Metadata));
         }
 
         private void SetOutputFilenameAndFolder(string filenameTemplate)
         {
-            OutputFilename = _pathUtil.GetFileName(filenameTemplate);
-            OutputFolder = _pathUtil.GetLongDirectoryName(filenameTemplate);
+            OutputFilename = PathSafe.GetFileName(filenameTemplate);
+            OutputFolder = PathSafe.GetDirectoryName(filenameTemplate);
         }
 
         private void UpdateNumberOfPrintJobsHint(int numberOfPrintJobs)
@@ -239,23 +229,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             RaisePropertyChanged(nameof(NumberOfPrintJobsHint));
         }
 
-        public void ExecuteWorkflowStep(Job job)
+        public Task ExecuteWorkflowStep(Job job)
         {
             SetJob(job);
+            return _taskCompletionSource.Task;
         }
 
         private void SaveExecute(object obj)
         {
-            ChangeOutputFormat(); //Ensure extension before the checks
+            EnsureValidExtensionInFilename(); //Ensure extension before the checks
 
-            if (_interactiveProfileChecker.CheckWithErrorResultInOverlay(_job))
+            if (_interactiveProfileChecker.CheckWithErrorResultInOverlay(Job))
                 if (CheckIfFileExistsElseNotifyUser())
                     CallFinishInteraction();
         }
 
         private bool CheckIfFileExistsElseNotifyUser()
         {
-            var filePath = _pathSafe.Combine(OutputFolder, OutputFilename);
+            var filePath = PathSafe.Combine(OutputFolder, OutputFilename);
 
             //Do not inform user, if SaveFileDialog already did
             if (filePath == _latestDialogFilePath)
@@ -276,7 +267,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void CallFinishInteraction()
         {
-            _job.Passwords = JobPasswordHelper.GetJobPasswords(_job.Profile, _job.Accounts); //todo: Why here? Aren't we doing that already somewhere else?
+            Job.Passwords = JobPasswordHelper.GetJobPasswords(Job.Profile, Job.Accounts); //todo: Why here? Aren't we doing that already somewhere else?
             FinishInteraction();
         }
 
@@ -291,13 +282,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void EmailExecute(object obj)
         {
-            var tempDirectory = _pathUtil.Combine(_tempFolderProvider.TempFolder,
+            var tempDirectory = PathSafe.Combine(_tempFolderProvider.TempFolder,
                 Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
             Directory.CreateDirectory(tempDirectory);
 
-            _job.OutputFilenameTemplate = _pathUtil.Combine(tempDirectory, OutputFilename);
+            Job.OutputFileTemplate = PathSafe.Combine(tempDirectory, OutputFilename);
 
-            if (!_interactiveProfileChecker.CheckWithErrorResultInOverlay(_job))
+            if (!_interactiveProfileChecker.CheckWithErrorResultInOverlay(Job))
             {
                 try
                 {
@@ -306,8 +297,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 catch { }
             }
 
-            _job.Profile.EmailClientSettings.Enabled = true;
-            _job.Profile.OpenViewer = false;
+            Job.Profile.EmailClientSettings.Enabled = true;
+            Job.Profile.OpenViewer = false;
 
             CallFinishInteraction();
         }
@@ -328,7 +319,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void FinishInteraction()
         {
-            StepFinished?.Invoke(this, EventArgs.Empty);
+            _taskCompletionSource.SetResult(null);
+        }
+
+        public void SetJob(Job job)
+        {
+            if (job != null)
+                Job = job;
+        }
+
+        private Job _job;
+
+        public Job Job
+        {
+            get { return _job; }
+            private set
+            {
+                _job = value;
+                RaisePropertyChanged();
+                SelectedProfile = _job.Profile;
+            }
         }
 
         public ConversionProfile SelectedProfile
@@ -340,55 +350,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                     return;
                 Job.Profile = value;
                 RaisePropertyChanged();
-                if (!string.IsNullOrWhiteSpace(Job.Profile.TargetDirectory))
-                {
-                    OutputFolder = Job.Profile.TargetDirectory;
-                }
-                SetMetadata();
-            }
-        }
-
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                _title = value;
-                if (Job?.JobInfo?.Metadata != null)
-                    Job.JobInfo.Metadata.Title = _title;
-            }
-        }
-
-        public string Author
-        {
-            get { return _author; }
-            set
-            {
-                _author = value;
-                if (Job?.JobInfo?.Metadata != null)
-                    Job.JobInfo.Metadata.Author = _author;
-            }
-        }
-
-        public string Keyword
-        {
-            get { return _keyword; }
-            set
-            {
-                _keyword = value;
-                if (Job?.JobInfo?.Metadata != null)
-                    Job.JobInfo.Metadata.Keywords = _keyword;
-            }
-        }
-
-        public string Subject
-        {
-            get { return _subject; }
-            set
-            {
-                _subject = value;
-                if (Job?.JobInfo?.Metadata != null)
-                    Job.JobInfo.Metadata.Subject = _subject;
+                Job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(Job);
+                SetOutputFilenameAndFolder(Job.OutputFileTemplate);
+                EnsureValidExtensionInFilename();
+                RaisePropertyChanged(nameof(OutputFormat));
+                UpdateMetadata();
             }
         }
 
@@ -397,19 +363,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public DelegateCommand<OutputFormat> SetOutputFormatCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public ICommand SendByEmailCommand { get; }
-        public ICommand BrowseFileCommand { get; }
+        public IAsyncCommand BrowseFileCommandAsync { get; }
         public ICommand MergeCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand EditProfileCommand { get; private set; }
-
-        public Job Job
-        {
-            get { return _job; }
-            private set
-            {
-                _job = value; RaisePropertyChanged();
-            }
-        }
 
         public ObservableCollection<ConversionProfile> Profiles { get; private set; }
 
@@ -421,7 +378,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             set
             {
                 Job.Profile.OutputFormat = value;
-                ChangeOutputFormat();
+                EnsureValidExtensionInFilename();
                 RaisePropertyChanged();
             }
         }
@@ -432,7 +389,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             set
             {
                 SetProperty(ref _outputFolder, value);
-                ComposeOutputFilename();
+                SetOutputFilePathInJob();
                 SaveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -443,18 +400,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             set
             {
                 SetProperty(ref _outputFilename, value);
-                ComposeOutputFilename();
+                SetOutputFilePathInJob();
+                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public bool IsProfileEnabled
-        {
-            get
-            {
-                return GpoSettings != null ? !GpoSettings.DisableProfileManagement : true;
-            }
-        }
-
-        public event EventHandler StepFinished;
+        public bool EditButtonEnabledByGpo => GpoSettings == null || !GpoSettings.DisableProfileManagement;
     }
 }

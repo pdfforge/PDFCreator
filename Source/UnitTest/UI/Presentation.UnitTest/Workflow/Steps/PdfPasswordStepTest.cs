@@ -14,7 +14,7 @@ namespace Presentation.UnitTest.Workflow.Steps
         [SetUp]
         public void Setup()
         {
-            _job = new Job(null, new ConversionProfile(), new JobTranslations(), new Accounts());
+            _job = new Job(null, new ConversionProfile(), new Accounts());
         }
 
         [Test]

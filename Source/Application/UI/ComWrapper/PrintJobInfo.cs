@@ -28,10 +28,5 @@ namespace pdfforge.PDFCreator.UI.ComWrapper
 			 get { return _printJobInfo.Keywords; }
 		}
 		
-		public string Producer
-		{
-			 get { return _printJobInfo.Producer; }
-		}
-		
 	}
 }

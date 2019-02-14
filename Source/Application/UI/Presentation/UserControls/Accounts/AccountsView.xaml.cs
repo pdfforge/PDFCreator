@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 {
@@ -6,8 +7,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
     {
         public AccountsView(AccountsViewModel vm)
         {
-            InitializeComponent();
             DataContext = vm;
+            TransposerHelper.Register(this, vm);
+            InitializeComponent();
         }
     }
 }

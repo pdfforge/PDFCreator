@@ -53,7 +53,7 @@ namespace Presentation.UnitTest.UserControls
         public void ExecuteWorkflowStep_SetsShareUrl()
         {
             var shareUrl = "hpp://www.shareUrl.test";
-            var job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
+            var job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
             job.ShareLinks.DropboxShareUrl = shareUrl;
 
             _viewModel.ExecuteWorkflowStep(job);
@@ -66,7 +66,7 @@ namespace Presentation.UnitTest.UserControls
         {
             var wasCalled = false;
             _viewModel.PropertyChanged += (sender, args) => wasCalled = args.PropertyName == nameof(_viewModel.ShareUrl);
-            var job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
+            var job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
 
             _viewModel.ExecuteWorkflowStep(job);
 

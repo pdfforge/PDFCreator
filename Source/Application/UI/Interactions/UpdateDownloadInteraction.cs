@@ -1,17 +1,16 @@
 ﻿using pdfforge.Obsidian.Interaction;
+using System;
 
 namespace pdfforge.PDFCreator.UI.Interactions
 {
     public class UpdateDownloadInteraction : IInteraction
     {
-        public UpdateDownloadInteraction(string downloadUrl)
+        public readonly Action StartDownloadCallback;
+
+        public UpdateDownloadInteraction(Action startDownloadCallback)
         {
-            DownloadUrl = downloadUrl;
+            StartDownloadCallback = startDownloadCallback;
         }
-
-        public string DownloadUrl { get; set; }
-
-        public string DownloadedFile { get; set; }
 
         public bool Success { get; set; }
     }

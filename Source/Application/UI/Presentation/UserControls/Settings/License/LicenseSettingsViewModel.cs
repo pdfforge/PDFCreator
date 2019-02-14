@@ -66,7 +66,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
     public class LicenseSettingsViewModel : TranslatableViewModelBase<LicenseSettingsTranslation>, ITabViewModel
     {
-        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         
         private readonly IGpoSettings _gpoSettings;
         private readonly IInteractionRequest _interactionRequest;
@@ -76,7 +76,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         private readonly IProcessStarter _processStarter;
 
         private Option<Activation, LicenseError> _activation;
-        private bool _isCheckingLicense;
         
         public LicenseSettingsViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker, IOfflineActivator offlineActivator,
             IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings):base(translationUpdater)
@@ -154,26 +153,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
         public ICommand ManageLicensesCommand { get; }
 
-        //public bool IsCheckingLicense
-        //{
-        //    get { return _isCheckingLicense; }
-        //    private set
-        //    {
-        //        _isCheckingLicense = value;
-        //        RaisePropertyChanged(nameof(IsCheckingLicense));
-        //        RaisePropertyChanged(nameof(LicenseKey));
-        //        RaisePropertyChanged(nameof(LicenseStatusText));
-        //        RaisePropertyChanged(nameof(LicenseStatusForView));
-        //        RaisePropertyChanged(nameof(LicenseExpiryDate));
-        //        RaisePropertyChanged(nameof(ActivationValidTill));
-        //        RaisePropertyChanged(nameof(LastActivationTime));
-        //        RaisePropertyChanged(nameof(Licensee));
-        //        RaisePropertyChanged(nameof(MachineId));
-        //        OnlineActivationAsyncCommand.RaiseCanExecuteChanged();
-        //        OfflineActivationAsyncCommand.RaiseCanExecuteChanged();
-        //    }
-        //}
-
         public string LicenseKey
         {
             get
@@ -188,6 +167,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         public IconList Icon { get; set; } = IconList.LicenseSettings;
         public bool HiddenByGPO => _gpoSettings.HideLicenseTab;
         public bool BlockedByGPO => false;
+        public bool HasNotSupportedFeatures => false;
 
         protected override void OnTranslationChanged()
         {
@@ -234,12 +214,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
         protected virtual bool OnlineActivationCommandCanExecute(object o)
         {
-            return true; //OnlineActivationAsyncCommand.Execution == null || OnlineActivationAsyncCommand.Execution.IsNotCompleted;
+            return true;
         }
 
         protected virtual bool OfflineActivationCommandCanExecute(object o)
         {
-            return OnlineActivationCommandCanExecute(o);
+            return true;
         }
 
         protected virtual async Task OnlineActivationCommandExecute(object o)

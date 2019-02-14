@@ -4,12 +4,23 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Printing.Printing;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using System.IO;
 
 namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
 {
     [TestFixture]
     internal class PrintCommandTest
     {
+        private IPrinterHelper _printerHelper;
+        private int _timeOut;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _printerHelper = new PrinterHelper(new SystemPrinterProvider());
+            _timeOut = 60;
+        }
+
         [TearDown]
         public void CleanUp()
         {
@@ -21,7 +32,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.unknownExtension");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.IsFalse(printCommand.IsPrintable);
             Assert.AreEqual(PrintType.Unprintable, printCommand.CommandType);
@@ -32,7 +43,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.ini");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.IsTrue(printCommand.CommandType == PrintType.Print);
         }
@@ -41,8 +52,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         public void PrintCommand_GivenValidPrintOnlyFile_HasCorrectStartInfo()
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.ini");
-            var printerHelper = new PrinterHelper();
-            var printCommand = new PrintCommand(tempFile, printerHelper.GetDefaultPrinter(), new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, _printerHelper.GetDefaultPrinter(), new FileAssoc(), _printerHelper, _timeOut);
 
             var factory = new MockProcessWrapperFactory(true);
             printCommand.ProcessWrapperFactory = factory;
@@ -57,8 +67,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         public void PrintCommand_GivenValidPrintOnlyFile_PrintsSuccessfully()
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.ini");
-            var printerHelper = new PrinterHelper();
-            var printCommand = new PrintCommand(tempFile, printerHelper.GetDefaultPrinter(), new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, _printerHelper.GetDefaultPrinter(), new FileAssoc(), _printerHelper, _timeOut);
 
             var factory = new MockProcessWrapperFactory(true);
             printCommand.ProcessWrapperFactory = factory;
@@ -74,7 +83,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.txt");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.IsTrue(printCommand.CommandType == PrintType.PrintTo);
         }
@@ -85,7 +94,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.txt");
             const string printer = "SomePrinter";
 
-            var printCommand = new PrintCommand(tempFile, printer, new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, printer, new FileAssoc(), _printerHelper, _timeOut);
 
             var factory = new MockProcessWrapperFactory(true);
             printCommand.ProcessWrapperFactory = factory;
@@ -101,7 +110,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.txt");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.IsTrue(printCommand.IsPrintable);
         }
@@ -111,7 +120,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.txt");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             var factory = new MockProcessWrapperFactory(true);
             printCommand.ProcessWrapperFactory = factory;
@@ -125,7 +134,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         [Test]
         public void PrintCommand_OnPrintingNonExistingFile_ThrowsException()
         {
-            var printCommand = new PrintCommand("NotExistingFile", "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand("NotExistingFile", "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.Throws<InvalidOperationException>(() => printCommand.Print());
         }
@@ -133,7 +142,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         [Test]
         public void PrintCommand_WithNonExistingFile_IsNotPrintable()
         {
-            var printCommand = new PrintCommand("NotExistingFile", "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand("NotExistingFile", "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             Assert.IsFalse(printCommand.IsPrintable);
         }
@@ -143,7 +152,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.txt");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             var factory = new MockProcessWrapperFactory(false);
             printCommand.ProcessWrapperFactory = factory;
@@ -159,11 +168,56 @@ namespace pdfforge.PDFCreator.IntegrationTest.Core.Printing.PrintFile
         {
             var tempFile = TempFileHelper.CreateTempFile("PrintCommand", "test.ini");
 
-            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc());
+            var printCommand = new PrintCommand(tempFile, "SomePrinter", new FileAssoc(), _printerHelper, _timeOut);
 
             printCommand.ProcessWrapperFactory = new MockProcessWrapperFactory(true);
 
             Assert.Throws<InvalidOperationException>(() => printCommand.Print());
+        }
+
+        [Test]
+        public void FileHasJpgAsExtensionType_PrintReturnsTrue()
+        {
+            var specialCommandArguments = Environment.SystemDirectory + "\\shimgvw.dll,imageview_printto";
+            var testFile = TempFileHelper.CreateTempFile("PicturePrintFallbackTest", "test.jpg");
+            var fileAssoc = new FileAssoc();
+            var printCommand = new PrintCommand(testFile, "SomePrinter", fileAssoc, _printerHelper, _timeOut);
+
+            var fileIsPrintable = printCommand.Print();
+            var shellCommand = fileAssoc.GetShellCommand(Path.GetExtension(testFile), "printto");
+
+            Assert.AreEqual(specialCommandArguments.ToUpper(), shellCommand.Arguments[0].ToUpper());
+            Assert.IsTrue(fileIsPrintable);
+        }
+
+        [Test]
+        public void FileHasPngAsExtensionType_PrintReturnsTrue()
+        {
+            var specialCommandArguments = Environment.SystemDirectory + "\\shimgvw.dll,imageview_printto";
+            var testFile = TempFileHelper.CreateTempFile("PicturePrintFallbackTest", "test.png");
+            var fileAssoc = new FileAssoc();
+            var printCommand = new PrintCommand(testFile, "SomePrinter", fileAssoc, _printerHelper, _timeOut);
+
+            var fileIsPrintable = printCommand.Print();
+            var shellCommand = fileAssoc.GetShellCommand(Path.GetExtension(testFile), "printto");
+
+            Assert.AreEqual(specialCommandArguments.ToUpper(), shellCommand.Arguments[0].ToUpper());
+            Assert.IsTrue(fileIsPrintable);
+        }
+
+        [Test]
+        public void FileHasTiffAsExtensionType_PrintReturnsTrue()
+        {
+            var specialCommandArguments = Environment.SystemDirectory + "\\shimgvw.dll,imageview_printto";
+            var testFile = TempFileHelper.CreateTempFile("PicturePrintFallbackTest", "test.tiff");
+            var fileAssoc = new FileAssoc();
+            var printCommand = new PrintCommand(testFile, "SomePrinter", fileAssoc, _printerHelper, _timeOut);
+
+            var fileIsPrintable = printCommand.Print();
+            var shellCommand = fileAssoc.GetShellCommand(Path.GetExtension(testFile), "printto");
+
+            Assert.AreEqual(specialCommandArguments.ToUpper(), shellCommand.Arguments[0].ToUpper());
+            Assert.IsTrue(fileIsPrintable);
         }
     }
 }

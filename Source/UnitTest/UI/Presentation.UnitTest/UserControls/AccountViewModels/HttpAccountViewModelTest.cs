@@ -35,7 +35,6 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _httpAccountInteraction = new HttpAccountInteraction(_httpAccount, "HttpAccountTestTitle");
 
             _viewModel = new HttpAccountViewModel(translationUpdater);
-            _viewModel.SetPasswordAction = s => { };
         }
 
         [Test]
@@ -141,7 +140,7 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _viewModel.AskForPasswordLater = true;
             _viewModel.Password = "";
             _viewModel.HasBasicAuthentication = true;
-            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+            Assert.IsFalse(_viewModel.SaveCommand.CanExecute(null));
         }
 
         [Test]
@@ -153,7 +152,7 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _viewModel.AskForPasswordLater = false;
             _viewModel.Password = "";
             _viewModel.HasBasicAuthentication = true;
-            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+            Assert.IsFalse(_viewModel.SaveCommand.CanExecute(null));
         }
 
         [Test]
@@ -429,35 +428,32 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
         }
 
         [Test]
-        public void SetInteraction_TriggersSetPassword()
+        public void SetInteraction_AllowConversionInterruptsEnabled_AskForPasswordLaterIsTrueIfPasswordIsEmpty()
         {
-            var wasTriggered = false;
-            _viewModel.SetPasswordAction += s => wasTriggered = true;
+            _viewModel.AllowConversionInterrupts = true;
 
+            _httpAccountInteraction.HttpAccount.Password = "Not empty";
             _viewModel.SetInteraction(_httpAccountInteraction);
 
-            Assert.IsTrue(wasTriggered);
+            Assert.IsFalse(_viewModel.AskForPasswordLater, "AskForPasswordLater should be false for set password");
+
+            _httpAccountInteraction.HttpAccount.Password = "";
+            _viewModel.SetInteraction(_httpAccountInteraction);
+            Assert.IsTrue(_viewModel.AskForPasswordLater, "AskForPasswordLater should be true for empty password");
         }
 
         [Test]
-        public void SetInteraction_PasswordIsEmpty_SetsAskForPasswordLaterToTrue()
+        public void SetInteraction_AllowConversionInterruptsDisabled_AskForPasswordLaterIsAlwaysFalse()
         {
-            _viewModel.AskForPasswordLater = false;
-            _httpAccount.Password = "";
+            _viewModel.AllowConversionInterrupts = false;
 
+            _httpAccountInteraction.HttpAccount.Password = "Not empty";
             _viewModel.SetInteraction(_httpAccountInteraction);
 
-            Assert.IsTrue(_viewModel.AskForPasswordLater);
-        }
+            Assert.IsFalse(_viewModel.AskForPasswordLater);
 
-        [Test]
-        public void SetInteraction_PasswordNotEmpty_SetsAskForPasswordLaterToFalse()
-        {
-            _viewModel.AskForPasswordLater = true;
-            _httpAccount.Password = "Not Empty";
-
+            _httpAccountInteraction.HttpAccount.Password = "";
             _viewModel.SetInteraction(_httpAccountInteraction);
-
             Assert.IsFalse(_viewModel.AskForPasswordLater);
         }
     }

@@ -1,7 +1,7 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.Core.Workflow;
+﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using System;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.DirectConversion
 {
@@ -9,43 +9,25 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
     {
         bool CanConvertDirectly(string file);
 
-        void ConvertDirectly(string file);
+        int GetNumberOfPages(string file);
     }
 
     public class DirectConversionHelper : IDirectConversionHelper
     {
-        private readonly IJobInfoQueue _jobInfoQueue;
-        private readonly IDirectConversionProvider _provider;
-        private readonly ISettingsProvider _settingsProvider;
-        private readonly IJobInfoManager _jobInfoManager;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public DirectConversionHelper(IDirectConversionProvider provider, IJobInfoQueue jobInfoQueue, ISettingsProvider settingsProvider, IJobInfoManager jobInfoManager)
+        private readonly IPdfProcessor _pdfProcessor;
+        private readonly IFile _file;
+
+        public DirectConversionHelper(IPdfProcessor pdfProcessor, IFile file)
         {
-            _provider = provider;
-            _jobInfoQueue = jobInfoQueue;
-            _settingsProvider = settingsProvider;
-            _jobInfoManager = jobInfoManager;
+            _pdfProcessor = pdfProcessor;
+            _file = file;
         }
 
         public bool CanConvertDirectly(string file)
         {
             return IsPsFile(file) || IsPdfFile(file);
-        }
-
-        public void ConvertDirectly(string file)
-        {
-            if (!CanConvertDirectly(file))
-                return;
-
-            var converter = GetCorrectConverterForFile(file);
-
-            var infFile = converter.TransformToInfFile(file, _settingsProvider.Settings.ApplicationSettings.PrimaryPrinter);
-
-            if (string.IsNullOrWhiteSpace(infFile))
-                return;
-
-            var jobInfo = _jobInfoManager.ReadFromInfFile(infFile);
-            _jobInfoQueue.Add(jobInfo);
         }
 
         private bool IsPsFile(string file)
@@ -58,9 +40,36 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             return file.EndsWith(".pdf", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private IDirectConversion GetCorrectConverterForFile(string file)
+        public int GetNumberOfPages(string file)
         {
-            return IsPdfFile(file) ? _provider.GetPdfConversion() : _provider.GetPsConversion();
+            if (IsPdfFile(file))
+                return _pdfProcessor.GetNumberOfPages(file);
+
+            return GetNumberOfPsPages(file);
+        }
+
+        private int GetNumberOfPsPages(string fileName)
+        {
+            var count = 0;
+            try
+            {
+                using (var fs = _file.OpenRead(fileName))
+                using (var sr = new System.IO.StreamReader(fs.StreamInstance))
+                {
+                    while (sr.Peek() >= 0)
+                    {
+                        var readLine = sr.ReadLine();
+                        if (readLine != null && readLine.Contains("%%Page:"))
+                            count++;
+                    }
+                }
+            }
+            catch
+            {
+                Logger.Warn("Error while retrieving page count. Set value to 1.");
+            }
+
+            return count == 0 ? 1 : count;
         }
     }
 }

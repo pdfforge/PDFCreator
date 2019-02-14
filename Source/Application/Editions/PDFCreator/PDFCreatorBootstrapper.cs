@@ -1,4 +1,6 @@
-﻿using pdfforge.LicenseValidator.Interface;
+﻿using Banners;
+using pdfforge.LicenseValidator.Interface;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.ITextProcessing;
 using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
@@ -12,12 +14,11 @@ using pdfforge.PDFCreator.Editions.EditionBase;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
+using pdfforge.PDFCreator.UI.Presentation.Banner;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
-using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
-using pdfforge.PDFCreator.UI.ViewModels;
 using Prism.Regions;
 using SimpleInjector;
 using System;
@@ -31,9 +32,8 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override string EditionName => "Free";
         protected override Color EditionHighlightColor => Color.FromRgb(215, 40, 40);
         protected override bool HideLicensing => true;
-        protected override bool ShowWelcomeWindow => true;
-        protected override EditionHintOptionProvider ShowOnlyForPlusAndBusinessHint => new EditionHintOptionProvider(true, true);
-        protected override ButtonDisplayOptions ButtonDisplayOptions => new ButtonDisplayOptions(false, false);
+
+        protected override EditionHelper EditionHelper => new EditionHelper(true, true);
 
         protected override void RegisterSettingsLoader(Container container)
         {
@@ -97,12 +97,21 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             return new DefaultSettingsProvider();
         }
 
+        protected override void RegisterBannerManager(Container container)
+        {
+            var cacheDirectory = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\pdfforge\PDFCreator\banners");
+            var bannerOptions = new BannerOptions(Urls.BannerIndexUrl, cacheDirectory, TimeSpan.FromDays(1));
+            container.RegisterSingleton(bannerOptions);
+            container.Register<IBannerManager, OnlineBannerManager>();
+            container.Register<IBannerMetricFactory, BannerMetricFactory>();
+        }
+
         protected override void RegisterPdfProcessor(Container container)
         {
             container.Register<IPdfProcessor, ITextPdfProcessor>();
         }
 
-        public override void RegisterEditiondependentRegions(IRegionManager regionManager)
+        public override void RegisterEditionDependentRegions(IRegionManager regionManager)
         {
             regionManager.RegisterViewWithRegion(RegionNames.StatusBarPlusHintRegion, typeof(PlusHintControl));
         }

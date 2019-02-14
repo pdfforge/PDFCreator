@@ -33,13 +33,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { AccountInfo = Data.UnescapeString(data.GetValue(@"" + path + @"AccountInfo")); } catch { AccountInfo = "";}
 		}
 		
-		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccessToken", _accessToken);
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
 			data.SetValue(@"" + path + @"AccountInfo", Data.EscapeString(AccountInfo));
 		}
-		
 		public DropboxAccount Copy()
 		{
 			DropboxAccount copy = new DropboxAccount();
@@ -47,7 +45,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AccessToken = AccessToken;
 			copy.AccountId = AccountId;
 			copy.AccountInfo = AccountInfo;
-			
 			return copy;
 		}
 		
@@ -59,19 +56,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!AccessToken.Equals(v.AccessToken)) return false;
 			if (!AccountId.Equals(v.AccountId)) return false;
 			if (!AccountInfo.Equals(v.AccountInfo)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccessToken=" + AccessToken.ToString());
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("AccountInfo=" + AccountInfo.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

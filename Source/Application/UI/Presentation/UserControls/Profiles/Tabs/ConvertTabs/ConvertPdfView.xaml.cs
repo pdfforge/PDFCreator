@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Globalization;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs
 {
@@ -14,7 +15,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         private void JpegFactorTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             var cursorPosition = JpegFactorTextBox.SelectionStart;
-            JpegFactorTextBox.Text = JpegFactorTextBox.Text.Replace(',', '.');
+            var numberFormat = CultureInfo.CurrentCulture.NumberFormat;
+
+            // To help the user, we we replace thousand separators with decimal separators if both are set (i.e. ',' to '.' or vice versa)
+            if (!string.IsNullOrEmpty(numberFormat.NumberDecimalSeparator) && !string.IsNullOrEmpty(numberFormat.NumberGroupSeparator))
+            {
+                JpegFactorTextBox.Text = JpegFactorTextBox.Text.Replace(numberFormat.NumberGroupSeparator, numberFormat.NumberDecimalSeparator);
+            }
+
             JpegFactorTextBox.SelectionStart = cursorPosition;
         }
     }

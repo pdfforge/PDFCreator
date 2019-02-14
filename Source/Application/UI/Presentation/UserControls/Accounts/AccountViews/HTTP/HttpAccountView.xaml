@@ -6,10 +6,12 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              mc:Ignorable="d"
              Width="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeHttpAccountViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converter:BoolNegationConverter x:Key="NegationConverter" />
     </UserControl.Resources>
     <DockPanel Margin ="10 5 10 10" HorizontalAlignment="Stretch">
@@ -18,7 +20,11 @@
                 <TextBlock Text="{Binding Translation.UrlText}"></TextBlock>
             </Label>
             <TextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
-            <CheckBox IsChecked="{Binding HasBasicAuthentication, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 5 0">
+            <StackPanel>
+                <Label Content="{Binding Translation.TimeoutLabel}" />
+                <controls:NumericUpDown Value="{Binding Timeout}" Minimum="1" MinWidth="80" HorizontalAlignment="Left"></controls:NumericUpDown>
+            </StackPanel>
+            <CheckBox IsChecked="{Binding HasBasicAuthentication, UpdateSourceTrigger=PropertyChanged}" Margin="0 15 0 0">
                 <TextBlock Text="{Binding Translation.HasBasicAuthenticationText}" />
             </CheckBox>
             <StackPanel IsEnabled="{Binding HasBasicAuthentication}">
@@ -29,20 +35,15 @@
                 <Label>
                     <TextBlock Text="{Binding Translation.PasswordLabel}" />
                 </Label>
-                <PasswordBox Name="HttpServerPasswordBox"
-                             PasswordChar="•"
-                             PasswordChanged="HttpServerPasswordBox_OnPasswordChanged"
-                             IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource NegationConverter}}" />
+
+                <controls1:PreviewPasswordField PasswordText="{Binding Password}" IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource NegationConverter}}" />
+
+                <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
+                </CheckBox>
             </StackPanel>
-            <StackPanel  Margin="0 5 0 5">
-                <Label Content="{Binding Translation.TimeoutLabel}" />
-                <controls:NumericUpDown Value="{Binding Timeout}" Minimum="1" MinWidth="80" HorizontalAlignment="Left"></controls:NumericUpDown>
-            </StackPanel>
-            <CheckBox Margin="0 5 0 20" IsChecked="{Binding AskForPasswordLater}">
-                <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
-            </CheckBox>
         </StackPanel>
-        <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom">
+        <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom" Margin="0 15 0 0">
             <Button Content="{Binding Translation.Save}" Command="{Binding SaveCommand}" Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}" />
             <Button Content="{Binding Translation.Cancel}" Command="{Binding CancelCommand}" Margin ="5 0 0 0" Style="{DynamicResource LightGreyButton}" />
         </UniformGrid>

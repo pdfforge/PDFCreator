@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Actions.Queries;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
@@ -53,7 +54,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             var file = job.OutputFiles.First();
 
-            var isPdf = _outputFormatHelper.IsPdfFormat(job.Profile.OutputFormat);
+            var isPdf = job.Profile.OutputFormat.IsPdf();
             if (isPdf && job.Profile.OpenWithPdfArchitect && _pdfArchitectCheck.IsInstalled())
                 return OpenWithArchitect(file);
 
@@ -86,7 +87,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         public ActionResult OpenOutputFile(string filePath)
         {
             var outputFormatByPath = _outputFormatHelper.GetOutputFormatByPath(filePath);
-            var defaultViewer = _settingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(outputFormatByPath);
+            var defaultViewer = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(outputFormatByPath);
 
             try
             {
@@ -101,7 +102,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     return new ActionResult();
                 }
 
-                if (_outputFormatHelper.IsPdfFormat(outputFormatByPath) && !_fileAssoc.HasOpen(".pdf"))
+                if (outputFormatByPath.IsPdf() && !_fileAssoc.HasOpen(".pdf"))
                 {
                     _recommendArchitect.Show();
                     return new ActionResult(); //return true, to avoid another message window.

@@ -1,7 +1,6 @@
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.Workflow.Steps;
 using pdfforge.PDFCreator.Utilities;
 using Prism.Regions;

@@ -1,10 +1,26 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
+using SystemInterface.IO;
+using SystemInterface.Microsoft.Win32;
 
 namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
 {
     [TestFixture]
     public class PdfArchitectCheckTest
     {
+        private IAssemblyHelper _assemblyHelper;
+
+        [SetUp]
+        public void Setup()
+        {
+            _assemblyHelper = Substitute.For<IAssemblyHelper>();
+        }
+
+        private PdfArchitectCheck CreateArchitectCheck(IRegistry registryMock, IFile fileMock)
+        {
+            return new PdfArchitectCheck(registryMock, fileMock, _assemblyHelper);
+        }
+
         [Test]
         public void InstallationPath_WithJustManagementConsoleInstalled_ReturnsNull()
         {
@@ -13,7 +29,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.IsNull(path);
@@ -26,7 +42,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.IsNull(path);
@@ -40,7 +56,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect\PDF Architect.exe", path);
@@ -54,7 +70,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files (x86)\PDF Architect\PDF Architect.exe", path);
@@ -69,7 +85,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 3\PDF Architect 3.exe", path);
@@ -84,7 +100,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 3\PDF Architect 3.exe", path);
@@ -98,7 +114,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 2\PDF Architect 2.exe", path);
@@ -112,7 +128,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files (x86)\PDF Architect 2\PDF Architect 2.exe", path);
@@ -127,7 +143,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 3\PDF Architect 3.exe", path);
@@ -141,7 +157,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 3\PDF Architect 3.exe", path);
@@ -155,7 +171,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files (x86)\PDF Architect 3\PDF Architect 3.exe", path);
@@ -169,7 +185,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.IsNull(path);
@@ -183,7 +199,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var path = architectCheck.GetInstallationPath();
 
             Assert.AreEqual(@"C:\Program Files\PDF Architect 3\architect.exe", path);
@@ -197,7 +213,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var isInstalled = architectCheck.IsInstalled();
 
             Assert.IsFalse(isInstalled);
@@ -211,7 +227,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var isInstalled = architectCheck.IsInstalled();
 
             Assert.IsTrue(isInstalled);
@@ -225,7 +241,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry();
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
             var isInstalled = architectCheck.IsInstalled();
 
             Assert.IsFalse(isInstalled);
@@ -239,7 +255,7 @@ namespace pdfforge.PDFCreator.Utilities.UnitTest.ArchitectCheck
             var registryMock = factory.BuildRegistry(throwException: true);
             var fileMock = factory.BuildFile();
 
-            var architectCheck = new PdfArchitectCheck(registryMock, fileMock);
+            var architectCheck = CreateArchitectCheck(registryMock, fileMock);
 
             Assert.DoesNotThrow(() => architectCheck.GetInstallationPath());
         }

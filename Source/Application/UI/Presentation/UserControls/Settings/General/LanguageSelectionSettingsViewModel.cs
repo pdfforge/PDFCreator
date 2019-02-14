@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
@@ -14,13 +15,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     public class LanguageSelectionSettingsViewModel : AGeneralSettingsItemControlModel
     {
         private readonly IList<ConversionProfile> _conversionProfiles = new List<ConversionProfile>();
+        private readonly ISettingsProvider _settingsProvider;
         private readonly ITranslationHelper _translationHelper;
         private IList<Language> _languages;
-        
-        public LanguageSelectionSettingsViewModel(IGpoSettings gpoSettings, ICurrentSettingsProvider settingsProvider, ILanguageProvider languageProvider, ITranslationHelper translationHelper, ITranslationUpdater translationUpdater) :
-            base(translationUpdater, settingsProvider, gpoSettings)
+
+        public LanguageSelectionSettingsViewModel(IGpoSettings gpoSettings, ISettingsProvider settingsProvider, ICurrentSettingsProvider currentSettingsProvider, ILanguageProvider languageProvider, ITranslationHelper translationHelper, ITranslationUpdater translationUpdater) :
+            base(translationUpdater, currentSettingsProvider, gpoSettings)
         {
             PreviewTranslationCommand = new DelegateCommand(ExecutePreviewTranslation);
+            _settingsProvider = settingsProvider;
             _translationHelper = translationHelper;
             Languages = languageProvider.GetAvailableLanguages().ToList();
             SettingsProvider.SettingsChanged += (sender, args) => RaisePropertyChanged(nameof(CurrentLanguage));
@@ -38,35 +41,32 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 
         public ICommand PreviewTranslationCommand { get; private set; }
 
-
         public bool LanguageIsEnabled
         {
             get
             {
-                if (SettingsProvider.Settings?.ApplicationSettings == null)
+                if (_settingsProvider.Settings?.ApplicationSettings == null)
                     return true;
 
                 return GpoSettings?.Language == null;
             }
         }
 
-
         public string CurrentLanguage
         {
             get
             {
-                if (SettingsProvider.Settings?.ApplicationSettings == null)
+                if (_settingsProvider.Settings?.ApplicationSettings == null)
                     return null;
 
                 if (GpoSettings?.Language == null)
-                    return SettingsProvider.Settings.ApplicationSettings.Language;
+                    return _settingsProvider.Settings.ApplicationSettings.Language;
 
                 return GpoSettings.Language;
             }
             set
             {
-                SettingsProvider.Settings.ApplicationSettings.Language = value;
-               
+                _settingsProvider.Settings.ApplicationSettings.Language = value;
             }
         }
 

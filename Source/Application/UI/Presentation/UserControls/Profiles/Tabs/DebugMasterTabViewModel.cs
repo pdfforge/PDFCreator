@@ -15,5 +15,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
         public IconList Icon { get; set; } = IconList.LicenseSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
+        public bool HasNotSupportedFeatures => false;
     }
 }

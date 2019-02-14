@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -23,6 +23,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private UnitTestInteractionRequest _interactionRequest;
         private ObservableCollection<HttpAccount> _httpAccounts;
         private readonly AccountsTranslation _translation = new AccountsTranslation();
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -30,14 +31,14 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _interactionRequest = new UnitTestInteractionRequest();
 
             _httpAccounts = new ObservableCollection<HttpAccount>();
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.HttpAccounts = _httpAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _httpAccountAddCommand = new HttpAccountAddCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _httpAccountAddCommand = new HttpAccountAddCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]

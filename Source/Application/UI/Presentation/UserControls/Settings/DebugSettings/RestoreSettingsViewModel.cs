@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
@@ -13,11 +14,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     public class RestoreSettingsViewModel : ADebugSettingsItemControlModel
     {
         private readonly IInteractionRequest _request;
+        private readonly ISettingsProvider _settingsProvider;
+        private readonly IDefaultSettingsBuilder _defaultSettingsBuilder;
 
-        public RestoreSettingsViewModel(IInteractionRequest request, ISettingsManager settingsManager, ITranslationUpdater translationUpdater, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings ) :
-            base(settingsManager, translationUpdater, settingsProvider, gpoSettings)
+        public RestoreSettingsViewModel(IInteractionRequest request, ITranslationUpdater translationUpdater, ISettingsProvider settingsProvider, IGpoSettings gpoSettings, IDefaultSettingsBuilder defaultSettingsBuilder) :
+            base( translationUpdater, gpoSettings)
         {
             _request = request;
+            _settingsProvider = settingsProvider;
+            _defaultSettingsBuilder = defaultSettingsBuilder;
             RestoreDefaultSettingsCommand = new DelegateCommand(RestoreDefaultSettingsExecute);
         }
 
@@ -32,11 +37,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
             {
                 if (messageInteraction.Response == MessageResponse.Yes)
                 {
-                    var profileBuilder = new DefaultSettingsBuilder();
-                    var defaultSettings = profileBuilder.CreateDefaultSettings(SettingsProvider.Settings);
-                    ApplySettingsProcedure(defaultSettings);
+                    var profileBuilder = _defaultSettingsBuilder;
+                    var defaultSettings = profileBuilder.CreateDefaultSettings(_settingsProvider.Settings);
+                    _settingsProvider.UpdateSettings((PdfCreatorSettings)defaultSettings);
                 }
-            } );
+            });
         }
     }
 }

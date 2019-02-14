@@ -103,7 +103,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         {
             var viewModel = BuildViewModel();
             viewModel.IsReplaceByRegex = true;
-            Assert.True(viewModel.IsReplaceByRegex);
+            Assert.IsTrue(viewModel.IsReplaceByRegex);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         {
             var viewModel = BuildViewModel();
             viewModel.IsRemoveAtBeginning = true;
-            Assert.True(viewModel.IsRemoveAtBeginning);
+            Assert.IsTrue(viewModel.IsRemoveAtBeginning);
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         {
             var viewModel = BuildViewModel();
             viewModel.IsRemoveAtEnd = true;
-            Assert.True(viewModel.IsRemoveAtEnd);
+            Assert.IsTrue(viewModel.IsRemoveAtEnd);
         }
 
         [Test]

@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.Jobs.ConversionTests
             _th.GenerateGsJob(PSfiles.ThreePDFCreatorTestpages, OutputFormat.Tif);
             _th.RunGsJob();
 
-            Assert.True(_th.Job.Completed, "The job has not completed yet!");
+            Assert.IsTrue(_th.Job.Completed, "The job has not completed yet!");
 
             Assert.AreEqual(1, _th.Job.OutputFiles.Count, "More than one Tiff-File");
 

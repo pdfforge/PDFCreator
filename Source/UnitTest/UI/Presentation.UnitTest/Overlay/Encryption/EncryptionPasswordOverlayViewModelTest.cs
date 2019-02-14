@@ -33,6 +33,16 @@ namespace Presentation.UnitTest.Overlay.Encryption
         }
 
         [Test]
+        public void OkCommand_CanExecute_IfSkipNotShown_AllowConversionInterruptsIsDisabled_IsFalse()
+        {
+            var viewModel = CreateViewModel();
+            viewModel.AllowConversionInterrupts = false;
+            viewModel.SetInteraction(new EncryptionPasswordInteraction(false, true, true));
+
+            Assert.IsFalse(viewModel.OkCommand.CanExecute(null));
+        }
+
+        [Test]
         public void OkCommand_CanExecute_OwnerPasswordIsRequiredAndNotSet_IsFalse()
         {
             var viewModel = CreateViewModel();
@@ -46,7 +56,7 @@ namespace Presentation.UnitTest.Overlay.Encryption
             var viewModel = CreateViewModel();
             viewModel.SetInteraction(new EncryptionPasswordInteraction(true, false, true));
             viewModel.Interaction.UserPassword = "MyPassword";
-            Assert.True(viewModel.OkCommand.CanExecute(null));
+            Assert.IsTrue(viewModel.OkCommand.CanExecute(null));
         }
 
         [Test]
@@ -69,19 +79,6 @@ namespace Presentation.UnitTest.Overlay.Encryption
 
             Assert.AreEqual(PasswordResult.StorePassword, interaction.Response);
             Assert.IsTrue(helper.InteractionIsFinished);
-        }
-
-        [Test]
-        public void OnInteractionSet_SetsPasswordsInView()
-        {
-            var viewModel = CreateViewModel();
-            var interaction = new EncryptionPasswordInteraction(false, true, true);
-
-            var actionWasCalled = false;
-            viewModel.SetPasswordInUi = (x, y) => actionWasCalled = true;
-
-            viewModel.SetInteraction(interaction);
-            Assert.IsTrue(actionWasCalled);
         }
 
         [Test]

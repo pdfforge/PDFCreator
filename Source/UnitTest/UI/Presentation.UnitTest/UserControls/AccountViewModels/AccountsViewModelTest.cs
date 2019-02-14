@@ -3,11 +3,12 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -48,6 +49,8 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
 
         private ICommand _saveApplicationSettingsChangesCommand;
 
+        private ICurrentSettings<Accounts> _accountsProvider;
+
         [SetUp]
         public void SetUp()
         {
@@ -66,66 +69,67 @@ namespace Presentation.UnitTest.UserControls.AccountViewModels
             _commandLocator = Substitute.For<ICommandLocator>();
             _commandLocator.CreateMacroCommand().Returns(x => new MacroCommandBuilder(_commandLocator));
 
-            _ftpAccountAddCommand = Substitute.For<ICommand>();
+            _ftpAccountAddCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<FtpAccountAddCommand>().Returns(_ftpAccountAddCommand);
 
-            _ftpAccountEditCommand = Substitute.For<ICommand>();
+            _ftpAccountEditCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<FtpAccountEditCommand>().Returns(_ftpAccountEditCommand);
 
-            _ftpAccountRemoveCommand = Substitute.For<ICommand>();
+            _ftpAccountRemoveCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<FtpAccountRemoveCommand>().Returns(_ftpAccountRemoveCommand);
 
-            _smtpAccountAddCommand = Substitute.For<ICommand>();
+            _smtpAccountAddCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<SmtpAccountAddCommand>().Returns(_smtpAccountAddCommand);
 
-            _smtpAccountEditCommand = Substitute.For<ICommand>();
+            _smtpAccountEditCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<SmtpAccountEditCommand>().Returns(_smtpAccountEditCommand);
 
-            _smtpAccountRemoveCommand = Substitute.For<ICommand>();
+            _smtpAccountRemoveCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<SmtpAccountRemoveCommand>().Returns(_smtpAccountRemoveCommand);
 
-            _httpAccountAddCommand = Substitute.For<ICommand>();
+            _httpAccountAddCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<HttpAccountAddCommand>().Returns(_httpAccountAddCommand);
 
-            _httpAccountEditCommand = Substitute.For<ICommand>();
+            _httpAccountEditCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<HttpAccountEditCommand>().Returns(_httpAccountEditCommand);
 
-            _httpAccountRemoveCommand = Substitute.For<ICommand>();
+            _httpAccountRemoveCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<HttpAccountRemoveCommand>().Returns(_httpAccountRemoveCommand);
 
-            _dropboxAccountAddCommand = Substitute.For<ICommand>();
+            _dropboxAccountAddCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<DropboxAccountAddCommand>().Returns(_dropboxAccountAddCommand);
 
-            _dropboxAccountRemoveCommand = Substitute.For<ICommand>();
+            _dropboxAccountRemoveCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<DropboxAccountRemoveCommand>().Returns(_dropboxAccountRemoveCommand);
 
-            _timeServerAccountAddCommand = Substitute.For<ICommand>();
+            _timeServerAccountAddCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<TimeServerAccountAddCommand>().Returns(_timeServerAccountAddCommand);
 
-            _timeServerAccountEditCommand = Substitute.For<ICommand>();
+            _timeServerAccountEditCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<TimeServerAccountEditCommand>().Returns(_timeServerAccountEditCommand);
 
-            _timeServerAccountRemoveCommand = Substitute.For<ICommand>();
+            _timeServerAccountRemoveCommand = Substitute.For<IMountableCommand>();
             _commandLocator.GetCommand<TimeServerAccountRemoveCommand>().Returns(_timeServerAccountRemoveCommand);
 
-            _saveApplicationSettingsChangesCommand = Substitute.For<ICommand>();
-            _commandLocator.GetCommand<SaveChangedSettingsCommand>().Returns(_saveApplicationSettingsChangesCommand);
+            _saveApplicationSettingsChangesCommand = Substitute.For<IMountableCommand>();
+            _commandLocator.GetCommand<ISaveChangedSettingsCommand>().Returns(_saveApplicationSettingsChangesCommand);
 
             InitViewModel();
         }
 
         private void InitViewModel()
         {
-            var settings = new PdfCreatorSettings(null);
-            settings.ApplicationSettings.Accounts = _accounts;
-
             var settingsProvider = Substitute.For<ICurrentSettingsProvider>();
+            var settings = Substitute.For<ICurrentSettings<Accounts>>();
 
-            settingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(_accounts);
+            settings.Settings.Returns(_accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
-            _viewModel = new AccountsViewModel(settingsProvider, _commandLocator, translationUpdater, new InvokeImmediatelyDispatcher(), null);
+            _viewModel = new AccountsViewModel(settingsProvider, _accountsProvider, _commandLocator, translationUpdater, new InvokeImmediatelyDispatcher(), null);
+            _viewModel.MountView();
         }
 
         [Test]

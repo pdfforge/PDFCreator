@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         private Data CreateV6Storage()
         {
             var data = Data.CreateDataStorage();
-            data.SetValue(SettingsUpgrader.VersionSettingPath, "6");
+            data.SetValue(@"ApplicationProperties\SettingsVersion", "6");
             data.SetValue(@"ApplicationSettings\TitleReplacement\numClasses", "0");
 
             return data;
@@ -23,7 +23,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
 
         private PdfCreatorSettings CreateSettings(Data data)
         {
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ReadValues(data, "");
             return settings;
         }
@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion6_UpgradeRequiredToVersion7_ReturnsTrue()
         {
             var data = CreateV6Storage();
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             Assert.IsTrue(upgrader.RequiresUpgrade(7));
         }
@@ -41,11 +41,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
         public void DataWithVersion6_UpgradeToVersion7_SetsVersionTo7()
         {
             var data = CreateV6Storage();
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
-            Assert.AreEqual("7", data.GetValue(SettingsUpgrader.VersionSettingPath));
+            Assert.AreEqual("7", data.GetValue(@"ApplicationProperties\SettingsVersion"));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\AutoSave\Enabled", "True");
             data.SetValue(@"ConversionProfiles\0\AutoSave\TargetDirectory", expectedDirectory);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -74,7 +74,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\AutoSave\Enabled", "False");
             data.SetValue(@"ConversionProfiles\0\SaveDialog\Folder", expectedDirectory);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -90,7 +90,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ConversionProfiles\0\AutoSave\Enabled", "False");
             data.SetValue(@"ConversionProfiles\0\AutoSave\TargetDirectory", "abc");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -130,7 +130,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             var data = CreateV6Storage();
             StoreTimeServerAccount(data, 0, account);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -158,7 +158,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             StoreTimeServerAccount(data, 0, account);
             StoreTimeServerAccount(data, 1, account);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -195,7 +195,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             StoreTimeServerAccount(data, 0, firstAccount);
             StoreTimeServerAccount(data, 1, secondAccount);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -240,7 +240,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             var data = CreateV6Storage();
             StoreFtpAccount(data, 0, account);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -287,7 +287,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             var data = CreateV6Storage();
             StoreSmtpAccount(data, 0, account);
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -307,7 +307,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Search", "123");
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Replace", "");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -326,7 +326,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Search", "123");
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Replace", "xyz");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 
@@ -346,7 +346,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.SettingsManagement
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Search", "123");
             data.SetValue(@"ApplicationSettings\TitleReplacement\0\Replace", "x.y*z");
 
-            var upgrader = new SettingsUpgrader(data);
+            var upgrader = new CreatorSettingsUpgrader(data);
 
             upgrader.Upgrade(7);
 

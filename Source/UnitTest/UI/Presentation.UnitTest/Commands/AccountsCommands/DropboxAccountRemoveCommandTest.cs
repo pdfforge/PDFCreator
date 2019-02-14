@@ -5,10 +5,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
@@ -26,11 +26,13 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private DropboxTranslation _translation;
         private IDropboxService _dropboxService;
         private ObservableCollection<DropboxAccount> _dropboxAccounts;
+        private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private DropboxAccount _usedAccount;
         private DropboxAccount _unusedAccount;
         private ObservableCollection<ConversionProfile> _profiles;
         private ConversionProfile _profileWithDropboxActionEnabled;
         private ConversionProfile _profileWithDropboxActionDisabled;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -52,6 +54,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _unusedAccount.AccessToken = "AT2";
             _dropboxAccounts.Add(_unusedAccount);
 
+            _profilesProvider = Substitute.For<ICurrentSettings<ObservableCollection<ConversionProfile>>>();
             _profiles = new ObservableCollection<ConversionProfile>();
 
             _profileWithDropboxActionEnabled = new ConversionProfile();
@@ -66,18 +69,18 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _profileWithDropboxActionDisabled.DropboxSettings.AccountId = _usedAccount.AccountId;
             _profiles.Add(_profileWithDropboxActionDisabled);
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.DropboxAccounts = _dropboxAccounts;
             settings.ConversionProfiles = _profiles;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
-            currentSettingsProvider.Profiles.Returns(_profiles);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
+            _profilesProvider.Settings.Returns(_profiles);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
 
             _dropboxService = Substitute.For<IDropboxService>();
 
-            _dropboxAccountRemoveCommand = new DropboxAccountRemoveCommand(_interactionRequest, currentSettingsProvider, _dropboxService, translationUpdater);
+            _dropboxAccountRemoveCommand = new DropboxAccountRemoveCommand(_interactionRequest, _accountsProvider, _profilesProvider, _dropboxService, translationUpdater);
         }
 
         [Test]
@@ -228,17 +231,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _interactionRequest.RegisterInteractionHandler<MessageInteraction>(i => i.Response = MessageResponse.Yes);
 
             Assert.DoesNotThrow(() => _dropboxAccountRemoveCommand.Execute(_usedAccount));
-        }
-
-        [Test]
-        public void ChangeAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var newAccount = new DropboxAccount();
-            _dropboxAccounts.Add(newAccount);
-            var wasRaised = false;
-            _dropboxAccountRemoveCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-            _dropboxAccounts.Remove(newAccount);
-            Assert.IsTrue(wasRaised);
         }
 
         [Test]

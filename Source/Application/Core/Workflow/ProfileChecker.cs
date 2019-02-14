@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
@@ -21,17 +22,15 @@ namespace pdfforge.PDFCreator.Core.Workflow
     public class ProfileChecker : IProfileChecker
     {
         private readonly IEnumerable<ICheckable> _actionChecks;
-        private readonly OutputFormatHelper _outputFormatHelper;
         private readonly IPathUtil _pathUtil;
         private readonly IFile _file;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ProfileChecker(IPathUtil pathUtil, IFile file, IEnumerable<ICheckable> actionChecks, OutputFormatHelper outputFormatHelper)
+        public ProfileChecker(IPathUtil pathUtil, IFile file, IEnumerable<ICheckable> actionChecks)
         {
             _pathUtil = pathUtil;
             _file = file;
             _actionChecks = actionChecks;
-            _outputFormatHelper = outputFormatHelper;
         }
 
         public ActionResult CheckJob(Job job)
@@ -47,7 +46,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 actionCheck.ApplyPreSpecifiedTokens(job);
             }
 
-            var actionResult = CheckJobOutputFilenameTemplate(job.OutputFilenameTemplate);
+            var actionResult = CheckJobOutputFilenameTemplate(job.OutputFileTemplate);
             actionResult.AddRange(ProfileCheck(job.Profile, job.Accounts, CheckLevel.Job));
             return actionResult;
         }
@@ -119,7 +118,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private ActionResult CheckTargetDirectory(ConversionProfile profile, CheckLevel checkLevel)
         {
             if (checkLevel == CheckLevel.Job)
-                return new ActionResult(); //Job uses Job.OutputFilenameTemplate
+                return new ActionResult(); //Job uses Job.OutputFileTemplate
 
             if (!profile.AutoSave.Enabled && string.IsNullOrWhiteSpace(profile.TargetDirectory))
                 return new ActionResult(); // Valid LastSaveDirectory-Trigger
@@ -153,7 +152,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private ActionResult CheckFileNameTemplate(ConversionProfile profile, CheckLevel checkLevel)
         {
             if (checkLevel == CheckLevel.Job)
-                return new ActionResult(); //Job uses Job.OutputFilenameTemplate
+                return new ActionResult(); //Job uses Job.OutputFileTemplate
 
             if (profile.AutoSave.Enabled)
             {
@@ -278,7 +277,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             if (!profile.BackgroundPage.Enabled)
                 return new ActionResult();
 
-            if (!_outputFormatHelper.IsPdfFormat(profile.OutputFormat))
+            if (!profile.OutputFormat.IsPdf())
                 return new ActionResult();
 
             if (string.IsNullOrEmpty(profile.BackgroundPage.File))
@@ -355,7 +354,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             if (!security.Enabled)
                 return result;
 
-            if (!_outputFormatHelper.IsPdfFormat(profile.OutputFormat))
+            if (!profile.OutputFormat.IsPdf())
                 return result;
 
             if (profile.AutoSave.Enabled)
@@ -388,7 +387,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             if (!signature.Enabled)
                 return result;
 
-            if (!_outputFormatHelper.IsPdfFormat(profile.OutputFormat))
+            if (!profile.OutputFormat.IsPdf())
                 return result;
 
             var isJobLevelCheck = checkLevel == CheckLevel.Job;

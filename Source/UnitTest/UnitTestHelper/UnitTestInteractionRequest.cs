@@ -25,9 +25,9 @@ namespace pdfforge.PDFCreator.UnitTest.UnitTestHelper
 
         public T AssertWasRaised<T>(Predicate<T> interactionPredicate) where T : class, IInteraction
         {
-            var interaction = _raisedInteractions.FirstOrDefault(i => i.GetType() == typeof(T) && interactionPredicate(i as T));
+            var interaction = _raisedInteractions.FirstOrDefault(i => i is T && interactionPredicate(i as T));
             if (interaction == null)
-                Assert.Fail($"An interaction with type {typeof(T)} was not raised");
+                Assert.Fail($"An interaction with type {typeof(T)} which fulfills the predicate was not raised");
             return interaction as T;
         }
 

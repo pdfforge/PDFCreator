@@ -25,7 +25,7 @@ namespace Presentation.UnitTest.Workflow.Steps
             _conversionProfile.PdfSettings.Signature.Enabled = true;
             _conversionProfile.PdfSettings.Signature.CertificateFile = _fixture.Create<string>();
 
-            _job = new Job(null, _conversionProfile, new JobTranslations(), new Accounts());
+            _job = new Job(null, _conversionProfile, new Accounts());
             _job.Passwords.PdfSignaturePassword = _fixture.Create<string>();
 
             _step = new SignaturePasswordStep(_signaturePasswordCheck);

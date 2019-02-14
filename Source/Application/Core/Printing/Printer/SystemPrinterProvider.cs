@@ -6,12 +6,20 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
 {
     public interface ISystemPrinterProvider
     {
-        IEnumerable<string> GetInstalledPrinters();
+        string GetDefaultPrinter();
+
+        IEnumerable<string> GetInstalledPrinterNames();
     }
 
     public class SystemPrinterProvider : ISystemPrinterProvider
     {
-        public IEnumerable<string> GetInstalledPrinters()
+        public string GetDefaultPrinter()
+        {
+            var settings = new PrinterSettings();
+            return settings.PrinterName;
+        }
+
+        public IEnumerable<string> GetInstalledPrinterNames()
         {
             var printers = PrinterSettings.InstalledPrinters.Cast<string>().ToList();
             printers.Sort();

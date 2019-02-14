@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         {
             public DesignTimeSettingsProvider()
             {
-                Settings = new PdfCreatorSettings(null);
+                Settings = new PdfCreatorSettings();
                 Settings.ConversionProfiles.Add(new ConversionProfile { Name = "Default profile" });
             }
 

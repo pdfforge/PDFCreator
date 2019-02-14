@@ -249,8 +249,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.Base
             Assert.AreEqual(ErrorCode.Signature_WrongCertificatePassword, ex.ErrorCode, "Wrong error code for wrong certificate password");
         }
 
-        [Test]
-        [Category("Manual")]
+        [Test, Explicit("This has to be checked manually")]
         public void SigningPdf_TwoSignatures_MultisigningIsDisabled_FirstSignatureIsInvalid()
         {
             if (!Debugger.IsAttached)
@@ -273,8 +272,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.Base
             Debugger.Break();
         }
 
-        [Test]
-        [Category("Manual")]
+        [Test, Explicit("This has to be checked manually")]
         public void SigningPdf_TwoSignatures_MultisigningIsEnabled_FirstSignatureIsValid()
         {
             if (!Debugger.IsAttached)
@@ -376,7 +374,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.Conversion.PDFProcessing.Base
                 var pdfFile = Path.Combine(tmpfolder, $"{i:D5}.pdf");
                 File.Copy(TestHelper.Job.TempOutputFiles[0], pdfFile);
 
-                var job = new Job(new JobInfo(), TestHelper.Job.Profile, new JobTranslations(), _accounts);
+                var job = new Job(new JobInfo(), TestHelper.Job.Profile, _accounts);
                 job.Passwords = TestHelper.Job.Passwords;
                 job.TempOutputFiles.Add(pdfFile);
 

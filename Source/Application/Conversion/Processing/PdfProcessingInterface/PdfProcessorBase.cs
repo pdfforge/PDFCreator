@@ -7,15 +7,12 @@ using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Linq;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
 {
     public abstract class PdfProcessorBase : IPdfProcessor
     {
         protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
         protected readonly IFile File;
 
         protected PdfProcessorBase(IFile file)
@@ -55,19 +52,13 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
                     }
                     return;
 
-                case OutputFormat.PdfA2B:
-                    if (job.Profile.PdfSettings.Security.Enabled)
-                    {
-                        job.Profile.PdfSettings.Security.Enabled = false;
-                        Logger.Warn("Encryption automatically disabled for PDF/A2-b");
-                    }
-                    return;
-
                 case OutputFormat.PdfX:
+                case OutputFormat.PdfA2B:
+                case OutputFormat.PdfA3B:
                     if (job.Profile.PdfSettings.Security.Enabled)
                     {
                         job.Profile.PdfSettings.Security.Enabled = false;
-                        Logger.Warn("Encryption automatically disabled for PDF/X");
+                        Logger.Warn("Encryption automatically disabled for" + job.Profile.OutputFormat);
                     }
                     return;
             }
@@ -89,6 +80,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             {
                 case OutputFormat.PdfA1B:
                 case OutputFormat.PdfA2B:
+                case OutputFormat.PdfA3B:
                     return true; //Always true because of the metadata update
 
                 case OutputFormat.Pdf:
@@ -191,7 +183,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
                     if (profile.PdfSettings.Security.EncryptionLevel == EncryptionLevel.Aes256Bit)
                         pdfVersion = "1.7";
 
-            if (profile.OutputFormat == OutputFormat.PdfA2B)
+            if (profile.OutputFormat == OutputFormat.PdfA2B || profile.OutputFormat == OutputFormat.PdfA3B)
                 pdfVersion = "1.7";
 
             return pdfVersion;

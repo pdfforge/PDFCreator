@@ -44,11 +44,13 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationNameProvider.cs" />
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="CommandLineParser.cs" />
     <Compile Include="DateTimeProvider.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="IO\IDirectoryHelper.cs" />
     <Compile Include="IO\UniqueFilenameBase.cs" />
     <Compile Include="IShellExecuteHelper.cs" />
+    <Compile Include="OutputFormatHelper.cs" />
     <Compile Include="PathUtil.cs" />
     <Compile Include="DownloadSpeed.cs" />
     <Compile Include="FileAssoc.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Threading\ThreadManager.cs" />
     <Compile Include="Tokens\TokenIdentifier.cs" />
     <Compile Include="Tokens\UserToken.cs" />
+    <Compile Include="UpdateProgressChangedEventArgs.cs" />
     <Compile Include="UserGuide\HelpTopicAttribute.cs" />
     <Compile Include="CommandLineUtil.cs" />
     <Compile Include="Ftp\FtpConnectionWrap.cs" />
@@ -106,6 +110,16 @@
     <None Include="paket.references" />
     <None Include="pdfforge.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\ServiceLocator\ServiceLocator.csproj">
+      <Project>{4b9272be-2f52-48cd-93d9-8880f509b304}</Project>
+      <Name>ServiceLocator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conversion\Settings\Settings.csproj">
+      <Project>{94936199-C9C7-4A5F-A58E-6123158E84F3}</Project>
+      <Name>Settings</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -118,7 +132,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="ftplib">
-          <HintPath>..\..\..\packages\ftplib\lib\net35\ftplib.dll</HintPath>
+          <HintPath>..\..\..\lib\ftplib.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -129,7 +143,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -140,7 +154,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -151,7 +165,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

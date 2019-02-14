@@ -8,7 +8,6 @@ using pdfforge.PDFCreator.Conversion.Processing.ITextProcessing;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services.Logging;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities;
@@ -195,18 +194,15 @@ namespace PDFCreator.TestUtilities
             _profile.OutputFormat = outputformat;
 
             GenerateInfFileWithPsFiles(psFiles);
-            var jobInfoReader = new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>()));
+            var jobInfoReader = new JobInfoManager(new LocalTitleReplacerProvider(new List<TitleReplacement>()), null);
             JobInfo = jobInfoReader.ReadFromInfFile(TmpInfFile);
 
-            var jobTranslations = new JobTranslations();
-            jobTranslations.EmailSignature = "\r\n\r\nCreated with PDFCreator";
-
-            Job = new Job(JobInfo, _profile, jobTranslations, _accounts);
+            Job = new Job(JobInfo, _profile, _accounts);
 
             var extension = outputformat.ToString();
-            if (outputformat == OutputFormat.PdfA1B || outputformat == OutputFormat.PdfA2B || outputformat == OutputFormat.PdfX)
+            if (outputformat == OutputFormat.PdfA1B || outputformat == OutputFormat.PdfA2B || outputformat == OutputFormat.PdfA3B || outputformat == OutputFormat.PdfX)
                 extension = "pdf";
-            Job.OutputFilenameTemplate = TmpInfFile.Replace(".inf", "." + extension);
+            Job.OutputFileTemplate = TmpInfFile.Replace(".inf", "." + extension);
             Job.Passwords.PdfUserPassword = _profile.PdfSettings.Security.RequireUserPassword ? UserPassword : null;
             Job.Passwords.PdfOwnerPassword = _profile.PdfSettings.Security.Enabled ? OwnerPassword : null;
             Job.Passwords.PdfSignaturePassword = _profile.PdfSettings.Signature.Enabled ? SignaturePassword : null;
@@ -285,7 +281,7 @@ namespace PDFCreator.TestUtilities
             Job.OutputFiles = Job.TempOutputFiles;
             Job.TempOutputFiles.Clear();
             Job.TempOutputFiles.Add(testFile);
-            Job.OutputFilenameTemplate = testFile;
+            Job.OutputFileTemplate = testFile;
         }
 
         /// <summary>
@@ -395,8 +391,8 @@ namespace PDFCreator.TestUtilities
         /// <param name="filename"></param>
         public void SetFilenameTemplate(string filename)
         {
-            var outputFolder = Path.GetDirectoryName(Job.OutputFilenameTemplate) ?? "";
-            Job.OutputFilenameTemplate = Path.Combine(outputFolder, filename);
+            var outputFolder = Path.GetDirectoryName(Job.OutputFileTemplate) ?? "";
+            Job.OutputFileTemplate = Path.Combine(outputFolder, filename);
         }
 
         /// <summary>

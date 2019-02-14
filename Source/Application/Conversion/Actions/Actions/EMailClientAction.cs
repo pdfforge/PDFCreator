@@ -12,11 +12,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     public class EMailClientAction : IEMailClientAction
     {
         private readonly IEmailClientFactory _emailClientFactory;
+        private readonly IMailSignatureHelper _mailSignatureHelper;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public EMailClientAction(IEmailClientFactory emailClientFactory)
+        public EMailClientAction(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper)
         {
             _emailClientFactory = emailClientFactory;
+            _mailSignatureHelper = mailSignatureHelper;
         }
 
         public ActionResult ProcessJob(Job job)
@@ -30,7 +32,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var signature = string.Empty;
 
             if (hasSignature)
-                signature = job.JobTranslations.EmailSignature;
+                signature = _mailSignatureHelper.ComposeMailSignature();
 
             var recipientsTo = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.Recipients).Replace(';', ',');
             var recipientsCc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.RecipientsCc).Replace(';', ',');

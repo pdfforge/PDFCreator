@@ -30,16 +30,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" FlowDirection="LeftToRight" Orientation="Vertical" HorizontalAlignment="Stretch"
-                    Margin="0,20,0,0"
-                    Visibility="{Binding Path=Interaction.ShowViewerWarning, Converter={StaticResource BoolToVisibilityConverter}}">
+                    Margin="0,20,0,0" Visibility="{Binding Path=Interaction.ShowViewerWarning, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock TextWrapping="Wrap" Margin="10,20,10,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontWeight="Bold"
-                       Text="{Binding Translation.ErrorText}" TextAlignment="Justify" Width="370">
-            </TextBlock>
+                       Text="{Binding ErrorText}" TextAlignment="Justify" Width="370" />
         </StackPanel>
         <StackPanel Grid.Row="1" FlowDirection="LeftToRight" Orientation="Vertical">
-            <TextBlock Text="{Binding Translation.RecommendText }" TextWrapping="Wrap" Margin="10,10,10,0"
-                       TextAlignment="Justify" LineHeight="10" Width="370" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            </TextBlock>
+            <TextBlock Text="{Binding RecommendedText }" TextWrapping="Wrap" Margin="10,10,10,0"
+                       TextAlignment="Justify" LineHeight="10" Width="370" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
             <ContentControl Height="56" IsTabStop="False" Content="{DynamicResource PDFArchitectLogo}"
                             HorizontalAlignment="Center" Margin="15 30 15 15" />
         </StackPanel>

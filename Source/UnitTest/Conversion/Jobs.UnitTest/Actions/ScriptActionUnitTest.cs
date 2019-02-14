@@ -228,7 +228,7 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Jobs.Actions
         public void ApplyTokens_PathGetFullPathThrowsExpection_DoNotThrowExcpetion_PathRemains()
         {
             _path.GetFullPath(Arg.Any<string>()).Throws(new Exception());
-            var job = new Job(new JobInfo(), _profile, new JobTranslations(), _unusedAccounts);
+            var job = new Job(new JobInfo(), _profile, _unusedAccounts);
             job.Profile.Scripting.ScriptFile = "inputPATH";
 
             Assert.DoesNotThrow(() =>

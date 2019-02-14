@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\test\NUnit\build\NUnit.props" Condition="Exists('..\..\..\..\packages\test\NUnit\build\NUnit.props')" Label="Paket" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -17,6 +18,7 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +68,7 @@
     <Compile Include="CoverAndAttachmentTest.cs" />
     <Compile Include="ImageData.cs" />
     <Compile Include="ImageExtractor.cs" />
+    <Compile Include="JobInfo\SourceFileInfoDataReaderTest.cs" />
     <Compile Include="PageOrientationTest.cs" />
     <Compile Include="PdfMetadataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,10 +104,6 @@
       <Project>{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}</Project>
       <Name>PdfProcessingInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Application\Conversion\Processing\PdfToolsProcessing\PdfToolsProcessing.csproj">
-      <Project>{a80fba8d-683c-4622-8c0b-5ab66c2a8968}</Project>
-      <Name>PdfToolsProcessing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Application\Conversion\Settings\Settings.csproj">
       <Project>{94936199-C9C7-4A5F-A58E-6123158E84F3}</Project>
       <Name>Settings</Name>
@@ -124,10 +123,6 @@
     <ProjectReference Include="..\..\..\Application\Utilities\Utilities.csproj">
       <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
       <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PDFProcessing.IntegrationTest\PDFProcessing.IntegrationTest.csproj">
-      <Project>{91344391-9472-4905-a909-f17d0ba32385}</Project>
-      <Name>PDFProcessing.IntegrationTest</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
@@ -167,8 +162,19 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
+        <Reference Include="DataStorage">
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+      <ItemGroup>
         <Reference Include="Dropbox.Api.Net40">
-          <HintPath>..\..\..\..\packages\Dropbox.Api.Net40\lib\net40-client\Dropbox.Api.Net40.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Dropbox.Api.Net40.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -179,7 +185,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="ftplib">
-          <HintPath>..\..\..\..\packages\ftplib\lib\net35\ftplib.dll</HintPath>
+          <HintPath>..\..\..\..\lib\ftplib.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -190,7 +196,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="itextsharp">
-          <HintPath>..\..\..\..\packages\iTextSharp\lib\itextsharp.dll</HintPath>
+          <HintPath>..\..\..\..\lib\itextsharp.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -207,12 +213,12 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net.Http.Extensions">
-          <HintPath>..\..\..\..\packages\Microsoft.Net.Http\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Net.Http.Extensions.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net.Http.Primitives">
-          <HintPath>..\..\..\..\packages\Microsoft.Net.Http\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Net.Http.Primitives.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -223,7 +229,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Newtonsoft.Json.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -234,7 +240,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SimpleInjector">
-          <HintPath>..\..\..\..\packages\SimpleInjector\lib\net45\SimpleInjector.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SimpleInjector.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -245,7 +251,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -256,7 +262,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -267,7 +273,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Ploeh.AutoFixture">
-          <HintPath>..\..\..\..\packages\test\AutoFixture\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Ploeh.AutoFixture.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -278,7 +284,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="BitMiracle.LibTiff.NET40">
-          <HintPath>..\..\..\..\packages\test\BitMiracle.LibTiff.NET\lib\net40\BitMiracle.LibTiff.NET40.dll</HintPath>
+          <HintPath>..\..\..\..\lib\BitMiracle.LibTiff.NET40.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -289,7 +295,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NSubstitute">
-          <HintPath>..\..\..\..\packages\test\NSubstitute\lib\net45\NSubstitute.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NSubstitute.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -300,7 +306,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="nunit.framework">
-          <HintPath>..\..\..\..\packages\test\NUnit\lib\net45\nunit.framework.dll</HintPath>
+          <HintPath>..\..\..\..\lib\nunit.framework.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -311,7 +317,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Rhino.Mocks">
-          <HintPath>..\..\..\..\packages\test\RhinoMocks\lib\net\Rhino.Mocks.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Rhino.Mocks.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -325,17 +331,17 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net.Http.Extensions">
-          <HintPath>..\..\..\..\packages\test\System.Net.Http.Formatting.Extension\lib\System.Net.Http.Extensions.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Net.Http.Extensions.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net.Http.Formatting">
-          <HintPath>..\..\..\..\packages\test\System.Net.Http.Formatting.Extension\lib\System.Net.Http.Formatting.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Net.Http.Formatting.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net.Http.Primitives">
-          <HintPath>..\..\..\..\packages\test\System.Net.Http.Formatting.Extension\lib\System.Net.Http.Primitives.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Net.Http.Primitives.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -346,7 +352,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Toolbelt.Net.Smtp.SmtpMessage">
-          <HintPath>..\..\..\..\packages\test\Toolbelt.Net.Smtp.SmtpMessage\lib\net45\Toolbelt.Net.Smtp.SmtpMessage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Toolbelt.Net.Smtp.SmtpMessage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -357,7 +363,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Toolbelt.Net.Smtp.SmtpServerCore">
-          <HintPath>..\..\..\..\packages\test\Toolbelt.Net.Smtp.SmtpServerCore\lib\net45\Toolbelt.Net.Smtp.SmtpServerCore.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Toolbelt.Net.Smtp.SmtpServerCore.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -368,7 +374,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Toolbelt.Net.Smtp.SmtpServerForUnitTest">
-          <HintPath>..\..\..\..\packages\test\Toolbelt.Net.Smtp.SmtpServerForUnitTest\lib\net40\Toolbelt.Net.Smtp.SmtpServerForUnitTest.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Toolbelt.Net.Smtp.SmtpServerForUnitTest.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

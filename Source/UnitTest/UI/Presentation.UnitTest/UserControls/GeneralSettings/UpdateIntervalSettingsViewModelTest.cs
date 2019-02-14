@@ -1,15 +1,15 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
 using pdfforge.Obsidian.Trigger;
-using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Process;
@@ -33,8 +33,11 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
             _processStarter = Substitute.For<IProcessStarter>();
             _gpoSettings = Substitute.For<IGpoSettings>();
             _currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            _currentSettingsProvider.Settings.Returns(new PdfCreatorSettings(new IniStorage()));
+
+            _currentSettings = Substitute.For<ICurrentSettings<UpdateInterval>>();
+
             _updateAssistant = Substitute.For<IUpdateAssistant>();
+            _updateLauncher = Substitute.For<IUpdateLauncher>();
             _interactionRequest = Substitute.For<IInteractionRequest>();
             _eventAggregator = new EventAggregator();
         }
@@ -50,12 +53,14 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         private ICurrentSettingsProvider _currentSettingsProvider;
         private IProcessStarter _processStarter;
         private IUpdateAssistant _updateAssistant;
+        private IUpdateLauncher _updateLauncher;
         private IInteractionRequest _interactionRequest;
         private IEventAggregator _eventAggregator;
+        private ICurrentSettings<UpdateInterval> _currentSettings;
 
         private UpdateIntervalSettingsViewModel BuildViewModel()
         {
-            return new UpdateIntervalSettingsViewModel(_updateAssistant, _processStarter, _currentSettingsProvider, _gpoSettings, _translationUpdater, _eventAggregator, _interactionRequest);
+            return new UpdateIntervalSettingsViewModel(_updateAssistant, _processStarter, null, _currentSettingsProvider, _gpoSettings, _translationUpdater, _eventAggregator, _interactionRequest, _currentSettings, new EditionHelper(false, false), _updateLauncher);
         }
 
         [Test]
@@ -89,18 +94,9 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         }
 
         [Test]
-        public void ApplicationSettingsNotSet_RequestDisplayUpdateWarning_ReturnsFalse()
-        {
-            _currentSettingsProvider.Settings.ApplicationSettings = null;
-            var viewModel = BuildViewModel();
-
-            Assert.IsFalse(viewModel.DisplayUpdateWarning);
-        }
-
-        [Test]
         public void ApplicationSettingUpdateIntervalIsNotNever_RequestDisplayUpdateWarning_ReturnsFalse()
         {
-            _currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval = UpdateInterval.Daily;
+            _currentSettings.Settings = UpdateInterval.Daily;
             var viewModel = BuildViewModel();
 
             Assert.IsFalse(viewModel.DisplayUpdateWarning);
@@ -109,7 +105,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         [Test]
         public void ApplicationSettingUpdateIntervalIsNever_RequestDisplayUpdateWarning_ReturnsTrue()
         {
-            _currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval = UpdateInterval.Never;
+            _currentSettings.Settings = UpdateInterval.Never;
             var viewModel = BuildViewModel();
 
             Assert.IsTrue(viewModel.DisplayUpdateWarning);
@@ -118,7 +114,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         [Test]
         public void ApplicationSettingIsNull_GetCurrentUpdateInterval_GetUpdateIntervalWeekly()
         {
-            _currentSettingsProvider.Settings.ApplicationSettings = null;
+            _currentSettings = null;
             var viewModel = BuildViewModel();
 
             Assert.AreEqual(viewModel.CurrentUpdateInterval, UpdateInterval.Weekly);
@@ -131,7 +127,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
 
             var viewModel = BuildViewModel();
 
-            Assert.AreEqual(viewModel.CurrentUpdateInterval, _currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval);
+            Assert.AreEqual(viewModel.CurrentUpdateInterval, _currentSettings.Settings);
         }
 
         [Test]
@@ -141,7 +137,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
 
             var viewModel = BuildViewModel();
 
-            Assert.AreEqual(viewModel.CurrentUpdateInterval, _currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval);
+            Assert.AreEqual(viewModel.CurrentUpdateInterval, _currentSettings.Settings);
         }
 
         [Test]
@@ -160,15 +156,14 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
 
             var eventStub = Substitute.For<IEventHandler<PropertyChangedEventArgs>>();
             viewModel.PropertyChanged += eventStub.OnEventRaised;
-            var CurrentUpdateIntervalListener = new PropertyChangedListenerMock(viewModel, nameof(viewModel.CurrentUpdateInterval));
-            var DisplayUpdateWarningListener = new PropertyChangedListenerMock(viewModel, nameof(viewModel.DisplayUpdateWarning));
+            var currentUpdateIntervalListener = new PropertyChangedListenerMock(viewModel, nameof(viewModel.CurrentUpdateInterval));
+            var displayUpdateWarningListener = new PropertyChangedListenerMock(viewModel, nameof(viewModel.DisplayUpdateWarning));
 
-            Assert.AreNotEqual(_currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval, UpdateInterval.Never);
             viewModel.CurrentUpdateInterval = UpdateInterval.Never;
 
-            Assert.IsTrue(CurrentUpdateIntervalListener.WasCalled, "CurrentUpdateInterval");
-            Assert.IsTrue(DisplayUpdateWarningListener.WasCalled, "DisplayUpdateWarning");
-            Assert.AreEqual(_currentSettingsProvider.Settings.ApplicationSettings.UpdateInterval, UpdateInterval.Never);
+            Assert.IsTrue(currentUpdateIntervalListener.WasCalled, "CurrentUpdateInterval");
+            Assert.IsTrue(displayUpdateWarningListener.WasCalled, "DisplayUpdateWarning");
+            Assert.AreEqual(_currentSettings.Settings, UpdateInterval.Never);
         }
 
         [Test]

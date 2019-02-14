@@ -39,9 +39,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
             return true;
         }
 
+        public PrinterNameValidation ValidatePrinterName(string printerName)
+        {
+            return PrinterNameValidation.InvalidName;
+        }
+
         public bool IsValidPrinterName(string printerName)
         {
             return false;
+        }
+
+        public string CreateValidPrinterName(string printerBaseName)
+        {
+            return printerBaseName;
         }
     }
 }

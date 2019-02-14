@@ -10,7 +10,6 @@
              xmlns:printJob="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob"
              xmlns:behavior="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Behavior"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="450"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}">
@@ -24,7 +23,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <Grid.Resources>
             <Style TargetType="Separator">
                 <Setter Property="BorderThickness" Value="0 1 0 0" />
@@ -40,14 +41,29 @@
         </Grid.Resources>
 
         <StackPanel Grid.Row="0">
+
             <DockPanel>
-                <StackPanel DockPanel.Dock="Left" Margin="10 0">
+                <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
+                           Content="{Binding Translation.ProfileLabel}" />
+                <Grid DockPanel.Dock="Right" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding EditButtonEnabledByGpo }">
+                    <Button Command="{Binding EditProfileCommand}" Style="{StaticResource SmallButtonStyle}"
+                                Content="{Binding Translation.EditProfile}" />
+                </Grid>
+                <ComboBox HorizontalAlignment="Stretch" Name="ProfileBox" ItemsSource="{Binding Profiles}"
+                              SelectedItem="{Binding SelectedProfile}" IsSynchronizedWithCurrentItem="True"
+                              DisplayMemberPath="Name" />
+            </DockPanel>
+
+            <Separator Margin="0 20 0 10" />
+
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left">
                     <controls:DropDownButton
                             MinWidth="65"
                             Orientation="Vertical"
                             ItemsSource="{Binding OutputFormats}"
                             BorderThickness="0"
-                            IconTemplate="{DynamicResource FileTypeIconDropDownTemplate}">
+                            IconTemplate="{DynamicResource FileTypeIconDropDownTemplate}" Height="108">
 
                         <controls:DropDownButton.ItemContainerStyle>
                             <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
@@ -60,33 +76,22 @@
                         </controls:DropDownButton.ItemContainerStyle>
                     </controls:DropDownButton>
                 </StackPanel>
-                <StackPanel VerticalAlignment="Center">
-                    <Label Target="{Binding ElementName=TargetFilenameTextBox}"
+                <StackPanel Margin="2 0 0 0">
+                    <StackPanel Margin="0 4 0 0">
+                        <Label Target="{Binding ElementName=TargetFilenameTextBox}"
                                Content="{Binding Translation.FilenameText}" />
-                    <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
+                        <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
+                    </StackPanel>
+                    <DockPanel>
+                        <Label DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
+                               Content="{Binding Translation.FoldernameText}" />
+                        <Button Style="{StaticResource SmallButtonStyle}" DockPanel.Dock="Right"
+                                Command="{Binding BrowseFileCommandAsync}">
+                            ...
+                        </Button>
+                        <TextBox HorizontalAlignment="Stretch" Name="TargetFolderTextBox" Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </DockPanel>
                 </StackPanel>
-            </DockPanel>
-
-            <DockPanel>
-                <Label DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
-                           Content="{Binding Translation.FoldernameText}" />
-                <Button Style="{StaticResource SmallButtonStyle}" DockPanel.Dock="Right"
-                            Command="{Binding BrowseFileCommand}">
-                    ...
-                </Button>
-                <TextBox HorizontalAlignment="Stretch" Name="TargetFolderTextBox" Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            </DockPanel>
-
-            <DockPanel>
-                <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
-                           Content="{Binding Translation.ProfileLabel}" />
-                <Grid DockPanel.Dock="Right" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding IsProfileEnabled }">
-                    <Button Command="{Binding EditProfileCommand}" Style="{StaticResource SmallButtonStyle}"
-                             Content="{Binding Translation.EditProfile}" />
-                </Grid>
-                <ComboBox HorizontalAlignment="Stretch" Name="ProfileBox" ItemsSource="{Binding Profiles}"
-                              SelectedItem="{Binding SelectedProfile}" IsSynchronizedWithCurrentItem="True"
-                              DisplayMemberPath="Name" />
             </DockPanel>
 
             <Separator />
@@ -108,41 +113,29 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=TitleTextBox}"
                            Content="{Binding Translation.TitleLabel}" />
-                <!--<TextBox Name="TitleTextBox" Grid.Row="0" Grid.Column="1"
-                             Text="{Binding Job.JobInfo.Metadata.Title}" />-->
                 <TextBox Name="TitleTextBox" Grid.Row="0" Grid.Column="1"
-                         Text="{Binding Title, Mode=TwoWay}" />
+                         Text="{Binding Metadata.Title, Mode=TwoWay}" />
 
                 <Label Grid.Row="2" Grid.Column="0" Target="{Binding ElementName=AuthorTextBox}"
                        Content="{Binding Translation.AuthorLabel}" />
-                <!--<TextBox Name="AuthorTextBox" Grid.Row="2" Grid.Column="1"
-                         Text="{Binding Job.JobInfo.Metadata.Author}" />-->
                 <TextBox Name="AuthorTextBox" Grid.Row="2" Grid.Column="1"
-                         Text="{Binding Author}" />
+                         Text="{Binding Metadata.Author}" />
 
                 <Label Grid.Row="4" Grid.Column="0" Target="{Binding ElementName=SubjectTextBox}"
                            Content="{Binding Translation.SubjectLabel}" />
-                <!--<TextBox Name="SubjectTextBox" Grid.Row="4" Grid.Column="1"
-                             Text="{Binding Job.JobInfo.Metadata.Subject}" />-->
                 <TextBox Name="SubjectTextBox" Grid.Row="4" Grid.Column="1"
-                         Text="{Binding Subject}" />
+                         Text="{Binding Metadata.Subject}" />
 
                 <Label Grid.Row="6" Grid.Column="0" Target="{Binding ElementName=KeywordsTextBox}"
                            Content="{Binding Translation.KeywordsLabel}" />
-                <!--<TextBox Name="KeywordsTextBox" Grid.Row="6" Grid.Column="1"
-                             Text="{Binding Job.JobInfo.Metadata.Keywords}" />-->
                 <TextBox Name="KeywordsTextBox" Grid.Row="6" Grid.Column="1"
-                         Text="{Binding Keyword}" />
+                         Text="{Binding Metadata.Keywords}" />
             </Grid>
-
-            <!--<Separator />
-
-            <CheckBox>
-                <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DisplayAfterConversionWindowText}" />
-            </CheckBox>-->
         </StackPanel>
 
-        <StackPanel  Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+        <Grid Grid.Row="1" Name="BannerRegion" MaxHeight="50" HorizontalAlignment="Center" />
+
+        <StackPanel  Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <Button
                     Style="{DynamicResource FlatPdfCreatorButton}"
                     Margin="10"

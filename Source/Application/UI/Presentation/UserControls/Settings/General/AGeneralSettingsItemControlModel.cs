@@ -12,9 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
             SettingsProvider = settingsProvider;
             GpoSettings = gpoSettings;
         }
-
-        //public ApplicationSettings ApplicationSettings { get; private set; }
-
+        
         public ICurrentSettingsProvider SettingsProvider { get; }
         protected IGpoSettings GpoSettings { get; }
 

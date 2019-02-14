@@ -23,7 +23,7 @@ namespace Presentation.UnitTest.UserControls
             var accounts = new Accounts();
             accounts.HttpAccounts.Add(_httpAccount);
 
-            _job = new Job(null, new ConversionProfile(), new JobTranslations(), accounts);
+            _job = new Job(null, new ConversionProfile(), accounts);
             _job.Profile.HttpSettings.AccountId = _httpAccount.AccountId;
         }
 

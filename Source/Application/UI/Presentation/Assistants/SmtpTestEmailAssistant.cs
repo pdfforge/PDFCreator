@@ -7,7 +7,6 @@ using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
@@ -31,23 +30,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IInteractionRequest _interactionRequest;
         private readonly IFile _file;
         private readonly IPath _path;
-        private readonly IMailSignatureHelper _mailSignatureHelper;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly IInteractionInvoker _interactionInvoker;
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenHelper _tokenHelper;
         private readonly ISmtpMailAction _smtpMailAction;
         private SmtpTranslation _translation;
 
         public SmtpTestEmailAssistant(ITranslationUpdater translationUpdater, IInteractionRequest interactionRequest, IFile file,
-            ISmtpMailAction smtpMailAction, IPath path, IMailSignatureHelper mailSignatureHelper, ErrorCodeInterpreter errorCodeInterpreter,
-            IInteractionInvoker interactionInvoker, TokenHelper tokenHelper)
+            ISmtpMailAction smtpMailAction, IPath path, ErrorCodeInterpreter errorCodeInterpreter,
+            IInteractionInvoker interactionInvoker, ITokenHelper tokenHelper)
         {
             _interactionRequest = interactionRequest;
             _file = file;
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
             _smtpMailAction = smtpMailAction;
             _path = path;
-            _mailSignatureHelper = mailSignatureHelper;
             _errorCodeInterpreter = errorCodeInterpreter;
             _interactionInvoker = interactionInvoker;
             _tokenHelper = tokenHelper;
@@ -77,10 +74,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             currentProfile.AutoSave.Enabled = false;
 
-            var jobTranslations = new JobTranslations();
-            jobTranslations.EmailSignature = _mailSignatureHelper.ComposeMailSignature();
-
-            var job = CreateJob(jobTranslations, currentProfile, accounts);
+            var job = CreateJob(currentProfile, accounts);
 
             _smtpMailAction.ApplyPreSpecifiedTokens(job);
             var result = _smtpMailAction.Check(job.Profile, job.Accounts, CheckLevel.Job);
@@ -136,10 +130,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return true;
         }
 
-        private Job CreateJob(JobTranslations jobTranslations, ConversionProfile currentProfile, Accounts accounts)
+        private Job CreateJob(ConversionProfile currentProfile, Accounts accounts)
         {
             var jobInfo = new JobInfo();
-            var job = new Job(jobInfo, currentProfile, jobTranslations, accounts);
+            var job = new Job(jobInfo, currentProfile, accounts);
             job.JobInfo.Metadata = new Metadata();
             job.JobInfo.SourceFiles.Add(new SourceFileInfo { Filename = "test.ps" });
             job.TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;

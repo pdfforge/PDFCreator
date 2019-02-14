@@ -1,4 +1,7 @@
-﻿namespace pdfforge.PDFCreator.Core.SettingsManagement
+﻿using Microsoft.Win32;
+using System;
+
+namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
     public interface IInstallationPathProvider
     {
@@ -14,6 +17,8 @@
         /// </summary>
         string ApplicationRegistryPath { get; }
 
+        string RegistryHive { get; }
+
         /// <summary>
         ///     The GUID with curly braces, i.e. {00000000-0000-0000-0000-000000000000}
         /// </summary>
@@ -23,15 +28,28 @@
     public class InstallationPathProvider : IInstallationPathProvider
     {
         public InstallationPathProvider(string applicationRegistryPath, string settingsRegistryPath,
-            string applicationGuid)
+            string applicationGuid, RegistryHive registryHive)
         {
             SettingsRegistryPath = settingsRegistryPath;
             ApplicationGuid = applicationGuid;
             ApplicationRegistryPath = applicationRegistryPath;
+            RegistryHive = GetHiveString(registryHive);
+        }
+
+        private string GetHiveString(RegistryHive registryHive)
+        {
+            switch (registryHive)
+            {
+                case Microsoft.Win32.RegistryHive.CurrentUser: return "HKEY_CURRENT_USER";
+                case Microsoft.Win32.RegistryHive.LocalMachine: return "HKEY_LOCAL_MACHINE";
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(registryHive), $"The registry hive {registryHive} is not supported!");
         }
 
         public string SettingsRegistryPath { get; }
         public string ApplicationRegistryPath { get; }
         public string ApplicationGuid { get; }
+        public string RegistryHive { get; }
     }
 }

@@ -43,17 +43,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PsParser">
-      <HintPath>..\..\..\..\packages\PsParser\lib\PsParser.dll</HintPath>
+      <HintPath>..\..\..\..\lib\PsParser.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionResult.cs" />
+    <Compile Include="DispatcherFactory.cs" />
     <Compile Include="ErrorCodes.cs" />
     <Compile Include="FolderProvider\ISpoolerProvider.cs" />
     <Compile Include="IDispatcher.cs" />
     <Compile Include="IJobPrinter.cs" />
+    <Compile Include="IMailSignatureHelper.cs" />
     <Compile Include="ITitleReplacerProvider.cs" />
+    <Compile Include="JobInfo\StoredParametersManager.cs" />
     <Compile Include="Jobs\IUserTokenExtractor.cs" />
     <Compile Include="Jobs\JobCompletedEventArgs.cs" />
     <Compile Include="Jobs\JobEvent.cs" />
@@ -63,7 +66,6 @@
     <Compile Include="JobInfo\SourceFileInfoDataReader.cs" />
     <Compile Include="Jobs\JobShareLinks.cs" />
     <Compile Include="Jobs\PsParserFactory.cs" />
-    <Compile Include="OutputFormatHelper.cs" />
     <Compile Include="ProcessingException.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SpooledJobFinder.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="PathHelper.cs" />
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="JobInfo\JobInfo.cs" />
-    <Compile Include="Jobs\JobTranslations.cs" />
     <Compile Include="JobInfo\Metadata.cs" />
     <Compile Include="JobInfo\SourceFileInfo.cs" />
     <Compile Include="TitleReplacer.cs" />
@@ -83,6 +84,10 @@
     <Compile Include="Query\QueryResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
+      <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
+      <Name>SettingsManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
@@ -110,7 +115,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -121,7 +126,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -132,7 +137,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -143,7 +148,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -154,7 +159,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

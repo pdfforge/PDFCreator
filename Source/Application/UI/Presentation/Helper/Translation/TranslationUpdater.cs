@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;

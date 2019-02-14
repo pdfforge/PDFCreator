@@ -56,7 +56,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
 
             foreach (var f in files)
             {
-                _printCommands.Add(new PrintCommand(f, printerName, _fileAssoc));
+                _printCommands.Add(new PrintCommand(f, printerName, _fileAssoc, _printerHelper, _settingsProvider.Settings.ApplicationSettings.ConversionTimeout));
             }
 
             var directories = _printCommands.FindAll(p => Directory.Exists(p.Filename));
@@ -105,7 +105,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
                 {
                     _logger.Debug("Current default printer is " + defaultPrinter);
                     _logger.Info("PDFCreator must be set temporarily as default printer");
-                    if (_settingsProvider.Settings.ApplicationSettings.AskSwitchDefaultPrinter)
+                    if (_settingsProvider.Settings.CreatorAppSettings.AskSwitchDefaultPrinter)
                     {
                         if (!QuerySwitchDefaultPrinter())
                             return false;
@@ -119,7 +119,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
                     _logger.Debug("PDFCreator set as default printer");
                 }
 
-                return _printCommands.PrintAll();
+                return _printCommands.PrintAll(_settingsProvider.Settings.ApplicationSettings.ConversionTimeout);
             }
             finally
             {
@@ -135,7 +135,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         private string GetPrinterName()
         {
             if (string.IsNullOrWhiteSpace(PdfCreatorPrinter))
-                PdfCreatorPrinter = _settingsProvider.Settings.ApplicationSettings.PrimaryPrinter;
+                PdfCreatorPrinter = _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter;
 
             return _printerHelper.GetApplicablePDFCreatorPrinter(PdfCreatorPrinter);
         }

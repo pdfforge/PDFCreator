@@ -1,12 +1,12 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.Generic;
@@ -25,9 +25,10 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
 
             _languageProvider = Substitute.For<ILanguageProvider>();
             _gpoSettings = Substitute.For<IGpoSettings>();
+            _settingsProvider = Substitute.For<ISettingsProvider>();
             _currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
             _translationHelper = Substitute.For<ITranslationHelper>();
-            _currentSettingsProvider.Settings.Returns(new PdfCreatorSettings(new IniStorage()));
+            _settingsProvider.Settings.Returns(new PdfCreatorSettings());
         }
 
         [TearDown]
@@ -40,12 +41,13 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
 
         private ITranslationUpdater _translationUpdater;
         private IGpoSettings _gpoSettings;
-        private ICurrentSettingsProvider _currentSettingsProvider;
+        private ISettingsProvider _settingsProvider;
         private ITranslationHelper _translationHelper;
+        private ICurrentSettingsProvider _currentSettingsProvider;
 
         private LanguageSelectionSettingsViewModel BuildViewModel()
         {
-            return new LanguageSelectionSettingsViewModel(_gpoSettings, _currentSettingsProvider, _languageProvider, _translationHelper, _translationUpdater);
+            return new LanguageSelectionSettingsViewModel(_gpoSettings, _settingsProvider, _currentSettingsProvider, _languageProvider, _translationHelper, _translationUpdater);
         }
 
         [Test]
@@ -66,7 +68,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         [Test]
         public void ApplicationIsNotSet_RequestCurrentLanguage_ReturnsNull()
         {
-            _currentSettingsProvider.Settings.Returns(x => null);
+            _settingsProvider.Settings.Returns(x => null);
             var viewModel = BuildViewModel();
             Assert.IsNull(viewModel.CurrentLanguage);
         }
@@ -74,7 +76,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         [Test]
         public void ApplicationSettingsIsNull_RequestLangaugeIsEnabled_GetTrue()
         {
-            _currentSettingsProvider.Settings.Returns(info => null);
+            _settingsProvider.Settings.Returns(info => null);
             var viewModel = BuildViewModel();
             Assert.IsTrue(viewModel.LanguageIsEnabled);
         }
@@ -137,7 +139,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
             var viewModel = BuildViewModel();
 
             viewModel.CurrentLanguage = language;
-            Assert.AreEqual(_currentSettingsProvider.Settings.ApplicationSettings.Language, language);
+            Assert.AreEqual(_settingsProvider.Settings.ApplicationSettings.Language, language);
         }
 
         [Test]
@@ -145,7 +147,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         {
             _gpoSettings = null;
             var viewModel = BuildViewModel();
-            Assert.AreEqual(_currentSettingsProvider.Settings.ApplicationSettings.Language, viewModel.CurrentLanguage);
+            Assert.AreEqual(_settingsProvider.Settings.ApplicationSettings.Language, viewModel.CurrentLanguage);
         }
 
         [Test]
@@ -162,7 +164,7 @@ namespace Presentation.UnitTest.UserControls.GeneralSettings
         {
             _gpoSettings.Language.Returns(x => null);
             var viewModel = BuildViewModel();
-            Assert.AreEqual(_currentSettingsProvider.Settings.ApplicationSettings.Language, viewModel.CurrentLanguage);
+            Assert.AreEqual(_settingsProvider.Settings.ApplicationSettings.Language, viewModel.CurrentLanguage);
         }
     }
 }

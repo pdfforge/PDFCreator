@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using System.Windows.Input;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
 {
@@ -12,11 +13,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
     {
         private readonly IPdfArchitectCheck _pdfArchitectCheck;
         private readonly IProcessStarter _processStarter;
+        private readonly IFile _file;
+        private string _architectButtonCaption;
 
-        public ArchitectViewModel(IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter, ITranslationUpdater translationUpdater) : base(translationUpdater)
+        public ArchitectViewModel(IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter, ITranslationUpdater translationUpdater, IFile file) : base(translationUpdater)
         {
             _pdfArchitectCheck = pdfArchitectCheck;
             _processStarter = processStarter;
+            _file = file;
+        }
+
+        protected override void OnTranslationChanged()
+        {
+            base.OnTranslationChanged();
+            RaisePropertyChanged(nameof(DownloadPdfArchitectButtonText));
         }
 
         public ICommand LaunchPdfArchitectCommand => new DelegateCommand(o =>
@@ -27,10 +37,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
                 _processStarter.Start(applicationPath);
         });
 
+        public string DownloadPdfArchitectButtonText => IsPdfArchitectDownloaded ? Translation.InstallPdfArchitectButtonContent : Translation.DownloadPdfArchitectButtonContent;
+
         public ICommand LaunchWebsiteCommand => new DelegateCommand(o => _processStarter.Start(Urls.ArchitectWebsiteUrl));
 
-        public ICommand DownloadPdfArchitectCommand => new DelegateCommand(o => _processStarter.Start(Urls.ArchitectDownloadUrl));
+        public ICommand DownloadPdfArchitectCommand => new DelegateCommand(o =>
+        {
+            var installerPath = _pdfArchitectCheck.GetInstallerPath();
+            if (string.IsNullOrEmpty(installerPath) || !_file.Exists(installerPath))
+            {
+                _processStarter.Start(Urls.ArchitectDownloadUrl);
+            }
+            else
+            {
+                _processStarter.Start(installerPath);
+            }
+        });
 
         public bool IsPdfArchitectInstalled => _pdfArchitectCheck.IsInstalled();
+        public bool IsPdfArchitectDownloaded => _pdfArchitectCheck.IsDownloaded();
     }
 }

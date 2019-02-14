@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.Query;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow.Output
@@ -22,14 +23,14 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         protected override IFile File { get; }
         protected override IPathUtil PathUtil { get; }
 
-        protected override QueryResult<string> HandleInvalidRootedPath(string filename, OutputFormat outputFormat)
+        protected override Task<QueryResult<string>> HandleInvalidRootedPath(string filename, OutputFormat outputFormat)
         {
-            return new QueryResult<string>(false, null);
+            return Task.FromResult(new QueryResult<string>(false, null));
         }
 
-        protected override QueryResult<string> HandleFirstFileFailed(string filename, OutputFormat outputFormat)
+        protected override Task<QueryResult<string>> HandleFirstFileFailed(string filename, OutputFormat outputFormat)
         {
-            return new QueryResult<string>(false, null);
+            return Task.FromResult(new QueryResult<string>(false, null));
         }
 
         protected override HandleCopyErrorResult QueryHandleCopyError(int fileNumber)

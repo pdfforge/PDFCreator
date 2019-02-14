@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
@@ -19,7 +19,7 @@ namespace Presentation.UnitTest.UserControls.Profile
         private EditEmailTextInteraction _interaction;
         private SmtpTranslation _translation;
         private const string TestSignature = "Test Signature";
-        private TokenHelper _tokenHelper;
+        private ITokenHelper _tokenHelper;
         private TokenReplacer _tokenReplacer;
 
         [SetUp]

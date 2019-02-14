@@ -1,5 +1,6 @@
 ﻿using pdfforge.DataStorage;
 using System;
+using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -25,11 +26,38 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             Data.SetValue(path, mapFunction(v));
         }
 
+        private IEnumerable<string> GetSubSections(string path)
+        {
+            try
+            {
+                return Data.GetSubSections(path);
+            }
+            catch
+            {
+                return new string[0];
+            }
+        }
+
         public void MoveSection(string path, string newPath)
         {
-            foreach (var value in Data.GetValues(path))
+            var keyValuePairs = Data.GetValues(path);
+
+            foreach (var value in keyValuePairs)
             {
                 MoveValue(path + value.Key, newPath + value.Key);
+            }
+
+            var subSections = GetSubSections(path);
+            foreach (var s in subSections)
+            {
+                var subAddress = s.Remove(0, path.Length);
+                var oldSubPath = path + subAddress;
+                var newSubPath = newPath + subAddress;
+
+                foreach (var value in Data.GetValues(oldSubPath))
+                {
+                    MoveValue(oldSubPath + value.Key, newSubPath + value.Key);
+                }
             }
 
             Data.RemoveSection(path.TrimEnd('\\'));

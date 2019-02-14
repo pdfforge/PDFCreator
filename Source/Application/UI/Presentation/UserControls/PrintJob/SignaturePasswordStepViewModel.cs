@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
@@ -23,8 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
         }
 
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
-        public string CertificateFile => _pathSafe.GetFileName(CertificatePath);
+        public string CertificateFile => PathSafe.GetFileName(CertificatePath);
 
         public SignaturePasswordStepViewModel(ITranslationUpdater translationUpdater, ISignaturePasswordCheck signaturePasswordCheck) : base(translationUpdater, nameof(JobPasswords.PdfSignaturePassword))
         {

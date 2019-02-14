@@ -1,15 +1,15 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements
 {
     public class TitleReplacementRemoveCommand : ICommand
     {
-        private readonly ICurrentSettingsProvider _settingsProvider;
+        private readonly ICurrentSettings<ObservableCollection<TitleReplacement>> _settingsProvider;
 
-        public TitleReplacementRemoveCommand(ICurrentSettingsProvider settingsProvider)
+        public TitleReplacementRemoveCommand(ICurrentSettings<ObservableCollection<TitleReplacement>> settingsProvider)
         {
             _settingsProvider = settingsProvider;
         }
@@ -21,7 +21,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements
 
         public void Execute(object parameter)
         {
-            _settingsProvider.Settings.ApplicationSettings.TitleReplacement.Remove(parameter as TitleReplacement);
+            _settingsProvider.Settings.Remove(parameter as TitleReplacement);
         }
 
 #pragma warning disable CS0067

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript
 {
@@ -19,7 +18,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
     {
         private readonly IAssemblyHelper _assemblyHelper;
         private readonly IFile _file;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
 
         public GhostscriptDiscovery(IFile file, IAssemblyHelper assemblyHelper)
         {
@@ -27,7 +25,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             _assemblyHelper = assemblyHelper;
         }
 
-        public List<string> PossibleGhostscriptPaths { get; set; } = new List<string> { "Ghostscript", @"..\..\..\..\..\..\packages\setup\Ghostscript" };
+        public List<string> PossibleGhostscriptPaths { get; set; } = new List<string> { "Ghostscript", @"..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\..\packages\Ghostscript" };
 
         /// <summary>
         ///     Get the internal instance if it exists, otherwise the installed instance in the given version
@@ -37,13 +35,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
         {
             var applicationPath = _assemblyHelper.GetAssemblyDirectory();
 
-            var paths = PossibleGhostscriptPaths.Select(path => _pathSafe.Combine(applicationPath, path));
+            var paths = PossibleGhostscriptPaths
+                .Select(path => PathSafe.Combine(applicationPath, path));
 
             foreach (var path in paths)
             {
-                var exePath = _pathSafe.Combine(path, @"Bin\gswin32c.exe");
-                var libPath = _pathSafe.Combine(path, @"Bin") + ';' + _pathSafe.Combine(path, @"Lib") + ';' +
-                              _pathSafe.Combine(path, @"Fonts");
+                var exePath = PathSafe.Combine(path, @"Bin\gswin32c.exe");
+                var libPath = PathSafe.Combine(path, @"Bin") + ';' + PathSafe.Combine(path, @"Lib") + ';' +
+                              PathSafe.Combine(path, @"Fonts");
 
                 if (_file.Exists(exePath))
                     return new GhostscriptVersion("<internal>", exePath, libPath);

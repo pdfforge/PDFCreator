@@ -128,6 +128,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
                     }
                 }
             }
+            catch (InterruptWorkflowException)
+            {
+                _logger.Warn("Interrupted workflow");
+            }
             catch (Exception ex)
             {
                 _logger.Error("There was an error while processing the print jobs: " + ex);

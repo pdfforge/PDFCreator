@@ -27,10 +27,16 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             var sfi = new SourceFileInfo();
 
             sfi.DocumentTitle = data.GetValue(section + "DocumentTitle");
+            sfi.OriginalFilePath = data.GetValue(section + "OriginalFilePath");
             sfi.WinStation = data.GetValue(section + "WinStation");
             sfi.Author = data.GetValue(section + "UserName");
             sfi.ClientComputer = data.GetValue(section + "ClientComputer");
             sfi.Filename = data.GetValue(section + "SpoolFileName");
+
+            sfi.PrinterName = data.GetValue(section + "PrinterName");
+            sfi.PrinterParameter = data.GetValue(section + "PrinterParameter");
+            sfi.ProfileParameter = data.GetValue(section + "ProfileParameter");
+            sfi.OutputFileParameter = data.GetValue(section + "OutputFileParameter");
 
             var type = data.GetValue(section + "SourceFileType");
 
@@ -120,11 +126,15 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
                 section = section + "\\";
 
             data.SetValue(section + "DocumentTitle", sourceFileInfo.DocumentTitle);
+            data.SetValue(section + "OriginalFilePath", sourceFileInfo.OriginalFilePath);
             data.SetValue(section + "WinStation", sourceFileInfo.WinStation);
             data.SetValue(section + "UserName", sourceFileInfo.Author);
             data.SetValue(section + "ClientComputer", sourceFileInfo.ClientComputer);
             data.SetValue(section + "SpoolFileName", sourceFileInfo.Filename);
             data.SetValue(section + "PrinterName", sourceFileInfo.PrinterName);
+            data.SetValue(section + "PrinterParameter", sourceFileInfo.PrinterParameter);
+            data.SetValue(section + "ProfileParameter", sourceFileInfo.ProfileParameter);
+            data.SetValue(section + "OutputFileParameter", sourceFileInfo.OutputFileParameter);
             data.SetValue(section + "SessionId", sourceFileInfo.SessionId.ToString(CultureInfo.InvariantCulture));
             data.SetValue(section + "JobCounter", sourceFileInfo.JobCounter.ToString(CultureInfo.InvariantCulture));
             data.SetValue(section + "JobId", sourceFileInfo.JobId.ToString(CultureInfo.InvariantCulture));

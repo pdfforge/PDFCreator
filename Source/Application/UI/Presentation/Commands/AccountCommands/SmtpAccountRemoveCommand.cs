@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -18,24 +17,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class SmtpAccountRemoveCommand : TranslatableCommandBase<SmtpTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ObservableCollection<SmtpAccount> _smtpAccounts;
-        private readonly ObservableCollection<ConversionProfile> _profiles;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ObservableCollection<SmtpAccount> SmtpAccounts => _accountsProvider?.Settings?.SmtpAccounts;
+        private ObservableCollection<ConversionProfile> Profiles => _profilesProvider?.Settings;
         private SmtpAccount _currentAccount;
         private List<ConversionProfile> _usedInProfilesList;
 
-        public SmtpAccountRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater) : base(translationUpdater)
+        public SmtpAccountRemoveCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _smtpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.SmtpAccounts;
-            _profiles = currentSettingsProvider?.Profiles;
-
-            _smtpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.SmtpAccounts ?? new ObservableCollection<SmtpAccount>();
-            _smtpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+            _accountsProvider = accountsProvider;
+            _profilesProvider = profilesProvider;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _smtpAccounts.Count > 0;
+            return SmtpAccounts.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -44,7 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            _usedInProfilesList = _profiles.Where(p => p.EmailSmtpSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
+            _usedInProfilesList = Profiles.Where(p => p.EmailSmtpSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
 
             var title = Translation.RemoveSmtpAccount;
 
@@ -77,8 +78,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Cancel));
                 return;
             }
-            if (_smtpAccounts.Contains(_currentAccount))
-                _smtpAccounts.Remove(_currentAccount);
+            if (SmtpAccounts.Contains(_currentAccount))
+                SmtpAccounts.Remove(_currentAccount);
 
             foreach (var profile in _usedInProfilesList)
             {

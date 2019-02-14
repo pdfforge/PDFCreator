@@ -1,14 +1,15 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -23,6 +24,7 @@ namespace Presentation.UnitTest.UserControls.Profile
     {
         private DropboxUserControlViewModel _viewModel;
         private ObservableCollection<DropboxAccount> _dropboxAccounts;
+        private ICurrentSettings<Accounts> _accountsProvider;
         private ICommand _addCommand;
 
         [SetUp]
@@ -33,10 +35,11 @@ namespace Presentation.UnitTest.UserControls.Profile
             var settingsProvider = Substitute.For<ICurrentSettingsProvider>();
             settingsProvider.SelectedProfile.Returns(new ConversionProfile());
 
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             _dropboxAccounts = new ObservableCollection<DropboxAccount>();
             settings.ApplicationSettings.Accounts.DropboxAccounts = _dropboxAccounts;
-            settingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var commandLocator = Substitute.For<ICommandLocator>();
             commandLocator.CreateMacroCommand().Returns(x => new MacroCommandBuilder(commandLocator));
@@ -44,7 +47,7 @@ namespace Presentation.UnitTest.UserControls.Profile
             _addCommand = Substitute.For<ICommand>();
             commandLocator.GetCommand<DropboxAccountAddCommand>().Returns(_addCommand);
 
-            _viewModel = new DropboxUserControlViewModel(translationUpdater, settingsProvider, commandLocator, new TokenViewModelFactory(settingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null);
+            _viewModel = new DropboxUserControlViewModel(translationUpdater, _accountsProvider, settingsProvider, commandLocator, new TokenViewModelFactory(settingsProvider, new TokenHelper(new DesignTimeTranslationUpdater())), null, new GpoSettingsDefaults());
         }
 
         [Test]

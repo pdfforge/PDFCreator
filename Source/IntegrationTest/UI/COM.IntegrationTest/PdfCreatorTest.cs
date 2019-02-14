@@ -31,7 +31,7 @@ namespace pdfforge.PDFCreator.IntegrationTest.UI.COM
 
             var bootstrapper = new PDFCreatorBootstrapper();
             var container = new Container();
-            bootstrapper.ConfigureContainer(container);
+            bootstrapper.RegisterMainApplication(container);
             _th = container.GetInstance<TestHelper>();
         }
 

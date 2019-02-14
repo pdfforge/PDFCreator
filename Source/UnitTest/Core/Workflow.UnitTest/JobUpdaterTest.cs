@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Utilities.Tokens;
 
@@ -53,12 +54,11 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             sfi2.Filename = PSFile2;
             jobInfo.SourceFiles.Add(sfi2);
 
-            _userTokenExtractor.ExtractUserTokenFromPsFile(PSFile1).Returns(_userToken1);
-            _userTokenExtractor.ExtractUserTokenFromPsFile(PSFile2).Returns(_userToken2);
-
             var profile = new ConversionProfile();
+            _job = new Job(jobInfo, profile, new Accounts());
 
-            _job = new Job(jobInfo, profile, null, new Accounts());
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PSFile1, _job.Profile.UserTokens.Seperator).Returns(_userToken1);
+            _userTokenExtractor.ExtractUserTokenFromPsFile(PSFile2, _job.Profile.UserTokens.Seperator).Returns(_userToken2);
         }
 
         [TestCase(0, 1, "0 should be defaulted to 0")]
@@ -91,7 +91,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _jobDataUpdater.UpdateTokensAndMetadata(_job);
 
-            _userTokenExtractor.DidNotReceiveWithAnyArgs().ExtractUserTokenFromPsFile(Arg.Any<string>());
+            _userTokenExtractor.DidNotReceiveWithAnyArgs().ExtractUserTokenFromPsFile(Arg.Any<string>(), Arg.Any<UserTokenSeperator>());
         }
 
         [Test]
@@ -103,10 +103,10 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _jobDataUpdater.UpdateTokensAndMetadata(_job);
 
-            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile1);
+            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile1, _job.Profile.UserTokens.Seperator);
             Assert.AreSame(_userToken1, _job.JobInfo.SourceFiles[0].UserToken);
             Assert.IsTrue(_job.JobInfo.SourceFiles[0].UserTokenEvaluated);
-            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2);
+            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2, _job.Profile.UserTokens.Seperator);
             Assert.AreSame(_userToken2, _job.JobInfo.SourceFiles[1].UserToken);
             Assert.IsTrue(_job.JobInfo.SourceFiles[1].UserTokenEvaluated);
         }
@@ -119,8 +119,8 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
 
             _jobDataUpdater.UpdateTokensAndMetadata(_job);
 
-            _userTokenExtractor.DidNotReceive().ExtractUserTokenFromPsFile(PSFile1);
-            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2);
+            _userTokenExtractor.DidNotReceive().ExtractUserTokenFromPsFile(PSFile1, _job.Profile.UserTokens.Seperator);
+            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2, _job.Profile.UserTokens.Seperator);
         }
 
         [Test]
@@ -131,8 +131,8 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _jobDataUpdater.UpdateTokensAndMetadata(_job);
             _jobDataUpdater.UpdateTokensAndMetadata(_job);
 
-            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile1);
-            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2);
+            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile1, _job.Profile.UserTokens.Seperator);
+            _userTokenExtractor.Received(1).ExtractUserTokenFromPsFile(PSFile2, _job.Profile.UserTokens.Seperator);
         }
 
         [Test]

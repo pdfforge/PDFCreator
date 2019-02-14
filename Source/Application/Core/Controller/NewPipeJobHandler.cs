@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace pdfforge.PDFCreator.Core.Controller
@@ -37,9 +38,9 @@ namespace pdfforge.PDFCreator.Core.Controller
             {
                 HandleNewJobMessage(message);
             }
-            else if (message.StartsWith("DragAndDrop|"))
+            else if (message.StartsWith("DragAndDrop|", StringComparison.OrdinalIgnoreCase))
             {
-                HandleDroppedFileMessage(message);
+                HandleDroppedFileMessage(message, false);
             }
             else if (message.StartsWith("ShowMain|", StringComparison.OrdinalIgnoreCase))
             {
@@ -52,9 +53,11 @@ namespace pdfforge.PDFCreator.Core.Controller
             }
         }
 
-        private void HandleDroppedFileMessage(string message)
+        private void HandleDroppedFileMessage(string message, bool merge)
         {
-            var droppedFiles = message.Split('|');
+            var droppedFiles = message.Split('|')
+                .Skip(1)
+                .Where(s => !string.IsNullOrWhiteSpace(s));
 
             var threadStart = new ThreadStart(() => _fileConversionAssistant.HandleFileList(droppedFiles));
 
@@ -63,20 +66,26 @@ namespace pdfforge.PDFCreator.Core.Controller
 
         private void HandleNewJobMessage(string message)
         {
-            var file = message.Substring(7);
-            try
-            {
-                _logger.Debug("NewJob found: " + file);
-                if (!File.Exists(file))
-                    return;
+            var newJobs = message.Split('|')
+                .Skip(1)
+                .Where(s => !string.IsNullOrWhiteSpace(s));
 
-                _logger.Trace("The given file exists.");
-                var jobInfo = _jobInfoManager.ReadFromInfFile(file);
-                _jobInfoQueue.Add(jobInfo);
-            }
-            catch (Exception ex)
+            foreach (var infFile in newJobs)
             {
-                _logger.Warn(ex, "There was an Exception while adding the print job: ");
+                try
+                {
+                    _logger.Debug("NewJob found: " + infFile);
+                    if (!File.Exists(infFile))
+                        return;
+
+                    _logger.Trace("The given file exists.");
+                    var jobInfo = _jobInfoManager.ReadFromInfFile(infFile);
+                    _jobInfoQueue.Add(jobInfo);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "There was an Exception while adding the print job: ");
+                }
             }
         }
     }

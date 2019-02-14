@@ -3,10 +3,10 @@ using NUnit.Framework;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UnitTest.UnitTestHelper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Collections.ObjectModel;
@@ -22,6 +22,7 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
         private ObservableCollection<HttpAccount> _httpAccounts;
         private HttpAccount _currentHttpAccount;
         private HttpTranslation _translation;
+        private ICurrentSettings<Accounts> _accountsProvider;
 
         [SetUp]
         public void SetUp()
@@ -31,13 +32,13 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             _currentHttpAccount = new HttpAccount() { UserName = "CurrentUserName" };
             _httpAccounts = new ObservableCollection<HttpAccount>();
             _httpAccounts.Add(_currentHttpAccount);
-            var settings = new PdfCreatorSettings(null);
+            var settings = new PdfCreatorSettings();
             settings.ApplicationSettings.Accounts.HttpAccounts = _httpAccounts;
-            var currentSettingsProvider = Substitute.For<ICurrentSettingsProvider>();
-            currentSettingsProvider.Settings.Returns(settings);
+            _accountsProvider = Substitute.For<ICurrentSettings<Accounts>>();
+            _accountsProvider.Settings.Returns(settings.ApplicationSettings.Accounts);
 
             var translationUpdater = new TranslationUpdater(new TranslationFactory(), new ThreadManager());
-            _httpAccountEditCommand = new HttpAccountEditCommand(_interactionRequest, currentSettingsProvider, translationUpdater);
+            _httpAccountEditCommand = new HttpAccountEditCommand(_interactionRequest, _accountsProvider, translationUpdater);
         }
 
         [Test]
@@ -154,17 +155,6 @@ namespace Presentation.UnitTest.Commands.AccountsCommands
             var interaction = _interactionRequest.AssertWasRaised<HttpAccountInteraction>();
             Assert.AreEqual(_currentHttpAccount, interaction.HttpAccount);
             Assert.AreEqual("Changed Username", _currentHttpAccount.UserName);
-        }
-
-        [Test]
-        public void ChangeHttpAccountsCollection_TriggersRaiseCanExecuteChanged()
-        {
-            var wasRaised = false;
-            _httpAccountEditCommand.CanExecuteChanged += (sender, args) => wasRaised = true;
-
-            _httpAccounts.Add(new HttpAccount());
-
-            Assert.IsTrue(wasRaised);
         }
     }
 }

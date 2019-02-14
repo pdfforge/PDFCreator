@@ -2,7 +2,6 @@
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
-using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup.AppStarts;
@@ -26,7 +25,7 @@ namespace pdfforge.PDFCreator.UnitTest.Startup.AppStarts
         {
             var checkAllStartupConditions = Substitute.For<ICheckAllStartupConditions>();
             _iniSettingsLoader = Substitute.For<IIniSettingsLoader>();
-            _settings = new PdfCreatorSettings(Substitute.For<IStorage>());
+            _settings = new PdfCreatorSettings();
             _iniSettingsLoader.LoadIniSettings(Arg.Any<string>()).Returns(_settings);
             _settingsProvider = Substitute.For<ISettingsProvider>();
             _settingsProvider.CheckValidSettings(_settings).Returns(true);

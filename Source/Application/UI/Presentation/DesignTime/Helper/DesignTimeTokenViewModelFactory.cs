@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
 {
     public class DesignTimeTokenViewModelFactory : ITokenViewModelFactory
     {
-        private readonly TokenHelper _tokenHelper;
+        private readonly ITokenHelper _tokenHelper;
 
         public DesignTimeTokenViewModelFactory()
         {

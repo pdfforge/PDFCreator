@@ -5,54 +5,54 @@ using System.Linq;
 
 namespace pdfforge.PDFCreator.Utilities.IO
 {
+    public class CleanUpPathExceptionPairs : Dictionary<string, Exception>
+    { }
+
+    public interface IFolderCleaner
+    {
+        CleanUpPathExceptionPairs Clean(string cleanupFolder, TimeSpan minAge);
+    }
+
     /// <summary>
     ///     Helper class to clean a folder with files older then a specific date
     /// </summary>
-    public class FolderCleaner
+    public class FolderCleaner : IFolderCleaner
     {
-        /// <summary>
-        ///     Build a new FolderCleander with the given path. The folder itself will NOT be deleted during cleanup.
-        /// </summary>
-        /// <param name="cleanupFolder">The path to be cleaned</param>
-        public FolderCleaner(string cleanupFolder)
-        {
-            CleanupFolder = cleanupFolder;
-        }
-
-        public string CleanupFolder { get; }
-
-        public Dictionary<string, Exception> CleanupExceptions { get; } = new Dictionary<string, Exception>();
+        private CleanUpPathExceptionPairs _cleanUpPathExceptionPairs;
 
         /// <summary>
-        ///     Clean all files in the configured folder. The folder itself will NOT be deleted during cleanup.
-        ///     If exceptions occur while cleaning up, they will be stored in CleanupExceptions.
+        ///     Clean all files in the given folder. The folder itself will NOT be deleted during cleanup.
+        ///     If exceptions occur while cleaning up, they will be returned as CleanUpPathExceptionPairs.
         /// </summary>
-        public void Clean()
+        public CleanUpPathExceptionPairs Clean(string cleanupFolder)
         {
-            Clean(TimeSpan.Zero);
+            return Clean(cleanupFolder, TimeSpan.Zero);
         }
 
         /// <summary>
-        ///     Clean all files in the configured folder. The folder itself will NOT be deleted during cleanup.
-        ///     If exceptions occur while cleaning up, they will be stored in CleanupExceptions.
+        ///     Clean all files in the given folder. The folder itself will NOT be deleted during cleanup.
+        ///     If exceptions occur while cleaning up, they will be returned as CleanUpPathExceptionPairs.
         ///     <param name="minAge">The minimum TimeSpan between file creation date and current time.</param>
         /// </summary>
-        public void Clean(TimeSpan minAge)
+        public CleanUpPathExceptionPairs Clean(string cleanupFolder, TimeSpan minAge)
         {
+            _cleanUpPathExceptionPairs = new CleanUpPathExceptionPairs(); //clear
             try
             {
-                if (!Directory.Exists(CleanupFolder))
-                    return;
+                if (!Directory.Exists(cleanupFolder))
+                    return _cleanUpPathExceptionPairs;
 
-                Clean(CleanupFolder, minAge);
+                DoClean(cleanupFolder, minAge);
             }
             catch (Exception ex)
             {
-                HandleException(CleanupFolder, ex);
+                HandleException(cleanupFolder, ex);
             }
+
+            return _cleanUpPathExceptionPairs;
         }
 
-        private void Clean(string folder, TimeSpan minAge)
+        private void DoClean(string folder, TimeSpan minAge)
         {
             var folders = new DirectoryInfo(folder).GetDirectories();
             foreach (var item in folders)
@@ -117,7 +117,7 @@ namespace pdfforge.PDFCreator.Utilities.IO
 
         private void HandleException(string path, Exception ex)
         {
-            CleanupExceptions[path] = ex;
+            _cleanUpPathExceptionPairs[path] = ex;
         }
     }
 }

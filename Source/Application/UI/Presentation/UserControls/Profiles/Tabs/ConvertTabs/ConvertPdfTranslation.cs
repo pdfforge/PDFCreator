@@ -17,6 +17,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         public string ColorAndGrayJpegFactor { get; private set; } = "Factor:";
         public string ColorAndGrayResampleCheckBox { get; private set; } = "Resample images to";
         public string ColorAndGrayDpi { get; private set; } = "DPI";
+        public string EnableValidationReport { get; private set; } = "Save validation report";
+        public string NotSupportedHintInfo { get; private set; } = "The rgb color mode is not supported for PDF/X";
 
         public EnumTranslation<PageOrientation>[] PageOrientationValues { get; private set; } = EnumTranslation<PageOrientation>.CreateDefaultEnumTranslation();
         public EnumTranslation<ColorModel>[] ColorModelValues { get; private set; } = EnumTranslation<ColorModel>.CreateDefaultEnumTranslation();

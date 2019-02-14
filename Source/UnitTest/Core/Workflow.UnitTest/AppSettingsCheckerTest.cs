@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -13,7 +14,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
     {
         private AppSettingsChecker _appSettingsChecker;
         private IDefaultViewerCheck _defaultViewerCheck;
-        private ApplicationSettings _applicationSettings;
+        private PdfCreatorSettings _pdfCreatorSettings;
         private DefaultViewer _defaultViewer;
         private IFile _file;
 
@@ -23,12 +24,12 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _defaultViewerCheck = Substitute.For<IDefaultViewerCheck>();
             _file = Substitute.For<IFile>();
             _appSettingsChecker = new AppSettingsChecker(_defaultViewerCheck);
-
-            _applicationSettings = new ApplicationSettings();
+            var storage = Substitute.For<IStorage>();
+            _pdfCreatorSettings = new PdfCreatorSettings();
             _defaultViewer = new DefaultViewer();
             _defaultViewer.IsActive = true;
             _defaultViewer.Path = "Some Path";
-            _applicationSettings.DefaultViewers.Add(_defaultViewer);
+            _pdfCreatorSettings.DefaultViewers.Add(_defaultViewer);
         }
 
         [Test]
@@ -36,7 +37,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
         {
             _defaultViewerCheck.Check(Arg.Any<DefaultViewer>()).Returns(new ActionResult());
 
-            var result = _appSettingsChecker.CheckDefaultViewers(_applicationSettings);
+            var result = _appSettingsChecker.CheckDefaultViewers(_pdfCreatorSettings.DefaultViewers);
 
             Assert.IsTrue(result);
         }
@@ -48,7 +49,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             _defaultViewer.Path = "";
             _defaultViewerCheck.Check(_defaultViewer).Returns(new ActionResult(ErrorCode.DefaultViewer_Not_Found));
 
-            var result = _appSettingsChecker.CheckDefaultViewers(_applicationSettings);
+            var result = _appSettingsChecker.CheckDefaultViewers(_pdfCreatorSettings.DefaultViewers);
 
             Assert.Contains(ErrorCode.DefaultViewer_Not_Found, result, "Did not detect error.");
         }
@@ -62,7 +63,7 @@ namespace pdfforge.PDFCreator.UnitTest.Core.Workflow
             checkResult.AddRange(new[] { ErrorCode.DefaultViewer_Not_Found, ErrorCode.DefaultViewer_PathIsEmpty_for_Pdf });
             _defaultViewerCheck.Check(_defaultViewer).Returns(checkResult);
 
-            var result = _appSettingsChecker.CheckDefaultViewers(_applicationSettings);
+            var result = _appSettingsChecker.CheckDefaultViewers(_pdfCreatorSettings.DefaultViewers);
 
             Assert.Contains(ErrorCode.DefaultViewer_Not_Found, result, "Did not detect error.");
             Assert.Contains(ErrorCode.DefaultViewer_PathIsEmpty_for_Pdf, result, "Did not detect error.");

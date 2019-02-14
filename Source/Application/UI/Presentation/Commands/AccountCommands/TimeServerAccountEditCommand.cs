@@ -2,30 +2,49 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class TimeServerAccountEditCommand : TranslatableCommandBase<TimeServerTranslation>, IWaitableCommand
+    public class TimeServerAccountEditCommand : TranslatableCommandBase<TimeServerTranslation>, IWaitableCommand, IMountable
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ICurrentSettingsProvider _currentSettingsProvider;
-        private ObservableCollection<TimeServerAccount> TimeServerAccounts => _currentSettingsProvider.Settings?.ApplicationSettings?.Accounts?.TimeServerAccounts ?? new ObservableCollection<TimeServerAccount>();
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private ObservableCollection<TimeServerAccount> TimeServerAccounts => _accountsProvider?.Settings.TimeServerAccounts;
         private TimeServerAccount _currentAccount;
+        private ObservableCollection<TimeServerAccount> _pointAtAccounts;
 
-        public TimeServerAccountEditCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider,
-            ITranslationUpdater translationUpdater)
-            : base(translationUpdater)
+        public TimeServerAccountEditCommand
+        (
+            IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ITranslationUpdater translationUpdater
+        )
+        : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _currentSettingsProvider = currentSettingsProvider;
+            _accountsProvider = accountsProvider;
+        }
 
-            TimeServerAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaiseCanExecuteChanged();
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs e)
+        {
+            if (_pointAtAccounts != _accountsProvider.Settings.TimeServerAccounts)
+            {
+                _pointAtAccounts.CollectionChanged -= OnCollectionChanged;
+                _pointAtAccounts = _accountsProvider.Settings.TimeServerAccounts;
+                _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+            }
         }
 
         public override bool CanExecute(object parameter)
@@ -59,5 +78,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         }
 
         public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
+
+        public void MountView()
+        {
+            _accountsProvider.SettingsChanged += OnSettingsChanged;
+            _pointAtAccounts = _accountsProvider.Settings.TimeServerAccounts;
+            _pointAtAccounts.CollectionChanged += OnCollectionChanged;
+        }
+
+        public void UnmountView()
+        {
+            _accountsProvider.SettingsChanged -= OnSettingsChanged;
+        }
     }
 }

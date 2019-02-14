@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -22,6 +23,11 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IFileAssoc _fileAssoc;
+        private readonly IPrinterHelper _printerHelper;
+
+        private readonly int _timeout;
+        private readonly List<SpecialShellCommand> _specialFileTypes;
+        private readonly string[] _pictureFallbackCommandParams = { Environment.SystemDirectory + "\\shimgvw.dll,ImageView_PrintTo", "/pt", "%1", "%2", "%3", "%4" };
 
         /// <summary>
         ///     Create a new PrintCommand for the given file
@@ -29,14 +35,27 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         /// <param name="filename">The full path to the file that shall be printed</param>
         /// <param name="printer">The printer the command will print to</param>
         /// <param name="fileAssoc">The IFileAssoc implementation used to detect if the is printable</param>
-        public PrintCommand(string filename, string printer, IFileAssoc fileAssoc)
+        /// <param name="printerHelper">PrinterHelper to determine the DefaultPrinter</param>
+        /// <param name="timeout">Timeout in seconds after which a print stops</param>
+        public PrintCommand(string filename, string printer, IFileAssoc fileAssoc, IPrinterHelper printerHelper, int timeout)
         {
+            _specialFileTypes = new List<SpecialShellCommand>
+                {
+                    new SpecialShellCommand("jpegfile", "printto", "rundll32.exe", _pictureFallbackCommandParams),
+                    new SpecialShellCommand("pngfile", "printto", "rundll32.exe", _pictureFallbackCommandParams),
+                    new SpecialShellCommand("TIFImage.Document", "printto", "rundll32.exe", _pictureFallbackCommandParams)
+                };
+
             if (filename == null)
                 throw new ArgumentNullException(nameof(filename));
 
             Filename = filename;
             Printer = printer;
             _fileAssoc = fileAssoc;
+            _printerHelper = printerHelper;
+            _timeout = timeout;
+
+            RegisterSpecialFileTypesToFileAssoc();
 
             Logger.Trace($"Checking PrintCommand for '{filename}'");
 
@@ -93,7 +112,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         /// <returns>true, if printing was successful</returns>
         public bool Print()
         {
-            return Print(TimeSpan.FromSeconds(180));
+            return Print(TimeSpan.FromSeconds(_timeout));
         }
 
         /// <summary>
@@ -106,8 +125,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             if (CommandType == PrintType.Unprintable)
                 throw new InvalidOperationException("File is not printable");
 
-            var printerHelper = new PrinterHelper();
-            if (CommandType == PrintType.Print && Printer != printerHelper.GetDefaultPrinter())
+            if (CommandType == PrintType.Print && Printer != _printerHelper.GetDefaultPrinter())
                 throw new InvalidOperationException("The default printer needs to be set in order to print this file");
 
             var p = ProcessWrapperFactory.BuildProcessWrapper(new ProcessStartInfo());
@@ -151,6 +169,11 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             }
 
             return Successful;
+        }
+
+        private void RegisterSpecialFileTypesToFileAssoc()
+        {
+            _fileAssoc.RegisterSpecialFileTypes(_specialFileTypes);
         }
 
         private bool SupportsPrint()

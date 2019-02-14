@@ -73,12 +73,12 @@ namespace pdfforge.PDFCreator.UnitTest.Conversion.Ghostscript.OutputDevices
             var jobInfo = new JobInfo();
             jobInfo.SourceFiles.Add(sourceFileInfo);
             jobInfo.Metadata = new Metadata();
-            var jobStub = new Job(jobInfo, new ConversionProfile(), new JobTranslations(), new Accounts());
+            var jobStub = new Job(jobInfo, new ConversionProfile(), new Accounts());
             jobStub.JobTempFileName = "JobTempFileNameDummie";
             jobStub.JobTempFolder = JobTempFolderDummie;
             jobStub.JobTempOutputFolder = "JobTempOutputFolderDummie";
             //jobStub.Stub(x => x.JobTempFileName).Return("JobTempFileNameDummie");
-            jobStub.OutputFilenameTemplate = "OutputFilenameTemplateDummie";
+            jobStub.OutputFileTemplate = "OutputFilenameTemplateDummie";
             jobStub.Profile = new ConversionProfile();
             jobStub.Profile.OutputFormat = outputFormat;
 

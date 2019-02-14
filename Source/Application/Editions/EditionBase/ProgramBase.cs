@@ -2,11 +2,11 @@
 using pdfforge.Communication;
 using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup;
-using pdfforge.PDFCreator.Editions.EditionBase.Prism.SimpleInjector;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.Utilities;
@@ -33,6 +33,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             try
             {
+                _container = new Container();
                 exitCode = StartApplication(args, getBootstrapperFunc);
             }
             finally
@@ -56,19 +57,48 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            var bootstrapper = getBootstrapperFunc();
-            _container = new Container();
+            var application = new SimpleInjectorPrismApplication(_container);
+            BootstrapContainerAndApplication(getBootstrapperFunc(), application);
 
-            var profileSettingsTabs = bootstrapper.DefineProfileSettingsTabs();
-            var applicationSettingsTabs = bootstrapper.DefineApplicationSettingsTabs();
+            InitalizeApplication(args, application);
 
-            var prismBootstrapper = new PrismBootstrapper(profileSettingsTabs, applicationSettingsTabs);
+            VerifyContainer();
 
-            prismBootstrapper.ConfigurePrismDependecies(_container);
-            prismBootstrapper.RegisterNavigationViews(_container);
+            return application.Run();
+        }
 
-            bootstrapper.ConfigureContainer(_container);
-            bootstrapper.RegisterInteractions();
+        private static void VerifyContainer()
+        {
+            if (Debugger.IsAttached)
+                _container.Verify(VerificationOption.VerifyOnly);
+        }
+
+        private static void InitalizeApplication(string[] args, SimpleInjectorPrismApplication application)
+        {
+            var resolver = new SimpleInjectorAppStartResolver(_container);
+            var appStartFactory = new AppStartFactory(resolver, _container.GetInstance<IPathUtil>(), _container.GetInstance<IDirectConversionHelper>());
+            var appStart = appStartFactory.CreateApplicationStart(args);
+            var helpCommandHandler = _container.GetInstance<HelpCommandHandler>();
+            var settingsManager = _container.GetInstance<ISettingsManager>();
+
+            application.InitApplication(appStart, helpCommandHandler, settingsManager);
+            application.DispatcherUnhandledException += Application_DispatcherUnhandledException;
+        }
+
+        private static void BootstrapContainerAndApplication(Bootstrapper bootstrapper, SimpleInjectorPrismApplication application)
+        {
+            bootstrapper.RegisterMainApplication(_container);
+            bootstrapper.RegisterPrismNavigation(_container);
+            SetupObsidian(bootstrapper);
+
+            application.Initialize();
+
+            bootstrapper.RegisterEditionDependentRegions(_container.GetInstance<IRegionManager>());
+        }
+
+        private static void SetupObsidian(Bootstrapper bootstrapper)
+        {
+            bootstrapper.RegisterObsidianInteractions();
 
             ViewRegistry.WindowFactory = new DelegateWindowFactory(content =>
             {
@@ -77,24 +107,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
                 return window;
             });
-
-            if (Debugger.IsAttached)
-                _container.Verify(VerificationOption.VerifyOnly);
-
-            bootstrapper.RegisterEditiondependentRegions(_container.GetInstance<IRegionManager>());
-            prismBootstrapper.InitPrismStuff(_container);
-
-            var resolver = new SimpleInjectorAppStartResolver(_container);
-
-            var appStartFactory = new AppStartFactory(resolver, _container.GetInstance<IParametersManager>());
-            var appStart = appStartFactory.CreateApplicationStart(args);
-
-            var helpCommandHandler = _container.GetInstance<HelpCommandHandler>();
-            var settingsManager = _container.GetInstance<ISettingsManager>();
-
-            var app = new App(appStart, helpCommandHandler, settingsManager);
-            app.DispatcherUnhandledException += Application_DispatcherUnhandledException;
-            return app.Run();
         }
 
         private static void InitializeLogging()

@@ -1,8 +1,11 @@
 ﻿using MahApps.Metro.Controls;
+using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+using Prism.Events;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -13,25 +16,32 @@ namespace pdfforge.PDFCreator.UI.Presentation
 {
     public partial class MainShell : MetroWindow, IWhitelisted
     {
-        private MainShellViewModel _mainShellViewModel;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IDispatcher _dispatcher;
         private bool _skipSettingsCheck;
         public IUpdateAssistant UpdateAssistant { get; }
 
         public MainShellViewModel ViewModel => (MainShellViewModel)DataContext;
 
-        public MainShell(MainShellViewModel vm, IHightlightColorRegistration hightlightColorRegistration, IUpdateAssistant updateAssistant)
+        public MainShell(MainShellViewModel vm, IHightlightColorRegistration hightlightColorRegistration, IUpdateAssistant updateAssistant, IEventAggregator eventAggregator, IDispatcher dispatcher)
         {
-            _mainShellViewModel = vm;
+            _eventAggregator = eventAggregator;
+            _dispatcher = dispatcher;
+            DataContext = vm;
             UpdateAssistant = updateAssistant;
-            DataContext = _mainShellViewModel;
-            _mainShellViewModel.Init(Close);
             InitializeComponent();
             hightlightColorRegistration.RegisterHighlightColorResource(this);
         }
 
+        private void OnTryCloseApplicationEvent()
+        {
+            _dispatcher.BeginInvoke(Close);
+        }
+
         protected override void OnClosed(EventArgs e)
         {
-            _mainShellViewModel.OnClosed();
+            ViewModel.OnClosed();
+            _eventAggregator.GetEvent<TryCloseApplicationEvent>().Unsubscribe(OnTryCloseApplicationEvent);
             base.OnClosed(e);
         }
 
@@ -47,6 +57,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             if (desktopSize.Width < Width || desktopSize.Height < Height)
                 WindowState = WindowState.Maximized;
 
+            _eventAggregator.GetEvent<TryCloseApplicationEvent>().Subscribe(OnTryCloseApplicationEvent);
             FocusManager.SetFocusedElement(this, HomeButton);
         }
 
@@ -59,13 +70,13 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             e.Cancel = true;
             _skipSettingsCheck = false;
-            var result = await _mainShellViewModel.CloseCommand.ExecuteAsync(null);
+            var result = await ViewModel.CloseCommand.ExecuteAsync(null);
 
             if (result == ResponseStatus.Success)
             {
                 _skipSettingsCheck = true;
                 // Invoke required because we can't call Close during the closing event
-                Dispatcher.BeginInvoke(new Action(Close));
+                await Dispatcher.BeginInvoke(new Action(Close));
             }
         }
     }

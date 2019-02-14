@@ -1,10 +1,11 @@
-﻿using System.Text;
+﻿using MahApps.Metro.Controls;
+using System.Text;
 using System.Windows;
 using Tartaros;
 
 namespace pdfforge.PDFCreator.ErrorReport
 {
-    public partial class ErrorReportWindow : Window
+    public partial class ErrorReportWindow : MetroWindow
     {
         private readonly Report _report;
         private readonly TartarosClient _tartarosClient;
@@ -20,6 +21,7 @@ namespace pdfforge.PDFCreator.ErrorReport
             : this()
         {
             _report = errorReport;
+
             _tartarosClient = tartarosClient;
             ErrorDescriptionText.Text = ComposeErrorText(errorReport);
         }
@@ -76,10 +78,6 @@ namespace pdfforge.PDFCreator.ErrorReport
             {
                 MessageBox.Show("Thank you, the error has been reported successfully.", "Error reported");
                 Close();
-            }
-            else
-            {
-                MessageBox.Show("We are sorry, we have not been able to report the error. Please check your internet connection and retry to send the report.", "Error not reported", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

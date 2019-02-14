@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using pdfforge.PDFCreator.UI.ViewModels;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Settings
@@ -22,7 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
         private readonly IEnumerable<IFirstTimeCommand> _firstTimeCommands;
         private readonly SettingsProvider _settingsProvider;
 
-        public SettingsManager(SettingsProvider settingsProvider, ISettingsLoader loader, IInstallationPathProvider installationPathProvider, 
+        public SettingsManager(SettingsProvider settingsProvider, ISettingsLoader loader, IInstallationPathProvider installationPathProvider,
             IVersionHelper versionHelper, IEnumerable<IFirstTimeCommand> firstTimeCommands)
         {
             _settingsProvider = settingsProvider;
@@ -55,11 +52,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
         {
             // Synchronize across processes with a Mutex to avoid partial reads/writes
             RunSynchronized(DoSaveSettings);
+            LoggingHelper.ChangeLogLevel(_settingsProvider.Settings.ApplicationSettings.LoggingLevel);
+            SettingsSaved?.Invoke(this, EventArgs.Empty);
         }
 
         private void DoSaveSettings()
         {
-            var settings = _settingsProvider.Settings;
+            //Remove shared profiles from copy and save this copy to preserve shred profile in settingsProvider
+            var settings = _settingsProvider.Settings.Copy();
+            var sharedProfiles = settings.ConversionProfiles.Where(p => p.Properties.IsShared).ToArray();
+            foreach (var profile in sharedProfiles)
+                settings.ConversionProfiles.Remove(profile);
             _loader.SaveSettingsInRegistry(settings);
         }
 
@@ -75,12 +78,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
 
             var version = _versionHelper.ApplicationVersion.ToString();
 
-            if (version != _settingsProvider.Settings.ApplicationSettings.LastLoginVersion)
+            if (version != _settingsProvider.Settings.CreatorAppSettings.LastLoginVersion)
             {
                 _firstTimeCommands.ToList().ForEach(x => x.Execute(_versionHelper.ApplicationVersion));
-                _settingsProvider.Settings.ApplicationSettings.LastLoginVersion = version;
+                _settingsProvider.Settings.CreatorAppSettings.LastLoginVersion = version;
             }
         }
+
+        public event EventHandler SettingsSaved;
 
         private void RunSynchronized(Action action)
         {

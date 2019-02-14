@@ -1,5 +1,5 @@
 ﻿using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -18,7 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
 
         private readonly TokenReplacer _tokenReplacer;
 
-        public EditEmailTextViewModel(ITranslationUpdater translationUpdater, IMailSignatureHelper mailSignatureHelper, TokenHelper tokenHelper, TokenViewModelFactory tokenViewModelFactory)
+        public EditEmailTextViewModel(ITranslationUpdater translationUpdater, IMailSignatureHelper mailSignatureHelper, ITokenHelper tokenHelper, TokenViewModelFactory tokenViewModelFactory)
             : base(translationUpdater)
         {
             _tokenReplacer = tokenHelper.TokenReplacerWithPlaceHolders;

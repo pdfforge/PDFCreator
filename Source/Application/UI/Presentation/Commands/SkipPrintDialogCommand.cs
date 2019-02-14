@@ -3,14 +3,13 @@ using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using System;
 using System.Windows.Input;
-using SystemWrapper.IO;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class SkipPrintDialogCommand : ICommand
     {
         private readonly IFileNameQuery _saveFileQuery;
-        private readonly PathWrapSafe _pathSafe = new PathWrapSafe();
 
         public SkipPrintDialogCommand(IFileNameQuery saveFileQuery)
         {
@@ -26,9 +25,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         {
             var job = parameter as Job;
 
-            var folder = _pathSafe.GetDirectoryName(job.OutputFilenameTemplate) ?? "";
+            var folder = PathSafe.GetDirectoryName(job.OutputFileTemplate) ?? "";
 
-            var filename = _pathSafe.GetFileName(job.OutputFilenameTemplate) ?? "";
+            var filename = PathSafe.GetFileName(job.OutputFileTemplate) ?? "";
 
             var result = _saveFileQuery.GetFileName(folder, filename, job.Profile.OutputFormat);
 
@@ -37,7 +36,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 throw new AbortWorkflowException("User cancelled in SaveFileDialog");
             }
 
-            job.OutputFilenameTemplate = result.Data.Filepath;
+            job.OutputFileTemplate = result.Data.Filepath;
             job.Profile.OutputFormat = result.Data.OutputFormat;
         }
 

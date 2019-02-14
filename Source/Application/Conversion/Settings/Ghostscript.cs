@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string AdditionalGsParameters { get; set; } = "";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try { AdditionalGsParameters = Data.UnescapeString(data.GetValue(@"" + path + @"AdditionalGsParameters")); } catch { AdditionalGsParameters = "";}
 		}
@@ -43,7 +43,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript copy = new Ghostscript();
 			
 			copy.AdditionalGsParameters = AdditionalGsParameters;
-			
 			return copy;
 		}
 		
@@ -53,17 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript v = o as Ghostscript;
 			
 			if (!AdditionalGsParameters.Equals(v.AdditionalGsParameters)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AdditionalGsParameters=" + AdditionalGsParameters.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

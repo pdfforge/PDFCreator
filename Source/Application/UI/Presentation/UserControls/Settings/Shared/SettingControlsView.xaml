@@ -11,17 +11,17 @@
 
     <StackPanel Height="40"
                 Orientation="Horizontal"
-                HorizontalAlignment="Right" Margin="10">
+                HorizontalAlignment="Right" Margin="20 10">
         
         <Button Style="{DynamicResource LargeGreenButton}"
                 Command="{Binding SaveCommand}"
-                CommandParameter="{x:Static regionNames:MainRegionViewNames.HomeView}"
+                CommandParameter="{Binding HomeViewName}"
                 Margin="10 0"
                 Content="{Binding Translation.SaveButtonContent}"/>
         
         <Button Style="{DynamicResource LargeRedButton}"
                 Command="{Binding CancelCommand}"
-                CommandParameter="{x:Static regionNames:MainRegionViewNames.HomeView}"
+                CommandParameter="{Binding HomeViewName}"
                 Margin="10 0"
                 Content="{Binding Translation.CancelButtonContent}"/>
     </StackPanel>

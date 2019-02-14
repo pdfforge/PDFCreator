@@ -68,13 +68,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string Subject { get; set; } = "";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
-			try { AddSignature = bool.Parse(data.GetValue(@"" + path + @"AddSignature")); } catch { AddSignature = true;}
+			AddSignature = bool.TryParse(data.GetValue(@"" + path + @"AddSignature"), out var tmpAddSignature) ? tmpAddSignature : true;
 			try { Content = Data.UnescapeString(data.GetValue(@"" + path + @"Content")); } catch { Content = "";}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
-			try { Html = bool.Parse(data.GetValue(@"" + path + @"Html")); } catch { Html = false;}
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			Html = bool.TryParse(data.GetValue(@"" + path + @"Html"), out var tmpHtml) ? tmpHtml : false;
 			try { Recipients = Data.UnescapeString(data.GetValue(@"" + path + @"Recipients")); } catch { Recipients = "";}
 			try { RecipientsBcc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsBcc")); } catch { RecipientsBcc = "";}
 			try { RecipientsCc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsCc")); } catch { RecipientsCc = "";}
@@ -107,7 +107,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.RecipientsBcc = RecipientsBcc;
 			copy.RecipientsCc = RecipientsCc;
 			copy.Subject = Subject;
-			
 			return copy;
 		}
 		
@@ -125,25 +124,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!RecipientsBcc.Equals(v.RecipientsBcc)) return false;
 			if (!RecipientsCc.Equals(v.RecipientsCc)) return false;
 			if (!Subject.Equals(v.Subject)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("AccountId=" + AccountId.ToString());
-			sb.AppendLine("AddSignature=" + AddSignature.ToString());
-			sb.AppendLine("Content=" + Content.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("Html=" + Html.ToString());
-			sb.AppendLine("Recipients=" + Recipients.ToString());
-			sb.AppendLine("RecipientsBcc=" + RecipientsBcc.ToString());
-			sb.AppendLine("RecipientsCc=" + RecipientsCc.ToString());
-			sb.AppendLine("Subject=" + Subject.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

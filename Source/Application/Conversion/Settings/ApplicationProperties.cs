@@ -19,33 +19,47 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		#pragma warning restore 67
 		
 		
-		public DateTime NextUpdate { get; set; } = DateTime.Now;
+		public bool AskSwitchDefaultPrinter { get; set; } = true;
+		
+		public string LastLoginVersion { get; set; } = "";
 		
 		/// <summary>
-		/// Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed
+		/// The last directory the user during interactive job (if no target directory was set in profile)
 		/// </summary>
-		public int SettingsVersion { get; set; } = 7;
+		public string LastSaveDirectory { get; set; } = "";
+		
+		public string LastUsedProfileGuid { get; set; } = "DefaultGuid";
+		
+		public string PrimaryPrinter { get; set; } = "PDFCreator";
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { NextUpdate = DateTime.Parse(data.GetValue(@"" + path + @"NextUpdate"), System.Globalization.CultureInfo.InvariantCulture); } catch { NextUpdate = DateTime.Now;}
-			try { SettingsVersion = int.Parse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.CultureInfo.InvariantCulture); } catch { SettingsVersion = 7;}
+			try { AskSwitchDefaultPrinter = bool.Parse(data.GetValue(@"" + path + @"AskSwitchDefaultPrinter")); } catch { AskSwitchDefaultPrinter = true;}
+			try { LastLoginVersion = Data.UnescapeString(data.GetValue(@"" + path + @"LastLoginVersion")); } catch { LastLoginVersion = "";}
+			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
+			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
+			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
-			data.SetValue(@"" + path + @"NextUpdate", NextUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
-			data.SetValue(@"" + path + @"SettingsVersion", SettingsVersion.ToString(System.Globalization.CultureInfo.InvariantCulture));
+			data.SetValue(@"" + path + @"AskSwitchDefaultPrinter", AskSwitchDefaultPrinter.ToString());
+			data.SetValue(@"" + path + @"LastLoginVersion", Data.EscapeString(LastLoginVersion));
+			data.SetValue(@"" + path + @"LastSaveDirectory", Data.EscapeString(LastSaveDirectory));
+			data.SetValue(@"" + path + @"LastUsedProfileGuid", Data.EscapeString(LastUsedProfileGuid));
+			data.SetValue(@"" + path + @"PrimaryPrinter", Data.EscapeString(PrimaryPrinter));
 		}
 		
 		public ApplicationProperties Copy()
 		{
 			ApplicationProperties copy = new ApplicationProperties();
 			
-			copy.NextUpdate = NextUpdate;
-			copy.SettingsVersion = SettingsVersion;
-			
+			copy.AskSwitchDefaultPrinter = AskSwitchDefaultPrinter;
+			copy.LastLoginVersion = LastLoginVersion;
+			copy.LastSaveDirectory = LastSaveDirectory;
+			copy.LastUsedProfileGuid = LastUsedProfileGuid;
+			copy.PrimaryPrinter = PrimaryPrinter;
 			return copy;
 		}
 		
@@ -54,20 +68,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is ApplicationProperties)) return false;
 			ApplicationProperties v = o as ApplicationProperties;
 			
-			if (!NextUpdate.Equals(v.NextUpdate)) return false;
-			if (!SettingsVersion.Equals(v.SettingsVersion)) return false;
-			
+			if (!AskSwitchDefaultPrinter.Equals(v.AskSwitchDefaultPrinter)) return false;
+			if (!LastLoginVersion.Equals(v.LastLoginVersion)) return false;
+			if (!LastSaveDirectory.Equals(v.LastSaveDirectory)) return false;
+			if (!LastUsedProfileGuid.Equals(v.LastUsedProfileGuid)) return false;
+			if (!PrimaryPrinter.Equals(v.PrimaryPrinter)) return false;
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("NextUpdate=" + NextUpdate.ToString());
-			sb.AppendLine("SettingsVersion=" + SettingsVersion.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

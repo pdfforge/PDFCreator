@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Presentation.UnitTest.UserControls
 
         private DefaultPrinterSettingsViewModel BuildViewModel()
         {
-            return new DefaultPrinterSettingsViewModel(_translationUpdater, new CurrentSettingsProvider(new DefaultSettingsProvider()), new GpoSettingsDefaults());
+            return new DefaultPrinterSettingsViewModel(_translationUpdater, new CurrentSettingsProvider(new DefaultSettingsProvider()), new GpoSettingsDefaults(), new DesignTimeCurrentSettings<CreatorAppSettings>());
         }
 
         [Test]

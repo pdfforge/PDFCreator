@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.Core.Controller;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.Customization;
-using pdfforge.PDFCreator.UI.Presentation.ServiceLocator;
+using pdfforge.PDFCreator.Utilities;
 using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls

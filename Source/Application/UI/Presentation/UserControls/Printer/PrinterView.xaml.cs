@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
@@ -7,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
         public PrinterView(PrinterViewModel viewModel)
         {
             DataContext = viewModel;
+            TransposerHelper.Register(this, viewModel);
             InitializeComponent();
         }
     }

@@ -14,7 +14,7 @@
              help:HelpProvider.HelpTopic="ProfileSettings">
 
     <Grid>
-        <Grid Style="{DynamicResource GpoStyle}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -36,21 +36,30 @@
                               ItemsSource="{Binding Profiles}"
                               SelectedItem="{Binding SelectedProfile}"
                               IsSynchronizedWithCurrentItem="True" MinWidth="300" />
-                    <Button Style="{DynamicResource LightGreyButton}" Grid.Column="3" Content="{Binding Translation.RenameButton}" Margin="10 0"
-                            Command="{Binding ProfileRenameCommand}" />
-                    <Button Style="{DynamicResource LightGreyButton}" Grid.Column="4" Content="{Binding Translation.AddButton}" Margin="10 0"
-                            Command="{Binding ProfileAddCommand}" />
-                    <Button Style="{DynamicResource LightGreyButton}" Grid.Column="5" Content="{Binding Translation.RemoveButton}" Margin="10 0"
-                            Command="{Binding ProfileRemoveCommand}" />
+                    <Grid Grid.Column="3" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RenameProfileButtonIsGpoEnabled}" Margin="10 0">
+                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RenameButton}"
+                                Command="{Binding ProfileRenameCommand}" />
+                    </Grid>
+                    <Grid Grid.Column="4" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding AddProfileButtonIsGpoEnabled}" Margin="10 0">
+                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.AddButton}"
+                                Command="{Binding ProfileAddCommand}" />
+                    </Grid>
+                    <Grid Grid.Column="5" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RemoveProfileButtonIsGpoEnabled}" Margin="10 0">
+                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RemoveButton}"
+                                Command="{Binding ProfileRemoveCommand}" />
+                    </Grid>
                 </Grid>
             </Border>
 
             <ScrollViewer Grid.Row="1"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
-                <TabControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileTabContentRegion}"
+                <Grid>
+                    <TabControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileTabContentRegion}"
                             TabStripPlacement="Left"
                             Margin="-2" />
+                    <gpo:GPOLockLayer IsLockedByGpo="{ Binding EditProfileIsGpoDisabled }" />
+                </Grid>
             </ScrollViewer>
 
             <UserControl VerticalAlignment="Bottom"
@@ -58,7 +67,5 @@
                          Grid.Row="1"
                          regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileSaveCancelButtonsRegion}" />
         </Grid>
-
-        <gpo:GPOLockLayer IsLockedByGpo="{ Binding ProfileIsDisabled }" />
     </Grid>
 </UserControl>

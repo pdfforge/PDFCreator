@@ -17,6 +17,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             _aggregator = aggregator;
         }
 
+        //public set to overrite MainRegionName for PDFCreator Server
+        public string MainRegionName { get; set; } = RegionNames.MainRegion;
+
         public bool CanExecute(object parameter)
         {
             return true;
@@ -24,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public void Execute(object parameter)
         {
-            _regionManager.RequestNavigate(RegionNames.MainRegion, parameter.ToString(), OnNavigateMainTab);
+            _regionManager.RequestNavigate(MainRegionName, parameter.ToString(), OnNavigateMainTab);
         }
 
         private void OnNavigateMainTab(NavigationResult navigationResult)

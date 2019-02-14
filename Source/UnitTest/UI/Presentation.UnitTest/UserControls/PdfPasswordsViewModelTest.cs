@@ -21,7 +21,7 @@ namespace Presentation.UnitTest.UserControls
         public void Setup()
         {
             _finishEventWasCalled = false;
-            _job = new Job(new JobInfo(), new ConversionProfile(), new JobTranslations(), new Accounts());
+            _job = new Job(new JobInfo(), new ConversionProfile(), new Accounts());
             _securitySettings = _job.Profile.PdfSettings.Security;
         }
 
@@ -73,7 +73,7 @@ namespace Presentation.UnitTest.UserControls
             var viewModel = BuildViewModel(false, true);
             viewModel.OwnerPassword = "owner password";
             viewModel.UserPassword = "MyPassword";
-            Assert.True(viewModel.PasswordButtonController.PrintJobPasswordButtonViewModel.OkCommand.CanExecute(null));
+            Assert.IsTrue(viewModel.PasswordButtonController.PrintJobPasswordButtonViewModel.OkCommand.CanExecute(null));
         }
 
         [Test]

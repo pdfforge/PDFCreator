@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     /// <summary>
     ///     Implements the action to print the input files
     /// </summary>
-    public class PrintingAction : IAction
+    public class PrintingAction : IPostConversionAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IJobPrinter _jobPrinter;

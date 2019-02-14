@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
@@ -8,11 +9,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {
     public class DefaultPrinterSettingsViewModel : AGeneralSettingsItemControlModel
     {
+        public ICurrentSettings<CreatorAppSettings> CreatorSettingsProvider { get; }
         private readonly AskSwitchPrinter _switchPrinterAsk;
         private readonly AskSwitchPrinter _switchPrinterYes;
 
-        public DefaultPrinterSettingsViewModel(ITranslationUpdater translationUpdater, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings) : base(translationUpdater, settingsProvider, gpoSettings)
+        public DefaultPrinterSettingsViewModel(ITranslationUpdater translationUpdater, ICurrentSettingsProvider settingsProvider, IGpoSettings gpoSettings, ICurrentSettings<CreatorAppSettings> applicationSettingsProvider) : base(translationUpdater, settingsProvider, gpoSettings)
         {
+            CreatorSettingsProvider = applicationSettingsProvider;
+
             _switchPrinterAsk = new AskSwitchPrinter(Translation.Ask, true);
             _switchPrinterYes = new AskSwitchPrinter(Translation.Yes, false);
             translationUpdater.RegisterAndSetTranslation(tf =>

@@ -44,12 +44,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public SelectPrinter SelectPrinter { get; set; } = SelectPrinter.ShowDialog;
 		
 		
-		public void ReadValues(Data data, string path)
+		public void ReadValues(Data data, string path = "")
 		{
-			try { Duplex = (DuplexPrint) Enum.Parse(typeof(DuplexPrint), data.GetValue(@"" + path + @"Duplex")); } catch { Duplex = DuplexPrint.Disable;}
-			try { Enabled = bool.Parse(data.GetValue(@"" + path + @"Enabled")); } catch { Enabled = false;}
+			Duplex = Enum.TryParse<DuplexPrint>(data.GetValue(@"" + path + @"Duplex"), out var tmpDuplex) ? tmpDuplex : DuplexPrint.Disable;
+			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			try { PrinterName = Data.UnescapeString(data.GetValue(@"" + path + @"PrinterName")); } catch { PrinterName = "PDFCreator";}
-			try { SelectPrinter = (SelectPrinter) Enum.Parse(typeof(SelectPrinter), data.GetValue(@"" + path + @"SelectPrinter")); } catch { SelectPrinter = SelectPrinter.ShowDialog;}
+			SelectPrinter = Enum.TryParse<SelectPrinter>(data.GetValue(@"" + path + @"SelectPrinter"), out var tmpSelectPrinter) ? tmpSelectPrinter : SelectPrinter.ShowDialog;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -68,7 +68,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.PrinterName = PrinterName;
 			copy.SelectPrinter = SelectPrinter;
-			
 			return copy;
 		}
 		
@@ -81,20 +80,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!PrinterName.Equals(v.PrinterName)) return false;
 			if (!SelectPrinter.Equals(v.SelectPrinter)) return false;
-			
 			return true;
-		}
-		
-		public override string ToString()
-		{
-			StringBuilder sb = new StringBuilder();
-			
-			sb.AppendLine("Duplex=" + Duplex.ToString());
-			sb.AppendLine("Enabled=" + Enabled.ToString());
-			sb.AppendLine("PrinterName=" + PrinterName.ToString());
-			sb.AppendLine("SelectPrinter=" + SelectPrinter.ToString());
-			
-			return sb.ToString();
 		}
 		
 		public override int GetHashCode()

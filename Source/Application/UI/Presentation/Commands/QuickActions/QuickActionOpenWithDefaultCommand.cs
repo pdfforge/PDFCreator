@@ -42,7 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
             }
             else
             {
-                if (FileAssoc.HasOpen(".pdf") || SettingsProvider.Settings.ApplicationSettings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf).IsActive)
+                if (FileAssoc.HasOpen(".pdf") || SettingsProvider.Settings.GetDefaultViewerByOutputFormat(OutputFormat.Pdf).IsActive)
                 {
                     HandleActionResult(Action.OpenOutputFile(path));
                 }

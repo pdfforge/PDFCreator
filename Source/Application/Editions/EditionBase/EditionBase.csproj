@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,11 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="CommandLocator.cs" />
-    <Compile Include="Prism.SimpleInjector\PrismBootstrapper.cs" />
-    <Compile Include="Prism.SimpleInjector\SimpleInjectorExtension.cs" />
-    <Compile Include="Prism.SimpleInjector\SimpleInjectorServiceLocator.cs" />
-    <Compile Include="Prism.SimpleInjector\WhitelistedServiceLocator.cs" />
+    <Compile Include="CreatorTab\ApplicationSettingsTabs.cs" />
+    <Compile Include="CreatorTab\ProfileSettingsTabs.cs" />
     <Compile Include="ProgramBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App.xaml.cs">
@@ -67,13 +65,7 @@
     </Compile>
     <Compile Include="ShellManager.cs" />
     <Compile Include="SimpleInjectorAppStartResolver.cs" />
-    <Compile Include="Tab\MasterTab.cs" />
-    <Compile Include="Tab\MultiTab.cs" />
-    <Compile Include="Tab\ISettingsTab.cs" />
-    <Compile Include="Tab\TabRegion.cs" />
-    <Compile Include="Tab\SimpleTab.cs" />
-    <Compile Include="Tab\SubTab.cs" />
-    <Compile Include="Tab\TabExtensions.cs" />
+    <Compile Include="SimpleInjectorPrismApplication.cs" />
     <Compile Include="WorkflowFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +74,14 @@
     <None Include="pdfforge.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Notifications\Notifications.csproj">
+      <Project>{17470f53-5ced-428e-b81f-82b31a541071}</Project>
+      <Name>Notifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\RssFeed\RssFeed.csproj">
+      <Project>{332B17D7-E291-4472-8899-2C8C5846DE87}</Project>
+      <Name>RssFeed</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Conversion\ActionsInterface\ActionsInterface.csproj">
       <Project>{8de100b3-17e1-46e3-830b-5e0b072483ca}</Project>
       <Name>ActionsInterface</Name>
@@ -130,6 +130,10 @@
       <Project>{fd68eb7e-2ae8-4c8e-ba9c-71f9ad98e33e}</Project>
       <Name>Printing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\ServiceLocator\ServiceLocator.csproj">
+      <Project>{4b9272be-2f52-48cd-93d9-8880f509b304}</Project>
+      <Name>ServiceLocator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Services\Services.csproj">
       <Project>{c6058628-42b2-4cf6-a4be-622ad45f6e42}</Project>
       <Name>Services</Name>
@@ -137,6 +141,10 @@
     <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
       <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
       <Name>SettingsManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\UsageStatistics\UsageStatistics.csproj">
+      <Project>{298FE9D1-10AC-4D58-8E05-9C5027B4BE6F}</Project>
+      <Name>UsageStatistics</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Workflow\Workflow.csproj">
       <Project>{e4f2f7aa-5a58-44a4-905d-09536cb81ea1}</Project>
@@ -157,6 +165,10 @@
     <ProjectReference Include="..\..\UI\Presentation\Presentation.csproj">
       <Project>{cf5ff5fd-39ad-472d-abc3-44d4e7909e68}</Project>
       <Name>Presentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UI\PrismHelper\PrismHelper.csproj">
+      <Project>{F4B19FCA-ACEE-4228-B37E-4A46316C791D}</Project>
+      <Name>PrismHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utilities\Utilities.csproj">
       <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
@@ -185,8 +197,8 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
-        <Reference Include="Microsoft.Practices.ServiceLocation">
-          <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+        <Reference Include="CommonServiceLocator">
+          <HintPath>..\..\..\..\lib\CommonServiceLocator.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -197,7 +209,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -208,7 +220,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="HtmlAgilityPack">
-          <HintPath>..\..\..\..\packages\HtmlAgilityPack\lib\Net45\HtmlAgilityPack.dll</HintPath>
+          <HintPath>..\..\..\..\lib\HtmlAgilityPack.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -219,12 +231,12 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="MahApps.Metro">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\MahApps.Metro.dll</HintPath>
+          <HintPath>..\..\..\..\lib\MahApps.Metro.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Windows.Interactivity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -235,7 +247,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="MahApps.Metro.SimpleChildWindow">
-          <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
+          <HintPath>..\..\..\..\lib\MahApps.Metro.SimpleChildWindow.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -246,7 +258,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -257,7 +269,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Obsidian">
-          <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Obsidian.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -268,7 +280,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="pdfforge.Communication">
-          <HintPath>..\..\..\..\packages\pdfforge.Communication\lib\pdfforge.Communication.dll</HintPath>
+          <HintPath>..\..\..\..\lib\pdfforge.Communication.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -279,7 +291,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="pdfforge.Mail">
-          <HintPath>..\..\..\..\packages\pdfforge.Mail\lib\pdfforge.Mail.dll</HintPath>
+          <HintPath>..\..\..\..\lib\pdfforge.Mail.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -290,7 +302,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Prism">
-          <HintPath>..\..\..\..\packages\Prism.Core\lib\net45\Prism.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Prism.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -301,12 +313,12 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Prism.Wpf">
-          <HintPath>..\..\..\..\packages\Prism.Wpf\lib\net45\Prism.Wpf.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Prism.Wpf.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\Prism.Wpf\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <HintPath>..\..\..\..\lib\System.Windows.Interactivity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -317,7 +329,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SimpleInjector">
-          <HintPath>..\..\..\..\packages\SimpleInjector\lib\net45\SimpleInjector.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SimpleInjector.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -328,7 +340,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -339,7 +351,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -350,7 +362,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="ToastNotifications">
-          <HintPath>..\..\..\..\packages\ToastNotifications\lib\net40\ToastNotifications.dll</HintPath>
+          <HintPath>..\..\..\..\lib\ToastNotifications.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -361,7 +373,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="ToastNotifications.Messages">
-          <HintPath>..\..\..\..\packages\ToastNotifications.Messages\lib\net40\ToastNotifications.Messages.dll</HintPath>
+          <HintPath>..\..\..\..\lib\ToastNotifications.Messages.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -372,7 +384,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
       <ItemGroup>
         <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
+          <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

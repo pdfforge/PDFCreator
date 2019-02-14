@@ -10,7 +10,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         private FtpAccount _ftpAccount;
 
         public FtpAccountViewModel(ITranslationUpdater translationUpdater) : base(translationUpdater)
-        { }
+        {
+        }
 
         public string Password
         {
@@ -61,7 +62,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(Password));
             AskForPasswordLater = string.IsNullOrWhiteSpace(Password);
             RaisePropertyChanged(nameof(AskForPasswordLater));
-            SetPasswordAction(_ftpAccount.Password);
             SaveCommand.RaiseCanExecuteChanged();
         }
     }

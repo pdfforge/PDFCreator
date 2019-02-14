@@ -5,7 +5,6 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -18,25 +17,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     public class HttpAccountRemoveCommand : TranslatableCommandBase<HttpTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ObservableCollection<HttpAccount> _httpAccounts;
-        private readonly ObservableCollection<ConversionProfile> _profiles;
+        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
+        private ObservableCollection<HttpAccount> HttpAccounts => _accountsProvider.Settings.HttpAccounts;
+        private ObservableCollection<ConversionProfile> Profiles => _profilesProvider.Settings;
         private HttpAccount _currentAccount;
         private List<ConversionProfile> _usedInProfilesList;
 
-        public HttpAccountRemoveCommand(IInteractionRequest interactionRequest, ICurrentSettingsProvider currentSettingsProvider, ITranslationUpdater translationUpdater)
+        public HttpAccountRemoveCommand(IInteractionRequest interactionRequest,
+            ICurrentSettings<Accounts> accountsProvider,
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            _httpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.HttpAccounts;
-            _profiles = currentSettingsProvider?.Profiles;
-
-            _httpAccounts = currentSettingsProvider?.Settings?.ApplicationSettings?.Accounts?.HttpAccounts ?? new ObservableCollection<HttpAccount>();
-            _httpAccounts.CollectionChanged += (sender, args) => RaiseCanExecuteChanged();
+            _accountsProvider = accountsProvider;
+            _profilesProvider = profilesProvider;
         }
 
         public override bool CanExecute(object parameter)
         {
-            return _httpAccounts?.Count > 0;
+            return HttpAccounts?.Count > 0;
         }
 
         public override void Execute(object parameter)
@@ -45,7 +46,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            _usedInProfilesList = _profiles.Where(p => p.HttpSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
+            _usedInProfilesList = Profiles.Where(p => p.HttpSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
 
             var title = Translation.RemoveHttpAccount;
 
@@ -78,8 +79,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Cancel));
                 return;
             }
-            if (_httpAccounts.Contains(_currentAccount))
-                _httpAccounts.Remove(_currentAccount);
+            if (HttpAccounts.Contains(_currentAccount))
+                HttpAccounts.Remove(_currentAccount);
 
             foreach (var profile in _usedInProfilesList)
             {

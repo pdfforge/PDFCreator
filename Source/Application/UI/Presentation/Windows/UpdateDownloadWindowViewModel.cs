@@ -1,47 +1,39 @@
 ﻿using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
-using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Update;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using System;
-using System.ComponentModel;
-using System.Net;
 using System.Windows.Input;
-using System.Windows.Threading;
-using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
     public class UpdateDownloadWindowViewModel : OverlayViewModelBase<UpdateDownloadInteraction, UpdateDownloadWindowTranslation>
     {
-        private readonly IDirectory _directory;
-        private readonly Dispatcher _dispatcher;
-        private readonly IFile _file;
-        private readonly IPathSafe _pathSafe = new PathWrapSafe();
-        private readonly ITempFolderProvider _tempFolderProvider;
+        public readonly IDispatcher Dispatcher;
         private readonly IReadableFileSizeFormatter _readableFileSizeFormatter;
         private readonly ApplicationNameProvider _applicationNameProvider;
-        private string _downloadLocation;
-        private DownloadSpeed _downloadSpeed;
-        private DateTime _lastUpdate;
-        private WebClient _webClient;
+        private readonly IUpdateHelper _updateHelper;
 
-        public UpdateDownloadWindowViewModel(IDirectory directory, IFile file, ITempFolderProvider tempFolderProvider,
-            ITranslationUpdater translationUpdater, IReadableFileSizeFormatter readableFileSizeFormatter, ApplicationNameProvider applicationNameProvider)
+        public UpdateDownloadWindowViewModel(
+            ITranslationUpdater translationUpdater, IReadableFileSizeFormatter readableFileSizeFormatter, ApplicationNameProvider applicationNameProvider, IUpdateHelper updateHelper, IDispatcher dispatcher)
             : base(translationUpdater)
         {
-            _directory = directory;
-            _file = file;
-            _tempFolderProvider = tempFolderProvider;
             _readableFileSizeFormatter = readableFileSizeFormatter;
             _applicationNameProvider = applicationNameProvider;
-            _dispatcher = Dispatcher.CurrentDispatcher;
-
+            _updateHelper = updateHelper;
+            Dispatcher = dispatcher;
+            _updateHelper.OnDownloadFinished += OnDownloadFinished;
+            _updateHelper.OnProgressChanged += UpdateProgress;
             CancelCommand = new DelegateCommand(ExecuteCancel);
+        }
+
+        private void OnDownloadFinished(object sender, UpdateProgressChangedEventArgs args)
+        {
+            Dispatcher.BeginInvoke(DownloadFinished, args.Done);
         }
 
         public int ProgressPercentage { get; protected set; }
@@ -52,82 +44,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         protected override void HandleInteractionObjectChanged()
         {
-            StartDownload(Interaction.DownloadUrl);
+            Interaction.StartDownloadCallback.Invoke();
         }
 
         public override string Title => _applicationNameProvider.ApplicationNameWithEdition;
 
-        private void StartDownload(string downloadUrl)
-        {
-            _webClient = new WebClient();
-            _webClient.DownloadProgressChanged += WebClientOnDownloadProgressChanged;
-            _webClient.DownloadFileCompleted += WebClientOnDownloadFileCompleted;
-            var uri = new Uri(downloadUrl);
-            var filename = _pathSafe.GetFileName(uri.LocalPath);
-            _downloadSpeed = new DownloadSpeed(_webClient);
-
-            _downloadLocation = _tempFolderProvider.TempFolder;
-            _directory.CreateDirectory(_downloadLocation);
-            _downloadLocation = _pathSafe.Combine(_downloadLocation, filename);
-            _webClient.DownloadFileAsync(uri, _downloadLocation);
-        }
-
-        private void WebClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)
-        {
-            var success = asyncCompletedEventArgs.Error == null;
-
-            if (success)
-            {
-                Interaction.DownloadedFile = _downloadLocation;
-            }
-            else
-            {
-                _file.Delete(_downloadLocation);
-            }
-
-            Action<bool> downloadFinished = DownloadFinished;
-            _dispatcher.BeginInvoke(downloadFinished, success);
-        }
-
         private void ExecuteCancel(object o)
         {
-            _webClient?.CancelAsync();
+            _updateHelper.AbortDownload();
             Interaction.Success = false;
             FinishInteraction();
         }
 
         private void DownloadFinished(bool success)
         {
-            UpdateProgress(100);
+            UpdateProgress(this, new UpdateProgressChangedEventArgs(true, 100, 0, 0));
             Interaction.Success = true;
             FinishInteraction();
         }
 
-        private void WebClientOnDownloadProgressChanged(object sender,
-            DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
+        private void UpdateProgress(object sender, UpdateProgressChangedEventArgs args)
         {
-            if (DateTime.Now - _lastUpdate < TimeSpan.FromMilliseconds(100))
-                return;
+            Dispatcher.BeginInvoke((Action<int>)delegate (int progress)
+            {
+                ProgressPercentage = progress;
 
-            Action<int> action = UpdateProgress;
-            _dispatcher.BeginInvoke(action, downloadProgressChangedEventArgs.ProgressPercentage);
+                DownloadSpeedText = string.Format("{0}/s - {1:0} s",
+                    _readableFileSizeFormatter.GetFileSizeString(_updateHelper.DownloadSpeed.BytesPerSecond),
+                    _updateHelper.DownloadSpeed.EstimatedRemainingDuration.TotalSeconds);
 
-            _lastUpdate = DateTime.Now;
-        }
+                RaisePropertyChanged(nameof(ProgressPercentage));
+                if (args.Progress == 100)
+                    DownloadSpeedText = "";
 
-        private void UpdateProgress(int progressPercentage)
-        {
-            ProgressPercentage = progressPercentage;
-            RaisePropertyChanged(nameof(ProgressPercentage));
-
-            DownloadSpeedText = string.Format("{0}/s - {1:0} s",
-                _readableFileSizeFormatter.GetFileSizeString(_downloadSpeed.BytesPerSecond),
-                _downloadSpeed.EstimatedRemainingDuration.TotalSeconds);
-
-            if (progressPercentage == 100)
-                DownloadSpeedText = "";
-
-            RaisePropertyChanged(nameof(DownloadSpeedText));
+                RaisePropertyChanged(nameof(DownloadSpeedText));
+            }, args.Progress);
         }
     }
 }
