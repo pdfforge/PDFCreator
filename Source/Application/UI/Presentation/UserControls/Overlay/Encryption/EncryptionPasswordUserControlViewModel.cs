@@ -4,15 +4,20 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.UI.Presentation.Wrapper;
+using System.Threading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
 {
     public class EncryptionPasswordUserControlViewModel : OverlayViewModelBase<EncryptionPasswordInteraction, EncryptionPasswordsUserControlTranslation>
     {
+        private readonly ZxcvbnProvider _zxcvbnProvider;
         public bool AllowConversionInterrupts { get; set; } = true;
 
-        public EncryptionPasswordUserControlViewModel(ITranslationUpdater updater) : base(updater)
+        public EncryptionPasswordUserControlViewModel(ITranslationUpdater updater, ZxcvbnProvider zxcvbnProvider) : base(updater)
         {
+            _zxcvbnProvider = zxcvbnProvider;
+
             OkCommand = new DelegateCommand(ExecuteOk, CanExecuteOk);
             RemoveCommand = new DelegateCommand(ExecuteRemove);
             SkipCommand = new DelegateCommand(ExecuteSkip);
@@ -24,25 +29,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
         public DelegateCommand SkipCommand { get; protected set; }
         public DelegateCommand CancelCommand { get; protected set; }
 
+        public double EntropyPercentageOwner { get; set; }
+        public double EntropyPercentageUser { get; set; }
+
+        private double EntropyCheck(string password)
+        {
+            if (password == null)
+                return 0.0;
+
+            var evaluator = _zxcvbnProvider.GetInstanceAsync().Result;
+            return evaluator.EvaluatePassword(password, CancellationToken.None).Entropy;
+        }
+
         public string OwnerPassword
         {
-            get => Interaction.OwnerPassword;
+            get => Interaction?.OwnerPassword;
             set
             {
+                EntropyPercentageOwner = EntropyCheck(value);
                 Interaction.OwnerPassword = value;
                 OkCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(OwnerPassword));
+                RaisePropertyChanged(nameof(EntropyPercentageOwner));
             }
         }
 
         public string UserPassword
         {
-            get => Interaction.UserPassword;
+            get => Interaction?.UserPassword;
             set
             {
+                EntropyPercentageUser = EntropyCheck(value);
                 Interaction.UserPassword = value;
                 OkCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(UserPassword));
+                RaisePropertyChanged(nameof(EntropyPercentageUser));
             }
         }
 
@@ -106,7 +127,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
 
     public class DesignTimeEncryptionPasswordUserControlViewModel : EncryptionPasswordUserControlViewModel
     {
-        public DesignTimeEncryptionPasswordUserControlViewModel() : base(new DesignTimeTranslationUpdater())
+        public DesignTimeEncryptionPasswordUserControlViewModel() : base(new DesignTimeTranslationUpdater(), null)
         {
         }
     }

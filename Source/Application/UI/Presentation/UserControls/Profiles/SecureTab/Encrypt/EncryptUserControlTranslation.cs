@@ -1,4 +1,6 @@
-﻿using Translatable;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using System;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt
 {
@@ -22,5 +24,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
         public string FillFormsPermissionCheckBox { get; private set; } = "to fill forms";
         public string EditAssemblyPermissionCheckBox { get; private set; } = "to edit the assembly";
         public string PasswordTitle { get; private set; } = "Password";
+
+        public string GetEncryptionName(EncryptionLevel encryptionLevel)
+        {
+            switch (encryptionLevel)
+            {
+                case EncryptionLevel.Aes128Bit:
+                    return Aes128BitEncryptionText;
+
+                case EncryptionLevel.Aes256Bit:
+                    return Aes256BitEncryptionText;
+
+                case EncryptionLevel.Rc128Bit:
+                    return Rc128BitEncryptionText;
+
+                default: throw new Exception($"The encryption level {encryptionLevel} is unknown here");
+            }
+        }
     }
 }

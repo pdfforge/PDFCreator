@@ -1,5 +1,4 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Utilities;
+﻿using pdfforge.PDFCreator.Utilities;
 using System;
 using SystemInterface.Microsoft.Win32;
 
@@ -8,8 +7,6 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
     public interface IWelcomeSettingsHelper
     {
         bool CheckIfRequiredAndSetCurrentVersion();
-
-        void SetCurrentApplicationVersionAsWelcomeVersionInRegistry();
     }
 
     public class WelcomeSettingsHelper : IWelcomeSettingsHelper
@@ -19,13 +16,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
         private readonly IRegistry _registryWrap;
         private readonly IVersionHelper _versionHelper;
-        private readonly IGpoSettings _gpoSettings;
 
-        public WelcomeSettingsHelper(IRegistry registryWrap, IVersionHelper versionHelper, IGpoSettings gpoSettings)
+        public WelcomeSettingsHelper(IRegistry registryWrap, IVersionHelper versionHelper)
         {
             _registryWrap = registryWrap;
             _versionHelper = versionHelper;
-            _gpoSettings = gpoSettings;
         }
 
         public bool CheckIfRequiredAndSetCurrentVersion()

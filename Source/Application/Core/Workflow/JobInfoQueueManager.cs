@@ -6,7 +6,10 @@ using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
+using System.IO;
 using System.Threading;
+using IJobInfoQueue = pdfforge.PDFCreator.Core.JobInfoQueue.IJobInfoQueue;
+using NewJobInfoEventArgs = pdfforge.PDFCreator.Core.JobInfoQueue.NewJobInfoEventArgs;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -24,7 +27,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly IJobBuilder _jobBuilder;
         private readonly ISettingsProvider _settingsProvider;
-        private readonly IJobHistoryManager _jobHistoryManager;
+        private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IManagePrintJobExceptionHandler _managePrintJobExceptionHandler;
@@ -35,7 +38,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private ISynchronizedThread _processingThread;
 
         public JobInfoQueueManager(IManagePrintJobExceptionHandler managePrintJobExceptionHandler, IThreadManager threadManager, IWorkflowFactory workflowFactory,
-                                   IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, IJobHistoryManager jobHistoryManager)
+                                   IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, IJobHistoryActiveRecord jobHistoryActiveRecord)
         {
             _managePrintJobExceptionHandler = managePrintJobExceptionHandler;
             _threadManager = threadManager;
@@ -43,7 +46,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _jobInfoQueue = jobInfoQueue;
             _jobBuilder = jobBuilder;
             _settingsProvider = settingsProvider;
-            _jobHistoryManager = jobHistoryManager;
+            _jobHistoryActiveRecord = jobHistoryActiveRecord;
 
             _jobInfoQueue.OnNewJobInfo += JobInfoQueue_OnNewJobInfo;
         }
@@ -106,8 +109,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
                         try
                         {
                             ProcessJob(jobInfo);
-
                             // If Job was processed without ManagePrintJobsException, it can be removed
+                            repeatJob = false;
+                        }
+                        catch (InvalidDataException ex)
+                        {
+                            _logger.Error("There was an invalid data exception while parsing the ps file: " + ex);
                             repeatJob = false;
                         }
                         finally
@@ -135,6 +142,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             catch (Exception ex)
             {
                 _logger.Error("There was an error while processing the print jobs: " + ex);
+
                 throw;
             }
             finally
@@ -178,7 +186,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             else
             {
-                _jobHistoryManager.Add(job);
+                _jobHistoryActiveRecord.Add(job);
             }
         }
 

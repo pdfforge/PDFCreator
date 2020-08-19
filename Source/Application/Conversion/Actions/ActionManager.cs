@@ -1,52 +1,69 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Workflow;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
 {
     public class ActionManager : IActionManager
     {
-        private readonly IEnumerable<IPreConversionAction> _preConversionActions;
-        private readonly IEnumerable<IPostConversionAction> _postConversionActions;
+        private readonly IEnumerable<IAction> _allActions;
+        private readonly IList<IActionFacade> _actionFacades;
+        private readonly IAppSettingsProvider _appSettingsProvider;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ActionManager(IList<IPreConversionAction> availablePreConversionActions, IList<IPostConversionAction> availablePostConversionActions)
+        public ActionManager(IEnumerable<IAction> allActions, IEnumerable<IActionFacade> actionFacades, IAppSettingsProvider appSettingsProvider)
         {
-            _preConversionActions = availablePreConversionActions;
-            _postConversionActions = availablePostConversionActions;
+            _allActions = allActions.ToList();
+            _actionFacades = actionFacades.ToList();
+            _appSettingsProvider = appSettingsProvider;
         }
 
-        public IEnumerable<IPreConversionAction> GetApplicablePreConversionActions(Job job)
+        public IEnumerable<T> GetActions<T>(ConversionProfile profile) where T : IAction
         {
-            var enabledActions = new List<IPreConversionAction>();
+            var list = _allActions.ToList();
 
-            foreach (var action in _preConversionActions)
+            if (profile.EnableWorkflowEditor)
             {
-                if (!action.IsEnabled(job.Profile))
-                    continue;
-
-                enabledActions.Add(action);
-                _logger.Trace($"added pre conversion action '{action.GetType().FullName}'");
+                list = CreateActionListWithOrder(profile)
+                    .AddRemainingActions(_allActions);
             }
 
-            return enabledActions;
+            return list.FilterForEnabledInProfile<T>(profile);
         }
 
-        public IEnumerable<IPostConversionAction> GetApplicablePostConversionActions(Job job)
+        private List<IAction> CreateActionListWithOrder(ConversionProfile profile)
         {
-            var enabledActions = new List<IPostConversionAction>();
+            var orderedWorkflowList = profile.ActionOrder.Select(s => _actionFacades.FirstOrDefault(x => x.SettingsType.Name == s));
+            return orderedWorkflowList.Select(actionFacade => _allActions.FirstOrDefault(action => actionFacade != null && action.GetType() == actionFacade.Action)).ToList();
+        }
 
-            foreach (var action in _postConversionActions)
+        public IEnumerable<T> GetActions<T>(Job job) where T : IAction
+        {
+            return GetActions<T>(job.Profile);
+        }
+    }
+
+    internal static class ActionListExtension
+    {
+        public static List<IAction> AddRemainingActions(this List<IAction> list, IEnumerable<IAction> allActions)
+        {
+            var returnList = list.ToList();
+            foreach (var action in allActions)
             {
-                if (!action.IsEnabled(job.Profile))
-                    continue;
-
-                enabledActions.Add(action);
-                _logger.Trace($"added post conversion action '{action.GetType().FullName}'");
+                if (!returnList.Contains(action))
+                    returnList.Add(action);
             }
 
-            return enabledActions;
+            return returnList;
+        }
+
+        public static IEnumerable<TActionType> FilterForEnabledInProfile<TActionType>(this List<IAction> list, ConversionProfile profile) where TActionType : IAction
+        {
+            return list.OfType<TActionType>().Where(x => x.IsEnabled(profile));
         }
     }
 }

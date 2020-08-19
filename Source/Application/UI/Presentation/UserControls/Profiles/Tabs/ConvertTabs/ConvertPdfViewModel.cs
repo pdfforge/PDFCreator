@@ -11,10 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
     {
         private readonly EditionHelper _editionHelper;
 
-        public bool AllowForPlusAndBusiness
-        {
-            get { return _editionHelper.ShowOnlyForPlusAndBusiness; }
-        }
+        public bool SupportsPdfAValidation => !_editionHelper.IsFreeEdition;
 
         public ConvertPdfViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider selectedProfile,
                                     EditionHelper editionHelper, IDispatcher dispatcher) : base(translationUpdater, selectedProfile, dispatcher)
@@ -24,14 +21,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
             {
                 RaiseIsPdfOutputChanged();
                 CurrentProfile.PropertyChanged += RaiseIsPdfOutputChanged;
-                CurrentProfile.SetRaiseConditionsForNotSupportedFeatureSections(RaiseIsPdfOutputChanged);
+                CurrentProfile.MountRaiseConditionsForNotSupportedFeatureSections(RaiseIsPdfOutputChanged);
             };
 
             if (CurrentProfile == null)
                 return;
 
             CurrentProfile.PropertyChanged += RaiseIsPdfOutputChanged;
-            CurrentProfile.SetRaiseConditionsForNotSupportedFeatureSections(RaiseIsPdfOutputChanged);
+            CurrentProfile.MountRaiseConditionsForNotSupportedFeatureSections(RaiseIsPdfOutputChanged);
         }
 
         private void RaiseIsPdfOutputChanged(object sender = null, PropertyChangedEventArgs args = null)

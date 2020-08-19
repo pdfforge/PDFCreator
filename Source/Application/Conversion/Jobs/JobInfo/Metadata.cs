@@ -1,9 +1,11 @@
-﻿namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
+﻿using System;
+
+namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 {
     /// <summary>
     ///     The Metadata class holds information about the printed document
     /// </summary>
-    public class Metadata
+    public class Metadata : IEquatable<Metadata>
     {
         public Metadata()
         {
@@ -56,6 +58,21 @@
             };
 
             return metadata;
+        }
+
+        public bool Equals(Metadata other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return PrintJobName.Equals(other.PrintJobName)
+                && Title.Equals(other.Title)
+                && PrintJobAuthor.Equals(other.PrintJobAuthor)
+                && Author.Equals(other.Author)
+                && Subject.Equals(other.Subject)
+                && Keywords.Equals(other.Keywords);
         }
     }
 }

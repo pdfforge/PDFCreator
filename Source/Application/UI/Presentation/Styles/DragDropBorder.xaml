@@ -39,6 +39,20 @@
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
+            <EventTrigger RoutedEvent="Control.DragEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.15" To="1" Storyboard.TargetProperty="BorderBrush.Opacity" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Control.DragLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.15" To="0" Storyboard.TargetProperty="BorderBrush.Opacity" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
         </Style.Triggers>
     </Style>
 

@@ -19,6 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
 
         private readonly string SettingPropertyName;
         public PasswordButtonController PasswordButtonController { get; }
+        public Action RaiseOkCanExecuteChanged { get; set; }
 
         public string Password
         {

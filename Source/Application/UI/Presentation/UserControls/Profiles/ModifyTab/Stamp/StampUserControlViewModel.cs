@@ -5,20 +5,22 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp
 {
     public class StampUserControlViewModel : ProfileUserControlViewModel<DocumentTabTranslation>
     {
         private readonly IFontHelper _fontHelper;
+        private readonly ITokenHelper _tokenHelper;
+        private readonly ITranslationUpdater _translationUpdater;
+        private readonly ITokenViewModelFactory _tokenViewModelFactory;
         private readonly IInteractionInvoker _interactionInvoker;
         private TokenReplacer _tokenReplacer;
         public TokenViewModel<ConversionProfile> StampUserControlTokenViewModel { get; set; }
@@ -29,18 +31,40 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.St
         {
             _interactionInvoker = interactionInvoker;
             _fontHelper = fontHelper;
+            _tokenHelper = tokenHelper;
+            _translationUpdater = translationUpdater;
+            _tokenViewModelFactory = tokenViewModelFactory;
+            _translationUpdater.RegisterAndSetTranslation(tf =>
+            {
+                _tokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
+                var tokens = _tokenHelper.GetTokenListForStamp();
+                SetTokenViewModels(_tokenViewModelFactory, tokens);
+            });
+        }
 
+        private bool wasInit;
+
+        public override void MountView()
+        {
             if (CurrentProfile != null)
             {
                 UpdateFontButtonText(CurrentProfile.Stamping);
             }
 
-            translationUpdater.RegisterAndSetTranslation(tf =>
+            if (!wasInit)
             {
-                _tokenReplacer = tokenHelper.TokenReplacerWithPlaceHolders;
-                var tokens = tokenHelper.GetTokenListForStamp();
-                SetTokenViewModels(tokenViewModelFactory, tokens);
-            });
+                wasInit = true;
+            }
+
+            StampUserControlTokenViewModel.MountView();
+
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+            StampUserControlTokenViewModel?.UnmountView();
         }
 
         private void SetTokenViewModels(ITokenViewModelFactory tokenViewModelFactory, List<string> tokens)
@@ -49,15 +73,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.St
                 .BuilderWithSelectedProfile()
                 .WithSelector(p => p.Stamping.StampText)
                 .WithTokenList(tokens)
-                .WithTokenCustomPreview(TokenReplace)
+                .WithDefaultTokenReplacerPreview()
                 .Build();
-        }
-
-        private string TokenReplace(string text)
-        {
-            var textWithTokens = _tokenReplacer.ReplaceTokens(text);
-            var bytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(textWithTokens); // Remove illegal characters (e.g. chinese characters).
-            return Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
         }
 
         public string FontButtonText { get; set; }
@@ -85,19 +102,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.St
             interaction.Font = new Font(CurrentProfile.Stamping.FontName, CurrentProfile.Stamping.FontSize);
 
             _interactionInvoker.Invoke(interaction);
+
             if (!interaction.Success)
                 return;
 
-            var postScriptName = _fontHelper.FindPostScriptName(interaction.Font.Name);
+            var fontFilename = _fontHelper.GetFontFilename(interaction.Font);
 
-            if (postScriptName == null)
+            if (fontFilename == null)
             {
                 DisplayFontError();
                 return;
             }
 
             CurrentProfile.Stamping.FontName = interaction.Font.Name;
-            CurrentProfile.Stamping.PostScriptFontName = postScriptName;
+            CurrentProfile.Stamping.FontFile = fontFilename;
             CurrentProfile.Stamping.FontSize = interaction.Font.Size;
 
             UpdateFontButtonText(CurrentProfile.Stamping);

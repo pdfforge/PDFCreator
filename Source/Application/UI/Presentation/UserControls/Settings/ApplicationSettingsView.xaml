@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              xmlns:regions="http://prismlibrary.com/"
              xmlns:redesign="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
@@ -12,18 +11,14 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSettingsViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
+    <Grid Background="White">
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
-            <TabControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.SettingsTabRegion}"
+            <TabControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ApplicationSettingsTabsRegion}"
                         TabStripPlacement="Left"
-                        Margin="-2 -2">
+                        Margin="-2 -2"  Background="White">
             </TabControl>
         </ScrollViewer>
-        
-        <UserControl VerticalAlignment="Bottom"
-                     HorizontalAlignment="Right"
-                     regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ApplicationSaveCancelButtonsRegion}"/>
 
         <gpo:GPOLockLayer IsLockedByGpo="{ Binding ApplicationSettingsIsDisabled }" />
     </Grid>

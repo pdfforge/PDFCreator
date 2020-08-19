@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Settings for the JPEG output format
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class JpegSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -61,6 +60,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Dpi = Dpi;
 			copy.Quality = Quality;
 			return copy;
+		}
+		
+		public void ReplaceWith(JpegSettings source)
+		{
+			if(Color != source.Color)
+				Color = source.Color;
+				
+			if(Dpi != source.Dpi)
+				Dpi = source.Dpi;
+				
+			if(Quality != source.Quality)
+				Quality = source.Quality;
+				
 		}
 		
 		public override bool Equals(object o)

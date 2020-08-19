@@ -4,7 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 
 namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 {
-    public interface ICheckable
+    public interface ICheckable : IAction
     {
         void ApplyPreSpecifiedTokens(Job job);
 

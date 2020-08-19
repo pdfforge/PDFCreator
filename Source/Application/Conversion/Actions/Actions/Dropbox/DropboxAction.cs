@@ -100,7 +100,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
                 return new ActionResult();
 
             if (!ValidName.IsValidDropboxFolder(profile.DropboxSettings.SharedFolder))
-                return new ActionResult(ErrorCode.Dropbox_InvalidFolderName);
+                return new ActionResult(ErrorCode.Dropbox_InvalidDirectoryName);
 
             return new ActionResult();
         }

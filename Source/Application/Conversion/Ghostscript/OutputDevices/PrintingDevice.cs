@@ -1,9 +1,10 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
@@ -13,25 +14,26 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public class PrintingDevice : OutputDevice
     {
+        public const string PasswordParameter = "-sPDFPassword=";
+
         private readonly PrinterWrapper _printer;
 
-        public PrintingDevice(Job job) : base(job)
+        public PrintingDevice(Job job) : base(job, ConversionMode.ImmediateConversion)
         {
             _printer = new PrinterWrapper();
         }
 
-        public PrintingDevice(Job job, PrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, file, osHelper, commandLineUtil)
+        public PrintingDevice(Job job, PrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
+            : base(job, ConversionMode.ImmediateConversion, file, osHelper, commandLineUtil)
         {
             _printer = printer;
         }
 
         protected override void AddDeviceSpecificParameters(IList<string> parameters)
         {
-            parameters.Add("-c");
-            var markstring = new StringBuilder();
-            markstring.Append("mark ");
-            markstring.Append("/NoCancel true ");
-            markstring.Append("/BitsPerPixel 24 "); //random = true color
+            parameters.Add("-dPrinted");
+            parameters.Add("-sDEVICE=mswinpr2");
+            var printerName = "";
             //var _printer = new PrinterSettings();
             switch (Job.Profile.Printing.SelectPrinter)
             {
@@ -42,8 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                         Logger.Error("The default printer (" + Job.Profile.Printing.PrinterName + ") is invalid!");
                         throw new Exception("100");
                     }
-                    markstring.Append("/OutputFile (\\\\\\\\spool\\\\" + _printer.PrinterName.Replace("\\", "\\\\") +
-                                      ") ");
+                    printerName = _printer.PrinterName;
                     break;
 
                 case SelectPrinter.SelectedPrinter:
@@ -54,8 +55,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                         Logger.Error("The selected printer (" + Job.Profile.Printing.PrinterName + ") is invalid!");
                         throw new Exception("101");
                     }
-                    markstring.Append("/OutputFile (\\\\\\\\spool\\\\" + _printer.PrinterName.Replace("\\", "\\\\") +
-                                      ") ");
+                    printerName = _printer.PrinterName;
                     break;
 
                 case SelectPrinter.ShowDialog:
@@ -63,13 +63,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     //add nothing to trigger the Windows-Printing-Dialog
                     break;
             }
-            markstring.Append("/UserSettings ");
-            markstring.Append("1 dict ");
-            markstring.Append("dup /DocumentName (" + PathSafe.GetFileName(Job.OutputFiles[0]) + ") put ");
-            markstring.Append("(mswinpr2) finddevice ");
-            markstring.Append("putdeviceprops ");
-            markstring.Append("setdevice");
-            parameters.Add(markstring.ToString());
+            if (!string.IsNullOrEmpty(printerName))
+                parameters.Add($"-sOutputFile=%printer%{printerName}");
+            parameters.Add("-c");
+            parameters.Add("<< /NoCancel true >> setpagedevice ");
 
             //No duplex settings for PrinterDialog
             if (Job.Profile.Printing.SelectPrinter == SelectPrinter.ShowDialog)
@@ -100,12 +97,24 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
         protected override void AddOutputfileParameter(IList<string> parameters)
         {
-            // we don't need to add an output filename here as the printer is defined in the pdfmarks section
+            if (Job.Profile.PdfSettings.Security.Enabled)
+                parameters.Add(PasswordParameter + Job.Passwords.PdfOwnerPassword);
         }
 
         protected override string ComposeOutputFilename()
         {
-            throw new NotImplementedException();
+            return "";
+        }
+
+        protected override void SetSourceFiles(IList<string> parameters, Job job)
+        {
+            if (job.Profile.OutputFormat.IsPdf())
+                foreach (var file in Job.OutputFiles)
+                    parameters.Add(PathHelper.GetShortPathName(file));
+            else if (!string.IsNullOrEmpty(job.IntermediatePdfFile))
+                SetSourceFilesFromIntermediateFiles(parameters);
+            else
+                SetSourceFilesFromSourceFileInfo(parameters);
         }
     }
 }

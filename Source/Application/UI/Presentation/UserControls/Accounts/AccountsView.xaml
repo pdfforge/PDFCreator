@@ -6,47 +6,92 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:settings="clr-namespace:pdfforge.PDFCreator.Conversion.Settings;assembly=PDFCreator.Settings"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:accounts="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance designTime:DesignTimeAccountsViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Styles/ListBox.xaml"></ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/ListBox.xaml" />
+                <ResourceDictionary Source="../../Styles/FlatPDFCreatorButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
+
     <Grid>
-        <Grid VerticalAlignment="Stretch">
+        <Grid.Resources>
+            <converter:IdToResourceConverter x:Key="IdToResourceConverter" />
+
+            <Style TargetType="Button" x:Key="LocalLightGrayButton" BasedOn="{StaticResource FlatGreyButton}">
+                <Setter Property="Height" Value="34" />
+                <Setter Property="Margin" Value="20 0 0 0" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Cursor" Value="Hand" />
+            </Style>
+        </Grid.Resources>
+        <Grid VerticalAlignment="Stretch" Margin="0 30 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="6*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Column="1" Grid.Row="1"
-                        VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-                        Visibility="{Binding ShowAddAccountsHint}"
-                        Margin="0 0 0 30">
-                <TextBlock Text="{Binding Translation.CreateNewAccountsHere}"
-                           FontStyle="Italic"
-                           TextAlignment="Center" />
-                <Viewbox Margin="0 5" Height="100">
-                    <ContentControl Content="{DynamicResource EmptyAccountArrow}" />
-                </Viewbox>
-            </StackPanel>
-
-            <HeaderedContentControl Grid.Column="1" Grid.Row="1"
+            <HeaderedContentControl Grid.Column="1"
                                     Template="{DynamicResource BorderlessHeaderPanelTemplate}"
                                     Header="{Binding Translation.ManageAccounts}">
-                <DockPanel>
+                <StackPanel>
                     <TextBlock Margin="0 0 0 10" Text="{Binding Translation.ManageAccountsDescription}"
-                               TextWrapping="Wrap"
-                               DockPanel.Dock="Top" />
+                               TextWrapping="Wrap" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 15">
+                        <controls:DropDownButton ItemsSource="{Binding AddAccountsToken}" Style ="{DynamicResource CustomColorDropDownButton}"
+                                                 Height="34" Cursor="Hand" Padding="0" ArrowVisibility="Visible" Content="{Binding Translation.AddAccount}">
+                            <controls:DropDownButton.ButtonStyle>
+                                <Style TargetType="Button" BasedOn="{StaticResource FlatGreyButton}">
+                                    <Setter Property="Padding" Value="10 0 5 0" />
+                                </Style>
+                            </controls:DropDownButton.ButtonStyle>
+                            <controls:DropDownButton.ItemContainerStyle>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="Command" Value="{Binding Path=Command}" />
+                                    <Setter Property="HeaderTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate DataType="accounts:AccountToken">
+                                                <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                                                    <Viewbox Height="20" Width="20" Margin="0 0 10 0">
+                                                        <ContentControl Focusable="False">
+                                                            <ContentControl.Content>
+                                                                <MultiBinding Converter="{StaticResource IdToResourceConverter}">
+                                                                    <Binding RelativeSource="{RelativeSource Self}" />
+                                                                    <Binding Path="NameOfIcon" />
+                                                                </MultiBinding>
+                                                            </ContentControl.Content>
+                                                        </ContentControl>
+                                                    </Viewbox>
+                                                    <TextBlock Text="{Binding Translation}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </controls:DropDownButton.ItemContainerStyle>
+                        </controls:DropDownButton>
+
+                        <Button Command="{Binding RemoveSelectedAccountCommand}"
+                                Content="{Binding Translation.RemoveAccount}"
+                                Style="{StaticResource LocalLightGrayButton}" />
+
+                        <Button Command="{Binding EditSelectedAccountCommand}"
+                                Style="{StaticResource LocalLightGrayButton}"
+                                Content="{Binding Translation.EditAccount}" />
+                    </StackPanel>
                     <ListBox
                         ItemsSource="{Binding AllAccounts}"
+                        SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
@@ -66,25 +111,8 @@
                         </ListBox.Style>
 
                         <ListBox.Resources>
-                            <!-- data templates which will be applied by accout type -->
                             <DataTemplate DataType="{x:Type settings:SmtpAccount}">
                                 <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 0 20 0"
-                                            Command="{Binding DataContext.SmtpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 5 0 5"
-                                            Command="{Binding DataContext.SmtpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource EditButtonIcon}" />
                                     <StackPanel Height="20" Width="45" DockPanel.Dock="Left">
                                         <ContentControl Focusable="False" Height="20" Width="20" Content="{DynamicResource EmailIcon}" />
                                     </StackPanel>
@@ -96,14 +124,6 @@
 
                             <DataTemplate DataType="{x:Type settings:DropboxAccount}">
                                 <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 0 20 0"
-                                            Command="{Binding DataContext.DropboxAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
                                     <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
                                         <ContentControl Focusable="False" Content="{DynamicResource DropboxIcon}" />
                                     </Viewbox>
@@ -115,22 +135,6 @@
 
                             <DataTemplate DataType="{x:Type settings:FtpAccount}">
                                 <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 0 20 0"
-                                            Command="{Binding DataContext.FtpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 5 0 5"
-                                            Command="{Binding DataContext.FtpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource EditButtonIcon}" />
                                     <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
                                         <ContentControl Focusable="False" Content="{DynamicResource FtpIcon}" />
                                     </Viewbox>
@@ -142,22 +146,6 @@
 
                             <DataTemplate DataType="{x:Type settings:HttpAccount}">
                                 <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 0 20 0"
-                                            Command="{Binding DataContext.HttpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 5 0 5"
-                                            Command="{Binding DataContext.HttpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource EditButtonIcon}" />
                                     <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
                                         <ContentControl Focusable="False" Content="{DynamicResource HttpIcon}" />
                                     </Viewbox>
@@ -169,22 +157,6 @@
 
                             <DataTemplate DataType="{x:Type settings:TimeServerAccount}">
                                 <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 0 20 0"
-                                            Command="{Binding DataContext.TimeServerAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
-                                    <Button DockPanel.Dock="Right"
-                                            Width="15"
-                                            Height="15"
-                                            Margin="20 5 0 5"
-                                            Command="{Binding DataContext.TimeServerAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource EditButtonIcon}" />
                                     <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
                                         <ContentControl Focusable="False" Content="{DynamicResource TimeServerIcon}" />
                                     </Viewbox>
@@ -195,105 +167,8 @@
                             </DataTemplate>
                         </ListBox.Resources>
                     </ListBox>
-                </DockPanel>
+                </StackPanel>
             </HeaderedContentControl>
-
-            <StackPanel Grid.Column="1" Grid.Row="2"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal"
-                        Margin="0 20 0 0">
-
-                <Button Command="{Binding SmtpAccountAddCommand}"
-                        Width="100"
-                        Height="100"
-                        Margin="10 0"
-                        Padding ="0">
-                    <StackPanel VerticalAlignment="Center" Margin="0">
-                        <Viewbox Height="40" Width="40">
-                            <ContentControl Focusable="False" Content="{DynamicResource EmailIcon}" />
-                        </Viewbox>
-                        <Viewbox MaxWidth="90">
-                            <TextBlock Text="{Binding Translation.AddSmtpAccount}"
-                                       Width="90"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center" />
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-
-                <Button Command="{Binding DropboxAccountAddCommand}"
-                        Width="100"
-                        Height="100"
-                        Margin="10 0"
-                        Padding ="0">
-                    <StackPanel VerticalAlignment="Center" Margin="0">
-                        <Viewbox Height="40" Width="40">
-                            <ContentControl Focusable="False" Content="{DynamicResource DropboxIcon}" />
-                        </Viewbox>
-                        <Viewbox MaxWidth="90">
-                            <TextBlock Text="{Binding Translation.AddDropboxAccount}"
-                                       Width="90"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center" />
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-
-                <Button Command="{Binding FtpAccountAddCommand}"
-                        Width="100"
-                        Height="100"
-                        Margin="10 0"
-                        Padding ="0">
-                    <StackPanel VerticalAlignment="Center" Margin="0">
-                        <Viewbox Height="40" Width="40">
-                            <ContentControl Focusable="False" Content="{DynamicResource FtpIcon}" />
-                        </Viewbox>
-                        <Viewbox MaxWidth="90">
-                            <TextBlock Text="{Binding Translation.AddFtpAccount}"
-                                       Width="90"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center" />
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-
-                <Button Command="{Binding HttpAccountAddCommand}"
-                        Width="100"
-                        Height="100"
-                        Margin="10 0"
-                        Padding ="0">
-                    <StackPanel VerticalAlignment="Center" Margin="0">
-                        <Viewbox Height="40" Width="40">
-                            <ContentControl Focusable="False" Content="{DynamicResource HttpIcon}" />
-                        </Viewbox>
-                        <Viewbox MaxWidth="90">
-                            <TextBlock Text="{Binding Translation.AddHttpAccount}"
-                                       Width="90"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center" />
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-
-                <Button Command="{Binding TimeServerAccountAddCommand}"
-                        Width="100"
-                        Height="100"
-                        Margin="10 0"
-                        Padding ="0">
-                    <StackPanel VerticalAlignment="Center" Margin="0">
-                        <Viewbox Height="40" Width="40">
-                            <ContentControl Focusable="False" Content="{DynamicResource TimeServerIcon}" />
-                        </Viewbox>
-                        <Viewbox MaxWidth="90">
-                            <TextBlock Text="{Binding Translation.AddTimeServerAccount}"
-                                       Width="90"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center" />
-                        </Viewbox>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
         </Grid>
 
         <gpo:GPOLockLayer IsLockedByGpo="{ Binding IsAccountsDisabled }" />

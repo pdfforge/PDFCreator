@@ -67,6 +67,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
 #pragma warning disable CS0067
 
         public event EventHandler SettingsChanged;
+        public int GetRegisteredSelectedProfileChangedListener()
+        {
+            return 0;
+        }
 
         public event PropertyChangedEventHandler SelectedProfileChanged;
 

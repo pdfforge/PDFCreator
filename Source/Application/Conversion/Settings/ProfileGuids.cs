@@ -10,6 +10,7 @@
         public const string PNG_PROFILE_GUID = "PngGuid";
         public const string PRINT_PROFILE_GUID = "PrintGuid";
         public const string TIFF_PROFILE_GUID = "TiffGuid";
+        public const string SECURED_PDF_PROFILE_GUID = "SecuredPdfGuid";
 
         public const string LAST_USED_PROFILE_GUID = "LastUsedProfileGuid";
     }

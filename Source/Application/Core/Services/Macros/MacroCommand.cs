@@ -125,17 +125,17 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
                     continue;
                 }
 
-                var waitableCommand = command as IWaitableCommand;
-
-                if (waitableCommand != null)
+                if (command is IWaitableCommand waitableCommand)
                 {
                     var taskCompletionSource = new TaskCompletionSource<ResponseStatus>();
+                    void IsDoneHandler(object sender, MacroCommandIsDoneEventArgs args) => taskCompletionSource.SetResult(args.ResponseStatus);
 
-                    waitableCommand.IsDone += (sender, args) => taskCompletionSource.SetResult(args.ResponseStatus);
+                    waitableCommand.IsDone += IsDoneHandler;
 
                     waitableCommand.Execute(parameter);
-
                     status = await taskCompletionSource.Task;
+
+                    waitableCommand.IsDone -= IsDoneHandler;
                 }
                 else
                 {
@@ -152,12 +152,31 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
             return status;
         }
 
+        public void MountView()
+        {
+            foreach (var command in CommandList)
+            {
+                if(command is IMountable mountable)
+                    mountable.MountView();
+            }
+        }
+
+        public void UnmountView()
+        {
+            foreach (var command in CommandList)
+            {
+                if (command is IMountable mountable)
+                    mountable.UnmountView();
+            }
+        }
+
         // has to be implemented because of ICommand
 #pragma warning disable 67
 
         public event EventHandler CanExecuteChanged;
 
 #pragma warning restore 67
+        
     }
 
     public enum ResponseStatus

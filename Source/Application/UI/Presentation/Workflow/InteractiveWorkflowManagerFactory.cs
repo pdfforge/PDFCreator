@@ -17,15 +17,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
     {
         private readonly IWorkflowNavigationHelper _workflowNavigationHelper;
         private readonly ISignaturePasswordCheck _signaturePasswordCheck;
-        private readonly IUpdateAssistant _updateAssistant;
+        private readonly IUpdateHelper _updateHelper;
 
         protected List<IWorkflowStep> WorkflowSteps;
 
-        public InteractiveWorkflowManagerFactory(IWorkflowNavigationHelper workflowNavigationHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateAssistant updateAssistant)
+        public InteractiveWorkflowManagerFactory(IWorkflowNavigationHelper workflowNavigationHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateHelper updateHelper)
         {
             _workflowNavigationHelper = workflowNavigationHelper;
             _signaturePasswordCheck = signaturePasswordCheck;
-            _updateAssistant = updateAssistant;
+            _updateHelper = updateHelper;
         }
 
         public virtual InteractiveWorkflowManager CreateInteractiveWorkflowManager(IRegionManager regionManager, ICurrentSettingsProvider currentSettingsProvider)
@@ -40,29 +40,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             WorkflowSteps.Add(new SignaturePasswordStep(_signaturePasswordCheck));
             WorkflowSteps.Add(WorkflowStep.Create<ProgressView>());
             WorkflowSteps.Add(new DropboxSharedLinkStep());
-            WorkflowSteps.Add(new UpdateHintStep(_updateAssistant));
+            WorkflowSteps.Add(new UpdateHintStep(_updateHelper));
             WorkflowSteps.Add(new QuickActionStep());
 
             return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps);
         }
     }
 
-    public class InteractiveWorkflowManagerFactoryWithPlusHintStep : InteractiveWorkflowManagerFactory
+    public class InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep : InteractiveWorkflowManagerFactory
     {
         private readonly IWorkflowNavigationHelper _workflowNavigationHelper;
-        private readonly IPlusHintHelper _plusHintHelper;
+        private readonly IProfessionalHintHelper _professionalHintHelper;
 
-        public InteractiveWorkflowManagerFactoryWithPlusHintStep(IWorkflowNavigationHelper workflowNavigationHelper, IPlusHintHelper plusHintHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateAssistant updateAssistant)
-            : base(workflowNavigationHelper, signaturePasswordCheck, updateAssistant)
+        public InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep(IWorkflowNavigationHelper workflowNavigationHelper, IProfessionalHintHelper professionalHintHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateHelper updateHelper)
+            : base(workflowNavigationHelper, signaturePasswordCheck, updateHelper)
         {
             _workflowNavigationHelper = workflowNavigationHelper;
-            _plusHintHelper = plusHintHelper;
+            _professionalHintHelper = professionalHintHelper;
         }
 
         public override InteractiveWorkflowManager CreateInteractiveWorkflowManager(IRegionManager regionManager, ICurrentSettingsProvider currentSettingsProvider)
         {
             base.CreateInteractiveWorkflowManager(regionManager, currentSettingsProvider);
-            WorkflowSteps.Add(new PlusHintStep(_plusHintHelper));
+            WorkflowSteps.Add(new ProfessionalHintStep(_professionalHintHelper));
 
             return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps);
         }

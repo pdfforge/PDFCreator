@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("pdfforge")]
 [assembly: AssemblyProduct("SetupHelper")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2019")]
+[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

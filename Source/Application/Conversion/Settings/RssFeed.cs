@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class RssFeed : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -49,6 +48,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enable = Enable;
 			copy.LatestRssUpdate = LatestRssUpdate;
 			return copy;
+		}
+		
+		public void ReplaceWith(RssFeed source)
+		{
+			if(Enable != source.Enable)
+				Enable = source.Enable;
+				
+			if(LatestRssUpdate != source.LatestRssUpdate)
+				LatestRssUpdate = source.LatestRssUpdate;
+				
 		}
 		
 		public override bool Equals(object o)

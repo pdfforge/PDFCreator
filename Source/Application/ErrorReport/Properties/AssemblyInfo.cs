@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("pdfforge GmbH")]
 [assembly: AssemblyProduct("ErrorReport")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2019")]
+[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -48,7 +48,7 @@ using System.Windows;
 //
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern
 // übernehmen, indem Sie "*" eingeben:
-// [assembly: AssemblyVersion("3.4.0.0")]
+// [assembly: AssemblyVersion("4.1.2.0")]
 
-[assembly: AssemblyVersion("3.4.0.0")]
-[assembly: AssemblyFileVersion("3.4.0.0")]
+[assembly: AssemblyVersion("4.1.2.0")]
+[assembly: AssemblyFileVersion("4.1.2.0")]

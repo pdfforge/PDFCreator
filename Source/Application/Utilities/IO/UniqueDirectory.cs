@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.Utilities.IO
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("Argument may not be empty string", nameof(path));
 
-            _path = path;
+            _path = path.TrimEnd(' ', '.');
 
             _directoryWrap = directory;
             _fileWrap = fileWrap;

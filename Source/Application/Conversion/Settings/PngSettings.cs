@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Settings for the PNG output format
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class PngSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -53,6 +52,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Color = Color;
 			copy.Dpi = Dpi;
 			return copy;
+		}
+		
+		public void ReplaceWith(PngSettings source)
+		{
+			if(Color != source.Color)
+				Color = source.Color;
+				
+			if(Dpi != source.Dpi)
+				Dpi = source.Dpi;
+				
 		}
 		
 		public override bool Equals(object o)

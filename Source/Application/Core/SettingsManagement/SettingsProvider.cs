@@ -1,17 +1,24 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using System;
+using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
     public class LanguageChangedEventArgs : EventArgs
     {
-        public LanguageChangedEventArgs(PdfCreatorSettings settings)
+        private readonly ApplicationSettings _appSettings;
+        private readonly IEnumerable<ConversionProfile> _profiles;
+
+        public LanguageChangedEventArgs(ApplicationSettings appSettings, IEnumerable<ConversionProfile> profiles)
         {
-            Settings = settings;
+            _appSettings = appSettings;
+            _profiles = profiles;
         }
 
-        public PdfCreatorSettings Settings { get; }
+        public ApplicationSettings AppSettings => _appSettings;
+
+        public IEnumerable<ConversionProfile> Profiles => _profiles;
     }
 
     public abstract class SettingsProvider : ISettingsProvider
@@ -38,7 +45,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
         private void RaiseLanguageChanged(PdfCreatorSettings settings)
         {
-            LanguageChanged?.Invoke(this, new LanguageChangedEventArgs(settings));
+            LanguageChanged?.Invoke(this, new LanguageChangedEventArgs(settings.ApplicationSettings, settings.ConversionProfiles));
         }
 
         public void UpdateSettings(PdfCreatorSettings settings)

@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.Controls.TokenControlWithAddButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             mc:Ignorable="d"
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance controls1:DesignTimeTokenViewModel, IsDesignTimeCreatable=true}">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <controls1:BindableTextBox Grid.Row="0" Grid.Column="0"
+                                   BindableSelectionStart="{Binding CurrentCursorPos}"
+                                   VerticalContentAlignment="Center"
+                                   Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                                   VerticalAlignment="Stretch"
+                                   Style="{DynamicResource {x:Type TextBox}}"
+                                   x:Name="TokenTextBox"
+                                   BorderThickness="1 1 0 1" />
+
+        <Button Grid.Row="0" Grid.Column="1" Margin="0 0 5 0" Command="{Binding ButtonCommands[1]}" Padding="3 0" Style="{DynamicResource LightGreyButton}" Width="26"
+                Visibility="{Binding ShowButton, Converter={StaticResource BoolToVisibilityConverter}}"
+                FontWeight="DemiBold">
+            +
+        </Button>
+
+        <controls:DropDownButton Grid.Row="0" Grid.Column="2" Name="SplitButton" ItemsSource="{Binding Tokens}" Style="{DynamicResource LightGreyDropDownButton}"
+                                 VerticalContentAlignment="Center"
+                                 ArrowVisibility="Collapsed"
+                                 Padding="0"
+                                 ToolTip="{Binding Translation.TokenHintText}">
+            <controls:DropDownButton.Content>
+                <TextBlock Text="&lt;...&gt;" FontWeight="DemiBold" />
+            </controls:DropDownButton.Content>
+            <controls:DropDownButton.ItemContainerStyle>
+                <Style TargetType="MenuItem">
+                    <Setter Property="Margin" Value="0 0 0 0" />
+                    <Setter Property="Header" Value="{Binding Path=Name}" />
+                    <Setter Property="Command" Value="{Binding Path=MyCommand}" />
+                </Style>
+            </controls:DropDownButton.ItemContainerStyle>
+        </controls:DropDownButton>
+
+        <Button Grid.Row="0" Grid.Column="3" Margin="5 0 0 0" Command="{Binding ButtonCommand}" Padding="3 0" Style="{DynamicResource LightGreyButton}" Width="26"
+            Visibility="{Binding ShowButton, Converter={StaticResource BoolToVisibilityConverter}}"
+            FontWeight="DemiBold">
+            . . .
+        </Button>
+
+        <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" LastChildFill="True">
+
+            <misc:TokenHintPanel DockPanel.Dock="Right" TextWithToken="{Binding Text, ElementName=TokenTextBox, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox IsReadOnly="True"
+                     Foreground="Gray" BorderThickness="0" Background="Transparent" SelectionBrush="Transparent" CaretBrush="Transparent" VerticalContentAlignment="Center" Margin="5 0 0 0"
+                     Text="{Binding Preview}" />
+        </DockPanel>
+    </Grid>
+</UserControl>

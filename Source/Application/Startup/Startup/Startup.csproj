@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Core.Startup</RootNamespace>
     <AssemblyName>PDFCreator.Startup</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -58,21 +58,19 @@
     <Compile Include="AppStarts\MainWindowStart.cs" />
     <Compile Include="AppStarts\MaybePipedApplicationStarter.cs" />
     <Compile Include="AppStarts\MaybePipedStart.cs" />
-    <Compile Include="AppStarts\DirectConversionStart.cs" />
     <Compile Include="AppStarts\NewPrintJobStart.cs" />
     <Compile Include="AppStarts\PrintFileStart.cs" />
+    <Compile Include="AppStarts\RestorePrinterAppStart.cs" />
     <Compile Include="AppStarts\StoreLicenseForAllUsersStart.cs" />
     <Compile Include="IAppStartResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartConditions\CheckAllStartupConditions.cs" />
     <Compile Include="StartConditions\GhostscriptCondition.cs" />
-    <Compile Include="StartConditions\LicenseCondition.cs" />
     <Compile Include="StartConditions\PrinterInstalledCondition.cs" />
     <Compile Include="StartConditions\SpoolerRunningCondition.cs" />
     <Compile Include="StartConditions\CheckSpoolFolderCondition.cs" />
     <Compile Include="StartConditions\SpoolFolderAccess.cs" />
     <Compile Include="StartConditions\TerminalServerNotAllowedCondition.cs" />
-    <Compile Include="StartConditions\TrialStartupCondition.cs" />
     <Compile Include="StaticPropertiesHack.cs" />
     <Compile Include="Translations\ProgramTranslation.cs" />
     <Compile Include="Translations\StartupTranslation.cs" />
@@ -102,6 +100,10 @@
     <ProjectReference Include="..\..\Core\DirectConversion\DirectConversion.csproj">
       <Project>{2d918f3c-5403-4346-98cf-fb53a5d09951}</Project>
       <Name>DirectConversion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\JobInfoQueue\JobInfoQueue.csproj">
+      <Project>{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}</Project>
+      <Name>JobInfoQueue</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Printing\Printing.csproj">
       <Project>{fd68eb7e-2ae8-4c8e-ba9c-71f9ad98e33e}</Project>
@@ -153,10 +155,10 @@
   </Target>
   -->
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="CommonServiceLocator">
-          <HintPath>..\..\..\..\lib\CommonServiceLocator.dll</HintPath>
+          <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\net47\CommonServiceLocator.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -164,10 +166,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -175,10 +177,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="LicenseValidator.Interface">
-          <HintPath>..\..\..\..\lib\LicenseValidator.Interface.dll</HintPath>
+          <HintPath>..\..\..\..\packages\LicenseValidator.Interface\lib\netstandard2.0\LicenseValidator.Interface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -186,15 +188,15 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="MahApps.Metro">
-          <HintPath>..\..\..\..\lib\MahApps.Metro.dll</HintPath>
+          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\MahApps.Metro.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\lib\System.Windows.Interactivity.dll</HintPath>
+          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -202,10 +204,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="MahApps.Metro.SimpleChildWindow">
-          <HintPath>..\..\..\..\lib\MahApps.Metro.SimpleChildWindow.dll</HintPath>
+          <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -213,10 +215,13 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="NLog">
-          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Win32.Registry">
+          <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -224,10 +229,45 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Microsoft.CSharp">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Configuration">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Data">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.IO.Compression">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Runtime.Serialization">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.ServiceModel">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Xml">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="NLog">
+          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="Obsidian">
-          <HintPath>..\..\..\..\lib\Obsidian.dll</HintPath>
+          <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -235,10 +275,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="Optional">
-          <HintPath>..\..\..\..\lib\Optional.dll</HintPath>
+          <HintPath>..\..\..\..\packages\Optional.StrongNamed\lib\net461\Optional.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -246,10 +286,55 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Security.AccessControl">
+          <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Data.OracleClient">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Drawing">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Net">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Security">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Security.Permissions">
+          <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Security.Principal.Windows">
+          <HintPath>..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -257,10 +342,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
+          <HintPath>..\..\..\..\packages\SystemWrapper\lib\netstandard2.0\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -268,10 +353,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="Translatable">
-          <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
+          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

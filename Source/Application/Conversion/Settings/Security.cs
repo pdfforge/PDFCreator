@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// PDF Security options
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Security : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -143,6 +142,45 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.RestrictPrintingToLowQuality = RestrictPrintingToLowQuality;
 			copy.UserPassword = UserPassword;
 			return copy;
+		}
+		
+		public void ReplaceWith(Security source)
+		{
+			if(AllowPrinting != source.AllowPrinting)
+				AllowPrinting = source.AllowPrinting;
+				
+			if(AllowScreenReader != source.AllowScreenReader)
+				AllowScreenReader = source.AllowScreenReader;
+				
+			if(AllowToCopyContent != source.AllowToCopyContent)
+				AllowToCopyContent = source.AllowToCopyContent;
+				
+			if(AllowToEditAssembly != source.AllowToEditAssembly)
+				AllowToEditAssembly = source.AllowToEditAssembly;
+				
+			if(AllowToEditComments != source.AllowToEditComments)
+				AllowToEditComments = source.AllowToEditComments;
+				
+			if(AllowToEditTheDocument != source.AllowToEditTheDocument)
+				AllowToEditTheDocument = source.AllowToEditTheDocument;
+				
+			if(AllowToFillForms != source.AllowToFillForms)
+				AllowToFillForms = source.AllowToFillForms;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(EncryptionLevel != source.EncryptionLevel)
+				EncryptionLevel = source.EncryptionLevel;
+				
+			OwnerPassword = source.OwnerPassword;
+			if(RequireUserPassword != source.RequireUserPassword)
+				RequireUserPassword = source.RequireUserPassword;
+				
+			if(RestrictPrintingToLowQuality != source.RestrictPrintingToLowQuality)
+				RestrictPrintingToLowQuality = source.RestrictPrintingToLowQuality;
+				
+			UserPassword = source.UserPassword;
 		}
 		
 		public override bool Equals(object o)

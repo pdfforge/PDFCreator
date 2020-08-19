@@ -17,6 +17,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
         event PropertyChangedEventHandler SelectedProfileChanged;
 
         event EventHandler SettingsChanged;
+
+        int GetRegisteredSelectedProfileChangedListener();
     }
 
     public interface ICurrentSettingsProvider : ISelectedProfileProvider
@@ -98,6 +100,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
         }
 
         public event EventHandler SettingsChanged;
+
+        public int GetRegisteredSelectedProfileChangedListener()
+        {
+            return SelectedProfileChanged != null ? SelectedProfileChanged.GetInvocationList().Length : 0;
+        }
 
         public event PropertyChangedEventHandler SelectedProfileChanged;
 

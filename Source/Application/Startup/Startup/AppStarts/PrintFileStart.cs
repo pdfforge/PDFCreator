@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Core.Printing.Printing;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {
@@ -29,20 +30,20 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         public string PrintFile { get; internal set; }
         public AppStartParameters AppStartParameters { get; internal set; }
 
-        public override ExitCode Run()
+        public override Task<ExitCode> Run()
         {
             _logger.Info("Launched printjob with PrintFile command.");
 
             if (string.IsNullOrEmpty(PrintFile))
             {
                 _logger.Error("PrintFile Parameter has no argument");
-                return ExitCode.PrintFileParameterHasNoArgument;
+                return Task.FromResult(ExitCode.PrintFileParameterHasNoArgument);
             }
 
             if (!File.Exists(PrintFile))
             {
                 _logger.Error("The file \"{0}\" does not exist!", PrintFile);
-                return ExitCode.PrintFileDoesNotExist;
+                return Task.FromResult(ExitCode.PrintFileDoesNotExist);
             }
 
             _settingsManager.LoadAllSettings();
@@ -52,7 +53,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             if (!_printFileHelper.AddFile(PrintFile))
             {
                 _logger.Warn("The file \"{0}\" is not printable!", PrintFile);
-                return ExitCode.PrintFileNotPrintable;
+                return Task.FromResult(ExitCode.PrintFileNotPrintable);
             }
 
             //todo: Test
@@ -66,10 +67,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             if (!_printFileHelper.PrintAll())
             {
                 _logger.Error("The file \"{0}\" could not be printed!", PrintFile);
-                return ExitCode.PrintFileCouldNotBePrinted;
+                return Task.FromResult(ExitCode.PrintFileCouldNotBePrinted);
             }
 
-            return ExitCode.Ok;
+            return Task.FromResult(ExitCode.Ok);
         }
 
         private string GetValidPrinterName()

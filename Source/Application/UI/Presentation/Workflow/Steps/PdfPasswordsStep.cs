@@ -12,8 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
         {
             var outputFormat = job.Profile.OutputFormat;
 
-            //Todo: PDF/A PDF/X? Glaube die darf man nicht verschlüsseln oder?
-            //Wollen wir das hier über den PDFProcessor ermitteln lassen?
+            // PDF/A nad PDF/X can't be encrypted
             if (outputFormat != OutputFormat.Pdf)
                 return false;
 

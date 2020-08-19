@@ -11,6 +11,7 @@ using Prism.Ioc;
 using Prism.Regions;
 using SimpleInjector;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 
@@ -34,7 +35,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             _appStart = appStart;
             _settingsManager = settingsManager;
             helpCommandHandler.RegisterHelpCommandBinding();
-            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             RegisterXamlCulture();
         }
@@ -58,8 +59,22 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 return;
             }
 
-            var exitCode = _appStart.Run();
+            var exitCode = RunAppStart(_appStart);
+
             Shutdown((int)exitCode);
+        }
+
+        private ExitCode RunAppStart(IAppStart appStart)
+        {
+            // Run this in a separate thread to avoid deadlocks
+
+            var exitCode = ExitCode.Ok;
+            var thread = new Thread(() => exitCode = appStart.Run().GetAwaiter().GetResult());
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            return exitCode;
         }
 
         protected override IContainerExtension CreateContainerExtension()

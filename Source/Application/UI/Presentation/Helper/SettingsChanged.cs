@@ -1,8 +1,8 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
@@ -18,6 +18,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         private readonly IGpoSettings _gpoSettings;
         private PdfCreatorSettings _currentSettingsSnapshot;
 
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public SettingsChanged(CurrentSettingsProvider settingsProvider,
             ILanguageProvider languageProvider, IGpoSettings gpoSettings, ISettingsManager settingsManager)
         {
@@ -30,6 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 
         private void SettingsManager_SettingsSaved(object sender, System.EventArgs e)
         {
+            _logger.Trace("Updating settings snapshot");
             _currentSettingsSnapshot = _settingsProvider.Settings.Copy();
         }
 
@@ -37,13 +40,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         {
             var storedSettings = _settingsProvider.Settings;
 
-            if (_gpoSettings.Language == null)
+            if (string.IsNullOrWhiteSpace(_gpoSettings?.Language))
                 if (_currentSettingsSnapshot.ApplicationSettings.Language != _languageProvider.CurrentLanguage.Iso2)
                 {
+                    _logger.Trace("Checking settings for changes: The language has changed");
                     return true;
                 }
 
-            return !_currentSettingsSnapshot.Equals(storedSettings);
+            var settingsHaveChanged = !_currentSettingsSnapshot.Equals(storedSettings);
+            _logger.Trace("Settings have changed: " + settingsHaveChanged);
+
+            return settingsHaveChanged;
         }
     }
 }

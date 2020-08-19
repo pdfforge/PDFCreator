@@ -91,7 +91,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
             catch (Exception ex)
             {
-                _logger.Error("Exception while running the script file \"" + scriptFile + "\"\r\n" + ex.Message);
+                _logger.Error(ex, "Exception while running the script file \"" + scriptFile);
                 return new ActionResult(ErrorCode.Script_GenericError);
             }
         }
@@ -119,6 +119,25 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
 
             return scriptPath;
+        }
+
+        public string GetPreview(string scriptPath, string additionalParams, TokenReplacer tokenReplacer)
+        {
+            if (string.IsNullOrEmpty(scriptPath) || (scriptPath.Trim().Length == 0))
+                return "";
+
+            var scriptCall = PathSafe.GetFileName(ComposeScriptPath(scriptPath, tokenReplacer));
+
+            if (!string.IsNullOrEmpty(additionalParams))
+            {
+                scriptCall += " " + ComposeScriptParameters(additionalParams, new[] { @"C:\File1.pdf", @"C:\File2.pdf" }, tokenReplacer);
+            }
+            else
+            {
+                scriptCall += @" C:\File1.pdf C:\File2.pdf";
+            }
+
+            return scriptCall;
         }
 
         public string ComposeScriptParameters(string parameterString, IList<string> outputFiles, TokenReplacer tokenReplacer)

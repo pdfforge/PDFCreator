@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Controls;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
+using System;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
@@ -11,6 +12,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
         where TTranslation : ITranslatable, new()
         where TInteraction : BasicPasswordOverlayInteraction
     {
+        public Action RaiseOkCanExecuteChanged { get; set; }
+
         public string Password
         {
             get { return PasswordButtonController.Password; }

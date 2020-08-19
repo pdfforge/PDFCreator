@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class ParameterSettings : INotifyPropertyChanged, ISettings {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -65,6 +64,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.Parameters = Parameters.Copy();
 			return copy;
+		}
+		
+		public void ReplaceWith(ParameterSettings source)
+		{
+			Parameters.ReplaceWith(source.Parameters);
 		}
 		
 		public override bool Equals(object o)

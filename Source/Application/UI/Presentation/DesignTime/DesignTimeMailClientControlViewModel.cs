@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeMailClientControlViewModel : MailClientControlViewModel
     {
-        public DesignTimeMailClientControlViewModel() : base(null, null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new DesignTimeTokenViewModelFactory(), null)
+        public DesignTimeMailClientControlViewModel() : base(null, null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new DesignTimeTokenViewModelFactory(), null, null)
         {
         }
     }

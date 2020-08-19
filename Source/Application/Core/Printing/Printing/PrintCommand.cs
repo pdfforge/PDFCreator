@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Printing.Printing
 {
@@ -24,6 +25,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IFileAssoc _fileAssoc;
         private readonly IPrinterHelper _printerHelper;
+        private readonly IFile _file;
 
         private readonly int _timeout;
         private readonly List<SpecialShellCommand> _specialFileTypes;
@@ -37,7 +39,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         /// <param name="fileAssoc">The IFileAssoc implementation used to detect if the is printable</param>
         /// <param name="printerHelper">PrinterHelper to determine the DefaultPrinter</param>
         /// <param name="timeout">Timeout in seconds after which a print stops</param>
-        public PrintCommand(string filename, string printer, IFileAssoc fileAssoc, IPrinterHelper printerHelper, int timeout)
+        public PrintCommand(string filename, string printer, IFileAssoc fileAssoc, IPrinterHelper printerHelper, IFile file, int timeout)
         {
             _specialFileTypes = new List<SpecialShellCommand>
                 {
@@ -53,13 +55,14 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             Printer = printer;
             _fileAssoc = fileAssoc;
             _printerHelper = printerHelper;
+            _file = file;
             _timeout = timeout;
 
             RegisterSpecialFileTypesToFileAssoc();
 
             Logger.Trace($"Checking PrintCommand for '{filename}'");
 
-            if (!File.Exists(filename))
+            if (!_file.Exists(filename))
             {
                 Logger.Trace($"The file '{filename}' does not exist!");
                 CommandType = PrintType.Unprintable;
@@ -161,10 +164,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception during printing"
-                             + "\r\nType: " + ex.GetType()
-                             + "\r\nMessage: " + ex.Message
-                    );
+                Logger.Error(ex, "Exception during printing");
                 return false;
             }
 

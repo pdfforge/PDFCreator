@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using SystemInterface.Microsoft.Win32;
 using Translatable;
 using Translatable.NGettext;
 
@@ -40,11 +41,11 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
 
                 return _languageLoader;
             }
-            set { _languageLoader = value; }
+            set => _languageLoader = value;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<string> PossibleLanguagePaths { get; set; } = new List<string> { "Languages", @"..\..\..\..\..\Languages" };
+        public List<string> PossibleLanguagePaths { get; set; } = new List<string> { "Languages", @"..\..\..\..\Languages", @"..\..\..\..\..\Languages" };
 
         public IEnumerable<Language> GetAvailableLanguages()
         {
@@ -140,7 +141,7 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         ///     name to them
         /// </summary>
         /// <param name="profiles">The profile list</param>
-        void TranslateProfileList(IList<ConversionProfile> profiles);
+        void TranslateProfileList(IEnumerable<ConversionProfile> profiles);
 
         List<string> PossibleLanguagePaths { get; set; }
 
@@ -156,30 +157,35 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         ///     Initialize an empty translator (i.e. for tests)
         /// </summary>
         void InitEmptyTranslator();
+
+        string SetupLanguage { get; }
     }
 
     public class TranslationHelper : BaseTranslationHelper, ITranslationHelper
     {
         private readonly IGpoSettings _gpoSettings;
+        private readonly IRegistry _registry;
+        private readonly IInstallationPathProvider _installationPathProvider;
 
-        public TranslationHelper(ISettingsProvider settingsProvider, IAssemblyHelper assemblyHelper, TranslationFactory translationFactory, IGpoSettings gpoSettings) : base(assemblyHelper, translationFactory)
+        public TranslationHelper(IApplicationLanguageProvider settingsProvider, IAssemblyHelper assemblyHelper, TranslationFactory translationFactory, IGpoSettings gpoSettings, IRegistry registry, IInstallationPathProvider installationPathProvider) : base(assemblyHelper, translationFactory)
         {
             _gpoSettings = gpoSettings;
+            _registry = registry;
+            _installationPathProvider = installationPathProvider;
             settingsProvider.LanguageChanged += SettingsProviderOnLanguageChanged;
         }
 
         private void SettingsProviderOnLanguageChanged(object sender, LanguageChangedEventArgs eventArgs)
         {
-            var settings = eventArgs.Settings;
             if (!string.IsNullOrEmpty(_gpoSettings?.Language))
             {
                 InitTranslator(_gpoSettings.Language);
             }
             else
             {
-                InitTranslator(settings.ApplicationSettings.Language);
+                InitTranslator(eventArgs.AppSettings.Language);
             }
-            TranslateProfileList(settings.ConversionProfiles);
+            TranslateProfileList(eventArgs.Profiles);
         }
 
         /// <summary>
@@ -220,7 +226,7 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         ///     name to them
         /// </summary>
         /// <param name="profiles">The profile list</param>
-        public void TranslateProfileList(IList<ConversionProfile> profiles)
+        public void TranslateProfileList(IEnumerable<ConversionProfile> profiles)
         {
             foreach (var p in profiles)
                 try
@@ -233,6 +239,22 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
                 {
                     //do nothing, profile must not be renamed
                 }
+        }
+
+        public string SetupLanguage
+        {
+            get
+            {
+                try
+                {
+                    var key = _registry.LocalMachine.OpenSubKey(_installationPathProvider.ApplicationRegistryPath);
+                    return key?.GetValue("SetupLanguage")?.ToString() ?? "";
+                }
+                catch
+                {
+                    return "";
+                }
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using System;
+using System.Linq;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print
@@ -12,5 +14,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print
 
         public EnumTranslation<DuplexPrint>[] DuplexPrintValues { get; set; } = EnumTranslation<DuplexPrint>.CreateDefaultEnumTranslation();
         public EnumTranslation<SelectPrinter>[] SelectPrinterValues { get; set; } = EnumTranslation<SelectPrinter>.CreateDefaultEnumTranslation();
+
+        public string GetPrinterText(SelectPrinter selectPrinter, string printerName)
+        {
+            if (selectPrinter == SelectPrinter.SelectedPrinter)
+                return printerName;
+
+            return SelectPrinterValues[(int)selectPrinter].Translation;
+        }
     }
 }

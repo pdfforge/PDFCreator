@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using pdfforge.Obsidian;
@@ -9,15 +8,17 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.Utilities.Process;
 using Prism.Events;
 using System.Windows;
 using System.Windows.Input;
 using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
+using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.Utilities;
 using Translatable;
 
@@ -25,30 +26,32 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {
     public class UpdateIntervalSettingsViewModel : AGeneralSettingsItemControlModel
     {
-        private readonly IProcessStarter _processStarter;
         private readonly ApplicationNameProvider _applicationNameProvider;
-        private readonly IUpdateAssistant _updateAssistant;
+        private readonly IUpdateHelper _updateHelper;
+        private readonly ICommandLocator _commandLocator;
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<UpdateInterval> _updateIntervalProvider;
         private readonly EditionHelper _editionHelper;
         private readonly IUpdateLauncher _updateLauncher;
+        private readonly IOnlineVersionHelper _onlineVersionHelper;
         private readonly SetShowUpdateEvent _showUpdateEvent;
 
-        public UpdateIntervalSettingsViewModel(IUpdateAssistant updateAssistant, IProcessStarter processStarter, ApplicationNameProvider applicationNameProvider,
+        public UpdateIntervalSettingsViewModel(IUpdateHelper updateHelper, ICommandLocator commandLocator, ApplicationNameProvider applicationNameProvider,
             ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings, ITranslationUpdater translationUpdater, 
             IEventAggregator eventAggregator, IInteractionRequest interactionRequest, ICurrentSettings<UpdateInterval> updateIntervalProvider, EditionHelper editionHelper,
-            IUpdateLauncher updateLauncher) :
+            IUpdateLauncher updateLauncher, IOnlineVersionHelper onlineVersionHelper) :
             base(translationUpdater, currentSettingsProvider, gpoSettings)
         {
-            _processStarter = processStarter;
             _applicationNameProvider = applicationNameProvider;
-            _updateAssistant = updateAssistant;
+            _updateHelper = updateHelper;
+            _commandLocator = commandLocator;
             _interactionRequest = interactionRequest;
             _updateIntervalProvider = updateIntervalProvider;
             _editionHelper = editionHelper;
             _updateLauncher = updateLauncher;
+            _onlineVersionHelper = onlineVersionHelper;
 
-            ShowUpdate = updateAssistant.ShowUpdate;
+            ShouldShowUpdate = updateHelper.UpdateShouldBeShown();
             _showUpdateEvent = eventAggregator.GetEvent<SetShowUpdateEvent>();
             _showUpdateEvent.Subscribe(SetShowDialog);
             currentSettingsProvider.SettingsChanged += (sender, args) =>
@@ -65,8 +68,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 
         private void SetShowDialog(bool value)
         {
-            ShowUpdate = _updateAssistant.ShowUpdate;
-            RaisePropertyChanged(nameof(ShowUpdate));
+            ShouldShowUpdate = _updateHelper.UpdateShouldBeShown();
+            RaisePropertyChanged(nameof(ShouldShowUpdate));
             RaisePropertyChanged(nameof(NewUpdateMessage));
         }
 
@@ -74,11 +77,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public ICommand SkipVersionCommand => new DelegateCommand(o => SkipVersion());
         public ICommand AskLaterCommand => new DelegateCommand(o => UpdateLater());
 
-        public ICommand UpdateCheckCommand => new DelegateCommand(o =>
+        public ICommand UpdateCheckCommand => new DelegateCommand(async o =>
         {
             try
             {
-                if (_updateAssistant.IsOnlineUpdateAvailable(false))
+                if (await _updateHelper.IsUpdateAvailableAsync(false))
                 {
                     _showUpdateEvent.Publish(true);
                 }
@@ -96,31 +99,33 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
             }
         });
 
-        public string NewUpdateMessage => Translation.GetNewUpdateMessage(_updateAssistant.OnlineVersion.Version.ToString(3));
+        public string NewUpdateMessage => Translation.GetNewUpdateMessage(_onlineVersionHelper.GetOnlineVersion().Version.ToString(3));
 
         private void UpdateLater()
         {
-            _updateAssistant.SetNewUpdateTime();
+            _updateHelper.ShowLater();
+            
         }
 
         private async Task InstallUpdate()
         {
-            await _updateLauncher.LaunchUpdate(_updateAssistant.OnlineVersion);
+            var applicationVersion = _onlineVersionHelper.GetOnlineVersion();
+            await _updateLauncher.LaunchUpdateAsync( applicationVersion);
         }
 
         private void SkipVersion()
         {
-            _updateAssistant.SkipVersion();
+            _updateHelper.SkipVersion();
         }
 
-        public bool UpdateIsEnabled => GpoSettings?.UpdateInterval == null;
+        public bool UpdateIsEnabled => string.IsNullOrWhiteSpace(GpoSettings?.UpdateInterval);
 
         public Visibility UpdateCheckControlVisibility
-            => _updateAssistant.UpdatesEnabled ? Visibility.Visible : Visibility.Collapsed;
+            => _updateHelper.UpdatesEnabled ? Visibility.Visible : Visibility.Collapsed;
 
-        public bool ShowUpdate { get; set; }
+        public bool ShouldShowUpdate { get; set; }
 
-        public ICommand VisitWebsiteCommand => new DelegateCommand(VisitWebsiteExecute);
+        public ICommand VisitWebsiteCommand => _commandLocator.GetInitializedCommand<UrlOpenCommand, string>(PdfforgeWebsiteUrl);
         public string PdfforgeWebsiteUrl => Urls.PdfforgeWebsiteUrl;
 
         public bool DisplayUpdateWarning => _updateIntervalProvider.Settings == UpdateInterval.Never;
@@ -132,7 +137,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
                 if (_updateIntervalProvider?.Settings == null)
                     return UpdateInterval.Weekly;
 
-                if (GpoSettings?.UpdateInterval == null)
+                if (string.IsNullOrWhiteSpace(GpoSettings?.UpdateInterval))
                     return _updateIntervalProvider.Settings;
                 return UpdateIntervalHelper.ParseUpdateInterval(GpoSettings.UpdateInterval);
             }
@@ -160,18 +165,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
                 }
                 return translations;
             } 
-        }
-
-        private void VisitWebsiteExecute(object o)
-        {
-            try
-            {
-                _processStarter.Start(PdfforgeWebsiteUrl);
-            }
-            catch
-            {
-                // ignored
-            }
         }
     }
 }

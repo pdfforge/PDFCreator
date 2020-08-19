@@ -2,7 +2,6 @@
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +33,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
         private readonly IFile _file;
         private readonly IDirectory _directory;
         private readonly IPath _path;
+        private readonly IJobFolderBuilder _jobFolderBuilder;
 
         public DirectConversionInfFileHelper(
             IDirectConversionHelper directConversionHelper,
@@ -41,7 +41,8 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             ISpoolerProvider spoolerProvider,
             IFile file,
             IDirectory directory,
-            IPath path
+            IPath path,
+            IJobFolderBuilder jobFolderBuilder
             )
         {
             _directConversionHelper = directConversionHelper;
@@ -50,6 +51,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             _file = file;
             _directory = directory;
             _path = path;
+            _jobFolderBuilder = jobFolderBuilder;
         }
 
         public string TransformToInfFile(string directConversionFile, AppStartParameters appStartParameters)
@@ -87,11 +89,11 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             string jobFolder;
             try
             {
-                jobFolder = CreateJobFolderInSpool(directConversionFiles[0]);
+                jobFolder = _jobFolderBuilder.CreateJobFolderInSpool(directConversionFiles[0]);
             }
             catch (Exception ex)
             {
-                Logger.Error("Error while creating spool directory for ps-job:\r\n" + ex.Message);
+                Logger.Error(ex, "Error while creating spool directory for ps-job: ");
                 return "";
             }
 
@@ -102,23 +104,10 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             }
             catch (Exception ex)
             {
-                Logger.Error("Error while coping ps-file in spool folder:\r\n" + ex.Message);
+                Logger.Error(ex, "Error while coping ps-file in spool folder: ");
                 _directory.Delete(jobFolder, true); //Delete created folder and files
                 return "";
             }
-        }
-
-        private string CreateJobFolderInSpool(string file)
-        {
-            var psFilename = PathSafe.GetFileName(file);
-            if (psFilename.Length > 23)
-                psFilename = psFilename.Substring(0, 23);
-            var jobFolder = PathSafe.Combine(_spoolerProvider.SpoolFolder, psFilename);
-            jobFolder = new UniqueDirectory(jobFolder).MakeUniqueDirectory();
-            _directory.CreateDirectory(jobFolder);
-            Logger.Trace("Created spool directory for ps-file job: " + jobFolder);
-
-            return jobFolder;
         }
 
         private class JobFolderFile

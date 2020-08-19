@@ -4,15 +4,15 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
+                      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
                       mc:Ignorable="d"
                       Height="300" Width="300"
                       WindowStartupLocation="CenterOwner"
                       SizeToContent="WidthAndHeight"
                       Title="{Binding Interaction.Title, FallbackValue=PDFCreator}"
                       Name="This"
-
+                      Unloaded="InteractionHostWindow_OnUnloaded"
                       BorderBrush="{DynamicResource AccentColorBrush}"
                       GlowBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1">
@@ -25,11 +25,11 @@
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
     </Window.Resources>
 
-    <i:Interaction.Triggers>
-        <trigger:InteractionRequestTrigger SourceObject="{Binding InteractionRequest, Mode=OneWay, ElementName=This}">
+    <b:Interaction.Triggers>
+        <trigger:InteractionRequestTrigger x:Name="OverlayActionTrigger" SourceObject="{Binding InteractionRequest, Mode=OneWay, ElementName=This}">
             <trigger:OverlayAction />
         </trigger:InteractionRequestTrigger>
-    </i:Interaction.Triggers>
+    </b:Interaction.Triggers>
 
     <Grid>
     </Grid>

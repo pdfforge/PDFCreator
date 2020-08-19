@@ -1,5 +1,5 @@
-﻿using pdfforge.PDFCreator.Core.UsageStatistics;
-using pdfforge.PDFCreator.Utilities;
+﻿using pdfforge.PDFCreator.Utilities;
+using pdfforge.UsageStatistics;
 
 namespace Banners
 {
@@ -12,23 +12,22 @@ namespace Banners
     {
         private readonly ApplicationNameProvider _applicationNameProvider;
         private readonly IVersionHelper _versionHelper;
-        private readonly IMachineIdGenerator _machineIdGenerator;
+        private readonly IUsageMetricFactory _usageMetricFactory;
 
-        private string _machineId;
-
-        private string MachineId => _machineId ?? (_machineId = _machineIdGenerator.GetMachineId());
-
-        public BannerMetricFactory(ApplicationNameProvider applicationNameProvider, IVersionHelper versionHelper, IMachineIdGenerator machineIdGenerator)
+        public BannerMetricFactory(ApplicationNameProvider applicationNameProvider, IVersionHelper versionHelper, IUsageMetricFactory usageMetricFactory)
         {
             _applicationNameProvider = applicationNameProvider;
             _versionHelper = versionHelper;
-            _machineIdGenerator = machineIdGenerator;
+            _usageMetricFactory = usageMetricFactory;
         }
 
         public BannerMetric BuildMetric(BannerDefinition banner, BannerMetricType type)
         {
-            var productName = _applicationNameProvider.ApplicationNameWithEdition.ToLowerInvariant().Replace(" ", "_");
-            var metric = new BannerMetric(productName, MachineId, _versionHelper.FormatWithThreeDigits(), banner.BundleId, banner.Version, type, banner.Campaign);
+            var metric = _usageMetricFactory.CreateMetric<BannerMetric>();
+            metric.Activity = type;
+            metric.BundleId = banner.BundleId;
+            metric.Campaign = banner.Campaign;
+            metric.BundleVersion = banner.Version;
 
             return metric;
         }

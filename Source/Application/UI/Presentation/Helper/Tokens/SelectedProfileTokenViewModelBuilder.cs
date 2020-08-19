@@ -1,4 +1,8 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using Optional;
+using pdfforge.PDFCreator.Conversion.Settings;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
@@ -10,14 +14,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             : base(tokenHelper, selectedProfileProvider.SelectedProfile)
         {
             _selectedProfileProvider = selectedProfileProvider;
-
-            ViewModelDecorators.Add(AddSelectedProfileChangedAction);
         }
 
-        private void AddSelectedProfileChangedAction(TokenViewModel<ConversionProfile> viewModel)
+        protected override TokenViewModel<ConversionProfile> CreateTokenViewModelInstance(Expression<Func<ConversionProfile, string>> selector, ConversionProfile initialValue, IList<string> tokens, Func<string, string> generatePreview, IList<Func<string, Option<string>>> buttonCommandFunctions)
         {
-            _selectedProfileProvider.SettingsChanged += (sender, args) => viewModel.CurrentValue = _selectedProfileProvider.SelectedProfile;
-            _selectedProfileProvider.SelectedProfileChanged += (sender, args) => viewModel.CurrentValue = _selectedProfileProvider.SelectedProfile;
+            return new MountableTokenViewModel(_selectedProfileProvider, selector, initialValue, tokens, generatePreview, buttonCommandFunctions);
         }
     }
 }

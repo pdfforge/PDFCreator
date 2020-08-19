@@ -2,17 +2,17 @@
 using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
 using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Windows;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Process;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -26,38 +26,37 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
     {
         private readonly TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
 
-        private readonly IUpdateAssistant _updateAssistant;
-        private readonly IProcessStarter _processStarter;
+        private readonly IUpdateHelper _updateHelper;
         private readonly IEventAggregator _eventAggregator;
         private readonly IUpdateLauncher _updateLauncher;
         private readonly IDispatcher _dispatcher;
-        public string WhatsNewUrl { get; }
+        private readonly IOnlineVersionHelper _onlineVersionHelper;
+        private readonly IAssemblyHelper _assemblyHelper;
         public string CurrentVersionDate { get; set; }
-        public string AvailabeVersionText { get; }
-
-        private bool IsInWorkflow = false;
+        public string AvailableVersionText { get; }
 
         public UpdateHintViewModel(
-            IUpdateAssistant updateAssistant,
-            IProcessStarter processStarter,
+            IUpdateHelper updateHelper,
             ITranslationUpdater translationUpdater,
             IEventAggregator eventAggregator,
             IVersionHelper versionHelper,
             IUpdateLauncher updateLauncher,
-            IDispatcher dispatcher)
+            IDispatcher dispatcher,
+            IOnlineVersionHelper onlineVersionHelper,
+            IAssemblyHelper assemblyHelper)
             :
             base(translationUpdater)
         {
-            _updateAssistant = updateAssistant;
-            _processStarter = processStarter;
+            _updateHelper = updateHelper;
             _eventAggregator = eventAggregator;
             _updateLauncher = updateLauncher;
             _dispatcher = dispatcher;
-            WhatsNewUrl = Urls.PDFCreatorWhatsNewUrl;
+            _onlineVersionHelper = onlineVersionHelper;
+            _assemblyHelper = assemblyHelper;
 
             SetCurrentDateFormat();
 
-            AvailabeVersionText = Translation.GetNewUpdateMessage(updateAssistant.OnlineVersion.Version.ToString(3),
+            AvailableVersionText = Translation.GetNewUpdateMessage(_onlineVersionHelper.GetOnlineVersion().Version.ToString(3),
                                                                     versionHelper.ApplicationVersion.ToString(3),
                                                                     CurrentVersionDate);
         }
@@ -66,10 +65,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
 
         private void SetCurrentDateFormat()
         {
-            CurrentVersionDate = _updateAssistant.CurrentReleaseVersion != null ? _updateAssistant.CurrentReleaseVersion.ReleaseDate : " - ";
+            var currentRelease = _onlineVersionHelper.CurrentReleaseVersion;
 
-            if (DateTime.TryParse(CurrentVersionDate, out var currentDateTime))
-                CurrentVersionDate = currentDateTime.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
+            if (currentRelease == null || !DateTime.TryParse(currentRelease.ReleaseDate, out var currentReleaseDate))
+                currentReleaseDate = _assemblyHelper.GetLinkerTime();
+
+            CurrentVersionDate = currentReleaseDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
         }
 
         private async Task InstallUpdate(object obj)
@@ -77,31 +78,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
             _eventAggregator.GetEvent<SetShowUpdateEvent>().Publish(false);
             FinishStep();
 
-            await _updateLauncher.LaunchUpdate(_updateAssistant.OnlineVersion);
+            var onlineVersion = _onlineVersionHelper.GetOnlineVersion();
+            await _updateLauncher.LaunchUpdateAsync(onlineVersion);
         }
 
         public ICommand SkipVersionCommand => new DelegateCommand(o => SkipVersion());
         public ICommand AskLaterCommand => new DelegateCommand(o => UpdateLater());
 
-        public ICommand WhatsNewCommand => new DelegateCommand(o => _processStarter.Start(WhatsNewUrl));
-
         private void SkipVersion()
         {
-            _updateAssistant.SkipVersion();
+            _updateHelper.SkipVersion();
             _eventAggregator.GetEvent<SetShowUpdateEvent>().Publish(false);
             FinishStep();
         }
 
         private void UpdateLater()
         {
-            _updateAssistant.SetNewUpdateTime();
+            _updateHelper.SetNewUpdateTime();
             _eventAggregator.GetEvent<SetShowUpdateEvent>().Publish(false);
             FinishStep();
         }
 
         private void FinishStep()
         {
-            StepFinished?.Invoke(this, EventArgs.Empty);
             _taskCompletionSource.SetResult(null);
             FinishInteraction?.Invoke();
         }
@@ -118,7 +117,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
             {
                 var list = new List<Release>();
 
-                foreach (var onlineVersionVersionInfo in _updateAssistant.OnlineVersion.VersionInfos)
+                foreach (var onlineVersionVersionInfo in _onlineVersionHelper.GetOnlineVersion().VersionInfos)
                 {
                     list.Add(onlineVersionVersionInfo.Copy());
                 }
@@ -133,8 +132,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
                 throw new InterruptWorkflowException()
             );
         }
-
-        public event EventHandler StepFinished;
 
         public void SetInteraction(IInteraction interaction)
         {

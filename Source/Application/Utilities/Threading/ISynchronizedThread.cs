@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Utilities.Threading
 {
@@ -49,6 +50,8 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         /// </summary>
         /// <param name="timeout">TimeSpan to wait</param>
         bool Join(TimeSpan timeout);
+
+        Task JoinAsync();
 
         /// <summary>
         ///     Starts thread execution

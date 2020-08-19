@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
         IGpoSettings gpoSettings, ITranslationUpdater translationUpdater, EditionHelper editionHelper, IDispatcher dispatcher) :
             base(translationUpdater, settingsProvider, dispatcher)
         {
-            AllowNotifications = !editionHelper.ShowOnlyForPlusAndBusiness;
+            AllowNotifications = !editionHelper.IsFreeEdition;
         }
 
         public bool AllowNotifications { get; }

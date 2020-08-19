@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         bool RenamePrinter(string oldPrinterName, string newPrinterName);
 
-        bool DeletePrinter(string printerName);
+        bool DeletePrinter(params string[] printerNames);
 
         bool StoreLicenseForAllUsers(string licenseServerCode, string licenseKey);
     }
@@ -79,9 +79,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return CallPrinterHelper("/RenamePrinter \"" + oldPrinterName + "\" \"" + newPrinterName + "\"");
         }
 
-        public bool DeletePrinter(string printerName)
+        public bool DeletePrinter(params string[] printerNames)
         {
-            return CallPrinterHelper("/DeletePrinter \"" + printerName + "\"");
+            if (printerNames.Length == 0)
+                return true;
+
+            var escapedPrinters = printerNames.Select(p => $"\"{p}\"");
+            var parameters = string.Join(" ", escapedPrinters);
+            return CallPrinterHelper("/DeletePrinter " + parameters);
         }
 
         /// <summary>

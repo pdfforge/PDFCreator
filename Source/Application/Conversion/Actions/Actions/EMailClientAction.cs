@@ -1,79 +1,95 @@
 ﻿using NLog;
 using pdfforge.Mail;
-using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using System;
 using System.Collections.Generic;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
+    public interface IEMailClientAction : IPostConversionAction
+    {
+        ActionResult OpenEmptyClient(IList<string> files, string signature);
+    }
+
     public class EMailClientAction : IEMailClientAction
     {
         private readonly IEmailClientFactory _emailClientFactory;
-        private readonly IMailSignatureHelper _mailSignatureHelper;
+        private readonly IFile _file;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public EMailClientAction(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper)
+        private IMailHelper _mailHelper;
+
+        public EMailClientAction(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper, IFile file, IMailHelper mailHelper)
         {
             _emailClientFactory = emailClientFactory;
-            _mailSignatureHelper = mailSignatureHelper;
+            _file = file;
+            _mailHelper = mailHelper;
+        }
+
+        public ActionResult OpenEmptyClient(IList<string> files, string signature)
+        {
+            var mailInfo = new MailInfo { Attachments = files, Body = signature };
+
+            return Process(mailInfo);
         }
 
         public ActionResult ProcessJob(Job job)
         {
             _logger.Info("Launched client e-mail action");
 
-            var subject = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.Subject);
-            var body = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.Content);
-            var isHtml = job.Profile.EmailClientSettings.Html;
-            var hasSignature = job.Profile.EmailClientSettings.AddSignature;
-            var signature = string.Empty;
+            var mailInfo = _mailHelper.CreateMailInfo(job, job.Profile.EmailClientSettings);
 
-            if (hasSignature)
-                signature = _mailSignatureHelper.ComposeMailSignature();
-
-            var recipientsTo = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.Recipients).Replace(';', ',');
-            var recipientsCc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.RecipientsCc).Replace(';', ',');
-            var recipientsBcc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailClientSettings.RecipientsBcc).Replace(';', ',');
-
-            var hasAttachments = !SkipFileAttachments(job);
-            IList<string> attachments = hasAttachments ? job.OutputFiles : null;
-
-            return Process(subject, body, isHtml, hasSignature, signature, recipientsTo, recipientsCc, recipientsBcc, hasAttachments, attachments);
+            return Process(mailInfo);
         }
 
-        public ActionResult Process(string subject, string body, bool isHtml, bool hasSignature, string signature, string recipientsTo, string recipientsCc, string recipientsBcc, bool hasAttachments, IEnumerable<string> attachedFiles)
+        private Email CreateEmail(MailInfo mailInfo)
         {
+            var mail = new Email
+            {
+                Html = mailInfo.IsHtml,
+                Subject = mailInfo.Subject,
+                Body = mailInfo.Body,
+            };
+
+            mail.Recipients.AddTo(mailInfo.Recipients);
+            mail.Recipients.AddCc(mailInfo.RecipientsCc);
+            mail.Recipients.AddBcc(mailInfo.RecipientsBcc);
+
+            AddOutputFilesAsAttachmentsForEmailClientAction(mail, mailInfo.Attachments);
+
+            return mail;
+        }
+
+        private void AddOutputFilesAsAttachmentsForEmailClientAction(Email mail, IList<string> outputFiles)
+        {
+            var i = 1;
+            foreach (var file in outputFiles)
+            {
+                if (_file.Exists(file))
+                {
+                    var attachment = new Attachment(file);
+                    mail.Attachments.Add(attachment);
+                    _logger.Debug("Attachment " + i + "/" + outputFiles.Count + ":" + file);
+                    i++;
+                }
+                else
+                {
+                    _logger.Error("E-Mail Attachment \"" + file + "\" not found.");
+                }
+            }
+        }
+
+        private ActionResult Process(MailInfo mailInfo)
+        {
+            var email = CreateEmail(mailInfo);
+
             try
             {
-                _logger.Info("Launched client e-mail action");
-
-                var message = new Email();
-
-                message.Subject = subject;
-                message.Body = body;
-                message.Html = isHtml;
-
-                if (hasSignature)
-                {
-                    message.Body += isHtml ? signature.Replace(Environment.NewLine, "<br>") : signature;
-                }
-
-                message.Recipients.AddTo(recipientsTo);
-                message.Recipients.AddCc(recipientsCc);
-                message.Recipients.AddBcc(recipientsBcc);
-
-                if (hasAttachments)
-                {
-                    foreach (var file in attachedFiles)
-                    {
-                        message.Attachments.Add(new Attachment(file));
-                    }
-                }
-
-                _logger.Info("Starting e-mail client");
+                _logger.Info("Launched e-mail client action");
 
                 var mailClient = _emailClientFactory.CreateEmailClient();
 
@@ -83,7 +99,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     return new ActionResult(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
                 }
 
-                var success = mailClient.ShowEmailClient(message);
+                var success = mailClient.ShowEmailClient(email);
 
                 if (!success)
                 {
@@ -96,17 +112,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
             catch (Exception ex)
             {
-                _logger.Error("Exception in e-mail client Action \r\n" + ex.Message);
+                _logger.Error(ex, "Exception in e-mail client Action ");
                 return new ActionResult(ErrorCode.MailClient_GenericError);
             }
-        }
-
-        private bool SkipFileAttachments(Job job)
-        {
-            if (job.Profile.DropboxSettings.Enabled == false || job.Profile.DropboxSettings.CreateShareLink == false)
-                return false;
-
-            return job.Profile.EmailClientSettings.Content.IndexOf("<Dropbox", StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         public bool IsEnabled(ConversionProfile profile)

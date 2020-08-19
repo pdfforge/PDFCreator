@@ -16,13 +16,14 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
     public interface ISmtpTest
     {
-        void SendTestMail(ConversionProfile profile, Accounts accounts);
+        Task SendTestMail(ConversionProfile profile, Accounts accounts);
     }
 
     public class SmtpTestEmailAssistant : ISmtpTest
@@ -68,7 +69,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return sb.ToString();
         }
 
-        public void SendTestMail(ConversionProfile profile, Accounts accounts)
+        public async Task SendTestMail(ConversionProfile profile, Accounts accounts)
         {
             var currentProfile = profile.Copy();
 
@@ -91,10 +92,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             _file.WriteAllText(testFile, @"PDFCreator", Encoding.GetEncoding("Unicode"));
             job.OutputFiles.Add(testFile);
 
-            result = _smtpMailAction.ProcessJob(job);
+            result = await RunSmtpAction(job);
             DisplayResult(result, job);
 
             _file.Delete(testFile);
+        }
+
+        private Task<ActionResult> RunSmtpAction(Job job)
+        {
+            return Task.Run(() => _smtpMailAction.ProcessJob(job));
         }
 
         private bool TrySetJobPasswords(Job job, ConversionProfile profile)

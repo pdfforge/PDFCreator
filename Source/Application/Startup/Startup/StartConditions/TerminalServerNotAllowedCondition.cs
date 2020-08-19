@@ -7,7 +7,7 @@ using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Utilities.Web;
 using Translatable;
 
 namespace pdfforge.PDFCreator.Core.Startup.StartConditions
@@ -15,8 +15,8 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
     public class TerminalServerNotAllowedCondition : IStartupCondition
     {
         private readonly IInteractionInvoker _interactionInvoker;
+        private readonly IWebLinkLauncher _webLinkLauncher;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IProcessStarter _processStarter;
         private readonly ApplicationNameProvider _applicationNameProvider;
         private readonly ITerminalServerDetection _terminalServerDetection;
         private readonly ProgramTranslation _translation;
@@ -24,12 +24,12 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
         public bool CanRequestUserInteraction => true;
 
         public TerminalServerNotAllowedCondition(ITerminalServerDetection terminalServerDetection, ITranslationFactory translationFactory,
-            IInteractionInvoker interactionInvoker, IProcessStarter processStarter, ApplicationNameProvider applicationNameProvider)
+            IInteractionInvoker interactionInvoker, IWebLinkLauncher webLinkLauncher, ApplicationNameProvider applicationNameProvider)
         {
             _terminalServerDetection = terminalServerDetection;
             _translation = translationFactory.CreateTranslation<ProgramTranslation>();
             _interactionInvoker = interactionInvoker;
-            _processStarter = processStarter;
+            _webLinkLauncher = webLinkLauncher;
             _applicationNameProvider = applicationNameProvider;
         }
 
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
             var message = _translation.UsePDFCreatorTerminalServer;
             var result = ShowMessage(message, caption, MessageOptions.MoreInfoCancel, MessageIcon.Exclamation);
             if (result == MessageResponse.MoreInfo)
-                _processStarter.Start(Urls.PdfCreatorTerminalServerUrl);
+                _webLinkLauncher.Launch(Urls.PdfCreatorTerminalServerUrl);
 
             return StartupConditionResult.BuildErrorWithMessage((int)ExitCode.NotValidOnTerminalServer, errorMessage, showMessage: false);
         }

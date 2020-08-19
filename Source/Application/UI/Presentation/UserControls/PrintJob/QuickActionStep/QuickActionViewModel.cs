@@ -31,55 +31,48 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         private string _fileDirectory;
         private string _fileName;
         private string _fileSize;
-        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
+        private readonly ICommand _saveChangedSettingsCommand;
 
         public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider) : base(translationUpdater)
         {
+            _saveChangedSettingsCommand = commandLocator.GetCommand<ISaveChangedSettingsCommand>();
+
             _commandLocator = commandLocator;
             _readableFileSizeHelper = readableFileSizeHelper;
             _profilesProvider = profilesProvider;
             _currentSettingsProvider = currentSettingsProvider;
-            StartQuickActionCommand = new DelegateCommand(StartQuickActionCommandExecute);
             FinishCommand = new DelegateCommand(OnFinish);
             InitList();
         }
 
         private void OnFinish(object obj)
         {
-            _commandLocator.GetCommand<ISaveChangedSettingsCommand>().Execute(null);
+            _saveChangedSettingsCommand.Execute(null);
             StepFinished?.Invoke(this, EventArgs.Empty);
             _taskCompletionSource.SetResult(null);
         }
 
         private void InitList()
         {
-            QuickActionOpenList = new List<QuickActionListItemVo>
+            QuickActionOpenList = new List<DropDownButtonItem>
             {
-                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(Translation.OpenPDFArchitect),
-                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(Translation.OpenDefaultProgram),
-                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(Translation.OpenExplorer)
+                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(() =>Translation.OpenPDFArchitect),
+                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(() =>Translation.OpenDefaultProgram),
+                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(() =>Translation.OpenExplorer)
             };
 
-            QuickActionSendList = new List<QuickActionListItemVo>
+            QuickActionSendList = new List<DropDownButtonItem>
             {
-                GetQuickActionItem<QuickActionOpenMailClientCommand>(Translation.SendEmail),
-                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(Translation.PrintFileWithArchitect)
+                GetQuickActionItem<QuickActionOpenMailClientCommand>(() => Translation.SendEmail),
+                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(() =>Translation.PrintFileWithArchitect)
             };
         }
 
-        private QuickActionListItemVo GetQuickActionItem<TCommand>(string text) where TCommand : class, ICommand
+        private DropDownButtonItem GetQuickActionItem<TCommand>(Func<string> text) where TCommand : class, ICommand
         {
-            return new QuickActionListItemVo(text, _commandLocator.GetCommand<TCommand>(), StartQuickActionCommand);
-        }
-
-        public void StartQuickActionCommandExecute(object obj)
-        {
-            var vo = obj as QuickActionListItemVo;
-            if (vo != null)
-            {
-                vo.Command.Execute(_job);
-            }
+            return new DropDownButtonItem(text, () => _job, _commandLocator.GetCommand<TCommand>());
         }
 
         public Task ExecuteWorkflowStep(Job job)
@@ -155,11 +148,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             }
         }
 
-        public DelegateCommand StartQuickActionCommand { get; }
-
         public DelegateCommand FinishCommand { get; }
 
-        public IEnumerable<QuickActionListItemVo> QuickActionOpenList { get; private set; }
-        public IEnumerable<QuickActionListItemVo> QuickActionSendList { get; private set; }
+        public IEnumerable<DropDownButtonItem> QuickActionOpenList { get; private set; }
+        public IEnumerable<DropDownButtonItem> QuickActionSendList { get; private set; }
     }
 }

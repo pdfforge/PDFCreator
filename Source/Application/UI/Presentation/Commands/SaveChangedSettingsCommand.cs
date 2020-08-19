@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.Core.SettingsManagement;
+﻿using NLog;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
 using System.Windows.Input;
 
@@ -15,6 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly ISettingsManager _settingsManager;
         private readonly ISettingsChanged _settingsChanged;
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public SaveChangedSettingsCommand(ICurrentSettingsProvider currentSettingsProvider,
             ISettingsManager settingsManager, ISettingsChanged settingsChanged)
@@ -31,11 +32,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public void Execute(object parameter)
         {
-            if (_settingsChanged.HaveChanged())
+            if (!_settingsChanged.HaveChanged())
             {
-                _currentSettingsProvider.StoreCurrentSettings();
-                _settingsManager.SaveCurrentSettings();
+                _logger.Trace("Settings have not changed, skip saving.");
+                return;
             }
+
+            _logger.Trace("Storing and saving current settings");
+            _currentSettingsProvider.StoreCurrentSettings();
+            _settingsManager.SaveCurrentSettings();
         }
 
 #pragma warning disable CS0067

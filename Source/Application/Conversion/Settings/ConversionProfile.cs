@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System;
 
@@ -13,7 +14,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class ConversionProfile : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -41,7 +41,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public CoverPage CoverPage { get; set; } = new CoverPage();
 		
 		/// <summary>
-		/// Pre- and postconversion actions calling functions from a custom script
+		/// Pre- and post-conversion actions calling functions from a custom script
 		/// </summary>
 		public CustomScript CustomScript { get; set; } = new CustomScript();
 		
@@ -59,6 +59,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// Sends a mail without user interaction through SMTP
 		/// </summary>
 		public EmailSmtpSettings EmailSmtpSettings { get; set; } = new EmailSmtpSettings();
+		
+		public ForwardToFurtherProfile ForwardToFurtherProfile { get; set; } = new ForwardToFurtherProfile();
 		
 		/// <summary>
 		/// Upload the converted documents with FTP
@@ -118,14 +120,26 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public TiffSettings TiffSettings { get; set; } = new TiffSettings();
 		
 		/// <summary>
-		/// Parse ps files for user definied tokens
+		/// Parse ps files for user defined tokens
 		/// </summary>
 		public UserTokens UserTokens { get; set; } = new UserTokens();
+		
+		/// <summary>
+		/// Adds a watermark to the resulting document
+		/// </summary>
+		public Watermark Watermark { get; set; } = new Watermark();
+		
+		/// <summary>
+		///  Order in which actions are processed by an executing job 
+		/// </summary>
+		public List<string> ActionOrder { get; set; } = new List<string>();
 		
 		/// <summary>
 		/// Template for the Author field. This may contain tokens.
 		/// </summary>
 		public string AuthorTemplate { get; set; } = "<PrintJobAuthor>";
+		
+		public bool EnableWorkflowEditor { get; set; } = true;
 		
 		/// <summary>
 		/// Template of which the filename will be created. This may contain Tokens.
@@ -161,6 +175,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// Default format for this print job.
 		/// </summary>
 		public OutputFormat OutputFormat { get; set; } = OutputFormat.Pdf;
+		
+		/// <summary>
+		/// Enable to save files only in a temp directory
+		/// </summary>
+		public bool SaveFileTemporary { get; set; } = false;
 		
 		/// <summary>
 		/// Show a notification after converting the document
@@ -212,6 +231,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			DropboxSettings.ReadValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.ReadValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.ReadValues(data, path + @"EmailSmtpSettings\");
+			ForwardToFurtherProfile.ReadValues(data, path + @"ForwardToFurtherProfile\");
 			Ftp.ReadValues(data, path + @"Ftp\");
 			Ghostscript.ReadValues(data, path + @"Ghostscript\");
 			HttpSettings.ReadValues(data, path + @"HttpSettings\");
@@ -225,7 +245,18 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			TextSettings.ReadValues(data, path + @"TextSettings\");
 			TiffSettings.ReadValues(data, path + @"TiffSettings\");
 			UserTokens.ReadValues(data, path + @"UserTokens\");
+			Watermark.ReadValues(data, path + @"Watermark\");
+			try{
+				int numClasses = int.Parse(data.GetValue(@"" + path + @"ActionOrder\numClasses"));
+				for (int i = 0; i < numClasses; i++){
+					try{
+						var value = Data.UnescapeString(data.GetValue(path + @"ActionOrder\" + i + @"\ActionOrder"));
+						ActionOrder.Add(value);
+					}catch{}
+				}
+			}catch{}
 			try { AuthorTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"AuthorTemplate")); } catch { AuthorTemplate = "<PrintJobAuthor>";}
+			EnableWorkflowEditor = bool.TryParse(data.GetValue(@"" + path + @"EnableWorkflowEditor"), out var tmpEnableWorkflowEditor) ? tmpEnableWorkflowEditor : true;
 			try { FileNameTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"FileNameTemplate")); } catch { FileNameTemplate = "<Title>";}
 			try { Guid = Data.UnescapeString(data.GetValue(@"" + path + @"Guid")); } catch { Guid = "";}
 			try { KeywordTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"KeywordTemplate")); } catch { KeywordTemplate = "";}
@@ -233,6 +264,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			OpenViewer = bool.TryParse(data.GetValue(@"" + path + @"OpenViewer"), out var tmpOpenViewer) ? tmpOpenViewer : true;
 			OpenWithPdfArchitect = bool.TryParse(data.GetValue(@"" + path + @"OpenWithPdfArchitect"), out var tmpOpenWithPdfArchitect) ? tmpOpenWithPdfArchitect : true;
 			OutputFormat = Enum.TryParse<OutputFormat>(data.GetValue(@"" + path + @"OutputFormat"), out var tmpOutputFormat) ? tmpOutputFormat : OutputFormat.Pdf;
+			SaveFileTemporary = bool.TryParse(data.GetValue(@"" + path + @"SaveFileTemporary"), out var tmpSaveFileTemporary) ? tmpSaveFileTemporary : false;
 			ShowAllNotifications = bool.TryParse(data.GetValue(@"" + path + @"ShowAllNotifications"), out var tmpShowAllNotifications) ? tmpShowAllNotifications : true;
 			ShowOnlyErrorNotifications = bool.TryParse(data.GetValue(@"" + path + @"ShowOnlyErrorNotifications"), out var tmpShowOnlyErrorNotifications) ? tmpShowOnlyErrorNotifications : false;
 			ShowProgress = bool.TryParse(data.GetValue(@"" + path + @"ShowProgress"), out var tmpShowProgress) ? tmpShowProgress : true;
@@ -252,6 +284,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			DropboxSettings.StoreValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.StoreValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.StoreValues(data, path + @"EmailSmtpSettings\");
+			ForwardToFurtherProfile.StoreValues(data, path + @"ForwardToFurtherProfile\");
 			Ftp.StoreValues(data, path + @"Ftp\");
 			Ghostscript.StoreValues(data, path + @"Ghostscript\");
 			HttpSettings.StoreValues(data, path + @"HttpSettings\");
@@ -265,7 +298,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			TextSettings.StoreValues(data, path + @"TextSettings\");
 			TiffSettings.StoreValues(data, path + @"TiffSettings\");
 			UserTokens.StoreValues(data, path + @"UserTokens\");
+			Watermark.StoreValues(data, path + @"Watermark\");
+			for (int i = 0; i < ActionOrder.Count; i++){
+				data.SetValue(path + @"ActionOrder\" + i + @"\ActionOrder", Data.EscapeString(ActionOrder[i]));
+			}
+			data.SetValue(path + @"ActionOrder\numClasses", ActionOrder.Count.ToString());
 			data.SetValue(@"" + path + @"AuthorTemplate", Data.EscapeString(AuthorTemplate));
+			data.SetValue(@"" + path + @"EnableWorkflowEditor", EnableWorkflowEditor.ToString());
 			data.SetValue(@"" + path + @"FileNameTemplate", Data.EscapeString(FileNameTemplate));
 			data.SetValue(@"" + path + @"Guid", Data.EscapeString(Guid));
 			data.SetValue(@"" + path + @"KeywordTemplate", Data.EscapeString(KeywordTemplate));
@@ -273,6 +312,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"OpenViewer", OpenViewer.ToString());
 			data.SetValue(@"" + path + @"OpenWithPdfArchitect", OpenWithPdfArchitect.ToString());
 			data.SetValue(@"" + path + @"OutputFormat", OutputFormat.ToString());
+			data.SetValue(@"" + path + @"SaveFileTemporary", SaveFileTemporary.ToString());
 			data.SetValue(@"" + path + @"ShowAllNotifications", ShowAllNotifications.ToString());
 			data.SetValue(@"" + path + @"ShowOnlyErrorNotifications", ShowOnlyErrorNotifications.ToString());
 			data.SetValue(@"" + path + @"ShowProgress", ShowProgress.ToString());
@@ -294,6 +334,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.DropboxSettings = DropboxSettings.Copy();
 			copy.EmailClientSettings = EmailClientSettings.Copy();
 			copy.EmailSmtpSettings = EmailSmtpSettings.Copy();
+			copy.ForwardToFurtherProfile = ForwardToFurtherProfile.Copy();
 			copy.Ftp = Ftp.Copy();
 			copy.Ghostscript = Ghostscript.Copy();
 			copy.HttpSettings = HttpSettings.Copy();
@@ -307,7 +348,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.TextSettings = TextSettings.Copy();
 			copy.TiffSettings = TiffSettings.Copy();
 			copy.UserTokens = UserTokens.Copy();
+			copy.Watermark = Watermark.Copy();
+			copy.ActionOrder = new List<string>(ActionOrder);
 			copy.AuthorTemplate = AuthorTemplate;
+			copy.EnableWorkflowEditor = EnableWorkflowEditor;
 			copy.FileNameTemplate = FileNameTemplate;
 			copy.Guid = Guid;
 			copy.KeywordTemplate = KeywordTemplate;
@@ -315,6 +359,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.OpenViewer = OpenViewer;
 			copy.OpenWithPdfArchitect = OpenWithPdfArchitect;
 			copy.OutputFormat = OutputFormat;
+			copy.SaveFileTemporary = SaveFileTemporary;
 			copy.ShowAllNotifications = ShowAllNotifications;
 			copy.ShowOnlyErrorNotifications = ShowOnlyErrorNotifications;
 			copy.ShowProgress = ShowProgress;
@@ -324,6 +369,93 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.TargetDirectory = TargetDirectory;
 			copy.TitleTemplate = TitleTemplate;
 			return copy;
+		}
+		
+		public void ReplaceWith(ConversionProfile source)
+		{
+			AttachmentPage.ReplaceWith(source.AttachmentPage);
+			AutoSave.ReplaceWith(source.AutoSave);
+			BackgroundPage.ReplaceWith(source.BackgroundPage);
+			CoverPage.ReplaceWith(source.CoverPage);
+			CustomScript.ReplaceWith(source.CustomScript);
+			DropboxSettings.ReplaceWith(source.DropboxSettings);
+			EmailClientSettings.ReplaceWith(source.EmailClientSettings);
+			EmailSmtpSettings.ReplaceWith(source.EmailSmtpSettings);
+			ForwardToFurtherProfile.ReplaceWith(source.ForwardToFurtherProfile);
+			Ftp.ReplaceWith(source.Ftp);
+			Ghostscript.ReplaceWith(source.Ghostscript);
+			HttpSettings.ReplaceWith(source.HttpSettings);
+			JpegSettings.ReplaceWith(source.JpegSettings);
+			PdfSettings.ReplaceWith(source.PdfSettings);
+			PngSettings.ReplaceWith(source.PngSettings);
+			Printing.ReplaceWith(source.Printing);
+			Properties.ReplaceWith(source.Properties);
+			Scripting.ReplaceWith(source.Scripting);
+			Stamping.ReplaceWith(source.Stamping);
+			TextSettings.ReplaceWith(source.TextSettings);
+			TiffSettings.ReplaceWith(source.TiffSettings);
+			UserTokens.ReplaceWith(source.UserTokens);
+			Watermark.ReplaceWith(source.Watermark);
+			ActionOrder.Clear();
+			for (int i = 0; i < source.ActionOrder.Count; i++)
+			{
+				ActionOrder.Add(source.ActionOrder[i]);
+			}
+			
+			if(AuthorTemplate != source.AuthorTemplate)
+				AuthorTemplate = source.AuthorTemplate;
+				
+			if(EnableWorkflowEditor != source.EnableWorkflowEditor)
+				EnableWorkflowEditor = source.EnableWorkflowEditor;
+				
+			if(FileNameTemplate != source.FileNameTemplate)
+				FileNameTemplate = source.FileNameTemplate;
+				
+			if(Guid != source.Guid)
+				Guid = source.Guid;
+				
+			if(KeywordTemplate != source.KeywordTemplate)
+				KeywordTemplate = source.KeywordTemplate;
+				
+			if(Name != source.Name)
+				Name = source.Name;
+				
+			if(OpenViewer != source.OpenViewer)
+				OpenViewer = source.OpenViewer;
+				
+			if(OpenWithPdfArchitect != source.OpenWithPdfArchitect)
+				OpenWithPdfArchitect = source.OpenWithPdfArchitect;
+				
+			if(OutputFormat != source.OutputFormat)
+				OutputFormat = source.OutputFormat;
+				
+			if(SaveFileTemporary != source.SaveFileTemporary)
+				SaveFileTemporary = source.SaveFileTemporary;
+				
+			if(ShowAllNotifications != source.ShowAllNotifications)
+				ShowAllNotifications = source.ShowAllNotifications;
+				
+			if(ShowOnlyErrorNotifications != source.ShowOnlyErrorNotifications)
+				ShowOnlyErrorNotifications = source.ShowOnlyErrorNotifications;
+				
+			if(ShowProgress != source.ShowProgress)
+				ShowProgress = source.ShowProgress;
+				
+			if(ShowQuickActions != source.ShowQuickActions)
+				ShowQuickActions = source.ShowQuickActions;
+				
+			if(SkipPrintDialog != source.SkipPrintDialog)
+				SkipPrintDialog = source.SkipPrintDialog;
+				
+			if(SubjectTemplate != source.SubjectTemplate)
+				SubjectTemplate = source.SubjectTemplate;
+				
+			if(TargetDirectory != source.TargetDirectory)
+				TargetDirectory = source.TargetDirectory;
+				
+			if(TitleTemplate != source.TitleTemplate)
+				TitleTemplate = source.TitleTemplate;
+				
 		}
 		
 		public override bool Equals(object o)
@@ -339,6 +471,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!DropboxSettings.Equals(v.DropboxSettings)) return false;
 			if (!EmailClientSettings.Equals(v.EmailClientSettings)) return false;
 			if (!EmailSmtpSettings.Equals(v.EmailSmtpSettings)) return false;
+			if (!ForwardToFurtherProfile.Equals(v.ForwardToFurtherProfile)) return false;
 			if (!Ftp.Equals(v.Ftp)) return false;
 			if (!Ghostscript.Equals(v.Ghostscript)) return false;
 			if (!HttpSettings.Equals(v.HttpSettings)) return false;
@@ -352,7 +485,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!TextSettings.Equals(v.TextSettings)) return false;
 			if (!TiffSettings.Equals(v.TiffSettings)) return false;
 			if (!UserTokens.Equals(v.UserTokens)) return false;
+			if (!Watermark.Equals(v.Watermark)) return false;
+			if (!ActionOrder.SequenceEqual(v.ActionOrder)) return false;
 			if (!AuthorTemplate.Equals(v.AuthorTemplate)) return false;
+			if (!EnableWorkflowEditor.Equals(v.EnableWorkflowEditor)) return false;
 			if (!FileNameTemplate.Equals(v.FileNameTemplate)) return false;
 			if (!Guid.Equals(v.Guid)) return false;
 			if (!KeywordTemplate.Equals(v.KeywordTemplate)) return false;
@@ -360,6 +496,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!OpenViewer.Equals(v.OpenViewer)) return false;
 			if (!OpenWithPdfArchitect.Equals(v.OpenWithPdfArchitect)) return false;
 			if (!OutputFormat.Equals(v.OutputFormat)) return false;
+			if (!SaveFileTemporary.Equals(v.SaveFileTemporary)) return false;
 			if (!ShowAllNotifications.Equals(v.ShowAllNotifications)) return false;
 			if (!ShowOnlyErrorNotifications.Equals(v.ShowOnlyErrorNotifications)) return false;
 			if (!ShowProgress.Equals(v.ShowProgress)) return false;

@@ -1,5 +1,6 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
+using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
 using SystemInterface.IO;
@@ -16,11 +17,13 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ISpoolerProvider _spoolerProvider;
         private readonly IDirectory _directory;
+        private readonly IDirectoryAccessControl _directoryAccess;
 
-        public SpoolFolderAccess(ISpoolerProvider spoolerProvider, IDirectory directory)
+        public SpoolFolderAccess(ISpoolerProvider spoolerProvider, IDirectory directory, IDirectoryAccessControl directoryAccess)
         {
             _spoolerProvider = spoolerProvider;
             _directory = directory;
+            _directoryAccess = directoryAccess;
         }
 
         public bool CanAccess()
@@ -33,14 +36,14 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
                     _directory.CreateDirectory(spoolFolder);
                 }
 
-                _directory.GetAccessControl(spoolFolder);
+                _directoryAccess.GetAccessControl(spoolFolder);
 
                 foreach (var directory in _directory.EnumerateDirectories(spoolFolder, "*", SearchOption.AllDirectories))
                 {
                     try
                     {
                         _logger.Debug("Checking directory " + directory);
-                        _directory.GetAccessControl(directory);
+                        _directoryAccess.GetAccessControl(directory);
                     }
                     catch (UnauthorizedAccessException)
                     {

@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
+using Prism.Events;
 using Prism.Regions;
 using SimpleInjector;
 
@@ -19,7 +20,7 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
             _contentRegionName = contentRegionName;
         }
 
-        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, string regionName)
+        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator, string regionName)
         {
             regionManager.RegisterSimpleTab<TView, TViewModel>(regionName, _contentRegionName, _helpTopic, serviceLocator);
         }

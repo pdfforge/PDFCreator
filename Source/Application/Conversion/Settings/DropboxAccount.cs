@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class DropboxAccount : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -46,6 +45,17 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AccountId = AccountId;
 			copy.AccountInfo = AccountInfo;
 			return copy;
+		}
+		
+		public void ReplaceWith(DropboxAccount source)
+		{
+			AccessToken = source.AccessToken;
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(AccountInfo != source.AccountInfo)
+				AccountInfo = source.AccountInfo;
+				
 		}
 		
 		public override bool Equals(object o)

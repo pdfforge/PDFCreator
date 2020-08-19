@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:update="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Assistants.Update"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:update="clr-namespace:pdfforge.PDFCreator.Core.Services.Update;assembly=PDFCreator.Services"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeUpdateHintViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
@@ -23,6 +23,7 @@
             </Grid>
         </DataTemplate>
         <Style TargetType="ItemsControl" x:Key="UpdateChangeItemsControl">
+            <Setter Property="Focusable" Value="False" />
             <Setter Property="ItemTemplate" Value="{StaticResource UpdateChangeDataTemplate}" />
         </Style>
     </UserControl.Resources>
@@ -35,9 +36,9 @@
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" HorizontalAlignment="Left"
                         VerticalAlignment="Top" Width="Auto">
-                <ContentControl VerticalAlignment="Center" Margin="20,20,0,0" Width="50" Focusable="False" IsTabStop="False"
+                <ContentControl VerticalAlignment="Center" Margin="20,20,0,0" Width="50" IsTabStop="False"
                                 Height="64"
-                                Content="{DynamicResource PDFCreatorLogo}" />
+                                Content="{DynamicResource PDFCreatorLogo}" Focusable="False" />
                 <StackPanel Margin="10,20,20,0"  Orientation="Vertical" VerticalAlignment="Center">
 
                     <TextBlock
@@ -49,13 +50,13 @@
                                Text="{Binding Translation.NewUpdateIsAvailable}" Margin="0 0 0 10" />
 
                     <TextBlock TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                               MinWidth="200" MaxWidth="450"  Text="{Binding AvailabeVersionText}" />
+                               MinWidth="200" MaxWidth="450"  Text="{Binding AvailableVersionText}" />
                 </StackPanel>
             </DockPanel>
 
             <Border Margin="20 0 20 0" Grid.Row="1" BorderThickness="0 0 0 0" BorderBrush="#7F7F7F" Padding=" 0 10 0 10" MinWidth="400" MaxWidth="400" MaxHeight="400">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Margin="0 0 0 0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False"  HorizontalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0 0 0 0" Focusable="False">
 
                         <ItemsControl ItemsSource="{Binding UpdateVersions}" Focusable="False">
                             <ItemsControl.Resources>

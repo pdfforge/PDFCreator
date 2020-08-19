@@ -1,5 +1,4 @@
 using pdfforge.LicenseValidator.Interface;
-using pdfforge.LicenseValidator.Interface.Data;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.ErrorReport;
 using pdfforge.PDFCreator.Utilities;
@@ -40,7 +39,6 @@ namespace pdfforge.PDFCreator.Core.Services
 
             var activation = LicenseChecker.GetSavedActivation();
             activation
-                .Filter(a => a.Product != 0, LicenseError.UnknownError)
                 .MatchSome(a =>
             {
                 additionalEntries["LicenseKey"] = a.Key;

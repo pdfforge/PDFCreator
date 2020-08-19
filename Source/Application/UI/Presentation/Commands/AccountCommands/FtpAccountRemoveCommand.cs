@@ -86,6 +86,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             {
                 profile.Ftp.AccountId = "";
                 profile.Ftp.Enabled = false;
+                profile.ActionOrder.Remove(nameof(Ftp));
             }
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));

@@ -1,9 +1,11 @@
 ﻿using Optional;
+using pdfforge.PDFCreator.Core.Services.Cache;
+using pdfforge.PDFCreator.Core.Services.Download;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.UsageStatistics;
 using pdfforge.PDFCreator.UI.Presentation.Banner;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Utilities.Web;
+using pdfforge.UsageStatistics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +23,13 @@ namespace Banners
         private readonly BannerLoader _bannerLoader;
         private readonly BannerDownloader _bannerDownloader;
 
-        public OnlineBannerManager(BannerOptions options, IDirectory directory, IProcessStarter processStarter, IVersionHelper versionHelper, ILanguageProvider languageProvider, IHashUtil hashUtil, IUsageStatisticsSender usageStatisticsSender, IBannerMetricFactory bannerMetricFactory)
+        public OnlineBannerManager(BannerOptions options, IDirectory directory, IWebLinkLauncher webLinkLauncher, IVersionHelper versionHelper, ILanguageProvider languageProvider, IHashUtil hashUtil, IUsageStatisticsSender usageStatisticsSender, IBannerMetricFactory bannerMetricFactory)
         {
             var cache = new FileCache(options);
 
             _versionHelper = versionHelper;
             _languageProvider = languageProvider;
-            _bannerLoader = new BannerLoader(directory, cache, processStarter, usageStatisticsSender, bannerMetricFactory);
+            _bannerLoader = new BannerLoader(directory, cache, webLinkLauncher, usageStatisticsSender, bannerMetricFactory);
             _bannerDownloader = new BannerDownloader(cache, options, hashUtil, new WebClientDownloader());
         }
 
@@ -48,17 +50,24 @@ namespace Banners
 
         public async Task<UIElement> GetBanner(string slot)
         {
-            if (_banners == null)
-                await LoadBanners();
+            try
+            {
+                if (_banners == null)
+                    await LoadBanners();
 
-            var selector = new BannerSelector();
-            var selectedBanner = selector.SelectBanner(_banners, slot);
+                var selector = new BannerSelector();
+                var selectedBanner = selector.SelectBanner(_banners, slot);
 
-            var bannerControl = selectedBanner
-                .FlatMap(banner => _bannerLoader.LoadBanner(banner).Some())
-                .ValueOr((UIElement)null);
+                var bannerControl = selectedBanner
+                    .FlatMap(banner => _bannerLoader.LoadBanner(banner).Some())
+                    .ValueOr((UIElement)null);
 
-            return bannerControl;
+                return bannerControl;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -1,26 +1,57 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using SystemInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Services.JobHistory
 {
     public class JobHistoryJsonFileStorage : IJobHistoryStorage
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private readonly IFile _file;
+        private readonly IAppDataProvider _appDataProvider;
+        private readonly IEnvironment _environment;
+
         private readonly string _savePath;
 
-        public JobHistoryJsonFileStorage(IFile file)
+        public JobHistoryJsonFileStorage(IEnvironment environment, IFile file, IAppDataProvider appDataProvider)
         {
+            _environment = environment;
             _file = file;
+            _appDataProvider = appDataProvider;
 
-            var historyDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PDFCreator");
-            _savePath = Path.Combine(historyDir, "PDFCreatorHistory.json");
+            var historyDir = _appDataProvider.LocalAppDataFolder;
+
+            _savePath = PathSafe.Combine(historyDir, "PDFCreatorHistory.json");
         }
 
         public List<HistoricJob> Load()
+        {
+            var oldHistoryDir = PathSafe.Combine(_environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PDFCreator");
+            var oldSavePath = PathSafe.Combine(oldHistoryDir, "PDFCreatorHistory.json");
+
+            if (!_file.Exists(_savePath))
+            {
+                if (_file.Exists(oldSavePath))
+                {
+                    _file.Copy(oldSavePath, _savePath);
+                    _logger.Debug($"Migrated job history from '{oldSavePath}' to '{_savePath}'.");
+                }
+                else
+                {
+                    return new List<HistoricJob>();
+                }
+            }
+
+            return ReadHistoryJobsFile();
+        }
+
+        private List<HistoricJob> ReadHistoryJobsFile()
         {
             try
             {
@@ -42,9 +73,9 @@ namespace pdfforge.PDFCreator.Core.Services.JobHistory
                 var serializedHistory = JsonConvert.SerializeObject(history);
                 _file.WriteAllText(_savePath, serializedHistory);
             }
-            catch
+            catch (Exception ex)
             {
-                //todo: log
+                _logger.Error(ex, "An error occurred while saving the job history file.");
             }
         }
     }

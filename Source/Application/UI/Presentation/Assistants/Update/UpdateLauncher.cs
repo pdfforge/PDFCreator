@@ -1,13 +1,14 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Events;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Update;
 using pdfforge.PDFCreator.UI.Presentation.Windows;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
+using pdfforge.PDFCreator.Utilities.Web;
 using Prism.Events;
 using System;
 using System.Diagnostics;
@@ -18,12 +19,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 {
     public interface IUpdateLauncher
     {
-        Task LaunchUpdate(IApplicationVersion version);
+        Task LaunchUpdateAsync(IApplicationVersion version);
     }
 
     public class DisabledUpdateLauncher : IUpdateLauncher
     {
-        public Task LaunchUpdate(IApplicationVersion version)
+        public Task LaunchUpdateAsync(IApplicationVersion version)
         {
             return Task.FromResult((object)null);
         }
@@ -31,9 +32,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 
     public class SimpleUpdateLauncher : IUpdateLauncher
     {
-        public Task LaunchUpdate(IApplicationVersion version)
+        private readonly IWebLinkLauncher _webLinkLauncher;
+
+        public SimpleUpdateLauncher(IWebLinkLauncher webLinkLauncher)
         {
-            Process.Start(Urls.PDFCreatorDownloadUrl);
+            _webLinkLauncher = webLinkLauncher;
+        }
+
+        public Task LaunchUpdateAsync(IApplicationVersion version)
+        {
+            _webLinkLauncher.Launch(Urls.PDFCreatorDownloadUrl);
             return Task.FromResult((object)null);
         }
     }
@@ -45,11 +53,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         private readonly IHashUtil _hashUtil;
         private readonly IThreadManager _threadManager;
         private readonly ApplicationNameProvider _applicationNameProvider;
-        private readonly IUpdateHelper _updateHelper;
+        private readonly IUpdateDownloader _updateDownloader;
         private readonly IEventAggregator _eventAggregator;
         private UpdateManagerTranslation _translation;
 
-        public AutoUpdateLauncher(ITranslationFactory translationFactory, IInteractionInvoker interactionInvoker, IInteractionRequest interactionRequest, IHashUtil hashUtil, IThreadManager threadManager, ApplicationNameProvider applicationNameProvider, IUpdateHelper updateHelper, IEventAggregator EventAggregator)
+        public AutoUpdateLauncher(ITranslationFactory translationFactory, IInteractionInvoker interactionInvoker, IInteractionRequest interactionRequest, IHashUtil hashUtil, IThreadManager threadManager, ApplicationNameProvider applicationNameProvider, IUpdateDownloader updateDownloader, IEventAggregator EventAggregator)
         {
             UpdateTranslation(translationFactory);
             translationFactory.TranslationChanged += (sender, args) => UpdateTranslation(translationFactory);
@@ -58,30 +66,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
             _hashUtil = hashUtil;
             _threadManager = threadManager;
             _applicationNameProvider = applicationNameProvider;
-            _updateHelper = updateHelper;
+            _updateDownloader = updateDownloader;
             _eventAggregator = EventAggregator;
         }
 
-        public async Task LaunchUpdate(IApplicationVersion version)
+        public async Task LaunchUpdateAsync(IApplicationVersion version)
         {
             var caption = _translation.GetFormattedTitle(_applicationNameProvider.ApplicationName);
-            var downloadPath = _updateHelper.GetDownloadPath(version.DownloadUrl);
+            var downloadPath = _updateDownloader.GetDownloadPath(version.DownloadUrl);
 
             // retry until successful
-            if (!_updateHelper.IsDownloaded(downloadPath))
+            if (!_updateDownloader.IsDownloaded(downloadPath))
             {
                 while (!TryLaunchUpdate(version, caption, downloadPath))
                 { }
             }
 
-            await AskUserForAppRestart(downloadPath);
+            await AskUserForAppRestartAsync(downloadPath);
         }
 
         private bool TryLaunchUpdate(IApplicationVersion version, string caption, string filePath)
         {
             try
             {
-                var interaction = new UpdateDownloadInteraction(() => _updateHelper.StartDownload(version));
+                var interaction = new UpdateDownloadInteraction(async () => await _updateDownloader.StartDownloadAsync(version));
                 _interactionInvoker.Invoke(interaction);
 
                 if (interaction.Success)
@@ -98,7 +106,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 var message = _translation.DownloadErrorMessage;
                 var res = ShowMessage(message, caption, MessageOptions.YesNo, MessageIcon.PDFCreator);
@@ -112,9 +120,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
             return true; // Download was successful
         }
 
-        private async Task AskUserForAppRestart(string downloadedFile)
+        private async Task AskUserForAppRestartAsync(string downloadedFile)
         {
-            await ShowAppRestartMessage(downloadedFile);
+            await ShowAppRestartMessageAsync(downloadedFile);
         }
 
         private void LaunchDownloadedFile(string filename)
@@ -136,7 +144,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
             return interaction.Response;
         }
 
-        private async Task ShowAppRestartMessage(string downloadedFile)
+        private async Task ShowAppRestartMessageAsync(string downloadedFile)
         {
             var interaction = new RestartApplicationInteraction();
             await _interactionRequest.RaiseAsync(interaction);

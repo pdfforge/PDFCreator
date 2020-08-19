@@ -9,10 +9,10 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSmtpActionViewModel, IsDesignTimeCreatable=True}"
              IsEnabled="{Binding CurrentProfile.EmailSmtpSettings.Enabled}"
-             Style="{DynamicResource TabUserControl}"
              help:HelpProvider.HelpTopic="SendEmailOverSmtp">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,10 +23,12 @@
 
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
         </ResourceDictionary>
     </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.SendEmailViaSmtp}">
         <StackPanel>
+            <TextBlock Margin="0 -20" Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" TextAlignment="Right" />
             <Label>
                 <TextBlock Text="{Binding Translation.SelectSmtpAccountLabel}" />
             </Label>
@@ -73,9 +75,12 @@
             </Label>
             <controls:TokenControl DataContext="{Binding RecipientsBccTokenViewModel}" />
 
-            <Label Margin="0 -5">
-                <TextBlock Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" />
+            <Label>
+                <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}"></TextBlock>
             </Label>
+            <controls:TokenControlWithAddButton DataContext="{Binding AdditionalAttachmentsTokenViewModel}" />
+
+            <controls:AdditionalAttachmentsUserControl />
 
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Style="{DynamicResource LightGreyButton}"
@@ -83,11 +88,20 @@
                         Command="{Binding EditMailTextCommand}"
                         Content="{Binding Translation.EditMailText}" />
 
-                <Button Style="{DynamicResource LightGreyButton}"
-                        Padding="12"
-                        Margin="20 0"
-                        Command="{Binding TestSmtpCommand}"
-                        Content="{Binding Translation.SendTestMail}" />
+                <Grid>
+                    <Button Style="{DynamicResource LightGreyButton}"
+                            Padding="12"
+                            Margin="20 0"
+                            Command="{Binding TestSmtpCommand}"
+                            Content="{Binding Translation.SendTestMail}" />
+                    <controls1:ProgressRing
+                        Foreground="{DynamicResource AccentColorBrush}"
+                        HorizontalAlignment="Center"
+                        Width="24"
+                        Height="24"
+                        Margin="5 0"
+                        Visibility="{Binding TestSmtpCommand.IsExecuting, Converter={StaticResource CollapsedWhenFalseConverter}}" />
+                </Grid>
             </StackPanel>
         </StackPanel>
     </HeaderedContentControl>

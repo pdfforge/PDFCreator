@@ -59,5 +59,116 @@ namespace pdfforge.PDFCreator.UI.Presentation.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the
+        ///of
+        ///and
+        ///in
+        ///to
+        ///was
+        ///is
+        ///for
+        ///as
+        ///on
+        ///with
+        ///by
+        ///he
+        ///that
+        ///at
+        ///from
+        ///his
+        ///it
+        ///an
+        ///were
+        ///are
+        ///which
+        ///doc
+        ///https
+        ///this
+        ///also
+        ///be
+        ///or
+        ///has
+        ///had
+        ///first
+        ///one
+        ///their
+        ///its
+        ///after
+        ///new
+        ///not
+        ///but
+        ///who
+        ///they
+        ///two
+        ///have
+        ///her
+        ///she
+        ///been
+        ///other
+        ///all
+        ///when
+        ///time
+        ///during
+        ///there
+        ///into
+        ///school
+        ///more
+        ///may
+        ///years
+        ///over
+        ///up
+        ///only
+        ///year
+        ///most
+        ///would
+        ///world
+        ///city
+        ///some
+        ///where
+        ///can
+        ///between
+        ///later
+        ///three
+        ///out
+        ///state
+        ///such
+        ///then
+        ///national
+        ///him
+        ///about
+        ///used
+        ///made
+        ///known
+        ///under
+        ///many
+        ///university
+        ///united
+        ///while
+        ///part
+        ///season
+        ///team
+        ///these
+        ///american
+        ///than
+        ///film
+        ///second
+        ///born
+        ///south
+        ///no
+        ///became
+        ///states
+        ///well
+        ///war
+        ///through
+        ///being
+        ///i [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string passwordsmatcher {
+            get {
+                return ResourceManager.GetString("passwordsmatcher", resourceCulture);
+            }
+        }
     }
 }

@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class SmtpAccount : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -84,6 +83,29 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Ssl = Ssl;
 			copy.UserName = UserName;
 			return copy;
+		}
+		
+		public void ReplaceWith(SmtpAccount source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(Address != source.Address)
+				Address = source.Address;
+				
+			Password = source.Password;
+			if(Port != source.Port)
+				Port = source.Port;
+				
+			if(Server != source.Server)
+				Server = source.Server;
+				
+			if(Ssl != source.Ssl)
+				Ssl = source.Ssl;
+				
+			if(UserName != source.UserName)
+				UserName = source.UserName;
+				
 		}
 		
 		public override bool Equals(object o)

@@ -17,7 +17,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// PDFCreator application settings
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class ApplicationSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -39,6 +38,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool EnableTips { get; set; } = true;
 		
 		public string Language { get; set; } = "";
+		
+		/// <summary>
+		/// Remind that license will expire soon
+		/// </summary>
+		public DateTime LicenseExpirationReminder { get; set; } = DateTime.Now;
 		
 		public LoggingLevel LoggingLevel { get; set; } = LoggingLevel.Error;
 		
@@ -85,6 +89,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			ConversionTimeout = int.TryParse(data.GetValue(@"" + path + @"ConversionTimeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpConversionTimeout) ? tmpConversionTimeout : 60;
 			EnableTips = bool.TryParse(data.GetValue(@"" + path + @"EnableTips"), out var tmpEnableTips) ? tmpEnableTips : true;
 			try { Language = Data.UnescapeString(data.GetValue(@"" + path + @"Language")); } catch { Language = "";}
+			LicenseExpirationReminder = DateTime.TryParse(data.GetValue(@"" + path + @"LicenseExpirationReminder"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLicenseExpirationReminder) ? tmpLicenseExpirationReminder : DateTime.Now;
 			LoggingLevel = Enum.TryParse<LoggingLevel>(data.GetValue(@"" + path + @"LoggingLevel"), out var tmpLoggingLevel) ? tmpLoggingLevel : LoggingLevel.Error;
 			NextUpdate = DateTime.TryParse(data.GetValue(@"" + path + @"NextUpdate"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpNextUpdate) ? tmpNextUpdate : DateTime.Now;
 			UnitOfMeasurement = Enum.TryParse<UnitOfMeasurement>(data.GetValue(@"" + path + @"UnitOfMeasurement"), out var tmpUnitOfMeasurement) ? tmpUnitOfMeasurement : UnitOfMeasurement.Centimeter;
@@ -116,6 +121,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"ConversionTimeout", ConversionTimeout.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"EnableTips", EnableTips.ToString());
 			data.SetValue(@"" + path + @"Language", Data.EscapeString(Language));
+			data.SetValue(@"" + path + @"LicenseExpirationReminder", LicenseExpirationReminder.ToString("yyyy-MM-dd HH:mm:ss"));
 			data.SetValue(@"" + path + @"LoggingLevel", LoggingLevel.ToString());
 			data.SetValue(@"" + path + @"NextUpdate", NextUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
 			data.SetValue(@"" + path + @"UnitOfMeasurement", UnitOfMeasurement.ToString());
@@ -147,11 +153,58 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.ConversionTimeout = ConversionTimeout;
 			copy.EnableTips = EnableTips;
 			copy.Language = Language;
+			copy.LicenseExpirationReminder = LicenseExpirationReminder;
 			copy.LoggingLevel = LoggingLevel;
 			copy.NextUpdate = NextUpdate;
 			copy.UnitOfMeasurement = UnitOfMeasurement;
 			copy.UpdateInterval = UpdateInterval;
 			return copy;
+		}
+		
+		public void ReplaceWith(ApplicationSettings source)
+		{
+			Accounts.ReplaceWith(source.Accounts);
+			JobHistory.ReplaceWith(source.JobHistory);
+			
+			PrinterMappings.Clear();
+			for (int i = 0; i < source.PrinterMappings.Count; i++)
+			{
+				PrinterMappings.Add(source.PrinterMappings[i].Copy());
+			}
+			
+			RssFeed.ReplaceWith(source.RssFeed);
+			
+			TitleReplacement.Clear();
+			for (int i = 0; i < source.TitleReplacement.Count; i++)
+			{
+				TitleReplacement.Add(source.TitleReplacement[i].Copy());
+			}
+			
+			UsageStatistics.ReplaceWith(source.UsageStatistics);
+			if(ConversionTimeout != source.ConversionTimeout)
+				ConversionTimeout = source.ConversionTimeout;
+				
+			if(EnableTips != source.EnableTips)
+				EnableTips = source.EnableTips;
+				
+			if(Language != source.Language)
+				Language = source.Language;
+				
+			if(LicenseExpirationReminder != source.LicenseExpirationReminder)
+				LicenseExpirationReminder = source.LicenseExpirationReminder;
+				
+			if(LoggingLevel != source.LoggingLevel)
+				LoggingLevel = source.LoggingLevel;
+				
+			if(NextUpdate != source.NextUpdate)
+				NextUpdate = source.NextUpdate;
+				
+			if(UnitOfMeasurement != source.UnitOfMeasurement)
+				UnitOfMeasurement = source.UnitOfMeasurement;
+				
+			if(UpdateInterval != source.UpdateInterval)
+				UpdateInterval = source.UpdateInterval;
+				
 		}
 		
 		public override bool Equals(object o)
@@ -180,6 +233,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!ConversionTimeout.Equals(v.ConversionTimeout)) return false;
 			if (!EnableTips.Equals(v.EnableTips)) return false;
 			if (!Language.Equals(v.Language)) return false;
+			if (!LicenseExpirationReminder.Equals(v.LicenseExpirationReminder)) return false;
 			if (!LoggingLevel.Equals(v.LoggingLevel)) return false;
 			if (!NextUpdate.Equals(v.NextUpdate)) return false;
 			if (!UnitOfMeasurement.Equals(v.UnitOfMeasurement)) return false;

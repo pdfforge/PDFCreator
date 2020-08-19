@@ -1,12 +1,10 @@
-﻿namespace pdfforge.PDFCreator.Core.UsageStatistics
-{
-    public class PdfCreatorUsageStatisticsMetric : IUsageMetric
-    {
-        public string EventName => "PdfCreatorMetric";
+﻿using pdfforge.UsageStatistics;
 
-        public string Product { get; set; }
-        public string MachineId { get; set; }
-        public string Version { get; set; }
+namespace pdfforge.PDFCreator.Core.UsageStatistics
+{
+    public class PdfCreatorUsageStatisticsMetric : UsageMetricBase
+    {
+        public override string EventName => "PdfCreatorMetric";
         public string OperatingSystem { get; set; }
         public Mode Mode { get; set; }
         public bool QuickActions { get; set; }
@@ -55,5 +53,6 @@
         public bool LoadSharedAppSettings { get; set; }
         public bool LoadSharedProfiles { get; set; }
         public bool AllowUserDefinedProfiles { get; set; }
+        public bool IsWorkflowEditorActive { get; set; }
     }
 }

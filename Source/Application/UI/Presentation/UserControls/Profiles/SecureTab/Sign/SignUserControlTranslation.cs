@@ -26,6 +26,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
         public string PfxP12Files { get; private set; } = "PFX/P12 files";
         public string AllFiles { get; private set; } = "All files";
         public string CertificateDoesNotExist { get; private set; } = "The certificate file does not exist.";
+        public string SignaturePasswordButton { get; private set; } = "Set Certificate Password";
+
         public string SelectOrAddTimeServerAccount { get; protected set; } = "Select account or create a new one ->";
 
         public EnumTranslation<SignaturePage>[] SignaturePageValues { get; private set; } = EnumTranslation<SignaturePage>.CreateDefaultEnumTranslation();

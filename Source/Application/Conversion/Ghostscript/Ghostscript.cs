@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -30,7 +31,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
 
         private bool Run(IList<string> parameters, string tempOutputFolder)
         {
-            _logger.Debug("Ghostscript Parameters:\r\n" + string.Join("\r\n", parameters));
+            var parametersWithoutPassword = parameters.Select(param => param.StartsWith(PrintingDevice.PasswordParameter) ?
+                PrintingDevice.PasswordParameter + "***" : param);
+            _logger.Debug("Ghostscript Parameters:\r\n" + string.Join("\r\n", parametersWithoutPassword));
 
             // Start the child process.
             var p = new Process();
@@ -52,7 +55,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
                     continue;
                 }
 
-                if (tmp.Contains(" "))
+                if (tmp.Contains(" ") && !tmp.Contains("\""))
                 {
                     tmp = tmp.Replace("\"", "\\\"");
                     tmp = "\"" + tmp + "\"";
@@ -121,14 +124,33 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
         /// </summary>
         /// <param name="output">The output device to use for conversion</param>
         /// <param name="tempOutputFolder">Full path to the folder, where temporary files can be stored</param>
-        public bool Run(OutputDevice output, string tempOutputFolder)
+        public bool Run(OutputDevice outputDevice, string tempOutputFolder)
         {
-            var parameters = (List<string>)output.GetGhostScriptParameters(GhostscriptVersion);
-            var success = Run(parameters.ToArray(), tempOutputFolder);
+            var parameters = outputDevice.GetGhostScriptParameters(GhostscriptVersion);
+            var success = Run(parameters, tempOutputFolder);
 
-            CollectTempOutputFiles(output.Job);
+            CollectTempOutputFiles(outputDevice);
 
             return success;
+        }
+
+        private void CollectTempOutputFiles(OutputDevice outputDevice)
+        {
+            switch (outputDevice.ConversionMode)
+            {
+                case ConversionMode.PdfConversion:
+                case ConversionMode.IntermediateConversion:
+                    CollectIntermediateFiles(outputDevice.Job);
+                    break;
+
+                case ConversionMode.ImmediateConversion:
+                case ConversionMode.IntermediateToTargetConversion:
+                    CollectTempOutputFiles(outputDevice.Job);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void CollectTempOutputFiles(Job job)
@@ -136,9 +158,12 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             var files = Directory.GetFiles(job.JobTempOutputFolder);
 
             foreach (var file in files)
-            {
                 job.TempOutputFiles.Add(file);
-            }
+        }
+
+        private void CollectIntermediateFiles(Job job)
+        {
+            job.IntermediatePdfFile = Directory.GetFiles(job.IntermediateFolder).Single();
         }
     }
 

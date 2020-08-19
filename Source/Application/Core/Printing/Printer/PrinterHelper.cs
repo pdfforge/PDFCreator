@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -60,6 +61,8 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         // ReSharper disable once InconsistentNaming
         private const int ERROR_INSUFFICIENT_BUFFER = 122;
 
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private static string InvalidCharsRegex => "[\\\\,\"]+"; //\" would be valid but causes problems, since it splits input strings
 
         private readonly ISystemPrinterProvider _systemPrinterProvider;
@@ -100,17 +103,25 @@ namespace pdfforge.PDFCreator.Core.Printing.Printer
         /// <returns>A Collection of PDFCreator printers</returns>
         public IList<string> GetPDFCreatorPrinters()
         {
-            var ports = GetPorts("pdfcmon");
-            var printers = new List<string>();
-
-            foreach (var port in ports)
+            try
             {
-                printers.AddRange(GetPrinters(port));
+                var ports = GetPorts("pdfcmon");
+                var printers = new List<string>();
+
+                foreach (var port in ports)
+                {
+                    printers.AddRange(GetPrinters(port));
+                }
+
+                printers.Sort();
+
+                return printers;
             }
-
-            printers.Sort();
-
-            return printers;
+            catch (Win32Exception ex)
+            {
+                _logger.Error(ex, "Could not enumerate the printers! (Is the spooler running?)");
+                return new List<string>();
+            }
         }
 
         /// <summary>

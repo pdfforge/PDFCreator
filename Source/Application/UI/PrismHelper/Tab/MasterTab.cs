@@ -1,5 +1,6 @@
 using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
+using Prism.Events;
 using Prism.Regions;
 using SimpleInjector;
 using System.Collections.Generic;
@@ -25,18 +26,19 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
             SubTabs.Add(subTab);
         }
 
-        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, string regionName)
+        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator, string regionName)
         {
             regionManager.RegisterMasterTab<T>(
                 _tabItemsRegionName,
                 _contentRegionName,
                 regionName,
-                serviceLocator);
+                serviceLocator,
+                eventAggregator);
 
             var isFirstTab = true;
             foreach (var subTab in SubTabs)
             {
-                subTab.Register(regionManager, serviceLocator, _tabItemsRegionName, _contentRegionName, isFirstTab);
+                subTab.Register(regionManager, serviceLocator, eventAggregator, _tabItemsRegionName, _contentRegionName, isFirstTab);
                 isFirstTab = false;
             }
         }

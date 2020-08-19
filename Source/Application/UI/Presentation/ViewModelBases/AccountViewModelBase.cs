@@ -27,6 +27,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
             set
             {
                 _askForPasswordLater = value && AllowConversionInterrupts;
+                if (_askForPasswordLater)
+                    ClearPassword();
+
                 SaveCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(AskForPasswordLater));
             }
@@ -41,6 +44,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
         protected abstract void SaveExecute();
 
         protected abstract bool SaveCanExecute();
+
+        protected abstract void ClearPassword();
 
         private void CancelExecute(object obj)
         {

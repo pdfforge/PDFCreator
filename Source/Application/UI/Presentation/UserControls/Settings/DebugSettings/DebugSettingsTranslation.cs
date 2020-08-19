@@ -23,7 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         public string NoLogFile { get; private set; } = "No log file";
         public string NoLogFileAvailable { get; private set; } = "There is currently no log file available.";
         public string RestoreDefaultSettingsTitle { get; private set; } = "Restore Default Settings";
-        public string AskSaveModifiedSettings { get; private set; } = "You have modified the application settings. In order to print a test page with the new settings, you have to save them first.\nDo you want to save the application settings now?";
-        public string AppSettings { get; private set; } = "Application Settings";
+        public string PrintTestPageTooltip { get; private set; } = "Print a test page with the current profile. You will be asked to save the settings if required.";
+        
     }
 }

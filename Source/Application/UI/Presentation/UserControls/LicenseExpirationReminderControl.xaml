@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.LicenseExpirationReminderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:DesignTimeLicenseExpirationReminderViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="40" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityCollapsedConverter" TrueValue="Visible" FalseValue="Collapsed" />
+    </UserControl.Resources>
+
+    <Border Height="42" BorderThickness="3"  BorderBrush="{DynamicResource WarningYellowBrush}"
+                Background="{DynamicResource WhiteBrush}"
+                Visibility="{Binding ShowLicenseExpireReminder, Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MaxWidth="350" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ContentControl Grid.Column="0" Height="16" Margin="5" Content="{DynamicResource InfoIcon}" />
+            <TextBlock Grid.Column="1" DockPanel.Dock="Left" Margin="5" Padding="5" TextWrapping="Wrap"
+                           Text="{Binding LicenseReminderInfo}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button  Margin="5" Padding="5" MinWidth="80"
+                        Style="{DynamicResource FlatGreyButton}"  Command="{Binding RemindMeLaterCommand}"
+                        Content="{Binding Translation.RemindMeLater}" />
+                <Button Visibility="{Binding RelativeSource={RelativeSource FindAncestor,
+                    AncestorType={x:Type local:LicenseExpirationReminderControl}},  Path=ShowManageLicenseButton,
+                    Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
+                        DockPanel.Dock="Right" Margin="5" Padding="5" MinWidth="80"
+                        Style="{DynamicResource FlatGreyButton}" Command="{Binding ManageLicensesCommand}"
+                        CommandParameter="{x:Static presentation:RegionNames.ApplicationSettingsView}"
+                        Content="{Binding Translation.ManageLicense}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,34 +1,45 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Update;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
-    public class UpdateDownloadWindowViewModel : OverlayViewModelBase<UpdateDownloadInteraction, UpdateDownloadWindowTranslation>
+    public class UpdateDownloadWindowViewModel : OverlayViewModelBase<UpdateDownloadInteraction, UpdateDownloadWindowTranslation>, IMountable
     {
         public readonly IDispatcher Dispatcher;
         private readonly IReadableFileSizeFormatter _readableFileSizeFormatter;
         private readonly ApplicationNameProvider _applicationNameProvider;
-        private readonly IUpdateHelper _updateHelper;
+        private readonly IUpdateDownloader _updateDownloader;
 
         public UpdateDownloadWindowViewModel(
-            ITranslationUpdater translationUpdater, IReadableFileSizeFormatter readableFileSizeFormatter, ApplicationNameProvider applicationNameProvider, IUpdateHelper updateHelper, IDispatcher dispatcher)
+            ITranslationUpdater translationUpdater, IReadableFileSizeFormatter readableFileSizeFormatter, ApplicationNameProvider applicationNameProvider, IUpdateDownloader updateDownloader, IDispatcher dispatcher)
             : base(translationUpdater)
         {
             _readableFileSizeFormatter = readableFileSizeFormatter;
             _applicationNameProvider = applicationNameProvider;
-            _updateHelper = updateHelper;
+            _updateDownloader = updateDownloader;
             Dispatcher = dispatcher;
-            _updateHelper.OnDownloadFinished += OnDownloadFinished;
-            _updateHelper.OnProgressChanged += UpdateProgress;
             CancelCommand = new DelegateCommand(ExecuteCancel);
+        }
+
+        public void MountView()
+        {
+            _updateDownloader.OnDownloadFinished += OnDownloadFinished;
+            _updateDownloader.OnProgressChanged += UpdateProgress;
+        }
+
+        public void UnmountView()
+        {
+            _updateDownloader.OnDownloadFinished -= OnDownloadFinished;
+            _updateDownloader.OnProgressChanged -= UpdateProgress;
         }
 
         private void OnDownloadFinished(object sender, UpdateProgressChangedEventArgs args)
@@ -51,7 +62,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         private void ExecuteCancel(object o)
         {
-            _updateHelper.AbortDownload();
+            _updateDownloader.AbortDownload();
             Interaction.Success = false;
             FinishInteraction();
         }
@@ -70,8 +81,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
                 ProgressPercentage = progress;
 
                 DownloadSpeedText = string.Format("{0}/s - {1:0} s",
-                    _readableFileSizeFormatter.GetFileSizeString(_updateHelper.DownloadSpeed.BytesPerSecond),
-                    _updateHelper.DownloadSpeed.EstimatedRemainingDuration.TotalSeconds);
+                    _readableFileSizeFormatter.GetFileSizeString(_updateDownloader.DownloadSpeed.BytesPerSecond),
+                    _updateDownloader.DownloadSpeed.EstimatedRemainingDuration.TotalSeconds);
 
                 RaisePropertyChanged(nameof(ProgressPercentage));
                 if (args.Progress == 100)

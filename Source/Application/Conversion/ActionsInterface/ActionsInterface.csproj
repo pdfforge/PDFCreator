@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Conversion.ActionsInterface</RootNamespace>
     <AssemblyName>PDFCreator.ActionsInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -67,6 +67,10 @@
     <ProjectReference Include="..\Jobs\Jobs.csproj">
       <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
       <Name>Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj">
+      <Project>{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}</Project>
+      <Name>PdfProcessingInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>

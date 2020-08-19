@@ -7,12 +7,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Routing
 {
     public interface IStartupActionHandler
     {
-        void HandleStartupActions(IRegionManager regionManager, StartupRoutine startupRoutine);
+        void HandleStartupActions(IRegionManager regionManager, IStartupRoutine startupRoutine);
     }
 
     public class StartupActionHandler : IStartupActionHandler
     {
-        public void HandleStartupActions(IRegionManager regionManager, StartupRoutine startupRoutine)
+        public void HandleStartupActions(IRegionManager regionManager, IStartupRoutine startupRoutine)
         {
             foreach (var action in startupRoutine.GetAllActions())
             {

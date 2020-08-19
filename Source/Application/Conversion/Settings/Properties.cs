@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Properties of the profile
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Properties : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -28,7 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Deletable { get; set; } = true;
 		
 		/// <summary>
-		/// True for shrared profiles
+		/// True for shared profiles
 		/// </summary>
 		public bool IsShared { get; set; } = false;
 		
@@ -60,6 +59,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.IsShared = IsShared;
 			copy.Renamable = Renamable;
 			return copy;
+		}
+		
+		public void ReplaceWith(Properties source)
+		{
+			if(Deletable != source.Deletable)
+				Deletable = source.Deletable;
+				
+			if(IsShared != source.IsShared)
+				IsShared = source.IsShared;
+				
+			if(Renamable != source.Renamable)
+				Renamable = source.Renamable;
+				
 		}
 		
 		public override bool Equals(object o)

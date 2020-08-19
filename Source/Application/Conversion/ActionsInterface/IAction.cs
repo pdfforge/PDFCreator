@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 
 namespace pdfforge.PDFCreator.Conversion.ActionsInterface
@@ -15,6 +16,19 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
     /// </summary>
     public interface IPostConversionAction : IAction
     { }
+
+    /// <summary>
+    /// Marker for Conversion Action
+    /// </summary>
+    public interface IConversionAction : IAction
+    {
+        /// <summary>
+        ///     Process all output files
+        /// </summary>
+        /// <param name="job">The job to process</param>
+        /// <returns>An ActionResult to determine the success and a list of errors</returns>
+        void ProcessJob(IPdfProcessor pdfProcessor, Job job);
+    }
 
     /// <summary>
     ///     The interface Action defines actions that can process a set of files (i.e. encrypt, send as mail)

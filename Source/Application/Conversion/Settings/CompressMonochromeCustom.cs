@@ -1,6 +1,6 @@
 ﻿namespace pdfforge.PDFCreator.Conversion.Settings
 {
-    public partial class  CompressMonochrome : IProfileSetting
+    public partial class  CompressMonochrome
     {
     }
 }

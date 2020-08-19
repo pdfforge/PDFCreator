@@ -1,12 +1,13 @@
-﻿using iTextSharp.text.pdf;
+﻿using iText.Kernel.Pdf;
+using iText.Kernel.XMP.Impl;
+using iText.Kernel.XMP.Options;
 using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
-using System.Globalization;
 using System.Text;
-using System.Xml;
 
 namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 {
@@ -21,12 +22,13 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         /// </summary>
         /// <param name="stamper">Stamper with document</param>
         /// <param name="profile">Profile with output format settings</param>
+        /// <param name="documentMetaData"></param>
         /// <exception cref="ProcessingException">In case of any error</exception>
-        internal void UpdateXmpMetadata(PdfStamper stamper, ConversionProfile profile)
+        internal void UpdateXmpMetadata(PdfDocument pdfDocument, ConversionProfile profile, Job job)
         {
             try
             {
-                DoUpdateXmpMetadata(stamper, profile);
+                DoUpdateXmpMetadata(pdfDocument, profile, job);
             }
             catch (Exception ex)
             {
@@ -36,9 +38,6 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
         private Tuple<int, string> GetPdfAConformance(OutputFormat outputFormat)
         {
-            if (!outputFormat.ToString().ToUpper().StartsWith("PDFA"))
-                return null;
-
             switch (outputFormat)
             {
                 case OutputFormat.PdfA1B: return Tuple.Create(1, "B");
@@ -48,28 +47,26 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             }
         }
 
-        private void DoUpdateXmpMetadata(PdfStamper stamper, ConversionProfile profile)
+        private void DoUpdateXmpMetadata(PdfDocument pdfDocument, ConversionProfile profile, Job job)
         {
             var conformance = GetPdfAConformance(profile.OutputFormat);
 
-            if (conformance == null)
-                return;
+            var xmlAuthor = "";
+            var xmlKeywords = "";
+            var xmlKeywords2 = "";
+            var xmlSubject = "";
+            var xmlTitle = "";
 
             Logger.Debug("Start updateing XMP Metadata for PDF/A");
 
             var ms = new PDFMetadataStrings("", "", "", "", "", "", "", "");
-            PdfReader reader = stamper.Reader;
 
-            var doc = new XmlDocument();
-            string xmlMetadataString = Encoding.UTF8.GetString(reader.Metadata);
-            doc.LoadXml(xmlMetadataString);
-
-            var documentIDs = (PdfArray)(reader.Trailer.Get(PdfName.ID));
+            var documentIDs = pdfDocument.GetOriginalDocumentId();
 
             string sDocumentId = GetHexString(GetRandomString(16));
             if (documentIDs != null)
             {
-                var o = documentIDs.ArrayList[0];
+                var o = documentIDs;
                 string s = o.ToString();
                 if (s.Length > 0)
                 {
@@ -77,10 +74,9 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 }
             }
 
-            string xmlAuthor = "";
-            if (reader.Info.ContainsKey("Author"))
+            if (!string.IsNullOrEmpty(job.JobInfo.Metadata.Author))
             {
-                ms.Author = reader.Info["Author"];
+                ms.Author = job.JobInfo.Metadata.Author;
                 xmlAuthor = "    <dc:creator>\n" +
                             "     <rdf:Seq>\n" +
                             "      <rdf:li>" + ms.Author + "</rdf:li>\n" +
@@ -88,16 +84,17 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                             "    </dc:creator>\n";
             }
 
-            if (reader.Info.ContainsKey("CreationDate"))
-                ms.CreationDate = reader.Info["CreationDate"];
+            if (pdfDocument.GetDocumentInfo().GetMoreInfo("CreationDate") != null)
+                ms.CreationDate = pdfDocument.GetDocumentInfo().GetMoreInfo("CreationDate");
 
-            if (reader.Info.ContainsKey("Creator"))
-                ms.Creator = reader.Info["Creator"];
-
-            string xmlKeywords = "", xmlKeywords2 = "";
-            if (reader.Info.ContainsKey("Keywords"))
+            if (!string.IsNullOrEmpty(job.Producer))
             {
-                ms.Keywords = reader.Info["Keywords"];
+                ms.Creator = job.Producer;
+                ms.Producer = job.Producer;
+            }
+            if (!string.IsNullOrEmpty(job.JobInfo.Metadata.Keywords))
+            {
+                ms.Keywords = job.JobInfo.Metadata.Keywords;
                 xmlKeywords = "    <dc:subject>\n" +
                               "     <rdf:Bag>\n" +
                               "      <rdf:li>" + ms.Keywords + "</rdf:li>\n" +
@@ -106,16 +103,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 xmlKeywords2 = "    <pdf:Keywords>" + ms.Keywords + "</pdf:Keywords>\n";
             }
 
-            if (reader.Info.ContainsKey("ModDate"))
-                ms.ModDate = reader.Info["ModDate"];
+            if (pdfDocument.GetDocumentInfo().GetMoreInfo("ModDate") != null)
+                ms.ModDate = pdfDocument.GetDocumentInfo().GetMoreInfo("ModDate");
 
-            if (reader.Info.ContainsKey("Producer"))
-                ms.Producer = reader.Info["Producer"];
-
-            string xmlSubject = "";
-            if (reader.Info.ContainsKey("Subject"))
+            if (!string.IsNullOrEmpty(job.JobInfo.Metadata.Subject))
             {
-                ms.Subject = reader.Info["Subject"];
+                ms.Subject = job.JobInfo.Metadata.Subject;
                 xmlSubject = "    <dc:description>\n" +
                              "     <rdf:Alt>\n" +
                              "      <rdf:li xml:lang='x-default'>" + ms.Subject + "</rdf:li>\n" +
@@ -123,10 +116,9 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                              "    </dc:description>\n";
             }
 
-            string xmlTitle = "";
-            if (reader.Info.ContainsKey("Title"))
+            if (!string.IsNullOrEmpty(job.JobInfo.Metadata.Title))
             {
-                ms.Title = reader.Info["Title"];
+                ms.Title = job.JobInfo.Metadata.Title;
                 xmlTitle = "    <dc:title>\n" +
                            "     <rdf:Alt>\n" +
                            "      <rdf:li xml:lang='x-default'>" + ms.Title + "</rdf:li>\n" +
@@ -164,10 +156,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                                  " </x:xmpmeta>\n" +
                                  "<?xpacket end='w'?>";
 
-            Encoding textEncoding = Encoding.GetEncoding("iso-8859-1");
-            byte[] newMetadata = Encoding.Convert(Encoding.Default, Encoding.UTF8, textEncoding.GetBytes(metadataStr));
-
-            stamper.Writer.XmpMetadata = newMetadata;
+            pdfDocument.SetXmpMetadata(new XMPMetaImpl(new XMPNode("XMP", metadataStr, new PropertyOptions())));
         }
 
         /// <summary>
@@ -199,13 +188,16 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         /// <returns>A string that contains random chars.</returns>
         private string GetRandomString(int length)
         {
-            var rnd = new Random();
-            var sb = new StringBuilder();
-            for (var i = 0; i < length; i++)
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
             {
-                sb.Append(Convert.ToChar((byte)rnd.Next(254)).ToString(CultureInfo.InvariantCulture));
+                stringChars[i] = chars[random.Next(chars.Length)];
             }
-            return sb.ToString();
+
+            return new string(stringChars);
         }
 
         /// <summary>

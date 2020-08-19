@@ -49,9 +49,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
                 job.OnJobHasError += OnAnErrorOccurredInJob;
 
-                await _jobRunner.RunJob(job, _outputFileMover);
+                var jobTask = Task.Run(() => _jobRunner.RunJob(job, _outputFileMover));
+                var stepTask = _taskCompletionSource.Task;
 
-                await _taskCompletionSource.Task;
+                await Task.WhenAll(jobTask, stepTask);
 
                 StepFinished?.Invoke(this, EventArgs.Empty);
             }

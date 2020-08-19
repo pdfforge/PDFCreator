@@ -86,6 +86,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             {
                 profile.HttpSettings.AccountId = "";
                 profile.HttpSettings.Enabled = false;
+                profile.ActionOrder.Remove(nameof(HttpSettings));
             }
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));

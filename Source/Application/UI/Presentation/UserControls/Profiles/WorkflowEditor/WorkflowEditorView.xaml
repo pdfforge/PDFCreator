@@ -1,0 +1,484 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:workflow="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Workflow;assembly=PDFCreator.Settings"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:workflowEditor="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             KeyboardNavigation.TabNavigation="None"
+             Loaded="WorkflowEditorView_OnLoaded"
+             help:HelpProvider.HelpTopic="WorkflowEditor"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeWorkflowEditorViewModel, IsDesignTimeCreatable=true}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary  Source="../../../Styles/LightGreyButton.xaml" />
+                <ResourceDictionary  Source="../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary  Source="../../../Styles/TextStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
+            <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrueConverter" TrueValue="Visible" FalseValue="Hidden" />
+            <workflowEditor:FacadeToVisibilityValueConverter x:Key="DragDropVisibilityConverter" />
+            <workflowEditor:FacadeColorValueConverter x:Key="DragDropColorConverter" />
+            <converter:EllipsisAdjustmentConverter x:Key="EllipsisAdjustmentConverter" />
+            <Style x:Key="PreviewTextBlockStyle" TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="DimGray" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="MaxWidth" Value="200" />
+                <Setter Property="Margin" Value="10 5 0 0" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="CustomListBoxStyle" TargetType="{x:Type ListBox}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
+                <Setter Property="ItemTemplate" Value="{DynamicResource CustomListBoxDataTemplate}" />
+                <Setter Property="dd:DragDrop.IsDragSource" Value="True" />
+                <Setter Property="dd:DragDrop.IsDropTarget" Value="True" />
+            </Style>
+            <Style x:Key="CustomListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <DockPanel>
+                                <ContentPresenter Cursor="{x:Static Cursors.Arrow}" />
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="0 5 0 0" />
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"  Color="Transparent" />
+                </Style.Resources>
+            </Style>
+
+            <DataTemplate x:Key="CustomListBoxDataTemplate"  DataType="workflow:IActionFacade">
+                <Border x:Name="Testname" BorderBrush="Transparent" BorderThickness="0"
+                        dd:DragDrop.IsDragSource="{Binding }"
+                        Padding="1"
+                        Background ="{Binding  Converter={StaticResource DragDropColorConverter}, UpdateSourceTrigger=PropertyChanged}">
+                    <DockPanel>
+                        <Label DockPanel.Dock="Right"
+                               Margin="3 0 0 0"
+                               Height="35" Width="20"
+                               Cursor="ScrollNS">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Label}">
+                                                <Grid>
+                                                    <Border x:Name="ScrollNSLabelBorder" Background="{TemplateBinding Background}">
+                                                        <Border.Visibility>
+                                                            <MultiBinding Converter="{StaticResource DragDropVisibilityConverter}">
+                                                                <Binding />
+                                                                <Binding ElementName="ScrollNSLabelBorder" Path="Visibility" />
+                                                            </MultiBinding>
+                                                        </Border.Visibility>
+                                                        <ContentPresenter  Content="{DynamicResource UpDownArrowIcon}" />
+                                                    </Border>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                                                         Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
+                                                         Value="False">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+
+                        <Button DockPanel.Dock="Right"
+                                        Width="13"
+                                        Height="13"
+                                        Margin="5 0 5 0"
+                                        Cursor="{x:Static Cursors.Hand}"
+                                        Command="{Binding DataContext.RemoveActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListBoxButton}"
+                                        Content="{DynamicResource RemoveButtonIcon}" />
+
+                        <Button DockPanel.Dock="Right"
+                                        Width="13"
+                                        Height="13"
+                                        Margin="20 0 5 0 "
+                                        Cursor="{x:Static Cursors.Hand}"
+                                        Command="{Binding DataContext.EditActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding }"
+                                        Style="{DynamicResource ListBoxButton}"
+                                        Content="{StaticResource EditButtonIcon}"
+                                        SnapsToDevicePixels="True" />
+
+                        <StackPanel DockPanel.Dock="Left" Background="Transparent"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding IsRestricted, Converter={StaticResource VisibleWhenTrueConverter}}">
+                            <misc:NotSupportedFeaturesControl />
+                        </StackPanel>
+
+                        <TextBlock   DockPanel.Dock="Left" Padding="10" Style="{StaticResource CreatorTextBlock}" HorizontalAlignment="Left" Background="Transparent" Text="{Binding Translation, StringFormat='\{0\}:'}" />
+                        <TextBlock   DockPanel.Dock="Top" Padding="10" Style="{StaticResource CreatorTextBlock}"
+                                     TextTrimming="CharacterEllipsis"  HorizontalAlignment="Left"
+                                     Background="Transparent" Text="{Binding Description}"
+                                     MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollContentPresenter}},
+                                    Converter={StaticResource EllipsisAdjustmentConverter}, ConverterParameter=205}" />
+                    </DockPanel>
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="DragAdornerTemplate" DataType="workflow:IActionFacade">
+                <Border BorderThickness="2"
+                        Opacity="0.8"
+                        BorderBrush="LightGray"
+                        Background="WhiteSmoke"
+                        Margin="2"
+                        Padding="10"
+                        Width="200">
+                    <Border.Effect>
+                        <DropShadowEffect Opacity="0.5" />
+                    </Border.Effect>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding Translation}" />
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" MaxWidth="450" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="2*" MaxWidth="350" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="{Binding Translation.ExplanationTitle}"
+                           FontSize="18"
+                           Foreground="Black"
+
+                           TextWrapping="Wrap"
+                           Padding="10"
+                           Margin="15 10 0 0" />
+                <TextBlock
+                    TextWrapping="Wrap"
+                    Margin="20 0 10 00"
+                    FontSize="12"
+                    Padding="5"
+                    Foreground="DimGray"
+                    LineHeight="22"
+                    TextAlignment="Left"
+                    Text="{Binding Translation.ExplanationText}" />
+            </StackPanel>
+
+            <ItemsControl Grid.Row="2" Margin="20 0 0 12" VerticalAlignment="Bottom"  regions:RegionManager.RegionName="{x:Static presentation:RegionNames.TestButtonWorkflowEditorRegion}" />
+        </Grid>
+
+        <DockPanel  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" Margin="0 20 0 0">
+            <DockPanel.Resources>
+                <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"></converter:BoolToVisibilityConverter>
+            </DockPanel.Resources>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden">
+                <DockPanel LastChildFill="True">
+                    <DockPanel DockPanel.Dock="Top"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                Visibility="{Binding HasPreConversion, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Bottom"
+                                   Margin="23 0 0 7"
+                                   Padding="1"
+                                   Content="{DynamicResource ArrowWorkflowIcon}"
+                                   Height="10" Width="10" />
+                            <Label DockPanel.Dock="Top"
+                                Margin="0 15 5 0"
+                                Content="{Binding Translation.Preparation}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Right"
+                                Foreground="Gray"
+                                FontWeight="Medium"
+                                FontSize="14">
+                                <Label.Style>
+                                    <Style>
+                                        <Setter Property="Border.BorderThickness" Value="0 0 0 2" />
+                                        <Setter Property="Border.BorderBrush" Value="DimGray" />
+                                    </Style>
+                                </Label.Style>
+                                <Label.LayoutTransform>
+                                    <RotateTransform Angle="-90" />
+                                </Label.LayoutTransform>
+                            </Label>
+                        </DockPanel>
+
+                        <ListBox DockPanel.Dock="Top"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdornerTemplate}"
+                                 dd:DragDrop.DropHandler="{Binding PreparationDropTarget}"
+                                 dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="False"
+                                 dd:DragDrop.UseDefaultDragAdorner="True"
+                                 Margin="0 10 0 10"
+                                 ItemsSource="{Binding PreparationActions, Mode=TwoWay}"
+                                 Style="{StaticResource ResourceKey=CustomListBoxStyle}"
+                                 ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
+                        </ListBox>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Bottom"
+                                   Margin="23 0 0 7"
+                                   Padding="1"
+                                   Content="{DynamicResource ArrowWorkflowIcon}"
+                                   Height="10" Width="10" />
+                            <Label DockPanel.Dock="Top"
+                                Margin="0 15 5 0"
+                                Content="{Binding Translation.Modify}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Right"
+                                Foreground="Gray"
+                                FontWeight="Medium"
+                                FontSize="14">
+                                <Label.Style>
+                                    <Style>
+                                        <Setter Property="Border.BorderThickness" Value="0 0 0 2" />
+                                        <Setter Property="Border.BorderBrush" Value="DimGray" />
+                                    </Style>
+                                </Label.Style>
+                                <Label.LayoutTransform>
+                                    <RotateTransform Angle="-90" />
+                                </Label.LayoutTransform>
+                            </Label>
+                        </DockPanel>
+
+                        <ListBox DockPanel.Dock="Top"
+                                 dd:DragDrop.DragHandler="{Binding ModifyDragSourceHandler}"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdornerTemplate}"
+                                 dd:DragDrop.DropHandler="{Binding ModifyDropTarget}"
+                                 dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="False"
+                                 dd:DragDrop.UseDefaultDragAdorner="True"
+                                 Margin="0 10 0 10"
+                                 ItemsSource="{Binding ModifyActions, Mode=TwoWay}"
+                                 Style="{StaticResource ResourceKey=CustomListBoxStyle}"
+                                 ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
+                        </ListBox>
+                    </DockPanel>
+
+                    <DockPanel DockPanel.Dock="Bottom"
+                               VerticalAlignment="Top" Margin="0 15 0 0">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Bottom"
+                                   Margin="23 0 0 0"
+                                   Padding="1"
+                                   Content="{DynamicResource ArrowWorkflowIcon}"
+                                   Height="10" Width="10" />
+                            <Label
+                                Margin="0 5 5 0"
+                                Foreground="Gray"
+                                Content="{Binding Translation.Send}"
+                                HorizontalAlignment="Center"
+                                HorizontalContentAlignment="Right"
+                                FontWeight="Medium"
+                                FontSize="14">
+                                <Label.Style>
+                                    <Style>
+                                        <Setter Property="Border.BorderThickness" Value="0 0 0 2" />
+                                        <Setter Property="Border.BorderBrush" Value="DimGray" />
+                                    </Style>
+                                </Label.Style>
+                                <Label.LayoutTransform>
+                                    <RotateTransform Angle="-90" />
+                                </Label.LayoutTransform>
+                            </Label>
+                        </DockPanel>
+
+                        <ListBox DockPanel.Dock="Top"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdornerTemplate}"
+                                 dd:DragDrop.DropHandler="{Binding SendDropTarget}"
+                                 dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="False"
+                                 dd:DragDrop.UseDefaultDragAdorner="True"
+                                 Margin="0 10 0 10"
+                                 ItemsSource="{Binding SendActions, Mode=TwoWay}"
+                                 Style="{StaticResource ResourceKey=CustomListBoxStyle}"
+                                 ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
+                        </ListBox>
+                    </DockPanel>
+                </DockPanel>
+            </ScrollViewer>
+        </DockPanel>
+
+        <DockPanel  Grid.Column="1" Grid.Row="2"
+                    HorizontalAlignment="Stretch"
+                    Margin="0 5 15 10"
+                    LastChildFill="True">
+            <Label  Height="20" Width="20"
+                    Margin="4 7 10 5"
+                    Content="{DynamicResource PlusIcon}">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Label}">
+                                    <Grid>
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderThickness="2"
+                                                Padding="3"
+                                                BorderBrush="DarkGray"
+                                                CornerRadius="20">
+                                            <ContentPresenter  Content="{DynamicResource PlusIcon}" />
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Label.Style>
+            </Label>
+            <Button
+                Content="{Binding Translation.AddAction}"
+                Command="{Binding OpenAddActionOverviewCommand}"
+                Style="{DynamicResource GreyButton}"
+                HorizontalContentAlignment="Left"
+                Padding="10 0"
+                Margin="0 0 0 2"
+                Height="40"
+                FontSize="16">
+            </Button>
+        </DockPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="3"
+                    Orientation="Vertical"
+                    Margin="10 35 0 0">
+            <Border BorderThickness="0 0 0 1" BorderBrush="DimGray"  Margin="10 0 30 0">
+                <DockPanel  Margin="0 10 0 10">
+                    <Button DockPanel.Dock="Left"
+                            Command="{Binding SetOutputFormatCommand}"
+                            Margin="0 3 0 0"
+                            Width="13"
+                            Height="13"
+                            Cursor="Hand"
+                            Style="{DynamicResource IconOnlyEditButton}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{StaticResource EditButtonIcon}" />
+                    <StackPanel DockPanel.Dock="Top">
+                        <StackPanel    HorizontalAlignment="Right" Margin="0 0 0 -15"
+                                    Visibility="{Binding HasNotSupportedConvertFeature, Converter={StaticResource VisibleWhenTrueConverter}}">
+                            <misc:NotSupportedFeaturesControl />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource PreviewTextBlockStyle}"
+                                   FontWeight="Bold"
+                                   Margin="10 0 10 3"
+                                   VerticalAlignment="Top"
+                                   Text="{Binding Translation.OutputFormatColon}" />
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+
+                                Text="{Binding OutputFormatDescription, Converter={StaticResource OutputFormatToTextConverter}}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border BorderThickness="0 0 0 1" BorderBrush="DimGray"  Margin="10 0 30 0">
+                <DockPanel Margin="0 10 10 10">
+                    <Button DockPanel.Dock="Left"  Command="{Binding SetSaveCommand}"
+                                 Margin="0 3 0 0"
+                                 Width="13"
+                                 Height="13"
+                                 Cursor="Hand"
+                                 Style="{DynamicResource IconOnlyEditButton}"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="{StaticResource EditButtonIcon}" />
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+                                    Margin="10 0 10 3"
+                                    FontWeight="Bold"
+                                    VerticalAlignment="Top"
+                                    Text="{Binding Translation.TargetLocation}" />
+                        <TextBlock
+                            Style="{StaticResource PreviewTextBlockStyle}"
+                            VerticalAlignment="Top"
+                            Text="{Binding TargetFilename}" />
+
+                        <TextBlock
+                            Style="{StaticResource PreviewTextBlockStyle}"
+                            VerticalAlignment="Top"
+                            Text="{Binding TargetDirectory}" />
+
+                        <TextBlock
+                            Style="{StaticResource PreviewTextBlockStyle}"
+                            VerticalAlignment="Top"
+                            Text="{Binding AutoSaveText}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border BorderThickness="0" BorderBrush="Transparent"  Margin="10 0 30 0">
+                <DockPanel Margin="0 10 0 10">
+                    <Button DockPanel.Dock="Left" Command="{Binding SetMetaDataCommand}"
+                         Margin="0 3 0 0"
+                         Width="13"
+                         Height="13"
+                         Style="{DynamicResource IconOnlyEditButton}"
+                         Cursor="Hand"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Content="{StaticResource EditButtonIcon}" />
+                    <StackPanel DockPanel.Dock="Top">
+                        <StackPanel   HorizontalAlignment="Right" Margin="0 0 0 -15"
+                                Visibility="{Binding HasNotSupportedMetadataFeature, Converter={StaticResource VisibleWhenTrueConverter}}">
+                            <misc:NotSupportedFeaturesControl />
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource PreviewTextBlockStyle}"
+                                Margin="10 0 10 3"
+                                FontWeight="Bold"
+                                VerticalAlignment="Top"
+                                Text="{Binding Translation.MetaDataColon}" />
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+                                    Text="{Binding TitlePreview}" />
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+                                Text="{Binding AuthorPreview}" />
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+                                Text="{Binding SubjectPreview}" />
+                        <TextBlock  Style="{StaticResource PreviewTextBlockStyle}"
+                                    Text="{Binding KeywordsPreview}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <ContentControl
+                            regions:RegionManager.RegionName="{x:Static presentation:RegionNames.WorkflowEditorSideBarRegion}"
+                            Margin="0 5" />
+        </StackPanel>
+    </Grid>
+</UserControl>

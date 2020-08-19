@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Compression settings for color and greyscale images
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class CompressColorAndGray : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -77,6 +76,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.JpegCompressionFactor = JpegCompressionFactor;
 			copy.Resampling = Resampling;
 			return copy;
+		}
+		
+		public void ReplaceWith(CompressColorAndGray source)
+		{
+			if(Compression != source.Compression)
+				Compression = source.Compression;
+				
+			if(Dpi != source.Dpi)
+				Dpi = source.Dpi;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(JpegCompressionFactor != source.JpegCompressionFactor)
+				JpegCompressionFactor = source.JpegCompressionFactor;
+				
+			if(Resampling != source.Resampling)
+				Resampling = source.Resampling;
+				
 		}
 		
 		public override bool Equals(object o)

@@ -13,7 +13,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class DefaultViewer : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -51,6 +50,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Parameters = Parameters;
 			copy.Path = Path;
 			return copy;
+		}
+		
+		public void ReplaceWith(DefaultViewer source)
+		{
+			if(IsActive != source.IsActive)
+				IsActive = source.IsActive;
+				
+			if(OutputFormat != source.OutputFormat)
+				OutputFormat = source.OutputFormat;
+				
+			if(Parameters != source.Parameters)
+				Parameters = source.Parameters;
+				
+			if(Path != source.Path)
+				Path = source.Path;
+				
 		}
 		
 		public override bool Equals(object o)

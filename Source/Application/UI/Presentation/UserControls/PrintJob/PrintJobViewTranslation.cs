@@ -9,36 +9,40 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string AuthorLabel { get; private set; } = "_Author:";
 
         [Context("PrintJobWindowButton")]
-        public string CancelButton { get; private set; } = "_Cancel";
+        public string Cancel { get; private set; } = "_Cancel";
 
-        public string ConfirmSaveAs { get; private set; } = "Confirm Save As";
+        [Context("PrintJobWindowButton")]
+        public string CancelAll { get; private set; } = "Cancel all";
+
         public string EditProfile { get; private set; } = "Edit";
-
-        private string FileAlreadyExists { get; set; } = "'{0}' already exists.\nDo you want to replace it?";
-
-        public string GetFileAlreadyExists(string filepath)
-        {
-            return string.Format(FileAlreadyExists, filepath);
-        }
 
         public string KeywordsLabel { get; private set; } = "_Keywords:";
 
         [Context("PrintJobWindowButton")]
-        public string MergeButton { get; private set; } = "_Merge";
+        public string Merge { get; private set; } = "_Merge";
+
+        [Context("PrintJobWindowButton")]
+        public string MergeAll { get; private set; } = "Merge all";
 
         public string ProfileLabel { get; private set; } = "_Profile:";
 
         [Context("PrintJobWindowButton")]
-        public string SaveButton { get; private set; } = "_Save";
+        public string Save { get; private set; } = "_Save";
+
+        public string SaveAs { get; private set; } = "Save as ...";
+        public string SaveToDesktop { get; private set; } = "Save to Desktop";
 
         [Context("PrintJobWindowButton")]
-        public string EmailButton { get; private set; } = "_E-mail";
+        public string Email { get; private set; } = "_E-mail";
+
+        public string Smtp { get; private set; } = "SMTP";
+
+        public string Dropbox { get; private set; } = "Dropbox";
+        public string Ftp { get; private set; } = "FTP";
 
         public string SubjectLabel { get; private set; } = "S_ubject:";
         public string TitleLabel { get; private set; } = "_Title:";
         public string FilenameText { get; private set; } = "File_name:";
-        public string FoldernameText { get; private set; } = "_Folder:";
-        public string PathTooLongTitle { get; private set; } = "The selected path is too long";
-        public string PathTooLongText { get; private set; } = "The selected path is too long. Please select a valid path.";
+        public string DirectoryLabel { get; private set; } = "_Directory:";
     }
 }

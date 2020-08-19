@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IIniSettingsLoader _iniSettingsLoader;
         private readonly IPrinterProvider _printerProvider;
         private readonly IUacAssistant _uacAssistant;
+        private readonly IActionOrderChecker _actionOrderChecker;
         private readonly ISettingsManager _settingsManager;
         private readonly ISettingsProvider _settingsProvider;
 
@@ -34,7 +36,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             IDataStorageFactory dataStorageFactory,
             IIniSettingsLoader iniSettingsLoader,
             IPrinterProvider printerProvider,
-            IUacAssistant uacAssistant)
+            IUacAssistant uacAssistant,
+            IActionOrderChecker actionOrderChecker)
             : base(interactionInvoker, dataStorageFactory, translationUpdater)
         {
             _settingsManager = settingsManager;
@@ -43,6 +46,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             _iniSettingsLoader = iniSettingsLoader;
             _printerProvider = printerProvider;
             _uacAssistant = uacAssistant;
+            _actionOrderChecker = actionOrderChecker;
         }
 
         public override bool LoadIniSettings()
@@ -71,6 +75,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
                 if (missingPrinters.Any())
                     QueryAndAddMissingPrinters(missingPrinters);
+
+                _actionOrderChecker.Check(settings.ConversionProfiles);
 
                 foreach (var profile in settings.ConversionProfiles)
                 {
@@ -107,10 +113,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             if (interaction.Response == MessageResponse.Yes)
             {
-                foreach (var printer in unusedPrinters)
-                {
-                    _uacAssistant.DeletePrinter(printer);
-                }
+                _uacAssistant.DeletePrinter(unusedPrinters.ToArray());
             }
         }
 

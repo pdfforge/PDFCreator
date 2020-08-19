@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
@@ -85,6 +86,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         public void UnmountView()
         {
             _accountsProvider.SettingsChanged -= OnSettingsChanged;
+            _pointAtAccounts.CollectionChanged -= OnCollectionChanged;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string SelectFilename { get; private set; } = "Filename:";
         public string SelectFolder { get; private set; } = "Folder:";
         public string OkButton { get; private set; } = "OK";
-        public string OpenWith { get; private set; } = "Open with";
+        public string Open { get; private set; } = "Open";
         public string Send { get; private set; } = "Send";
         public string TotalFileSize { get; private set; } = "Total file size:";
 

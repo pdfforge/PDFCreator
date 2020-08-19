@@ -14,9 +14,8 @@ using System;
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
 	/// <summary>
-	/// Parse ps files for user definied tokens
+	/// Parse ps files for user defined tokens
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class UserTokens : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -24,12 +23,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		
 		/// <summary>
-		/// Activate parsing ps files for user tokens (Only available in PDFCreator Business)
+		/// Activate parsing ps files for user tokens (Only available in the PDFCreator business editions)
 		/// </summary>
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// UserToken seperator in the document
+		/// UserToken separator in the document
 		/// </summary>
 		public UserTokenSeperator Seperator { get; set; } = UserTokenSeperator.SquareBrackets;
 		
@@ -53,6 +52,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.Seperator = Seperator;
 			return copy;
+		}
+		
+		public void ReplaceWith(UserTokens source)
+		{
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(Seperator != source.Seperator)
+				Seperator = source.Seperator;
+				
 		}
 		
 		public override bool Equals(object o)

@@ -17,6 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
         private readonly ICommandLocator _commandLocator;
 
         public List<FrequentTip> FrequentTipList;
+        private readonly bool _isInitialized;
         public string CurrentBannerTitle { get; set; }
         public string CurrentBannerText { get; set; }
         public ICommand CurrentBannerCommand { get; set; }
@@ -24,6 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
         public FrequentTipsControlViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator) : base(translationUpdater)
         {
             _commandLocator = commandLocator;
+            _isInitialized = true;
             ComposeFrequentTipList();
             SetRandomTip();
         }
@@ -32,23 +34,32 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
         {
             FrequentTipList = new List<FrequentTip>
             {
-                ComposeF1HelpTip(),
-                ComposeAutoSaveTip(),
-                ComposeUserTokensTip(),
-                ComposePDFCreatorOnlineTip()
+                ComposeUserGuideTip(Translation.F1HelpTitle, Translation.F1HelpText, HelpTopic.General),
+                ComposeUrlTip(Translation.AutoSaveTitle,Translation.AutoSaveText, Urls.Tip_AutoSaveUrl),
+                ComposeUrlTip(Translation.UserTokensTitle,Translation.UserTokensText, Urls.Tip_UserTokensUrl),
+                ComposeUrlTip(Translation.PDFCreatorOnlineTitle,Translation.PDFCreatorOnlineText, Urls.PdfCreatorOnlineUrl ),
+                ComposeUserGuideTip(Translation.TemporarySaveTitle, Translation.TemporarySaveText,HelpTopic.ProfileSave),
+                ComposeUrlTip(Translation.WorkflowTitle,Translation.WorkflowText, Urls.Tip_WorkflowUrl ),
+                ComposeUrlTip(Translation.DropBoxTitle, Translation.DropBoxText, Urls.Tip_DropBoxUrl )
             };
         }
 
         protected override void OnTranslationChanged()
         {
-            if (FrequentTipList != null)
-                SetRandomTip();
+            if (!_isInitialized)
+                return;
+
+            ComposeFrequentTipList();
+            SetRandomTip();
             RaisePropertyChanged(nameof(CurrentBannerTitle));
             RaisePropertyChanged(nameof(CurrentBannerText));
         }
 
         private void SetRandomTip()
         {
+            if (FrequentTipList == null || FrequentTipList.Count <= 0)
+                return;
+
             var random = new Random();
             var randomIndex = random.Next(FrequentTipList.Count);
             var currentFrequentBanner = FrequentTipList[randomIndex];
@@ -58,40 +69,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
             CurrentBannerCommand = currentFrequentBanner.Command;
         }
 
-        public FrequentTip ComposeF1HelpTip()
+        public FrequentTip ComposeUrlTip(string title, string body, string parameter)
         {
-            var frequentBannerElement = new FrequentTip();
-            frequentBannerElement.Title = Translation.F1HelpTitle;
-            frequentBannerElement.Text = Translation.F1HelpText;
-            frequentBannerElement.Command = _commandLocator.GetInitializedCommand<ShowUserGuideCommand, HelpTopic>(HelpTopic.General);
-            return frequentBannerElement;
+            return ComposeTip<UrlOpenCommand, string>(title, body, parameter);
         }
 
-        public FrequentTip ComposeAutoSaveTip()
+        public FrequentTip ComposeUserGuideTip(string title, string body, HelpTopic parameter)
         {
-            var frequentBannerElement = new FrequentTip();
-            frequentBannerElement.Title = Translation.AutoSaveTitle;
-            frequentBannerElement.Text = Translation.AutoSaveText;
-            frequentBannerElement.Command = _commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.Tip_AutoSaveUrl);
-            return frequentBannerElement;
+            return ComposeTip<ShowUserGuideCommand, HelpTopic>(title, body, parameter);
         }
 
-        public FrequentTip ComposeUserTokensTip()
+        private FrequentTip ComposeTip<TCommand, TParameter>(string title, string body, TParameter parameter) where TCommand : class, IInitializedCommand<TParameter>
         {
-            var frequentBannerElement = new FrequentTip();
-            frequentBannerElement.Title = Translation.UserTokensTitle;
-            frequentBannerElement.Text = Translation.UserTokensText;
-            frequentBannerElement.Command = _commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.Tip_UserTokensUrl);
-            return frequentBannerElement;
-        }
-
-        public FrequentTip ComposePDFCreatorOnlineTip()
-        {
-            var frequentBannerElement = new FrequentTip();
-            frequentBannerElement.Title = Translation.PDFCreatorOnlineTitle;
-            frequentBannerElement.Text = Translation.PDFCreatorOnlineText;
-            frequentBannerElement.Command = _commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.PdfCreatorOnlineUrl);
-            return frequentBannerElement;
+            var composedTip = new FrequentTip();
+            composedTip.Title = title;
+            composedTip.Text = body;
+            composedTip.Command = _commandLocator.GetInitializedCommand<TCommand, TParameter>(parameter);
+            return composedTip;
         }
     }
 

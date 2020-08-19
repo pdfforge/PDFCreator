@@ -1,12 +1,11 @@
-﻿namespace pdfforge.PDFCreator.Core.UsageStatistics
-{
-    public class JobUsageStatisticsMetric : IUsageMetric
-    {
-        public string EventName => "JobMetric";
+﻿using pdfforge.UsageStatistics;
 
-        public string Product { get; set; }
-        public string MachineId { get; set; }
-        public string Version { get; set; }
+namespace pdfforge.PDFCreator.Core.UsageStatistics
+{
+    public class JobUsageStatisticsMetric : UsageMetricBase
+    {
+        public override string EventName => "JobMetric";
+
         public string OutputFormat { get; set; }
         public string Status { get; set; }
         public long Duration { get; set; }

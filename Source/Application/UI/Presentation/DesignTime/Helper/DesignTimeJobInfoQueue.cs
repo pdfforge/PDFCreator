@@ -1,5 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,6 +50,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
             return true;
         }
 
+        public void Clear()
+        {
+        }
+
         public void Add(IEnumerable<JobInfo> jobInfos)
         {
         }
@@ -60,6 +64,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         }
 
         public void Add(JobInfo jobInfo)
+        {
+        }
+
+        public void AddFirst(JobInfo jobInfo)
         {
         }
 

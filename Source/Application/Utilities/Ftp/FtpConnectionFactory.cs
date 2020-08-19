@@ -1,15 +1,21 @@
-﻿namespace pdfforge.PDFCreator.Utilities.Ftp
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
+
+namespace pdfforge.PDFCreator.Utilities.Ftp
 {
     public interface IFtpConnectionFactory
     {
-        IFtpConnection BuildConnection(string host, string userName, string password);
+        IFtpClient BuildConnection(FtpAccount ftpAccount, string password);
     }
 
     public class FtpConnectionFactory : IFtpConnectionFactory
     {
-        public IFtpConnection BuildConnection(string host, string userName, string password)
+        public IFtpClient BuildConnection(FtpAccount account, string password)
         {
-            return new FtpConnectionWrap(host, userName, password);
+            if (account.FtpConnectionType == FtpConnectionType.Sftp)
+                return new SftpClientWrap(account.Server, account.UserName, password, account.PrivateKeyFile, account.AuthenticationType);
+
+            return new FtpClientWrap(account.Server, account.UserName, password);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using pdfforge.PDFCreator.Core.Services.Update;
 using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update

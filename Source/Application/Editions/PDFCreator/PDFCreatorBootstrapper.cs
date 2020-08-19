@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Licensing;
+using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.Workflow;
@@ -17,8 +18,10 @@ using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
 using pdfforge.PDFCreator.UI.Presentation.Banner;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
+using pdfforge.PDFCreator.Utilities.Web;
 using Prism.Regions;
 using SimpleInjector;
 using System;
@@ -33,7 +36,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override Color EditionHighlightColor => Color.FromRgb(215, 40, 40);
         protected override bool HideLicensing => true;
 
-        protected override EditionHelper EditionHelper => new EditionHelper(true, true);
+        protected override EditionHelper EditionHelper => new EditionHelper(true);
 
         protected override void RegisterSettingsLoader(Container container)
         {
@@ -42,14 +45,15 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
 
         protected override void RegisterUpdateAssistant(Container container)
         {
-            container.RegisterSingleton<IUpdateAssistant, UpdateAssistant>();
-            container.RegisterSingleton<IUpdateLauncher, SimpleUpdateLauncher>();
-            container.RegisterSingleton(() => new UpdateInformationProvider(Urls.PdfCreatorUpdateInfoUrl, "PDFCreator"));
+            container.RegisterSingleton<IUpdateHelper, UpdateHelper>();
+            container.RegisterSingleton<IUpdateLauncher>(() => new SimpleUpdateLauncher(container.GetInstance<IWebLinkLauncher>()));
+            container.RegisterSingleton<IOnlineVersionHelper, OnlineVersionHelper>();
+            container.RegisterSingleton(() => new UpdateInformationProvider(Urls.PdfCreatorUpdateInfoUrl, "PDFCreator", Urls.PdfCreatorUpdateChangelogUrl));
         }
 
         protected override void RegisterInteractiveWorkflowManagerFactory(Container container)
         {
-            container.Register<IInteractiveWorkflowManagerFactory, InteractiveWorkflowManagerFactoryWithPlusHintStep>();
+            container.Register<IInteractiveWorkflowManagerFactory, InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep>();
         }
 
         protected override void RegisterJobBuilder(Container container)
@@ -62,7 +66,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             container.Register<ILicenseChecker, UnlicensedLicenseChecker>();
             container.Register<IOfflineActivator, UnlicensedOfflineActivator>();
 
-            container.Register<PrioritySupportUrlOpenCommand, DisabledPrioritySupportUrlOpenCommand>();
+            container.Register<IPrioritySupportUrlOpenCommand, DisabledPrioritySupportUrlOpenCommand>();
         }
 
         protected override void RegisterUserTokenExtractor(Container container)
@@ -75,7 +79,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             return new GpoSettingsDefaults();
         }
 
-        protected override void RegisterMailSigantureHelper(Container container)
+        protected override void RegisterMailSignatureHelper(Container container)
         {
             container.Register<IMailSignatureHelper, MailSignatureHelperFreeVersion>();
         }
@@ -87,9 +91,9 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             return defaultConditions;
         }
 
-        protected override void RegisterPlusHintHelper(Container container)
+        protected override void RegisterProfessionalHintHelper(Container container)
         {
-            container.RegisterSingleton<IPlusHintHelper, PlusHintHelper>();
+            container.RegisterSingleton<IProfessionalHintHelper, ProfessionalHintHelper>();
         }
 
         protected override SettingsProvider CreateSettingsProvider()
@@ -100,8 +104,18 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override void RegisterBannerManager(Container container)
         {
             var cacheDirectory = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\pdfforge\PDFCreator\banners");
-            var bannerOptions = new BannerOptions(Urls.BannerIndexUrl, cacheDirectory, TimeSpan.FromDays(1));
-            container.RegisterSingleton(bannerOptions);
+            var bannerUrl = Urls.BannerIndexUrl;
+
+            var useStaging = Environment.CommandLine.IndexOf("/Banners=staging", StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+            if (useStaging)
+            {
+                cacheDirectory += "-staging";
+                bannerUrl = Urls.BannerIndexUrlStaging;
+            }
+
+            var bannerOptions = new BannerOptions(bannerUrl, cacheDirectory, TimeSpan.FromDays(1));
+            container.RegisterInstance(bannerOptions);
             container.Register<IBannerManager, OnlineBannerManager>();
             container.Register<IBannerMetricFactory, BannerMetricFactory>();
         }
@@ -113,10 +127,10 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
 
         public override void RegisterEditionDependentRegions(IRegionManager regionManager)
         {
-            regionManager.RegisterViewWithRegion(RegionNames.StatusBarPlusHintRegion, typeof(PlusHintControl));
+            regionManager.RegisterViewWithRegion(RegionNames.BusinessHintStatusBarRegion, typeof(BusinessHintStatusBarControl));
         }
 
-        public override void RegisterNotificationService(Container container)
+        protected override void RegisterNotificationService(Container container)
         {
             container.RegisterSingleton<INotificationService, DisabledNotificationService>();
         }

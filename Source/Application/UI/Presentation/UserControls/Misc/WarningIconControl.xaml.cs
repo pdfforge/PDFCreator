@@ -8,6 +8,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         public static readonly DependencyProperty ToolTipTextDependencyProperty =
             DependencyProperty.Register("ToolTipText", typeof(object), typeof(WarningIconControl), new PropertyMetadata(""));
 
+        public static readonly DependencyProperty ApplicationCommandDependencyProperty =
+            DependencyProperty.Register("ApplicationCommand", typeof(object), typeof(WarningIconControl), new PropertyMetadata("ApplicationCommands.Help"));
+
         public WarningIconControl()
         {
             InitializeComponent();
@@ -17,6 +20,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         {
             get { return (string)GetValue(ToolTipTextDependencyProperty); }
             set { SetValue(ToolTipTextDependencyProperty, value); }
+        }
+
+        public object ApplicationCommand
+        {
+            get { return GetValue(ApplicationCommandDependencyProperty); }
+            set { SetValue(ApplicationCommandDependencyProperty, value); }
         }
     }
 }

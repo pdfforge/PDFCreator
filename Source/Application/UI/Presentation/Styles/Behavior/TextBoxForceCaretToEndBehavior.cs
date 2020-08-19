@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Microsoft.Xaml.Behaviors;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Styles.Behavior
 {

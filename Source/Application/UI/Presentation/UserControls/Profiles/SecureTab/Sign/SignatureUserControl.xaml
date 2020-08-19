@@ -10,17 +10,17 @@
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
     xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     d:DesignHeight="500" d:DesignWidth="500"
     d:DataContext="{d:DesignInstance designTime:DesignTimeSignatureUserControlViewModel, IsDesignTimeCreatable=True}"
-    Style="{DynamicResource TabUserControl}"
     help:HelpProvider.HelpTopic="PdfSignature">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../../../Styles/LightGreyButton.xaml" />
                 <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/TextStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
@@ -53,26 +53,19 @@
                         </TextBox>
                     </DockPanel>
                     <StackPanel IsEnabled="{Binding Text, ElementName=CertificationFileTextBox, Converter={StaticResource FalseWhenNullOrWhiteSpace}}">
-                        <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource BoolNegationConverter}}">
-                            <Label>
-                                <TextBlock Text="{Binding Translation.CertificatePasswordLabel}" />
-                            </Label>
+                        <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource BoolNegationConverter}}"
+                                    Margin="0 5"
+                                    Orientation="Horizontal">
+                            <Button Command="{Binding SignaturePasswordCommand}"
+                                    HorizontalAlignment="Left" MaxWidth="231"  Padding="10,0,10,0"
+                                    Content="{Binding Translation.SignaturePasswordButton}" />
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Right" Margin="5 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Visibility="{Binding AskForPasswordLater, Converter={StaticResource CollapsedWhenTrue}}">
                                     <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Visibility="{Binding Text, ElementName=CertificationFileTextBox, Converter={StaticResource CollapedWhenNullOrWhiteSpace}}">
-                                        <Viewbox Stretch="Uniform" Width="18"
-                                     Visibility="{Binding CertificatePasswordIsValid, Converter={StaticResource VisibleWhenTrue}}">
-                                            <Path Data="{DynamicResource AcceptIconPath}" Fill="#6fae7f" />
-                                        </Viewbox>
-                                        <Viewbox Stretch="Uniform" Width="18"
-                                     Visibility="{Binding CertificatePasswordIsValid, Converter={StaticResource CollapsedWhenTrue}}">
-                                            <Path Data="{DynamicResource WarningIconPath}" Fill="#db3232" />
-                                        </Viewbox>
                                     </StackPanel>
                                 </StackPanel>
-                                <controls:PreviewPasswordField PasswordText="{Binding Password}" />
                             </DockPanel>
                         </StackPanel>
                         <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" DockPanel.Dock="Bottom"
@@ -153,13 +146,13 @@
                             </Grid.RowDefinitions>
 
                             <Grid.Resources>
-                                <Style x:Key="GridBox" TargetType="TextBox">
+                                <Style x:Key="GridBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                                     <Setter Property="MaxWidth" Value="140" />
                                     <Setter Property="HorizontalAlignment" Value="Left" />
                                     <Setter Property="TextAlignment" Value="Right" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                     <Setter Property="Padding" Value="4" />
-                                    <Setter Property="Width" Value="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}}" />
+                                    <Setter Property="Width" Value="500" />
                                 </Style>
                             </Grid.Resources>
 
@@ -193,34 +186,26 @@
                                           SelectedValue="{Binding ApplicationSettings.Settings.UnitOfMeasurement}"
                                           DisplayMemberPath="Translation" SelectedValuePath="Value"
                                           ItemsSource="{Binding Translation.UnitOfMeasurementValues}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction
                                                 Command="{Binding ChangeUnitConverterCommand}"
-                                                CommandParameter="{Binding SelectedValue,ElementName=SignatureUnitOfMeasurementComboBox}"></i:InvokeCommandAction>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                                                CommandParameter="{Binding SelectedValue,ElementName=SignatureUnitOfMeasurementComboBox}"></b:InvokeCommandAction>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ComboBox>
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{Binding Translation.LeftXLabel}" />
-                            <Grid Grid.Column="1" Grid.Row="1">
-                                <TextBox Margin="0 0 0 5" Text="{Binding LeftX, StringFormat=' {0:N2}'}" Style="{StaticResource GridBox}" />
-                            </Grid>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0 0 0 5" Text="{Binding LeftX, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
                             <Label  Grid.Column="0" Grid.Row="2" Content="{Binding Translation.LeftYLabel}" />
-                            <Grid Grid.Column="1" Grid.Row="2">
-                                <TextBox Text="{Binding LeftY, StringFormat=' {0:N2}'}" Style="{StaticResource GridBox}" />
-                            </Grid>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LeftY, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
                             <Label   Grid.Column="2" Grid.Row="1" Margin="15 0 0 0" Content="{Binding Translation.RightXLabel}" />
-                            <Grid Grid.Column="3" Grid.Row="1">
-                                <TextBox Text="{Binding RightX, StringFormat=' {0:N2}'}" Style="{StaticResource GridBox}" />
-                            </Grid>
+                            <TextBox  Grid.Column="3" Grid.Row="1" Text="{Binding SignatureWidth, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
                             <Label  Grid.Column="2"  Grid.Row="2" Margin="15 0 0 0" Content="{Binding Translation.RightYLabel}" />
-                            <Grid Grid.Column="3" Grid.Row="2">
-                                <TextBox Text="{Binding RightY, StringFormat=' {0:N2}'}" Style="{StaticResource GridBox}" />
-                            </Grid>
+                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SignatureHeight, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
                         </Grid>
                     </StackPanel>
                 </StackPanel>

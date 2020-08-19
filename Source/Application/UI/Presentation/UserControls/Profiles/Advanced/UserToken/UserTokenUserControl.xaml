@@ -12,19 +12,17 @@
     d:DesignHeight="600"
     d:DesignWidth="600"
     d:DataContext="{d:DesignInstance local:DesignTimeUserTokenUserControlViewModel, IsDesignTimeCreatable=True}"
-    Style="{DynamicResource TabUserControl}"
     help:HelpProvider.HelpTopic="UserTokens">
     <UserControl.Resources>
-        <converter:DebugConverter x:Key="DebugConverter" />
         <local:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
     </UserControl.Resources>
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" IsEnabled="{Binding IsBusinessEdition}">
         <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
                 <Label Margin="-5"  IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}">
                     <TextBlock Style="{DynamicResource HeaderTextStyle}" Text="{Binding Translation.UserTokenTitle}" />
                 </Label>
-                <userControls:PlusFeatureControl Edition="AllLicensed" Margin="20 0 0 0" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" />
             </StackPanel>
         </HeaderedContentControl.Header>
 

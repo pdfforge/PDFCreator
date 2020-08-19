@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class HttpAccount : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -22,7 +21,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string AccountId { get; set; } = "";
 		
 		/// <summary>
-		/// If true, basic authenification with user-.name and password is used
+		/// If true, basic authentication with user-.name and password is used
 		/// </summary>
 		public bool IsBasicAuthentication { get; set; } = false;
 		
@@ -76,6 +75,26 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Url = Url;
 			copy.UserName = UserName;
 			return copy;
+		}
+		
+		public void ReplaceWith(HttpAccount source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(IsBasicAuthentication != source.IsBasicAuthentication)
+				IsBasicAuthentication = source.IsBasicAuthentication;
+				
+			Password = source.Password;
+			if(Timeout != source.Timeout)
+				Timeout = source.Timeout;
+				
+			if(Url != source.Url)
+				Url = source.Url;
+				
+			if(UserName != source.UserName)
+				UserName = source.UserName;
+				
 		}
 		
 		public override bool Equals(object o)

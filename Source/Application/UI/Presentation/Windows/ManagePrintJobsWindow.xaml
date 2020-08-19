@@ -3,7 +3,6 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       xmlns:beh="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
                       xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -12,6 +11,9 @@
                       xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
                       xmlns:dd="urn:gong-wpf-dragdrop"
                       xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+                      xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
+                        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       mc:Ignorable="d"
                       d:DataContext="{d:DesignInstance designTime:DesignTimeManagePrintJobsVm, IsDesignTimeCreatable=True}"
                       Title="{Binding Title}"
@@ -22,7 +24,6 @@
                       WindowStartupLocation="CenterScreen"
                       AllowDrop="True"
                       Name="ThisWindow"
-
                       BorderBrush="{DynamicResource AccentColorBrush}"
                       GlowBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="1">
@@ -35,18 +36,21 @@
     </controls:MetroWindow.WindowButtonCommands>
 
     <i:Interaction.Behaviors>
-        <!-- The first two behaviors are needed by MahApps. They are added by default, but as we overwrite behaviors, we have to add them again -->
+        <!--The first two behaviors are needed by MahApps. They are added by default, but as we overwrite behaviors, we have to add them again-->
+
         <behaviours:BorderlessWindowBehavior />
         <behaviours:GlowWindowBehavior />
         <behaviours:WindowsSettingBehaviour />
+    </i:Interaction.Behaviors>
+
+    <b:Interaction.Behaviors>
 
         <beh:EventToCommandBehavior Command="{Binding WindowClosedCommand}" Event="Closing" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding WindowActivatedCommand}" Event="Activated" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding DropCommand}" Event="Drop" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding KeyDownCommand}" Event="KeyDown" PassArguments="True" />
-    </i:Interaction.Behaviors>
-
+    </b:Interaction.Behaviors>
     <controls:MetroWindow.InputBindings>
         <KeyBinding Modifiers="Control" Key="M" Command="{Binding MergeJobsCommand}"
                     CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}" />
@@ -84,16 +88,17 @@
                              IsSynchronizedWithCurrentItem="True"
                              SelectionMode="Extended"
                              dd:DragDrop.IsDragSource="True"
-                             dd:DragDrop.IsDropTarget="True">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding JobListSelectionChanged}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <i:Interaction.Behaviors>
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.DropHandler="{Binding CustomDropHandler }">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="SelectionChanged">
+                                <b:InvokeCommandAction Command="{Binding JobListSelectionChanged}" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <b:Interaction.Behaviors>
                             <beh:EventToCommandBehavior Command="{Binding ListSelectionChangedCommand}"
                                                         Event="SelectionChanged" PassArguments="True" />
-                        </i:Interaction.Behaviors>
+                        </b:Interaction.Behaviors>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="jobInfo:JobInfo">
                                 <DockPanel LastChildFill="False" Margin="4" Cursor="{x:Static Cursors.Hand}" Background="Transparent">
@@ -218,6 +223,15 @@
                     Command="{Binding MergeAllJobsCommand}"
                     CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}">
             </Button>
+
+            <controls:DropDownButton
+                ItemsSource="{Binding SortCommands}"
+                Content ="{Binding Translation.Sort}"
+                MinWidth="120"
+                Command="{Binding DoNothingCommand}"
+                CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}"
+
+                Style ="{DynamicResource CustomColorDropDownButton}" />
 
             <Button Style="{StaticResource FlatGreenButton}"
                     IsCancel="True"

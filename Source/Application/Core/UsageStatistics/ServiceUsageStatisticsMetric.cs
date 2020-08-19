@@ -1,12 +1,11 @@
-﻿namespace pdfforge.PDFCreator.Core.UsageStatistics
-{
-    public class ServiceUsageStatisticsMetric : IUsageMetric
-    {
-        public string EventName => "ServiceMetric";
+﻿using pdfforge.UsageStatistics;
 
-        public string Product { get; set; }
-        public string MachineId { get; set; }
-        public string Version { get; set; }
+namespace pdfforge.PDFCreator.Core.UsageStatistics
+{
+    public class ServiceUsageStatisticsMetric : UsageMetricBase
+    {
+        public override string EventName => "ServiceMetric";
+
         public int TotalDocuments { get; set; }
         public int TotalUsers { get; set; }
         public string OperatingSystem { get; set; }

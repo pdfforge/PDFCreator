@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.StartupInterface;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {
@@ -11,7 +12,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             _checkAllStartupConditions = checkAllStartupConditions;
         }
 
-        public abstract ExitCode Run();
+        public abstract Task<ExitCode> Run();
 
         public bool SkipStartupConditionCheck { get; set; }
 

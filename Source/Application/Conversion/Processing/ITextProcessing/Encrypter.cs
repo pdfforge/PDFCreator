@@ -1,4 +1,4 @@
-﻿using iTextSharp.text.pdf;
+﻿using iText.Kernel.Pdf;
 using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -11,7 +11,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        internal void SetEncryption(PdfStamper stamper, ConversionProfile profile, JobPasswords jobPasswords)
+        internal void SetEncryption(WriterProperties writerProperties, ConversionProfile profile, JobPasswords jobPasswords)
         {
             if (!profile.PdfSettings.Security.Enabled)
                 return;
@@ -42,16 +42,19 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             switch (profile.PdfSettings.Security.EncryptionLevel)
             {
                 case EncryptionLevel.Rc40Bit:
-                    stamper.SetEncryption(userPassword, ownerPassword, encryption, PdfWriter.STRENGTH40BITS);
+                    writerProperties.SetStandardEncryption(userPassword, ownerPassword,
+                        encryption, EncryptionConstants.STANDARD_ENCRYPTION_40);
                     break;
 
                 case EncryptionLevel.Rc128Bit:
-                    stamper.SetEncryption(userPassword, ownerPassword, encryption, PdfWriter.STRENGTH128BITS);
+                    writerProperties.SetStandardEncryption(userPassword, ownerPassword,
+                        encryption, EncryptionConstants.STANDARD_ENCRYPTION_128);
                     break;
 
                 case EncryptionLevel.Aes128Bit:
                 case EncryptionLevel.Aes256Bit:
-                    stamper.SetEncryption(userPassword, ownerPassword, encryption, PdfWriter.ENCRYPTION_AES_128);
+                    writerProperties.SetStandardEncryption(userPassword, ownerPassword,
+                        encryption, EncryptionConstants.ENCRYPTION_AES_128);
                     break;
             }
         }
@@ -65,12 +68,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         {
             var permissionValue = 0;
 
-            if (profile.PdfSettings.Security.AllowPrinting) permissionValue = permissionValue | PdfWriter.ALLOW_PRINTING;
+            if (profile.PdfSettings.Security.AllowPrinting) permissionValue = permissionValue | EncryptionConstants.ALLOW_PRINTING;
             if (profile.PdfSettings.Security.AllowToEditTheDocument)
-                permissionValue = permissionValue | PdfWriter.ALLOW_MODIFY_CONTENTS;
-            if (profile.PdfSettings.Security.AllowToCopyContent) permissionValue = permissionValue | PdfWriter.ALLOW_COPY;
+                permissionValue = permissionValue | EncryptionConstants.ALLOW_MODIFY_CONTENTS;
+            if (profile.PdfSettings.Security.AllowToCopyContent) permissionValue = permissionValue | EncryptionConstants.ALLOW_COPY;
             if (profile.PdfSettings.Security.AllowToEditComments)
-                permissionValue = permissionValue | PdfWriter.ALLOW_MODIFY_ANNOTATIONS;
+                permissionValue = permissionValue | EncryptionConstants.ALLOW_MODIFY_ANNOTATIONS;
 
             if ((profile.PdfSettings.Security.EncryptionLevel == EncryptionLevel.Rc128Bit)
                 || (profile.PdfSettings.Security.EncryptionLevel == EncryptionLevel.Aes128Bit)
@@ -78,14 +81,14 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             {
                 if (profile.PdfSettings.Security.AllowPrinting)
                     if (profile.PdfSettings.Security.RestrictPrintingToLowQuality)
-                        permissionValue = permissionValue ^ PdfWriter.ALLOW_PRINTING ^ PdfWriter.ALLOW_DEGRADED_PRINTING;
+                        permissionValue = permissionValue ^ EncryptionConstants.ALLOW_PRINTING ^ EncryptionConstants.ALLOW_DEGRADED_PRINTING;
                 //Remove higher bit of AllowPrinting
                 if (profile.PdfSettings.Security.AllowToFillForms)
-                    permissionValue = permissionValue | PdfWriter.ALLOW_FILL_IN; //Set automatically for 40Bit
+                    permissionValue = permissionValue | EncryptionConstants.ALLOW_FILL_IN; //Set automatically for 40Bit
                 if (profile.PdfSettings.Security.AllowScreenReader)
-                    permissionValue = permissionValue | PdfWriter.ALLOW_SCREENREADERS; //Set automatically for 40Bit
+                    permissionValue = permissionValue | EncryptionConstants.ALLOW_SCREENREADERS; //Set automatically for 40Bit
                 if (profile.PdfSettings.Security.AllowToEditAssembly)
-                    permissionValue = permissionValue | PdfWriter.ALLOW_ASSEMBLY; //Set automatically for 40Bit
+                    permissionValue = permissionValue | EncryptionConstants.ALLOW_ASSEMBLY; //Set automatically for 40Bit
             }
             return permissionValue;
         }

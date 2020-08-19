@@ -17,13 +17,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP
 {
     public class FtpActionViewModel : ProfileUserControlViewModel<FtpActionTranslation>
     {
-        public ICollectionView FtpAccountsView { get; }
+        public ICollectionView FtpAccountsView { get; private set; }
 
-        private readonly ObservableCollection<FtpAccount> _ftpAccounts;
+        private ObservableCollection<FtpAccount> _ftpAccounts;
 
-        public IMacroCommand EditAccountCommand { get; }
-        public IMacroCommand AddAccountCommand { get; }
+        public IMacroCommand EditAccountCommand { get; private set; }
+        public IMacroCommand AddAccountCommand { get; private set; }
 
+        private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountsProvider;
+        private readonly ICommandLocator _commandLocator;
+        private readonly ITokenViewModelFactory _tokenViewModelFactory;
         private readonly IGpoSettings _gpoSettings;
         public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
 
@@ -39,14 +42,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP
 
             : base(translationUpdater, currentSettingsProvider, dispatcher)
         {
+            _accountsProvider = accountsProvider;
+            _commandLocator = commandLocator;
+            _tokenViewModelFactory = tokenViewModelFactory;
             _gpoSettings = gpoSettings;
-            DirectoryTokenViewModel = tokenViewModelFactory
-                .BuilderWithSelectedProfile()
-                .WithSelector(p => p.Ftp.Directory)
-                .WithDefaultTokenReplacerPreview(th => th.GetTokenListWithFormatting())
-                .Build();
 
-            _ftpAccounts = accountsProvider?.Settings.FtpAccounts;
+            _ftpAccounts = _accountsProvider?.Settings.FtpAccounts;
 
             if (_ftpAccounts != null)
             {
@@ -54,15 +55,35 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP
                 FtpAccountsView.SortDescriptions.Add(new SortDescription(nameof(FtpAccount.AccountInfo), ListSortDirection.Ascending));
             }
 
-            AddAccountCommand = commandLocator.CreateMacroCommand()
+            AddAccountCommand = _commandLocator.CreateMacroCommand()
                 .AddCommand<FtpAccountAddCommand>()
                 .AddCommand(new DelegateCommand(o => SelectNewAccountInView()))
                 .Build();
 
-            EditAccountCommand = commandLocator.CreateMacroCommand()
+            EditAccountCommand = _commandLocator.CreateMacroCommand()
                 .AddCommand<FtpAccountEditCommand>()
                 .AddCommand(new DelegateCommand(o => RefreshAccountsView()))
                 .Build();
+
+            DirectoryTokenViewModel = _tokenViewModelFactory
+                .BuilderWithSelectedProfile()
+                .WithSelector(p => p.Ftp.Directory)
+                .WithDefaultTokenReplacerPreview(th => th.GetTokenListWithFormatting())
+                .Build();
+        }
+
+        public override void MountView()
+        {
+            DirectoryTokenViewModel.MountView();
+            EditAccountCommand.MountView();
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+            DirectoryTokenViewModel.UnmountView();
+            EditAccountCommand.UnmountView();
         }
 
         private void SelectNewAccountInView()

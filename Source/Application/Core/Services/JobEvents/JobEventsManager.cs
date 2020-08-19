@@ -17,27 +17,28 @@ namespace pdfforge.PDFCreator.Core.Services.JobEvents
 
     public class JobEventsManager : IJobEventsManager
     {
-        private readonly List<IJobEventsHandler> _eventHandlers;
+        private readonly Lazy<List<IJobEventsHandler>> _eventHandlers;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public JobEventsManager(IEnumerable<IJobEventsHandler> eventHandlers)
         {
-            _eventHandlers = eventHandlers.ToList();
+            // expand IEnumerable on first use to prevent lifetime issues
+            _eventHandlers = new Lazy<List<IJobEventsHandler>>(eventHandlers.ToList);
         }
 
         public void RaiseJobStarted(Job job, string currentThreadName)
         {
-            _eventHandlers.ForEach(handler => LogOnException(() => handler.HandleJobStarted(job, currentThreadName)));
+            _eventHandlers.Value.ForEach(handler => LogOnException(() => handler.HandleJobStarted(job, currentThreadName)));
         }
 
         public void RaiseJobCompleted(Job job, TimeSpan duration)
         {
-            _eventHandlers.ForEach(handler => LogOnException(() => handler.HandleJobCompleted(job, duration)));
+            _eventHandlers.Value.ForEach(handler => LogOnException(() => handler.HandleJobCompleted(job, duration)));
         }
 
         public void RaiseJobFailed(Job job, TimeSpan duration, FailureReason reason)
         {
-            _eventHandlers.ForEach(handler => LogOnException(() => handler.HandleJobFailed(job, duration, reason)));
+            _eventHandlers.Value.ForEach(handler => LogOnException(() => handler.HandleJobFailed(job, duration, reason)));
         }
 
         private void LogOnException(Action action)

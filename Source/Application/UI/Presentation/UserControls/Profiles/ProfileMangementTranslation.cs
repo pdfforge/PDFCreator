@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string AddButton { get; private set; } = "Add";
         public string RemoveButton { get; private set; } = "Remove";
         public string RemoveProfile { get; private set; } = "Remove Profile";
-        public string RemoveProfileForSure { get; private set; } = "Are you sure, you want to remove this profile?";
+		public string RemoveProfileForSure { get; private set; } = "Are you sure, you want to remove this profile?";
 
         private string[] ProfileIsMappedTo { get; set; } = { "The profile is mapped to the following printer:", "The profile is mapped to the following printers:" };
 

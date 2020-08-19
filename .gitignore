@@ -156,6 +156,9 @@ publish/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
 
+#COM-Script results
+**/Results/*
+
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
@@ -233,9 +236,34 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
+.paket/Paket.Restore.targets
+paket-files/*
 
 # FAKE - F# Make
 .fake/
 
+# Ionide - VS Code integration
+.ionide
+
 build
 signatures
+build-cache
+Source/.idea/
+Source/.idea/.idea.PDFCreator/*
+Source/.idea/.idea.PDFCreator/riderModule.iml
+Source/.idea/.idea.PDFCreator/.idea/workspace.xml
+Source/.idea/.idea.PDFCreator/.idea/modules.xml
+Source/.idea/.idea.PDFCreator/.idea/contentModel.xml
+Source/.idea/.idea.PDFCreator/.idea/.name
+Setup/WiX/PDFCreator/ExternalProperties.wxi
+Setup/WiX/PDFCreator/ExternalVariables.wxi
+Setup/WiX/PDFCreator/Components/AdditionalProgramBinaries.wxs
+Setup/WiX/PDFCreator/Components/ComScripts.wxs
+Setup/WiX/PDFCreator/Components/GhostscriptLib.wxs
+Setup/WiX/PDFCreator/Components/GroupPolicies.wxs
+Setup/WiX/PDFCreator/Components/HelpFiles.wxs
+Setup/WiX/PDFCreator/Components/HotFolder.wxs
+Setup/WiX/PDFCreator/Components/Images2PDF.wxs
+Setup/WiX/PDFCreator/Components/PDFCreatorShell.wxs
+Setup/WiX/PDFCreator/Components/Pdftools.wxs
+Setup/WiX/PDFCreator/Components/ProgramLanguageIniFiles.wxs

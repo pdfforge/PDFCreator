@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs
 {
@@ -8,6 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         public ConvertPdfView(ConvertPdfViewModel vm)
         {
             DataContext = vm;
+            TransposerHelper.Register(this, vm);
             InitializeComponent();
         }
 

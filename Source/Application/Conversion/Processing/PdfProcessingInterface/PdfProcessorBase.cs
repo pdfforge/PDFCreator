@@ -21,95 +21,17 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
         }
 
         /// <summary>
-        /// Inits the Profile
-        /// </summary>
-        /// <param name="job"></param>
-        public void Init(Job job)
-        {
-            Logger.Trace("Init Processor");
-
-            //Must be applied before determining passwords
-            ApplyRestrictionsToProfile(job);
-        }
-
-        private void ApplyRestrictionsToProfile(Job job)
-        {
-            switch (job.Profile.OutputFormat)
-            {
-                case OutputFormat.PdfA1B:
-                    if (job.Profile.PdfSettings.Security.Enabled)
-                    {
-                        job.Profile.PdfSettings.Security.Enabled = false;
-                        Logger.Warn("Encryption automatically disabled for PDF/A1-b");
-                    }
-                    if (job.Profile.PdfSettings.Signature.Enabled)
-                    {
-                        if (!job.Profile.PdfSettings.Signature.AllowMultiSigning)
-                        {
-                            job.Profile.PdfSettings.Signature.AllowMultiSigning = true;
-                            Logger.Warn("Allow multiple signing automatically enabled for PDF/A1-b");
-                        }
-                    }
-                    return;
-
-                case OutputFormat.PdfX:
-                case OutputFormat.PdfA2B:
-                case OutputFormat.PdfA3B:
-                    if (job.Profile.PdfSettings.Security.Enabled)
-                    {
-                        job.Profile.PdfSettings.Security.Enabled = false;
-                        Logger.Warn("Encryption automatically disabled for" + job.Profile.OutputFormat);
-                    }
-                    return;
-            }
-
-            if (!job.Profile.PdfSettings.Security.AllowPrinting)
-                job.Profile.PdfSettings.Security.RestrictPrintingToLowQuality = false;
-        }
-
-        /// <summary>
-        ///     Check if processing is required.
-        ///     Therefore the output format must be pdf and security or background page or signing must be enabled.
-        ///     Furthermore PDF/A requires processing the metadata.
-        /// </summary>
-        /// <param name="profile">Profile with PDF settings</param>
-        /// <returns>True if processing is required</returns>
-        public bool ProcessingRequired(ConversionProfile profile)
-        {
-            switch (profile.OutputFormat)
-            {
-                case OutputFormat.PdfA1B:
-                case OutputFormat.PdfA2B:
-                case OutputFormat.PdfA3B:
-                    return true; //Always true because of the metadata update
-
-                case OutputFormat.Pdf:
-                    return profile.PdfSettings.Security.Enabled
-                           || profile.BackgroundPage.Enabled
-                           || profile.PdfSettings.Signature.Enabled;
-
-                case OutputFormat.PdfX:
-                    return profile.BackgroundPage.Enabled
-                           || profile.PdfSettings.Signature.Enabled;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         ///     Process PDF with updating metadata (for PDF/A), Encryption, adding background and signing according to profile.
         /// </summary>
-        public void ProcessPdf(Job job)
+        public void SignEncryptConvertPdfAAndWriteFile(Job job)
         {
-            var pdfFile = job.TempOutputFiles.First();
+            var pdfFile = job.IntermediatePdfFile;
             Logger.Debug("Start processing of " + pdfFile);
 
             if (!File.Exists(pdfFile))
             {
                 throw new ProcessingException("_file in PdfProcessor does not exist: " + pdfFile, ErrorCode.Processing_OutputFileMissing);
             }
-
-            ApplyTokens(job);
 
             const int retryCount = 5;
             var retryInterval = TimeSpan.FromMilliseconds(300);
@@ -118,7 +40,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             {
                 // Retry signing when a ProcessingException with the ErrorCode Signature_NoTimeServerConnection was thrown
                 Retry.Do(
-                        () => DoProcessPdf(job),
+                        () => DoSignEncryptAndConvertPdfAAndWritePdf(job),
                         retryInterval: retryInterval,
                         retryCount: retryCount,
                         retryCondition: ex => (ex as ProcessingException)?.ErrorCode == ErrorCode.Signature_NoTimeServerConnection);
@@ -133,9 +55,9 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.GetType() + " while processing file:" + pdfFile + Environment.NewLine + ex.Message);
+                Logger.Error(ex, ex.GetType() + " while processing file:" + pdfFile);
                 throw new ProcessingException(
-                    ex.GetType() + " while processing file:" + pdfFile + Environment.NewLine + ex.Message, ErrorCode.Processing_GenericError);
+                    ex.GetType() + " while processing file:" + pdfFile + Environment.NewLine + ex.Message, ErrorCode.Processing_GenericError, ex);
             }
         }
 
@@ -189,26 +111,16 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             return pdfVersion;
         }
 
-        private void ApplyTokens(Job job)
-        {
-            try
-            {
-                if (job.Profile.PdfSettings.Signature.Enabled)
-                {
-                    job.Profile.PdfSettings.Signature.SignReason = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignReason);
-                    job.Profile.PdfSettings.Signature.SignContact = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignContact);
-                    job.Profile.PdfSettings.Signature.SignLocation = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignLocation);
-                }
+        public abstract void AddAttachment(Job job);
 
-                if (job.Profile.BackgroundPage.Enabled)
-                    job.Profile.BackgroundPage.File = job.TokenReplacer.ReplaceTokens(job.Profile.BackgroundPage.File);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn("Exception while replacing tokens in signature metadata: " + ex.Message);
-            }
-        }
+        public abstract void AddCover(Job job);
 
-        protected abstract void DoProcessPdf(Job job);
+        public abstract void AddStamp(Job job);
+
+        public abstract void AddBackground(Job job);
+
+        public abstract void AddWatermark(Job job);
+
+        protected abstract void DoSignEncryptAndConvertPdfAAndWritePdf(Job job);
     }
 }

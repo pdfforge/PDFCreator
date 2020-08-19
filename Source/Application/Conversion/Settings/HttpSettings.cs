@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Action to upload files to a HTTP server
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class HttpSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -49,6 +48,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AccountId = AccountId;
 			copy.Enabled = Enabled;
 			return copy;
+		}
+		
+		public void ReplaceWith(HttpSettings source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
 		}
 		
 		public override bool Equals(object o)

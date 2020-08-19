@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:beh="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
-             xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:license="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              Width="540"
@@ -22,7 +20,7 @@
         <Label Name="RequestActivationCodeLabel" Content="{Binding Translation.RequestActivationCodeLabelContent}"></Label>
         <TextBlock VerticalAlignment="Center" Padding="5 0 5 5">
             <Hyperlink Command="{Binding OpenOfflineActivationUrlCommand}">
-                <TextBlock Text="{Binding OfflineActivationUrl}" />
+                <TextBlock Text="{Binding OfflineActivationUrl}"  Style="{DynamicResource HyperLinkTextBlock}"/>
             </Hyperlink>
         </TextBlock>
         <TextBox MinHeight="100" Name="OfflineActivationTextBox"

@@ -7,20 +7,25 @@
     xmlns:actionViewModels="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{d:DesignInstance actionViewModels:DesignTimeAttachmentUserControlViewModel, IsDesignTimeCreatable=True}"
-    Style="{DynamicResource TabUserControl}"
     help:HelpProvider.HelpTopic="Attachment">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid IsEnabled="{Binding CurrentProfile.AttachmentPage.Enabled}">
         <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.DisplayName}">
-            <StackPanel>
+            <StackPanel Margin="0 0 0 10">
                 <Label>
                     <TextBlock Text="{Binding Translation.AttachmentFileText}" />
                 </Label>
                 <DockPanel>
                     <controls:TokenControl DataContext="{Binding AttachmentFileTokenViewModel}" />
                 </DockPanel>
+                <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Translation.WarningIsPdf20}"
+                       Visibility="{Binding IsPdf20, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
         </HeaderedContentControl>
     </Grid>

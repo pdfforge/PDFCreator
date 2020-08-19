@@ -1,9 +1,9 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Communication;
 using pdfforge.PDFCreator.Core.DirectConversion;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
-using pdfforge.PDFCreator.Core.Workflow;
 using System.Runtime.InteropServices;
 using SystemInterface.IO;
 

@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab;
@@ -31,12 +32,13 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
         public ProfileSettingsTabs() : base(RegionNames.ProfileTabContentRegion)
         {
             Add(new SimpleTab<SaveTab, SaveTabViewModel>(RegionNames.SaveTabContentRegion, HelpTopic.ProfileSave));
-            Add(new MultiTab<ConvertTabViewModel>(RegionNames.ConvertTabContentRegion, HelpTopic.ProfileSave, typeof(OutputFormatTab), typeof(ConvertPdfView), typeof(ConvertJpgView), typeof(ConvertPngView), typeof(ConvertTiffView), typeof(ConvertTextView)));
+            Add(new MultiTab<ConvertTabViewModel>(RegionNames.ConvertTabContentRegion, HelpTopic.Convert, typeof(OutputFormatTab), typeof(ConvertPdfView), typeof(ConvertJpgView), typeof(ConvertPngView), typeof(ConvertTiffView), typeof(ConvertTextView)));
             Add(new SimpleTab<MetadataTab, MetadataViewModel>(RegionNames.MetadataTabContentRegion, HelpTopic.ProfileMetadata));
 
             var modifyTab = new MasterTab<ModifyMasterTabViewModel>(RegionNames.ModifyMasterTabItemsRegion, RegionNames.ModifyMasterTabContentRegion);
             modifyTab.AddSubTab(new SubTab<CoverUserControl, ProfileModifyTranslation>(t => t.Cover, p => p.CoverPage));
-            modifyTab.AddSubTab(new SubTab<BackgroundUserControl, ProfileModifyTranslation>(t => t.Background, p => p.BackgroundPage, p => p.HasNotSupportedBackground()));
+            modifyTab.AddSubTab(new SubTab<BackgroundUserControl, ProfileModifyTranslation>(t => t.Background, p => p.BackgroundPage));
+            modifyTab.AddSubTab(new SubTab<WatermarkView, ProfileModifyTranslation>(t => t.Watermark, p => p.Watermark));
             modifyTab.AddSubTab(new SubTab<AttachmentUserControl, ProfileModifyTranslation>(t => t.Attachment, p => p.AttachmentPage));
             modifyTab.AddSubTab(new SubTab<StampUserControl, ProfileModifyTranslation>(t => t.Stamp, p => p.Stamping));
             Add(modifyTab);
@@ -57,6 +59,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
 
             var advancedTab = new MasterTab<AdvancedMasterTabViewModel>(RegionNames.AdvancedMasterTabItemsRegion, RegionNames.AdvancedMasterTabContentRegion);
             advancedTab.AddSubTab(new SubTab<ScriptUserControl, ProfileAdvancedTranslation>(t => t.Script, p => p.Scripting));
+            advancedTab.AddSubTab(new SubTab<ForwardToFurtherProfileView, ProfileAdvancedTranslation>(t => t.Forward, p => p.ForwardToFurtherProfile));
             advancedTab.AddSubTab(new SubTab<UserTokenUserControl, ProfileAdvancedTranslation>(t => t.UserToken, p => p.UserTokens));
             Add(advancedTab);
         }

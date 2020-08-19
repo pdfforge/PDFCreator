@@ -9,11 +9,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     {
         private readonly bool _useTextDevice = true;
 
-        public TextDevice(Job job) : base(job)
+        public TextDevice(Job job, ConversionMode conversionMode) : base(job, conversionMode)
         {
         }
 
-        public TextDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, file, osHelper, commandLineUtil)
+        public TextDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, conversionMode, file, osHelper, commandLineUtil)
         {
         }
 

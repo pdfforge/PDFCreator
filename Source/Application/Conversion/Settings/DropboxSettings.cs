@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Dropbox settings for currently logged user
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class DropboxSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -67,6 +66,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			copy.SharedFolder = SharedFolder;
 			return copy;
+		}
+		
+		public void ReplaceWith(DropboxSettings source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(CreateShareLink != source.CreateShareLink)
+				CreateShareLink = source.CreateShareLink;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(EnsureUniqueFilenames != source.EnsureUniqueFilenames)
+				EnsureUniqueFilenames = source.EnsureUniqueFilenames;
+				
+			if(SharedFolder != source.SharedFolder)
+				SharedFolder = source.SharedFolder;
+				
 		}
 		
 		public override bool Equals(object o)

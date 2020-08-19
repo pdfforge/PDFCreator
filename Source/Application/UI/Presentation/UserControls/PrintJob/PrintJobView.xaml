@@ -9,24 +9,52 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:printJob="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob"
              xmlns:behavior="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Behavior"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
+             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="450"
-             d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}">
+             d:DesignHeight="600" d:DesignWidth="520"
+             d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}"
+             x:Name="PrintJobControl">
     <UserControl.Resources>
-        <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
-        <DataTemplate DataType="{x:Type enums:OutputFormat}">
-            <TextBlock Text="{Binding Converter={StaticResource OutputFormatToTextConverter}}" />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/LightGreyButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <DataTemplate DataType="{x:Type enums:OutputFormat}">
+                <TextBlock Text="{Binding Converter={StaticResource OutputFormatToTextConverter}}" />
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.Resources>
+            <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <DataTemplate DataType="{x:Type enums:OutputFormat}">
+                <TextBlock Text="{Binding Converter={StaticResource OutputFormatToTextConverter}}" />
+            </DataTemplate>
+            <CollectionViewSource x:Key='SortedProfiles' Source="{Binding Profiles}">
+                <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="Name" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
             <Style TargetType="Separator">
                 <Setter Property="BorderThickness" Value="0 1 0 0" />
                 <Setter Property="BorderBrush" Value="#FFCCCCCC" />
@@ -34,13 +62,13 @@
                 <Setter Property="Margin" Value="0 20" />
             </Style>
 
-            <Style TargetType="Button" x:Key="SmallButtonStyle">
+            <Style TargetType="Button" x:Key="SmallButtonStyle" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="MinWidth" Value="30" />
                 <Setter Property="Margin" Value="10 0 0 0" />
             </Style>
         </Grid.Resources>
 
-        <StackPanel Grid.Row="0">
+        <StackPanel Grid.Row="1">
 
             <DockPanel>
                 <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
@@ -49,9 +77,8 @@
                     <Button Command="{Binding EditProfileCommand}" Style="{StaticResource SmallButtonStyle}"
                                 Content="{Binding Translation.EditProfile}" />
                 </Grid>
-                <ComboBox HorizontalAlignment="Stretch" Name="ProfileBox" ItemsSource="{Binding Profiles}"
-                              SelectedItem="{Binding SelectedProfile}" IsSynchronizedWithCurrentItem="True"
-                              DisplayMemberPath="Name" />
+                <profiles:ProfilesComboBox Profiles="{Binding ProfilesWrapper}"
+                                           SelectedProfile="{Binding SelectedProfileWrapper}" />
             </DockPanel>
 
             <Separator Margin="0 20 0 10" />
@@ -82,15 +109,20 @@
                                Content="{Binding Translation.FilenameText}" />
                         <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
                     </StackPanel>
-                    <DockPanel>
+                    <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}">
                         <Label DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
-                               Content="{Binding Translation.FoldernameText}" />
+                                   Content="{Binding Translation.DirectoryLabel}" />
                         <Button Style="{StaticResource SmallButtonStyle}" DockPanel.Dock="Right"
-                                Command="{Binding BrowseFileCommandAsync}">
+                                    Command="{Binding BrowseFileCommand}" Padding="0">
                             ...
                         </Button>
-                        <TextBox HorizontalAlignment="Stretch" Name="TargetFolderTextBox" Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBox HorizontalAlignment="Stretch" Name="TargetFolderTextBox" Text="{Binding OutputFolder}" />
                     </DockPanel>
+                    <misc:SaveTempOnlyHintControl HorizontalAlignment="Left"
+                                              Margin="0 5"
+                                              SaveTempOnlyCommand="{Binding Path=ViewModel.DisableSaveTempOnlyCommand, ElementName=PrintJobControl}"
+                                              Visibility="{Binding Path=ViewModel.SaveFileTemporaryIsEnabled, ElementName=PrintJobControl,
+                                                Converter={StaticResource CollapsedWhenFalseConverter}}" />
                 </StackPanel>
             </DockPanel>
 
@@ -133,43 +165,78 @@
             </Grid>
         </StackPanel>
 
-        <Grid Grid.Row="1" Name="BannerRegion" MaxHeight="50" HorizontalAlignment="Center" />
+        <ContentControl Grid.Row="2" Name="BannerRegion"
+                        regions:RegionManager.RegionName="{x:Static presentation:PrintJobRegionNames.PrintJobViewBannerRegion}"
+                        MaxHeight="50" HorizontalAlignment="Stretch" />
 
-        <StackPanel  Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-            <Button
-                    Style="{DynamicResource FlatPdfCreatorButton}"
-                    Margin="10"
-                    Width="90"
-                    Command="{Binding CancelCommand}">
-                <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.CancelButton}" />
-            </Button>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel.Resources>
+                <ResourceDictionary Source="../../Styles/Colors.xaml"></ResourceDictionary>
+            </StackPanel.Resources>
+            <DockPanel Height="50" Width="100" Margin="0 15 10 15" LastChildFill="True">
+                <buttons:ColoredDropDownButton DockPanel.Dock="Right"
+                                               Width="21"
+                                               Visibility="{Binding CancelDropDownCommands.Enabled, Converter={StaticResource CollapsedWhenFalseConverter}}"
+                                               ItemsSource="{Binding CancelDropDownCommands}"
+                                               PrimaryColor="{StaticResource PdfforgeRedColor}"
+                                               SecondaryColor="White" />
+                <buttons:CustomColoredButton DockPanel.Dock="Left"
+                                             Command="{Binding CancelCommand}"
+                                             PrimaryColor="{StaticResource PdfforgeRedColor}"
+                                             SecondaryColor="White">
+                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Cancel}" MaxWidth="90" />
+                </buttons:CustomColoredButton>
+            </DockPanel>
 
-            <controls:Badged Margin="10" BadgePlacementMode="TopRight" Badge="{Binding NumberOfPrintJobsHint}"
-                                 BadgeBackground="{DynamicResource RegularButtonGreenBrush}">
-                <Button
-                        Style="{DynamicResource FlatGreyButton}"
-                        Width="90"
-                        Command="{Binding MergeCommand}">
-                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.MergeButton}" />
-                </Button>
+            <controls:Badged Height="50" Margin="10 15"
+                             BadgePlacementMode="TopRight" Badge="{Binding NumberOfPrintJobsHint}"
+                             BadgeBackground="{DynamicResource RegularButtonGreenBrush}">
+                <DockPanel Width="100" LastChildFill="True">
+                    <buttons:ColoredDropDownButton DockPanel.Dock="Right"
+                                                   Width="21"
+                                                   Visibility="{Binding MergeDropDownCommands.Enabled, Converter={StaticResource CollapsedWhenFalseConverter}}"
+                                                   ItemsSource="{Binding MergeDropDownCommands}"
+                                                   PrimaryColor="#333333"
+                                                   SecondaryColor="White" />
+                    <buttons:CustomColoredButton DockPanel.Dock="Left"
+                                                 Command="{Binding MergeCommand}"
+                                                 PrimaryColor="#333333"
+                                                 SecondaryColor="White">
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Merge}" MaxWidth="90" />
+                    </buttons:CustomColoredButton>
+                </DockPanel>
             </controls:Badged>
 
-            <Button
-                Style="{DynamicResource FlatGreyButton}"
-                Margin="10"
-                Width="90"
-                Command="{Binding SendByEmailCommand}">
-                <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.EmailButton}" />
-            </Button>
+            <DockPanel Height="50" Width="100" Margin="10 15" LastChildFill="True">
+                <buttons:ColoredDropDownButton DockPanel.Dock="Right"
+                                               Width="21"
+                                               ItemsSource="{Binding SendDropDownCommands}"
+                                               PrimaryColor="#333333"
+                                               SecondaryColor="White" />
+                <buttons:CustomColoredButton DockPanel.Dock="Left"
+                                             Command="{Binding EmailCommand}"
+                                             PrimaryColor="#333333"
+                                             SecondaryColor="White">
+                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Email}" MaxWidth="90" />
+                </buttons:CustomColoredButton>
+            </DockPanel>
 
-            <Button
-                    IsDefault="True"
-                    Style="{DynamicResource GreenButton}"
-                    Margin="10"
-                    Width="90"
-                    Command="{Binding SaveCommand}">
-                <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.SaveButton}" />
-            </Button>
+            <DockPanel Height="50" Width="100" Margin="10 15 0 15" LastChildFill="True">
+                <buttons:ColoredDropDownButton DockPanel.Dock="Right"
+                                               Width="21"
+                                               Visibility="{Binding SaveDropDownCommands.Enabled, Converter={StaticResource CollapsedWhenFalseConverter}}"
+                                               ItemsSource="{Binding SaveDropDownCommands}"
+                                               PrimaryColor="{StaticResource RegularButtonGreen}"
+                                               SecondaryColor="White" />
+                <buttons:CustomColoredButton DockPanel.Dock="Left"
+                                             x:Name="SaveButton"
+                                             Command="{Binding SaveCommand}"
+                                             PrimaryColor="{StaticResource RegularButtonGreen}"
+                                             SecondaryColor="White"
+                                             IsDefault="True">
+                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Save}" MaxWidth="90" />
+                </buttons:CustomColoredButton>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Core.Communication;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -17,7 +18,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
     {
         ICheckAllStartupConditions StartupConditions { get; }
 
-        bool SendMessageOrStartApplication(Func<string> composePipeMessage, Func<bool> startApplication, bool startManagePrintJobs);
+        Task<bool> SendMessageOrStartApplication(Func<string> composePipeMessage, Func<bool> startApplication, bool startManagePrintJobs);
     }
 
     public class MaybePipedApplicationStarter : IMaybePipedApplicationStarter
@@ -29,25 +30,23 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         private readonly IPipeServerManager _pipeServerManager;
         private readonly ISettingsManager _settingsManager;
         private readonly ISpooledJobFinder _spooledJobFinder;
-        private readonly INotificationService _notificationService;
-        private readonly IJobHistoryManager _jobHistoryManager;
+        private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
         private readonly IThreadManager _threadManager;
-        private readonly IUpdateAssistant _updateAssistant;
+        private readonly IUpdateHelper _updateHelper;
 
-        public MaybePipedApplicationStarter(ISettingsManager settingsManager, IUpdateAssistant updateAssistant,
+        public MaybePipedApplicationStarter(ISettingsManager settingsManager, IUpdateHelper updateHelper,
             ICheckAllStartupConditions startupConditions, IThreadManager threadManager,
             IPipeServerManager pipeServerManager, IJobInfoQueueManager jobInfoQueueManager, IJobInfoQueue jobInfoQueue,
             IStaticPropertiesHack staticPropertiesHack, IPdfCreatorFolderCleanUp folderCleanUp, ISpooledJobFinder spooledJobFinder,
-            INotificationService notificationService, IJobHistoryManager jobHistoryManager)
+            IJobHistoryActiveRecord jobHistoryActiveRecord)
         {
             StartupConditions = startupConditions;
             _jobInfoQueue = jobInfoQueue;
             _folderCleanUp = folderCleanUp;
             _spooledJobFinder = spooledJobFinder;
-            _notificationService = notificationService;
-            _jobHistoryManager = jobHistoryManager;
+            _jobHistoryActiveRecord = jobHistoryActiveRecord;
             _settingsManager = settingsManager;
-            _updateAssistant = updateAssistant;
+            _updateHelper = updateHelper;
             _threadManager = threadManager;
             _pipeServerManager = pipeServerManager;
             _jobInfoQueueManager = jobInfoQueueManager;
@@ -59,10 +58,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         public ICheckAllStartupConditions StartupConditions { get; }
 
-        public bool SendMessageOrStartApplication(Func<string> composePipeMessage, Func<bool> startApplication, bool startManagePrintJobs)
+        public async Task<bool> SendMessageOrStartApplication(Func<string> composePipeMessage, Func<bool> startApplication, bool startManagePrintJobs)
         {
             _settingsManager.LoadAllSettings();
-            Task.Run(() => _jobHistoryManager.Load());
+            var loadHistoryTask = Task.Run(() => _jobHistoryActiveRecord.Load());
 
             var pipeMessage = composePipeMessage();
 
@@ -94,21 +93,23 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
                 StartCleanUpThread();
             }
 
-            Shutdown();
+            await Shutdown();
+            await loadHistoryTask;
+
             return success;
         }
 
-        private void Shutdown()
+        private async Task Shutdown()
         {
             _logger.Debug("Waiting for all threads to finish");
-            _threadManager.WaitForThreads();
+            await _threadManager.WaitForThreads();
 
             _pipeServerManager.PrepareShutdown();
 
             _threadManager.Shutdown();
 
             _settingsManager.SaveCurrentSettings();
-            _jobHistoryManager.Save();
+            _jobHistoryActiveRecord.Save();
 
             _pipeServerManager.Shutdown();
         }
@@ -180,7 +181,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         private void StartUpdateCheck()
         {
-            _updateAssistant.UpdateProcedure(true);
+            Task.Run(async () => await _updateHelper.UpdateCheckAsync(true));
         }
     }
 }

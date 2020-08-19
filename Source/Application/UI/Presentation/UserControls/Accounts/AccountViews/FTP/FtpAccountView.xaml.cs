@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
@@ -10,6 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public FtpAccountView(FtpAccountViewModel vm)
         {
             DataContext = vm;
+            TransposerHelper.Register(this, vm);
             InitializeComponent();
         }
     }

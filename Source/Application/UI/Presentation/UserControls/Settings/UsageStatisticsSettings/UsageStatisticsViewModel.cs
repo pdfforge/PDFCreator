@@ -12,11 +12,14 @@ using pdfforge.PDFCreator.Utilities.Process;
 using System;
 using System.Windows.Input;
 using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
+using pdfforge.UsageStatistics;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings
 {
     public class UsageStatisticsViewModel : UsageStatisticsViewModelBase
     {
+        private readonly IUsageMetricFactory _usageMetricFactory;
 
         public string SampleStatisticsJobData => GetJobSampleData();
         public string SampleStatisticsData => GetServiceSampleData();
@@ -35,59 +38,50 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
         }
 
 
-        public UsageStatisticsViewModel(IVersionHelper versionHelper, IOsHelper osHelper, ICommandLocator commandLocator,
-            ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings, IProcessStarter processStarter,
-            ICurrentSettings<UsageStatistics> usageStatisticsProvider, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider)
-            : base(versionHelper, osHelper, currentSettingsProvider, gpoSettings, processStarter, translationUpdater, usageStatisticsProvider, applicationNameProvider, commandLocator)
+        public UsageStatisticsViewModel(IOsHelper osHelper, ICommandLocator commandLocator,
+            ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings, IUsageMetricFactory usageMetricFactory,
+            ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider)
+            : base(osHelper, currentSettingsProvider, gpoSettings, translationUpdater, usageStatisticsProvider, commandLocator, applicationNameProvider)
         {
-
+            _usageMetricFactory = usageMetricFactory;
         }
 
         public string UsageStatisticsExplanationText => Translation.FormatUsageStatisticsExplanationText(base.ApplicationNameWithEdition);
 
         private string GetJobSampleData()
         {
-            var metric = new JobUsageStatisticsMetric()
-            {
-                MachineId = "sample machineId",
-                Product = base.ApplicationName,
-                Version = base.VersionHelper?.ApplicationVersion?.ToString(),
-                Duration = TimeSpan.Zero.Milliseconds,
-                OutputFormat = OutputFormat.Pdf.ToString(),
-                Status = "Success",
-                Attachment = true,
-                Background = true,
-                Dropbox = true,
-                Cover = true,
-                NumberOfCopies = 1,
-                Script = true,
-                CustomScript = true,
-                TotalPages = 1,
-                Print = true,
-                Signature = true,
-                Encryption = true,
-                UserToken = true,
-                Ftp = true,
-                Http = true,
-                Smtp = true,
-                Stamp = true
-            };
+            var metric = _usageMetricFactory.CreateMetric<JobUsageStatisticsMetric>();
+            
+            metric.Duration = TimeSpan.Zero.Milliseconds;
+            metric.OutputFormat = OutputFormat.Pdf.ToString();
+            metric.Status = "Success";
+            metric.Attachment = true;
+            metric.Background = true;
+            metric.Dropbox = true;
+            metric.Cover = true;
+            metric.NumberOfCopies = 1;
+            metric.Script = true;
+            metric.CustomScript = true;
+            metric.TotalPages = 1;
+            metric.Print = true;
+            metric.Signature = true;
+            metric.Encryption = true;
+            metric.UserToken = true;
+            metric.Ftp = true;
+            metric.Http = true;
+            metric.Smtp = true;
+            metric.Stamp = true;
 
             return ConvertToJson(metric);
         }
 
         private string GetServiceSampleData()
         {
-            var metric = new ServiceUsageStatisticsMetric()
-            {
-                MachineId = "sample machineId",
-                Product = base.ApplicationName,
-                Version = base.VersionHelper?.ApplicationVersion?.ToString(),
-                ServiceUptime = TimeSpan.TicksPerMillisecond,
-                TotalUsers = 1,
-                TotalDocuments = 1,
-                OperatingSystem = base.OsHelper.GetWindowsVersion()
-            };
+            var metric = _usageMetricFactory.CreateMetric<ServiceUsageStatisticsMetric>();
+            metric.ServiceUptime = TimeSpan.TicksPerMillisecond;
+            metric.TotalUsers = 1;
+            metric.TotalDocuments = 1;
+            metric.OperatingSystem = OsHelper.GetWindowsVersion();
 
             return ConvertToJson(metric);
         }
@@ -98,9 +92,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
 
     public class DesignTimeUsageStatisticsViewModel : UsageStatisticsViewModel
     {
-        public DesignTimeUsageStatisticsViewModel() : base(new DesignTimeVersionHelper(), new OsHelper(), new DesignTimeCommandLocator(),
-                                                            new DesignTimeCurrentSettingsProvider(), new GpoSettingsDefaults(), new ProcessStarter(),
-                                                            new DesignTimeCurrentSettings<UsageStatistics>(), new DesignTimeTranslationUpdater(), 
+        public DesignTimeUsageStatisticsViewModel() : base(new OsHelper(), new DesignTimeCommandLocator(),
+                                                            new DesignTimeCurrentSettingsProvider(), new GpoSettingsDefaults(),new DesignTimeUsageMetricFactory(), 
+                                                            new DesignTimeCurrentSettings<Conversion.Settings.UsageStatistics>(), new DesignTimeTranslationUpdater(), 
                                                             new DesignTimeApplicationNameProvider())
         {
 

@@ -67,14 +67,29 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public string JobTempFolder { get; set; }
 
         /// <summary>
+        ///     Temporary filename of the output file with extension
+        /// </summary>
+        public string JobTempFileName { get; set; } = "output";
+
+        /// <summary>
         ///     The folder in which the job produces the output files
         /// </summary>
         public string JobTempOutputFolder { get; set; }
 
         /// <summary>
-        ///     Temporary filename of the output file with extension
+        ///     A list of output files produced during the conversion
         /// </summary>
-        public string JobTempFileName { get; set; } = "output";
+        public IList<string> TempOutputFiles { get; set; } = new List<string>();
+
+        /// <summary>
+        ///     The folder in which the job produces the output files
+        /// </summary>
+        public string IntermediateFolder { get; set; }
+
+        /// <summary>
+        ///     A list of output files produced during the conversion
+        /// </summary>
+        public string IntermediatePdfFile { get; set; }
 
         /// <summary>
         /// ShareLinks from upload actions like Dropbox
@@ -97,9 +112,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public string Producer { get; }
 
         /// <summary>
-        ///     A list of output files produced during the conversion
+        ///    Flag for JobRunner to call CleanUp
         /// </summary>
-        public IList<string> TempOutputFiles { get; set; } = new List<string>();
+        public bool CleanUpOnError { get; set; }
 
         public event EventHandler<JobCompletedEventArgs> OnJobCompleted;
 

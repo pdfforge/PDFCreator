@@ -42,10 +42,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             if (_titleReplacements != null)
                 UpdateTitleReplacements();
 
-            _settingsProvider.SettingsChanged += (sender, args) => UpdateTitleReplacements();
-
-            if(TitleReplacements != null)
-                TitleReplacements.CollectionChanged += TitleReplacementsOnCollectionChanged;
         }
 
         private void UpdateTitleReplacements()
@@ -126,6 +122,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
                 return GpoSettings != null ? !GpoSettings.DisableTitleTab : true;
             }
         }
+
+        public void MountView()
+        {
+            _settingsProvider.SettingsChanged += OnSettingsChanged;
+
+            if(TitleReplacements != null)
+                TitleReplacements.CollectionChanged += TitleReplacementsOnCollectionChanged;
+        }
+        public void UnmountView()
+        {
+            _settingsProvider.SettingsChanged -= OnSettingsChanged;
+
+            if(TitleReplacements != null)
+                TitleReplacements.CollectionChanged -= TitleReplacementsOnCollectionChanged;
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs args)
+        {
+            UpdateTitleReplacements();
+        }
+
     }
 
     public class DesignTimeTitleReplacementsViewModel : TitleReplacementsViewModel

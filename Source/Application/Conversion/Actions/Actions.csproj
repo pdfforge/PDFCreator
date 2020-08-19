@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Conversion.Actions</RootNamespace>
     <AssemblyName>PDFCreator.Actions</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -49,10 +49,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="SystemWrapper, Version=9.6.171.928, Culture=neutral, PublicKeyToken=9861416082383a00, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\SystemWrapper.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionManager.cs" />
@@ -64,24 +60,49 @@
     <Compile Include="Actions\Dropbox\DropboxUserInfo.cs" />
     <Compile Include="Actions\Dropbox\WinInetHelper.cs" />
     <Compile Include="Actions\EMailClientAction.cs" />
+    <Compile Include="Actions\AttachmentAction.cs" />
+    <Compile Include="Actions\EncryptionAction.cs" />
+    <Compile Include="Actions\ForwardToFurtherProfileAction.cs" />
+    <Compile Include="Actions\Interface\IBusinessFeatureAction.cs" />
     <Compile Include="Actions\Interface\IDefaultViewerAction.cs" />
-    <Compile Include="Actions\Interface\IEMailClientAction.cs" />
+    <Compile Include="Actions\Mail\MailHelper.cs" />
     <Compile Include="Actions\RetypePasswordActionBase.cs" />
     <Compile Include="Actions\HttpAction.cs" />
     <Compile Include="Actions\FtpAction.cs" />
     <Compile Include="Actions\Dropbox\IDropboxService.cs" />
+    <Compile Include="Actions\SigningAction.cs" />
+    <Compile Include="Actions\UserTokensAction.cs" />
+    <Compile Include="Actions\BackgroundAction.cs" />
+    <Compile Include="Actions\WatermarkAction.cs" />
+    <Compile Include="Components\ActionComponent.cs" />
+    <Compile Include="Components\ComponentBase.cs" />
+    <Compile Include="Components\IComponentBase.cs" />
+    <Compile Include="Components\IActionComponent.cs" />
+    <Compile Include="Components\SettingsComponent.cs" />
+    <Compile Include="Actions\CoverAction.cs" />
     <Compile Include="Queries\IRecommendArchitect.cs" />
     <Compile Include="IScriptActionHelper.cs" />
     <Compile Include="Actions\PrintingAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Actions\ScriptAction.cs" />
     <Compile Include="Actions\SmtpMailAction.cs" />
+    <Compile Include="Actions\StampAction.cs" />
+    <Compile Include="ActionFacades\ActionFacade.cs" />
+    <Compile Include="ActionFacades\ActionFacadeBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
     <None Include="pdfforge.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Services\Services.csproj">
+      <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\JobInfoQueue\JobInfoQueue.csproj">
+      <Project>{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}</Project>
+      <Name>JobInfoQueue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
       <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
       <Name>SettingsManagement</Name>
@@ -98,6 +119,10 @@
       <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
       <Name>Jobs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj">
+      <Project>{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}</Project>
+      <Name>PdfProcessingInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
       <Name>Settings</Name>
@@ -112,10 +137,10 @@
   </Target>
   -->
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="HtmlAgilityPack">
-          <HintPath>..\..\..\..\lib\HtmlAgilityPack.dll</HintPath>
+          <HintPath>..\..\..\..\packages\HtmlAgilityPack\lib\Net45\HtmlAgilityPack.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -123,10 +148,13 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="NLog">
-          <HintPath>..\..\..\..\lib\NLog.dll</HintPath>
+        <Reference Include="mscorlib">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Win32.Registry">
+          <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -134,10 +162,36 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Configuration">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.IO.Compression">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Runtime.Serialization">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.ServiceModel">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="NLog">
+          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="pdfforge.Mail">
-          <HintPath>..\..\..\..\lib\pdfforge.Mail.dll</HintPath>
+          <HintPath>..\..\..\..\packages\pdfforge.Mail\lib\pdfforge.Mail.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -145,10 +199,61 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Security.AccessControl">
+          <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Data.OracleClient">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Drawing">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Net">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Security">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.ServiceProcess">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="WindowsBase">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Security.Permissions">
+          <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Security.Principal.Windows">
+          <HintPath>..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\lib\SystemInterface.dll</HintPath>
+          <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

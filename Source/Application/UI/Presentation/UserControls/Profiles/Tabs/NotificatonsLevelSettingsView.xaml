@@ -18,7 +18,7 @@
                 IsEnabled="{Binding AllowNotifications}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding CurrentProfile.ShowAllNotifications}" Content="{Binding Translation.ShowAllNotifications}"></CheckBox>
-            <userControls:PlusFeatureControl Margin="10 0" Edition="AllLicensed" />
+            <userControls:BusinessFeatureBadge Margin="10 0" Edition="AllLicensed" />
         </StackPanel>
         <CheckBox Margin="25 5 0 0" IsChecked="{Binding CurrentProfile.ShowOnlyErrorNotifications}" Content="{Binding Translation.ShowOnlyErrorNotifications}"
                   IsEnabled="{Binding CurrentProfile.ShowAllNotifications}" />

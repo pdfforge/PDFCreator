@@ -9,10 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
     public class CreatorIniSettingsAssistantHelper : CreatorIniSettingsAssistant
     {
-        public CreatorIniSettingsAssistantHelper(IInteractionInvoker interactionInvoker, ITranslationUpdater translationUpdater, ISettingsManager settingsManager,
-                                                    IDataStorageFactory dataStorageFactory, IIniSettingsLoader iniSettingsLoader, IPrinterProvider printerProvider,
-                                                    IUacAssistant uacAssistant) :
-                                                base(interactionInvoker, translationUpdater, settingsManager, dataStorageFactory, iniSettingsLoader, printerProvider, uacAssistant)
+        public CreatorIniSettingsAssistantHelper(IInteractionInvoker interactionInvoker, ITranslationUpdater translationUpdater, ISettingsManager settingsManager, IDataStorageFactory dataStorageFactory, IIniSettingsLoader iniSettingsLoader, IPrinterProvider printerProvider, IUacAssistant uacAssistant, IActionOrderChecker actionOrderChecker) : base(interactionInvoker, translationUpdater, settingsManager, dataStorageFactory, iniSettingsLoader, printerProvider, uacAssistant, actionOrderChecker)
         {
         }
 

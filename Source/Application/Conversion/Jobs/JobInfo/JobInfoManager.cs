@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
@@ -35,7 +36,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         /// <summary>
         ///     Merge the second JobInfo into the first one
         /// </summary>
-        void Merge(JobInfo jobInfo, JobInfo jobinfoToMerge);
+        void Merge(JobInfo jobInfo, JobInfo jobInfoToMerge);
     }
 
     public class JobInfoManager : IJobInfoManager
@@ -100,17 +101,22 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             DeleteInf(jobInfo);
         }
 
-        public void Merge(JobInfo jobInfo, JobInfo jobinfoToMerge)
+        public void Merge(JobInfo jobInfo, JobInfo jobInfoToMerge)
         {
-            if (jobInfo.JobType != jobinfoToMerge.JobType)
+            if (jobInfo.JobType != jobInfoToMerge.JobType)
                 return;
 
-            foreach (var sourceFile in jobinfoToMerge.SourceFiles)
+            var sourceFiles = jobInfo.SourceFiles.ToList();
+
+            foreach (var sourceFile in jobInfoToMerge.SourceFiles)
             {
-                jobInfo.SourceFiles.Add(sourceFile);
+                sourceFiles.Add(sourceFile);
             }
 
-            DeleteInf(jobinfoToMerge);
+            // Create a new ObservableCollection to avoid threading problems
+            jobInfo.SourceFiles = new ObservableCollection<SourceFileInfo>(sourceFiles);
+
+            DeleteInf(jobInfoToMerge);
         }
 
         private void DeleteInf(JobInfo jobInfo)
@@ -182,10 +188,20 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             if (!_storedParametersManager.HasPredefinedParameters())
                 return;
 
-            var storedParameters = _storedParametersManager.GetAndResetParameters();
-            jobInfo.ProfileParameter = storedParameters.Profile;
-            jobInfo.OutputFileParameter = storedParameters.Outputfile;
-            jobInfo.OriginalFilePath = storedParameters.OriginalFilePath;
+            try
+            {
+                var storedParameters = _storedParametersManager.GetAndResetParameters();
+                jobInfo.ProfileParameter = storedParameters.Profile;
+                jobInfo.OutputFileParameter = storedParameters.Outputfile;
+                jobInfo.OriginalFilePath = storedParameters.OriginalFilePath;
+            }
+            catch (InvalidOperationException)
+            {
+                /*
+                 * A race condition can occur that the parameters are deleted between the HasPredefinedParameters
+                 * and GetAndResetParameters calls which results in an InvalidOperationException
+                 */
+            }
         }
     }
 }

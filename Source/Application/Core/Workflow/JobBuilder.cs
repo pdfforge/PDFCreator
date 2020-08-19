@@ -35,7 +35,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             var preselectedProfile = PreselectedProfile(jobInfo, settings).Copy();
 
             _logger.Debug("Profile: {0} (GUID {1})", preselectedProfile.Name, preselectedProfile.Guid);
-
             var producer = _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
             var job = new Job(jobInfo, preselectedProfile, settings.ApplicationSettings.Accounts, producer);
 
@@ -93,15 +92,29 @@ namespace pdfforge.PDFCreator.Core.Workflow
         }
     }
 
-    public class JobBuilderPlus : JobBuilder
+    public class JobBuilderProfessional : JobBuilder
     {
-        public JobBuilderPlus(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+        public JobBuilderProfessional(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
             : base(mailSignatureHelper, versionHelper, applicationNameProvider)
         {
         }
 
         public override Job SkipPrintDialog(Job job)
         {
+            return job;
+        }
+    }
+
+    public class JobBuilderServer : JobBuilder
+    {
+        public JobBuilderServer(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
+        {
+        }
+
+        public override Job SkipPrintDialog(Job job)
+        {
+            job.Profile.SkipPrintDialog = true;
             return job;
         }
     }

@@ -1,13 +1,13 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:beh="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:behavior="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Behavior"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Width="400"
         MinWidth="400"
         MaxWidth="400"
@@ -24,11 +24,11 @@
             <StackPanel Margin="0 10 10 10">
                 <Label Target="{Binding ElementName=TextBox}" Name="Label" Content="{Binding Interaction.QuestionText}" />
                 <TextBox Name="TextBox" Text="{Binding Interaction.InputText, UpdateSourceTrigger=PropertyChanged}">
-                    <i:Interaction.Behaviors>
+                    <b:Interaction.Behaviors>
                         <beh:EventToCommandBehavior Command="{Binding TextChangedCommand}" Event="TextChanged"
                                                     PassArguments="True" />
                         <behavior:TextBoxForceCaretToEndBehavior />
-                    </i:Interaction.Behaviors>
+                    </b:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock Margin="0 3" Name="ValidationMessageText" MinHeight="35" TextWrapping="Wrap"
                            Text="{Binding ValidationMessage}" />

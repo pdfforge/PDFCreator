@@ -3,11 +3,12 @@ using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using System;
+using pdfforge.PDFCreator.Core.Services;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Controls.Tab
 {
-    public interface ISubTabViewModel : IWhitelisted, IHasNotSupportedFeatures
+    public interface ISubTabViewModel : IWhitelisted, IHasNotSupportedFeatures, IMountable
 
     {
         string Title { get; }

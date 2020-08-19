@@ -15,28 +15,64 @@
     </UserControl.Resources>
     <DockPanel Margin ="10 5 10 10" HorizontalAlignment="Stretch">
         <StackPanel DockPanel.Dock="Top">
+            <Label>
+                <TextBlock Text="{Binding Translation.FtpProtocol}" />
+            </Label>
+            <ComboBox Name="FtpSftpConnectionComboBox"
+                      ItemsSource="{Binding Translation.FtpConnectionTypes}"
+                      SelectedValue="{Binding FtpConnectionType}"
+                      DisplayMemberPath="Translation" SelectedValuePath="Value">
+            </ComboBox>
             <DockPanel>
                 <Label>
                     <TextBlock Text="{Binding Translation.ServerLabel}" />
                 </Label>
             </DockPanel>
             <DockPanel VerticalAlignment="Top">
-                <Label DockPanel.Dock="Left" FontWeight="Bold" Margin="5 0 5 0">ftp://</Label>
+                <Label DockPanel.Dock="Left" FontWeight="Bold" Margin="5 0 5 0" Content="{Binding ProtocolPrefix}" />
                 <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
             </DockPanel>
-            <DockPanel>
+            <DockPanel VerticalAlignment="Top" Visibility="{Binding IsSftpConnection, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                <Label>
+                    <TextBlock Text="{Binding Translation.Authentication}" />
+                </Label>
+            </DockPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding IsSftpConnection, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                <RadioButton  IsChecked="{Binding NormalAuthentication}">
+                    <Label DockPanel.Dock="Left"
+                               Margin="0 -6"
+                               Content="{Binding Translation.UserName}" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding KeyFileAuthentication}">
+                    <Label DockPanel.Dock="Left"
+                               Margin="0 -6"
+                               Content="{Binding Translation.KeyFile}" />
+                </RadioButton>
+            </StackPanel>
+            <StackPanel>
                 <Label>
                     <TextBlock Text="{Binding Translation.UserNameLabel}" />
                 </Label>
-            </DockPanel>
-            <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
-            <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource NegationConverter}}">
-                <Label Content="{Binding Translation.PasswordLabel, UpdateSourceTrigger=PropertyChanged}" />
-                <controls:PreviewPasswordField PasswordText="{Binding Password}" />
+                <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
-            <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalseConverter}}">
-                <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
-            </CheckBox>
+            <StackPanel Visibility="{Binding KeyFileAuthentication, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                <Label Content="{Binding Translation.PrivateKeyFile}" />
+                <DockPanel LastChildFill="True">
+                    <controls:TokenControl DataContext="{Binding FtpAccountTokenViewModel}" />
+                </DockPanel>
+                <CheckBox Margin="0 5 0 0" IsChecked="{Binding KeyFileRequiresPass}">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Translation.PassphraseRequired}" />
+                </CheckBox>
+            </StackPanel>
+            <StackPanel Visibility="{Binding ShowPassForKeyFile, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource NegationConverter}}">
+                    <Label Content="{Binding Translation.PasswordLabel, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:PreviewPasswordField PasswordText="{Binding Password}" />
+                </StackPanel>
+                <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
+                </CheckBox>
+            </StackPanel>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Height="35" Rows="1" VerticalAlignment="Bottom" Margin="0 15 0 0">
             <Button Content="{Binding Translation.Save}" Command="{Binding SaveCommand}" Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}" />

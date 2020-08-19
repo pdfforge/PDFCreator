@@ -4,6 +4,8 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Utilities.Web;
+using System.ComponentModel;
 using System.Windows.Input;
 using SystemInterface.IO;
 
@@ -13,13 +15,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
     {
         private readonly IPdfArchitectCheck _pdfArchitectCheck;
         private readonly IProcessStarter _processStarter;
+        private readonly IWebLinkLauncher _webLinkLauncher;
         private readonly IFile _file;
-        private string _architectButtonCaption;
 
-        public ArchitectViewModel(IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter, ITranslationUpdater translationUpdater, IFile file) : base(translationUpdater)
+        public ArchitectViewModel(IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter, IWebLinkLauncher webLinkLauncher, ITranslationUpdater translationUpdater, IFile file) : base(translationUpdater)
         {
             _pdfArchitectCheck = pdfArchitectCheck;
             _processStarter = processStarter;
+            _webLinkLauncher = webLinkLauncher;
             _file = file;
         }
 
@@ -32,26 +35,38 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
         public ICommand LaunchPdfArchitectCommand => new DelegateCommand(o =>
         {
             var applicationPath = _pdfArchitectCheck.GetInstallationPath();
-
-            if (!string.IsNullOrWhiteSpace(applicationPath))
-                _processStarter.Start(applicationPath);
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(applicationPath))
+                    _processStarter.Start(applicationPath);
+            }
+            catch
+            {
+                //ignore
+            }
         });
 
         public string DownloadPdfArchitectButtonText => IsPdfArchitectDownloaded ? Translation.InstallPdfArchitectButtonContent : Translation.DownloadPdfArchitectButtonContent;
 
-        public ICommand LaunchWebsiteCommand => new DelegateCommand(o => _processStarter.Start(Urls.ArchitectWebsiteUrl));
+        public ICommand LaunchWebsiteCommand => new DelegateCommand(o => _webLinkLauncher.Launch(Urls.ArchitectWebsiteUrl));
 
         public ICommand DownloadPdfArchitectCommand => new DelegateCommand(o =>
         {
             var installerPath = _pdfArchitectCheck.GetInstallerPath();
-            if (string.IsNullOrEmpty(installerPath) || !_file.Exists(installerPath))
+            if (!string.IsNullOrEmpty(installerPath) && _file.Exists(installerPath))
             {
-                _processStarter.Start(Urls.ArchitectDownloadUrl);
+                try
+                {
+                    _processStarter.Start(installerPath);
+                }
+                catch (Win32Exception e) when (e.NativeErrorCode == 1223)
+                {
+                    // ignore Win32Exception when UAC was not allowed
+                }
+                return;
             }
-            else
-            {
-                _processStarter.Start(installerPath);
-            }
+
+            _webLinkLauncher.Launch(Urls.ArchitectDownloadUrl);
         });
 
         public bool IsPdfArchitectInstalled => _pdfArchitectCheck.IsInstalled();

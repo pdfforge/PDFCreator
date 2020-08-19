@@ -1,7 +1,6 @@
-﻿using pdfforge.PDFCreator.Core.Services.Macros;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Events;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using Prism.Events;
 using System;
 
@@ -23,15 +22,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
 
         public void Execute(object parameter)
         {
-            _eventAggregator.GetEvent<EditSettingsFinishedEvent>().Subscribe(OnWindowClosedAction);
+            _eventAggregator.GetEvent<EditSettingsFinishedEvent>().Subscribe(EditSettingsFinishedWindowClosedAction);
             _eventAggregator.GetEvent<MainWindowClosedEvent>().Subscribe(OnWindowClosedAction);
         }
 
         private void OnWindowClosedAction()
         {
-            _eventAggregator.GetEvent<EditSettingsFinishedEvent>().Unsubscribe(OnWindowClosedAction);
+            _eventAggregator.GetEvent<EditSettingsFinishedEvent>().Unsubscribe(EditSettingsFinishedWindowClosedAction);
             _eventAggregator.GetEvent<MainWindowClosedEvent>().Unsubscribe(OnWindowClosedAction);
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+        }
+
+        private void EditSettingsFinishedWindowClosedAction(ConversionProfile p)
+        {
+            OnWindowClosedAction();
         }
 
 #pragma warning disable 67

@@ -4,6 +4,7 @@ using NLog.Layouts;
 using NLog.Targets;
 using System;
 using System.IO;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Services.Logging
 {
@@ -45,10 +46,10 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
         {
             _fileTarget.Layout = GetLayoutForLogLevel(logLevel);
 
-            LogManager.Configuration.LoggingRules.Remove(_loggingRule);
+            LogManager.Configuration?.LoggingRules.Remove(_loggingRule);
 
             _loggingRule = new LoggingRule("*", logLevel, _fileTarget);
-            LogManager.Configuration.LoggingRules.Add(_loggingRule);
+            LogManager.Configuration?.LoggingRules.Add(_loggingRule);
 
             LogManager.ReconfigExistingLoggers();
         }
@@ -80,8 +81,10 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
 
         private string GetDefaultLogFilePath(string applicationName)
         {
-            var logFileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationName);
-            var fileName = Path.Combine(logFileDir, applicationName + ".log");
+            var localAppDataFolderBase = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var logFileDir = PathSafe.Combine(localAppDataFolderBase, "pdfforge", "PDFCreator");
+
+            var fileName = PathSafe.Combine(logFileDir, applicationName + ".log");
             return fileName;
         }
     }

@@ -1,8 +1,8 @@
-using Translatable;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient
 {
-    public class MailClientTabTranslation : ITranslatable
+    public class MailClientTabTranslation : MailBaseTabTranslation
     {
         public string CheckMailClient { get; private set; } = "Check e-mail client";
         public string NoMapiClientFound { get; private set; } = "Could not find MAPI client (e.g. Thunderbird or Outlook).";

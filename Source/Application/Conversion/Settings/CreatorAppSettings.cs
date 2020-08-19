@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class CreatorAppSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -35,7 +34,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed
 		/// </summary>
-		public int SettingsVersion { get; set; } = 8;
+		public int SettingsVersion { get; set; } = 9;
 		
 		
 		public void ReadValues(Data data, string path = "")
@@ -45,7 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
 			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
 			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
-			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 8;
+			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 9;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -69,6 +68,28 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.PrimaryPrinter = PrimaryPrinter;
 			copy.SettingsVersion = SettingsVersion;
 			return copy;
+		}
+		
+		public void ReplaceWith(CreatorAppSettings source)
+		{
+			if(AskSwitchDefaultPrinter != source.AskSwitchDefaultPrinter)
+				AskSwitchDefaultPrinter = source.AskSwitchDefaultPrinter;
+				
+			if(LastLoginVersion != source.LastLoginVersion)
+				LastLoginVersion = source.LastLoginVersion;
+				
+			if(LastSaveDirectory != source.LastSaveDirectory)
+				LastSaveDirectory = source.LastSaveDirectory;
+				
+			if(LastUsedProfileGuid != source.LastUsedProfileGuid)
+				LastUsedProfileGuid = source.LastUsedProfileGuid;
+				
+			if(PrimaryPrinter != source.PrimaryPrinter)
+				PrimaryPrinter = source.PrimaryPrinter;
+				
+			if(SettingsVersion != source.SettingsVersion)
+				SettingsVersion = source.SettingsVersion;
+				
 		}
 		
 		public override bool Equals(object o)

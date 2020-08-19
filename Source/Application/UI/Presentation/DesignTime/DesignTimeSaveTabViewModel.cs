@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeSaveTabViewModel : SaveTabViewModel
     {
-        public DesignTimeSaveTabViewModel() : base(new TokenButtonFunctionProvider(new InteractionInvoker(), new OpenFileInteractionHelper(new InteractionInvoker())), new DesignTimeCurrentSettingsProvider(), new DesignTimeTranslationUpdater(), new EditionHelper(true, true), new TokenHelper(new DesignTimeTranslationUpdater()), new DesignTimeTokenViewModelFactory(), null)
+        public DesignTimeSaveTabViewModel() : base(new TokenButtonFunctionProvider(new InteractionInvoker(), new OpenFileInteractionHelper(new InteractionInvoker())), new DesignTimeCurrentSettingsProvider(), new DesignTimeTranslationUpdater(), new EditionHelper(true), new TokenHelper(new DesignTimeTranslationUpdater()), new DesignTimeTokenViewModelFactory(), null)
         {
         }
     }

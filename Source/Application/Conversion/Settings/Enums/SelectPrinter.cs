@@ -5,11 +5,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
     [Translatable]
     public enum SelectPrinter
     {
-        [Translation("default printer")]
+        [Translation("Default printer")]
         DefaultPrinter,
-        [Translation("printer dialog")]
+        [Translation("Select printer before printing")]
         ShowDialog,
-        [Translation("select printer ->")]
+        [Translation("Select printer ->")]
         SelectedPrinter
     }
 }

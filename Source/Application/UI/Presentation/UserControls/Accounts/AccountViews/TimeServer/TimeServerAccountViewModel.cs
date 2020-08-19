@@ -86,5 +86,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(IsSecured));
             SaveCommand.RaiseCanExecuteChanged();
         }
+
+        protected override void ClearPassword()
+        {
+        }
     }
 }

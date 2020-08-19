@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Compression settings for monochrome images
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class CompressMonochrome : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -69,6 +68,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.Resampling = Resampling;
 			return copy;
+		}
+		
+		public void ReplaceWith(CompressMonochrome source)
+		{
+			if(Compression != source.Compression)
+				Compression = source.Compression;
+				
+			if(Dpi != source.Dpi)
+				Dpi = source.Dpi;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(Resampling != source.Resampling)
+				Resampling = source.Resampling;
+				
 		}
 		
 		public override bool Equals(object o)

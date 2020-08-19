@@ -1,4 +1,6 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs;
+﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
@@ -6,6 +8,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
@@ -16,6 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 {
     public class AccountsViewModel : TranslatableViewModelBase<AccountsTranslation>, IMountable
     {
+        private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IDispatcher _dispatcher;
         private readonly IGpoSettings _gpoSettings;
         public CompositeCollection AllAccounts { get; } = new CompositeCollection();
@@ -23,6 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         private Conversion.Settings.Accounts Accounts => _accountsProvider?.Settings;
         private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountsProvider;
         private readonly ICommandLocator _commandLocator;
+        private object _selectedAccount;
 
         public Visibility ShowAddAccountsHint
         {
@@ -51,52 +56,115 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             IGpoSettings gpoSettings)
             : base(translationUpdater)
         {
+            _currentSettingsProvider = currentSettingsProvider;
             _dispatcher = dispatcher;
             _gpoSettings = gpoSettings;
             _accountsProvider = accountProvider;
             _commandLocator = commandLocator;
             ConflateAllAccounts();
 
-            FtpAccountAddCommand = commandLocator.GetCommand<FtpAccountAddCommand>();
-            FtpAccountRemoveCommand = commandLocator.GetCommand<FtpAccountRemoveCommand>();
-            FtpAccountEditCommand = _commandLocator.GetCommand<FtpAccountEditCommand>();
+            FtpAccountAddCommand = _commandLocator.GetCommand<FtpAccountAddCommand>();
+            SmtpAccountAddCommand = _commandLocator.GetCommand<SmtpAccountAddCommand>();
+            HttpAccountAddCommand = _commandLocator.GetCommand<HttpAccountAddCommand>();
+            DropboxAccountAddCommand = _commandLocator.GetCommand<DropboxAccountAddCommand>();
+            TimeServerAccountAddCommand = _commandLocator.GetCommand<TimeServerAccountAddCommand>();
 
-            SmtpAccountAddCommand = commandLocator.GetCommand<SmtpAccountAddCommand>();
-            SmtpAccountRemoveCommand = commandLocator.GetCommand<SmtpAccountRemoveCommand>();
-            SmtpAccountEditCommand = _commandLocator.GetCommand<SmtpAccountEditCommand>();
+            RemoveSelectedAccountCommand = new DelegateCommand(OnRemoveSelectedCommand, CanRemoveSelectedCommand);
 
-            HttpAccountAddCommand = commandLocator.GetCommand<HttpAccountAddCommand>();
-            HttpAccountRemoveCommand = commandLocator.GetCommand<HttpAccountRemoveCommand>();
-            HttpAccountEditCommand = _commandLocator.GetCommand<HttpAccountEditCommand>();
+            EditSelectedAccountCommand = new DelegateCommand(OnEditSelectedCommand, CanEditSelectedCommand);
 
-            DropboxAccountAddCommand = commandLocator.GetCommand<DropboxAccountAddCommand>();
-            DropboxAccountRemoveCommand = commandLocator.GetCommand<DropboxAccountRemoveCommand>();
-
-            TimeServerAccountAddCommand = commandLocator.GetCommand<TimeServerAccountAddCommand>();
-            TimeServerAccountRemoveCommand = commandLocator.GetCommand<TimeServerAccountRemoveCommand>();
-            TimeServerAccountEditCommand = _commandLocator.GetCommand<TimeServerAccountEditCommand>();
-
-            if (currentSettingsProvider != null)
+            AddAccountsToken = new List<AccountToken>
             {
-                currentSettingsProvider.SelectedProfileChanged += CurrentSettingsProviderOnSelectedProfileChanged;
-                currentSettingsProvider.SettingsChanged += CurrentSettingsProviderOnSettingsChanged;
+                new AccountToken(SmtpAccountAddCommand, () => Translation.AddSmtpAccount, "EmailIcon"),
+                new AccountToken(DropboxAccountAddCommand,  () =>Translation.AddDropboxAccount, "DropboxIcon"),
+                new AccountToken(FtpAccountAddCommand,  () =>Translation.AddFtpAccount, "FtpIcon"),
+                new AccountToken(HttpAccountAddCommand, () => Translation.AddHttpAccount, "HttpIcon"),
+                new AccountToken(TimeServerAccountAddCommand, () => Translation.AddTimeServerAccount, "TimeServerIcon")
+            };
+        }
+
+        private void OnEditSelectedCommand(object obj)
+        {
+            switch (SelectedAccount)
+            {
+                case HttpAccount httpAccount:
+                    _commandLocator.GetCommand<HttpAccountEditCommand>().Execute(httpAccount);
+                    break;
+
+                case SmtpAccount smtpAccount:
+                    _commandLocator.GetCommand<SmtpAccountEditCommand>().Execute(smtpAccount);
+                    break;
+
+                case FtpAccount ftpAccount:
+                    _commandLocator.GetCommand<FtpAccountEditCommand>().Execute(ftpAccount);
+                    break;
+
+                case TimeServerAccount timeServerAccount:
+                    _commandLocator.GetCommand<TimeServerAccountEditCommand>().Execute(timeServerAccount);
+                    break;
             }
         }
 
+        private bool CanEditSelectedCommand(object obj)
+        {
+            return SelectedAccount != null && !(SelectedAccount is DropboxAccount);
+        }
+
+        private bool CanRemoveSelectedCommand(object obj)
+        {
+            return SelectedAccount != null;
+        }
+
+        private void OnRemoveSelectedCommand(object obj)
+        {
+            switch (SelectedAccount)
+            {
+                case HttpAccount httpAccount:
+                    _commandLocator.GetCommand<HttpAccountRemoveCommand>().Execute(httpAccount);
+                    break;
+
+                case SmtpAccount smtpAccount:
+                    _commandLocator.GetCommand<SmtpAccountRemoveCommand>().Execute(smtpAccount);
+                    break;
+
+                case FtpAccount ftpAccount:
+                    _commandLocator.GetCommand<FtpAccountRemoveCommand>().Execute(ftpAccount);
+                    break;
+
+                case DropboxAccount dropboxAccount:
+                    _commandLocator.GetCommand<DropboxAccountRemoveCommand>().Execute(dropboxAccount);
+                    break;
+
+                case TimeServerAccount timeServerAccount:
+                    _commandLocator.GetCommand<TimeServerAccountRemoveCommand>().Execute(timeServerAccount);
+                    break;
+            }
+        }
+
+        public List<AccountToken> AddAccountsToken { get; set; }
+
         public void MountView()
         {
-            ((IMountable)FtpAccountEditCommand).MountView();
-            ((IMountable)SmtpAccountEditCommand).MountView();
-            ((IMountable)HttpAccountEditCommand).MountView();
-            ((IMountable)TimeServerAccountEditCommand).MountView();
+            if (_currentSettingsProvider != null)
+            {
+                _currentSettingsProvider.SelectedProfileChanged += CurrentSettingsProviderOnSelectedProfileChanged;
+                _currentSettingsProvider.SettingsChanged += CurrentSettingsProviderOnSettingsChanged;
+            }
         }
 
         public void UnmountView()
         {
-            ((IMountable)FtpAccountEditCommand).UnmountView();
-            ((IMountable)SmtpAccountEditCommand).UnmountView();
-            ((IMountable)HttpAccountEditCommand).UnmountView();
-            ((IMountable)TimeServerAccountEditCommand).UnmountView();
+            if (_currentSettingsProvider != null)
+            {
+                _currentSettingsProvider.SelectedProfileChanged -= CurrentSettingsProviderOnSelectedProfileChanged;
+                _currentSettingsProvider.SettingsChanged -= CurrentSettingsProviderOnSettingsChanged;
+            }
+        }
+
+        protected override void OnTranslationChanged()
+        {
+            base.OnTranslationChanged();
+            RaisePropertyChanged(nameof(AddAccountsToken));
         }
 
         private void CurrentSettingsProviderOnSettingsChanged(object sender, EventArgs eventArgs)
@@ -151,22 +219,44 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         }
 
         public ICommand FtpAccountAddCommand { get; }
-        public ICommand FtpAccountRemoveCommand { get; }
-        public ICommand FtpAccountEditCommand { get; set; }
 
         public ICommand SmtpAccountAddCommand { get; }
-        public ICommand SmtpAccountRemoveCommand { get; }
-        public ICommand SmtpAccountEditCommand { get; set; }
 
         public ICommand HttpAccountAddCommand { get; }
-        public ICommand HttpAccountRemoveCommand { get; }
-        public ICommand HttpAccountEditCommand { get; set; }
 
         public ICommand DropboxAccountAddCommand { get; }
-        public ICommand DropboxAccountRemoveCommand { get; }
 
         public ICommand TimeServerAccountAddCommand { get; }
-        public ICommand TimeServerAccountRemoveCommand { get; }
-        public ICommand TimeServerAccountEditCommand { get; set; }
+
+        public ICommand RemoveSelectedAccountCommand { get; set; }
+
+        public ICommand EditSelectedAccountCommand { get; set; }
+
+        public Object SelectedAccount
+        {
+            get => _selectedAccount;
+            set
+            {
+                _selectedAccount = value;
+                RaisePropertyChanged();
+                (RemoveSelectedAccountCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+                (EditSelectedAccountCommand as DelegateCommand)?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    public class AccountToken
+    {
+        public ICommand Command { get; set; }
+        public string Translation => _getTranslation();
+        private readonly Func<string> _getTranslation;
+        public string NameOfIcon { get; set; }
+
+        public AccountToken(ICommand command, Func<string> translation, string nameOfIcon)
+        {
+            Command = command;
+            _getTranslation = translation;
+            NameOfIcon = nameOfIcon;
+        }
     }
 }

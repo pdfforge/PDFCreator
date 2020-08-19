@@ -13,9 +13,8 @@ using System;
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
 	/// <summary>
-	/// Pre- and postconversion actions calling functions from a custom script
+	/// Pre- and post-conversion actions calling functions from a custom script
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class CustomScript : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -23,7 +22,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		
 		/// <summary>
-		/// Enables the custom script pre- and postconversion action
+		/// Enables the custom script pre- and post-conversion action
 		/// </summary>
 		public bool Enabled { get; set; } = false;
 		
@@ -52,6 +51,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.ScriptFilename = ScriptFilename;
 			return copy;
+		}
+		
+		public void ReplaceWith(CustomScript source)
+		{
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(ScriptFilename != source.ScriptFilename)
+				ScriptFilename = source.ScriptFilename;
+				
 		}
 		
 		public override bool Equals(object o)

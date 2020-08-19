@@ -17,11 +17,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         private const int DpiMin = 4;
         private const int DpiMax = 2400;
 
-        public PdfDevice(Job job) : base(job)
+        public PdfDevice(Job job, ConversionMode conversionMode) : base(job, conversionMode)
         {
         }
 
-        public PdfDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, file, osHelper, commandLineUtil)
+        public PdfDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, conversionMode, file, osHelper, commandLineUtil)
         {
         }
 
@@ -33,23 +33,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add("-dEmbedAllFonts=true");
             if (Job.Profile.PdfSettings.NoFonts)
                 parameters.Add("-dNoOutputFonts");
-
-            /* FastWebView=true causes crashes in Ghostscript 9.20 so it has been removed for now, GS uses fastwebview=false by defrault
-
-            if (!(Job.Profile.OutputFormat.Equals(OutputFormat.PdfA2B) || Job.Profile.OutputFormat.Equals(OutputFormat.PdfA1B))
-                && Job.Profile.PdfSettings.FastWebView)
-            {
-                parameters.Add("-dFastWebView=true");
-            }
-            */
-
-            /* Parameters that are recommended for better quality of pictures
-             * - without obvious effect
-             */
-            //parameters.Add("-dTextAlphaBits=4");
-            //parameters.Add("-dDOINTERPOLATE");
-            //if(Job.Profile.OutputFormat != OutputFormat.PdfA1B)
-            //    parameters.Add("-dGraphicsAlphaBits=4");
 
             SetPageOrientation(parameters, DistillerDictonaries);
             SetColorSchemeParameters(parameters);
@@ -83,26 +66,24 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     break;
             }
 
-            //parameters.Add("-dNOOUTERSAVE"); //Set in pdf-A example, but is not documented in the distiller parameters
-
             Logger.Debug("Shortened Temppath from\r\n\"" + Job.JobTempFolder + "\"\r\nto\r\n\"" + shortenedTempPath + "\"");
 
             //Add ICC profile
             var iccFile = PathSafe.Combine(shortenedTempPath, "profile.icc");
+
             //Set ICC Profile according to the color model
             switch (Job.Profile.PdfSettings.ColorModel)
             {
                 case ColorModel.Cmyk:
-                    FileWrap.WriteAllBytes(iccFile, Resources.WebCoatedFOGRA28);
+                    FileWrap.WriteAllBytes(iccFile, GhostscriptResources.WebCoatedFOGRA28);
                     break;
 
                 case ColorModel.Gray:
-                    FileWrap.WriteAllBytes(iccFile, Resources.ISOcoated_v2_grey1c_bas);
+                    FileWrap.WriteAllBytes(iccFile, GhostscriptResources.ISOcoated_v2_grey1c_bas);
                     break;
 
                 default:
-                case ColorModel.Rgb:
-                    FileWrap.WriteAllBytes(iccFile, Resources.eciRGB_v2);
+                    FileWrap.WriteAllBytes(iccFile, GhostscriptResources.eciRGB_v2);
                     break;
             }
 
@@ -111,7 +92,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add("-sOutputICCProfile=\"" + iccFile + "\"");
 
             var defFile = PathSafe.Combine(Job.JobTempFolder, "pdfa_def.ps");
-            var sb = new StringBuilder(Resources.PdfaDefinition);
+            var sb = new StringBuilder(GhostscriptResources.PdfaDefinition);
             sb.Replace("[ICC_PROFILE]", "(" + EncodeGhostscriptParametersOctal(iccFile.Replace('\\', '/')) + ")");
             FileWrap.WriteAllText(defFile, sb.ToString());
             parameters.Add(defFile);
@@ -130,18 +111,19 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             switch (Job.Profile.PdfSettings.ColorModel)
             {
                 case ColorModel.Cmyk:
-                    FileWrap.WriteAllBytes(iccFile, Resources.WebCoatedFOGRA28);
+                    FileWrap.WriteAllBytes(iccFile, GhostscriptResources.WebCoatedFOGRA28);
                     break;
 
                 case ColorModel.Gray:
-                    FileWrap.WriteAllBytes(iccFile, Resources.ISOcoated_v2_grey1c_bas);
+                    FileWrap.WriteAllBytes(iccFile, GhostscriptResources.ISOcoated_v2_grey1c_bas);
                     break;
             }
             parameters.Add("-sOutputICCProfile=\"" + iccFile + "\"");
-            //parameters.Add("-dNOOUTERSAVE"); //Set in pdf-X example, but is not documented in the distiller parameters
+
+            //Set in pdf-X example, but is not documented in the distiller parameters
 
             var defFile = PathSafe.Combine(shortenedTempPath, "pdfx_def.ps");
-            var sb = new StringBuilder(Resources.PdfxDefinition);
+            var sb = new StringBuilder(GhostscriptResources.PdfxDefinition);
             sb.Replace("%/ICCProfile (ISO Coated sb.icc)", "/ICCProfile (" + EncodeGhostscriptParametersOctal(iccFile.Replace('\\', '/')) + ")");
             FileWrap.WriteAllText(defFile, sb.ToString());
             parameters.Add(defFile);
@@ -356,7 +338,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             }
         }
 
-        private void SetPageOrientation(IList<string> parameters, IList<string> distillerDictonaries)
+        protected void SetPageOrientation(IList<string> parameters, IList<string> distillerDictonaries)
         {
             switch (Job.Profile.PdfSettings.PageOrientation)
             {
@@ -380,6 +362,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         protected override string ComposeOutputFilename()
         {
             return Job.JobTempFileName + ".pdf";
+        }
+
+        protected override void AddOutputfileParameter(IList<string> parameters)
+        {
+            parameters.Add("-sOutputFile=" + PathSafe.Combine(Job.IntermediateFolder, ComposeOutputFilename()));
         }
     }
 }

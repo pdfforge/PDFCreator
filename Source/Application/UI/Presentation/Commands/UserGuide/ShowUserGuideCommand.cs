@@ -7,12 +7,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide
 {
     public class ShowUserGuideCommand : IInitializedCommand<HelpTopic>
     {
-        private readonly IUserGuideHelper _userGuildeHelper;
+        private readonly IUserGuideHelper _userGuideHelper;
         private HelpTopic _helpTopic = HelpTopic.General;
 
-        public ShowUserGuideCommand(IUserGuideHelper userGuildeHelper)
+        public ShowUserGuideCommand(IUserGuideHelper userGuideHelper)
         {
-            _userGuildeHelper = userGuildeHelper;
+            _userGuideHelper = userGuideHelper;
         }
 
         public bool CanExecute(object parameter)
@@ -24,11 +24,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide
         {
             if (parameter is HelpTopic)
             {
-                _userGuildeHelper.ShowHelp((HelpTopic)parameter);
+                _userGuideHelper.ShowHelp((HelpTopic)parameter);
             }
             else
             {
-                _userGuildeHelper.ShowHelp(_helpTopic);
+                _userGuideHelper.ShowHelp(_helpTopic);
             }
         }
 

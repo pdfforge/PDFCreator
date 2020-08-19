@@ -7,6 +7,7 @@
         public bool DisablePrinterTab => false;
         public bool DisableProfileManagement => false;
         public bool DisableTitleTab => false;
+        public bool DisableHistory => false;
         public bool DisableAccountsTab => false;
         public bool DisableUsageStatistics => false;
         public bool DisableRssFeed => false;
@@ -20,5 +21,8 @@
         public bool LoadSharedAppSettings => false;
         public bool LoadSharedProfiles => false;
         public bool AllowUserDefinedProfiles => true;
+
+        public bool AllowSharedProfilesEditing => false;
+        public bool DisableLicenseExpirationReminder => false;
     }
 }

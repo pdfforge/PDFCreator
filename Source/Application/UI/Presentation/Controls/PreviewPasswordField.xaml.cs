@@ -1,6 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Globalization;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -28,6 +31,57 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
             typeof(string),
             typeof(PreviewPasswordField),
             new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback));
+
+        public double EntropyPercentage
+        {
+            get { return (double)GetValue(EntropyPercentageProperty); }
+            set
+            {
+                SetValue(EntropyPercentageProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty EntropyPercentageProperty =
+            DependencyProperty.Register("EntropyPercentage", typeof(double),
+                typeof(PreviewPasswordField),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, EntropyPercentagePropertyChangedCallback));
+
+        private static void EntropyPercentagePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as PreviewPasswordField).EntropyPercentage = (double)e.NewValue;
+
+            (d as PreviewPasswordField).EntropyIndicatorWidth = (double)e.NewValue * 5;
+        }
+
+        public double EntropyIndicatorWidth
+        {
+            get { return (double)GetValue(EntropyIndicatorWidthProperty); }
+            set { SetValue(EntropyIndicatorWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty EntropyIndicatorWidthProperty =
+            DependencyProperty.Register("EntropyIndicatorWidth", typeof(double),
+                typeof(PreviewPasswordField), new PropertyMetadata(0.0));
+
+        public bool IsEntropyChecked
+        {
+            get { return (bool)GetValue(IsEntropyCheckedProperty); }
+            set { SetValue(IsEntropyCheckedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsEntropyCheckedProperty =
+            DependencyProperty.Register("IsEntropyChecked", typeof(bool), typeof(PreviewPasswordField),
+                new PropertyMetadata(false));
+
+        public string PasswordIndicatorLabel
+        {
+            get { return (string)GetValue(PasswordIndicatorLabelProperty); }
+            set { SetValue(PasswordIndicatorLabelProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordIndicatorLabelProperty =
+            DependencyProperty.Register("PasswordIndicatorLabel", typeof(string), typeof(PreviewPasswordField),
+                new PropertyMetadata(""));
 
         // Static Methods
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -72,7 +126,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
         // Object variables
         private int _caretIndex;
 
-        internal bool _wasInit;
         private bool _isMasked = true;
 
         public PreviewPasswordField()
@@ -164,7 +217,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
 
         private void Icon_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            SolidColorBrush brush = (SolidColorBrush)FindResource("NavigationLightGrey");
+            SolidColorBrush brush = (SolidColorBrush)FindResource("NavigationLightGreyBrush");
             EyeGrid.Background = brush;
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
@@ -176,6 +229,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
         {
             EyeGrid.Background = Brushes.Transparent;
             UIElement_OnMouseUp(this, e);
+        }
+    }
+
+    public class ProgressForegroundConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double progress = Math.Min(Double.Parse(value.ToString()) / 100, 1);
+
+            Brush foreground = new SolidColorBrush(Colors.Transparent);
+            if (progress > 0.02 && progress < 0.5)
+                foreground = new SolidColorBrush(Color.FromRgb(255, (byte)((progress * 1.5) * 255), 0));
+            if (progress > 0.5 && progress < 0.65)
+                foreground = new SolidColorBrush(Color.FromRgb((byte)((1 - progress) * 255), (byte)(progress * 255), 0));
+            if (progress >= 0.65)
+                foreground = new SolidColorBrush(Color.FromRgb(100, 170, 0));
+
+            return foreground;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

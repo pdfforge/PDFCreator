@@ -75,7 +75,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         }
 
         /// <summary>
-        ///     Remove all untritable files
+        ///     Remove all unprintable files
         /// </summary>
         public void RemoveUnprintableCommands()
         {
@@ -83,6 +83,11 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             {
                 _printCommands.Remove(command);
             }
+        }
+
+        public void RemoveAllCommands()
+        {
+            _printCommands.RemoveAll(x => true);
         }
 
         /// <summary>
@@ -95,7 +100,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             if (_printCommands.Any(p => p.CommandType == PrintType.Unprintable))
                 throw new InvalidOperationException("The list of print commands contains unprintable files");
 
-            foreach (var p in _printCommands)
+            foreach (var p in _printCommands.ToArray())
             {
                 p.ProcessWrapperFactory = ProcessWrapperFactory;
 

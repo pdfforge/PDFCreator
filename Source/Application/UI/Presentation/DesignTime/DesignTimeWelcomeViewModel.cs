@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     {
         public DesignTimeWelcomeViewModel()
             : base(new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(),
-                new EditionHelper(true, true), new DesignTimeVersionHelper(), new DesignTimeApplicationNameProvider())
+                new EditionHelper(true), new DesignTimeVersionHelper(), new DesignTimeApplicationNameProvider())
         {
         }
     }

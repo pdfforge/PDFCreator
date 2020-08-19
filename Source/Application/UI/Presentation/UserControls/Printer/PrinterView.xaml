@@ -5,10 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:wrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Wrapper"
+             xmlns:conversionwrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
+             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrinterViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800"
+             Name="UserControlX">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -63,12 +67,7 @@
                                       CommandParameter="{Binding}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate  DataType="{x:Type wrapper:PrinterMappingWrapper}" x:Key="ProfilesCell">
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource Findancestor, AncestorType={x:Type UserControl}}, Path=DataContext.PrinterMappingProfiles}"
-                                  HorizontalAlignment="Stretch"
-                                  DisplayMemberPath="Name"
-                                  Margin="5 5 10 5"
-                                  SelectedItem="{Binding Profile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataTemplate    x:Key="ProfilesCell">
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}" x:Key="PrinterCell">
                             <TextBlock Text="{Binding PrinterName}" MinWidth="100" Margin="10" />
@@ -92,12 +91,14 @@
                             </DataGridTemplateColumn.HeaderTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTemplateColumn CellTemplate="{StaticResource ProfilesCell}" Width="*">
-                            <DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn Width="*" MaxWidth="400">
+                            <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding DataContext.Translation.ProfileColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    <profiles:ProfilesComboBox
+                                    Profiles="{Binding Path=DataContext.ConversionProfiles,ElementName=UserControlX}"
+                                    SelectedProfile="{Binding Profile,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Margin="10 0" />
                                 </DataTemplate>
-                            </DataGridTemplateColumn.HeaderTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>

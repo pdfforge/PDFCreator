@@ -33,16 +33,16 @@
                     <TextBlock HorizontalAlignment="Left" Text="{Binding Translation.UsageStatisticsManualLinkText}"/>
                     <TextBlock HorizontalAlignment="Right" Margin="5 0">
                         <Hyperlink Command="{Binding ShowUserGuideCommand}">
-                            <TextBlock Text="{Binding Translation.UsageStatisticsLink}" />
+                            <TextBlock Text="{Binding Translation.UsageStatisticsLink}"  Style="{DynamicResource HyperLinkTextBlock}"/>
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
                     <TextBlock HorizontalAlignment="Left"  Text="{Binding Translation.PrivacyPolicy, Mode=OneWay}" />
                     <TextBlock HorizontalAlignment="Right" Margin="5 0">
-                        <Hyperlink NavigateUri="{Binding PrivatePolicy}"
+                        <Hyperlink NavigateUri="{Binding PrivacyPolicy}"
                                    Command="{Binding VisitWebsiteCommand}">
-                            <TextBlock Text="{Binding Translation.PrivacyPolicyLink}" />
+                            <TextBlock Text="{Binding Translation.PrivacyPolicyLink}"  Style="{DynamicResource HyperLinkTextBlock}" />
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>

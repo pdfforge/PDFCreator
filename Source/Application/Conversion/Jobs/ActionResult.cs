@@ -22,6 +22,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
             return actionResult.IsSuccess;
         }
 
+        public void Add(ActionResult actionResult)
+        {
+            foreach (var errorCode in actionResult)
+                Add(errorCode);
+        }
+
         public override string ToString()
         {
             return string.Join(Environment.NewLine, this.Select(x => x.ToString()).ToArray());
@@ -55,6 +61,19 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
                 else
                     this.Add(key, actionResultDict[key]);
             }
+        }
+    }
+
+    public class ActionResult<T> : ActionResult
+    {
+        public T Value { get; set; }
+
+        public ActionResult(ErrorCode errorCode) : base(errorCode)
+        { }
+
+        public ActionResult(T value)
+        {
+            Value = value;
         }
     }
 }

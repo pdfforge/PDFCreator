@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class TimeServerAccount : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -68,6 +67,23 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Url = Url;
 			copy.UserName = UserName;
 			return copy;
+		}
+		
+		public void ReplaceWith(TimeServerAccount source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(IsSecured != source.IsSecured)
+				IsSecured = source.IsSecured;
+				
+			Password = source.Password;
+			if(Url != source.Url)
+				Url = source.Url;
+				
+			if(UserName != source.UserName)
+				UserName = source.UserName;
+				
 		}
 		
 		public override bool Equals(object o)

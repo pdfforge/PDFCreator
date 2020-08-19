@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeArchitectViewModel : ArchitectViewModel
     {
-        public DesignTimeArchitectViewModel() : base(null, null, new TranslationUpdater(new TranslationFactory(), new ThreadManager()), null)
+        public DesignTimeArchitectViewModel() : base(null, null, null, new TranslationUpdater(new TranslationFactory(), new ThreadManager()), null)
         {
         }
     }

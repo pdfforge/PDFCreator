@@ -12,6 +12,8 @@
 
         bool DisableTitleTab { get; }
 
+        bool DisableHistory { get; }
+
         bool DisableAccountsTab { get; }
         bool DisableUsageStatistics { get; }
 
@@ -30,5 +32,10 @@
         bool LoadSharedAppSettings { get; }
         bool LoadSharedProfiles { get; }
         bool AllowUserDefinedProfiles { get; }
-    }
+
+        bool AllowSharedProfilesEditing { get; }
+
+        bool DisableLicenseExpirationReminder { get; }
+    };
 }
+

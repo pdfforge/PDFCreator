@@ -12,7 +12,7 @@
 
                             <Border BorderThickness="0">
                                 <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}" Background="Transparent"
-                                              SnapsToDevicePixels="False">
+                                              SnapsToDevicePixels="False" Cursor="Hand">
                                     <TextBlock
                                                      Margin="0 0 10 0"
                                                      FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource AncestorType=Expander}}"
@@ -31,7 +31,7 @@
                                                       VerticalAlignment="Stretch"
                                                       Data="M 1.5,1.0 L 9,7 L 17,0.5"
                                                       SnapsToDevicePixels="False"
-                                                      Stroke="{DynamicResource PdfforgeRed}"
+                                                      Stroke="{DynamicResource PdfforgeRedBrush}"
                                                       StrokeThickness="2"
                                                       RenderTransformOrigin="0.5,0.5">
                                             <Path.RenderTransform>
@@ -155,6 +155,5 @@
 
     <Style TargetType="{x:Type Expander}">
         <Setter Property="Template" Value="{StaticResource CustomExpanderTemplate}" />
-        <Setter Property="Cursor" Value="Hand" />
     </Style>
 </ResourceDictionary>

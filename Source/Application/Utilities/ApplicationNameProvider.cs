@@ -12,5 +12,10 @@ namespace pdfforge.PDFCreator.Utilities
         public string ApplicationName => "PDFCreator";
         public string EditionName { get; }
         public string ApplicationNameWithEdition => ApplicationName + " " + EditionName;
+
+        /// <summary>
+        /// Machine readable product name, e.g. pdfcreator_professional
+        /// </summary>
+        public string ProductIdentifier => ApplicationNameWithEdition.ToLowerInvariant().Replace(" ", "_");
     }
 }

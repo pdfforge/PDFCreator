@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             InitializeComponent();
             hightlightColorRegistration.RegisterHighlightColorResource(this);
 
-            // dummy reference to force GongSolutions.Wpf.DragDrop to be copied to bin folder
+            // dummy reference to force GongSolutions.Wpf.DragDrop to be copied into bin folder
             var t = typeof(GongSolutions.Wpf.DragDrop.DragDrop);
         }
     }

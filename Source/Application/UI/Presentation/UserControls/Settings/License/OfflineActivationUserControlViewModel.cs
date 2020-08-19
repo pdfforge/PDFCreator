@@ -11,6 +11,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using pdfforge.PDFCreator.Utilities.Threading;
+using pdfforge.PDFCreator.Utilities.Web;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
@@ -20,13 +21,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         //private readonly ILicenseChecker _licenseChecker;
         private readonly LicenseKeySyntaxChecker _licenseKeySyntaxChecker = new LicenseKeySyntaxChecker();
 
+        private readonly IWebLinkLauncher _webLinkLauncher;
         private readonly IOfflineActivator _offlineActivator;
 
-        private readonly IProcessStarter _processStarter;
-
-        public OfflineActivationUserControlViewModel(IProcessStarter process, IOfflineActivator offlineActivator, ITranslationUpdater translationUpdater):base(translationUpdater)
+        public OfflineActivationUserControlViewModel(IWebLinkLauncher webLinkLauncher, IOfflineActivator offlineActivator, ITranslationUpdater translationUpdater):base(translationUpdater)
         {
-            _processStarter = process;
+            _webLinkLauncher = webLinkLauncher;
             _offlineActivator = offlineActivator;
 
             CancelCommand = new DelegateCommand(ExecuteCancelCommand);
@@ -93,13 +93,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
         private void OpenOfflineActivationUrlCommandExecute(object obj)
         {
-            try
-            {
-                _processStarter.Start(OfflineActivationUrl);
-            }
-            catch (Exception)
-            {
-            }
+            _webLinkLauncher.Launch(OfflineActivationUrl);
         }
 
         private void ExecuteCancelCommand(object o)

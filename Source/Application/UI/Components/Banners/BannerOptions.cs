@@ -1,18 +1,15 @@
-﻿using System;
+﻿using pdfforge.PDFCreator.Core.Services.Cache;
+using System;
 
 namespace Banners
 {
-    public class BannerOptions
+    public class BannerOptions : CacheOption
     {
-        public BannerOptions(string indexUrl, string cacheDirectory, TimeSpan maxCacheDuration)
+        public BannerOptions(string indexUrl, string cacheDirectory, TimeSpan maxCacheDuration) : base(cacheDirectory, maxCacheDuration)
         {
             IndexUrl = indexUrl;
-            CacheDirectory = cacheDirectory;
-            MaxCacheDuration = maxCacheDuration;
         }
 
         public string IndexUrl { get; }
-        public string CacheDirectory { get; }
-        public TimeSpan MaxCacheDuration { get; }
     }
 }

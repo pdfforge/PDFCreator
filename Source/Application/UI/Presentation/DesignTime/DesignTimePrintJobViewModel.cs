@@ -1,5 +1,4 @@
-﻿using pdfforge.Obsidian.Trigger;
-using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
+﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
@@ -18,13 +17,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             : base(new DesignTimeSettingsProvider(),
                   new TranslationUpdater(new TranslationFactory(), new ThreadManager()),
                   new DesignTimeJobInfoQueue(),
-                  null,//IFileNameQuery
-                  new InteractionRequest(),
                   new DesignTimeCommandLocator(),
                   null,//IEventAggregator
                   null,//ISelectedProfileProvider
-                  null,//ICurrentSettings<ObservableCollection<ConversionProfile>>
-                  null,
                   null,
                   null,
                   null,
@@ -42,9 +37,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 OutputFileTemplate = @"C:\My Documents\MyFile.pdf"
             };
 
-            job.Profile = Profiles.First();
+            job.Profile = ProfilesWrapper.First().ConversionProfile;
 
-            SetJob(job);
+            SetNewJob(job);
         }
     }
 }

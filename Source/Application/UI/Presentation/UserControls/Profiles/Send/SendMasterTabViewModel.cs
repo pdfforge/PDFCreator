@@ -28,5 +28,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
         public bool HasNotSupportedFeatures => false;
+        public void MountView()
+        {
+            
+        }
+
+        public void UnmountView()
+        {
+        }
     }
 }

@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Settings for the PDF output format
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class PdfSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -125,6 +124,35 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.PageView = PageView;
 			copy.ViewerStartsOnPage = ViewerStartsOnPage;
 			return copy;
+		}
+		
+		public void ReplaceWith(PdfSettings source)
+		{
+			CompressColorAndGray.ReplaceWith(source.CompressColorAndGray);
+			CompressMonochrome.ReplaceWith(source.CompressMonochrome);
+			Security.ReplaceWith(source.Security);
+			Signature.ReplaceWith(source.Signature);
+			if(ColorModel != source.ColorModel)
+				ColorModel = source.ColorModel;
+				
+			if(DocumentView != source.DocumentView)
+				DocumentView = source.DocumentView;
+				
+			if(EnablePdfAValidation != source.EnablePdfAValidation)
+				EnablePdfAValidation = source.EnablePdfAValidation;
+				
+			if(NoFonts != source.NoFonts)
+				NoFonts = source.NoFonts;
+				
+			if(PageOrientation != source.PageOrientation)
+				PageOrientation = source.PageOrientation;
+				
+			if(PageView != source.PageView)
+				PageView = source.PageView;
+				
+			if(ViewerStartsOnPage != source.ViewerStartsOnPage)
+				ViewerStartsOnPage = source.ViewerStartsOnPage;
+				
 		}
 		
 		public override bool Equals(object o)

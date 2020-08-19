@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter
 {
-    internal class EnumToBooleanConverter : IValueConverter
+    public class EnumToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

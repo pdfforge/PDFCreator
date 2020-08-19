@@ -19,18 +19,20 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private readonly IEventAggregator _eventAggregator;
         private readonly IDispatcher _dispatcher;
         private bool _skipSettingsCheck;
-        public IUpdateAssistant UpdateAssistant { get; }
+        public IUpdateHelper UpdateHelper { get; }
 
         public MainShellViewModel ViewModel => (MainShellViewModel)DataContext;
 
-        public MainShell(MainShellViewModel vm, IHightlightColorRegistration hightlightColorRegistration, IUpdateAssistant updateAssistant, IEventAggregator eventAggregator, IDispatcher dispatcher)
+        public MainShell(MainShellViewModel vm, IHightlightColorRegistration hightlightColorRegistration, IUpdateHelper updateHelper, IEventAggregator eventAggregator, IDispatcher dispatcher)
         {
             _eventAggregator = eventAggregator;
             _dispatcher = dispatcher;
             DataContext = vm;
-            UpdateAssistant = updateAssistant;
+            UpdateHelper = updateHelper;
             InitializeComponent();
+            vm.Init(Close);
             hightlightColorRegistration.RegisterHighlightColorResource(this);
+            TransposerHelper.Register(this, vm);
         }
 
         private void OnTryCloseApplicationEvent()

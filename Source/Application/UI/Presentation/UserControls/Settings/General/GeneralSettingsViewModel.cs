@@ -19,5 +19,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         {
             translationUpdater.RegisterAndSetTranslation(tf => RaisePropertyChanged(nameof(Title)));
         }
+
+        public void MountView()
+        {
+            
+        }
+
+        public void UnmountView()
+        {
+        }
     }
 }

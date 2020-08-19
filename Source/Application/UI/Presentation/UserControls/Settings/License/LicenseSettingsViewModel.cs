@@ -18,14 +18,15 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
+using Prism.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 {
     public class LicenseSettingsOnlineViewModel : LicenseSettingsViewModel
     {
         public LicenseSettingsOnlineViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings)
-            : base(processStarter, licenseChecker, null, interactionRequest, translationUpdater, gpoSettings)
+            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings, IEventAggregator eventAggregator)
+            : base(processStarter, licenseChecker, null, interactionRequest, translationUpdater, gpoSettings, eventAggregator)
         //offlineActivator not required. Set to null. 
         {
         }
@@ -46,8 +47,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
     public class LicenseSettingsOfflineViewModel : LicenseSettingsViewModel
     {
         public LicenseSettingsOfflineViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker, IOfflineActivator offlineActivator,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings)
-            : base(processStarter, licenseChecker, offlineActivator, interactionRequest, translationUpdater, gpoSettings)
+            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings, IEventAggregator eventAggregator)
+            : base(processStarter, licenseChecker, offlineActivator, interactionRequest, translationUpdater, gpoSettings,eventAggregator)
         {
         }
 
@@ -69,6 +70,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         
         private readonly IGpoSettings _gpoSettings;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IInteractionRequest _interactionRequest;
         private readonly ILicenseChecker _licenseChecker;
         private readonly LicenseKeySyntaxChecker _licenseKeySyntaxChecker = new LicenseKeySyntaxChecker();
@@ -78,7 +80,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         private Option<Activation, LicenseError> _activation;
         
         public LicenseSettingsViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker, IOfflineActivator offlineActivator,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings):base(translationUpdater)
+            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings,
+            IEventAggregator eventAggregator):base(translationUpdater)
         {
             ShareLicenseForAllUsersEnabled = true;
             _processStarter = processStarter;
@@ -87,6 +90,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
             _interactionRequest = interactionRequest;
             _gpoSettings = gpoSettings;
+            _eventAggregator = eventAggregator;
 
             OnlineActivationAsyncCommand = new AsyncCommand(OnlineActivationCommandExecute, OnlineActivationCommandCanExecute);
             OfflineActivationAsyncCommand = new AsyncCommand(OfflineActivationCommandExecute, OfflineActivationCommandCanExecute);
@@ -209,6 +213,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
                 //Just to show in UI
                 //LicenseChecker in UpdateActivation can't save activation
                 await UpdateActivation(activation);
+                RaiseLicensePropertyChangedEvents();
             }
         }
 
@@ -258,6 +263,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             RaisePropertyChanged(nameof(LastActivationTime));
             RaisePropertyChanged(nameof(Licensee));
             RaisePropertyChanged(nameof(MachineId));
+
         }
 
         public InputValidation ValidateLicenseKey(string s)
@@ -332,19 +338,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             }
             else if (ShareLicenseForAllUsersEnabled)
             {
-                //StoreLicenseForAllUsersQuery is also a Successfull Message
+                //StoreLicenseForAllUsersQuery is also a Successful Message
                 if (activation.HasValue)
                 {
                     var a = activation.ValueOr(() => null);
                     await StoreLicenseForAllUsersQuery(a);
                     RaiseCloseWindow();
                 }
-
-                //activation.MatchSome(async a =>
-                //{
-                //    await StoreLicenseForAllUsersQuery(a);
-                //    RaiseCloseWindow();
-                //});
             }
             else
             {
@@ -358,7 +358,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
         private string DetermineLicenseStatusText(Option<Activation, LicenseError> activation)
         {
-            return activation.Match(DetermineLicenseStatusText, e => Translation.LicenseStatusNoLicense);
+            return activation.Match(DetermineLicenseStatusText, e =>
+            {
+                switch (e)
+                {
+                    case LicenseError.NoActivation:
+                    case LicenseError.NoLicenseKey:
+                        return Translation.LicenseStatusNoLicenseKey;
+                    default: return Translation.LicenseStatusNoServerConnection;
+                }
+            });
         }
 
         private LicenseStatusState DetermineLicenseStatusState(Activation activation)
@@ -450,6 +459,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         {
             public string Translation;
             public LicenseStatusForView Status;
+        }
+
+        public void MountView()
+        {
+            
+        }
+
+        public void UnmountView()
+        {
         }
     }
 

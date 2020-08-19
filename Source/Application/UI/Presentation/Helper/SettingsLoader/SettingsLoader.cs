@@ -30,10 +30,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         private readonly EditionHelper _editionHelper;
         protected readonly IDefaultSettingsBuilder DefaultSettingsBuilder;
         private readonly IMigrationStorageFactory _migrationStorageFactory;
+        private readonly IActionOrderChecker _actionOrderChecker;
         private readonly ITranslationHelper _translationHelper;
         private readonly ISettingsMover _settingsMover;
+        private readonly ISettingsBackup _settingsBackup;
 
-        public SettingsLoaderBase(ITranslationHelper translationHelper, ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IPrinterHelper printerHelper, EditionHelper editionHelper, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory)
+        public SettingsLoaderBase(ITranslationHelper translationHelper, ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IPrinterHelper printerHelper, EditionHelper editionHelper, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderChecker actionOrderChecker, ISettingsBackup settingsBackup)
         {
             _settingsMover = settingsMover;
             InstallationPathProvider = installationPathProvider;
@@ -41,13 +43,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             _editionHelper = editionHelper;
             DefaultSettingsBuilder = defaultSettingsBuilder;
             _migrationStorageFactory = migrationStorageFactory;
+            _actionOrderChecker = actionOrderChecker;
             _translationHelper = translationHelper;
+            _settingsBackup = settingsBackup;
         }
 
         public void SaveSettingsInRegistry(PdfCreatorSettings settings)
         {
             CheckGuids(settings);
-            var regStorage = BuildStorage();
+            var regStorage = BuildMigrationStorage();
             _logger.Debug("Saving settings");
             settings.SaveData(regStorage);
             LogProfiles(settings);
@@ -56,34 +60,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         public PdfCreatorSettings LoadPdfCreatorSettings()
         {
             MoveSettingsIfRequired();
-            var storage = _migrationStorageFactory.GetMigrationStorage(BuildStorage(), CreatorAppSettings.ApplicationSettingsVersion);
 
             var settings = (PdfCreatorSettings)DefaultSettingsBuilder.CreateEmptySettings();
-
-            if (UserSettingsExist())
-            {
-                var settingsMigrationStorage = _migrationStorageFactory.GetMigrationStorage(storage, CreatorAppSettings.ApplicationSettingsVersion);
-                settings.LoadData(settingsMigrationStorage);
-            }
+            var migrationStorage = BuildMigrationStorage();
+            settings.LoadData(migrationStorage);
 
             ApplySharedSettings(settings);
 
-            if (!_translationHelper.HasTranslation(settings.ApplicationSettings.Language))
-            {
-                var language = _translationHelper.FindBestLanguage(CultureInfo.CurrentCulture);
-                settings.ApplicationSettings.Language = language.Iso2;
-            }
-
-            if (!CheckValidSettings(settings))
+            if (settings.ConversionProfiles.Count <= 0)
             {
                 settings = CreateDefaultSettings(FindPrimaryPrinter(), settings.ApplicationSettings.Language);
             }
 
-            CheckAndAddMissingDefaultProfile(settings, DefaultSettingsBuilder);
+            CheckLanguage(settings);
+            CheckAndAddMissingDefaultProfile(settings);
             CheckPrinterMappings(settings);
             CheckTitleReplacement(settings);
             CheckUpdateInterval(settings);
             CheckDefaultViewers(settings);
+            _actionOrderChecker.Check(settings.ConversionProfiles);
 
             _translationHelper.TranslateProfileList(settings.ConversionProfiles);
 
@@ -127,22 +122,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             _settingsMover.MoveSettings();
         }
 
-        private IStorage BuildStorage()
+        private IStorage BuildMigrationStorage()
         {
             var storage = new RegistryStorage(RegistryHive.CurrentUser, InstallationPathProvider.SettingsRegistryPath, true);
-
-            return storage;
-        }
-
-        private bool UserSettingsExist()
-        {
-            using (var k = Registry.CurrentUser.OpenSubKey(InstallationPathProvider.SettingsRegistryPath))
-                return k != null;
-        }
-
-        public bool CheckValidSettings(PdfCreatorSettings settings)
-        {
-            return settings.ConversionProfiles.Count > 0;
+            return _migrationStorageFactory.GetMigrationStorage(storage, CreatorAppSettings.ApplicationSettingsVersion, _settingsBackup);
         }
 
         /// <summary>
@@ -179,15 +162,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             return "PDFCreator";
         }
 
+        private void CheckLanguage(PdfCreatorSettings settings)
+        {
+            if (!_translationHelper.HasTranslation(settings.ApplicationSettings.Language))
+            {
+                var language = _translationHelper.FindBestLanguage(CultureInfo.CurrentUICulture);
+
+                var setupLanguage = _translationHelper.SetupLanguage;
+                if (!string.IsNullOrWhiteSpace(setupLanguage) && _translationHelper.HasTranslation(setupLanguage))
+                    language = _translationHelper.FindBestLanguage(setupLanguage);
+
+                settings.ApplicationSettings.Language = language.Iso2;
+            }
+        }
+
         /// <summary>
         ///     Functions checks, if a default profile exists and adds one.
         /// </summary>
-        private void CheckAndAddMissingDefaultProfile(PdfCreatorSettings settings, IDefaultSettingsBuilder settingsBuilder)
+        private void CheckAndAddMissingDefaultProfile(PdfCreatorSettings settings)
         {
             var defaultProfile = settings.GetProfileByGuid(ProfileGuids.DEFAULT_PROFILE_GUID);
             if (defaultProfile == null)
             {
-                defaultProfile = settingsBuilder.CreateDefaultProfile();
+                defaultProfile = DefaultSettingsBuilder.CreateDefaultProfile();
                 settings.ConversionProfiles.Add(defaultProfile);
             }
             else
@@ -274,15 +271,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 
     public class SettingsLoader : SettingsLoaderBase
     {
-        public SettingsLoader(
-            ITranslationHelper translationHelper,
-            ISettingsMover settingsMover,
-            IInstallationPathProvider installationPathProvider,
-            IPrinterHelper printerHelper,
-            EditionHelper editionHelper,
-            IDefaultSettingsBuilder defaultSettingsBuilder,
-            IMigrationStorageFactory migrationStorageFactory) :
-            base(translationHelper, settingsMover, installationPathProvider, printerHelper, editionHelper, defaultSettingsBuilder, migrationStorageFactory)
+        public SettingsLoader(ITranslationHelper translationHelper, ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IPrinterHelper printerHelper, EditionHelper editionHelper, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderChecker actionOrderChecker, ISettingsBackup settingsBackup) : base(translationHelper, settingsMover, installationPathProvider, printerHelper, editionHelper, defaultSettingsBuilder, migrationStorageFactory, actionOrderChecker, settingsBackup)
         {
         }
 

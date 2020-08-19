@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// AutoSave allows to create PDF files without user interaction
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class AutoSave : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -49,6 +48,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			return copy;
+		}
+		
+		public void ReplaceWith(AutoSave source)
+		{
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(EnsureUniqueFilenames != source.EnsureUniqueFilenames)
+				EnsureUniqueFilenames = source.EnsureUniqueFilenames;
+				
 		}
 		
 		public override bool Equals(object o)

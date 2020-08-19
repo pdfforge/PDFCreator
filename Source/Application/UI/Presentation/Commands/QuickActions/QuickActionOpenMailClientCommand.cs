@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
+﻿using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
@@ -21,8 +21,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
         {
             List<string> files = GetPaths(obj);
             var signature = _mailSignatureHelper.ComposeMailSignature();
-
-            _action.Process("", "", false, true, signature, "", "", "", true, files);
+            _action.OpenEmptyClient(files, signature);
         }
     }
 }

@@ -13,7 +13,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converter:IconConverter x:Key="IconConverter" />
-    <converter:DebugConverter x:Key="DebugConverter" />
     <converter:AreEqualConverter x:Key="CollapsedToVisibleConverter" Reference="{x:Static Visibility.Collapsed}" EqualValue="{x:Static Visibility.Visible}" NotEqualValue="{x:Static Visibility.Hidden}" />
     <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrueConverter" TrueValue="Visible" FalseValue="Hidden" />
 
@@ -137,7 +136,8 @@
                 </Grid>
 
                 <StackPanel>
-
+                    <StackPanel.Resources>
+                    </StackPanel.Resources>
                     <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

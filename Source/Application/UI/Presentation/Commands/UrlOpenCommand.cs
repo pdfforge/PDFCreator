@@ -1,17 +1,17 @@
 ﻿using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Utilities.Web;
 using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
     public class UrlOpenCommand : IInitializedCommand<string>
     {
-        private readonly IProcessStarter _processStarter;
+        private readonly IWebLinkLauncher _webLinkLauncher;
         protected string Url { get; set; }
 
-        public UrlOpenCommand(IProcessStarter processStarter)
+        public UrlOpenCommand(IWebLinkLauncher webLinkLauncher)
         {
-            _processStarter = processStarter;
+            _webLinkLauncher = webLinkLauncher;
         }
 
         public virtual bool CanExecute(object parameter)
@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
             try
             {
-                _processStarter.Start(url);
+                _webLinkLauncher.Launch(url);
             }
             catch
             {

@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class JobHistory : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -81,6 +80,28 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.LastDateTo = LastDateTo;
 			copy.LastSearchText = LastSearchText;
 			return copy;
+		}
+		
+		public void ReplaceWith(JobHistory source)
+		{
+			if(Capacity != source.Capacity)
+				Capacity = source.Capacity;
+				
+			if(Column != source.Column)
+				Column = source.Column;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(LastDateFrom != source.LastDateFrom)
+				LastDateFrom = source.LastDateFrom;
+				
+			if(LastDateTo != source.LastDateTo)
+				LastDateTo = source.LastDateTo;
+				
+			if(LastSearchText != source.LastSearchText)
+				LastSearchText = source.LastSearchText;
+				
 		}
 		
 		public override bool Equals(object o)

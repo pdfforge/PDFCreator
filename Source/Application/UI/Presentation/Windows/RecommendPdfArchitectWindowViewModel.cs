@@ -4,7 +4,7 @@ using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Utilities.Web;
 using System.Media;
 using System.Windows.Input;
 
@@ -12,15 +12,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
     public class RecommendPdfArchitectWindowViewModel : OverlayViewModelBase<RecommendPdfArchitectInteraction, RecommendPdfArchitectWindowTranslation>
     {
-        private readonly IProcessStarter _processStarter;
+        private readonly IWebLinkLauncher _webLinkLauncher;
         private readonly ISoundPlayer _soundPlayer;
 
         // ReSharper disable once MemberCanBeProtected.Global
-        public RecommendPdfArchitectWindowViewModel(ISoundPlayer soundPlayer, IProcessStarter processStarter, ITranslationUpdater translationUpdater)
+        public RecommendPdfArchitectWindowViewModel(ISoundPlayer soundPlayer, IWebLinkLauncher webLinkLauncher, ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _soundPlayer = soundPlayer;
-            _processStarter = processStarter;
+            _webLinkLauncher = webLinkLauncher;
             InfoCommand = new DelegateCommand(ExecuteInfo);
             DownloadCommand = new DelegateCommand(ExecuteDownload);
         }
@@ -31,13 +31,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         private void ExecuteInfo(object o)
         {
-            _processStarter.Start(Urls.ArchitectWebsiteUrl);
+            _webLinkLauncher.Launch(Urls.ArchitectWebsiteUrl);
             FinishInteraction();
         }
 
         private void ExecuteDownload(object o)
         {
-            _processStarter.Start(Urls.ArchitectDownloadUrl);
+            _webLinkLauncher.Launch(Urls.ArchitectDownloadUrl);
             FinishInteraction();
         }
 

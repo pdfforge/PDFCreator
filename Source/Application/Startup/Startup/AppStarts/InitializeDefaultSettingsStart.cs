@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {
@@ -24,14 +25,14 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             _storageFactory = storageFactory;
         }
 
-        public override ExitCode Run()
+        public override Task<ExitCode> Run()
         {
             var settings = _iniSettingsLoader.LoadIniSettings(SettingsFile);
             if (settings == null)
-                return ExitCode.InvalidSettingsFile;
+                return Task.FromResult(ExitCode.InvalidSettingsFile);
 
             if (!_settingsProvider.CheckValidSettings(settings as PdfCreatorSettings))
-                return ExitCode.InvalidSettingsInGivenFile;
+                return Task.FromResult(ExitCode.InvalidSettingsInGivenFile);
 
             try
             {
@@ -40,10 +41,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             }
             catch (Exception)
             {
-                return ExitCode.ErrorWhileSavingDefaultSettings;
+                return Task.FromResult(ExitCode.ErrorWhileSavingDefaultSettings);
             }
 
-            return ExitCode.Ok;
+            return Task.FromResult(ExitCode.Ok);
         }
     }
 }

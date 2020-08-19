@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Upload the converted documents with FTP
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Ftp : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -68,6 +68,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			return copy;
+		}
+		
+		public void ReplaceWith(Ftp source)
+		{
+			if(AccountId != source.AccountId)
+				AccountId = source.AccountId;
+				
+			if(Directory != source.Directory)
+				Directory = source.Directory;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(EnsureUniqueFilenames != source.EnsureUniqueFilenames)
+				EnsureUniqueFilenames = source.EnsureUniqueFilenames;
+				
 		}
 		
 		public override bool Equals(object o)

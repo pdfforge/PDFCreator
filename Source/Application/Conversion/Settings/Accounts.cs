@@ -13,7 +13,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class Accounts : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -174,6 +173,45 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			
 			return copy;
+		}
+		
+		public void ReplaceWith(Accounts source)
+		{
+			
+			DropboxAccounts.Clear();
+			for (int i = 0; i < source.DropboxAccounts.Count; i++)
+			{
+				DropboxAccounts.Add(source.DropboxAccounts[i].Copy());
+			}
+			
+			
+			FtpAccounts.Clear();
+			for (int i = 0; i < source.FtpAccounts.Count; i++)
+			{
+				FtpAccounts.Add(source.FtpAccounts[i].Copy());
+			}
+			
+			
+			HttpAccounts.Clear();
+			for (int i = 0; i < source.HttpAccounts.Count; i++)
+			{
+				HttpAccounts.Add(source.HttpAccounts[i].Copy());
+			}
+			
+			
+			SmtpAccounts.Clear();
+			for (int i = 0; i < source.SmtpAccounts.Count; i++)
+			{
+				SmtpAccounts.Add(source.SmtpAccounts[i].Copy());
+			}
+			
+			
+			TimeServerAccounts.Clear();
+			for (int i = 0; i < source.TimeServerAccounts.Count; i++)
+			{
+				TimeServerAccounts.Add(source.TimeServerAccounts[i].Copy());
+			}
+			
 		}
 		
 		public override bool Equals(object o)

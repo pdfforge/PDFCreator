@@ -7,22 +7,31 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient
 {
-    public class MailClientControlViewModel : ProfileUserControlViewModel<MailClientTabTranslation>
+    public class MailClientControlViewModel : MailBaseControlViewModel<MailClientTabTranslation>
     {
         private readonly IClientTestEmail _clientTestEmail;
         private readonly IInteractionRequest _interactionRequest;
+
         public TokenViewModel<ConversionProfile> RecipientsTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsCcTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsBccTokenViewModel { get; private set; }
+
         public DelegateCommand EmailClientTestCommand { get; set; }
         public DelegateCommand EditEmailTextCommand { get; set; }
         private EmailClientSettings EmailClientSettings => CurrentProfile?.EmailClientSettings;
 
-        public MailClientControlViewModel(IInteractionRequest interactionRequest, IClientTestEmail clientTestEmail, ITranslationUpdater translationUpdater,
-            ISelectedProfileProvider selectedProfileProvider, ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher) : base(translationUpdater, selectedProfileProvider, dispatcher)
+        public MailClientControlViewModel(IInteractionRequest interactionRequest,
+            IClientTestEmail clientTestEmail,
+            ITranslationUpdater translationUpdater,
+            ISelectedProfileProvider selectedProfileProvider,
+            ITokenViewModelFactory tokenViewModelFactory,
+            IDispatcher dispatcher,
+            IOpenFileInteractionHelper openFileInteractionHelper)
+            : base(translationUpdater, selectedProfileProvider, dispatcher, openFileInteractionHelper)
         {
             _interactionRequest = interactionRequest;
             _clientTestEmail = clientTestEmail;
@@ -31,6 +40,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
 
             EmailClientTestCommand = new DelegateCommand(EmailClientTestExecute);
             EditEmailTextCommand = new DelegateCommand(EditEmailTextExecute);
+            RemoveSelectedFromListCommand = new DelegateCommand(RemoveSelectedFromList);
         }
 
         private void CreateTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
@@ -51,7 +61,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
                 .WithSelector(p => p.EmailClientSettings.RecipientsBcc)
                 .Build();
 
-            RaisePropertyChanged(nameof(RecipientsTokenViewModel));
+            AdditionalAttachmentsTokenViewModel = builder
+                .WithSelector(p => AdditionalAttachmentsForTextBox)
+                .WithButtonCommand(SelectAttachmentFileAction)
+                .WithSecondaryButtonCommand(AddFilePathToAdditionalAttachments)
+                .Build();
+        }
+
+        public override void MountView()
+        {
+            RecipientsTokenViewModel.MountView();
+            RecipientsCcTokenViewModel.MountView();
+            RecipientsBccTokenViewModel.MountView();
+            AdditionalAttachmentsTokenViewModel.MountView();
+
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+
+            RecipientsTokenViewModel.UnmountView();
+            RecipientsCcTokenViewModel.UnmountView();
+            RecipientsBccTokenViewModel.UnmountView();
+            AdditionalAttachmentsTokenViewModel.UnmountView();
         }
 
         private void EmailClientTestExecute(object obj)
@@ -60,6 +94,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
             if (!success)
                 DisplayNoClientFoundMessage();
         }
+
+        protected override IMailActionSettings MailActionSettings => EmailClientSettings;
 
         private void DisplayNoClientFoundMessage()
         {

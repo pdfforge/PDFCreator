@@ -3,7 +3,7 @@
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
     <addRaisePropertyChanged>True</addRaisePropertyChanged>
-    <generatorVersion>1.4.1.0</generatorVersion>
+    <generatorVersion>1.5.0.0</generatorVersion>
   </options>
   <classes>
     <class name="ParameterSettings" propertyName="ParameterSettings" readonly="False" classtype="Class">
@@ -14,10 +14,10 @@
           <comment>OriginalFilePath from command line parameter</comment>
         </value>
         <value name="Outputfile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment>Outputfile path from command line paramter</comment>
+          <comment>Outputfile path from command line parameter</comment>
         </value>
         <value name="Profile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-          <comment>Profile from command line paramter</comment>
+          <comment>Profile from command line parameter</comment>
         </value>
       </class>
     </class>
@@ -44,8 +44,20 @@
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
             </value>
+            <value name="AuthenticationType" type="value" datatype="Enum" enumname="AuthenticationType" defaultvalue="AuthenticationType.NormalAuthentication" islist="False">
+              <comment>Normal authentication or with key file.</comment>
+            </value>
+            <value name="FtpConnectionType" type="value" datatype="Enum" enumname="FtpConnectionType" defaultvalue="FtpConnectionType.Ftp" islist="False">
+              <comment>The connection type used for the FTP action.</comment>
+            </value>
+            <value name="KeyFileRequiresPass" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+              <comment>True if key file requires a password.</comment>
+            </value>
             <value name="Password" type="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
+            </value>
+            <value name="PrivateKeyFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+              <comment>The path private key file for the sftp connection.</comment>
             </value>
             <value name="Server" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment>Hostname or IP address of the FTP server</comment>
@@ -60,7 +72,7 @@
               <comment />
             </value>
             <value name="IsBasicAuthentication" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
-              <comment>If true, basic authenification with user-.name and password is used</comment>
+              <comment>If true, basic authentication with user-.name and password is used</comment>
             </value>
             <value name="Password" type="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
@@ -178,7 +190,7 @@
             <comment>Enable usage statistics</comment>
           </value>
           <value name="UsageStatsInfo" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-            <comment>Show or hide the usage statisticss info on first start</comment>
+            <comment>Show or hide the usage statistics info on first start</comment>
           </value>
         </class>
         <value name="ConversionTimeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
@@ -189,6 +201,9 @@
         </value>
         <value name="Language" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment />
+        </value>
+        <value name="LicenseExpirationReminder" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
+          <comment>Remind that license will expire soon</comment>
         </value>
         <value name="LoggingLevel" type="value" datatype="Enum" enumname="LoggingLevel" defaultvalue="LoggingLevel.Error" islist="False">
           <comment />
@@ -231,11 +246,17 @@
           <value name="File" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Filename of the PDF that will be used as background</comment>
           </value>
+          <value name="FitToPage" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>Enable to resize the background to fit the document page</comment>
+          </value>
           <value name="OnAttachment" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, the background will be placed on the attachment as well</comment>
           </value>
           <value name="OnCover" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, the background will be placed on the cover as well</comment>
+          </value>
+          <value name="Opacity" type="value" datatype="Int" enumname="" defaultvalue="100" islist="False">
+            <comment>Opacity for background in percent</comment>
           </value>
           <value name="Repetition" type="value" datatype="Enum" enumname="BackgroundRepetition" defaultvalue="BackgroundRepetition.RepeatLastPage" islist="False">
             <comment>Defines the way the background document is repeated.</comment>
@@ -251,9 +272,9 @@
           </value>
         </class>
         <class name="CustomScript" propertyName="CustomScript" readonly="False" classtype="Class">
-          <comment>Pre- and postconversion actions calling functions from a custom script</comment>
+          <comment>Pre- and post-conversion actions calling functions from a custom script</comment>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>Enables the custom script pre- and postconversion action</comment>
+            <comment>Enables the custom script pre- and post-conversion action</comment>
           </value>
           <value name="ScriptFilename" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Filename of the custom script in application directory 'Cs-Scripts' folder</comment>
@@ -282,6 +303,9 @@
           <value name="AddSignature" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Add the PDFCreator signature to the mail</comment>
           </value>
+          <value name="AdditionalAttachments" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
+            <comment>The list of additional attachments for the e-mail</comment>
+          </value>
           <value name="Content" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Body text of the e-mail</comment>
           </value>
@@ -292,13 +316,13 @@
             <comment>Use html for e-mail body</comment>
           </value>
           <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="RecipientsBcc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="RecipientsCc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="Subject" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Subject line of the e-mail</comment>
@@ -312,6 +336,9 @@
           <value name="AddSignature" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Add the PDFCreator signature to the mail</comment>
           </value>
+          <value name="AdditionalAttachments" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
+            <comment>The list of additional attachments for the e-mail</comment>
+          </value>
           <value name="Content" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Body text of the mail</comment>
           </value>
@@ -322,16 +349,25 @@
             <comment>Use html for e-mail body</comment>
           </value>
           <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="RecipientsBcc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="RecipientsCc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>The list of receipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+            <comment>The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
           </value>
           <value name="Subject" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Subject line of the e-mail</comment>
+          </value>
+        </class>
+        <class name="ForwardToFurtherProfile" propertyName="ForwardToFurtherProfile" readonly="False" classtype="Class">
+          <comment />
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment />
+          </value>
+          <value name="ProfileGuid" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment />
           </value>
         </class>
         <class name="Ftp" propertyName="Ftp" readonly="False" classtype="Class">
@@ -553,7 +589,7 @@
             <comment>Can users delete this profile?</comment>
           </value>
           <value name="IsShared" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>True for shrared profiles</comment>
+            <comment>True for shared profiles</comment>
           </value>
           <value name="Renamable" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Can users rename this profile?</comment>
@@ -574,7 +610,7 @@
             <comment>If false, the given script or application will be executed in a hidden window</comment>
           </value>
           <value name="WaitForScript" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-            <comment>Wait until the script excution has ended</comment>
+            <comment>Wait until the script execution has ended</comment>
           </value>
         </class>
         <class name="Stamping" propertyName="Stamping" readonly="False" classtype="Class">
@@ -588,6 +624,9 @@
           <value name="FontAsOutline" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>If true, the text will be rendered as outline. If false, it will be filled.</comment>
           </value>
+          <value name="FontFile" type="value" datatype="String" enumname="" defaultvalue="arial.ttf" islist="False">
+            <comment>PostScript name of the stamp font.</comment>
+          </value>
           <value name="FontName" type="value" datatype="String" enumname="" defaultvalue="Arial" islist="False">
             <comment>Name of the font. (this is only used as a hint, the PostScriptFontName contains the real name)</comment>
           </value>
@@ -596,9 +635,6 @@
           </value>
           <value name="FontSize" type="value" datatype="Float" enumname="" defaultvalue="48" islist="False">
             <comment>Size of the font</comment>
-          </value>
-          <value name="PostScriptFontName" type="value" datatype="String" enumname="" defaultvalue="Arial" islist="False">
-            <comment>PostScript name of the stamp font.</comment>
           </value>
           <value name="StampText" type="value" datatype="String" enumname="" defaultvalue="Confidential" islist="False">
             <comment>Text that will be stamped</comment>
@@ -620,16 +656,40 @@
           </value>
         </class>
         <class name="UserTokens" propertyName="UserTokens" readonly="False" classtype="Class">
-          <comment>Parse ps files for user definied tokens</comment>
+          <comment>Parse ps files for user defined tokens</comment>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>Activate parsing ps files for user tokens (Only available in PDFCreator Business)</comment>
+            <comment>Activate parsing ps files for user tokens (Only available in the PDFCreator business editions)</comment>
           </value>
           <value name="Seperator" type="value" datatype="Enum" enumname="UserTokenSeperator" defaultvalue="UserTokenSeperator.SquareBrackets" islist="False">
-            <comment>UserToken seperator in the document</comment>
+            <comment>UserToken separator in the document</comment>
           </value>
         </class>
+        <class name="Watermark" propertyName="Watermark" readonly="False" classtype="Class">
+          <comment>Adds a watermark to the resulting document</comment>
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+            <comment>Enables the WatermarkAction</comment>
+          </value>
+          <value name="File" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>Filename of the PDF that will be used as watermark</comment>
+          </value>
+          <value name="FitToPage" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>Enable to resize the watermark to fit the document page</comment>
+          </value>
+          <value name="Opacity" type="value" datatype="Int" enumname="" defaultvalue="50" islist="False">
+            <comment>Opacity for watermark in percent</comment>
+          </value>
+          <value name="Repetition" type="value" datatype="Enum" enumname="BackgroundRepetition" defaultvalue="BackgroundRepetition.RepeatLastPage" islist="False">
+            <comment>Defines the way the watermark document is repeated</comment>
+          </value>
+        </class>
+        <value name="ActionOrder" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
+          <comment> Order in which actions are processed by an executing job </comment>
+        </value>
         <value name="AuthorTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobAuthor&gt;" islist="False">
           <comment>Template for the Author field. This may contain tokens.</comment>
+        </value>
+        <value name="EnableWorkflowEditor" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+          <comment />
         </value>
         <value name="FileNameTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;Title&gt;" islist="False">
           <comment>Template of which the filename will be created. This may contain Tokens.</comment>
@@ -651,6 +711,9 @@
         </value>
         <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
           <comment>Default format for this print job.</comment>
+        </value>
+        <value name="SaveFileTemporary" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+          <comment>Enable to save files only in a temp directory</comment>
         </value>
         <value name="ShowAllNotifications" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
           <comment>Show a notification after converting the document</comment>
@@ -694,7 +757,7 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="8" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="9" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
         </value>
       </class>

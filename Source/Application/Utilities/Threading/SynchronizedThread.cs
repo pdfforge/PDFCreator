@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Utilities.Threading
 {
@@ -11,6 +12,7 @@ namespace pdfforge.PDFCreator.Utilities.Threading
     {
         public Thread Thread { get; }
         private readonly ThreadStart _threadFunction;
+        private readonly TaskCompletionSource<bool> _taskCompletionSource = new TaskCompletionSource<bool>();
 
         /// <summary>
         ///     Creates a new SynchronizedThread with the given function
@@ -83,6 +85,11 @@ namespace pdfforge.PDFCreator.Utilities.Threading
             return Thread.Join(timeout);
         }
 
+        public Task JoinAsync()
+        {
+            return _taskCompletionSource.Task;
+        }
+
         /// <summary>
         ///     Starts thread execution
         /// </summary>
@@ -111,6 +118,7 @@ namespace pdfforge.PDFCreator.Utilities.Threading
             finally
             {
                 OnThreadFinished?.Invoke(this, new ThreadFinishedEventArgs(this));
+                _taskCompletionSource.SetResult(true);
             }
         }
     }

@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Place a stamp text on all pages of the document
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Stamping : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -39,6 +38,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool FontAsOutline { get; set; } = true;
 		
 		/// <summary>
+		/// PostScript name of the stamp font.
+		/// </summary>
+		public string FontFile { get; set; } = "arial.ttf";
+		
+		/// <summary>
 		/// Name of the font. (this is only used as a hint, the PostScriptFontName contains the real name)
 		/// </summary>
 		public string FontName { get; set; } = "Arial";
@@ -52,11 +56,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// Size of the font
 		/// </summary>
 		public float FontSize { get; set; } = 48;
-		
-		/// <summary>
-		/// PostScript name of the stamp font.
-		/// </summary>
-		public string PostScriptFontName { get; set; } = "Arial";
 		
 		/// <summary>
 		/// Text that will be stamped
@@ -74,10 +73,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			catch { Color =  ColorTranslator.FromHtml("#CCCCCC");}
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			FontAsOutline = bool.TryParse(data.GetValue(@"" + path + @"FontAsOutline"), out var tmpFontAsOutline) ? tmpFontAsOutline : true;
+			try { FontFile = Data.UnescapeString(data.GetValue(@"" + path + @"FontFile")); } catch { FontFile = "arial.ttf";}
 			try { FontName = Data.UnescapeString(data.GetValue(@"" + path + @"FontName")); } catch { FontName = "Arial";}
 			FontOutlineWidth = int.TryParse(data.GetValue(@"" + path + @"FontOutlineWidth"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontOutlineWidth) ? tmpFontOutlineWidth : 2;
 			FontSize = float.TryParse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontSize) ? tmpFontSize : 48;
-			try { PostScriptFontName = Data.UnescapeString(data.GetValue(@"" + path + @"PostScriptFontName")); } catch { PostScriptFontName = "Arial";}
 			try { StampText = Data.UnescapeString(data.GetValue(@"" + path + @"StampText")); } catch { StampText = "Confidential";}
 		}
 		
@@ -86,10 +85,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Color", ColorTranslator.ToHtml(Color));
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
 			data.SetValue(@"" + path + @"FontAsOutline", FontAsOutline.ToString());
+			data.SetValue(@"" + path + @"FontFile", Data.EscapeString(FontFile));
 			data.SetValue(@"" + path + @"FontName", Data.EscapeString(FontName));
 			data.SetValue(@"" + path + @"FontOutlineWidth", FontOutlineWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"FontSize", FontSize.ToString(System.Globalization.CultureInfo.InvariantCulture));
-			data.SetValue(@"" + path + @"PostScriptFontName", Data.EscapeString(PostScriptFontName));
 			data.SetValue(@"" + path + @"StampText", Data.EscapeString(StampText));
 		}
 		
@@ -100,12 +99,40 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Color = Color;
 			copy.Enabled = Enabled;
 			copy.FontAsOutline = FontAsOutline;
+			copy.FontFile = FontFile;
 			copy.FontName = FontName;
 			copy.FontOutlineWidth = FontOutlineWidth;
 			copy.FontSize = FontSize;
-			copy.PostScriptFontName = PostScriptFontName;
 			copy.StampText = StampText;
 			return copy;
+		}
+		
+		public void ReplaceWith(Stamping source)
+		{
+			if(Color != source.Color)
+				Color = source.Color;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(FontAsOutline != source.FontAsOutline)
+				FontAsOutline = source.FontAsOutline;
+				
+			if(FontFile != source.FontFile)
+				FontFile = source.FontFile;
+				
+			if(FontName != source.FontName)
+				FontName = source.FontName;
+				
+			if(FontOutlineWidth != source.FontOutlineWidth)
+				FontOutlineWidth = source.FontOutlineWidth;
+				
+			if(FontSize != source.FontSize)
+				FontSize = source.FontSize;
+				
+			if(StampText != source.StampText)
+				StampText = source.StampText;
+				
 		}
 		
 		public override bool Equals(object o)
@@ -116,10 +143,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Color.Equals(v.Color)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!FontAsOutline.Equals(v.FontAsOutline)) return false;
+			if (!FontFile.Equals(v.FontFile)) return false;
 			if (!FontName.Equals(v.FontName)) return false;
 			if (!FontOutlineWidth.Equals(v.FontOutlineWidth)) return false;
 			if (!FontSize.Equals(v.FontSize)) return false;
-			if (!PostScriptFontName.Equals(v.PostScriptFontName)) return false;
 			if (!StampText.Equals(v.StampText)) return false;
 			return true;
 		}

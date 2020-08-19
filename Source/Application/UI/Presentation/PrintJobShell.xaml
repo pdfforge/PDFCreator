@@ -7,14 +7,14 @@
                    xmlns:regions="http://prismlibrary.com/"
                    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
                    xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
                    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
                    xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
                    xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
+                   xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
                    mc:Ignorable="d"
                    Title="{Binding ApplicationNameAndVersion}"
-                   Height="700" Width="500"
+                   Height="700" Width="520"
                    BorderThickness="1"
                    BorderBrush="{DynamicResource AccentColorBrush}"
                    GlowBrush="{DynamicResource AccentColorBrush}"
@@ -32,20 +32,20 @@
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
     </metro:MetroWindow.Resources>
 
-    <i:Interaction.Triggers>
+    <b:Interaction.Triggers>
         <trigger:InteractionRequestTrigger SourceObject="{Binding InteractionRequest, Mode=OneWay}">
             <trigger:OverlayAction />
         </trigger:InteractionRequestTrigger>
-    </i:Interaction.Triggers>
+    </b:Interaction.Triggers>
 
     <Grid AllowDrop="True" Background="Transparent">
         <!-- The background has to be set to make drag&drop work anywhere in the grid -->
 
-        <i:Interaction.Behaviors>
+        <b:Interaction.Behaviors>
             <obsidian:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter"
                                              PassArguments="True" />
             <obsidian:EventToCommandBehavior Command="{Binding DragDropCommand}" Event="Drop" PassArguments="True" />
-        </i:Interaction.Behaviors>
+        </b:Interaction.Behaviors>
 
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

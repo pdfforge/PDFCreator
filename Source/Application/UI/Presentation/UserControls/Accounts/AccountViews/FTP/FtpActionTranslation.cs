@@ -1,3 +1,5 @@
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using System;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
@@ -18,9 +20,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string ErrorCustomViewNotFoundTitle { get; private set; } = "Viewer not found";
         public string ErrorCustomViewNotFoundDesc { get; private set; } = "Viewer was not found, please check your settings.";
 
+        private string FtpConnection { get; set; } = "{0} via FTP";
+        private string SftpConnection { get; set; } = "{0} via SFTP";
+
         public string GetFtpGetsDisabledMessage(int numberOfProfiles)
         {
             return PluralBuilder.GetFormattedPlural(numberOfProfiles, FtpGetsDisabled);
+        }
+
+        public string FormatFtpConnectionName(string serverName, FtpConnectionType ftpConnectionType)
+        {
+            switch (ftpConnectionType)
+            {
+                case FtpConnectionType.Ftp:
+                    return string.Format(FtpConnection, serverName);
+
+                case FtpConnectionType.Sftp:
+                    return string.Format(SftpConnection, serverName);
+
+                default: throw new Exception($"The FTP connection type {ftpConnectionType} is unknown here");
+            }
         }
     }
 }

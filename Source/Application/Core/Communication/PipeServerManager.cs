@@ -64,6 +64,7 @@ namespace pdfforge.PDFCreator.Core.Communication
         public void Shutdown()
         {
             _logger.Debug("Stopping pipe server");
+
             _pipeServer.Stop();
         }
     }

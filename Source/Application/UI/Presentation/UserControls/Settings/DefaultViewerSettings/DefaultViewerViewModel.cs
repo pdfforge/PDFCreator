@@ -16,6 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
     public class DefaultViewerViewModel : TranslatableViewModelBase<DefaultViewerTranslation>, ITabViewModel
     {
         private readonly ICurrentSettings<ObservableCollection<DefaultViewer>> _defaultViewerProvider;
+        private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IOpenFileInteractionHelper _fileInteractionHelper;
         public IGpoSettings GpoSettings { get; }
 
@@ -30,13 +31,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
             : base(translationUpdater)
         {
             _defaultViewerProvider = defaultViewerProvider;
+            _currentSettingsProvider = currentSettingsProvider;
             _fileInteractionHelper = fileInteractionHelper;
             GpoSettings = gpoSettings;
 
             if (_defaultViewers != null)
                 UpdateDefaultViewer();
 
-            currentSettingsProvider.SettingsChanged += (sender, args) => UpdateDefaultViewer();
             FindPathCommand = new DelegateCommand(ExecuteFindPath);
 
         }
@@ -81,6 +82,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
             Title = Translation.Title;
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged();
+        }
+
+        public void MountView()
+        {
+            _currentSettingsProvider.SettingsChanged += OnSettingsChanged;
+        }
+
+        private void OnSettingsChanged(object sender, EventArgs args)
+        {
+            UpdateDefaultViewer();
+        }
+
+        public void UnmountView()
+        {
+            _currentSettingsProvider.SettingsChanged -= OnSettingsChanged;
         }
     }
 

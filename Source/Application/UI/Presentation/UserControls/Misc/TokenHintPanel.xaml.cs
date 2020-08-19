@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -33,7 +34,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             if (RestrictedServiceLocator.IsLocationProviderSet)
             {
                 DataContext = RestrictedServiceLocator.Current.GetInstance<TokenHintPanelViewModel>();
+                TransposerHelper.Register(this, DataContext as TokenHintPanelViewModel);
             }
+
             InitializeComponent();
         }
     }

@@ -19,5 +19,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string PrintJobPrinter { get; private set; } = "Printer:";
         public string PrintJobCounter { get; private set; } = "ID:";
         public string DragHint { get; private set; } = "Hint: You can drag the print jobs to reorder them";
+        public string IdAscending { get; set; } = "Sort by ID ascending";
+        public string IdDescending { get; set; } = "Sort by ID descending";
+
+        public string AlphabeticalAscending { get; set; } = "Sort alphabetically ascending";
+        public string AlphabeticalDescending { get; set; } = "Sort alphabetically descending";
+
+        public string DateAscending { get; set; } = "Sort by date ascending";
+        public string DateDescending { get; set; } = "Sort by date descending";
+        public string Sort { get; set; } = "Sort";
     }
 }

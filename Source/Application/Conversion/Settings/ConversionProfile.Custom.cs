@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,27 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 {
     public partial class ConversionProfile
     {
-        public bool IsDefault
+        public bool IsDefault => Guid == ProfileGuids.DEFAULT_PROFILE_GUID;
+
+        public bool HasEnabledSecurity => PdfSettings.Security.Enabled && !HasNotSupportedEncryption();
+
+        public bool HasNotSupportedEncryption()
         {
-            get { return Guid == ProfileGuids.DEFAULT_PROFILE_GUID; }
+            return PdfSettings.Security.Enabled && OutputFormat != OutputFormat.Pdf;
         }
+
+        public bool HasEnabledSendActions =>
+
+            Ftp.Enabled
+            || EmailClientSettings.Enabled
+            || HttpSettings.Enabled
+            || EmailSmtpSettings.Enabled
+            || DropboxSettings.Enabled
+            || Printing.Enabled;
+
+     
     }
+
 }
+
+

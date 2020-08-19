@@ -11,13 +11,13 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeMailClientControlViewModel, IsDesignTimeCreatable=True}"
              IsEnabled="{Binding CurrentProfile.EmailClientSettings.Enabled}"
-             Style="{DynamicResource TabUserControl}"
              help:HelpProvider.HelpTopic="OpenEmailClient">
 
     <UserControl.Resources>
     </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Email}">
         <StackPanel>
+            <TextBlock Margin="0 -20" Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" TextAlignment="Right" />
             <Label>
                 <TextBlock Text="{Binding Translation.RecipientsToText}"></TextBlock>
             </Label>
@@ -33,9 +33,12 @@
             </Label>
             <controls:TokenControl DataContext="{Binding RecipientsBccTokenViewModel}" />
 
-            <Label Margin="0 -5">
-                <TextBlock Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" />
+            <Label>
+                <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}"></TextBlock>
             </Label>
+            <controls:TokenControlWithAddButton DataContext="{Binding AdditionalAttachmentsTokenViewModel}" Margin="0 0 0 5" />
+
+            <controls:AdditionalAttachmentsUserControl DataContext="{Binding}" />
 
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Style="{DynamicResource LightGreyButton}"

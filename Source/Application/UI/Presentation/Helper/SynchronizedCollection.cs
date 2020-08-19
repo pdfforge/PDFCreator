@@ -21,7 +21,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         {
             Collection = collection;
             ObservableCollection = new ObservableCollection<T>(collection);
-            ObservableCollection.CollectionChanged += OnObservableCollectionChanged;
+            ResumeUpdates();
         }
 
         /// <summary>
@@ -60,6 +60,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        /// <summary>
+        /// Do not promote updates to the ObservableCollection to the source collection.
+        /// This can be used to react to changes in the source collection that need to be applied to the ObservableCollection.
+        /// </summary>
+        public void SuspendUpdates()
+        {
+            ObservableCollection.CollectionChanged -= OnObservableCollectionChanged;
+        }
+
+        /// <summary>
+        /// Start promoting updates to the ObservableCollection to the source collection after updates were suspended.
+        /// </summary>
+        public void ResumeUpdates()
+        {
+            ObservableCollection.CollectionChanged += OnObservableCollectionChanged;
         }
     }
 }

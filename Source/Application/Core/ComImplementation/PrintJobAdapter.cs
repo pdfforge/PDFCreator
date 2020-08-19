@@ -1,6 +1,7 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
@@ -32,7 +33,8 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             "autosave",
             "properties",
             "skipprintdialog",
-            "savedialog"
+            "savedialog",
+            "openviewer"
         };
 
         private readonly IComWorkflowFactory _workflowFactory;
@@ -177,11 +179,12 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         }
 
         /// <summary>
-        ///     Disabling unneccessary profile settings for COM
+        ///     Disabling unnecessary profile settings for COM
         /// </summary>
         private void DisableIrrelevantProfileSettings(ConversionProfile profile)
         {
             profile.AutoSave.Enabled = false;
+            profile.AutoSave.EnsureUniqueFilenames = false;
 
             profile.OpenViewer = false;
         }

@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class PrinterMapping : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -40,6 +39,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.PrinterName = PrinterName;
 			copy.ProfileGuid = ProfileGuid;
 			return copy;
+		}
+		
+		public void ReplaceWith(PrinterMapping source)
+		{
+			if(PrinterName != source.PrinterName)
+				PrinterName = source.PrinterName;
+				
+			if(ProfileGuid != source.ProfileGuid)
+				ProfileGuid = source.ProfileGuid;
+				
 		}
 		
 		public override bool Equals(object o)

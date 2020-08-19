@@ -119,5 +119,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(Timeout));
             SaveCommand.RaiseCanExecuteChanged();
         }
+
+        protected override void ClearPassword()
+        {
+            _httpAccount.Password = "";
+        }
     }
 }

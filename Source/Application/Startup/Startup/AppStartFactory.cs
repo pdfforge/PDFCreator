@@ -37,6 +37,11 @@ namespace pdfforge.PDFCreator.Core.Startup
             }
 
             var commandLineParser = new CommandLineParser(commandLineArgs);
+            if (commandLineParser.HasArgument("RestorePrinters"))
+            {
+                _logger.Debug("Launched RestorePrinters");
+                return _appStartResolver.ResolveAppStart<RestorePrinterAppStart>();
+            }
 
             var appStartParameters = new AppStartParameters();
             appStartParameters.ManagePrintJobs = commandLineParser.HasArgument("ManagePrintJobs");
@@ -96,19 +101,21 @@ namespace pdfforge.PDFCreator.Core.Startup
             }
 
             AddDirectConversionFiles(files, commandLineParser);
-            var parameterlessFiles = commandLineArgs.Where(x => _pathUtil.IsValidRootedPath(x)).ToList();
+            var parameterlessFiles = commandLineArgs.Where(IsFileArg).ToList();
             files.AddRange(parameterlessFiles);
             if (files.Count > 0)
             {
-                _logger.Debug("Launched DirectConversionStart");
-                var directConversionStart = _appStartResolver.ResolveAppStart<DirectConversionStart>();
-                directConversionStart.DirectConversionFiles = files;
-                directConversionStart.AppStartParameters = appStartParameters;
-                return directConversionStart;
+                _logger.Debug("Launched DragAndDropStart");
+                var dragAndDropStart = _appStartResolver.ResolveAppStart<DragAndDropStart>();
+                dragAndDropStart.DroppedFiles = files;
+                dragAndDropStart.AppStartParameters = appStartParameters;
+                return dragAndDropStart;
             }
 
             // ... else we have a MainWindowStart
             var mainWindowStart = _appStartResolver.ResolveAppStart<MainWindowStart>();
+            // suppress ManagePrintJobWindows together with the MainWindow (at this point no conversion was requested)
+            appStartParameters.ManagePrintJobs = false;
             mainWindowStart.AppStartParameters = appStartParameters;
 
             return mainWindowStart;
@@ -122,6 +129,10 @@ namespace pdfforge.PDFCreator.Core.Startup
             }
         }
 
+        private bool IsCommandArg(string arg) => arg.StartsWith("/") || arg.StartsWith("-");
+
+        private bool IsFileArg(string arg) => !IsCommandArg(arg) && _pathUtil.IsValidRootedPath(arg);
+
         private bool IsDragAndDropStart(string[] args)
         {
             if (args == null)
@@ -130,13 +141,10 @@ namespace pdfforge.PDFCreator.Core.Startup
             if (!args.Any())
                 return false;
 
-            if (args.Any(x => x.StartsWith("/") || x.StartsWith("-")))
+            if (args.Any(IsCommandArg))
                 return false;
 
-            if (!args.All(x => _pathUtil.IsValidRootedPath(x)))
-                return false;
-
-            return true;
+            return args.All(IsFileArg);
         }
 
         private void AddDirectConversionFiles(List<string> files, CommandLineParser commandLineParser)

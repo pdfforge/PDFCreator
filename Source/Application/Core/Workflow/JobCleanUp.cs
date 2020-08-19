@@ -98,6 +98,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
         {
             try
             {
+                if (!_file.Exists(infFile))
+                    return;
+
                 _file.Delete(infFile);
 
                 var folder = Path.GetDirectoryName(infFile);

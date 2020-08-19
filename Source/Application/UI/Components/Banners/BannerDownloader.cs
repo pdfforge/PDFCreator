@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using NLog;
 using Optional;
+using pdfforge.PDFCreator.Core.Services.Cache;
+using pdfforge.PDFCreator.Core.Services.Download;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
@@ -56,7 +58,7 @@ namespace Banners
         {
             var cacheFilename = $"{banner.BundleId}-v{banner.Version}.zip";
 
-            if (_fileCache.FileExists(cacheFilename, true) && IsMd5Valid(banner, cacheFilename))
+            if (_fileCache.FileAvailable(cacheFilename, true) && IsMd5Valid(banner, cacheFilename))
                 return true;
 
             try
@@ -93,7 +95,7 @@ namespace Banners
         private Option<IList<BannerDefinition>> GetCachedBannerDefinition(string languageIso2, bool ignoreCacheAge)
         {
             var indexFilename = GetIndexFilename(languageIso2);
-            if (_fileCache.FileExists(indexFilename, ignoreCacheAge))
+            if (_fileCache.FileAvailable(indexFilename, ignoreCacheAge))
             {
                 try
                 {
@@ -113,7 +115,7 @@ namespace Banners
         {
             try
             {
-                var indexFilename = GetIndexFilename(languageIso2);
+                var indexFilename = GetIndexFilename(languageIso2 ?? "en");
                 var parameters = new Dictionary<string, string>()
                 {
                     {"lang", languageIso2},

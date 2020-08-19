@@ -4,7 +4,9 @@ using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Printing.Printing
 {
@@ -18,12 +20,16 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         private PrintCommandGroup _printCommands = new PrintCommandGroup();
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
+        private readonly IDirectory _directory;
+        private readonly IFile _file;
 
-        protected PrintFileHelperBase(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc)
+        protected PrintFileHelperBase(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc, IDirectory directory, IFile file)
         {
             _printerHelper = printerHelper;
             _settingsProvider = settingsProvider;
             _fileAssoc = fileAssoc;
+            _directory = directory;
+            _file = file;
         }
 
         public string PdfCreatorPrinter { get; set; }
@@ -56,10 +62,10 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
 
             foreach (var f in files)
             {
-                _printCommands.Add(new PrintCommand(f, printerName, _fileAssoc, _printerHelper, _settingsProvider.Settings.ApplicationSettings.ConversionTimeout));
+                _printCommands.Add(new PrintCommand(f, printerName, _fileAssoc, _printerHelper, _file, _settingsProvider.Settings.ApplicationSettings.ConversionTimeout));
             }
 
-            var directories = _printCommands.FindAll(p => Directory.Exists(p.Filename));
+            var directories = _printCommands.FindAll(p => _directory.Exists(p.Filename));
 
             if (directories.Count > 0)
             {
@@ -71,15 +77,34 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             {
                 var sb = new StringBuilder("The following file(s) could not be converted:");
                 var unprintable = _printCommands.UnprintableCommands;
+                
                 foreach (var file in unprintable)
                 {
                     sb.AppendLine(file.Filename);
                 }
                 _logger.Error(sb.ToString);
-                if (!UnprintableFilesQuery(unprintable))
-                    return false;
+                
+                var canProceed = unprintable.Count < files.Count();
 
-                _printCommands.RemoveUnprintableCommands();
+                if (!canProceed)
+                {
+                    UnprintableFilesHint(unprintable);
+                    _printCommands.RemoveUnprintableCommands();
+                    return false;
+                }
+
+                var proceed = UnprintableFilesProceedQuery(unprintable);
+
+                if (proceed)
+                {
+                    _printCommands.RemoveUnprintableCommands();
+                }
+                else
+                {
+                    _printCommands.RemoveAllCommands();
+                }
+
+                return proceed;
             }
 
             return true;
@@ -142,7 +167,9 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
 
         protected abstract void DirectoriesNotSupportedHint();
 
-        protected abstract bool UnprintableFilesQuery(IList<PrintCommand> unprintable);
+        protected abstract void UnprintableFilesHint(IList<PrintCommand> unprintable);
+
+        protected abstract bool UnprintableFilesProceedQuery(IList<PrintCommand> unprintable);
 
         protected abstract bool QuerySwitchDefaultPrinter();
     }

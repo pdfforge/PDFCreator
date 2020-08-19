@@ -25,8 +25,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared
                 .Build();
         }
 
-        //public set to overrite HomeViewName for PDFCreator Server
-        public string HomeViewName { get; set; } = MainRegionViewNames.HomeView; 
+        //public set to override HomeViewName for PDFCreator Server
+        public string HomeViewName { get; set; } = RegionNames.HomeView; 
 
         public ICommand SaveCommand { get; private set; }
 

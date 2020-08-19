@@ -5,13 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeDropboxUserControlViewModel, IsDesignTimeCreatable=True}"
              IsEnabled="{Binding CurrentProfile.DropboxSettings.Enabled}"
-             Style="{DynamicResource TabUserControl}"
              help:HelpProvider.HelpTopic="Dropbox">
     <UserControl.Resources>
         <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
@@ -41,7 +39,7 @@
         </DockPanel>
 
         <StackPanel>
-            <Label Content="{Binding Translation.DropboxSharedFolderNameContent}" />
+            <Label Content="{Binding Translation.DropboxDirectoryLabel}" />
             <controls:TokenControl DataContext="{Binding SharedFolderTokenViewModel}" />
         </StackPanel>
 

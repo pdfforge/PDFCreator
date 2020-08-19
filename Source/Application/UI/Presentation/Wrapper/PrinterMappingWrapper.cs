@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Annotations;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,15 +10,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Wrapper
 {
     public class PrinterMappingWrapper : INotifyPropertyChanged
     {
-        private ConversionProfile _conversionProfile;
+        private ConversionProfileWrapper _conversionProfile;
         private string _primaryPrinter;
         private string _printerName;
 
-        public PrinterMappingWrapper(PrinterMapping printerMapping, IEnumerable<ConversionProfile> profiles)
+        public PrinterMappingWrapper(PrinterMapping printerMapping, IEnumerable<ConversionProfileWrapper> profiles)
         {
             PrinterMapping = printerMapping;
             PrinterName = printerMapping.PrinterName;
-            Profile = profiles.FirstOrDefault(p => p.Guid == printerMapping.ProfileGuid);
+            Profile = profiles.FirstOrDefault(p => p.ConversionProfile.Guid == printerMapping.ProfileGuid);
         }
 
         public PrinterMapping PrinterMapping { get; }
@@ -34,13 +35,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Wrapper
             }
         }
 
-        public ConversionProfile Profile
+        public ConversionProfileWrapper Profile
         {
             get { return _conversionProfile; }
             set
             {
                 _conversionProfile = value;
-                PrinterMapping.ProfileGuid = _conversionProfile == null ? "" : _conversionProfile.Guid;
+                PrinterMapping.ProfileGuid = _conversionProfile == null ? "" : _conversionProfile.ConversionProfile.Guid;
                 OnPropertyChanged(nameof(Profile));
             }
         }

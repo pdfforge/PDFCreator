@@ -102,5 +102,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
                 RaisePropertyChanged(nameof(Username));
             }
         }
+
+        protected override void ClearPassword()
+        {
+            _smtpAccount.Password = "";
+        }
     }
 }

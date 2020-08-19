@@ -10,11 +10,10 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:DesignTimePrintUserControlViewModel, IsDesignTimeCreatable=True}"
              IsEnabled="{Binding CurrentProfile.Printing.Enabled}"
-             Style="{DynamicResource TabUserControl}"
              help:HelpProvider.HelpTopic="PrintDocument">
 
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.DisplayName}">
-        <StackPanel>
+        <StackPanel Margin="0 0 10 10">
             <StackPanel.Resources>
                 <converter:AreEqualConverter x:Key="AreEqualConverter"
                                          Reference="{x:Static enums:SelectPrinter.SelectedPrinter}" EqualValue="True"

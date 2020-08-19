@@ -21,8 +21,6 @@
         <converter:BoolToVisibilityConverter x:Key="ShowIfTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converter:BoolToVisibilityConverter x:Key="ShowIfPdfXTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converter:BoolToVisibilityConverter x:Key="ShowValidationCheckboxIfTrueconverter" TrueValue="Visible" FalseValue="Collapsed" />
-        <converter:BoolNegationConverter x:Key="EnableValidationIfTrueconverter" />
-        <converter:DebugConverter x:Key="DebugConverter" />
         <converter:AreEqualConverter Reference="{x:Static enums:CompressionColorAndGray.JpegManual}"
                                      EqualValue="{StaticResource True}" NotEqualValue="{StaticResource False}"
                                      x:Key="CompressionColorAndGrayIsJpegManualConverter" />
@@ -116,10 +114,10 @@
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding Path=IsPdfAOutput, Converter={StaticResource ShowValidationCheckboxIfTrueconverter}}">
                     <CheckBox VerticalAlignment="Center"
                               IsChecked="{Binding CurrentProfile.PdfSettings.EnablePdfAValidation}"
-                              IsEnabled="{Binding AllowForPlusAndBusiness, Converter={StaticResource EnableValidationIfTrueconverter}}"
+                              IsEnabled="{Binding SupportsPdfAValidation}"
                               Margin="0,0,5,0"
                               Content="{Binding Translation.EnableValidationReport}" />
-                    <userControls:PlusFeatureControl Margin="10 0" Edition="AllLicensed" />
+                    <userControls:BusinessFeatureBadge Margin="10 0" Edition="AllLicensed" />
                 </StackPanel>
             </StackPanel>
         </HeaderedContentControl>

@@ -29,10 +29,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
             _tokenHelper = tokenHelper;
             _tokenViewModelFactory = tokenViewModelFactory;
 
-            translationUpdater.RegisterAndSetTranslation(tf => SetTokenViewModels(tokenViewModelFactory));
+            translationUpdater?.RegisterAndSetTranslation(tf => SetTokenViewModels(tokenViewModelFactory));
         }
 
-        private void SetTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
+        public void SetTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
         {
             var builder = tokenViewModelFactory
                 .BuilderWithSelectedProfile()
@@ -43,10 +43,33 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
             SubjectTokenViewModel = builder.WithSelector(p => p.SubjectTemplate).Build();
             KeywordsTokenViewModel = builder.WithSelector(p => p.KeywordTemplate).Build();
 
+            UpdateMetadata();
+        }
+
+        private void UpdateMetadata()
+        {
             RaisePropertyChanged(nameof(TitleTokenViewModel));
             RaisePropertyChanged(nameof(AuthorTokenViewModel));
             RaisePropertyChanged(nameof(SubjectTokenViewModel));
             RaisePropertyChanged(nameof(KeywordsTokenViewModel));
+        }
+
+        public override void MountView()
+        {
+            TitleTokenViewModel.MountView();
+            AuthorTokenViewModel.MountView();
+            SubjectTokenViewModel.MountView();
+            KeywordsTokenViewModel.MountView();
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+            TitleTokenViewModel.UnmountView();
+            AuthorTokenViewModel.UnmountView();
+            SubjectTokenViewModel.UnmountView();
+            KeywordsTokenViewModel.UnmountView();
         }
     }
 }

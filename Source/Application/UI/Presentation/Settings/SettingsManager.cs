@@ -5,7 +5,6 @@ using System.Threading;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.Commands.FirstTimeCommands;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.Utilities;
 
@@ -16,17 +15,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
         private readonly ISettingsLoader _loader;
         private readonly IInstallationPathProvider _installationPathProvider;
         private readonly IVersionHelper _versionHelper;
-        private readonly IEnumerable<IFirstTimeCommand> _firstTimeCommands;
         private readonly SettingsProvider _settingsProvider;
 
         public SettingsManager(SettingsProvider settingsProvider, ISettingsLoader loader, IInstallationPathProvider installationPathProvider,
-            IVersionHelper versionHelper, IEnumerable<IFirstTimeCommand> firstTimeCommands)
+            IVersionHelper versionHelper)
         {
             _settingsProvider = settingsProvider;
             _loader = loader;
             _installationPathProvider = installationPathProvider;
             _versionHelper = versionHelper;
-            _firstTimeCommands = firstTimeCommands;
         }
 
         private void LoadAllSettingsSynchronized()
@@ -80,9 +77,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
 
             if (version != _settingsProvider.Settings.CreatorAppSettings.LastLoginVersion)
             {
-                _firstTimeCommands.ToList().ForEach(x => x.Execute(_versionHelper.ApplicationVersion));
                 _settingsProvider.Settings.CreatorAppSettings.LastLoginVersion = version;
             }
+
+            SettingsSaved?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler SettingsSaved;

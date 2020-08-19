@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Label.xaml" />
+        <ResourceDictionary Source="Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.PasswordBox.xaml" />
+        <ResourceDictionary Source="LightGreyButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="TextBoxFocusBorderBrush" Color="{StaticResource LightGreyButtonBorder}" />
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
+        <Setter Property="SelectionBrush" Value="#AAA" />
+        <Setter Property="styles:TextBoxBehavior.TripleClickSelectAll" Value="True" />
+    </Style>
+
+    <Style x:Key="CreatorTextBlock" TargetType="TextBlock" BasedOn="{StaticResource MetroTextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource Creator.BodyText.Brush}" />
+        <Setter Property="styles:TextBoxBehavior.TripleClickSelectAll" Value="True" />
+    </Style>
+
+    <Style TargetType="TextBlock" BasedOn="{StaticResource CreatorTextBlock}" />
+
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource MetroPasswordBox}">
+        <Setter Property="SelectionBrush" Value="#AAA" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="CreatorLabel" BasedOn="{StaticResource MetroLabel}">
+        <Setter Property="Foreground" Value="{StaticResource Creator.BodyText.Brush}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.6" />
+                <Setter Property="Foreground" Value="{StaticResource Creator.BodyText.Brush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="HyperLinkTextBlock">
+        <Setter Property="Foreground" Value="DodgerBlue" />
+    </Style>
+
+    <Style TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="DodgerBlue" />
+    </Style>
+
+    <Style TargetType="Label" BasedOn="{StaticResource CreatorLabel}" />
+</ResourceDictionary>

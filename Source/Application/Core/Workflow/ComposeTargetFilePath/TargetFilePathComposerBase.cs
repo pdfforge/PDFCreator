@@ -1,5 +1,4 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Utilities;
@@ -63,7 +62,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
                 outputFolder = ConsiderLastSaveDirectory(outputFolder, job);
 
             // MyDocuments folder as fallback for interactive
-            if (!job.Profile.AutoSave.Enabled)
+            if (!job.Profile.AutoSave.Enabled && !job.Profile.SaveFileTemporary)
                 if (string.IsNullOrWhiteSpace(outputFolder))
                     outputFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 

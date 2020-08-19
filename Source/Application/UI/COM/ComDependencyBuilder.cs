@@ -19,12 +19,18 @@ namespace pdfforge.PDFCreator.UI.COM
     {
         private static ComDependencies _comDependencies;
 
+        static ComDependencyBuilder()
+        {
+            CustomBindingResolver.WatchBindingResolution();
+        }
+
         public ComDependencies ComDependencies
         {
             get
             {
                 if (_comDependencies != null)
                     return _comDependencies;
+
                 return _comDependencies = BuildComDependencies();
             }
         }
@@ -61,9 +67,9 @@ namespace pdfforge.PDFCreator.UI.COM
 
             DoModifyRegistrations(container);
 
-            var dependencies = container.GetInstance<ComDependencies>();
-
             LoggingHelper.InitFileLogger("PDFCreator", LoggingLevel.Error);
+
+            var dependencies = container.GetInstance<ComDependencies>();
 
             var settingsManager = container.GetInstance<ISettingsManager>();
             settingsManager.LoadAllSettings();

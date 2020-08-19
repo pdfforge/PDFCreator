@@ -3,6 +3,7 @@
     public enum BundleType
     {
         Xaml,
-        Image
+        Image,
+        Exe
     }
 }

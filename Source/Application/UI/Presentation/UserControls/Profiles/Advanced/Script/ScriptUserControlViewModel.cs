@@ -10,7 +10,6 @@ using pdfforge.PDFCreator.Utilities.Threading;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.ComponentModel;
-using SystemInterface.IO;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script
@@ -19,6 +18,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Scr
     {
         private readonly IOpenFileInteractionHelper _openFileInteractionHelper;
         private readonly IScriptActionHelper _scriptActionHelper;
+        private readonly ITokenHelper _tokenHelper;
+        private readonly ITokenViewModelFactory _tokenViewModelFactory;
 
         public ScriptUserControlViewModel(
             ITranslationUpdater translationUpdater,
@@ -32,29 +33,50 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Scr
         {
             _openFileInteractionHelper = openFileInteractionHelper;
             _scriptActionHelper = scriptActionHelper;
+            _tokenHelper = tokenHelper;
+            _tokenViewModelFactory = tokenViewModelFactory;
 
-            if (tokenHelper != null)
+            if (_tokenHelper != null)
             {
-                TokenReplacer = tokenHelper.TokenReplacerWithPlaceHolders;
-                var tokens = tokenHelper.GetTokenListWithFormatting();
+                TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
+                var tokens = _tokenHelper.GetTokenListWithFormatting();
 
-                ParameterTokenViewModel = tokenViewModelFactory.BuilderWithSelectedProfile()
+                ParameterTokenViewModel = _tokenViewModelFactory.BuilderWithSelectedProfile()
                     .WithSelector(p => p.Scripting.ParameterString)
                     .WithTokenList(tokens)
                     .WithTokenReplacerPreview(TokenReplacer)
                     .Build();
 
-                ScriptFileTokenViewModel = tokenViewModelFactory.BuilderWithSelectedProfile()
+                ScriptFileTokenViewModel = _tokenViewModelFactory.BuilderWithSelectedProfile()
                     .WithSelector(p => p.Scripting.ScriptFile)
                     .WithTokenList(tokens)
                     .WithTokenReplacerPreview(TokenReplacer)
                     .WithButtonCommand(SelectScriptFileAction)
                     .Build();
-
-                ParameterTokenViewModel.TextChanged += TokenTextChanged;
-                ScriptFileTokenViewModel.TextChanged += TokenTextChanged;
-                TokenTextChanged(this, EventArgs.Empty);
             }
+        }
+
+        public override void MountView()
+        {
+            ParameterTokenViewModel.MountView();
+            ScriptFileTokenViewModel.MountView();
+
+            ParameterTokenViewModel.TextChanged += TokenTextChanged;
+            ScriptFileTokenViewModel.TextChanged += TokenTextChanged;
+            TokenTextChanged(this, EventArgs.Empty);
+
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            ParameterTokenViewModel.UnmountView();
+            ScriptFileTokenViewModel.UnmountView();
+
+            ParameterTokenViewModel.TextChanged -= TokenTextChanged;
+            ScriptFileTokenViewModel.TextChanged -= TokenTextChanged;
+
+            base.UnmountView();
         }
 
         private Option<string> SelectScriptFileAction(string s1)
@@ -81,39 +103,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Scr
 
         public TokenViewModel<ConversionProfile> ParameterTokenViewModel { get; set; }
 
-        public TokenReplacer TokenReplacer { get; }
+        public TokenReplacer TokenReplacer { get; private set; }
 
         private void TokenTextChanged(object sender, EventArgs eventArgs)
         {
-            PreviewScriptCall = ComposeSampleCommand(ScriptFileTokenViewModel.Text, ParameterTokenViewModel.Text);
+            PreviewScriptCall = _scriptActionHelper.GetPreview(ScriptFileTokenViewModel.Text, ParameterTokenViewModel.Text, TokenReplacer);
             RaisePropertyChanged(nameof(PreviewScriptCall));
-        }
-
-        private string ComposeSampleCommand(string scriptPath, string additionalParams)
-        {
-            if (string.IsNullOrEmpty(scriptPath) || (scriptPath.Trim().Length == 0))
-                return "";
-
-            var scriptCall = PathSafe.GetFileName(_scriptActionHelper.ComposeScriptPath(scriptPath, TokenReplacer));
-
-            if (!string.IsNullOrEmpty(additionalParams))
-            {
-                scriptCall += " " + _scriptActionHelper.ComposeScriptParameters(additionalParams, new[] { @"C:\File1.pdf", @"C:\File2.pdf" }, TokenReplacer);
-            }
-            else
-            {
-                scriptCall += @" C:\File1.pdf C:\File2.pdf";
-            }
-
-            return scriptCall;
         }
 
         protected override void OnCurrentProfileChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             base.OnCurrentProfileChanged(sender, propertyChangedEventArgs);
 
-            ParameterTokenViewModel.RaiseTextChanged();
-            ScriptFileTokenViewModel.RaiseTextChanged();
+            ParameterTokenViewModel?.RaiseTextChanged();
+            ScriptFileTokenViewModel?.RaiseTextChanged();
             TokenTextChanged(this, EventArgs.Empty);
         }
     }

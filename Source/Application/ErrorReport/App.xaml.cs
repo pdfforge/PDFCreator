@@ -33,7 +33,7 @@ namespace pdfforge.PDFCreator.ErrorReport
 
                 File.Delete(errorFile);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Environment.Exit(-1);
             }

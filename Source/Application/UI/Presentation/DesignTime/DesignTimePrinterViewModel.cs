@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Printer;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             )
 
         {
-            var profiles = ProfilesProvider.Settings;
+            var profiles = ProfilesProvider.Settings.Select(x => new ConversionProfileWrapper(x));
 
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator", ""), profiles));
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator2", ""), profiles));

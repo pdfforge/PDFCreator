@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:general="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General"
+             xmlns:controller="clr-namespace:pdfforge.PDFCreator.Core.Controller;assembly=PDFCreator.Controller"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance general:LanguageSelectionSettingsViewModel}">
@@ -18,10 +19,15 @@
                 <ComboBox Width="300" DisplayMemberPath="NativeName"
                           SelectedValuePath="Iso2" SelectedValue="{Binding CurrentLanguage, Mode=TwoWay}"
                           ItemsSource="{Binding Languages}" />
-                <Button Margin="10 0 0 0" MinWidth="80" Style="{DynamicResource LightGreyButton}"
-                        Command="{Binding PreviewTranslationCommand}"
-                        Content="{Binding Translation.LanguagePreviewButtonContent, Mode=OneWay}" />
             </StackPanel>
+
+            <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" >
+                <Run Text="{Binding Translation.TranslatorHintText, Mode=OneWay}"/>
+                <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
+                           Command="{Binding VisitWebsiteCommand}">
+                    <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" Style="{DynamicResource HyperLinkTextBlock}"/>
+                </Hyperlink>
+            </TextBlock>
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

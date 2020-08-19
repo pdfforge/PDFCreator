@@ -35,6 +35,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
                 CancelCommand = new DelegateCommand(CancelExecute),
                 RemoveCommand = new DelegateCommand(RemoveExecute)
             };
+
+            _buttonViewModel.RaiseOkCanExecuteChanged = () => PrintJobPasswordButtonViewModel.OkCommand.RaiseCanExecuteChanged();
         }
 
         private void RemoveExecute(object obj)

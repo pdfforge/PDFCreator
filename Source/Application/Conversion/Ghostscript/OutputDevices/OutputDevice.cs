@@ -1,15 +1,11 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.Resources;
 using System.Text;
 using SystemInterface.IO;
 using SystemWrapper.IO;
@@ -26,6 +22,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public abstract class OutputDevice
     {
+        public ConversionMode ConversionMode { get; }
+
         private readonly ICommandLineUtil _commandLineUtil;
         private readonly IFormatProvider _numberFormat = CultureInfo.InvariantCulture.NumberFormat;
 
@@ -39,18 +37,13 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         /// </summary>
         protected IList<string> DistillerDictonaries = new List<string>();
 
-        /// <summary>
-        ///     A list of output files produced during the conversion
-        /// </summary>
-        public IList<string> TempOutputFiles = new List<string>();
+        protected OutputDevice(Job job, ConversionMode conversionMode) : this(job, conversionMode, new FileWrap(), new OsHelper(), new CommandLineUtil())
+        { }
 
-        protected OutputDevice(Job job) : this(job, new FileWrap(), new OsHelper(), new CommandLineUtil())
-        {
-        }
-
-        protected OutputDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
+        protected OutputDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
         {
             Job = job;
+            ConversionMode = conversionMode;
             FileWrap = file;
             _osHelper = osHelper;
             _commandLineUtil = commandLineUtil;
@@ -75,6 +68,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             var outputFormatHelper = new OutputFormatHelper();
 
             parameters.Add("gs");
+            parameters.Add("--permit-file-all=\"" + Job.JobTempFolder + "\\\"");
             parameters.Add("-I" + ghostscriptVersion.LibPaths);
             parameters.Add("-sFONTPATH=" + _osHelper.WindowsFontsFolder);
 
@@ -110,23 +104,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
             parameters.Add("-f");
 
-            if (Job.Profile.Stamping.Enabled)
-            {
-                // Compose name of the stamp file based on the location and name of the inf file
-                var stampFileName = PathSafe.Combine(Job.JobTempFolder,
-                    PathSafe.GetFileNameWithoutExtension(Job.JobInfo.InfFile) + ".stm");
-                CreateStampFile(stampFileName, Job.Profile, Job.TokenReplacer);
-                parameters.Add(stampFileName);
-            }
-
-            SetCover(Job, parameters);
-
-            foreach (var sfi in Job.JobInfo.SourceFiles)
-            {
-                parameters.Add(PathHelper.GetShortPathName(sfi.Filename));
-            }
-
-            SetAttachment(Job, parameters);
+            SetSourceFiles(parameters, Job);
 
             // Compose name of the pdfmark file based on the location and name of the inf file
             var pdfMarkFileName = PathSafe.Combine(Job.JobTempFolder, "metadata.mtd");
@@ -138,31 +116,24 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             return parameters;
         }
 
-        private void SetCover(Job job, IList<string> parameters)
+        protected virtual void SetSourceFiles(IList<string> parameters, Job job)
         {
-            if (Job.Profile.CoverPage.Enabled)
-            {
-                var coverFile = job.TokenReplacer.ReplaceTokens(Job.Profile.CoverPage.File);
-
-                if (!FileWrap.Exists(coverFile))
-                    return; // todo: Inform user. Probably way sooner.
-
-                coverFile = PathHelper.GetShortPathName(coverFile);
-                parameters.Add(PathHelper.GetShortPathName(coverFile));
-            }
+            if (ConversionMode == ConversionMode.IntermediateToTargetConversion)
+                SetSourceFilesFromIntermediateFiles(parameters);
+            else
+                SetSourceFilesFromSourceFileInfo(parameters);
         }
 
-        private void SetAttachment(Job job, IList<string> parameters)
+        protected void SetSourceFilesFromIntermediateFiles(IList<string> parameters)
         {
-            if (Job.Profile.AttachmentPage.Enabled)
+            parameters.Add(PathHelper.GetShortPathName(Job.IntermediatePdfFile));
+        }
+
+        protected void SetSourceFilesFromSourceFileInfo(IList<string> parameters)
+        {
+            foreach (var sourceFileInfo in Job.JobInfo.SourceFiles)
             {
-                var attachmentFile = job.TokenReplacer.ReplaceTokens(Job.Profile.AttachmentPage.File);
-
-                if (!FileWrap.Exists(attachmentFile))
-                    return; // todo: Inform user. Probably way sooner.
-
-                attachmentFile = PathHelper.GetShortPathName(attachmentFile);
-                parameters.Add(PathHelper.GetShortPathName(attachmentFile));
+                parameters.Add(PathHelper.GetShortPathName(sourceFileInfo.Filename));
             }
         }
 
@@ -193,78 +164,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             FileWrap.WriteAllText(filename, metadataContent.ToString());
 
             Logger.Debug("Created metadata file \"" + filename + "\"");
-        }
-
-        private string RgbToCmykColorString(Color color)
-        {
-            var red = color.R / 255.0;
-            var green = color.G / 255.0;
-            var blue = color.B / 255.0;
-
-            var k = Math.Min(1 - red, 1 - green);
-            k = Math.Min(k, 1 - blue);
-            var c = (1 - red - k) / (1 - k);
-            var m = (1 - green - k) / (1 - k);
-            var y = (1 - blue - k) / (1 - k);
-
-            return c.ToString("0.00", _numberFormat) + " " +
-                   m.ToString("0.00", _numberFormat) + " " +
-                   y.ToString("0.00", _numberFormat) + " " +
-                   k.ToString("0.00", _numberFormat);
-        }
-
-        private void CreateStampFile(string filename, ConversionProfile profile, TokenReplacer tokenReplacer)
-        {
-            // Create a resource manager to retrieve resources.
-            var rm = new ResourceManager(typeof(Resources));
-
-            var stampString = rm.GetString("PostScriptStamp");
-
-            if (stampString == null)
-                throw new InvalidOperationException("Error while fetching stamp template");
-
-            var outlineWidth = 0;
-            var outlineString = "show";
-
-            if (profile.Stamping.FontAsOutline)
-            {
-                outlineWidth = profile.Stamping.FontOutlineWidth;
-                outlineString = "true charpath stroke";
-            }
-
-            var textWithTokens = tokenReplacer.ReplaceTokens(profile.Stamping.StampText);
-            var stampText = RemoveIllegalCharacters(textWithTokens);
-
-            // Only Latin1 chars are allowed here
-            stampString = stampString.Replace("[STAMPSTRING]",
-                EncodeGhostscriptParametersOctal(stampText));
-            stampString = stampString.Replace("[FONTNAME]", profile.Stamping.PostScriptFontName);
-            stampString = stampString.Replace("[FONTSIZE]", profile.Stamping.FontSize.ToString(_numberFormat));
-            stampString = stampString.Replace("[STAMPOUTLINEFONTTHICKNESS]", outlineWidth.ToString(CultureInfo.InvariantCulture));
-            stampString = stampString.Replace("[USEOUTLINEFONT]", outlineString); // true charpath stroke OR show
-
-            if (profile.OutputFormat == OutputFormat.PdfX ||
-                profile.PdfSettings.ColorModel == ColorModel.Cmyk)
-            {
-                var colorString = RgbToCmykColorString(profile.Stamping.Color);
-                stampString = stampString.Replace("[FONTCOLOR]", colorString);
-                stampString = stampString.Replace("setrgbcolor", "setcmykcolor");
-            }
-            else
-            {
-                var colorString = (profile.Stamping.Color.R / 255.0).ToString("0.00", _numberFormat) + " " +
-                                  (profile.Stamping.Color.G / 255.0).ToString("0.00", _numberFormat) + " " +
-                                  (profile.Stamping.Color.B / 255.0).ToString("0.00", _numberFormat);
-                stampString = stampString.Replace("[FONTCOLOR]", colorString);
-            }
-
-            FileWrap.WriteAllText(filename, stampString);
-        }
-
-        private string RemoveIllegalCharacters(string text)
-        {
-            var bytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(text);
-            return Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
         }
 
         protected string EncodeGhostscriptParametersOctal(string String)

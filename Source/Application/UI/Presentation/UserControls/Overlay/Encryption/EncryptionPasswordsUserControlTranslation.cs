@@ -13,5 +13,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption
         public string SkipButtonContent { get; private set; } = "Skip";
         public string Title { get; private set; } = "Encryption Passwords";
         public string UserPasswordLabelContent { get; private set; } = "User password (for opening):";
+        public string PasswordIndicatorText { get; private set; } = "Password strength:";
     }
 }

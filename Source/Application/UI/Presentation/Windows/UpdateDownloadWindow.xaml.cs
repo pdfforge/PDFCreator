@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Windows;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Windows;
 using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Views.Windows
@@ -8,8 +9,8 @@ namespace pdfforge.PDFCreator.UI.Views.Windows
         public UpdateDownloadWindow(UpdateDownloadWindowViewModel viewModel)
         {
             InitializeComponent();
-
             DataContext = viewModel;
+            TransposerHelper.Register(this, viewModel);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {
@@ -14,7 +15,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             _settingsManager = settingsManager;
         }
 
-        public override ExitCode Run()
+        public override Task<ExitCode> Run()
         {
             try
             {
@@ -23,10 +24,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             }
             catch (Exception)
             {
-                return ExitCode.Unknown;
+                return Task.FromResult(ExitCode.Unknown);
             }
 
-            return ExitCode.Ok;
+            return Task.FromResult(ExitCode.Ok);
         }
     }
 }

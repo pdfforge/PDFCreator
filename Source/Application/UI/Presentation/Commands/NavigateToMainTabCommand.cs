@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             _aggregator = aggregator;
         }
 
-        //public set to overrite MainRegionName for PDFCreator Server
+        //public set to overwrite MainRegionName for PDFCreator Server
         public string MainRegionName { get; set; } = RegionNames.MainRegion;
 
         public bool CanExecute(object parameter)

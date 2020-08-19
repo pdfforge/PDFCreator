@@ -2,8 +2,8 @@
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Communication;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.Core.Workflow;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;

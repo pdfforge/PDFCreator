@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector;
+using Prism.Events;
 using Prism.Regions;
 using SimpleInjector;
 using System;
@@ -11,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
 {
     public interface ISubTab
     {
-        void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, string masterTabItemsRegion, string masterTabContentRegion, bool isFirstTab);
+        void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator, string masterTabItemsRegion, string masterTabContentRegion, bool isFirstTab);
 
         void RegisterNavigationViews(Container container);
     }
@@ -31,9 +32,9 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
             _hasNotSupportedFeature = hasNotSupportedFeature;
         }
 
-        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, string masterTabItemsRegion, string masterTabContentRegion, bool isFirstTab)
+        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator, string masterTabItemsRegion, string masterTabContentRegion, bool isFirstTab)
         {
-            regionManager.RegisterSubTab<TView, ProfileSubTabViewModel, TTranslation>(masterTabItemsRegion, masterTabContentRegion, _titleId, _setting, serviceLocator, _hasNotSupportedFeature, isFirstTab);
+            regionManager.RegisterSubTab<TView, ProfileSubTabViewModel, TTranslation>(masterTabItemsRegion, masterTabContentRegion, _titleId, _setting, serviceLocator, _hasNotSupportedFeature, eventAggregator, isFirstTab);
         }
 
         public void RegisterNavigationViews(Container container)

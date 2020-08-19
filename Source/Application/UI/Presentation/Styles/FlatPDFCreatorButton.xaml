@@ -184,6 +184,90 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="LightGreyAnimatedButton" BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type ButtonBase}">
+        <Style.Resources>
+            <Color x:Key="ForegroundColor">#333333</Color>
+            <Color x:Key="BackgroundColor">White</Color>
+            <Color x:Key="InvertedForegroundColor">White</Color>
+            <Color x:Key="InvertedBackgroundColor">#333333</Color>
+            <Color x:Key="PressedForegroundColor">White</Color>
+            <Color x:Key="PressedBackgroundColor">#F6F6F6</Color>
+        </Style.Resources>
+
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource ForegroundColor}" />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource BackgroundColor}" />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource ForegroundColor}" />
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        From="{StaticResource BackgroundColor}"
+                                        To="{StaticResource InvertedBackgroundColor}"
+                                        Duration="0:0:0.15" />
+                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                        From="{StaticResource ForegroundColor}"
+                                        To="{StaticResource InvertedForegroundColor}"
+                                        Duration="0:0:0.15" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                        From="{StaticResource InvertedBackgroundColor}"
+                                        To="{StaticResource BackgroundColor}"
+                                        Duration="0:0:0.1" />
+                        <ColorAnimation Storyboard.Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                        From="{StaticResource InvertedForegroundColor}"
+                                        To="{StaticResource ForegroundColor}"
+                                        Duration="0:0:0.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource PressedForegroundColor}" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource PressedBackgroundColor}" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="LargeGreyButton" BasedOn="{StaticResource GreyButton}" TargetType="{x:Type ButtonBase}">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Light" />
@@ -288,10 +372,6 @@
     </Style>
 
     <Style x:Key="FlatGreyButton" BasedOn="{StaticResource GreyButton}" TargetType="{x:Type ButtonBase}">
-        <Setter Property="Padding" Value="15" />
-    </Style>
-
-    <Style x:Key="FlatPdfCreatorButton" BasedOn="{StaticResource RedButton}" TargetType="{x:Type ButtonBase}">
         <Setter Property="Padding" Value="15" />
     </Style>
 

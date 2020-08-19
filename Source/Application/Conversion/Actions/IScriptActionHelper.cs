@@ -8,5 +8,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
         string ComposeScriptPath(string path, TokenReplacer tokenReplacer);
 
         string ComposeScriptParameters(string parameterString, IList<string> outputFiles, TokenReplacer tokenReplacer);
+
+        string GetPreview(string scriptPath, string additionalParams, TokenReplacer tokenReplacer);
     }
 }

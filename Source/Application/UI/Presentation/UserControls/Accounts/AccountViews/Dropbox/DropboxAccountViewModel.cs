@@ -71,5 +71,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         {
             return _dropboxService.GetAuthorizeUri(_dropboxData.AppKey, _dropboxData.RedirectUri);
         }
+
+        protected override void ClearPassword()
+        {
+        }
     }
 }

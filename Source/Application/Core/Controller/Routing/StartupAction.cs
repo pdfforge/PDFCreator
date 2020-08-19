@@ -1,7 +1,9 @@
-﻿namespace pdfforge.PDFCreator.Core.Controller.Routing
+﻿using System.Threading.Tasks;
+
+namespace pdfforge.PDFCreator.Core.Controller.Routing
 {
     public abstract class StartupAction : IStartupAction
     {
-        public abstract void Execute();
+        public abstract Task Execute();
     }
 }

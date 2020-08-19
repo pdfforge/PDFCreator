@@ -104,6 +104,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 if (outputFormatByPath.IsPdf() && !_fileAssoc.HasOpen(".pdf"))
                 {
+                    if (_pdfArchitectCheck.IsInstalled())
+                        return OpenWithArchitect(filePath);
+
                     _recommendArchitect.Show();
                     return new ActionResult(); //return true, to avoid another message window.
                 }

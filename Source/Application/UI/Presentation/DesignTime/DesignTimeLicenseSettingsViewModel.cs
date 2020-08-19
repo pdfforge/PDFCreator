@@ -2,9 +2,11 @@
 using pdfforge.LicenseValidator.Interface;
 using pdfforge.LicenseValidator.Interface.Data;
 using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services.Licensing;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
+using pdfforge.PDFCreator.Utilities.Process;
 using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
@@ -12,7 +14,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     internal class DesignTimeLicenseSettingsViewModel : LicenseSettingsViewModel
     {
         public DesignTimeLicenseSettingsViewModel()
-            : base(null, new DesignTimeLicenseChecker(), new UnlicensedOfflineActivator(), new InteractionRequest(), new DesignTimeTranslationUpdater(), null)
+            : base(new ProcessStarter(), new DesignTimeLicenseChecker(), new UnlicensedOfflineActivator(), new InteractionRequest(),
+                new DesignTimeTranslationUpdater(), new GpoSettingsDefaults(), new DesignTimeEventAggregator())
         {
         }
     }

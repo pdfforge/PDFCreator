@@ -12,26 +12,39 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         public string PngGuid { get; private set; } = "PNG (graphic file)";
         public string PrintGuid { get; private set; } = "Print after saving";
         public string TiffGuid { get; private set; } = "TIFF (multipage graphic file)";
+        public string SecuredPdfGuid { get; private set; } = "Secured PDF";
 
         public string GetProfileGuidTranslation(string profileGuid)
         {
-            if (profileGuid == "DefaultGuid")
-                return DefaultGuid;
+            switch (profileGuid)
+            {
+                case "DefaultGuid":
+                    return DefaultGuid;
 
-            if (profileGuid == "HighCompressionGuid")
-                return HighCompressionGuid;
-            if (profileGuid == "HighQualityGuid")
-                return HighQualityGuid;
-            if (profileGuid == "JpegGuid")
-                return JpegGuid;
-            if (profileGuid == "PdfaGuid")
-                return PdfaGuid;
-            if (profileGuid == "PrintGuid")
-                return PrintGuid;
-            if (profileGuid == "PngGuid")
-                return PngGuid;
-            if (profileGuid == "TiffGuid")
-                return TiffGuid;
+                case "HighCompressionGuid":
+                    return HighCompressionGuid;
+
+                case "HighQualityGuid":
+                    return HighQualityGuid;
+
+                case "JpegGuid":
+                    return JpegGuid;
+
+                case "PdfaGuid":
+                    return PdfaGuid;
+
+                case "PrintGuid":
+                    return PrintGuid;
+
+                case "PngGuid":
+                    return PngGuid;
+
+                case "TiffGuid":
+                    return TiffGuid;
+
+                case "SecuredPdfGuid":
+                    return SecuredPdfGuid;
+            }
 
             return "";
         }

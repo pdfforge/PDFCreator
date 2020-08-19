@@ -41,8 +41,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             foreach (var path in paths)
             {
                 var exePath = PathSafe.Combine(path, @"Bin\gswin32c.exe");
-                var libPath = PathSafe.Combine(path, @"Bin") + ';' + PathSafe.Combine(path, @"Lib") + ';' +
-                              PathSafe.Combine(path, @"Fonts");
+                var libPath = PathSafe.Combine(path, @"Bin") + ';' + PathSafe.Combine(path, @"Lib");
 
                 if (_file.Exists(exePath))
                     return new GhostscriptVersion("<internal>", exePath, libPath);

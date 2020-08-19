@@ -7,12 +7,14 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
-    public class TokenViewModel<T> : ObservableObject, ITranslatableViewModel<TokenHintPanelTranslation>
+    public class TokenViewModel<T> : ObservableObject, ITranslatableViewModel<TokenHintPanelTranslation>, IMountable
     {
         private readonly Func<string, string> _generatePreview;
         private string _preview;
@@ -20,7 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         private readonly Func<T, string> _getter;
         private readonly Action<T, string> _setter;
 
-        public TokenViewModel(Expression<Func<T, string>> selector, T initialValue, IList<string> tokens, Func<string, string> generatePreview, Func<string, Option<string>> buttonCommandFunction = null)
+        public TokenViewModel(Expression<Func<T, string>> selector, T initialValue, IList<string> tokens, Func<string, string> generatePreview, IList<Func<string, Option<string>>> buttonCommandFunctions)
         {
             if (RestrictedServiceLocator.IsLocationProviderSet)
             {
@@ -34,8 +36,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
                 Expression.Assign(selector.Body, newValue),
                 selector.Parameters[0], newValue).Compile();
 
-            ButtonCommandExecute = buttonCommandFunction;
-            ButtonCommand = new DelegateCommand(ExecuteButtonCommand);
+            foreach (var command in buttonCommandFunctions)
+            {
+                ButtonCommands.Add(new DelegateCommand(_ => ExecuteButtonCommand(command)));
+            }
+
             _generatePreview = generatePreview;
 
             Tokens = new ObservableCollection<TokenWithCommand>();
@@ -51,10 +56,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             set { _currentValue = value; RaiseTextChanged(); }
         }
 
-        private Func<string, Option<string>> ButtonCommandExecute { get; }
-        public ICommand ButtonCommand { get; }
+        public ICommand ButtonCommand => ButtonCommands.Any() ? ButtonCommands[0] : null;
+        public IList<ICommand> ButtonCommands { get; set; } = new List<ICommand>();
 
-        public bool ShowButton => ButtonCommandExecute != null;
+        public bool ShowButton => ButtonCommand != null;
 
         public string Preview
         {
@@ -86,12 +91,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             }
         }
 
-        private void ExecuteButtonCommand(object o)
+        private void ExecuteButtonCommand(Func<string, Option<string>> func)
         {
-            if (ButtonCommandExecute == null)
-                return;
-
-            var result = ButtonCommandExecute(Text);
+            var result = func(Text);
             result.MatchSome(s => Text = s);
             CurrentCursorPos = Text.Length;
             RaiseTextChanged();
@@ -127,6 +129,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         }
 
         public TokenHintPanelTranslation Translation { get; set; }
+
+        public virtual void MountView()
+        {
+            GeneratePreviewText();
+            RaisePropertyChanged(nameof(Text));
+            RaisePropertyChanged(nameof(Preview));
+        }
+
+        public virtual void UnmountView()
+        {
+        }
     }
 
     public class TokenWithCommand

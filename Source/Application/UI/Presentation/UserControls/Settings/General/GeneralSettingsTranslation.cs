@@ -15,12 +15,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string DefaultPrinterControlHeader { get; private set; } = "Default Printer";
         public string DownloadLatestVersionText { get; private set; } = "Download the latest version at:";
         public string LanguageControlHeader { get; private set; } = "Language";
-        public string LanguagePreviewButtonContent { get; private set; } = "Preview";
         public string MenuIntegrationControlHeader { get; private set; } = "Explorer Context Menu Integration";
         public string NeverUpdateWarningText { get; private set; } = "Please note that you won't receive any notifications about available updates!";
         public string RemoveFromContextMenuText { get; private set; } = "Removed from context menu (Maybe you need to restart your computer)";
         public string RemoveMenuIntegrationText { get; private set; } = "Remove";
         public string SelectLanguageLabelText { get; private set; } = "Select the application language:";
+        public string TranslatorHintText { get; private set; } = "PDFCreator is translated by volunteers of our translator community. If you would like to contribute your translation skills, please visit our translation page:";
         public string UpdateCheckControlHeader { get; private set; } = "Update";
         public string UpdateCheckIsRunning { get; private set; } = "Update check is already running.";
         public string ErrorMessage { get; private set; } =  "{0} was not able to look for an update.\nPlease check your internet connection and retry later.";

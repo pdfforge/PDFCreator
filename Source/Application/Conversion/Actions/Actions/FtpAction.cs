@@ -3,13 +3,13 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Ftp;
 using pdfforge.PDFCreator.Utilities.IO;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
-using System.ComponentModel;
-using System.IO;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -18,13 +18,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IFtpConnectionFactory _ftpConnectionFactory;
         private readonly IPathUtil _pathUtil;
+        private readonly IFile _file;
 
         protected override string PasswordText => "FTP";
 
-        public FtpAction(IFtpConnectionFactory ftpConnectionFactory, IPathUtil pathUtil)
+        public FtpAction(IFtpConnectionFactory ftpConnectionFactory, IPathUtil pathUtil, IFile file)
         {
             _ftpConnectionFactory = ftpConnectionFactory;
             _pathUtil = pathUtil;
+            _file = file;
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)
@@ -62,7 +64,35 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 actionResult.Add(ErrorCode.Ftp_NoUser);
             }
 
-            if (profile.AutoSave.Enabled && string.IsNullOrEmpty(ftpAccount.Password))
+            if (ftpAccount.AuthenticationType == AuthenticationType.KeyFileAuthentication)
+            {
+                var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(ftpAccount.PrivateKeyFile);
+                switch (pathUtilStatus)
+                {
+                    case PathUtilStatus.InvalidRootedPath:
+                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
+
+                    case PathUtilStatus.PathTooLongEx:
+                        return new ActionResult(ErrorCode.FtpKeyFilePath_PathTooLong);
+
+                    case PathUtilStatus.NotSupportedEx:
+                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
+
+                    case PathUtilStatus.ArgumentEx:
+                        return new ActionResult(ErrorCode.FtpKeyFilePath_IllegalCharacters);
+                }
+
+                if (!isFinal && ftpAccount.PrivateKeyFile.StartsWith(@"\\"))
+                    return new ActionResult();
+
+                if (!_file.Exists(ftpAccount.PrivateKeyFile))
+                {
+                    Logger.Error("The private key file \"" + ftpAccount.PrivateKeyFile + "\" does not exist.");
+                    return new ActionResult(ErrorCode.FtpKeyFilePath_FileDoesNotExist);
+                }
+            }
+
+            if (profile.AutoSave.Enabled && string.IsNullOrEmpty(ftpAccount.Password) || KeyFilePasswordIsRequired(ftpAccount))
             {
                 Logger.Error("Automatic saving without ftp password.");
                 actionResult.Add(ErrorCode.Ftp_AutoSaveWithoutPassword);
@@ -77,42 +107,30 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return actionResult;
         }
 
+        private bool KeyFilePasswordIsRequired(FtpAccount ftpAccount)
+        {
+            return ftpAccount.AuthenticationType == AuthenticationType.KeyFileAuthentication
+                   && ftpAccount.KeyFileRequiresPass
+                && string.IsNullOrEmpty(ftpAccount.Password);
+        }
+
         protected override ActionResult DoActionProcessing(Job job)
         {
             var ftpAccount = job.Accounts.GetFtpAccount(job.Profile);
 
             Logger.Debug("Creating ftp connection.\r\nServer: " + ftpAccount.Server + "\r\nUsername: " + ftpAccount.UserName);
 
-            var ftpConnection = _ftpConnectionFactory.BuildConnection(ftpAccount.Server, ftpAccount.UserName, job.Passwords.FtpPassword);
+            var ftpClient = _ftpConnectionFactory.
+                BuildConnection(ftpAccount, job.Passwords.FtpPassword);
 
             try
             {
-                ftpConnection.Open();
-                ftpConnection.Login();
-            }
-            catch (Win32Exception ex)
-            {
-                if (ex.NativeErrorCode.Equals(12007))
-                {
-                    Logger.Error("Can not connect to the internet for login to ftp. Win32Exception Message:\r\n" + ex.Message);
-                    ftpConnection.Close();
-                    return new ActionResult(ErrorCode.Ftp_ConnectionError);
-                }
-                if (ex.NativeErrorCode.Equals(12014))
-                {
-                    Logger.Error("Can not login to ftp because the password is incorrect. Win32Exception Message:\r\n" + ex.Message);
-                    ftpConnection.Close();
-                    return new ActionResult(ErrorCode.PasswordAction_Login_Error);
-                }
-
-                Logger.Error("Win32Exception while login to ftp server:\r\n" + ex.Message);
-                ftpConnection.Close();
-                return new ActionResult(ErrorCode.Ftp_LoginError);
+                ftpClient.Connect();
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while login to ftp server:\r\n" + ex.Message);
-                ftpConnection.Close();
+                Logger.Error(ex, "Exception while login to ftp server: ");
+                ftpClient.Disconnect();
                 return new ActionResult(ErrorCode.Ftp_LoginError);
             }
 
@@ -125,62 +143,52 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             Logger.Debug("Directory on ftp server: " + fullDirectory);
 
-            var directories = fullDirectory.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-
             try
             {
-                foreach (var directory in directories)
-                {
-                    if (!ftpConnection.DirectoryExists(directory))
-                    {
-                        Logger.Debug("Create folder: " + directory);
-                        ftpConnection.CreateDirectory(directory);
-                    }
-                    Logger.Debug("Move to: " + directory);
-                    ftpConnection.SetCurrentDirectory(directory);
-                }
+                if (!ftpClient.DirectoryExists(fullDirectory))
+                    ftpClient.CreateDirectory(fullDirectory);
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while setting directory on ftp server\r\n:" + ex.Message);
-                ftpConnection.Close();
+                Logger.Error(ex, "Exception while setting directory on ftp server: ");
+                ftpClient.Disconnect();
                 return new ActionResult(ErrorCode.Ftp_DirectoryError);
             }
 
             foreach (var file in job.OutputFiles)
             {
-                var targetFile = Path.GetFileName(file);
+                var targetFile = PathSafe.GetFileName(file);
                 targetFile = ValidName.MakeValidFtpPath(targetFile);
                 if (job.Profile.Ftp.EnsureUniqueFilenames)
                 {
                     Logger.Debug("Make unique filename for " + targetFile);
                     try
                     {
-                        var uf = new UniqueFilenameForFtp(targetFile, ftpConnection, _pathUtil);
+                        var uf = new UniqueFilenameForFtp(targetFile, ftpClient, _pathUtil);
                         targetFile = uf.CreateUniqueFileName();
                         Logger.Debug("-> The unique filename is \"" + targetFile + "\"");
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("Exception while generating unique filename\r\n:" + ex.Message);
-                        ftpConnection.Close();
+                        Logger.Error(ex, "Exception while generating unique filename: ");
+                        ftpClient.Disconnect();
                         return new ActionResult(ErrorCode.Ftp_DirectoryReadError);
                     }
                 }
 
                 try
                 {
-                    ftpConnection.PutFile(file, targetFile);
+                    ftpClient.UploadFile(file, fullDirectory + "/" + targetFile);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Exception while uploading the file \"" + file + "\": \r\n" + ex.Message);
-                    ftpConnection.Close();
+                    Logger.Error(ex, "Exception while uploading the file \"" + file);
+                    ftpClient.Disconnect();
                     return new ActionResult(ErrorCode.Ftp_UploadError);
                 }
             }
 
-            ftpConnection.Close();
+            ftpClient.Disconnect();
             return new ActionResult();
         }
 

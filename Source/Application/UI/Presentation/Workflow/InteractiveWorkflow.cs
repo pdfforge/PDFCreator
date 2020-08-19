@@ -22,13 +22,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         private readonly ICommandLocator _commandLocator;
         private readonly ILastSaveDirectoryHelper _lastSaveDirectoryHelper;
         private readonly IDirectoryHelper _directoryHelper;
-        private readonly InteractiveProfileChecker _interactiveProfileChecker;
+        private readonly IInteractiveProfileChecker _interactiveProfileChecker;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
 
         public InteractiveWorkflow(IShellManager shellManager, ITargetFilePathComposer targetFilePathComposer, IJobDataUpdater jobDataUpdater,
                                    IErrorNotifier errorNotifier, ISettingsProvider settingsProvider,
                                    ICommandLocator commandLocator, ILastSaveDirectoryHelper lastSaveDirectoryHelper,
-                                   IDirectoryHelper directoryHelper, InteractiveProfileChecker interactiveProfileChecker,
+                                   IDirectoryHelper directoryHelper, IInteractiveProfileChecker interactiveProfileChecker,
                                    IJobEventsManager jobEventsManager
             )
         {
@@ -53,9 +53,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         {
             job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(job);
 
+            job.Passwords = JobPasswordHelper.GetJobPasswords(job.Profile, job.Accounts);  // Set passwords for a skipped print job window
+
             if (job.Profile.SkipPrintDialog)
             {
-                if (_interactiveProfileChecker.CheckWithErrorResultInWindow(job))
+                if (!job.Profile.SaveFileTemporary && _interactiveProfileChecker.CheckWithErrorResultInWindow(job))
                 {
                     _commandLocator.GetCommand<SkipPrintDialogCommand>().Execute(job);
                 }

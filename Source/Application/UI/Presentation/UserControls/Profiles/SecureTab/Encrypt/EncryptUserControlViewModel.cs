@@ -13,6 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
     public class EncryptUserControlViewModel : ProfileUserControlViewModel<EncryptUserControlTranslation>
     {
         private readonly IInteractionRequest _interactionRequest;
+        private readonly EditionHelper _editionHelper;
 
         public EncryptUserControlViewModel
             (
@@ -25,17 +26,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
         : base(translationUpdater, selectedProfile, dispatcher)
         {
             _interactionRequest = interactionRequest;
-
-            if (editionHelper != null)
-            {
-                OnlyForPlusAndBusiness = editionHelper.ShowOnlyForPlusAndBusiness;
-            }
+            _editionHelper = editionHelper;
 
             SecurityPasswordCommand = new DelegateCommand(SecurityPasswordExecute);
         }
 
         public DelegateCommand SecurityPasswordCommand { get; }
-        public bool OnlyForPlusAndBusiness { get; }
+
+        public bool SupportsHighLevelEncryption => !_editionHelper.IsFreeEdition;
 
         public bool LowEncryptionEnabled
         {

@@ -1,8 +1,9 @@
-﻿using Translatable;
+﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
-    public class SmtpTranslation : AccountsTranslation
+    public class SmtpTranslation : AccountsTranslation, IMailBaseTabTranslation
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
@@ -57,5 +58,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string RecipientsToText { get; private set; } = "To:";
         public string RecipientsCcText { get; private set; } = "CC:";
         public string RecipientsBccText { get; private set; } = "BCC:";
+        public string AdditionalAttachmentsText { get; set; } = "Additional E-mail Attachments:";
+        public new string AllFiles { get; set; } = "All files";
+        public string SelectAttachmentTitle { get; set; } = "Select attachment file";
     }
 }

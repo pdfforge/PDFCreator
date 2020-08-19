@@ -20,7 +20,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// i.e. Word prints are named "Document.docx - Microsoft Word", where the replacement can remove the ".docx - Microsoft Word" part.
 	/// 
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class TitleReplacement : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -53,6 +52,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.ReplacementType = ReplacementType;
 			copy.Search = Search;
 			return copy;
+		}
+		
+		public void ReplaceWith(TitleReplacement source)
+		{
+			if(Replace != source.Replace)
+				Replace = source.Replace;
+				
+			if(ReplacementType != source.ReplacementType)
+				ReplacementType = source.ReplacementType;
+				
+			if(Search != source.Search)
+				Search = source.Search;
+				
 		}
 		
 		public override bool Equals(object o)

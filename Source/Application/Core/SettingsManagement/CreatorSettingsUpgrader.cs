@@ -1,12 +1,16 @@
 ﻿using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Utilities;
 using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
     public class CreatorSettingsUpgrader : SettingsUpgrader
     {
-        public CreatorSettingsUpgrader(Data settingsData) : base(settingsData)
+        private readonly IFontHelper _fontHelper;
+
+        public CreatorSettingsUpgrader(Data settingsData, IFontHelper fontHelper) : base(settingsData)
         {
+            _fontHelper = fontHelper;
             VersionSettingPaths = new string[] { @"CreatorAppSettings\SettingsVersion", @"ApplicationSettings\SettingsVersion", @"ApplicationProperties\SettingsVersion" };
         }
 
@@ -22,6 +26,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV5ToV6);
             UpgradeMethods.Add(UpgradeV6ToV7);
             UpgradeMethods.Add(UpgradeV7ToV8);
+            UpgradeMethods.Add(UpgradeV8ToV9);
         }
 
         private void UpgradeV0ToV1()
@@ -105,6 +110,18 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             MoveValue(@"ApplicationProperties\NextUpdate", @"ApplicationSettings\NextUpdate");
             MoveSection(@"ApplicationProperties", @"CreatorAppSettings");
             Data.SetValue(SettingsVersionPath, "8");
+        }
+
+        private void UpgradeV8ToV9()
+        {
+            ForAllProfiles((path, i) =>
+            {
+                var fontFamily = Data.GetValue(path + @"Stamping\FontName");
+                var ttfFile = _fontHelper.GetFontFilename(fontFamily) ?? "arial.ttf";
+                Data.SetValue(path + @"Stamping\FontFile", ttfFile);
+            }, "ConversionProfiles");
+
+            Data.SetValue(SettingsVersionPath, "9");
         }
 
         private string MapTiffColorBlackWhite_V4(string s)

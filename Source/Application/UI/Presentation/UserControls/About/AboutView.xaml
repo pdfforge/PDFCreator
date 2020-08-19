@@ -49,8 +49,7 @@
                        FontSize="15"
                        Text="{Binding Translation.LicenseInfo}"
                        TextAlignment="Left"
-
-                       Visibility="{Binding IsLicensedVersion, Converter={StaticResource VisibileWhenFalseConverter}}" />
+                       Visibility="{Binding IsBusinessEdition, Converter={StaticResource VisibileWhenFalseConverter}}" />
             <TextBlock DockPanel.Dock="Top"
                        Margin="0 0 0 0"
                        TextWrapping="Wrap"
@@ -94,10 +93,10 @@
                     <SolidColorBrush x:Key="NoChromeButton.Deactive.Foreground" Color="Black" />
                     <system:Double x:Key="NoChromeButton.Deactive.Opacity">0.4</system:Double>
                 </Grid.Resources>
-                <Button Style="{DynamicResource BoldTextButton}" IsEnabled="{Binding AllowPrioritySupport}" Command="{Binding PrioritySupportCommand}">
+                <Button Style="{DynamicResource BoldTextButton}" IsEnabled="{Binding IsBusinessEdition}" Command="{Binding PrioritySupportCommand}">
                     <ContentControl Content="{DynamicResource AboutPrioritySupportIcon}" Height="35" />
                 </Button>
-                <userControls:PlusFeatureControl Edition="AllLicensed" Margin="0 20 0 0" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="0 20 0 0" />
             </Grid>
 
             <TextBlock Text="{Binding Translation.UserGuide}" Margin="5" />
@@ -127,8 +126,9 @@
                         IsTabStop="False"
                         Content="{DynamicResource pdfforge}"
                         Height="36"
+                        MaxWidth="120"
                         VerticalAlignment="Top"
-                        Margin="0 0 10 0"
+                        Margin="10 0 10 0"
                         Command="{Binding PdfforgeWebsiteCommand}" />
 
                 <Button Style="{DynamicResource BoldTextButton}" Margin="5 0 0 0" VerticalAlignment="Top"
@@ -145,7 +145,7 @@
                     <ContentControl Content="{DynamicResource AboutFacebookIcon}" Height="30" />
                 </Button>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button HorizontalAlignment="Right"
                         Content="{Binding Translation.License}"
                         Style="{DynamicResource BoldTextButton}"

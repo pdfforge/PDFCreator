@@ -42,5 +42,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
                 return _gpoSettings?.DisableDebugTab ?? false;
             }
         }
+
+        public void MountView()
+        {
+            
+        }
+
+        public void UnmountView()
+        {
+        }
     }
 }

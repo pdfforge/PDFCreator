@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.Core.Services.Macros
 {
-    public interface IMacroCommand : ICommand
+    public interface IMacroCommand : ICommand, IMountable
     {
         event EventHandler MacroIsDone;
 

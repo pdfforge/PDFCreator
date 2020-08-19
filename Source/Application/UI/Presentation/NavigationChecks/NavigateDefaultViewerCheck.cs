@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls;
 using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
@@ -14,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
         private readonly IDefaultViewerCheck _defaultViewerCheck;
         private EvaluateSettingsAndNotifyUserTranslation _translation;
 
-        public string ApplicationSettingsRegionName { get; set; } = MainRegionViewNames.SettingsView;
+        public string ApplicationSettingsRegionName { get; set; } = RegionNames.ApplicationSettingsView;
 
         public NavigateDefaultViewerCheck(ICurrentSettings<ObservableCollection<DefaultViewer>> defaultViewerSettings, IDefaultViewerCheck defaultViewerCheck, ITranslationUpdater translationUpdater)
         {

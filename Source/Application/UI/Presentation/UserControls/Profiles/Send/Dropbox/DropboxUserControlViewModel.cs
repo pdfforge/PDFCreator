@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using Prism.Regions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox
 {
@@ -21,6 +22,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox
         public IMacroCommand AddDropboxAccountCommand { get; set; }
         public ObservableCollection<DropboxAccount> DropboxAccounts { get; set; }
 
+        private readonly ITranslationUpdater _translationUpdater;
+        private readonly ITokenViewModelFactory _tokenViewModelFactory;
         private readonly IGpoSettings _gpoSettings;
         public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
 
@@ -33,6 +36,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox
             IGpoSettings gpoSettings)
             : base(translationUpdater, currentSettingsProvider, dispatcher)
         {
+            _translationUpdater = translationUpdater;
+            _tokenViewModelFactory = tokenViewModelFactory;
             _gpoSettings = gpoSettings;
             AddDropboxAccountCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<DropboxAccountAddCommand>()
@@ -40,17 +45,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox
                 .Build();
 
             DropboxAccounts = accountsProvider?.Settings.DropboxAccounts;
+            
+            _translationUpdater.RegisterAndSetTranslation(tf =>
+            {
+                SharedFolderTokenViewModel = _tokenViewModelFactory
+                    .BuilderWithSelectedProfile()
+                    .WithSelector(p => p.DropboxSettings.SharedFolder)
+                    .WithDefaultTokenReplacerPreview(th => th.GetTokenListForDirectory())
+                    .Build();
+            });
 
-            translationUpdater.RegisterAndSetTranslation(tf => SetTokenViewModels(tokenViewModelFactory));
+        }
+        
+        
+
+        public override void MountView()
+        {
+            SharedFolderTokenViewModel.MountView();
+            
+            base.MountView();
         }
 
-        private void SetTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
+        public override void UnmountView()
         {
-            SharedFolderTokenViewModel = tokenViewModelFactory
-                .BuilderWithSelectedProfile()
-                .WithSelector(p => p.DropboxSettings.SharedFolder)
-                .WithDefaultTokenReplacerPreview(th => th.GetTokenListForDirectory())
-                .Build();
+            base.UnmountView();
+            SharedFolderTokenViewModel.UnmountView();
         }
 
         private void SelectNewAccountInView(object obj)

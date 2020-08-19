@@ -12,10 +12,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
     public sealed class AutoSaveWorkflow : ConversionWorkflow
     {
         private readonly IJobRunner _jobRunner;
+        private readonly INotificationService _notificationService;
+        private readonly AutosaveOutputFileMover _outputFileMover;
         private readonly IProfileChecker _profileChecker;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
-        private readonly AutosaveOutputFileMover _outputFileMover;
-        private readonly INotificationService _notificationService;
 
         public AutoSaveWorkflow(IJobDataUpdater jobDataUpdater, IJobRunner jobRunner, IProfileChecker profileChecker,
             ITargetFilePathComposer targetFilePathComposer, AutosaveOutputFileMover outputFileMover,
@@ -30,8 +30,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _notificationService = notificationService;
         }
 
-        protected override IJobEventsManager JobEventsManager { get; }
         protected override IJobDataUpdater JobDataUpdater { get; }
+        protected override IJobEventsManager JobEventsManager { get; }
 
         protected override void DoWorkflowWork(Job job)
         {
@@ -48,8 +48,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 job.Passwords = JobPasswordHelper.GetJobPasswords(job.Profile, job.Accounts);
 
-                // Can throw ProcessingException
-                _jobRunner.RunJob(job, _outputFileMover).Wait();
+                job.CleanUpOnError = true;
+                // Can throw ProcessingException. Use GetAwaiter().GetResult() to unwrap an occuring AggregateException.
+                _jobRunner.RunJob(job, _outputFileMover).GetAwaiter().GetResult();
 
                 WorkflowResult = WorkflowResult.Finished;
                 OnJobFinished(EventArgs.Empty);

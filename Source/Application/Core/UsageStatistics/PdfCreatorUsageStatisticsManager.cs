@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
+using pdfforge.UsageStatistics;
 using System;
 
 namespace pdfforge.PDFCreator.Core.UsageStatistics
@@ -11,22 +12,18 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
     {
         private readonly IUsageStatisticsSender _sender;
         private readonly IOsHelper _osHelper;
-        private readonly IMachineIdGenerator _machineIdGenerator;
-        private readonly ApplicationNameProvider _applicationNameProvider;
-        private readonly IVersionHelper _versionHelper;
+        private readonly IUsageMetricFactory _usageMetricFactory;
         private readonly ISettingsProvider _settingsProvider;
         private readonly IGpoSettings _gpoSettings;
         private readonly IThreadManager _threadManager;
 
-        public PdfCreatorUsageStatisticsManager(IUsageStatisticsSender sender, IOsHelper osHelper, IMachineIdGenerator machineIdGenerator,
-            ApplicationNameProvider applicationNameProvider, IVersionHelper versionHelper,
+        public PdfCreatorUsageStatisticsManager(IUsageStatisticsSender sender, IOsHelper osHelper,
+            IUsageMetricFactory usageMetricFactory,
             ISettingsProvider settingsProvider, IGpoSettings gpoSettings, IThreadManager threadManager)
         {
             _sender = sender;
             _osHelper = osHelper;
-            _machineIdGenerator = machineIdGenerator;
-            _applicationNameProvider = applicationNameProvider;
-            _versionHelper = versionHelper;
+            _usageMetricFactory = usageMetricFactory;
             _settingsProvider = settingsProvider;
             _gpoSettings = gpoSettings;
             _threadManager = threadManager;
@@ -48,11 +45,6 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
 
         public bool IsComMode { get; set; }
 
-        private string GetApplicationName()
-        {
-            return _applicationNameProvider.ApplicationNameWithEdition.ToLower().Replace(" ", "_");
-        }
-
         private Mode GetMode(bool autoSave)
         {
             if (IsComMode)
@@ -63,65 +55,62 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
 
         private PdfCreatorUsageStatisticsMetric CreateJobUsageStatisticsMetric(Job job, TimeSpan duration, string status)
         {
-            var pdfCreatorUsageStatisticsMetric = new PdfCreatorUsageStatisticsMetric
-            {
-                Product = GetApplicationName(),
-                MachineId = _machineIdGenerator.GetMachineId(),
-                OperatingSystem = _osHelper.GetWindowsVersion(),
-                OutputFormat = job.Profile.OutputFormat.ToString(),
-                Mode = GetMode(job.Profile.AutoSave.Enabled),
-                QuickActions = job.Profile.ShowQuickActions,
+            var metric = _usageMetricFactory.CreateMetric<PdfCreatorUsageStatisticsMetric>();
+            metric.OperatingSystem = _osHelper.GetWindowsVersion();
+            metric.OutputFormat = job.Profile.OutputFormat.ToString();
+            metric.Mode = GetMode(job.Profile.AutoSave.Enabled);
+            metric.QuickActions = job.Profile.ShowQuickActions;
 
-                OpenViewer = job.Profile.OpenViewer,
-                OpenWithPdfArchitect = job.Profile.OpenWithPdfArchitect,
-                TotalPages = job.JobInfo.TotalPages,
-                NumberOfCopies = job.NumberOfCopies,
+            metric.OpenViewer = job.Profile.OpenViewer;
+            metric.OpenWithPdfArchitect = job.Profile.OpenWithPdfArchitect;
+            metric.TotalPages = job.JobInfo.TotalPages;
+            metric.NumberOfCopies = job.NumberOfCopies;
 
-                Version = _versionHelper?.ApplicationVersion?.ToString(),
-                Duration = (long)duration.TotalMilliseconds,
+            metric.Duration = (long)duration.TotalMilliseconds;
 
-                Dropbox = job.Profile.DropboxSettings.Enabled,
-                Ftp = job.Profile.Ftp.Enabled,
-                Smtp = job.Profile.EmailSmtpSettings.Enabled,
-                Mailclient = job.Profile.EmailClientSettings.Enabled,
-                Http = job.Profile.HttpSettings.Enabled,
-                Print = job.Profile.Printing.Enabled,
+            metric.Dropbox = job.Profile.DropboxSettings.Enabled;
+            metric.Ftp = job.Profile.Ftp.Enabled;
+            metric.Smtp = job.Profile.EmailSmtpSettings.Enabled;
+            metric.Mailclient = job.Profile.EmailClientSettings.Enabled;
+            metric.Http = job.Profile.HttpSettings.Enabled;
+            metric.Print = job.Profile.Printing.Enabled;
 
-                Cover = job.Profile.CoverPage.Enabled,
-                Background = job.Profile.BackgroundPage.Enabled,
-                Attachment = job.Profile.AttachmentPage.Enabled,
-                Stamp = job.Profile.Stamping.Enabled,
+            metric.Cover = job.Profile.CoverPage.Enabled;
+            metric.Background = job.Profile.BackgroundPage.Enabled;
+            metric.Attachment = job.Profile.AttachmentPage.Enabled;
+            metric.Stamp = job.Profile.Stamping.Enabled;
 
-                Encryption = job.Profile.PdfSettings.Security.Enabled,
-                Signature = job.Profile.PdfSettings.Signature.Enabled,
-                DisplaySignatureInDocument = job.Profile.PdfSettings.Signature.Enabled
-                                             && job.Profile.PdfSettings.Signature.DisplaySignatureInDocument,
+            metric.Encryption = job.Profile.PdfSettings.Security.Enabled;
+            metric.Signature = job.Profile.PdfSettings.Signature.Enabled;
+            metric.DisplaySignatureInDocument = job.Profile.PdfSettings.Signature.Enabled
+                                             && job.Profile.PdfSettings.Signature.DisplaySignatureInDocument;
 
-                Script = job.Profile.Scripting.Enabled,
-                CustomScript = job.Profile.CustomScript.Enabled,
-                UserToken = job.Profile.UserTokens.Enabled,
-                IsShared = job.Profile.Properties.IsShared,
+            metric.Script = job.Profile.Scripting.Enabled;
+            metric.CustomScript = job.Profile.CustomScript.Enabled;
+            metric.UserToken = job.Profile.UserTokens.Enabled;
+            metric.IsShared = job.Profile.Properties.IsShared;
 
-                DisableApplicationSettings = _gpoSettings.DisableApplicationSettings,
-                DisableDebugTab = _gpoSettings.DisableDebugTab,
-                DisablePrinterTab = _gpoSettings.DisablePrinterTab,
-                DisableProfileManagement = _gpoSettings.DisableProfileManagement,
-                DisableTitleTab = _gpoSettings.DisableTitleTab,
-                DisableAccountsTab = _gpoSettings.DisableAccountsTab,
-                DisableRssFeed = _gpoSettings.DisableRssFeed,
-                DisableTips = _gpoSettings.DisableTips,
-                HideLicenseTab = _gpoSettings.HideLicenseTab,
-                HidePdfArchitectInfo = _gpoSettings.HidePdfArchitectInfo,
-                GpoLanguage = _gpoSettings.Language ?? "",
-                GpoUpdateInterval = _gpoSettings.UpdateInterval ?? "",
-                LoadSharedAppSettings = _gpoSettings.LoadSharedAppSettings,
-                LoadSharedProfiles = _gpoSettings.LoadSharedProfiles,
-                AllowUserDefinedProfiles = _gpoSettings.AllowUserDefinedProfiles,
+            metric.DisableApplicationSettings = _gpoSettings.DisableApplicationSettings;
+            metric.DisableDebugTab = _gpoSettings.DisableDebugTab;
+            metric.DisablePrinterTab = _gpoSettings.DisablePrinterTab;
+            metric.DisableProfileManagement = _gpoSettings.DisableProfileManagement;
+            metric.DisableTitleTab = _gpoSettings.DisableTitleTab;
+            metric.DisableAccountsTab = _gpoSettings.DisableAccountsTab;
+            metric.DisableRssFeed = _gpoSettings.DisableRssFeed;
+            metric.DisableTips = _gpoSettings.DisableTips;
+            metric.HideLicenseTab = _gpoSettings.HideLicenseTab;
+            metric.HidePdfArchitectInfo = _gpoSettings.HidePdfArchitectInfo;
+            metric.GpoLanguage = _gpoSettings.Language ?? "";
+            metric.GpoUpdateInterval = _gpoSettings.UpdateInterval ?? "";
+            metric.LoadSharedAppSettings = _gpoSettings.LoadSharedAppSettings;
+            metric.LoadSharedProfiles = _gpoSettings.LoadSharedProfiles;
+            metric.AllowUserDefinedProfiles = _gpoSettings.AllowUserDefinedProfiles;
 
-                Status = status
-            };
+            metric.IsWorkflowEditorActive = job.Profile.EnableWorkflowEditor;
 
-            return pdfCreatorUsageStatisticsMetric;
+            metric.Status = status;
+
+            return metric;
         }
     }
 }

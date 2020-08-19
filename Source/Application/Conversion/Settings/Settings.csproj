@@ -1,5 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\PropertyChanged.Fody\build\PropertyChanged.Fody.props" Condition="Exists('..\..\..\..\packages\PropertyChanged.Fody\build\PropertyChanged.Fody.props')" Label="Paket" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Conversion.Settings</RootNamespace>
     <AssemblyName>PDFCreator.Settings</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,10 +47,10 @@
   <ItemGroup>
     <Compile Include="Accounts.cs" />
     <Compile Include="Accounts.Custom.cs" />
-    <Compile Include="ApplicationProperties.cs" />
     <Compile Include="ApplicationProperties.Custom.cs" />
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="ApplicationSettings.Custom.cs" />
+    <Compile Include="ApplicationSettingsProvider.cs" />
     <Compile Include="AttachmentPage.cs" />
     <Compile Include="AttachmentPageCustom.cs" />
     <Compile Include="AutoSave.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="EmailClientSettingsCustom.cs" />
     <Compile Include="EmailSmtpSettings.cs" />
     <Compile Include="EmailSmtpSettingsCustom.cs" />
+    <Compile Include="Enums\AuthenticationType.cs" />
+    <Compile Include="Enums\FtpConnectionType.cs" />
     <Compile Include="Enums\PageOrientation.cs" />
     <Compile Include="Enums\BackgroundRepetition.cs" />
     <Compile Include="Enums\ColorModel.cs" />
@@ -96,9 +99,14 @@
     <Compile Include="Enums\UpdateInterval.cs" />
     <Compile Include="Enums\UserTokenSeperator.cs" />
     <Compile Include="Extensions\ProfileHasNotSupportedFeatures.cs" />
+    <Compile Include="Extensions\UpdateIntervalToTimeSpan.cs" />
+    <Compile Include="ForwardToFurtherProfile.cs" />
+    <Compile Include="ForwardToFurtherProfile.Custom.cs" />
     <Compile Include="Ftp.cs" />
     <Compile Include="FtpCustom.cs" />
     <Compile Include="FtpAccount.cs" />
+    <Compile Include="IMailActionSettings.cs" />
+    <Compile Include="IWatermarkSettings.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ParameterSettings.cs" />
     <Compile Include="JobHistory.cs" />
@@ -148,6 +156,11 @@
     <Compile Include="UsageStatistics.cs" />
     <Compile Include="UserTokens.cs" />
     <Compile Include="UserTokensCustom.cs" />
+    <Compile Include="Watermark.cs" />
+    <Compile Include="Watermark.Custom.cs" />
+    <Compile Include="Workflow\IActionFacade.cs" />
+    <Compile Include="Workflow\IActionFacadeBuilder.cs" />
+    <Compile Include="Workflow\IFixedOrderAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
@@ -162,13 +175,6 @@
     <None Include="paket.references" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
-      <PropertyGroup>
-        <__paket__Fody_targets>portable-net+sl+win+wpa+wp\Fody</__paket__Fody_targets>
-      </PropertyGroup>
-    </When>
-  </Choose>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -177,10 +183,10 @@
   </Target>
   -->
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\lib\DataStorage.dll</HintPath>
+          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -188,10 +194,10 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="PropertyChanged">
-          <HintPath>..\..\..\..\lib\PropertyChanged.dll</HintPath>
+          <HintPath>..\..\..\..\packages\PropertyChanged.Fody\lib\net452\PropertyChanged.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -199,15 +205,15 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.5.1'">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="Translatable">
-          <HintPath>..\..\..\..\lib\Translatable.dll</HintPath>
+          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
       </ItemGroup>
     </When>
   </Choose>
-  <Import Project="..\..\..\..\packages\Fody\build\$(__paket__Fody_targets).targets" Condition="Exists('..\..\..\..\packages\Fody\build\$(__paket__Fody_targets).targets')" Label="Paket" />
+  <Import Project="..\..\..\..\packages\Fody\build\Fody.targets" Condition="Exists('..\..\..\..\packages\Fody\build\Fody.targets')" Label="Paket" />
 </Project>

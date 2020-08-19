@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
@@ -12,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         private Expression<Func<T, string>> _selector;
         private IList<string> _tokenList = new List<string>();
         private Func<string, string> _previewFunc;
-        private Func<string, Option<string>> _buttonCommandFunction = null;
+        private IList<Func<string, Option<string>>> _buttonCommandFunctions = new List<Func<string, Option<string>>>();
         private T _initialValue;
 
         protected IList<Action<TokenViewModel<T>>> ViewModelDecorators { get; } = new List<Action<TokenViewModel<T>>>();
@@ -73,7 +74,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         public TokenViewModelBuilder<T> WithButtonCommand(Func<string, Option<string>> buttonCommand)
         {
-            _buttonCommandFunction = buttonCommand;
+            if (_buttonCommandFunctions.Any())
+                throw new InvalidOperationException("ButtonCommand is already set!");
+            _buttonCommandFunctions.Add(buttonCommand);
+
+            return this;
+        }
+
+        public TokenViewModelBuilder<T> WithSecondaryButtonCommand(Func<string, Option<string>> secondaryButtonCommand)
+        {
+            if (_buttonCommandFunctions.Count == 0)
+                throw new InvalidOperationException("Set WithButtonCommand first.");
+            _buttonCommandFunctions.Add(secondaryButtonCommand);
+
             return this;
         }
 
@@ -90,7 +103,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             ValidateRequiredFields();
 
-            var viewModel = new TokenViewModel<T>(_selector, _initialValue, _tokenList, _previewFunc, _buttonCommandFunction);
+            var viewModel = CreateTokenViewModelInstance(_selector, _initialValue, _tokenList, _previewFunc, _buttonCommandFunctions);
 
             foreach (var viewModelDecorator in ViewModelDecorators)
             {
@@ -98,6 +111,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             }
 
             return viewModel;
+        }
+
+        protected virtual TokenViewModel<T> CreateTokenViewModelInstance(Expression<Func<T, string>> selector, T initialValue, IList<string> tokens, Func<string, string> generatePreview, IList<Func<string, Option<string>>> buttonCommandFunctions)
+        {
+            return new TokenViewModel<T>(_selector, _initialValue, _tokenList, _previewFunc, _buttonCommandFunctions);
         }
     }
 }

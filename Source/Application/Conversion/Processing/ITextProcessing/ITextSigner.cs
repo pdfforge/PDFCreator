@@ -1,6 +1,8 @@
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.security;
+using iText.Kernel;
+using iText.Kernel.Font;
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Signatures;
 using NLog;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pkcs;
@@ -14,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Path = System.IO.Path;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
@@ -27,12 +30,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         ///     Add a signature (set in profile) to a document, that is opened in the stamper.
         ///     The function does nothing, if signature settings are disabled.
         /// </summary>
-        /// <param name="stamper">Stamper with document</param>
+        /// <param name="signer">Signer with document</param>
         /// <param name="profile">Profile with signature settings</param>
         /// <param name="jobPasswords">Passwords with PdfSignaturePassword</param>
         /// <param name="accounts">List of accounts</param>
         /// <exception cref="ProcessingException">In case of any error.</exception>
-        public void SignPdfFile(PdfStamper stamper, ConversionProfile profile, JobPasswords jobPasswords, Accounts accounts)
+        public void SignPdfFile(PdfSigner signer, ConversionProfile profile, JobPasswords jobPasswords, Accounts accounts)
         {
             var signing = profile.PdfSettings.Signature;
 
@@ -40,6 +43,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 return;
 
             _logger.Debug("Start signing file.");
+
+            if (!File.Exists(signing.CertificateFile))
+            {
+                _logger.Error("Unable to find certification file: " + signing.CertificateFile);
+                throw new ProcessingException("Canceled signing. Unable to find certification file.", ErrorCode.Signature_FileNotFound);
+            }
 
             signing.CertificateFile = Path.GetFullPath(signing.CertificateFile);
 
@@ -69,13 +78,13 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
             try
             {
-                DoSignPdfFile(stamper, signing, jobPasswords, timeServerAccount);
+                DoSignPdfFile(signer, signing, jobPasswords, timeServerAccount);
             }
             catch (ProcessingException)
             {
                 throw;
             }
-            catch (WebException ex)
+            catch (PdfException ex) when (ex.InnerException is WebException)
             {
                 throw new ProcessingException(ex.GetType() + " while signing:" + Environment.NewLine + ex.Message, ErrorCode.Signature_NoTimeServerConnection, ex);
             }
@@ -130,57 +139,64 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
         private IOcspClient BuildOcspClient()
         {
-            var verifier = new OcspVerifier(null, null);
+            var verifier = new OCSPVerifier(null, null);
             return new OcspClientBouncyCastle(verifier);
         }
 
-        private PdfSignatureAppearance BuildSignatureAppearance(PdfStamper stamper, Signature signing)
+        private void BuildSignatureAppearance(PdfSigner signer, Signature signing)
         {
             // Creating the appearance
-            PdfSignatureAppearance appearance = stamper.SignatureAppearance;
-            appearance.Reason = signing.SignReason;
-            appearance.Contact = signing.SignContact;
-            appearance.Location = signing.SignLocation;
-            var arial = BaseFont.CreateFont(Environment.GetEnvironmentVariable("WINDIR") + "\\Fonts\\Arial.ttf", BaseFont.CP1252, true);
-            appearance.Layer2Font = new Font(arial, 12);
+            PdfSignatureAppearance appearance = signer.GetSignatureAppearance();
+            appearance.SetReason(signing.SignReason);
+            appearance.SetContact(signing.SignContact);
+            appearance.SetLocation(signing.SignLocation);
+
+            var arial = PdfFontFactory.CreateFont(Environment.GetEnvironmentVariable("WINDIR") + "\\Fonts\\Arial.ttf", PdfName.WinAnsiEncoding.GetValue(), true);
+
+            appearance.SetLayer2Font(arial);
             if (!signing.AllowMultiSigning)
-                //Lock PDF, except for form filling (irrelevant for PDFCreator)
-                appearance.CertificationLevel = PdfSignatureAppearance.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS;
+            {
+                signer.SetCertificationLevel(PdfSigner.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS);
+                appearance.SetCertificate(signer.GetSignatureAppearance().GetCertificate());
+            }
 
             if (signing.DisplaySignatureInDocument)
             {
-                var signPage = SignPageNr(stamper, signing);
+                var signPage = SignPageNr(signer, signing);
+                var left = signing.LeftX;
+                var bottom = signing.LeftY;
+                var width = signing.RightX - left;
+                var height = signing.RightY - bottom;
 
-                appearance.SetVisibleSignature(new Rectangle(signing.LeftX, signing.LeftY, signing.RightX, signing.RightY),
-                    signPage, null);
+                var rect = new Rectangle(left, bottom, width, height);
+                appearance.SetPageRect(rect);
+                appearance.SetPageNumber(signPage);
             }
-
-            return appearance;
         }
 
-        private void DoSignPdfFile(PdfStamper stamper, Signature signing, JobPasswords jobPasswords, TimeServerAccount timeServerAccount)
+        private void DoSignPdfFile(PdfSigner signer, Signature signing, JobPasswords jobPasswords, TimeServerAccount timeServerAccount)
         {
             Pkcs12Store store = GetCertificateStore(signing.CertificateFile, jobPasswords.PdfSignaturePassword);
             var certificateAlias = GetCertificateAlias(store);
             var pk = GetPrivateKey(store, certificateAlias);
 
-            var appearance = BuildSignatureAppearance(stamper, signing);
+            BuildSignatureAppearance(signer, signing);
 
             // Creating the signature
             IExternalSignature pks = new PrivateKeySignature(pk, DigestAlgorithms.SHA512);
-            var chain = GetCertificateChain(store, certificateAlias);
+            var chain = GetCertificateChain(store, certificateAlias).ToArray();
             var ocspClient = BuildOcspClient();
             var tsaClient = BuildTimeServerClient(timeServerAccount);
 
-            var cryptoStandard = CryptoStandard.CADES;
-            MakeSignature.SignDetached(appearance, pks, chain, null, ocspClient, tsaClient, 0, cryptoStandard);
+            var cryptoStandard = PdfSigner.CryptoStandard.CADES;
+            signer.SignDetached(pks, chain, null, ocspClient, tsaClient, 0, cryptoStandard);
         }
 
-        private bool IsValidCertificatePassword(string certficateFilename, string certifcatePassword)
+        private bool IsValidCertificatePassword(string certificateFilename, string certificatePassword)
         {
             try
             {
-                var cert = new X509Certificate2(certficateFilename, certifcatePassword);
+                var cert = new X509Certificate2(certificateFilename, certificatePassword);
                 return true;
             }
             catch (CryptographicException)
@@ -189,28 +205,28 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             }
         }
 
-        private bool CertificateHasPrivateKey(string certficateFilename, string certifcatePassword)
+        private bool CertificateHasPrivateKey(string certificateFilename, string certificatePassword)
         {
-            var cert = new X509Certificate2(certficateFilename, certifcatePassword);
+            var cert = new X509Certificate2(certificateFilename, certificatePassword);
             if (cert.HasPrivateKey)
                 return true;
             return false;
         }
 
-        private int SignPageNr(PdfStamper stamper, Signature signing)
+        private int SignPageNr(PdfSigner signer, Signature signing)
         {
             switch (signing.SignaturePage)
             {
                 case SignaturePage.CustomPage:
-                    if (signing.SignatureCustomPage > stamper.Reader.NumberOfPages)
-                        return stamper.Reader.NumberOfPages;
+                    if (signing.SignatureCustomPage > signer.GetDocument().GetNumberOfPages())
+                        return signer.GetDocument().GetNumberOfPages();
                     if (signing.SignatureCustomPage < 1)
                         return 1;
                     return signing.SignatureCustomPage;
 
                 case SignaturePage.LastPage:
-                    return stamper.Reader.NumberOfPages;
-                //case SignaturePosition.FirstPage:
+                    return signer.GetDocument().GetNumberOfPages();
+
                 default:
                     return 1;
             }

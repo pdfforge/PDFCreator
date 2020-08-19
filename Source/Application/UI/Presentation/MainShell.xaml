@@ -7,7 +7,6 @@
                    xmlns:regions="http://prismlibrary.com/"
                    xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
                    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                    xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
                    xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
                    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
@@ -15,6 +14,7 @@
                    xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
                    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
                    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
                    mc:Ignorable="d"
                    Title="{Binding ApplicationNameAndVersion}"
                    Height="800" Width="1200"
@@ -41,11 +41,11 @@
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
     </metro:MetroWindow.Resources>
 
-    <i:Interaction.Triggers>
+    <b:Interaction.Triggers>
         <trigger:InteractionRequestTrigger SourceObject="{Binding InteractionRequest, Mode=OneWay}">
             <trigger:OverlayAction />
         </trigger:InteractionRequestTrigger>
-    </i:Interaction.Triggers>
+    </b:Interaction.Triggers>
     <Grid AllowDrop="True" Background="Transparent">
         <!-- The background has to be set to make drag&drop work anywhere in the grid -->
         <Grid.Resources>
@@ -61,11 +61,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <i:Interaction.Behaviors>
+        <b:Interaction.Behaviors>
             <obsidian:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter"
                                              PassArguments="True" />
             <obsidian:EventToCommandBehavior Command="{Binding DragDropCommand}" Event="Drop" PassArguments="True" />
-        </i:Interaction.Behaviors>
+        </b:Interaction.Behaviors>
         <Grid Grid.Row="0" Background="{StaticResource PdfforgeDarkGreyColorBrush}" ZIndex="100">
             <Grid.Resources>
                 <converter:CaseConverter x:Key="UpperCaseConverter" Case="Upper" />
@@ -91,40 +91,40 @@
                         help:HelpProvider.HelpTopic="Home"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.HomeView}}"
+                                        ConverterParameter={x:Static presentation:RegionNames.HomeView}}"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.HomeView}" />
+                        CommandParameter="{x:Static presentation:RegionNames.HomeView}" />
 
                 <Button Content="{Binding Translation.Profiles, Converter={StaticResource UpperCaseConverter}}"
                         help:HelpProvider.HelpTopic="ProfileSettings"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.ProfilesView}}"
+                                        ConverterParameter={x:Static presentation:RegionNames.ProfilesView}}"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.ProfilesView}" />
+                        CommandParameter="{x:Static presentation:RegionNames.ProfilesView}" />
 
                 <Button Content="{Binding Translation.Printer, Converter={StaticResource UpperCaseConverter}}"
                         help:HelpProvider.HelpTopic="AppPrinters"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.PrinterView}}"
+                                        ConverterParameter={x:Static presentation:RegionNames.PrinterView}}"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.PrinterView}" />
+                        CommandParameter="{x:Static presentation:RegionNames.PrinterView}" />
 
                 <Button Content="{Binding Translation.Accounts, Converter={StaticResource UpperCaseConverter}}"
                         help:HelpProvider.HelpTopic="Accounts"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.AccountsView}}"
+                                        ConverterParameter={x:Static presentation:RegionNames.AccountsView}}"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.AccountsView}" />
+                        CommandParameter="{x:Static presentation:RegionNames.AccountsView}" />
 
                 <Button DockPanel.Dock="Right"
                         Command="{Binding NavigateCommand}"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.ArchitectView}}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.ArchitectView}"
+                                        ConverterParameter={x:Static presentation:RegionNames.ArchitectView}}"
+                        CommandParameter="{x:Static presentation:RegionNames.ArchitectView}"
                         Visibility="{Binding GpoSettings.HidePdfArchitectInfo, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                     <ContentControl Content="{StaticResource PdfArchitectLogoWithoutSlogan}" Height="25" />
                 </Button>
@@ -133,9 +133,9 @@
                         help:HelpProvider.HelpTopic="AppSettings"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.AboutView}}"
+                                        ConverterParameter={x:Static presentation:RegionNames.AboutView}}"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.AboutView}"
+                        CommandParameter="{x:Static presentation:RegionNames.AboutView}"
                         FontSize="25">
                     <ContentControl Content="{StaticResource AboutIcon}" Height="25" />
                 </Button>
@@ -144,8 +144,8 @@
                         Command="{Binding NavigateCommand}"
                         BorderBrush="{ Binding ActivePath,
                                         Converter={StaticResource StringToActiveColorConverter},
-                                        ConverterParameter={x:Static constants:MainRegionViewNames.SettingsView}}"
-                        CommandParameter="{x:Static constants:MainRegionViewNames.SettingsView}"
+                                        ConverterParameter={x:Static presentation:RegionNames.ApplicationSettingsView}}"
+                        CommandParameter="{x:Static presentation:RegionNames.ApplicationSettingsView}"
                         help:HelpProvider.HelpTopic="AppSettings">
                     <StackPanel>
                         <controls:Badged BadgePlacementMode="TopRight"
@@ -164,7 +164,7 @@
 
             <Border Grid.Row="2" BorderThickness="3" BorderBrush="{DynamicResource BlackBrush}"
                     Background="{DynamicResource WhiteBrush}"
-                Visibility="{Binding ShowUsageStatsInfo,  Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
+                    Visibility="{Binding ShowUsageStatsInfo,  Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
                 <DockPanel   HorizontalAlignment="Left">
                     <ContentControl  Height="16" Margin="5" Content="{DynamicResource InfoIcon}" />
                     <TextBlock DockPanel.Dock="Left" Margin="5" Padding="5"
@@ -173,10 +173,12 @@
                             Style="{DynamicResource FlatGreyButton}"  Command="{Binding DismissUsageStatsInfoCommand}" Content="{Binding Translation.UsageStatsDismiss}" />
                     <Button DockPanel.Dock="Right" Margin="5" Padding="5" MinWidth="80" MaxWidth="100"
                             Style="{DynamicResource FlatGreyButton}" Command="{Binding ReadMoreUsageStatsCommand}"
-                            CommandParameter="{x:Static constants:MainRegionViewNames.SettingsView}"
+                            CommandParameter="{x:Static presentation:RegionNames.ApplicationSettingsView}"
                             Content="{Binding Translation.UsageStatsMore}" />
                 </DockPanel>
             </Border>
+
+            <userControls:LicenseExpirationReminderControl ShowManageLicenseButton="True" Grid.Row="2" />
         </Grid>
 
         <Grid Grid.Row="1">
@@ -199,7 +201,7 @@
             </StatusBarItem>
 
             <StatusBarItem HorizontalAlignment="Right" Margin="10 0" DockPanel.Dock="Right">
-                <ContentControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.StatusBarPlusHintRegion}" />
+                <ContentControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.BusinessHintStatusBarRegion}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

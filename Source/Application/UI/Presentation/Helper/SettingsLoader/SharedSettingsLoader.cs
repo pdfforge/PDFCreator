@@ -2,7 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using System;
+using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
@@ -16,18 +16,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 
     public class SharedSettingsLoader : ISharedSettingsLoader
     {
-        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private const string SharedSettingsFolder = @"%ProgramData%\pdfforge\PDFCreator";
         private readonly IIniSettingsLoader _iniSettingsLoader;
         private readonly IDirectory _directory;
         private readonly IGpoSettings _gpoSettings;
+        private readonly IProgramDataDirectoryHelper _programDataDirectoryHelper;
 
-        public SharedSettingsLoader(IIniSettingsLoader iniSettingsLoader, IDirectory directory, IGpoSettings gpoSettings)
+        public SharedSettingsLoader(IIniSettingsLoader iniSettingsLoader, IDirectory directory,
+            IGpoSettings gpoSettings, IProgramDataDirectoryHelper programDataDirectoryHelper)
         {
             _iniSettingsLoader = iniSettingsLoader;
             _directory = directory;
             _gpoSettings = gpoSettings;
+            _programDataDirectoryHelper = programDataDirectoryHelper;
         }
 
         public void ApplySharedSettings(PdfCreatorSettings currentSettings)
@@ -60,7 +62,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         {
             try
             {
-                var dir = Environment.ExpandEnvironmentVariables(SharedSettingsFolder);
+                var dir = _programDataDirectoryHelper.GetDir();
                 var files = _directory.GetFiles(dir, "*.ini");
                 if (files.Length > 0)
                     return files[0];

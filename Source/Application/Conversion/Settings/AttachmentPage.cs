@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Appends one or more pages at the end of the converted document
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class AttachmentPage : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -52,6 +51,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.File = File;
 			return copy;
+		}
+		
+		public void ReplaceWith(AttachmentPage source)
+		{
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(File != source.File)
+				File = source.File;
+				
 		}
 		
 		public override bool Equals(object o)

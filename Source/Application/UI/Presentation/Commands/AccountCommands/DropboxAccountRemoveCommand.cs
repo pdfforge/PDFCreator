@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         private List<ConversionProfile> _usedInProfilesList;
 
         public DropboxAccountRemoveCommand(IInteractionRequest interactionRequest,
-            ICurrentSettings<Conversion.Settings.Accounts> accountsProvider,
+            ICurrentSettings<Accounts> accountsProvider,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
             IDropboxService dropboxService,
             ITranslationUpdater translationUpdater)
@@ -90,6 +90,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             {
                 profile.DropboxSettings.AccountId = "";
                 profile.DropboxSettings.Enabled = false;
+                profile.ActionOrder.Remove(nameof(DropboxSettings));
             }
 
             try

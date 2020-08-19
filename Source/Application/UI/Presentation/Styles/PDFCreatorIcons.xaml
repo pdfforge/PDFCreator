@@ -110,15 +110,6 @@
         </Canvas>
     </Viewbox>
 
-    <Viewbox x:Key="EditButton" Stretch="Uniform" x:Shared="False">
-        <Canvas Width="178.767" Height="178.738">
-            <Path Fill="#ff323232"
-                  Data="F1 M 0.005,178.448 C 0.005,163.680 -0.027,148.994 0.074,134.310 C 0.081,133.319 0.890,132.142 1.653,131.376 C 19.806,113.144 38.014,94.967 56.190,76.759 C 68.485,64.442 80.746,52.092 93.025,39.761 C 93.619,39.165 94.248,38.604 94.671,38.205 C 109.904,53.470 125.048,68.646 140.385,84.014 C 140.196,84.223 139.680,84.849 139.109,85.421 C 108.464,116.129 77.819,146.837 47.143,177.514 C 46.548,178.109 45.599,178.699 44.813,178.703 C 30.123,178.762 15.433,178.732 0.743,178.713 C 0.591,178.713 0.439,178.608 0.005,178.448 Z" />
-            <Path Fill="#ff323232"
-                  Data="F1 M 157.365,67.193 C 142.027,51.845 126.870,36.677 111.138,20.934 C 112.677,19.630 114.439,18.307 116.001,16.781 C 120.248,12.630 124.381,8.362 128.615,4.199 C 133.982,-1.078 140.610,-1.494 145.804,3.590 C 155.986,13.558 166.050,23.655 175.903,33.946 C 179.954,38.176 179.598,44.732 175.528,48.951 C 169.582,55.116 163.449,61.101 157.365,67.193 Z" />
-        </Canvas>
-    </Viewbox>
-
     <Viewbox x:Key="RemoveButtonIcon" Stretch="Uniform" x:Shared="False">
         <Canvas Width="146.916" Height="176.689">
             <Path
@@ -143,13 +134,43 @@
     </Viewbox>
 
     <Viewbox x:Key="EditButtonIcon" Stretch="Uniform" x:Shared="False">
-        <Canvas Width="178.767" Height="178.738">
-            <Path
-                Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, FallbackValue=#ffff0000, TargetNullValue=#ffff0000}"
-                Data="F1 M 0.005,178.448 C 0.005,163.680 -0.027,148.994 0.074,134.310 C 0.081,133.319 0.890,132.142 1.653,131.376 C 19.806,113.144 38.014,94.967 56.190,76.759 C 68.485,64.442 80.746,52.092 93.025,39.761 C 93.619,39.165 94.248,38.604 94.671,38.205 C 109.904,53.470 125.048,68.646 140.385,84.014 C 140.196,84.223 139.680,84.849 139.109,85.421 C 108.464,116.129 77.819,146.837 47.143,177.514 C 46.548,178.109 45.599,178.699 44.813,178.703 C 30.123,178.762 15.433,178.732 0.743,178.713 C 0.591,178.713 0.439,178.608 0.005,178.448 Z" />
-            <Path
-                Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, FallbackValue=#ffff0000, TargetNullValue=#ffff0000}"
-                 Data="F1 M 157.365,67.193 C 142.027,51.845 126.870,36.677 111.138,20.934 C 112.677,19.630 114.439,18.307 116.001,16.781 C 120.248,12.630 124.381,8.362 128.615,4.199 C 133.982,-1.078 140.610,-1.494 145.804,3.590 C 155.986,13.558 166.050,23.655 175.903,33.946 C 179.954,38.176 179.598,44.732 175.528,48.951 C 169.582,55.116 163.449,61.101 157.365,67.193 Z" />
+        <Canvas Width="49.000" Height="49.000">
+            <Canvas>
+                <Path
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}, FallbackValue=#ffff0000, TargetNullValue=#ffff0000}"
+                    Data="F1 M 25.588,4.370 C 21.061,-0.136 14.167,-1.282 8.419,1.516 L 16.794,9.869 C 17.692,10.763 17.693,12.215 16.795,13.111 C 16.795,13.111 16.794,13.112 16.794,13.112 L 13.131,16.766 C 12.264,17.661 10.833,17.686 9.934,16.822 C 9.915,16.803 9.897,16.785 9.878,16.766 L 1.503,8.442 C -2.105,15.864 1.004,24.798 8.447,28.396 C 12.152,30.188 16.434,30.378 20.285,28.923 L 38.637,47.227 C 41.008,49.591 44.851,49.591 47.222,47.227 C 49.593,44.862 49.593,41.029 47.222,38.665 L 28.927,20.457 C 31.126,14.910 29.814,8.590 25.588,4.370 Z" />
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+
+    <Viewbox x:Key="UpDownArrowIcon" Stretch="Uniform" x:Shared="False">
+        <Canvas Width="26.298" Height="49.674">
+            <Canvas>
+                <Path
+                    Fill="#ff7d7d7d" Data="F1 M 0.000,0.000 L 26.298,0.000 L 26.298,49.674 L 0.000,49.674 L 0.000,0.000 Z" />
+                <Canvas>
+                    <Canvas>
+                        <Canvas>
+                            <Path
+                                Fill="#fff4f4f4"
+                                Data="F1 M 13.149,37.431 L 8.237,32.516 L 9.698,31.055 L 13.146,34.503 L 16.597,31.055 L 18.058,32.516 L 13.149,37.431 Z" />
+                        </Canvas>
+                        <Canvas.Clip>
+                            <PathGeometry Figures=" M 8.237,31.055 L 18.061,31.055 L 18.061,37.431 L 8.237,37.431 L 8.237,31.055 Z" />
+                        </Canvas.Clip>
+                    </Canvas>
+                    <Canvas>
+                        <Canvas>
+                            <Path
+                                Fill="#fff4f4f4"
+                                Data="F1 M 13.149,12.243 L 18.061,17.158 L 16.600,18.619 L 13.152,15.171 L 9.701,18.619 L 8.240,17.158 L 13.149,12.243 Z" />
+                        </Canvas>
+                        <Canvas.Clip>
+                            <PathGeometry Figures=" M 8.237,12.243 L 18.061,12.243 L 18.061,18.619 L 8.237,18.619 L 8.237,12.243 Z" />
+                        </Canvas.Clip>
+                    </Canvas>
+                </Canvas>
+            </Canvas>
         </Canvas>
     </Viewbox>
 
@@ -489,6 +510,49 @@
         </Canvas>
     </Viewbox>
 
+    <Viewbox x:Key="ActionArrow" x:Shared="False">
+        <Canvas Width="167.137" Height="185.722">
+            <Canvas>
+                <Canvas>
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black"  Data="F1 M 6.151,102.157 L 1.027,102.157 L 4.641,105.789" />
+                    <Canvas.Clip>
+                        <PathGeometry  Figures=" M 0.000,185.722 L 167.137,185.722 L 167.137,0.000 L 0.000,0.000 L 0.000,185.722 Z" />
+                    </Canvas.Clip>
+                </Canvas>
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black"  Data="F1 M 27.748,129.014 L 65.690,167.148" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 11.488,112.671 L 16.908,118.119 M 71.110,172.596 L 76.531,178.045" />
+                <Canvas>
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 79.954,181.485 L 83.568,185.117 L 87.182,181.485" />
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 0.000,185.722 L 167.137,185.722 L 167.137,0.000 L 0.000,0.000 L 0.000,185.722 Z" />
+                    </Canvas.Clip>
+                </Canvas>
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 110.289,158.260 L 148.231,120.126" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 94.029,174.603 L 99.449,169.155 M 153.651,114.678 L 159.072,109.229" />
+                <Canvas>
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 162.495,105.789 L 166.109,102.157 L 160.985,102.157" />
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 0.000,185.722 L 167.137,185.722 L 167.137,0.000 L 0.000,0.000 L 0.000,185.722 Z" />
+                    </Canvas.Clip>
+                </Canvas>
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 148.828,102.157 L 130.591,102.157" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 124.512,102.157 L 119.388,102.157 L 119.388,97.033" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 119.388,86.869 L 119.388,10.633" />
+                <Canvas>
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 119.388,5.551 L 119.388,0.427 L 114.265,0.427" />
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 105.494,0.427 L 57.257,0.427" />
+                    <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 52.871,0.427 L 47.748,0.427 L 47.748,5.551" />
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 0.000,185.722 L 167.137,185.722 L 167.137,0.000 L 0.000,0.000 L 0.000,185.722 Z" />
+                    </Canvas.Clip>
+                </Canvas>
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 47.748,15.716 L 47.748,91.951" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black" Data="F1 M 47.748,97.033 L 47.748,102.157 L 42.624,102.157" />
+                <Path StrokeThickness="10" Stroke="Black" Fill="Black"  Data="F1 M 30.466,102.157 L 12.230,102.157" />
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+
     <Viewbox x:Key="Cross" x:Shared="False">
         <Canvas Width="23" Height="23">
             <Canvas>
@@ -568,6 +632,22 @@
         </Canvas>
     </Viewbox>
 
+    <Viewbox x:Key="ArrowWorkflowIcon" Stretch="Uniform" x:Shared="False">
+        <Canvas Width="47.609" Height="30.899">
+            <Canvas>
+                <Canvas>
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 0.000,0.000 L 47.609,0.000 L 47.609,30.899 L 0.000,30.899 L 0.000,0.000 Z" />
+                    </Canvas.Clip>
+                    <Canvas>
+                        <Path Fill="DimGray"
+                              Data="F1 M 23.804,30.899 L 0.000,7.080 L 7.080,0.000 L 23.790,16.710 L 40.514,0.000 L 47.595,7.080 L 23.804,30.899 Z" />
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+
     <Viewbox x:Key="RssFeedWarningIcon" Stretch="Uniform" x:Shared="False">
         <Canvas Width="20" Height="16">
             <Canvas.RenderTransform>
@@ -590,6 +670,21 @@
                         FillRule="NonZero" />
                 </Path.Data>
             </Path>
+        </Canvas>
+    </Viewbox>
+
+    <Viewbox x:Key="PlusIcon" HorizontalAlignment="Stretch" x:Shared="False"
+             VerticalAlignment="Stretch">
+        <Canvas Width="10"
+                Height="10">
+            <Rectangle Canvas.Top="3.75"
+                       Width="10"
+                       Height="2.5"
+                       Fill="DarkGray" />
+            <Rectangle Canvas.Left="3.75"
+                       Width="2.5"
+                       Height="10"
+                       Fill="DarkGray" />
         </Canvas>
     </Viewbox>
 

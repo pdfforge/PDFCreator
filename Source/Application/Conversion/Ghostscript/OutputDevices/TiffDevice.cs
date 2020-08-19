@@ -11,11 +11,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public class TiffDevice : OutputDevice
     {
-        public TiffDevice(Job job) : base(job)
+        public TiffDevice(Job job, ConversionMode conversionMode) : base(job, conversionMode)
         {
         }
 
-        public TiffDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, file, osHelper, commandLineUtil)
+        public TiffDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, conversionMode, file, osHelper, commandLineUtil)
         {
         }
 

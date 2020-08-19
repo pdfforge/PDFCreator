@@ -1,12 +1,13 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 {
     public interface IActionManager
     {
-        IEnumerable<IPreConversionAction> GetApplicablePreConversionActions(Job job);
+        IEnumerable<T> GetActions<T>(ConversionProfile profile) where T : IAction;
 
-        IEnumerable<IPostConversionAction> GetApplicablePostConversionActions(Job job);
+        IEnumerable<T> GetActions<T>(Job job) where T : IAction;
     }
 }

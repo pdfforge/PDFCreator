@@ -58,6 +58,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The specified time server account for signing is not configured.")]
         Signature_NoTimeServerAccount = 12207,
 
+        [Translation("Unable to find the certification file.")]
+        Signature_FileNotFound = 12208,
+
         [Translation("Error while signing the document.")]
         Signature_GenericError = 12999,
 
@@ -121,6 +124,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Invalid SMTP e-mail recipients.")]
         Smtp_InvalidRecipients = 15109,
 
+        [Translation("At least one of the attachment files for the SMTP action is unavailable.")]
+        Smtp_InvalidAttachmentFiles = 15110,
+
         [Translation("Error while sending e-mail over SMTP.")]
         Smtp_GenericError = 15999,
 
@@ -133,11 +139,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Background file is no PDF file.")]
         Background_NoPdf = 17102,
 
-        [Translation("Could not open cover file.")]
-        Cover_CouldNotOpenFile = 17200,
+        [Translation("Unable to add the background. The documents' PDF format version is not compatible.")]
+        Background_ConformanceError = 17103,
 
-        [Translation("Could not open attachment file.")]
-        Attachment_CouldNotOpenFile = 17201,
+        [Translation("Unable to add the background. The background PDF may not be password protected.")]
+        Background_BadPasswordError = 17104,
 
         [Translation("Error while adding background to the document.")]
         Background_GenericError = 17999,
@@ -184,11 +190,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The specified Dropbox access token is not configured.")]
         Dropbox_AccessTokenNotSpecified = 19002,
 
-        [Translation("These characters are not allowed as Dropbox folder name: < > : ? * \" |")]
-        Dropbox_InvalidFolderName = 19003,
-
-        [Translation("Automatic saving without target directory.")]
-        AutoSave_NoTargetDirectory = 21100,
+        [Translation("These characters are not allowed as Dropbox directory name: < > : ? * \" |")]
+        Dropbox_InvalidDirectoryName = 19003,
 
         [Translation("Automatic saving without filename template.")]
         AutoSave_NoFilenameTemplate = 21101,
@@ -205,6 +208,21 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The cover file is no PDF file.")]
         Cover_NoPdf = 22102,
 
+        [Translation("Cover path is invalid absolute path.")]
+        Cover_InvalidRootedPath = 22103,
+
+        [Translation("Cover path is too long.")]
+        Cover_PathTooLong = 22104,
+
+        [Translation("Cover path contains illegal characters.")]
+        Cover_IllegalCharacters = 22105,
+
+        [Translation("Unable to add the cover. The documents' PDF format version is not compatible.")]
+        Cover_ConformanceError = 22106,
+
+        [Translation("Error while adding cover to the document.")]
+        Cover_GenericError = 22999,
+
         [Translation("No attachment file is specified.")]
         Attachment_NoFileSpecified = 23100,
 
@@ -214,11 +232,29 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Attachment file is no PDF file.")]
         Attachment_NoPdf = 23102,
 
+        [Translation("Unable to add the attachment. The documents' PDF format version is not compatible.")]
+        Attachment_ConformanceError = 23103,
+
+        [Translation("Attachment path is invalid rooted path.")]
+        Attachment_InvalidRootedPath = 23104,
+
+        [Translation("Attachment path is too long.")]
+        Attachment_PathTooLong = 23105,
+
+        [Translation("Attachment path contains illegal characters.")]
+        Attachment_IllegalCharacters = 23106,
+
+        [Translation("Error while adding attachment to the document.")]
+        Attachment_GenericError = 23999,
+
         [Translation("No stamp text is specified.")]
         Stamp_NoText = 24100,
 
-        [Translation("No stamp font is specified.")]
-        Stamp_NoFont = 24101,
+        [Translation("Stamp font can't be found.")]
+        Stamp_FontNotFound = 24101,
+
+        [Translation("Error while stamping the document. Make sure that the selected font contains all glyphs used in the stamping text.")]
+        Stamp_GenericError = 24999,
 
         [Translation("Automatic saving without owner password.")]
         AutoSave_NoOwnerPassword = 25100,
@@ -241,11 +277,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Missing output file for PDF processing.")]
         Processing_OutputFileMissing = 26100,
 
+        [Translation("At least one PDF file is applied that does not conform to the PDF/A standard.")]
+        Processing_ConformanceMismatch = 26200,
+
         [Translation("Error while processing the document.")]
         Processing_GenericError = 26999,
-
-        [Translation("Preselected folder for save dialog is empty.")]
-        SaveDialog_NoPreselectedFolder = 28100,
 
         [Translation("Error while copying the output file.")]
         Conversion_ErrorWhileCopyingOutputFile = 28200,
@@ -310,32 +346,14 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Target directory contains illegal characters.")]
         TargetDirectory_IllegalCharacters = 34004,
 
-        [Translation("Cover path is invalid absolute path.")]
-        CoverPage_InvalidRootedPath = 35001,
-
-        [Translation("Cover path is too long.")]
-        CoverPage_TooLong = 35002,
-
-        [Translation("Cover path contains illegal characters.")]
-        CoverPage_IllegalCharacters = 35003,
-
-        [Translation("Background path is invalid absolute path.")]
-        BackgroundPage_InvalidRootedPath = 36001,
+        [Translation("Background file path is invalid rooted path.")]
+        Background_InvalidRootedPath = 36001,
 
         [Translation("Background path is too long.")]
-        BackgroundPage_TooLong = 36002,
+        Background_PathTooLong = 36002,
 
         [Translation("Background path contains illegal characters.")]
-        BackgroundPage_IllegalCharacters = 36003,
-
-        [Translation("Attachment path is invalid absolute path.")]
-        AttachmentPage_InvalidRootedPath = 37001,
-
-        [Translation("Attachment path is too long.")]
-        AttachmentPage_TooLong = 37002,
-
-        [Translation("Attachment path contains illegal characters.")]
-        AttachmentPage_IllegalCharacters = 37003,
+        Background_IllegalCharacters = 36003,
 
         [Translation("Certificate path is invalid absolute path.")]
         CertificateFile_InvalidRootedPath = 38001,
@@ -348,6 +366,21 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Ftp directory path is invalid ftp path.")]
         FtpDirectory_InvalidFtpPath = 40001,
+
+        [Translation("Ftp key file path is invalid path.")]
+        FtpKeyFilePath_InvalidKeyFilePath = 40002,
+
+        [Translation("Ftp key file path is invalid rooted path.")]
+        FtpKeyFilePath_InvalidRootedPath = 40003,
+
+        [Translation("Ftp key file path is too long.")]
+        FtpKeyFilePath_PathTooLong = 40004,
+
+        [Translation("Ftp key file path contains illegal characters.")]
+        FtpKeyFilePath_IllegalCharacters = 40005,
+
+        [Translation("Ftp key file does not exist.")]
+        FtpKeyFilePath_FileDoesNotExist = 40006,
 
         [Translation("Custom viewer was not found.")]
         DefaultViewer_Not_Found = 41000,
@@ -385,7 +418,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The path is not valid. Please enter a valid absolute path.")]
         FilePath_InvalidRootedPath = 42000,
 
-        [Translation("The folder path is not valid or empty. Please enter a valid path. \nThe folder path must not contain any of the following characters: \n" + @" \ / : * ? \" + "< >")]
+        [Translation("The file path is not valid or empty. Please enter a valid path. \nThe file path must not contain any of the following characters: \n" + @" \ / : * ? \" + "< >")]
         FilePath_InvalidCharacters = 42001,
 
         //todo: better translation
@@ -414,5 +447,44 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Exception during post-conversion CS-Script.")]
         CustomScriptPostConversion_Exception = 45002,
+
+        [Translation("Error during forward to further profile action.")]
+        ForwardToFurtherProfile_GeneralError = 46000,
+
+        [Translation("The forward to further profile action forwards to itself.")]
+        ForwardToFurtherProfile_ForwardToItself = 46001,
+
+        [Translation("The forward to further profile action is linked to an unknown profile.")]
+        ForwardToFurtherProfile_UnknownProfile = 46002,
+
+        [Translation("The forward to further profile action causes a circular dependency between the profiles.")]
+        ForwardToFurtherProfile_CircularDependency = 46003,
+
+        [Translation("No watermark file is specified.")]
+        Watermark_NoFileSpecified = 47001,
+
+        [Translation("Watermark file is no PDF file.")]
+        Watermark_NoPdf = 47002,
+
+        [Translation("Watermark file path is invalid rooted path.")]
+        Watermark_InvalidRootedPath = 47003,
+
+        [Translation("Watermark file path is too long.")]
+        Watermark_PathTooLong = 47004,
+
+        [Translation("Watermark path contains illegal characters.")]
+        Watermark_IllegalCharacters = 47005,
+
+        [Translation("Watermark file does not exist.")]
+        Watermark_FileDoesNotExist = 47006,
+
+        [Translation("Unable to add the watermark. The documents' PDF format version is not compatible.")]
+        Watermark_ConformanceError = 47007,
+
+        [Translation("Unable to add the watermark. The watermark PDF may not be password protected.")]
+        Watermark_BadPassword = 47008,
+
+        [Translation("Error while adding watermark to the document.")]
+        Watermark_GenericError = 47999,
     }
 }

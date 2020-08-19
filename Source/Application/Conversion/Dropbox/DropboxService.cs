@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while uploading files to DropBox:\r\n" + ex.Message);
+                Logger.Error(ex, "Exception while uploading files to DropBox: ");
                 return false;
             }
         }
@@ -92,7 +92,7 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while uploading and sharing file to DropBox:\r\n" + ex.Message);
+                Logger.Error(ex, "Exception while uploading and sharing file to DropBox: ");
                 return new DropboxFileMetaData();
             }
         }

@@ -1,4 +1,5 @@
-﻿using pdfforge.Obsidian;
+﻿using System;
+using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
@@ -13,7 +14,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         public ConvertTabViewModel(ITranslationUpdater updater, ISelectedProfileProvider selectedProfile, IDispatcher dispatcher) : base(updater, selectedProfile, dispatcher)
         {
             SetOutputFormatCommand = new DelegateCommand<OutputFormat>(SetOutputFormatExecute);
-            CurrentProfileChanged += (sender, args) => RaisePropertyChanged(nameof(OutputFormat));
         }
 
         // Required for Icons Styles
@@ -33,6 +33,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.Convert
         {
             CurrentProfile.OutputFormat = parameter;
             RaisePropertyChanged(nameof(OutputFormat));
+        }
+        private void OnCurrentProfileChanged(object sender, EventArgs args)
+        {
+            RaisePropertyChanged(nameof(OutputFormat));
+        }
+
+        public override void MountView()
+        {
+            base.MountView();
+            CurrentProfileChanged += OnCurrentProfileChanged;
+        }
+
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+            CurrentProfileChanged -= OnCurrentProfileChanged;
         }
     }
 }

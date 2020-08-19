@@ -1,5 +1,4 @@
 ﻿using NLog;
-using pdfforge.Mail;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -7,7 +6,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using System;
 using System.Net;
 using System.Net.Mail;
-using Attachment = System.Net.Mail.Attachment;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -16,14 +15,17 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
     public class SmtpMailAction : RetypePasswordActionBase, ISmtpMailAction
     {
-        private readonly IMailSignatureHelper _mailSignatureHelper;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IFile _file;
+        private readonly IMailHelper _mailHelper;
 
         protected override string PasswordText => "SMTP";
 
-        public SmtpMailAction(IMailSignatureHelper mailSignatureHelper)
+        public SmtpMailAction(IFile file, IMailHelper mailHelper)
         {
-            _mailSignatureHelper = mailSignatureHelper;
+            _file = file;
+            _mailHelper = mailHelper;
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)
@@ -34,6 +36,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                                                                           .Replace(';', ',');
             job.Profile.EmailSmtpSettings.RecipientsBcc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.RecipientsBcc)
                                                                            .Replace(';', ',');
+            job.Profile.EmailSmtpSettings.AdditionalAttachments = job.Profile.EmailSmtpSettings.AdditionalAttachments;
         }
 
         public override ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
@@ -91,6 +94,19 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 }
             }
 
+            if (checkLevel == CheckLevel.Job)
+            {
+                foreach (var attachmentFile in profile.EmailSmtpSettings.AdditionalAttachments)
+                {
+                    if (!_file.Exists(attachmentFile))
+                    {
+                        actionResult.Add(ErrorCode.Smtp_InvalidAttachmentFiles);
+                        Logger.Error("Can't find SMTP attachment " + attachmentFile + ".");
+                        break;
+                    }
+                }
+            }
+
             return actionResult;
         }
 
@@ -104,125 +120,83 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 return new ActionResult(ErrorCode.Smtp_NoPasswordSpecified);
             }
 
-            MailMessage mail;
-            try
-            {
-                mail = new MailMessage(smtpAccount.Address, job.Profile.EmailSmtpSettings.Recipients);
-            }
-            catch (Exception e) when (e is FormatException || e is ArgumentException)
-            {
-                Logger.Error($"\'{job.Profile.EmailSmtpSettings.Recipients}\' is no valid SMTP e-mail recipient: " + e.Message);
-                return new ActionResult(ErrorCode.Smtp_InvalidRecipients);
-            }
-
-            // these blocks have to be seperated, because we want to log the offending recipients
-            // (AddRecipients does this already, but can't be reused for the constructor)
-            try
-            {
-                AddRecipients(mail, RecipientType.Cc, job.Profile.EmailSmtpSettings.RecipientsCc);
-                AddRecipients(mail, RecipientType.Bcc, job.Profile.EmailSmtpSettings.RecipientsBcc);
-            }
-            catch
-            {
-                return new ActionResult(ErrorCode.Smtp_InvalidRecipients);
-            }
-
-            mail.Subject = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.Subject);
-            mail.IsBodyHtml = job.Profile.EmailSmtpSettings.Html;
-            mail.Body = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.Content);
-
-            if (job.Profile.EmailSmtpSettings.AddSignature)
-            {
-                var mailSignature = _mailSignatureHelper.ComposeMailSignature();
-
-                // if html option is checked replace newLine with <br />
-                if (job.Profile.EmailSmtpSettings.Html)
-                    mailSignature = mailSignature.Replace(Environment.NewLine, "<br>");
-
-                mail.Body += mailSignature;
-            }
+            var result = CreateMailMessage(job, job.Profile.EmailSmtpSettings, smtpAccount, out var message);
+            if (!result)
+                return result;
 
             Logger.Debug("Created new Mail"
-                         + "\r\nFrom: " + mail.From
-                         + "\r\nTo: " + mail.To
-                         + "\r\nSubject: " + mail.Subject
-                         + "\r\nContent: " + mail.Body
+                         + "\r\nFrom: " + message.From
+                         + "\r\nTo: " + message.To
+                         + "\r\nSubject: " + message.Subject
+                         + "\r\nContent: " + message.Body
             );
 
-            if (!SkipFileAttachments(job))
+            var smtp = new SmtpClient(smtpAccount.Server, smtpAccount.Port)
             {
-                var i = 1;
-                foreach (var file in job.OutputFiles)
-                {
-                    var attach = new Attachment(file);
-                    //attach.NameEncoding = System.Text.Encoding.ASCII;
-                    mail.Attachments.Add(attach);
-                    Logger.Debug("Attachement " + i + "/" + job.OutputFiles.Count + ":" + file);
-                    i++;
-                }
-            }
-
-            var smtp = new SmtpClient(smtpAccount.Server, smtpAccount.Port);
-            smtp.EnableSsl = smtpAccount.Ssl;
+                EnableSsl = smtpAccount.Ssl
+            };
 
             Logger.Debug("Created new SmtpClient:"
                          + "\r\nHost: " + smtp.Host
                          + "\r\nPort: " + smtp.Port
             );
 
-            return SendEmail(job, smtp, mail);
+            return SendEmail(smtp, job.Passwords.SmtpPassword, message, smtpAccount);
         }
 
-        private MailAddressCollection GetAddressCollection(MailMessage mail, RecipientType recipientType)
+        private ActionResult CreateMailMessage(Job job, EmailSmtpSettings mailSettings, SmtpAccount sender, out MailMessage mailMessage)
         {
-            switch (recipientType)
-            {
-                case RecipientType.To: return mail.To;
-                case RecipientType.Cc: return mail.CC;
-                case RecipientType.Bcc: return mail.Bcc;
-                default: throw new ArgumentException("Invalid recipient type!", nameof(recipientType));
-            }
-        }
+            var mailInfo = _mailHelper.CreateMailInfo(job, mailSettings);
 
-        private void AddRecipients(MailMessage mail, RecipientType recipientType, string recipients)
-        {
-            if (string.IsNullOrWhiteSpace(recipients))
-                return;
-
-            var addressCollection = GetAddressCollection(mail, recipientType);
+            mailMessage = null;
             try
             {
-                addressCollection.Add(recipients);
+                mailMessage = mailMessage = new MailMessage(sender.Address, mailInfo.Recipients)
+                {
+                    Subject = mailInfo.Subject,
+                    Body = mailInfo.Body,
+                    IsBodyHtml = mailInfo.IsHtml
+                };
+
+                if (!string.IsNullOrWhiteSpace(mailInfo.RecipientsBcc)) //Prevent MailMessage from throwing and exception if BCC is not set
+                    mailMessage.Bcc.Add(mailInfo.RecipientsBcc);
+
+                if (!string.IsNullOrWhiteSpace(mailInfo.RecipientsCc)) //Prevent MailMessage from throwing and exception if CC is not set
+                    mailMessage.CC.Add(mailInfo.RecipientsCc);
             }
-            catch (Exception e) when (e is FormatException || e is ArgumentException)
+            catch
             {
-                Logger.Error($"\'{recipients}\' is no valid SMTP e-mail recipient: " + e.Message);
-                throw;
+                return new ActionResult(ErrorCode.Smtp_InvalidRecipients);
             }
+
+            foreach (var attachment in mailInfo.Attachments)
+            {
+                try
+                {
+                    mailMessage.Attachments.Add(new Attachment(attachment));
+                }
+                catch
+                {
+                    Logger.Error("Invalid SMTP attachment: " + attachment);
+                    return new ActionResult(ErrorCode.Smtp_InvalidAttachmentFiles);
+                }
+            }
+
+            return new ActionResult();
         }
 
-        private bool SkipFileAttachments(Job job)
+        private ActionResult SendEmail(SmtpClient smtpClient, string smtpPassword, MailMessage mail, SmtpAccount smtpAccount)
         {
-            if (job.Profile.DropboxSettings.Enabled == false || job.Profile.DropboxSettings.CreateShareLink == false)
-                return false;
-
-            return job.Profile.EmailSmtpSettings.Content.IndexOf("<Dropbox", StringComparison.InvariantCultureIgnoreCase) >= 0;
-        }
-
-        private ActionResult SendEmail(Job job, SmtpClient smtp, MailMessage mail)
-        {
-            var smtpAccount = job.Accounts.GetSmtpAccount(job.Profile);
-
-            var credentials = new NetworkCredential(smtpAccount.UserName, job.Passwords.SmtpPassword);
-            smtp.Credentials = credentials;
+            var credentials = new NetworkCredential(smtpAccount.UserName, smtpPassword);
+            smtpClient.Credentials = credentials;
 
             try
             {
-                smtp.Send(mail);
+                smtpClient.Send(mail);
             }
             catch (SmtpFailedRecipientsException ex)
             {
-                Logger.Error("The message could not be delivered to one or more of the recipients\r\n" + ex.Message);
+                Logger.Error(ex, "The message could not be delivered to one or more of the recipients ");
                 return new ActionResult(ErrorCode.Smtp_EmailNotDelivered);
             }
             catch (SmtpException ex)
@@ -232,7 +206,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while sending mail over smtp:\r\n" + ex.Message);
+                Logger.Error(ex, "Exception while sending mail over smtp: ");
 
                 return new ActionResult(ErrorCode.Smtp_GenericError);
             }

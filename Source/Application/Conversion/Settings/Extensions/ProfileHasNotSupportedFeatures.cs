@@ -12,7 +12,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeatures
             return profile.HasNotSupportedMetadata()
                    || profile.HasNotSupportedModify()
                    || profile.HasNotSupportedSecure()
-                   || profile.HasNotSupportedConvert();
+                   || profile.HasNotSupportedConvert()
+                   || profile.HasNotSupportedSendSettings();
         }
 
         public static bool HasNotSupportedMetadata(this ConversionProfile profile)
@@ -27,23 +28,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeatures
 
         public static bool HasNotSupportedModify(this ConversionProfile profile)
         {
-            return profile.HasNotSupportedBackground();
-        }
-
-        public static bool HasNotSupportedBackground(this ConversionProfile profile)
-        {
-            return profile.BackgroundPage.Enabled && !profile.OutputFormat.IsPdf();
+            return false;
         }
 
         public static bool HasNotSupportedSecure(this ConversionProfile profile)
         {
             return profile.HasNotSupportedEncryption()
                    || profile.HasNotSupportedSignature();
-        }
-
-        public static bool HasNotSupportedEncryption(this ConversionProfile profile)
-        {
-            return profile.PdfSettings.Security.Enabled && profile.OutputFormat != OutputFormat.Pdf;
         }
 
         public static bool HasNotSupportedSignature(this ConversionProfile profile)
@@ -61,13 +52,50 @@ namespace pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeatures
             return (profile.OutputFormat == OutputFormat.PdfX) && (profile.PdfSettings.ColorModel == ColorModel.Rgb);
         }
 
-        public static void SetRaiseConditionsForNotSupportedFeatureSections(this ConversionProfile profile, PropertyChangedEventHandler onPropertyChanged)
+        public static bool HasNotSupportedSendSettings(this ConversionProfile profile)
+        {
+            var hasSendSettings = profile.EmailClientSettings.Enabled
+                                  || profile.DropboxSettings.Enabled
+                                  || profile.Ftp.Enabled
+                                  || profile.HttpSettings.Enabled
+                                  || profile.Printing.Enabled
+                                  || profile.EmailSmtpSettings.Enabled;
+
+
+
+            return !hasSendSettings && profile.SaveFileTemporary;
+        }
+
+        public static void MountRaiseConditionsForNotSupportedFeatureSections(this ConversionProfile profile, PropertyChangedEventHandler onPropertyChanged)
         {
             profile.PropertyChanged += onPropertyChanged;
             profile.BackgroundPage.PropertyChanged += onPropertyChanged;
             profile.PdfSettings.PropertyChanged += onPropertyChanged;
             profile.PdfSettings.Security.PropertyChanged += onPropertyChanged;
-            profile.PdfSettings.Signature.PropertyChanged += onPropertyChanged;
+            profile.PdfSettings.Signature.PropertyChanged += onPropertyChanged;  
+            
+            profile.Ftp.PropertyChanged += onPropertyChanged;          
+            profile.EmailSmtpSettings.PropertyChanged += onPropertyChanged;          
+            profile.DropboxSettings.PropertyChanged += onPropertyChanged;
+            profile.Printing.PropertyChanged += onPropertyChanged;
+            profile.HttpSettings.PropertyChanged += onPropertyChanged;
+            profile.EmailClientSettings.PropertyChanged += onPropertyChanged;
+        }
+
+        public static void UnMountRaiseConditionsForNotSupportedFeatureSections(this ConversionProfile profile, PropertyChangedEventHandler onPropertyChanged)
+        {
+            profile.PropertyChanged -= onPropertyChanged;
+            profile.BackgroundPage.PropertyChanged -= onPropertyChanged;
+            profile.PdfSettings.PropertyChanged -= onPropertyChanged;
+            profile.PdfSettings.Security.PropertyChanged -= onPropertyChanged;
+            profile.PdfSettings.Signature.PropertyChanged -= onPropertyChanged;  
+            
+            profile.Ftp.PropertyChanged -= onPropertyChanged;          
+            profile.EmailSmtpSettings.PropertyChanged -= onPropertyChanged;          
+            profile.DropboxSettings.PropertyChanged -= onPropertyChanged;
+            profile.Printing.PropertyChanged -= onPropertyChanged;
+            profile.HttpSettings.PropertyChanged -= onPropertyChanged;
+            profile.EmailClientSettings.PropertyChanged -= onPropertyChanged;
         }
     }
 }

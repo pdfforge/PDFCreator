@@ -1,21 +1,25 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Printing.Printer;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings
 {
     public class TestPageSettingsViewModel : ADebugSettingsItemControlModel
     {
-        private readonly IPrinterHelper _printerHelper;
-        private readonly ITestPageHelper _testPageHelper;
-        private readonly ICurrentSettings<CreatorAppSettings> _settingsProvider;
-        private readonly ICurrentSettings<ApplicationSettings> _applicationSettingsProvider;
+        protected readonly IPrinterHelper _printerHelper;
+        protected readonly ITestPageHelper _testPageHelper;
+        protected readonly ICurrentSettings<CreatorAppSettings> _settingsProvider;
+        protected readonly ICurrentSettings<ApplicationSettings> _applicationSettingsProvider;
 
         public TestPageSettingsViewModel(
             ITestPageHelper testPageHelper,
@@ -26,27 +30,49 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
             IGpoSettings gpoSettings) :
             base(translationUpdater, gpoSettings)
         {
-            PrintPdfCreatorTestpageCommand = new DelegateCommand(PdfCreatorTestpageExecute);
-            PrintWindowsTestpageCommand = new DelegateCommand(WindowsTestpageExecute);
+            PrintPdfCreatorTestPageCommand = new AsyncCommand(PdfCreatorTestPageExecute);
+            PrintWindowsTestPageCommand = new AsyncCommand(WindowsTestPageExecute);
             _printerHelper = printerHelper;
             _testPageHelper = testPageHelper;
             _settingsProvider = settingsProvider;
             _applicationSettingsProvider = applicationSettingsProvider;
         }
 
-        public ICommand PrintPdfCreatorTestpageCommand { get; }
-        public ICommand PrintWindowsTestpageCommand { get; }
+        public ICommand PrintPdfCreatorTestPageCommand { get; protected set; }
+        public ICommand PrintWindowsTestPageCommand { get; }
 
-        private void PdfCreatorTestpageExecute(object o)
+        protected virtual async Task PdfCreatorTestPageExecute(object o)
         {
-            LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
-            _testPageHelper.CreateTestPage();
+            await Task.Run(() =>{
+                LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
+                _testPageHelper.CreateTestPage();
+            });
         }
 
-        private void WindowsTestpageExecute(object o)
+        private async Task WindowsTestPageExecute(object o)
         {
-            LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
-            _printerHelper.PrintWindowsTestPage(_settingsProvider.Settings.PrimaryPrinter);
+            await Task.Run(() =>
+            {
+                LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
+                _printerHelper.PrintWindowsTestPage(_settingsProvider.Settings.PrimaryPrinter);
+            });
         }
+    }
+
+    public class WorkflowTestPageSettingsViewModel :  TranslatableViewModelBase<DebugSettingsTranslation>
+    {
+        public WorkflowTestPageSettingsViewModel(
+            ICommandLocator commandLocator,
+            ITranslationUpdater translationUpdater) : base(translationUpdater)
+        {
+            PrintPdfCreatorTestPageCommand = commandLocator
+                                                .CreateMacroCommand()
+                                                .AddCommand<AskForSavingCommand>()
+                                                .AddCommand<ISaveChangedSettingsCommand>()
+                                                .AddCommand<IPrintTestPageAsyncCommand>()
+                                                .Build();
+        }
+
+        public IMacroCommand PrintPdfCreatorTestPageCommand { get; private set; }
     }
 }

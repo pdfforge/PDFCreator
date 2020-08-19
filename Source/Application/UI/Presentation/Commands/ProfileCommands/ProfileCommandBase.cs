@@ -38,5 +38,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
             return new InputValidation(profileNameDoesNotExist,
                 profileNameDoesNotExist ? null : invalidProfileMessage);
         }
+        
+        
     }
 }

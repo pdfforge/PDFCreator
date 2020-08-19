@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System;
 using System.Security;
+using System.Threading.Tasks;
 using SystemInterface.Microsoft.Win32;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
@@ -22,10 +23,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             SkipStartupConditionCheck = true;
         }
 
-        public override ExitCode Run()
+        public override Task<ExitCode> Run()
         {
             if (string.IsNullOrWhiteSpace(LicenseServerCode))
-                return ExitCode.MissingActivation;
+                return Task.FromResult(ExitCode.MissingActivation);
 
             var regPath = "HKEY_LOCAL_MACHINE\\" + _registryPath;
 
@@ -36,14 +37,14 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             }
             catch (SecurityException)
             {
-                return ExitCode.NoAccessPrivileges;
+                return Task.FromResult(ExitCode.NoAccessPrivileges);
             }
             catch (Exception)
             {
-                return ExitCode.Unknown;
+                return Task.FromResult(ExitCode.Unknown);
             }
 
-            return ExitCode.Ok;
+            return Task.FromResult(ExitCode.Ok);
         }
     }
 }

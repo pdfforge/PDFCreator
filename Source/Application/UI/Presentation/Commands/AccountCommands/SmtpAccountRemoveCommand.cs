@@ -85,6 +85,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             {
                 profile.EmailSmtpSettings.AccountId = "";
                 profile.EmailSmtpSettings.Enabled = false;
+
+                profile.ActionOrder.Remove(nameof(EmailSmtpSettings));
             }
 
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));

@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         protected override bool StartApplication()
         {
             _logger.Debug("Starting main window");
-            _mainWindowThreadLauncher.LaunchMainWindow(null);
+            _mainWindowThreadLauncher.LaunchMainWindow();
 
             var pdfArchitectCheckThread = new SynchronizedThread(() => { _pdfArchitectCheck.IsInstalled(); });
             _threadManager.StartSynchronizedThread(pdfArchitectCheckThread);

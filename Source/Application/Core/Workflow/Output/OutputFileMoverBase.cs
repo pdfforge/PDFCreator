@@ -111,6 +111,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
                                 {
                                     throw new ProcessingException("Error while copying to target file in second attempt. Process gets canceled.", ErrorCode.Conversion_ErrorWhileCopyingOutputFile);
                                 }
+
                                 break;
                         }
                     }

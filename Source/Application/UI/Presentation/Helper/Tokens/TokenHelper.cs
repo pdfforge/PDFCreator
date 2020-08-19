@@ -53,7 +53,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             get { return _tokenReplacer ?? (_tokenReplacer = CreateTokenReplacerWithPlaceHolders()); }
         }
 
-        private TokenReplacer CreateTokenReplacerWithPlaceHolders()
+        protected virtual TokenReplacer CreateTokenReplacerWithPlaceHolders()
+        {
+            var tr = CreateTokenReplacerWithPlaceHoldersBase();
+
+            tr.AddToken(new StringToken("Username", Environment.UserName));
+            tr.AddToken(new StringToken("Desktop", Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
+            tr.AddToken(new StringToken("MyDocuments", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            tr.AddToken(new StringToken("MyPictures", Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
+
+            return tr;
+        }
+
+        protected TokenReplacer CreateTokenReplacerWithPlaceHoldersBase()
         {
             var tr = new TokenReplacer();
 
@@ -80,16 +92,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new NumberToken("SessionID", 0));
             tr.AddToken(new StringToken("Title", _translation.TitleFromSettings));
             tr.AddToken(new StringToken("PrintJobName", _translation.TitleFromPrintJob));
-            tr.AddToken(new StringToken("Username", Environment.UserName));
             tr.AddToken(new StringToken("Subject", _translation.SubjectFromSettings));
             tr.AddToken(new StringToken("Keywords", _translation.KeywordsFromSettings));
             tr.AddToken(new StringToken("DropboxHtmlLinks", "<a href=\"https://dropbox.com/link1\">File.pdf</a>"));
             tr.AddToken(new StringToken("DropboxFullLinks", "File.pdf ( https://dropbox.com/link1 )"));
             tr.AddToken(new EnvironmentToken());
             tr.AddToken(new ParameterPreviewToken("User", _translation.FormatTokenPreviewText));
-            tr.AddToken(new StringToken("Desktop", Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
-            tr.AddToken(new StringToken("MyDocuments", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
-            tr.AddToken(new StringToken("MyPictures", Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
 
             return tr;
         }

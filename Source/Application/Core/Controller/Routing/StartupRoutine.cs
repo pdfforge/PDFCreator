@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace pdfforge.PDFCreator.Core.Controller.Routing
 {
-    public class StartupRoutine
+    public class StartupRoutine : IStartupRoutine
     {
         private List<IStartupAction> _startupActions = new List<IStartupAction>();
 
@@ -52,5 +52,16 @@ namespace pdfforge.PDFCreator.Core.Controller.Routing
         {
             return _startupActions;
         }
+    }
+
+    public interface IStartupRoutine
+    {
+        void AddAction(IStartupAction action);
+
+        void OverrideRoutine(StartupRoutine routine);
+
+        List<TType> GetActionByType<TType>() where TType : class, IStartupAction;
+
+        IEnumerable<IStartupAction> GetAllActions();
     }
 }

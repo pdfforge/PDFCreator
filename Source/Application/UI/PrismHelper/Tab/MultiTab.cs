@@ -1,6 +1,7 @@
 using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
+using Prism.Events;
 using Prism.Regions;
 using SimpleInjector;
 using System;
@@ -22,13 +23,24 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
             Views = views;
         }
 
-        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, string regionName)
+        public MultiTab(string contentRegionName, HelpTopic helpTopic, IList<Type> views)
+        {
+            _helpTopic = helpTopic;
+            _contentRegionName = contentRegionName;
+            Views = views;
+        }
+
+        public void Register(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator, string regionName)
         {
             regionManager.RegisterMultiContentTab<T>(regionName, _contentRegionName, _helpTopic, serviceLocator);
             foreach (var view in Views)
             {
                 regionManager.RegisterViewWithRegion(_contentRegionName, view);
             }
+        }
+
+        public static void RegisterWithoutMultiTab(IRegionManager regionManager, IEnumerable<Type> views, string RegionName)
+        {
         }
 
         public void RegisterNavigationViews(Container container)

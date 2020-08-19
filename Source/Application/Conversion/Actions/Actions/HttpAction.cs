@@ -77,7 +77,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception while upload file to http:\r\n" + ex.Message);
+                Logger.Error(ex, "Exception while upload file to http: ");
 
                 return new ActionResult(ErrorCode.HTTP_Generic_Error);
             }
@@ -121,6 +121,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     outputFile.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
                     outputFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
                     outputFile.Headers.ContentDisposition.FileName = Path.GetFileName(jobOutputFile);
+                    outputFile.Headers.ContentDisposition.Name = GetRandomString(12);
                     multiContent.Add(outputFile);
                 }
 
@@ -132,6 +133,20 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 Logger.Error($"Exception during HTTP upload:\r\n{e.Message}");
                 throw;
             }
+        }
+
+        private string GetRandomString(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(stringChars);
         }
 
         private async Task<HttpResponseMessage> MakePostRequest(Job job, HttpContent message)

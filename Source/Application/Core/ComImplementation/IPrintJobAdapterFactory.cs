@@ -1,8 +1,8 @@
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Utilities;
 using SystemInterface.IO;
 

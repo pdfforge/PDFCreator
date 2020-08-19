@@ -1,7 +1,8 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Utilities.Threading
 {
@@ -11,17 +12,19 @@ namespace pdfforge.PDFCreator.Utilities.Threading
     /// </summary>
     public class ThreadManager : IThreadManager
     {
-        private static readonly object LockObject = new object();
-
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<ISynchronizedThread> _threads = new List<ISynchronizedThread>();
+        private readonly ConcurrentQueue<ISynchronizedThread> _threads = new ConcurrentQueue<ISynchronizedThread>();
 
         private bool _isShuttingDown;
 
         public Action UpdateAfterShutdownAction { get; set; }
 
+#pragma warning disable CS0067
+
         public event EventHandler<ThreadFinishedEventArgs> CleanUpAfterThreadClosed;
+
+#pragma warning restore CS0067
 
         /// <summary>
         ///     Adds and starts a synchronized thread to the thread list. The application will wait for all of these to end before
@@ -30,22 +33,18 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         /// <param name="thread">A thread that needs to be synchronized. This thread will not be automatically started</param>
         public void StartSynchronizedThread(ISynchronizedThread thread)
         {
-            lock (LockObject)
+            if (_isShuttingDown)
             {
-                if (_isShuttingDown)
-                {
-                    _logger.Warn("Tried to start thread while shutdown already started!");
-                    return;
-                }
-
-                _logger.Debug("Adding thread " + thread.Name);
-
-                _threads.Add(thread);
-                thread.OnThreadFinished += thread_OnThreadFinished;
-
-                if (thread.ThreadState == ThreadState.Unstarted)
-                    thread.Start();
+                _logger.Warn("Tried to start thread while shutdown already started!");
+                return;
             }
+
+            _logger.Debug("Adding thread " + thread.Name);
+
+            _threads.Enqueue(thread);
+
+            if (thread.ThreadState == ThreadState.Unstarted)
+                thread.Start();
         }
 
         public ISynchronizedThread StartSynchronizedThread(ThreadStart threadMethod, string threadName)
@@ -61,69 +60,44 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         /// <summary>
         ///     Wait for all Threads and exit the application afterwards
         /// </summary>
-        public void WaitForThreads()
+        public async Task WaitForThreads()
         {
-            CleanUpThreads();
-
             _logger.Debug("Waiting for all synchronized threads to end");
 
-            while (_threads.Count > 0)
+            while (!_threads.IsEmpty)
             {
                 _logger.Debug(_threads.Count + " Threads remaining");
 
-                var firstThread = MaybeFetchFirstThreadUsingLock();
-                firstThread?.Join();
-
-                CleanUpThreads();
+                if (_threads.TryDequeue(out var thread))
+                {
+                    await thread.JoinAsync();
+                }
             }
 
             _logger.Debug("All synchronized threads have ended");
         }
 
-        private ISynchronizedThread MaybeFetchFirstThreadUsingLock()
-        {
-            lock (LockObject)
-            {
-                if (_threads.Count == 0)
-                    return null;
-
-                try
-                {
-                    // For some reason, this might be null (seems like a timing issue with concurrency)
-                    return _threads[0];
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return null;
-                }
-            }
-        }
-
         public void Shutdown()
         {
-            lock (LockObject)
+            _logger.Debug("Shutting down the application");
+            _isShuttingDown = true;
+
+            foreach (var thread in _threads.ToArray())
             {
-                _logger.Debug("Shutting down the application");
-                _isShuttingDown = true;
+                if (string.IsNullOrEmpty(thread.Name))
+                    _logger.Debug("Aborting thread");
+                else
+                    _logger.Debug("Aborting thread " + thread.Name);
 
-                // convert _threads to array to prevent InvalidOperationException when an item is removed
-                foreach (var t in _threads.ToArray())
-                {
-                    if (string.IsNullOrEmpty(t.Name))
-                        _logger.Debug("Aborting thread");
-                    else
-                        _logger.Debug("Aborting thread " + t.Name);
+                thread.Abort();
+            }
 
-                    t.Abort();
-                }
+            _logger.Debug("Exiting...");
 
-                _logger.Debug("Exiting...");
-
-                if (UpdateAfterShutdownAction != null)
-                {
-                    _logger.Debug("Starting application update...");
-                    UpdateAfterShutdownAction();
-                }
+            if (UpdateAfterShutdownAction != null)
+            {
+                _logger.Debug("Starting application update...");
+                UpdateAfterShutdownAction();
             }
         }
 
@@ -137,44 +111,6 @@ namespace pdfforge.PDFCreator.Utilities.Threading
 
             StartSynchronizedThread(t);
             return t;
-        }
-
-        /// <summary>
-        ///     Remove all finished threads
-        /// </summary>
-        private void CleanUpThreads()
-        {
-            lock (LockObject)
-            {
-                try
-                {
-                    _threads.RemoveAll(t => t.IsAlive == false);
-                }
-                catch (NullReferenceException ex)
-                {
-                    _logger.Warn(ex, "There was an exception while cleaning up threads");
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Remove threads when they have finished
-        /// </summary>
-        /// <param name="sender">The event sender</param>
-        /// <param name="e">EventArgs with information about the thread</param>
-        private void thread_OnThreadFinished(object sender, ThreadFinishedEventArgs e)
-        {
-            try
-            {
-                lock (LockObject)
-                {
-                    _threads.Remove(e.SynchronizedThread);
-                    CleanUpAfterThreadClosed.Invoke(this, e);
-                }
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-            }
         }
     }
 }

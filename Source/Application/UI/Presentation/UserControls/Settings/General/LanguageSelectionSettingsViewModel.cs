@@ -1,37 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Input;
-using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {
     public class LanguageSelectionSettingsViewModel : AGeneralSettingsItemControlModel
     {
         private readonly IList<ConversionProfile> _conversionProfiles = new List<ConversionProfile>();
-        private readonly ISettingsProvider _settingsProvider;
+        private readonly ICurrentSettings<ApplicationSettings> _appSettingsProvider;
         private readonly ITranslationHelper _translationHelper;
+        private readonly ICommandLocator _commandLocator;
         private IList<Language> _languages;
 
-        public LanguageSelectionSettingsViewModel(IGpoSettings gpoSettings, ISettingsProvider settingsProvider, ICurrentSettingsProvider currentSettingsProvider, ILanguageProvider languageProvider, ITranslationHelper translationHelper, ITranslationUpdater translationUpdater) :
+        public LanguageSelectionSettingsViewModel(IGpoSettings gpoSettings, ICurrentSettings<ApplicationSettings> appSettingsProvider, ICurrentSettingsProvider currentSettingsProvider, ILanguageProvider languageProvider, ITranslationHelper translationHelper, ITranslationUpdater translationUpdater, ICommandLocator commandLocator) :
             base(translationUpdater, currentSettingsProvider, gpoSettings)
         {
-            PreviewTranslationCommand = new DelegateCommand(ExecutePreviewTranslation);
-            _settingsProvider = settingsProvider;
+            _appSettingsProvider = appSettingsProvider;
             _translationHelper = translationHelper;
+            _commandLocator = commandLocator;
             Languages = languageProvider.GetAvailableLanguages().ToList();
+            VisitWebsiteCommand = _commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.PdfforgeTranslationUrl);
             SettingsProvider.SettingsChanged += (sender, args) => RaisePropertyChanged(nameof(CurrentLanguage));
         }
 
         public IList<Language> Languages
         {
-            get { return _languages; }
+            get => _languages;
             set
             {
                 _languages = value;
@@ -39,16 +42,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
             }
         }
 
-        public ICommand PreviewTranslationCommand { get; private set; }
-
         public bool LanguageIsEnabled
         {
             get
             {
-                if (_settingsProvider.Settings?.ApplicationSettings == null)
+                if (_appSettingsProvider?.Settings == null)
                     return true;
 
-                return GpoSettings?.Language == null;
+                return string.IsNullOrWhiteSpace(GpoSettings?.Language);
             }
         }
 
@@ -56,19 +57,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         {
             get
             {
-                if (_settingsProvider.Settings?.ApplicationSettings == null)
+                if (_appSettingsProvider?.Settings== null)
                     return null;
 
-                if (GpoSettings?.Language == null)
-                    return _settingsProvider.Settings.ApplicationSettings.Language;
+                if (string.IsNullOrWhiteSpace(GpoSettings?.Language))
+                    return _appSettingsProvider.Settings.Language;
 
                 return GpoSettings.Language;
             }
             set
             {
-                _settingsProvider.Settings.ApplicationSettings.Language = value;
+                _appSettingsProvider.Settings.Language = value;
+
+                ExecutePreviewTranslation(null);
             }
         }
+
+        public ICommand VisitWebsiteCommand { get; set; } 
 
         private void ExecutePreviewTranslation(object o)
         {

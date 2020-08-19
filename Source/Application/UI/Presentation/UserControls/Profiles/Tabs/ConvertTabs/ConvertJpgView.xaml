@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeConvertJpgViewModel, IsDesignTimeCreatable=true}"
              help:HelpProvider.HelpTopic="JpegOutput">
@@ -45,9 +45,9 @@
             <TextBox Name="JpegQualityTextBox" Grid.Row="2" Grid.Column="1" Margin="0 5 0 0"
                         HorizontalAlignment="Left" Width="50" TextAlignment="Right"
                         Text="{Binding CurrentProfile.JpegSettings.Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
+                <b:Interaction.Behaviors>
                     <obsidian:EventToCommandBehavior Command="{Binding LostFocusCommand}" Event="LostFocus" />
-                </i:Interaction.Behaviors>
+                </b:Interaction.Behaviors>
             </TextBox>
         </Grid>
     </HeaderedContentControl>

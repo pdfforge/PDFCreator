@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// The scripting action allows to run a script after the conversion
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Scripting : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -43,7 +42,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Visible { get; set; } = true;
 		
 		/// <summary>
-		/// Wait until the script excution has ended
+		/// Wait until the script execution has ended
 		/// </summary>
 		public bool WaitForScript { get; set; } = true;
 		
@@ -76,6 +75,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Visible = Visible;
 			copy.WaitForScript = WaitForScript;
 			return copy;
+		}
+		
+		public void ReplaceWith(Scripting source)
+		{
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(ParameterString != source.ParameterString)
+				ParameterString = source.ParameterString;
+				
+			if(ScriptFile != source.ScriptFile)
+				ScriptFile = source.ScriptFile;
+				
+			if(Visible != source.Visible)
+				Visible = source.Visible;
+				
+			if(WaitForScript != source.WaitForScript)
+				WaitForScript = source.WaitForScript;
+				
 		}
 		
 		public override bool Equals(object o)

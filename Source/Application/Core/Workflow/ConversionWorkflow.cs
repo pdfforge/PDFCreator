@@ -73,7 +73,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             catch (ProcessingException ex)
             {
-                _logger.Error("Error " + ex.ErrorCode + ": " + ex.Message);
+                var errorMessage = ex.ErrorCode + " / " + ex.Message;
+                if (ex.InnerException != null)
+                    errorMessage += Environment.NewLine + ex.InnerException;
+                _logger.Error(errorMessage);
+
                 LastError = ex.ErrorCode;
 
                 HandleError(ex.ErrorCode);

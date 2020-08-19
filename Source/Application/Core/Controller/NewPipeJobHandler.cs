@@ -1,8 +1,8 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Communication;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Core.Controller
             }
             else if (message.StartsWith("ShowMain|", StringComparison.OrdinalIgnoreCase))
             {
-                _mainWindowThreadLauncher.LaunchMainWindow(null);
+                _mainWindowThreadLauncher.LaunchMainWindow();
             }
             else if (message.StartsWith("ReloadSettings|", StringComparison.OrdinalIgnoreCase))
             {

@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
@@ -13,7 +14,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             _fileConversionAssistant = fileConversionAssistant;
         }
 
-        public ICollection<string> DroppedFiles { get; set; }
+        public IList<string> DroppedFiles { get; set; } = new List<string>();
 
         protected override string ComposePipeMessage()
         {
@@ -22,7 +23,12 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         protected override bool StartApplication()
         {
-            _fileConversionAssistant.HandleFileList(DroppedFiles);
+            var list = new List<(string path, AppStartParameters paramters)>();
+            foreach (var droppedFile in DroppedFiles)
+            {
+                list.Add((droppedFile, AppStartParameters));
+            }
+            _fileConversionAssistant.HandleFileList(list);
             return true;
         }
     }

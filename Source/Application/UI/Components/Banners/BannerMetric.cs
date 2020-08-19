@@ -1,28 +1,15 @@
-﻿using pdfforge.PDFCreator.Core.UsageStatistics;
+﻿using pdfforge.UsageStatistics;
 
 namespace Banners
 {
-    public class BannerMetric : IUsageMetric
+    public class BannerMetric : UsageMetricBase
     {
-        public BannerMetric(string product, string machineId, string version, string bundleId, int bundleVersion, BannerMetricType type, string campaign)
-        {
-            Product = product;
-            MachineId = machineId;
-            Version = version;
-            BundleId = bundleId;
-            BundleVersion = bundleVersion;
-            Activity = type;
-            Campaign = campaign;
-        }
+        public override string EventName => "Banner";
 
-        public string EventName => "Banner";
-        public string Product { get; }
-        public string MachineId { get; }
-        public string Version { get; }
-        public string BundleId { get; }
-        public int BundleVersion { get; }
-        public string Campaign { get; }
-        public BannerMetricType Activity { get; }
+        public string BundleId { get; set; }
+        public int BundleVersion { get; set; }
+        public string Campaign { get; set; }
+        public BannerMetricType Activity { get; set; }
     }
 
     public enum BannerMetricType

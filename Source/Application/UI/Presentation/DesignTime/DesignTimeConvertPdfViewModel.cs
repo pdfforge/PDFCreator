@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeConvertPdfViewModel : ConvertPdfViewModel
     {
         public DesignTimeConvertPdfViewModel()
-            : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new EditionHelper(true, true), null)
+            : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new EditionHelper(true), null)
         {
         }
     }

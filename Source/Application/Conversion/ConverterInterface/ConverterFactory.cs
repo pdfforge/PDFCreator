@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.Conversion.ConverterInterface
 {
     public interface IConverterFactory
     {
-        IConverter GetCorrectConverter(JobType jobType);
+        IConverter GetConverter(JobType jobType);
     }
 
     public class ConverterFactory : IConverterFactory
@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.Conversion.ConverterInterface
             _psConverterFactory = psConverterFactory;
         }
 
-        public IConverter GetCorrectConverter(JobType jobType)
+        public IConverter GetConverter(JobType jobType)
         {
             if (jobType == JobType.PsJob)
                 return _psConverterFactory.BuildPsConverter();

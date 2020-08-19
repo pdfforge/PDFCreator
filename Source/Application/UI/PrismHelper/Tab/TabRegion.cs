@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.ServiceLocator;
+using Prism.Events;
 using Prism.Regions;
 using SimpleInjector;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
         string RegionName { get; }
         IList<ISettingsTab> Tabs { get; }
 
-        void RegisterTabs(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator);
+        void RegisterTabs(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator);
 
         void RegisterNavigationViews(Container container);
 
@@ -27,11 +28,11 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
             RegionName = regionName;
         }
 
-        public void RegisterTabs(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator)
+        public void RegisterTabs(IRegionManager regionManager, IWhitelistedServiceLocator serviceLocator, IEventAggregator eventAggregator)
         {
             foreach (var pageTab in Tabs)
             {
-                pageTab.Register(regionManager, serviceLocator, RegionName);
+                pageTab.Register(regionManager, serviceLocator, eventAggregator, RegionName);
             }
         }
 

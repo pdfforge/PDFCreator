@@ -15,7 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Ghostscript settings
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Ghostscript : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -44,6 +43,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.AdditionalGsParameters = AdditionalGsParameters;
 			return copy;
+		}
+		
+		public void ReplaceWith(Ghostscript source)
+		{
+			if(AdditionalGsParameters != source.AdditionalGsParameters)
+				AdditionalGsParameters = source.AdditionalGsParameters;
+				
 		}
 		
 		public override bool Equals(object o)

@@ -35,6 +35,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
         // Profile settings
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/index")] ProfileSettings,
 
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/workflow-editor")] WorkflowEditor,
+
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Stamp,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/metadata")] ProfileMetadata,
@@ -44,6 +46,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Cover,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Background,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Watermark,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/save")] OpenViewer,
 
@@ -60,6 +64,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/advanced-features/run-script")] RunScript,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/upload-with-ftp")] UploadWithFtp,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/upload-with-http")] UploadWithHttp,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/advanced-features/user-tokens")] UserTokens,
 
@@ -92,20 +98,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
         //Server
         [HelpTopic("pdfcreator-server/index")] Server,
 
-        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/queue-settings")] ServerQueueSettings,
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/queues")] ServerQueueSettings,
 
-        [HelpTopic("pdfcreator-server/cs-script")] ServerCsScript,
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/cs-script")] ServerCsScript,
 
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/errors")] ServerErrorReportList,
 
-        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/index")] ServerGeneralSettings,
-
-        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/general")] ServerGeneralSettingsTab,
-
-        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/general-settings/header")] ServerHeader,
-
+        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/application-settings/general")] ServerGeneralSettingsTab,
         [HelpTopic("pdfcreator-server/performance-test")] ServerPerformanceTest,
 
-        [HelpTopic("pdfcreator/license/index")] License
+        [HelpTopic("pdfcreator/license/index")] License,
+
+        [HelpTopic("pdfcreator-server/license/index")] ServerLicense
     }
 }

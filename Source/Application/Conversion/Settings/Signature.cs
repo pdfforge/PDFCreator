@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Digitally sign the PDF document
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Signature : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -158,6 +157,53 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.SignaturePassword = SignaturePassword;
 			copy.TimeServerAccountId = TimeServerAccountId;
 			return copy;
+		}
+		
+		public void ReplaceWith(Signature source)
+		{
+			if(AllowMultiSigning != source.AllowMultiSigning)
+				AllowMultiSigning = source.AllowMultiSigning;
+				
+			if(CertificateFile != source.CertificateFile)
+				CertificateFile = source.CertificateFile;
+				
+			if(DisplaySignatureInDocument != source.DisplaySignatureInDocument)
+				DisplaySignatureInDocument = source.DisplaySignatureInDocument;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(LeftX != source.LeftX)
+				LeftX = source.LeftX;
+				
+			if(LeftY != source.LeftY)
+				LeftY = source.LeftY;
+				
+			if(RightX != source.RightX)
+				RightX = source.RightX;
+				
+			if(RightY != source.RightY)
+				RightY = source.RightY;
+				
+			if(SignContact != source.SignContact)
+				SignContact = source.SignContact;
+				
+			if(SignLocation != source.SignLocation)
+				SignLocation = source.SignLocation;
+				
+			if(SignReason != source.SignReason)
+				SignReason = source.SignReason;
+				
+			if(SignatureCustomPage != source.SignatureCustomPage)
+				SignatureCustomPage = source.SignatureCustomPage;
+				
+			if(SignaturePage != source.SignaturePage)
+				SignaturePage = source.SignaturePage;
+				
+			SignaturePassword = source.SignaturePassword;
+			if(TimeServerAccountId != source.TimeServerAccountId)
+				TimeServerAccountId = source.TimeServerAccountId;
+				
 		}
 		
 		public override bool Equals(object o)

@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.Controller.Routing;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Routing
 {
@@ -13,8 +14,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Routing
             TabName = tabName;
         }
 
-        public override void Execute()
+        public override Task Execute()
         {
+            return Task.FromResult(false);
         }
     }
 }

@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class UsageStatistics : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -25,7 +24,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enable { get; set; } = true;
 		
 		/// <summary>
-		/// Show or hide the usage statisticss info on first start
+		/// Show or hide the usage statistics info on first start
 		/// </summary>
 		public bool UsageStatsInfo { get; set; } = true;
 		
@@ -49,6 +48,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enable = Enable;
 			copy.UsageStatsInfo = UsageStatsInfo;
 			return copy;
+		}
+		
+		public void ReplaceWith(UsageStatistics source)
+		{
+			if(Enable != source.Enable)
+				Enable = source.Enable;
+				
+			if(UsageStatsInfo != source.UsageStatsInfo)
+				UsageStatsInfo = source.UsageStatsInfo;
+				
 		}
 		
 		public override bool Equals(object o)

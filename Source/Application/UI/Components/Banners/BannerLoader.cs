@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
-using pdfforge.PDFCreator.Core.UsageStatistics;
-using pdfforge.PDFCreator.Utilities.Process;
+using pdfforge.PDFCreator.Core.Services.Cache;
+using pdfforge.PDFCreator.Utilities.Web;
+using pdfforge.UsageStatistics;
 using System;
 using System.Globalization;
 using System.IO;
@@ -15,15 +16,15 @@ namespace Banners
     {
         private readonly IDirectory _directory;
         private readonly IFileCache _fileCache;
-        private readonly IProcessStarter _processStarter;
+        private readonly IWebLinkLauncher _webLinkLauncher;
         private readonly IUsageStatisticsSender _usageStatisticsSender;
         private readonly IBannerMetricFactory _bannerMetricFactory;
 
-        public BannerLoader(IDirectory directory, IFileCache fileCache, IProcessStarter processStarter, IUsageStatisticsSender usageStatisticsSender, IBannerMetricFactory bannerMetricFactory)
+        public BannerLoader(IDirectory directory, IFileCache fileCache, IWebLinkLauncher webLinkLauncher, IUsageStatisticsSender usageStatisticsSender, IBannerMetricFactory bannerMetricFactory)
         {
             _directory = directory;
             _fileCache = fileCache;
-            _processStarter = processStarter;
+            _webLinkLauncher = webLinkLauncher;
             _usageStatisticsSender = usageStatisticsSender;
             _bannerMetricFactory = bannerMetricFactory;
         }
@@ -87,7 +88,7 @@ namespace Banners
 
             try
             {
-                _processStarter.Start(url);
+                _webLinkLauncher.Launch(url);
 
                 var metric = _bannerMetricFactory.BuildMetric(banner, BannerMetricType.Click);
                 _usageStatisticsSender.SendAsync(metric);
@@ -115,7 +116,10 @@ namespace Banners
 
             using (var s = new FileStream(xamlFile, FileMode.Open))
             {
-                return (FrameworkElement)XamlReader.Load(s);
+                var context = new ParserContext();
+                context.BaseUri = new Uri("file://" + Path.GetDirectoryName(xamlFile) + "/", UriKind.Absolute);
+
+                return (FrameworkElement)XamlReader.Load(s, context);
             }
         }
 

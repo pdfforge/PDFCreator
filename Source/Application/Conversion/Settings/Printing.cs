@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Print the document to a physical printer
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class Printing : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -69,6 +68,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.PrinterName = PrinterName;
 			copy.SelectPrinter = SelectPrinter;
 			return copy;
+		}
+		
+		public void ReplaceWith(Printing source)
+		{
+			if(Duplex != source.Duplex)
+				Duplex = source.Duplex;
+				
+			if(Enabled != source.Enabled)
+				Enabled = source.Enabled;
+				
+			if(PrinterName != source.PrinterName)
+				PrinterName = source.PrinterName;
+				
+			if(SelectPrinter != source.SelectPrinter)
+				SelectPrinter = source.SelectPrinter;
+				
 		}
 		
 		public override bool Equals(object o)

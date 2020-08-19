@@ -10,17 +10,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (!(obj is FrequentTip tip))
                 return false;
 
-            FrequentTip ft = obj as FrequentTip;
-            if (ft == null)
-                return false;
-
-            return (Title == ft.Title)
-                   && (Text == ft.Text)
-                   && (Command == ft.Command)
+            return (Title == tip.Title)
+                   && (Text == tip.Text)
+                   && (Command == tip.Command)
                 ;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                // Choose large primes to avoid hashing collisions
+                const int hashingBase = (int)2166136261;
+                const int hashingMultiplier = 16777619;
+
+                int hash = hashingBase;
+                // ReSharper disable NonReadonlyMemberInGetHashCode
+                hash = (hash * hashingMultiplier) ^ Title?.GetHashCode() ?? 0;
+                hash = (hash * hashingMultiplier) ^ Text?.GetHashCode() ?? 0;
+                return hash;
+            }
         }
     }
 }

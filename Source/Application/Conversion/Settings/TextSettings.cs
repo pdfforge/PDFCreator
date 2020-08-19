@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class TextSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -41,6 +40,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.Format = Format;
 			return copy;
+		}
+		
+		public void ReplaceWith(TextSettings source)
+		{
+			if(Format != source.Format)
+				Format = source.Format;
+				
 		}
 		
 		public override bool Equals(object o)

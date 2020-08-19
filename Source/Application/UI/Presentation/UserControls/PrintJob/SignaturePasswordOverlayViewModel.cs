@@ -20,6 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 _certificateFile = value;
                 RaisePropertyChanged(nameof(CertificatePath));
                 RaisePropertyChanged(nameof(CertificateFile));
+                RaiseOkCanExecuteChanged();
             }
         }
 

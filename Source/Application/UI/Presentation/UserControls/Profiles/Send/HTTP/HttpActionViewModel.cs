@@ -62,5 +62,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP
         {
             HttpAccountsView.Refresh();
         }
+
+        public override void MountView()
+        {
+            EditAccountCommand.MountView();
+            base.MountView();
+        }
+
+        public override void UnmountView()
+        {
+            base.UnmountView();
+            EditAccountCommand.UnmountView();
+        }
+
     }
 }

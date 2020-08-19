@@ -9,14 +9,17 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              xmlns:tabs="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSaveTabViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource TabUserControl}">
+             help:HelpProvider.HelpTopic="ProfileSave">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="ShowWhenTrue" TrueValue="Visible" FalseValue="Collapsed" />
         <converter:BoolToVisibilityConverter x:Key="ShowWhenFalse" TrueValue="Collapsed" FalseValue="Visible" />
         <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <converter:BoolToVisibilityConverter x:Key="ShowIfNoSettingsForSendingConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <Style TargetType="Separator">
             <Setter Property="Height" Value="10" />
             <Setter Property="Background" Value="Transparent" />
@@ -103,48 +106,63 @@
                 <controls:TokenControl DataContext="{Binding FileNameViewModel}" />
             </StackPanel>
 
-            <StackPanel Margin="0 0 0 10">
-                <Label Content="{Binding Translation.SelectFolder}" />
+            <StackPanel Margin="0 0 0 10" IsEnabled="{Binding CurrentProfile.SaveFileTemporary, Converter={StaticResource BoolNegationConverter}}">
+                <Label Content="{Binding Translation.DirectoryLabel}" />
                 <controls:TokenControl DataContext="{Binding FolderViewModel}" />
             </StackPanel>
 
-            <StackPanel Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenTrue}}">
-                <CheckBox
-                          Content="{Binding Translation.DontOverwriteFiles}"
+            <StackPanel Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenTrue}}"
+                        Margin="0 0 0 10">
+                <CheckBox Content="{Binding Translation.DontOverwriteFiles}"
                           IsChecked="{Binding CurrentProfile.AutoSave.EnsureUniqueFilenames}" />
                 <TextBlock TextWrapping="Wrap"
                            Text="{Binding Translation.UniqueFilenameHint}"
-                           Margin="25,0,0,0" />
+                           Margin="25 0 0 0" />
             </StackPanel>
 
-            <StackPanel Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenFalse}}">
+            <DockPanel LastChildFill="False" Margin="0 0 0 0">
+                <CheckBox Content="{Binding Translation.SaveOnlyTemporary}"
+                          IsChecked="{Binding TemporarySaveFiles}" />
+                <misc:WarningIconControl DockPanel.Dock="Left"
+                                         help:HelpProvider.HelpTopic="ProfileSave"
+                                         Margin="10 2 0 0"
+                                         Visibility="{Binding Path=HasNotSupportedSettingsForSavingTempOnly,
+                                                      Converter={StaticResource ShowIfNoSettingsForSendingConverter}}"
+                                         ToolTipText="{Binding Translation.NoSendActionEnabledHintInfo}" />
+            </DockPanel>
+
+            <TextBlock TextWrapping="Wrap"
+                       Text="{Binding Translation.TemporarySaveFilesHint}"
+                       Margin="25 0 0 0" />
+
+            <StackPanel Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenFalse}}"
+                        Margin="0 10 0 0">
 
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox Content="{Binding Translation.SkipPrintDialog}"
-                              IsChecked="{Binding CurrentProfile.SkipPrintDialog}"
-                              HorizontalAlignment="Stretch"
-                              IsEnabled="{Binding AllowSkipPrintDialog}" />
-
-                    <userControls:PlusFeatureControl Margin="10 0" Edition="AllLicensed" />
+                    <StackPanel IsEnabled="{Binding CurrentProfile.SaveFileTemporary, Converter={StaticResource BoolNegationConverter}}">
+                        <CheckBox Content="{Binding Translation.SkipPrintDialog}"
+                                  IsChecked="{Binding CurrentProfile.SkipPrintDialog}"
+                                  HorizontalAlignment="Stretch"
+                                  IsEnabled="{Binding AllowSkipPrintDialog}" />
+                    </StackPanel>
+                    <userControls:BusinessFeatureBadge Margin="10 -3 0 0" Edition="AllLicensed" />
                 </StackPanel>
             </StackPanel>
 
-            <Separator />
-
             <CheckBox Content="{Binding Translation.OpenFileAfterSaving}"
-                      IsChecked="{Binding CurrentProfile.OpenViewer}" />
+                      IsChecked="{Binding CurrentProfile.OpenViewer}"
+                      Margin="0 13 0 0" />
             <CheckBox Content="{Binding Translation.OpenWithPdfArchitect}"
                       IsChecked="{Binding CurrentProfile.OpenWithPdfArchitect}"
                       IsEnabled="{Binding CurrentProfile.OpenViewer}"
-                      Margin="25 5 0 0" />
-
-            <Separator />
+                      Margin="25 10 0 0" />
 
             <CheckBox Content="{Binding Translation.ShowQuickActions}"
                       IsChecked="{Binding CurrentProfile.ShowQuickActions}"
-                      Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenFalse}}" />
+                      Visibility="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource ShowWhenFalse}}"
+                      Margin="0 15 0 0" />
 
-            <tabs:NotificationsLevelSettingsView />
+            <tabs:NotificationsLevelSettingsView Margin="0 10 0 0" />
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

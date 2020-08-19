@@ -4,36 +4,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="300"
-    d:DataContext="{d:DesignInstance local:DesignTimeBackgroundUserControlViewModel, IsDesignTimeCreatable=True}"
-    Style="{DynamicResource TabUserControl}"
+    d:DesignHeight="300" d:DesignWidth="320"
+    d:DataContext="{d:DesignInstance designTime:DesignTimeBackgroundUserControlViewModel, IsDesignTimeCreatable=True}"
     help:HelpProvider.HelpTopic="Background">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+        <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+    </UserControl.Resources>
     <Grid IsEnabled="{Binding CurrentProfile.BackgroundPage.Enabled}">
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.DisplayName}">
+        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Background}">
             <StackPanel>
                 <Label Content="{Binding Translation.BackgroundFileLabelContent}"></Label>
                 <DockPanel LastChildFill="True">
                     <controls:TokenControl DataContext="{Binding BackgroundTokenViewModel}" />
                 </DockPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" VerticalAlignment="Center">
-                    <Label Content="{Binding Translation.BackgroundRepetitionLabelContent}" />
+                <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Translation.WarningIsPdf20}"
+                       Visibility="{Binding IsPdf20, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <ComboBox Margin="5 0 0 0"
+                <Grid Margin="0 10 0 0" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition MinWidth="200" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0"
+                           Content="{Binding Translation.OpacityLabel}" />
+                    <Slider  Grid.Row="0" Grid.Column="2"
+                             Value="{Binding CurrentProfile.BackgroundPage.Opacity}" Minimum="0" Maximum="100"
+                              VerticalAlignment="Center" LargeChange="10" />
+                    <Label Grid.Row="0" Grid.Column="3">
+                        <TextBlock TextAlignment="Right" Width="30">
+                            <Run Text="{Binding CurrentProfile.BackgroundPage.Opacity}" /><Run Text="%" />
+                        </TextBlock>
+                    </Label>
+                    <Label Grid.Row="2" Grid.Column="0"
+                           Content="{Binding Translation.BackgroundRepetitionLabelContent}" />
+                    <ComboBox Grid.Row="2" Grid.Column="2"
                               SelectedValue="{Binding CurrentProfile.BackgroundPage.Repetition}"
                               SelectedValuePath="Value"
                               DisplayMemberPath="Translation"
                               ItemsSource="{Binding Translation.BackgroundRepetitionValues}" />
+                    <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="4 0 0 0"
+                              IsChecked="{Binding CurrentProfile.BackgroundPage.FitToPage}" Content="{Binding Translation.FitToPage}" />
+                </Grid>
+
+                <StackPanel Orientation="Vertical" Margin="4 0 0 0"
+                    Visibility="{Binding CurrentProfile.EnableWorkflowEditor, Converter={StaticResource BooleanNegationToVisibilityConverter}}">
+                    <CheckBox IsChecked="{Binding CurrentProfile.BackgroundPage.OnCover}" Margin="0,10,0,0">
+                        <TextBlock Text="{Binding Translation.ShowBackgroundOnCoverText}" TextWrapping="Wrap"></TextBlock>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding CurrentProfile.BackgroundPage.OnAttachment}" Margin="0,10,0,0">
+                        <TextBlock Text="{Binding Translation.ShowBackgroundOnAttachmentText}" TextWrapping="Wrap"></TextBlock>
+                    </CheckBox>
                 </StackPanel>
-                <CheckBox IsChecked="{Binding CurrentProfile.BackgroundPage.OnCover}" Margin="0,10,0,0">
-                    <TextBlock Text="{Binding Translation.ShowBackgroundOnCoverText}" TextWrapping="Wrap"></TextBlock>
-                </CheckBox>
-                <CheckBox IsChecked="{Binding CurrentProfile.BackgroundPage.OnAttachment}" Margin="0,5,0,0">
-                    <TextBlock Text="{Binding Translation.ShowBackgroundOnAttachmentText}" TextWrapping="Wrap"></TextBlock>
-                </CheckBox>
             </StackPanel>
         </HeaderedContentControl>
     </Grid>

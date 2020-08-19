@@ -1,9 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Core.Workflow;
-using pdfforge.PDFCreator.Utilities;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -11,7 +9,7 @@ namespace pdfforge.PDFCreator.Core.Controller
 {
     public interface ITestPageHelper
     {
-        void CreateTestPage();
+        void CreateTestPage(string profile = "");
     }
 
     public class TestPageHelper : ITestPageHelper
@@ -32,7 +30,7 @@ namespace pdfforge.PDFCreator.Core.Controller
         /// <summary>
         ///     Creates a testpage in the spool folder and adds it to the JobInfoQueue
         /// </summary>
-        public void CreateTestPage()
+        public void CreateTestPage(string profile = "")
         {
             var tempPath = Path.Combine(_spoolFolder, Guid.NewGuid().ToString());
             Directory.CreateDirectory(tempPath);
@@ -43,9 +41,13 @@ namespace pdfforge.PDFCreator.Core.Controller
 
             var infFileContent = _testPageCreator.GetInfFileContent("testpage.ps");
             var infFilePath = Path.Combine(tempPath, "testpage.inf");
+
             File.WriteAllText(infFilePath, infFileContent, Encoding.Unicode);
 
             var testPageJob = _jobInfoManager.ReadFromInfFile(infFilePath);
+
+            if (!string.IsNullOrEmpty(profile))
+                testPageJob.ProfileParameter = profile;
 
             _jobInfoQueue.Add(testPageJob);
         }

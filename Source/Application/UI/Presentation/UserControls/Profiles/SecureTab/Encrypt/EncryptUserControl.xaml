@@ -12,11 +12,9 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300"
     d:DataContext="{d:DesignInstance designTime:DesignTimeEncryptUserControlViewModel, IsDesignTimeCreatable=True}"
-    Style="{DynamicResource TabUserControl}"
     help:HelpProvider.HelpTopic="PdfSecurity">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="BoolToVisibilityConverter" />
-        <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
     </UserControl.Resources>
     <Grid IsEnabled="{Binding CurrentProfile.PdfSettings.Security.Enabled}">
         <StackPanel>
@@ -53,12 +51,12 @@
                     </RadioButton>
                     <DockPanel Margin="0 2 0 0">
                         <RadioButton IsChecked="{Binding HighEncryptionEnabled}"
-                                         IsEnabled="{Binding OnlyForPlusAndBusiness, Converter={StaticResource BoolNegationConverter}}">
+                                         IsEnabled="{Binding SupportsHighLevelEncryption}">
                             <Label DockPanel.Dock="Left"
                                        Margin="0 -6"
                                        Content="{Binding Translation.Aes256BitEncryptionText}" />
                         </RadioButton>
-                        <userControls:PlusFeatureControl Edition="AllLicensed" Margin="5 0 0 0" HorizontalAlignment="Left" />
+                        <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="5 0 0 0" HorizontalAlignment="Left" />
                     </DockPanel>
                 </StackPanel>
             </HeaderedContentControl>

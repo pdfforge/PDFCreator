@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System;
 using System.Linq.Expressions;
 
@@ -21,17 +22,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public CurrentSettingsBase(Expression<Func<TSource, TSetting>> expression, ICurrentSettingsProvider currentSettingsProvider)
         {
+            var generator = new CustomMethodGenerator();
             _getter = expression.Compile();
+            _setter = generator.GenerateSetterFromGetter<TSource, TSetting, TSetting>(expression);
 
             currentSettingsProvider.SettingsChanged += (sender, args) => SettingsChanged?.Invoke(this, EventArgs.Empty);
-
-            ParameterExpression newValue = Expression.Parameter(typeof(TSetting));
-
-            // Define own Setter
-            _setter = Expression.Lambda<Action<TSource, TSetting>>(
-                Expression.Assign(expression.Body, newValue),
-                expression.Parameters[0], newValue
-            ).Compile();
         }
     }
 

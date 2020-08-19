@@ -1,7 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls;
 using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
@@ -13,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
         private readonly IProfileChecker _profileChecker;
         private readonly ISettingsChanged _settingsChanged;
 
-        public string ProfileSettingsRegionName { get; set; } = MainRegionViewNames.ProfilesView;
+        public string ProfileSettingsRegionName { get; set; } = RegionNames.ProfilesView;
 
         public NavigateProfileCheck(ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettings<Accounts> accountsProvider, IProfileChecker profileChecker, ISettingsChanged settingsChanged)
         {

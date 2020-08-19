@@ -17,7 +17,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 	/// <summary>
 	/// Container class for PDFCreator settings and profiles
 	/// </summary>
-	[ImplementPropertyChanged]
 	public partial class PdfCreatorSettings : INotifyPropertyChanged, ISettings {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -134,6 +133,26 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			
 			return copy;
+		}
+		
+		public void ReplaceWith(PdfCreatorSettings source)
+		{
+			ApplicationSettings.ReplaceWith(source.ApplicationSettings);
+			
+			ConversionProfiles.Clear();
+			for (int i = 0; i < source.ConversionProfiles.Count; i++)
+			{
+				ConversionProfiles.Add(source.ConversionProfiles[i].Copy());
+			}
+			
+			CreatorAppSettings.ReplaceWith(source.CreatorAppSettings);
+			
+			DefaultViewers.Clear();
+			for (int i = 0; i < source.DefaultViewers.Count; i++)
+			{
+				DefaultViewers.Add(source.DefaultViewers[i].Copy());
+			}
+			
 		}
 		
 		public override bool Equals(object o)

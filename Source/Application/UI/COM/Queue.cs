@@ -1,6 +1,6 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Core.ComImplementation;
-using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 using System;
 using System.Runtime.InteropServices;
 

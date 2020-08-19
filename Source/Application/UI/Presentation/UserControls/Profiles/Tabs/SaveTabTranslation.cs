@@ -12,10 +12,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
         public string SaveTabText { get; private set; } = "Save";
         public string SaveTitle { get; private set; } = "Save";
         public string SelectFilename { get; private set; } = "Filename:";
-        public string SelectFolder { get; private set; } = "Folder:";
+        public string DirectoryLabel { get; private set; } = "Target Directory:";
 
         public string SkipPrintDialog { get; private set; } = "Skip print dialog (start with save dialog)";
         public string OpenFileAfterSaving { get; private set; } = "Open file after saving";
+        public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
+        public string NoSendActionEnabledHintInfo { get; private set; } = "Please note that without enabling any send action, files will not be forwarded and only stored in a temporary folder";
+        public string TemporarySaveFilesHint { get; private set; } = "Select this to only save files in a temporary directory, e.g. if sent by e-mail/SMTP";
         public string OpenWithPdfArchitect { get; private set; } = "Use PDF Architect for PDF files";
         public string ChooseFolder { get; private set; } = "Choose a folder";
 

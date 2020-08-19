@@ -45,11 +45,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
         }
 
+        public void HandleFileList(IEnumerable<string> droppedFiles)
+        {
+            if (droppedFiles == null)
+                return;
+
+            var list = new List<(string path, AppStartParameters paramters)>();
+            foreach (var droppedFile in droppedFiles)
+            {
+                list.Add((droppedFile, null));
+            }
+            HandleFileList(list);
+        }
+
         /// <summary>
         ///     Removes invalid files and launches print jobs for the files that needs to be printed.
         ///     If successful, the direct convertable files are added to the current JobInfoQueue.
         /// </summary>
-        public void HandleFileList(IEnumerable<string> droppedFiles)
+        public void HandleFileList(IEnumerable<(string path, AppStartParameters paramters)> droppedFiles)
         {
             if (droppedFiles == null)
                 return;
@@ -69,26 +82,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             HandleFiles(files);
         }
 
-        private List<string> GetExistingFiles(IEnumerable<string> droppedFiles)
+        private List<(string path, AppStartParameters paramters)> GetExistingFiles(IEnumerable<(string path, AppStartParameters paramters)> droppedFiles)
         {
-            var validFiles = new List<string>();
-            foreach (var path in droppedFiles)
+            var validFiles = new List<(string path, AppStartParameters paramters)>();
+            foreach (var pathTuple in droppedFiles)
             {
-                if (_file.Exists(path))
+                if (_file.Exists(pathTuple.path))
                 {
-                    validFiles.Add(path);
+                    validFiles.Add(pathTuple);
                 }
-                else if (_directory.Exists(path))
+                else if (_directory.Exists(pathTuple.path))
                 {
-                    validFiles.AddRange(_directory.GetFiles(path));
+                    var directoryFiles = _directory.GetFiles(pathTuple.path);
+                    foreach (var file in directoryFiles)
+                    {
+                        validFiles.Add((file, pathTuple.paramters));
+                    }
                 }
                 else
                 {
-                    Logger.Warn("The file " + path + " does not exist.");
+                    Logger.Warn("The file " + pathTuple.path + " does not exist.");
                 }
             }
 
-            return validFiles.ToList();
+            return validFiles;
         }
 
         /// <summary>
@@ -103,21 +120,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             _printFileHelper.PrintAll();
         }
 
-        private void HandleFiles(IList<string> droppedFiles)
+        private void HandleFiles(IList<(string path, AppStartParameters paramters)> droppedFiles)
         {
-            var directConversionFiles = new List<string>();
+            var directConversionFiles = new List<(string path, AppStartParameters paramters)>();
             var printFiles = new List<string>();
             foreach (var file in droppedFiles)
             {
-                if (_directConversion.CanConvertDirectly(file))
+                if (_directConversion.CanConvertDirectly(file.path))
                     directConversionFiles.Add(file);
                 else
-                    printFiles.Add(file);
+                    printFiles.Add(file.path);
             }
 
             foreach (var directConversionFile in directConversionFiles)
             {
-                _directConversion.ConvertDirectly(directConversionFile);
+                _directConversion.ConvertDirectly(directConversionFile.Item1, directConversionFile.Item2);
             }
 
             if (printFiles.Any())

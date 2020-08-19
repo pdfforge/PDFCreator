@@ -11,6 +11,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 {
     public class GhostscriptConverter : IConverter
     {
+        private ConversionMode _firstConversionStepMode;
+
         private readonly StringBuilder _ghostscriptOutput = new StringBuilder();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private GhostscriptVersion _ghostscriptVersion;
@@ -24,7 +26,46 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
         private int NumberOfPages { get; set; }
 
-        public void DoConversion(Job job)
+        public void Init(bool isPdf, bool isProcessingRequired)
+        {
+            if (isPdf)
+                _firstConversionStepMode = ConversionMode.PdfConversion;
+            else if (isProcessingRequired)
+                _firstConversionStepMode = ConversionMode.IntermediateConversion;
+            else
+                _firstConversionStepMode = ConversionMode.ImmediateConversion;
+        }
+
+        public void FirstConversionStep(Job job)
+        {
+            DoConversion(job, _firstConversionStepMode);
+        }
+
+        public void SecondConversionStep(Job job)
+        {
+            switch (_firstConversionStepMode)
+            {
+                case ConversionMode.PdfConversion:
+                    MovePdfFileFromIntermediateToTempOutputFiles(job);
+                    break;
+
+                case ConversionMode.IntermediateConversion:
+                    DoConversion(job, ConversionMode.IntermediateToTargetConversion);
+                    break;
+
+                default:
+                case ConversionMode.ImmediateConversion:
+                    //no second conversion step required
+                    break;
+            }
+        }
+
+        private void MovePdfFileFromIntermediateToTempOutputFiles(Job job)
+        {
+            job.TempOutputFiles = new[] { job.IntermediatePdfFile };
+        }
+
+        private void DoConversion(Job job, ConversionMode conversionMode)
         {
             var ghostScript = GetGhostscript();
             NumberOfPages = job.NumberOfPages;
@@ -36,7 +77,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
                 _logger.Debug("Starting Ghostscript Job");
 
-                var device = GetCorrectOutputDevice(job);
+                var device = GetOutputDevice(job, conversionMode);
 
                 _logger.Trace("Output format is: {0}", job.Profile.OutputFormat);
 
@@ -54,9 +95,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                     {
                         throw new ProcessingException("Ghostscript execution failed: " + errorMessage, ErrorCode.Conversion_Ghostscript_PasswordProtectedPDFError);
                     }
-                    {
-                        throw new ProcessingException("Ghostscript execution failed: " + errorMessage, ErrorCode.Conversion_GhostscriptError);
-                    }
+
+                    throw new ProcessingException("Ghostscript execution failed: " + errorMessage, ErrorCode.Conversion_GhostscriptError);
                 }
 
                 _logger.Trace("Ghostscript Job was successful");
@@ -79,9 +119,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
         public event EventHandler<ConversionProgressChangedEventArgs> OnReportProgress;
 
-        private OutputDevice GetCorrectOutputDevice(Job job)
+        private OutputDevice GetOutputDevice(Job job, ConversionMode conversionMode)
         {
             OutputDevice device;
+            if (conversionMode == ConversionMode.IntermediateConversion)
+            {
+                return new PdfIntermediateDevice(job);
+            }
+
             switch (job.Profile.OutputFormat)
             {
                 case OutputFormat.PdfA1B:
@@ -89,23 +134,23 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                 case OutputFormat.PdfA3B:
                 case OutputFormat.PdfX:
                 case OutputFormat.Pdf:
-                    device = new PdfDevice(job);
+                    device = new PdfDevice(job, conversionMode);
                     break;
 
                 case OutputFormat.Png:
-                    device = new PngDevice(job);
+                    device = new PngDevice(job, conversionMode);
                     break;
 
                 case OutputFormat.Jpeg:
-                    device = new JpegDevice(job);
+                    device = new JpegDevice(job, conversionMode);
                     break;
 
                 case OutputFormat.Tif:
-                    device = new TiffDevice(job);
+                    device = new TiffDevice(job, conversionMode);
                     break;
 
                 case OutputFormat.Txt:
-                    device = new TextDevice(job);
+                    device = new TextDevice(job, conversionMode);
                     break;
 
                 default:

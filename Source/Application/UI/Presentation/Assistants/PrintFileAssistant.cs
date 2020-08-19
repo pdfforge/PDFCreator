@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
@@ -22,8 +23,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IInteractionInvoker _interactionInvoker;
         private PrintFilesTranslation _translation;
 
-        public PrintFileAssistant(IInteractionInvoker interactionInvoker, IPrinterHelper printerHelper, ISettingsProvider settingsProvider, ITranslationUpdater translationUpdater, IFileAssoc fileAssoc)
-            : base(printerHelper, settingsProvider, fileAssoc)
+        public PrintFileAssistant(IInteractionInvoker interactionInvoker, IPrinterHelper printerHelper, ISettingsProvider settingsProvider, ITranslationUpdater translationUpdater, IFileAssoc fileAssoc, IDirectory directory, IFile file)
+            : base(printerHelper, settingsProvider, fileAssoc, directory, file)
         {
             _interactionInvoker = interactionInvoker;
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
@@ -43,23 +44,39 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return interaction.Response;
         }
 
-        protected override bool UnprintableFilesQuery(IList<PrintCommand> unprintable)
+        private string BuildUnprintableFilesMessage(IList<PrintCommand> unprintable)
         {
             var fileList =
                 new List<string>(unprintable.Select(p => Path.GetFileName(p.Filename)).Take(Math.Min(3, unprintable.Count)));
-            const string caption = "PDFCreator";
-            var message = _translation.NotPrintableFiles + System.Environment.NewLine;
+            
+            var message = _translation.GetNotPrintableFiles(unprintable.Count) + System.Environment.NewLine;
 
             message += string.Join("\r\n", fileList.ToArray());
 
             if (fileList.Count < unprintable.Count)
                 message += "\r\n" + _translation.GetAndXMoreMessage(unprintable.Count - fileList.Count);
 
+            return message;
+        }
+
+        protected override void UnprintableFilesHint(IList<PrintCommand> unprintable)
+        {
+            const string caption = "PDFCreator";
+            var message = BuildUnprintableFilesMessage(unprintable);
+
+            ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Warning);
+        }
+
+        protected override bool UnprintableFilesProceedQuery(IList<PrintCommand> unprintable)
+        {
+            const string caption = "PDFCreator";
+            var message = BuildUnprintableFilesMessage(unprintable);
+
             message += "\r\n\r\n" + _translation.ProceedAnyway;
 
-            var result = ShowMessage(message, caption, MessageOptions.YesNo, MessageIcon.Warning);
+            var response = ShowMessage(message, caption, MessageOptions.YesNo, MessageIcon.Warning);
 
-            return result == MessageResponse.Yes;
+            return response == MessageResponse.Yes;
         }
 
         protected override bool QuerySwitchDefaultPrinter()

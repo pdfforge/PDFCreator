@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Utilities.Threading
 {
@@ -17,6 +18,6 @@ namespace pdfforge.PDFCreator.Utilities.Threading
 
         void Shutdown();
 
-        void WaitForThreads();
+        Task WaitForThreads();
     }
 }

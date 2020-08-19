@@ -18,29 +18,62 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
             return Instance.GetInstance(type);
         }
 
+        public object Resolve(Type type, params (Type Type, object Instance)[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public object Resolve(Type type, string name)
         {
             throw new NotImplementedException("Simple Inject cannot resolve by name");
         }
 
-        public void RegisterInstance(Type type, object instance)
+        public object Resolve(Type type, string name, params (Type Type, object Instance)[] parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerRegistry RegisterInstance(Type type, object instance)
         {
             Instance.RegisterSingleton(type, () => instance);
+            return this;
         }
 
-        public void RegisterSingleton(Type @from, Type to)
+        public IContainerRegistry RegisterInstance(Type type, object instance, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerRegistry RegisterSingleton(Type @from, Type to)
         {
             Instance.RegisterSingleton(from, to);
+            return this;
         }
 
-        public void Register(Type @from, Type to)
+        public IContainerRegistry RegisterSingleton(Type @from, Type to, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IContainerRegistry Register(Type @from, Type to)
         {
             Instance.Register(from, to);
+            return this;
         }
 
-        public void Register(Type @from, Type to, string name)
+        public IContainerRegistry Register(Type @from, Type to, string name)
         {
             throw new NotImplementedException("Simple Inject cannot register by name");
+        }
+
+        public bool IsRegistered(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsRegistered(Type type, string name)
+        {
+            throw new NotImplementedException();
         }
 
         public void FinalizeExtension()

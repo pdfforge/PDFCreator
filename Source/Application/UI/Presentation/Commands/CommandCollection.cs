@@ -10,7 +10,7 @@ using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class CommandCollection<T> : IEnumerable<NamedCommand> where T : ITranslatable, new()
+    public class CommandCollection<T> : INotifyPropertyChanged, IEnumerable<NamedCommand> where T : ITranslatable, new()
     {
         private readonly ITranslationUpdater _updater;
 
@@ -37,6 +37,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public void AddCommand(ICommand command, Func<T, string> getTranslationFunc)
         {
+            command.CanExecuteChanged += (sender, args) => OnPropertyChanged(nameof(Enabled));
             var namedCommand = new NamedCommand(command);
             Action<T> action = translation => namedCommand.Name = getTranslationFunc(translation);
             action(_translation);
@@ -52,6 +53,36 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                if (_commands == null || _commands.Count < 1)
+                    return false;
+
+                foreach (var command in _commands)
+                {
+                    if (!command.Command.CanExecute(null))
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
+        public void RaiseEnabledChanged()
+        {
+            OnPropertyChanged(nameof(Enabled));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

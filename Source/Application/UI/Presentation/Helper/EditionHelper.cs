@@ -2,14 +2,11 @@
 {
     public class EditionHelper
     {
-        public EditionHelper(bool showOnlyForPlusAndBusiness, bool showOnlyForBusiness)
+        public EditionHelper(bool isFreeEdition)
         {
-            ShowOnlyForPlusAndBusiness = showOnlyForPlusAndBusiness;
-            ShowOnlyForBusiness = showOnlyForBusiness;
+            IsFreeEdition = isFreeEdition;
         }
 
-        public bool ShowOnlyForPlusAndBusiness { get; }
-        public bool ShowOnlyForBusiness { get; }
-        public bool IsFreeEdition => ShowOnlyForPlusAndBusiness;
+        public bool IsFreeEdition { get; }
     }
 }

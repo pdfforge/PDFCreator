@@ -31,9 +31,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             return _isRequiredPredicate(job);
         }
 
-        public Task ExecuteStep(Job job, IWorkflowViewModel workflowViewModel)
+        public async Task ExecuteStep(Job job, IWorkflowViewModel workflowViewModel)
         {
-            return workflowViewModel.ExecuteWorkflowStep(job);
+            await workflowViewModel.ExecuteWorkflowStep(job);
         }
     }
 }

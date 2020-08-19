@@ -1,12 +1,12 @@
-﻿using pdfforge.PDFCreator.Utilities.Ftp;
+﻿using IFtpClient = pdfforge.PDFCreator.Utilities.Ftp.IFtpClient;
 
 namespace pdfforge.PDFCreator.Utilities.IO
 {
     public class UniqueFilenameForFtp : UniqueFilenameBase
     {
-        private readonly IFtpConnection _ftpConnection;
+        private readonly IFtpClient _ftpConnection;
 
-        public UniqueFilenameForFtp(string originalFilename, IFtpConnection ftpConnection, IPathUtil pathUtil)
+        public UniqueFilenameForFtp(string originalFilename, IFtpClient ftpConnection, IPathUtil pathUtil)
             : base(originalFilename, pathUtil)
         {
             _ftpConnection = ftpConnection;
@@ -14,7 +14,8 @@ namespace pdfforge.PDFCreator.Utilities.IO
 
         protected override bool UniqueCondition(string file)
         {
-            return _ftpConnection.FileExists(file);
+            var fileExists = _ftpConnection.FileExists(file);
+            return fileExists;
         }
     }
 }

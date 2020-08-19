@@ -17,6 +17,7 @@
         <TextBlock DockPanel.Dock="Top"
                    FontSize="32"
                    FontFamily="{DynamicResource YorktenRegular}"
+                   Style="{DynamicResource MetroTextBlock}"
                    Margin="-3">
             <Run Text="{Binding ApplicationName, FallbackValue=PDFCreator, Mode=OneWay}" />
             <Run x:Name="TrialText" FontSize="26" />
@@ -39,7 +40,7 @@
                 <Polygon DockPanel.Dock="Right" SnapsToDevicePixels="True" Points="0,0 20,0 0,20"
                          Fill="{DynamicResource {x:Static helper:HightlightColorRegistration.HighlightColorName}}" />
             </Viewbox>
-            <TextBlock Margin="10 0 0 0" x:Name="CustomEditionText" />
+            <TextBlock Margin="10 0 0 0" x:Name="CustomEditionText" Foreground="White" />
         </StackPanel>
     </DockPanel>
 </UserControl>

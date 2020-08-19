@@ -11,11 +11,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public class PngDevice : OutputDevice
     {
-        public PngDevice(Job job) : base(job)
+        public PngDevice(Job job, ConversionMode conversionMode) : base(job, conversionMode)
         {
         }
 
-        public PngDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, file, osHelper, commandLineUtil)
+        public PngDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, conversionMode, file, osHelper, commandLineUtil)
         {
         }
 

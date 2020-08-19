@@ -1,12 +1,12 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
-using pdfforge.PDFCreator.Core.Workflow;
+using pdfforge.PDFCreator.Core.JobInfoQueue;
 
 namespace pdfforge.PDFCreator.Core.DirectConversion
 {
     public interface IDirectConversion
     {
-        void ConvertDirectly(string file);
+        void ConvertDirectly(string file, AppStartParameters appStartParameters = null);
 
         bool CanConvertDirectly(string file);
     }
@@ -37,9 +37,12 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             return _directConversionHelper.CanConvertDirectly(file);
         }
 
-        public void ConvertDirectly(string file)
+        public void ConvertDirectly(string file, AppStartParameters appStartParameters = null)
         {
-            var infFile = _directConversionInfFileHelper.TransformToInfFile(file);
+            var infFile = appStartParameters != null ?
+                _directConversionInfFileHelper.TransformToInfFile(file, appStartParameters) :
+                _directConversionInfFileHelper.TransformToInfFile(file);
+
             if (string.IsNullOrEmpty(infFile))
                 return;
 

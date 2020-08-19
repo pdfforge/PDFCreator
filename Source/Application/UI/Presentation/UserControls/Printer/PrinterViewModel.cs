@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 using pdfforge.PDFCreator.Utilities;
@@ -18,16 +19,19 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
     public class PrinterViewModel : TranslatableViewModelBase<PrinterTabTranslation>, IMountable
     {
-        private readonly ConversionProfile _dummyLastUsedProfile = new ConversionProfile
-        {
-            Name = "<Last used profile>",
-            Guid = ProfileGuids.LAST_USED_PROFILE_GUID
-        };
+        private readonly ConversionProfileWrapper _dummyLastUsedProfile = new ConversionProfileWrapper
+        (
+            new ConversionProfile()
+            {
+                Name = "<Last used profile>",
+                Guid = ProfileGuids.LAST_USED_PROFILE_GUID
+            });
 
         private readonly IOsHelper _osHelper;
         private readonly IPrinterActionsAssistant _printerActionsAssistant;
@@ -37,7 +41,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
         private readonly IPrinterProvider _printerProvider;
         private readonly ISettingsProvider _settingsProvider;
         private readonly ICurrentSettings<ObservableCollection<PrinterMapping>> _printerMappingProvider;
-        private ConversionProfile _defaultProfile;
+        private ConversionProfileWrapper _defaultProfile;
 
         private ICollection<string> _pdfCreatorPrinters;
         private Helper.SynchronizedCollection<PrinterMappingWrapper> _printerMappings;
@@ -103,25 +107,59 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
             get { return _osHelper.UserIsAdministrator() ? Visibility.Collapsed : Visibility.Visible; }
         }
 
-        public ObservableCollection<ConversionProfile> ConversionProfiles
+        private ObservableCollection<ConversionProfileWrapper> _conversionProfiles;
+
+        public ObservableCollection<ConversionProfileWrapper> ConversionProfiles
         {
-            get { return ProfilesProvider.Settings; }
+            get
+            {
+                if (_conversionProfiles == null)
+                {
+                    _conversionProfiles = _settingsProvider.Settings?.Copy().ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
+                    _conversionProfiles?.Insert(0, _dummyLastUsedProfile);
+                }
+
+                return _conversionProfiles;
+            }
             set
             {
+                if (value == null)
+                    return;
+
+                _conversionProfiles = value;
+                _conversionProfiles?.Insert(0, _dummyLastUsedProfile);
+
+                var buffer = new Dictionary<string, string>();
+                if (PrinterMappings != null)
+                {
+                    foreach (var printerMappingWrapper in PrinterMappings)
+                    {
+                        buffer.Add(printerMappingWrapper.PrinterName, printerMappingWrapper.Profile.ConversionProfile.Guid);
+                    }
+                }
+
                 RaisePropertyChanged(nameof(ConversionProfiles));
 
-                _defaultProfile = ConversionProfiles.FirstOrDefault(x => x.Guid == ProfileGuids.DEFAULT_PROFILE_GUID);
+                if (PrinterMappings != null)
+                {
+                    foreach (var printerMappingWrapper in PrinterMappings)
+                    {
+                        printerMappingWrapper.Profile = _conversionProfiles.FirstOrDefault(x => x.ConversionProfile.Guid == buffer[printerMappingWrapper.PrinterName]);
+                    }
+                }
+
+                _defaultProfile = ConversionProfiles.FirstOrDefault(x => x.ConversionProfile.Guid == ProfileGuids.DEFAULT_PROFILE_GUID);
                 if (_defaultProfile == null)
                     _defaultProfile = _dummyLastUsedProfile;
             }
         }
 
-        public IEnumerable<ConversionProfile> PrinterMappingProfiles
+        public IEnumerable<ConversionProfileWrapper> PrinterMappingProfiles
         {
             get
             {
                 var profiles = ConversionProfiles.ToList();
-                _dummyLastUsedProfile.Name = "<" + Translation.LastUsedProfileMapping + ">";
+                _dummyLastUsedProfile.ConversionProfile.Name = "<" + Translation.LastUsedProfileMapping + ">";
                 profiles.Insert(0, _dummyLastUsedProfile);
                 return profiles;
             }
@@ -170,10 +208,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 
         private void SetSettingsAndRaiseNotifications(ObservableCollection<ConversionProfile> profiles)
         {
-            ConversionProfiles = profiles;
+            ConversionProfiles = profiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
 
             RaisePropertyChanged(nameof(ApplicationSettings));
-            RaisePropertyChanged(nameof(ConversionProfiles));
 
             UpdatePrinterList();
             ApplyPrinterMappings();
@@ -357,7 +394,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
             {
                 foreach (var mappingWrapper in PrinterMappings)
                 {
-                    mappingWrapper.Profile = PrinterMappingProfiles?.FirstOrDefault(x => x.Guid == mappingWrapper.Profile.Guid);
+                    mappingWrapper.Profile = PrinterMappingProfiles?.FirstOrDefault(x => x.ConversionProfile.Guid == mappingWrapper.Profile.ConversionProfile.Guid);
                 }
             }
         }

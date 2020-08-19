@@ -12,7 +12,6 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-	[ImplementPropertyChanged]
 	public partial class Parameters : INotifyPropertyChanged {
 		#pragma warning disable 67
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -25,12 +24,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string OriginalFilePath { get; set; } = "";
 		
 		/// <summary>
-		/// Outputfile path from command line paramter
+		/// Outputfile path from command line parameter
 		/// </summary>
 		public string Outputfile { get; set; } = "";
 		
 		/// <summary>
-		/// Profile from command line paramter
+		/// Profile from command line parameter
 		/// </summary>
 		public string Profile { get; set; } = "";
 		
@@ -57,6 +56,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Outputfile = Outputfile;
 			copy.Profile = Profile;
 			return copy;
+		}
+		
+		public void ReplaceWith(Parameters source)
+		{
+			if(OriginalFilePath != source.OriginalFilePath)
+				OriginalFilePath = source.OriginalFilePath;
+				
+			if(Outputfile != source.Outputfile)
+				Outputfile = source.Outputfile;
+				
+			if(Profile != source.Profile)
+				Profile = source.Profile;
+				
 		}
 		
 		public override bool Equals(object o)

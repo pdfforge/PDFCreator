@@ -1,11 +1,13 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Core.Printing.Port;
+using pdfforge.PDFCreator.Core.SettingsManagement;
+using System;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Printing
 {
-    public class FolderProvider : ITempFolderProvider, ISpoolerProvider
+    public class FolderProvider : ITempFolderProvider, ISpoolerProvider, IAppDataProvider
     {
         private const string PrinterPortName = "pdfcmon";
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -18,22 +20,34 @@ namespace pdfforge.PDFCreator.Core.Printing
             _path = path;
 
             var tempFolderBase = GetTempFolderBase();
+            var localAppDataFolderBase = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var roamingAppDataFolderBase = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            TempFolder = _path.Combine(tempFolderBase, "Temp");
+            TempFolder = PathSafe.Combine(tempFolderBase, "Temp");
             _logger.Debug("Temp folder is '{0}'", TempFolder);
 
-            SpoolFolder = _path.Combine(tempFolderBase, "Spool");
+            SpoolFolder = PathSafe.Combine(tempFolderBase, "Spool");
             _logger.Debug("Spool folder is '{0}'", SpoolFolder);
+
+            LocalAppDataFolder = PathSafe.Combine(localAppDataFolderBase, "pdfforge", "PDFCreator");
+            _logger.Debug("LocalAppData folder is '{0}'", LocalAppDataFolder);
+
+            RoamingAppDataFolder = PathSafe.Combine(roamingAppDataFolderBase, "pdfforge", "PDFCreator");
+            _logger.Debug("RoamingAppData folder is '{0}'", RoamingAppDataFolder);
         }
 
         public string SpoolFolder { get; }
 
         public string TempFolder { get; }
 
+        public string LocalAppDataFolder { get; }
+
+        public string RoamingAppDataFolder { get; }
+
         private string GetTempFolderBase()
         {
             var tempFolderName = ReadTempFolderName();
-            return _path.Combine(_path.GetTempPath(), tempFolderName);
+            return PathSafe.Combine(_path.GetTempPath(), tempFolderName);
         }
 
         private string ReadTempFolderName()
