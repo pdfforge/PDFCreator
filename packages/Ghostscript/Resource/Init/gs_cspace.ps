@@ -1,0 +1,117 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% basic colorspace mechanism
+
+%
+% There have been some major changes to the PostScript colour handling.
+% In particular, the vast majority of the colour space code has been
+% converted from PostScript to C. This file has been extensively
+% modified, as has gs_icc.ps. The remaining PostScript files which
+% previously implemented colour space handling; gs_ciecs2.ps, gs_ciecs3.ps
+% gs_devcs.ps, gs_devn.ps, gs_devpxl.ps, gs_indxd.ps, gs_patrn.ps and
+% gs_sepr.ps have been superceded by the C code and removed.
+%
+% gs_lev2.ps and gs_ll3.ps have also been modified so that they no longer
+% attempt to execute these PostScript files.
+%
+.currentglobal //true .setglobal
+systemdict begin
+
+%
+% gs_res.ps, and possibly other files, use this dictionary. Formerly
+% in cspace_util, moved to systemdict.
+%
+20 dict dup /colorspacedict exch def
+
+begin % colorspacedict
+
+%
+% gs_res.ps uses these entries in colorspacedict
+% to populate the ColorSpaceFamily resource, so we need
+% to add the supported spaces.
+%
+/DeviceGray [] def
+/DeviceRGB [] def
+/DeviceCMYK [] def
+end % colorspacedict
+
+%
+% Global, read-only, unpacked, array-form device color spaces
+% We need to return an array argument in response to currentcolorspace
+% even if the argument presented to setcolorspace was a simple device
+% space name. Not only that, but in order to satisfy some Adobe
+% applications, it must be the *same* array every time. The only way
+% to do that is to define an appropriate set initial arrays and always return
+% one of those. These arrays are defined here.
+%
+/DeviceGray_array /DeviceGray 1 array astore readonly def
+/DeviceRGB_array  /DeviceRGB  1 array astore readonly def
+/DeviceCMYK_array /DeviceCMYK 1 array astore readonly def
+
+%
+% These routines used for the NOSUBSTDEVICECOLORS switch. This prevents
+% substitution of DeviceGray, DeviceRGB and DeviceCMYK with a Default*
+% colour space when /UseCIEColors is true. If the job includes a
+% definition of /DefaltGray, DefaultRGB or DefaultCMYK then it also executes
+% .includecolorspace to allow the device to record the substitute space.
+%
+/..page_default_spaces 3 dict def
+
+%
+% Used internally to retrieve any relevant default colour space.
+%
+% <Default space name> ..nosubstdevicetest false
+%                                          <Default space name> [space] true
+%
+% If the boolean is true then the C code must set the additional colour space
+% and execute .includecolorspace before finally setting a DeviceGray space.
+%
+% called from C code, can't undef. Use this to trigger the code:
+% -sDEVICE=pkmraw -dMaxBitmap=4000m -r72 -dNOSUBSTDEVICECOLORS ./tests/Ghent_V3.0/110_defaultcolourspace_x3.pdf
+/..nosubstdevicetest
+{
+  //false mark 3 -1 roll
+  % If we have already recorded this space, don't repeat it.
+  systemdict /..page_default_spaces get 1 index known {
+    cleartomark
+  } {
+    {
+      % Check to see if this space was defined by defineresource, if so then
+      % the job defined it, otherwise its the usual default, so ignore it.
+      dup /ColorSpace resourcestatus {
+        pop 0 eq {
+                  % Default* defined by defineresource
+          systemdict /..page_default_spaces get 1 index //true put
+                  dup /ColorSpace findresource 4 2 roll pop pop //true
+        }{
+          cleartomark
+        } ifelse
+      }{
+        cleartomark
+      } ifelse
+    } stopped
+    {cleartomark}if
+  } ifelse
+}bind def
+
+end
+
+%
+% Set the initial device space
+%
+systemdict /DeviceGray_array get setcolorspace
+
+.setglobal

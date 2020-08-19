@@ -1,0 +1,1449 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>High Level Output Devices</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!-- need to modify devices.htm and readme.htm to reflect new document -->
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12">High Level Output Devices</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+    <ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<blockquote><ul>
+<li><a href="#Overview">Overview</a>
+<li><a href="#PXL">PCL-XL file output</a>
+<li><a href="#TXT">Text output</a>
+<li><a href="#XPS">XPS file output</a>
+<li><a href="#PDFWRITE">PDF file output</a>
+<li><a href="#PDFWRITE">PostScript file output</a>
+<li><a href="#PDFWRITE">EPS file output</a>
+<li><a href="#PDFX">PDF/X-3 file output</a>
+<li><a href="#PDFA">PDF/A file output</a>
+<li><a href="#PPD">Ghostscript PDF printer description</a>
+<li><a href="#Extensions">pdfmark extensions</a>
+<li><a href="#Limitations">Limitations</a>
+</ul></blockquote>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.3 begin hint] ====================================================== -->
+
+<p>For other information, see the <a href="Readme.htm">Ghostscript overview</a>.
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+<h2><a name="Overview"></a>Overview</h2>
+
+<p>
+High level devices are Ghostscript output devices which do not render to a raster,
+in general they produce 'vector' as opposed to bitmap output. Such devices currently
+include: pdfwrite, ps2write, eps2write, txtwrite, xpswrite, pxlmono and pxlcolor.
+</p>
+
+<p>
+Although these devices produce output which is not a raster, they still work in the
+same general fashion as all Ghostscript devices. The input (PostScript, PDF, XPS, PCL
+or PXL) is handled by an appropriate interpreter, the interpreter processes the input
+and produces from it a sequence of drawing 'primitives' which are handed to the device.
+The device decides whether to handle the primitive itself, or call upon the graphics
+library to render the primitive to the final raster.
+</p>
+
+<p>
+Primitives are quite low level graphics operations; as an example consider the PDF
+sequence '0 0 100 100 re f'. This constructs a rectangle with the bottom left
+corner at 0,0 which is 100 units wide by 100 units high, and fills it with the current
+color. A lower level implementation using only primitives would first move the current
+point to 0,0, then construct a line to 0,100, then a line to 100,100, a line to 100, 0
+and finally a line back to 0,0. It would then fill the result.
+</p>
+
+<p>
+Obviously that's a simple example but it serves to demonstrate the point.
+</p>
+
+<p>
+Now the raster devices all call the graphics library to process primitives (though they
+may choose to take some action first) and render the result to a bitmap. The high level
+devices instead reassemble the primitives back into high level page description and
+write the result to a file. This means that the output, while it should be visually the
+same as the input (because it makes the same marks), is <b>not</b> the same as the
+original input, even if the output Page Description Language is the same as the input
+one was (eg PDF to PDF).
+</p>
+
+<p>
+Why is this important ? Firstly because the description of the page won't be the same,
+if your workflow relies upon (for example) finding rectangles in the description then
+it might not work after it has been processed by a high level device, as the
+rectangles may all have turned into lengthy path descriptions.
+</p>
+<p>In addition, any part of the original input which does not actually make marks on the
+page (such as hyperlinks, bookmarks, comments etc) will normally <b>not</b> be
+present in the output, even if the output is the same format. In general the PDF
+interpreter and the PDF output device (pdfwrite) try to preserve the non-marking
+information from the input, but some kinds of content are not carried across, in
+particular comments are not preserved.
+</p>
+
+<p>
+We often hear from users that they are 'splitting' PDF files, or 'modifying' them, or converting
+them to PDF/A, and it's important to realize that this is not what's happening. Instead,
+a new PDF file is being created, which should <b>look</b> the same as the original, but
+the actual insides of the PDF file are not the same as the original. This may not be a
+problem, but if it's important to keep the original contents, then you need to use
+a different tool (we'd suggest MuPDF, also available from Artifex). Of course, if the
+<b>intention</b> is to produce a modified PDF file (for example, reducing the resolution
+of images, or changing the colour space), then clearly you cannot keep the original
+contents unchanged, and pdfwrite performs these tasks well.
+</p>
+
+
+<hr>
+<h2><a name="PXL"></a>PCL-XL (PXL)</h2>
+
+<p>The <tt>pxlmono</tt> and <tt>pxlcolor</tt> devices output HP PCL-XL,
+a graphic language understood by many recent laser printers.
+
+<h4>Options</h4>
+<blockquote>
+<dl>
+<dt><code>-dCompressMode=<em>1 | 2 | 3</em></code> (default is 1)
+<dd>Set the compression algorithm used for bitmap graphics. RLE=1, JPEG=2, DeltaRow=3.
+When JPEG=2 is on, it is applied only to full-color images; indexed-color graphics
+and masks continues to be compressed with RLE.
+</dl></blockquote>
+
+<hr>
+<h2><a name="TXT"></a>Text output</h2>
+
+<p> The txtwrite device will output the text contained in the original
+document as Unicode.
+
+<h4>Options</h4>
+<blockquote>
+<dl>
+<dt><code>-dTextFormat=<em>0 | 1 | 2 | 3 </em></code> (default is 3)
+<p><dd>Format 0 is intended for use by developers and outputs XML-escaped Unicode
+along with information regarding the format of the text (position, font name,
+point size, etc). The XML output is the same format as the MuPDF output, but
+no additional processing is performed on the content, so no block detection.</dd></p>
+<p><dd>Format 1 uses the same XML output format, but attempts similar processing to
+MuPDF, and will output blocks of text. Note the algorithm used is not the same
+as the MuPDF code, and so the results will not be identical.</dd></p>
+<p><dd>Format 2 outputs Unicode (UCS2) text (with a Byte Order Mark) which
+approximates the layout of the text in the original document.</dd></p>
+<p><dd>Format 3 is the same as format 2, but the text is encoded in UTF-8.</dd></p>
+</dl></blockquote>
+
+<p>
+
+<hr>
+<h2><a name="XPS"></a>XPS file output</h2>
+
+<p>The xpswrite device writes its output according to the Microsoft XML Paper Specification. This
+specification was later amended to the Open XML Paper specification, submitted to ECMA International
+and adopted as ECMA-388.
+</p>
+<p>This device currently has no special configuration parameters.</p>
+</p>
+<p>
+
+<hr>
+<h2><a name="PDFWRITE"></a>The family of PDF and PostScript output devices</h2>
+
+<blockquote><ul>
+<li><a href="#COMMON">Common controls and features</a>
+<li><a href="#PSPDF_IN">Controls and features specific to PostScript and PDF input</a>
+<li><a href="#PXL_IN">Controls and features specific to PCL and PXL input</a>
+<li><a href="#PDF">PDF file output</a>
+<li><a href="#PS">PostScript file output</a>
+<li><a href="#EPS">EPS file output</a>
+</ul></blockquote>
+
+<h3><a name="COMMON"></a>Common controls and features</h3>
+<p>
+The PDF and PostScript (including Encapsulated PostScript, or EPS) devices have much of their code
+in common, and so many of the controlling parameters are also common amongst the devices.
+The pdfwrite, ps2write and eps2write devices create PDF or PostScript files whose visual appearance should match, as closely
+as possible, the appearance of the original input (PS, PDF, XPS, PCL, PXL). There are a number of caveats
+as mentioned in the <a href="#Overview">overview</a> above. In addition to the general comments there are some additional points that
+bear mentioning;
+</p>
+<p>
+PCL has a graphics model which differs significantly from the PostScript or PDF one, in particular it has
+a form of transparency called RasterOps, some aspects of which cannot be represented in PDF at a high
+level (or at all, in PostScript). The pdfwrite device makes no attempt to handle this, and the resulting PDF file will <b>not</b> match
+the original input. The only way to deal with these types of file is to render the whole page to a bitmap
+and then 'wrap' the bitmap as a PDF file. Currently we do not do this either, but it is possible that a
+future enhancement may do so.
+</p>
+<p>
+If the input contains PDF-compatible transparency, but the ps2weite device is selected, or the pdfwrite device
+is selected, but has been told to limit the PDF feature set to a version less than 1.4, the transparency
+cannot be preserved. In this case the entire page is rendered to a bitmap and that bitmap is 'wrapped up'
+in appropriate PDF or PostScript content. The output should be visually the same as the input, but since
+it has been rendered it will not scale up or down well, unlike the original, vector, content of the input.
+</p>
+
+<p>
+The <em>options</em> in the command line may include any switches that may
+be used with the language interpreter appropriate for the input (see <a
+href="Use.htm#Options">here</a> for a complete list). In addition the
+following options are common to all the pdfwrite family of devices, and should
+work when specified on the command line with any of the language interpreters.
+
+<dl>
+
+<dt><code>-r</code><em>resolution</em>
+<dd>Sets the resolution for pattern fills, for fonts that must be
+converted to bitmaps and any other rendering required (eg rendering
+transparent pages for output to PDF versions < 14). The default internal
+resolution for pdfwrite is 720dpi.
+
+<dt><code>-dUNROLLFORMS</code><dd>When converting from PostScript,
+pdfwrite (and ps2write) preserve the use of Form resources as Form
+XObjects in the output. Some badly written PostScript can cause this
+to produce incorrect output (the Quality Logic CET tests for example).
+By setting this flag, forms will be unrolled and stored in the output
+each time they are used, which avoids the problems. Note that the output
+file will of course be larger this way.
+We do not attempt to preserve Form XObjects from PDF files, unless they
+are associated with transparency groups.
+
+<dt><code>-dNoOutputFonts</code></dt><dd>Ordinarily the pdfwrite device family
+goes to considerable lengths to preserve fonts from the input as fonts
+in the output. However in some highly specific cases it can be useful to
+have the text emitted as linework/bitmaps instead. Setting this switch
+will prevent these devices from emitting any fonts, all text
+will be stored as vectors (or bitmaps in the case of bitmapped fonts)
+in the page content stream. Note that this will produce larger output
+which will process more slowly, render differently and particularly
+at lower resolution produce less consistent text rendering. Use with
+caution.
+
+<dt><code>-dCompressFonts=</code><em>boolean</em>
+<dd>Defines whether <code>pdfwrite</code> will compress embedded fonts in
+the output.  The default value is <code>true</code>; the
+<code>false</code> setting is intended only for debugging as it will result in larger output.
+
+<dt><code>-dCompressStreams=</code><em>boolean</em>
+<dd>Defines whether <code>pdfwrite</code> will compress streams other than those in fonts or pages in
+the output.  The default value is <code>true</code>; the
+<code>false</code> setting is intended only for debugging as it will result in larger output.
+
+</dl>
+<h4><a name="distillerparams"></a>Distiller Parameters</h4>
+<p>
+<em>Options</em> may also include
+<code>-d</code><em>parameter</em>=<em>value</em> or
+<code>-s</code><em>parameter</em>=<em>string</em> switches for setting
+"distiller parameters", Adobe's documented parameters for controlling the
+conversion of PostScript into PDF.  The PostScript <code>setdistillerparams</code> and
+<code>currentdistillerparams</code> operators are also recognized when
+the input is PostScript, and provide an equivalent way to set these
+parameters from within a PostScript input file.
+</p>
+<p>Although the name implies that these parameters are for controlling PDF output, in
+fact the whole family of devices use these same parameters to control the conversion into
+PostScript and EPS as well.
+</p>
+
+<p>
+The pdfwrite family of devices recognize all of the Acrobat Distiller 5 parameters
+defined in the DistillerParameters (version 5) document available from the Adobe web site.
+Cells in the table below containing '=' mean that the value of the parameter is the same as in the
+"default" column.
+
+<blockquote>
+<table>
+<tr>
+<th align="left">Parameter name</th>
+<th></th>
+<th align="left">Notes</th>
+<th></th>
+<th align="left">default</th>
+<th></th>
+<th align="left">screen</th>
+<th></th>
+<th align="left">ebook</th>
+<th></th>
+<th align="left">printer</th>
+<th></th>
+<th align="left">prepress</th>
+<tr>
+<tr valign=top><td><code>AlwaysEmbed</code><td><td><a href="#note_13">(13)</a><td><td>[ ]<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AntiAliasColorImages</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AntiAliasGrayImages</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AntiAliasMonoImages</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ASCII85EncodePages</code><td><td><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AutoFilterColorImages</code><td><td><a href="#note_1">(1)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AutoFilterGrayImages</code><td><td><a href="#note_1">(1)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AutoPositionEPSFiles</code><td><td><a href="#note_0">(0)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>AutoRotatePages</code><td><td><td><td>/PageByPage<td><td>/PageByPage<td><td>/All<td><td>/None<td><td>/None
+<tr valign=top><td><code>Binding</code><td><td><a href="#note_0">(0)</a><td><td>/Left<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CalCMYKProfile</code><td><td><a href="#note_0">(0)</a><td><td>()<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CalGrayProfile</code><td><td><a href="#note_0">(0)</a><td><td>()<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CalRGBProfile</code><td><td><a href="#note_0">(0)</a><td><td>()<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CannotEmbedFontPolicy</code><td><td><a href="#note_0">(0)</a><td><td>/Warning<td><td>/Warning<td><td>/Warning<td><td>/Warning<td><td>/Error
+<tr valign=top><td><code>ColorACSImageDict</code><td><td><a href="#note_13">(13)</a><td><td><a href="#note_7">(note 7)</a><td><td><a href="#note_10">(note 10)</a><td><td><a href="#note_10">(note 10)</a><td><td><a href="#note_8">(note 8)</a><td><td><a href="#note_9">(note 9)</a>
+<tr valign=top><td><code>ColorConversionStrategy</code><td><td><a href="#note_6">(6)</a><td><td>LeaveColorUnchanged<td><td>RGB<td><td>RGB<td><td>UseDeviceIndependentColor<td><td>LeaveColorUnchanged
+<tr valign=top><td><code>ColorImageDepth</code><td><td><td><td>-1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ColorImageDict</code><td><td><a href="#note_13">(13)</a><td><td><a href="#note_7">(note 7)</a><td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ColorImageFilter</code><td><td><td><td>/DCTEncode<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ColorImageDownsampleThreshold</code><td><td><td><td>1.5<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ColorImageDownsampleType</code><td><td><a href="#note_3">(3)</a><td><td>/Subsample<td><td>/Average<td><td>/Average<td><td>/Average<td><td>/Bicubic
+<tr valign=top><td><code>ColorImageResolution</code><td><td><td><td>72<td><td>72<td><td>150<td><td>300<td><td>300
+<tr valign=top><td><code>CompatibilityLevel</code><td><td><td><td>1.7<td><td>1.5<td><td>1.5<td><td>1.7<td><td>1.7
+<tr valign=top><td><code>CompressPages</code><td><td><a href="#note_14">(14)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ConvertCMYKImagesToRGB</code><td><td><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ConvertImagesToIndexed</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CoreDistVersion</code><td><td><td><td>4000<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>CreateJobTicket</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>false<td><td>false<td><td>true<td><td>true
+<tr valign=top><td><code>DefaultRenderingIntent</code><td><td><td><td>/Default<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>DetectBlends</code><td><td><a href="#note_0">(0)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>DoThumbnails</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>false<td><td>false<td><td>false<td><td>true
+<tr valign=top><td><code>DownsampleColorImages</code><td><td><td><td>false<td><td>true<td><td>true<td><td>false<td><td>false
+<tr valign=top><td><code>DownsampleGrayImages</code><td><td><td><td>false<td><td>true<td><td>true<td><td>false<td><td>false
+<tr valign=top><td><code>DownsampleMonoImages</code><td><td><td><td>false<td><td>true<td><td>true<td><td>false<td><td>false
+<tr valign=top><td><code>EmbedAllFonts</code><td><td><td><td>true<td><td>false<td><td>true<td><td>true<td><td>true
+<tr valign=top><td><code>EmitDSCWarnings</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>EncodeColorImages</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>EncodeGrayImages</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>EncodeMonoImages</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>EndPage</code><td><td><a href="#note_0">(0)</a><td><td>-1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>GrayACSImageDict</code><td><td><a href="#note_13">(13)</a><td><td><a href="#note_7">(note 7)</a><td><td><a href="#note_7">(note 7)</a><td><td><a href="#note_10">(note 10)</a><td><td><a href="#note_8">(note 8)</a><td><td><a href="#note_9">(note 9)</a>
+<tr valign=top><td><code>GrayImageDepth</code><td><td><td><td>-1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>GrayImageDict</code><td><td><a href="#note_13">(13)</a><td><td><a href="#note_7">(note 7)</a><td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>GrayImageDownsampleThreshold</code><td><td><td><td>1.5<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>GrayImageDownsampleType</code><td><td><a href="#note_3">(3)</a><td><td>/Subsample<td><td>/Average<td><td>/Bicubic<td><td>/Bicubic<td><td>/Bicubic
+<tr valign=top><td><code>GrayImageFilter</code><td><td><td><td>/DCTEncode<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>GrayImageResolution</code><td><td><td><td>72<td><td>72<td><td>150<td><td>300<td><td>300
+<tr valign=top><td><code>ImageMemory</code><td><td><a href="#note_0">(0)</a><td><td>524288<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>LockDistillerParams</code><td><td><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>LZWEncodePages</code><td><td><a href="#note_2">(2)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MaxSubsetPct</code><td><td><td><td>100<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MonoImageDepth</code><td><td><td><td>-1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MonoImageDict</code><td><td><a href="#note_13">(13)</a><td><td>&lt;&lt;K -1&gt;&gt;<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MonoImageDownsampleThreshold</code><td><td><td><td>1.5<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MonoImageDownsampleType</code><td><td><td><td>/Subsample<td><td>/Subsample<td><td>/Subsample<td><td>/Subsample<td><td>/Subsample
+<tr valign=top><td><code>MonoImageFilter</code><td><td><td><td>/CCITTFaxEncode<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>MonoImageResolution</code><td><td><td><td>300<td><td>300<td><td>300<td><td>1200<td><td>1200
+<tr valign=top><td><code>NeverEmbed</code><td><td><a href="#note_13">(13)</a><td><td><a href="#note_11">(note 11)</a><a href="#note_12">(note 12)</a><td><td><a href="#note_11">(note 11)</a><a href="#note_12">(note 12)</a><td><td><a href="#note_11">(note 11)</a><a href="#note_12">(note 12)</a><td><td>[ ]<a href="#note_12">(note 12)</a><td><td>[ ]<a href="#note_12">(note 12)</a>
+<tr valign=top><td><code>OffOptimizations</code><td><td><td><td>0<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>OPM</code><td><td><td><td>1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>Optimize</code><td><td><a href="#note_0">(0</a>,<a href="#note_5">5)</a><td><td>false<td><td>true<td><td>true<td><td>true<td><td>true
+<tr valign=top><td><code>ParseDSCComments</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>ParseDSCCommentsForDocInfo</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>PreserveCopyPage</code><td><td><a href="#note_0">(0)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>PreserveEPSInfo</code><td><td><a href="#note_0">(0)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>PreserveHalftoneInfo</code><td><td><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>PreserveOPIComments</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>false<td><td>false<td><td>true<td><td>true
+<tr valign=top><td><code>PreserveOverprintSettings</code><td><td><td><td>false<td><td>false<td><td>false<td><td>true<td><td>true
+<tr valign=top><td><code>sRGBProfile</code><td><td><a href="#note_0">(0)</a><td><td>()<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>StartPage</code><td><td><a href="#note_0">(0)</a><td><td>1<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>SubsetFonts</code><td><td><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>TransferFunctionInfo</code><td><td><a href="#note_4">(4)</a><td><td>/Preserve<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>UCRandBGInfo</code><td><td><td><td>/Remove<td><td>/Remove<td><td>/Remove<td><td>/Preserve<td><td>/Preserve
+<tr valign=top><td><code>UseFlateCompression</code><td><td><a href="#note_2">(2)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>UsePrologue</code><td><td><a href="#note_0">(0)</a><td><td>false<td><td>=<td><td>=<td><td>=<td><td>=
+<tr valign=top><td><code>PassThroughJPEGImages</code><td><td><a href="#note_15">(15)</a><td><td>true<td><td>=<td><td>=<td><td>=<td><td>=
+</table></blockquote>
+
+<p>
+<a name="note_0">(note 0)</a>
+This parameter can be set and queried, but currently has no effect.
+
+<p>
+<a name="note_1">(note 1)</a>
+<code>-dAutoFilterxxxImages=false</code> works since Ghostscript version 7.30.
+Older versions of Ghostscript don't examine the image to
+decide between JPEG and LZW or Flate compression: they always use
+Flate compression.
+
+<p>
+<a name="note_2">(note 2)</a>
+Because the LZW compression scheme was covered by patents at the time this
+device was created, <code>pdfwrite</code> does not actually use LZW compression:
+all requests for LZW compression are ignored.
+<tt>UseFlateCompression</tt> is treated as always on, but the switch <code>CompressPages</code>
+can be set to false to turn off page level stream compression.
+Now that the patent has expired, we could change this should it become worthwhile.
+
+<p>
+<a name="note_3">(note 3)</a>
+The <code>xxxDownsampleType</code> parameters can also have the value
+/Bicubic (a Distiller 4 feature), this will use a Mitchell filter. (older
+versions of pdfwrite simply used Average instead). Note; if a non-integer
+downsample factor is used the code will clamp to the nearest integer (if
+the difference is less than 0.1) or will silently switch to the old bicubic
+filter, NOT the Mitchell filter.
+
+<p>
+<a name="note_4">(note 4)</a>
+The default for transfer functions is to preserve them, this is because transfer functions are
+a device-dependent feature, a set of transfer functions designed for an RGB device will give
+incorrect output on a CMYK device for instance. The pdfwrite device does now support /Preserve,
+/Apply and /Remove (the previous documentation was incorrect, application of transfer functions
+was not supported). PDF 2.0 deprecates the use of transfer functions, and so when producing PDF 2.0
+compatible output if the TransferFunctionInfor is set to /Preserve it will be silently replaced with /Apply.
+You can instead specifically set TransferFunctionInfo to /Remove when producing PDF 2.0 in order to
+avoid the transfer function being applied.
+
+<p>
+
+<a name="note_5">(note 5)</a>
+Use the -dFastWebView command line switch to 'optimize' output.
+<p>
+
+<a name="note_6">(note 6)</a>
+
+The value <code>UseDeviceIndependentColorForImages</code> works the same as
+<code>UseDeviceIndependentColor</code>.
+The value <code>sRGB</code> actually converts to RGB with the default Ghostscript conversion.
+The new Ghostscript-specific value <code>Gray</code> converts all colors to DeviceGray.
+With the introduction of new color conversion code in version 9.11 it is no longer necessary to
+set <code>ProcessColorModel</code> when selecting <code>Gray</code>, <code>RGB</code> or <code>CMYK</code>. It is also no
+longer necessary to set <code>UseCIEColor</code> for <code>UseDeviceIndependentColor</code> to
+work properly, and the use of <code>UseCIEColor</code> is now strongly discouraged.
+<p>
+<a name="note_7">(note 7)</a>
+ The default image parameter dictionary is
+<blockquote><code>
+&lt;&lt; /QFactor 0.9 /Blend 1 /HSamples [2 1 1 2] /VSamples [2 1 1 2] &gt;&gt;
+</code></blockquote>
+
+<p>
+<a name="note_8">(note 8)</a>
+The printer ACS image parameter dictionary is
+<blockquote><code>
+&lt;&lt; /QFactor 0.4 /Blend 1 /ColorTransform 1 /HSamples [1 1 1 1] /VSamples [1 1 1 1] &gt;&gt;
+</code></blockquote>
+
+<p>
+<a name="note_9">(note 9)</a>
+The prepress ACS image parameter dictionary is
+<blockquote><code>
+&lt;&lt; /QFactor 0.15 /Blend 1 /ColorTransform 1 /HSamples [1 1 1 1] /VSamples [1 1 1 1] &gt;&gt;
+</code></blockquote>
+
+<p>
+<a name="note_10">(note 10)</a>
+The screen and ebook ACS image parameter dictionary is
+<blockquote><code>
+&lt;&lt; /QFactor 0.76 /Blend 1 /ColorTransform 1 /HSamples [2 1 1 2] /VSamples [2 1 1 2] &gt;&gt;
+</code></blockquote>
+
+<p>
+<a name="note_11">(note 11)</a>
+The default, screen, and ebook settings never embed the 14 standard fonts
+(Courier, Helvetica, and Times families, Symbol, and ZapfDingbats).
+This behaviour is intentional but can be overridden by:
+<blockquote><code>
+&lt;&lt; /NeverEmbed [ ] &gt;&gt; setdistillerparams
+</code></blockquote>
+
+<p>
+<a name="note_12">(note 12)</a>
+<code>NeverEmbed</code> can include CID font names.
+If a CID font is substituted in <code>lib/cidfmap</code>,
+the substitute font name is used when the CID font is embedded,
+and the original CID font name is used when it is not embedded.
+<code>NeverEmbed</code> should always specify the original CID font
+name.
+
+<p>
+<a name="note_13">(note 13)</A>
+The arrays <code>AlwaysEmbed</code> and <code>NeverEmbed</code> and
+image parameter dictionaries <code>ColorACSImageDict</code>,
+<code>ColorACSImageDict</code>, <code>ColorImageDict</code>,
+
+<code>GrayACSImageDict</code>, <code>GrayImageDict</code>,
+<code>MonoImageDict</code> cannot be specified on the command line.
+To specify these, you must use PostScript, either by including it in the PostScript source
+or by passing the <code>-c</code> command-line parameter to ghostscript as described in <a href="#Limitations">Limitations</A> below.
+For example, including the PostScript string in your file <tt>in.ps</tt>:
+<blockquote><tt>&lt;&lt;/AlwaysEmbed [/Helvetica /Times-Roman]&gt;&gt; setdistillerparams</tt></blockquote>
+is equivalent to invoking:
+
+<blockquote><code>gs -dBATCH -dSAFER -DNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=out.pdf -c
+'&lt;&lt;/AlwaysEmbed [/Helvetica /Times-Roman]&gt;&gt; setdistillerparams' -f
+in.ps</code></blockquote>
+
+or using the extra parameters in a file:
+
+<blockquote><code>@params.in</code></blockquote>
+
+where the file <b>params.in</b> contains:
+
+<blockquote><code>-c '&lt;&lt;/AlwaysEmbed [/Helvetica /Times-Roman]&gt;&gt; setdistillerparams' -f
+in.ps</code></blockquote>
+
+<p>
+<a name="note_14">(note 14)</a>
+The default value of <code>CompressPages</code> is <code>false</code> for ps2write and eps2write.
+
+<p>
+<a name="note_15">(note 15)</a>
+When <code>true</code> image data in the source which is encoded using the DCT (JPEG) filter will not be decompressed
+and then recompressed on output. This prevents the multiplication of JPEG artefacts caused by lossy compression.
+</code><code>PassThroughJPEGImages</code> currently only affects simple JPEG images. It has no effect on JPX (JPEG2000) encoded images,
+or masked images. In addition this parameter will be ignored if the pdfwrite device needs to modify the source data. This can happen if the image
+is being downsampled, changing colour space or having transfer functions applied. Note that this parameter essentially overrides
+the 'EncodeColorImages' and 'EncodeGrayImages' parameters if they are false, the image will still be written with a DCTDecode filter. NB this
+feature currently only works with PostScript or PDF input, it does not work with PCL, PXL or XPS input.
+
+<h4><a name="Color_Conversion_and_Management"></a>Color Conversion and Management</h4>
+<p>
+As of the 9.11 pre-release, the color management in the pdfwrite family has been substantially
+altered so that it now uses the same Color Management System as rendering (the default
+is LCMS2). This considerably improves the color handling in both pdfwrite and ps2write,
+particularly in the areas of Separation and DeviceN color spaces, and Indexed color
+spaces with images.
+</p>
+
+<p>Note that while pdfwrite uses the same CMS as the rendering devices, this does not mean that the entire suite of options is available, as described
+in the GS9_Colour Management.pdf file. The colour management code has no effect at all unless either ColorConversionStrategy
+or ConvertCMYKImagesToRGB is set, or content has to be rendered to an image (this is rare and usually required only when
+converting a PDF file with transparency to a version < PDF 1.4).
+</p>
+<p>Options based on object type (image, text, linework) are not used, all objects are converted using the same scheme.
+<code>-dKPreserve</code> has no effect because we will not convert CMYK to CMYK. <code>-dDeviceGrayToK</code> also has no effect;
+when converting to CMYK DeviceGray objects are left in DeviceGray since that can be mapped directly to the K channel.</p>
+
+The <code>ColorConversionStrategy</code> switch can now be set to <code>LeaveColorUnchanged</code>, <code>Gray</code>, <code>RGB</code>, <code>CMYK</code> or
+<code>UseDeviceIndependentColor</code>. Note that, particularly for ps2write, <code>LeaveColorUnchanged</code> may still need to convert
+colors into a different space (ICCbased colors cannot be represented in PostScript for example). <code>ColorConversionStrategy</code> can be specified either as; a string
+by using the <code>-s</code> switch (<code>-sColorConversionStrategy=RGB</code>) or as a name using the <code>-d</code> switch (<code>-dColorConversionStrategy=/RGB</code>).
+</p>
+<p>ps2write cannot currently convert into device-independent color spaces, and so <code>UseDeviceIndependentColor</code>should not be used with ps2write (oe eps2write).
+</p>
+<p>All other color spaces are converted appropriately. Separation and DeviceN spaces will be preserved if possible (ps2write cannot preserve DeviceN or Lab)
+and if the alternate space is not appropriate a new alternate space will be created. Eg a [/Separation (MyColor) /DeviceRGB {...}]
+when the <code>ColorConversionStrategy</code> is set to <code>CMYK</code> would be converted to [/Separation (MyColor) /DeviceCMYK {...}]
+The new tint transform will be created by sampling the original tint transform, converting the RGB values into CMYK, and then creating
+a function to linearly interpolate between those values.</p>
+
+The <code>PreserveSeparation</code> switch now controls whether the pdfwrite family of devices will attempt to preserve Separation spaces. If this is set to false then
+all Separation colours will be converted into the current device space specified by ProcessColorModel.
+</p>
+
+<h4><a name="Orientation"></a>Setting page orientation</h4>
+
+<p>
+By default Ghostscript determines viewing page orientation based on the dominant
+text orientation on the page. Sometimes, when the page has text in several
+orientations or has no text at all, wrong orientation can be selected.
+
+<p>
+Acrobat Distiller parameter <code>AutoRotatePages</code> controls the
+automatic orientation selection algorithm. On Ghostscript, besides
+input stream, Distiller parameters can be given as command line arguments.
+For instance: <code>-dAutoRotatePages=/None</code> or
+<code>/All</code> or <code>/PageByPage</code>.
+
+<p>
+When there is no text on the page or automatic page rotation is set to
+<code>/None</code> an orientation value from setpagedevice is used.
+Valid values are: <code>0</code> (portrait),
+<code>3</code> (landscape), <code>2</code> (upside down),
+and <code>1</code> (seascape). The orientation can be set from the
+command line as <code>-c "&lt;&lt;/Orientation 3&gt;&gt; setpagedevice"</code>
+using Ghostscript directly but cannot be set in <code>ps2pdf</code>.
+See <a href="#Limitations">Limitations</a> below.
+
+<p>
+Ghostscript passes the orientation values from DSC comments to the
+<code>pdfwrite</code> driver, and these are compared with the
+auto-rotate heuristic. If they are different then the DSC value will be used preferentially.
+If the heuristic is to be preferred over the DSC comments then comment parsing
+can be disabled by setting <code>-dParseDSCComments=false</code>.
+<p>
+
+<h3><a name="PSPDF_IN"></a>Controls and features specific to PostScript and PDF input</h3>
+<dt><code>-dPDFSETTINGS=</code><em>configuration</em>
+<dd>Presets the "distiller parameters" to one of four predefined settings:
+
+<ul>
+
+<li><code>/screen</code> selects low-resolution output similar to the
+Acrobat Distiller (up to version X) "Screen Optimized" setting.
+
+<li><code>/ebook</code> selects medium-resolution output similar to the
+Acrobat Distiller (up to version X) "eBook" setting.
+
+<li><code>/printer</code> selects output similar to the Acrobat Distiller
+"Print Optimized" (up to version X) setting.
+
+<li><code>/prepress</code> selects output similar to Acrobat Distiller
+"Prepress Optimized" (up to version X) setting.
+
+<li><code>/default</code> selects output intended to be useful across a
+wide variety of uses, possibly at the expense of a larger output file.
+
+</ul>
+<p>
+NB Adobe has recently changed the names of the presets it uses in Adobe Acrobat Distiller,
+in order to avoid confusion with earlier versions we do not plan to change the
+names of the PDFSETTINGS parameters. The precise value for each control is listed
+in the table <a href="#distillerparams">above</a>.
+</p>
+
+<dd>Please be aware that the <code>/prepress</code> setting does <b>not</b> indicate
+the highest quality conversion. Using any of these presets will involve altering the
+input, and as such may result in a PDF of poorer quality (compared to the input) than
+simply using the defaults. The 'best' quality (where best means closest to the original
+input) is obtained by not setting this parameter at all (or by using <code>/default</code>).
+</dd>
+
+<dd>The PDFSETTINGS presets should only be used if you are sure you understand that the
+output will be altered in a variety of ways from the input. It is usually better to
+adjust the controls individually (see the table below) if you have a genuine requirement to produce,
+for example, a PDF file where the images are reduced in resolution.
+</dd>
+
+<h3><a name="PXL_IN"></a>Controls and features specific to PCL and PXL input</h3>
+<p>
+Many of the controls used for  <a href="#distillerparams">distiller parameters</a> can be used on the command line with the -d or -s
+switches, and these will work correctly with PCL or PXL input. However, some controls (eg /NeverEmbed) do
+not take simple numeric or string arguments, and these cannot be set from the command line. When
+the input is PostScript or PDF we can use the -c and -f switches to send PostScript through
+the interpreter to control these parameters, but clearly this is not possible when the interpreter
+does not understand PostScript. In addition some features are controlled using the PostScript
+<code>pdfmark</code> operator and again that clearly is not possible unless we are using a PostScript
+interpreter to read the input.
+</p>
+<p>
+To overcome this new, GhostPCL-specific, PJL parameters have been added. These parameters are defined
+as <code>PDFMARK</code> and <code>SETDISTILLERPARAMS</code>. In order to reduce confusion when using
+PostScript and PCL as inputs these PJL parameters take essentially the same PostScript constructs as
+the corresponding PostScript operators <code>pdfmark</code> and <code>setdistillerparams</code>. However
+it is important to realise that these are <b>not</b> processed by a full PostScript interpreter, and
+there are syntactic rules which must be followed carefully when using these parameters.
+</p>
+<p>
+You cannot use arbitrary PostScript operators, only boolean, number, name, string, array and dictionary
+objects are supported (but see <code>PUTFILE</code> later). All tokens <b>must</b> be separated by white space, so
+while this <code>[/Test(string)]</code> is perfectly valid in PostScript, you must instead write it
+as <code>[ /Test (string) ]</code> for PJL parsing. All <code>PDFMARK</code> and <code>SETDISTILLERPARAMS</code> must be set as
+DEFAULT, the values must be on a single line, and delimited by "".
+</p>
+<p>
+pdfmarks sometimes require the insertion of file objects (especially for production of PDF/A files) so
+we must find some way to handle these. This is done (for the pdfmark case only) by defining a special
+(non-standard) pdfmark name <code>PUTFILE</code>, this simply takes the preceding string, and uses
+it as a fully qualified path to a file. Any further pdfmark operations can then use the named object
+holding the file to access it.
+</p>
+<p>
+The easiest way to use these parameters is to create a 'settings' file, put all the commands in it,
+and then put it on the command line immediately before the real input file. For example:
+</p>
+<code>
+./gpcl6 -sDEVICE=pdfwrite -dPDFA=1 -dCompressPages=false -dCompressFonts=false -sOutputFile=./out.pdf ./pdfa.pjl ./input.pcl
+</code></p>
+<p>
+Where pdfa.pjl contains the PJL commands to create a PDF/A-1b file (see example below).</p>
+<p>
+<h4>Example creation of a PDF/A output file</h4>
+<p>For readability the line has been bisected, when used for real this must be a single line. The 'ESC' represents
+a single byte, value 0x1B an escape character in ASCII.</p>
+<code>
+</p>
+<pre>
+ESC%-12345X
+@PJL DEFAULT PDFMARK = "
+[ /_objdef {icc_PDFA} /type /stream /OBJ pdfmark
+[ {icc_PDFA} << /N 3 >> /PUT pdfmark
+[ {icc_PDFA} (/ghostpdl/iccprofiles/default_rgb.icc) /PUTFILE pdfmark
+[ /_objdef {OutputIntent_PDFA} /type /dict /OBJ pdfmark
+[ {OutputIntent_PDFA} << /S /GTS_PDFA1 /Type /OutputIntent /DestOutputProfile {icc_PDFA} /OutputConditionIdentifier (sRGB) >> /PUT pdfmark
+[ {Catalog} << /OutputIntents [{OutputIntent_PDFA}] >> /PUT pdfmark
+[ /Author (Ken) /Creator (also Ken) /Title (PDF/A-1b) /DOCINFO pdfmark
+"
+</pre>
+</code>
+<h4>Example using DISTILLERPARAMS to set the quality of JPEG compression.</h4>
+<p>
+<code>
+ESC%-12345X
+@PJL DEFAULT SETDISTILLERPARAMS = "<< /ColorImageDict << /QFactor 0.7 /Blend 1 /HSamples [ 2 1 1 2 ] /VSamples [ 2 1 1 2 ] >> >>"
+</code>
+</p>
+
+<h3><a name="PDF"></a>PDF file output</h3>
+<dt><code>-dMaxInlineImageSize=</code><em>integer</em>
+<dd>Specifies the maximum size of an inline image, in bytes. For images larger
+than this size, <code>pdfwrite</code> will create an XObject instead of embedding
+the image into the context stream.
+The default value is <code>4000</code>.
+Note that redundant inline images must be embedded each time they occur in the
+document, while multiple references can be made to a single XObject image. Therefore
+it may be advantageous to set a small or zero value if the source document is expected
+to contain multiple identical images, reducing the size of the generated PDF.
+
+<dt><code>-dDoNumCopies</code>
+<dd>When present, causes pdfwrite to use the #copies or /NumCopies entry in the page
+device dictionary to duplicate each page in the output PDF file as many times as
+the 'copies' value. This is intended for use by workflow applications like CUPS
+and should not be used for generating general purpose PDF files. In particular any
+pdfmark operations which rely on page numbers, such as Link or Outline annotations
+will not work correctly with this flag.
+
+<dt><code>-dDetectDuplicateImages</code>
+<dd> Takes a Boolean argument, when set to true (the default) pdfwrite will compare all new images with all the images encountered to date (NOT small images which are stored in-line) to see if the new image is a duplicate of an earlier one. If it is a duplicate then instead of writing a new image into the PDF file, the PDF will reuse the reference to the earlier image. This can considerably reduce the size of the output PDF file, but increases the time taken to process the file. This time grows exponentially as more images are added, and on large input files with numerous images can be prohibitively slow. Setting this to false will improve performance at the cost of final file size.
+
+<dt><code>-dFastWebView</code>
+<dd> Takes a Boolean argument, default is false. When set to true pdfwrite will
+reorder the output PDF file to conform to the Adobe 'linearised' PDF specification.
+The Acrobat user interface refers to this as 'Optimised for Fast Web Viewing'.
+Note that this will cause the conversion to PDF to be slightly slower and will
+usually result in a slightly larger PDF file.</dd>
+<dd>This option is incompatible with producing an encrypted (password protected) PDF file.</dd>
+</dt>
+
+<dl>
+<dt><code>-dPreserveAnnots=</code><em>boolean</em>
+<dd>We now attempt to preserve most annotations from input PDF files as annotations in the output PDF file (note, not in output PostScript!)
+There are a few annotation types which are not preserved, most notably Link and Widget annotations. However, should you wish to revert
+to the old behaviour, or find that the new behaviour leads to problems, you can set this switch to false which will cause all annotations to be
+inserted into the page content stream, instead of preserved as annotations.
+</dd>
+</dt>
+<d<p> In addition, finer control is available by defining an array
+<code>/PreserveAnnotTypes</code>. Annotation types listed in this array will
+be preserved, whilst those not listed will be drawn according to the setting os ShowAnnots and ShowAnnotTypes.
+By using the controls PreserveAnnots, PreserveAnnotTypes, ShowAnnots and ShowAnnotTypes it is possible to select
+by annotation type whether annotations are preserved as annotations, drawn into the page, or simply dropped.
+</p>
+<p> To use this feature:
+<code>-c "/PreserveAnnotTypes [....] def" -f &ltinput file&gt</code>
+<br> Where the array can contain one or more of the following names:
+<code>/Stamp</code>, <code>/Squiggly</code>, <code>/Underline</code>, <code>/Link</code>, <code>/Text</code>, <code>/Highlight</code>, <code>/Ink</code>, <code>/FreeText</code>, <code>/StrikeOut</code> and <code>/stamp_dict</code>.</p>
+<p> For example, adding the follow to the command line:
+<code>-c "/PreserveAnnotTypes [/Text /UnderLine] def" -f &ltinput file&gt</code>
+    <br> would preserve only annotations with the subtypes &quotText&quot and &quotUnderLine&quot</p>
+</d1>
+
+<p>
+The following options are useful for creating PDF 1.2 files:
+<p>
+
+<dl>
+
+<dt><code>-dPatternImagemask=<em>boolean</em></code>
+<dd>With <code>CompatibilityLevel &lt; 1.3 </code> it specifies whether
+the target viewer handles <code>ImageMask</code> with a pattern color.
+Some old viewers, such as Ghostscript 3.30 fail with such constructs.
+Setting this option to false, one can get more compatibility,
+but the mask interpolation is lost.
+With <code>CompatibilityLevel &ge; 1.3 </code> this option is ignored.
+Default value is <code>false</code>.
+
+<dt><code>-dMaxClipPathSize=<em>integer</em></code>
+<dd>Specifies the maximum number of elements in the clipping path
+that the target viewer can handle. This option is used only with
+<code>CompatibilityLevel &lt; 1.3</code> and
+<code>PatternImagemask=false</code>,
+and only when converting a mask into a clipping path.
+If the clipping path exceeds the specified size,
+the masked image and the clipping path is decomposed into smaller images.
+The value of the option counts straight path segments
+(curved segments are not used for representing a mask).
+Default value is <code>12000</code>.
+
+<dt><code>-dMaxShadingBitmapSize=<em>integer</em></code>
+<dd>Specifies the maximum number of bytes allowed for representing a shading as a bitmap.
+If a shading exceeds this value, the resolution of the output bitmap
+is reduced to fit into the specified number of bytes.
+Note that the number of bytes depends on the number of color components
+in <code>ProcessColorModel</code> or <code>ColorConversionStrategy</code>, assumes 8 bits per sample,
+and doesn't consider image compression or downsampling. The image is rendered at the current resolution
+as specified by <code>-r</code> or the default of 720 dpi.
+
+Default value is <code>256000</code>.
+In general larger values will result in higher quality,
+but the output file size may increase dramatically, particularly with shadings which cover large areas.
+
+Shadings should generally only be rendered to images if <code>CompatibilityLevel</code> is 1.2 or less
+or if <code>ColorCoversionStrategy</code> specifies a color space different to that of the shading.
+
+<dt><code>-dHaveTrueTypes=<em>boolean</em></code>
+<dd>With <code>CompatibilityLevel &lt; 1.3</code> it specifies
+whether the target viewer can handle TrueType fonts.
+If not, TrueType fonts are converted into raster fonts
+with resolution specified in <code>HWResolution</code>. Note that large text at higher resolutions
+results in very large bitmaps which are likely to defeat caching in many printers. As a result the
+text is emitted as simple images rather than as a (type 3) bitmap font. The PostScript user parameter
+MaxFontItem can be used to increase the maximum size of a cache entry which will increase the size/resolution
+of the text which can be stored in a font.
+With <code>CompatibilityLevel &ge; 1.3</code> this option is ignored. Default value is <code>true</code>.
+
+</dl>
+
+<p>
+The following options are useful for creating PDF 1.3 files:
+<p>
+
+<dl>
+
+<dt><code>-dHaveTransparency=<em>boolean</em></code>
+<dd>With <code>CompatibilityLevel &ge; 1.4</code> it specifies
+whether the target viewer can handle PDF 1.4 transparency objects.
+If not, transparency objects are converted into plain images.
+Default value is <code>true</code>.
+
+</dl>
+
+<h4>The following option specifies creation of a PDF/X-3 file</h4>
+
+<dl>
+<dt><code>-dPDFX=</code><em>boolean</em>
+<dd>Specifies the generated document is to follow the PDF/X-3 standard.
+When true, a <code>DefaultRGB</code> <code>ColorSpace</code> resource
+must be defined, and options <code>NOSUBSTDEVICECOLORS</code>,
+<code>NOCIE</code> must not be specified.
+Default value is <code>false</code>.
+<p>The pdfwrite device does not currently support PDF/X versions other than 3.</p>
+</dl>
+
+<p>
+
+When generating a PDF/X-3 document, Ghostscript performs the following
+special actions to satisfy the PDF/X-3 standard:
+<ul>
+<li> All fonts are embedded.
+<li> <code>DeviceRGB</code> color space is substituted with
+<code>the DefaultRGB</code> color space,
+which must be defined in the <code>ColorSpace</code> category.
+The easiest way is to provide it in the <code>DefaultRGB</code> file in the resource directory.
+<li> <code>DeviceRGB</code> color values are passed unchanged.
+If a user needs a non trivial color adjustment, a non trivial
+<code>DefaultRGB</code> color space must be defined.
+<li> Transfer functions and halftone phases are skipped.
+<li> <code>/PS pdfmark</code> interprets the <code>DataSource</code>
+stream or file.
+<li><code>TrimBox</code> and <code>BleedBox</code> entries
+are generated in page descriptions.
+Their values can be changed using the
+<code>PDFXTrimBoxToMediaBoxOffset</code>,
+<code>PDFXSetBleedBoxToMediaBox</code>, and
+<code>PDFXBleedBoxToTrimBoxOffset</code>
+distiller parameters (see below).
+</ul>
+
+
+<h4><a name="Encryption"></a>
+The following switches are used for creating encrypted documents :
+</h4>
+
+<dl>
+<dt><code>-sOwnerPassword=</code><em>string</em>
+<dd>Defines that the document be encrypted with the specified
+owner password.
+</dl>
+
+<dl>
+<dt><code>-sUserPassword=</code><em>string</em>
+<dd>Defines the user password for opening the document.
+If empty, the document can be opened with no password,
+but the owner password is required to edit it.
+</dl>
+
+<dl>
+<dt><code>-dPermissions=</code><em>number</em>
+<dd>Defines the PDF permissions flag field. Negative values are allowed
+to represent unsigned integers with the highest bit set. See the PDF
+Reference manual for the meaning of the flag bits.
+</dl>
+
+<dl>
+<dt><code>-dEncryptionR=</code><em>number</em>
+<dd>Defines the encryption method revision number - either 2 or 3.
+</dl>
+
+<dl>
+<dt><code>-dKeyLength=</code><em>number</em>
+<dd>Defines the length (in bits) of the encryption key.
+Must be a multiple of 8 in the interval [40, 128].
+If the length isn't 40, <code>-dEncryptionR</code> must be 3.
+</dl>
+
+
+<h4><a name="Metadata"></a>
+The following switches are used for generating metadata according to the Adobe XMP specification :
+</h4>
+
+<dl>
+<dt><code>-sDocumentUUID=</code><em>string</em>
+<dd>Defines a DocumentID to be included into the document Metadata.
+If not specified, Ghostscript generates an UUID automatically.
+Otherwise the specified string is copied into the document without
+checking its syntax or consistence.
+<p>
+Note that Adobe XMP specification requires DocumentID must be same
+for all versions of a document. Since Ghostscript does not provide
+a maintenance of document versions, users are responsible to provide
+a correct UUID through this parameter.
+<p>
+Note that Ghostscript has no assess to the host node ID
+due to a minimization of platform dependent modules.
+Therefore it uses an MD5 hash of the document contents for generating UUIDs.
+</dl>
+
+<dl>
+<dt><code>-sInstanceUUID=</code><em>string</em>
+<dd>Defines a instance ID to be included into the document Metadata.
+If not specified, Ghostscript generates an UUID automatically.
+Otherwise the specified string is copied into the document without
+checking its syntax or consistence.
+<p>
+Note that the Adobe XMP specification requires the instance ID to be unique
+for all versions of the document. This parameter may be used to disable
+unique ID generation for debug purposes.
+
+<p>
+When none of <code>DocumentUUID</code>
+and <code>InstanceUUID</code> are specified,
+the generated DocumentID appears same as instance ID.
+</dl>
+
+<dl>
+<dt><code>-sDocumentTimeSeq=</code><em>integer</em>
+<dd>Defines an integer to be used as a deconflictor for generating
+UUIDs, when several invocations of Ghostscript create
+several PDF documents within same clock quantum (tick).
+Mainly reserved for very fast computers and/or multithreading applications,
+which may appear in future. If both <code>DocumentUUID</code>
+and <code>InstanceUUID</code> are specified, <code>DocumentTimeSeq</code> is ignored.
+</dl>
+
+<dl>
+<dt><code>-sDSCEncoding=</code><em>string</em>
+<dd>Defines the name of a Postscript encoding in which
+DSC comments in the source document are encoded.
+If specified, the comments are converted
+from that encoding into Unicode UTF-8 when writing <code>Metadata</code>.
+If not specified, the comments are copied to <code>Metadata</code>
+with no conversion. Note that Adobe Distiller for
+Windows uses the default locale's code page
+for this translation, so it's result may differ from Ghostscript.
+Adobe Acrobat appears to use <code>PDFDocEncoding</code> when
+displaying document's properties,
+so we recommend this value.
+</dl>
+
+<h3><a name="PS"></a>PostScript file output</h3>
+<p>
+The <code>ps2write</code> device handles the same set of distiller
+parameters as
+are handled by the <code>pdfwrite</code> device (and 2 unique extensions, see below).
+<p>
+The option <code>-dMaxInlineImageSize=</code><em>integer</em>
+must not be used with <code>ps2write</code> as all images are inline in PostScript.
+</p>
+
+<a name="AdditionalDistillerParams"></a>
+<p>
+There are also two additional (not Adobe-standard) Distiller parameters, specific to ps2write:
+<dl>
+<dt>
+<code>/PSDocOptions</code><em> string</em>
+<dd>No default value. If defined, the contents of the string will be emitted in the output PostScript prolog
+enclosed within %%BeginSetup and %%EndSetup comments. This is intended as a means of introducing device-specific document wide
+setup or configuration options into the output. Default media selection, printer resolution etc might be included here.
+</dd>
+<code>/PSPageOptions</code><em> array of strings</em>
+<dd>No default value. If defined, the contents of the strings in the array will be emitted in the output PostScript at the start
+of each page, one string per page, enclosed within %%BeginPageSetup and %%EndPageSetup comments. This is intended as a means of introducing device-specific
+setup or configuration options into the output on a page by page basis. The strings are used from the array sequentially, if there are more
+pages than strings then we 'wrap round' and start again with the first string. This makes it convenient to do setup for even/odd pages
+by simply including 2 strings in the array.
+</dd>
+<p>
+Note: executing setpagedevice will reset distiller parameters to the default, if you use any of these options via setdistillerparams, and
+ expect to execute setpagedevice, you should set /LockDistillerParams true. Ordinarily the PDF interpreter executes setpagedevice for
+ every page in order to set the media size.
+</p>
+</dt>
+</d1>
+
+<p>
+NB the strings contained in PSDocOptions, and the PSPageOptions array, are written verbatim to the output. No error checking is (or can be) performed on these strings
+and it is the users responsibility to ensure they contain well formed PostScript which does not cause errors on the target device.
+</p>
+</p>
+<p>
+There are also the  following ps2write specific options :
+<p>
+
+<dl>
+<dt>
+<code>-dProduceDSC=</code><em>boolean</em>
+<dd> Default value is true. When this value is true the output PostScript file will be constructed in a way which is compatible with the Adobe Document Structuring Convention, and will include a set of comments appropriate for use by document managers. This enables features such as page extraction, N-up printing and so on to be performed. When set to false, the output file will not be DSC-compliant. Older versions of Ghostscript cannot produce DSC-compliant output from ps2write, and the behaviour for these older versions matches the case when <code>ProduceDSC</code> is false.
+</dl>
+
+<dl>
+<dt>
+<code>-dCompressEntireFile=</code><em>boolean</em>
+<dd>When this parameter is true, the <code>LZWEncode</code>
+and <code>ASCII85Encode</code> filters will be applied to the entire output file.
+In this case <code>CompressPages</code> should be false to prevent a dual compression.
+When this parameter is false, these filters will be applied to the initial procset only,
+if <code>CompressPages</code> is true.
+Default value is <code>false</code>.
+</dl>
+<p>
+Note: It is not possible to set <code>CompressEntireFile</code> when <code>ProduceDSC</code> is true as a single compressed object cannot conform to the DSC. It is possible to set <code>CompressPages</code> which will also compress the ps2write ProcSet.
+</p>
+<h4><a name="printer_control"></a>Controlling device-specific behavior</h4>
+
+<p>
+A few options can be used to influence the behavior of a printer or
+PostScript interpreter that reads the result of ps2ps2. All of these options
+are incompatible with DSC-compliant PostScript, in order to use any of them
+<code>ProduceDSC</code> must be set to false.
+
+<dl>
+<dt><code>-dRotatePages=</code><em>boolean</em>.
+<dd>The printer will rotate pages
+for a better fit with the physical size. Default value : <em>false</em>.
+Must be <em>false</em> if <code>-dSetPageSize=true</code>.
+
+<dt><code>-dFitPages=</code><em>boolean</em>.
+<dd>The printer will scale pages down
+to better fit the physical page size. The rendering quality may be poor due to the scaling,
+especially for fonts which Ghostscript had converted into bitmaps
+(see the <em>ps2write</em> device parameter <code>HaveTrueTypes</code>;
+See <a href="#Options">Options</a> about the <code>PageSize</code> entry of the <code>Policies</code>
+dictionary while the conversion step).
+Default value : <em>false</em>.
+Must be <em>false</em> if <code>-dSetPageSize=true</code> or <code>-dCenterPages=true</code>.
+
+<dt><code>-dCenterPages=</code><em>boolean</em>.
+<dd>The printer will center the page image on the selected media. Compatible with <code>-dRotatePages=true</code>, which may rotate the image on the media if it fits better, and then center it.
+Default value : <em>false</em>.
+Must be <em>false</em> if <code>-dSetPageSize=true</code> or <code>-dFitPages=true</code>.
+
+<dt><code>-dSetPageSize=</code><em>boolean</em>.
+<dd>The printer will try to set page size from the job.
+Only use with printers which can handle random <em>PageSize</em>.
+Defaults to <em>true</em>, must be <em>false</em> if <code>-dRotatePages=true</code>, <code>-dCenterPages=true</code> or <code>-dFitPages=true</code>.
+
+<dt><code>-dDoNumCopies=</code><em>boolean</em>.
+<dd>The PostScript emitted by ps2write will try to use copypage to create the number of copies originally requested. Note that this relies on the level 2 semantics for copypage
+and will not reliably work on language level 3 devices (such as Ghostscript itself).
+Defaults to false. This flag is not compatible with the ProduceDSC flag which will take precedence if set.
+
+</dl>
+
+<p>
+These correspond to keys in the Postscript <em>userdict</em>
+of the target printer's virtual memory to control its behavior while
+executing a job generated with <code>ps2write</code>.
+
+<p>
+These keys can be set when executing using the ps2write device,
+this 'fixes' the resulting behaviour according to which key has been set.
+If these keys are not defined during conversion, the resulting PostScript
+will not attempt any form of media selection.
+
+In this case the behaviour can then be modified by setting the keys, either by modifying the resulting
+PostScript or setting the values in some other manner on the target device.
+
+<p>
+See also the distiller params PSDocOptions and PSPageOptions mentioned <a href="#AdditionalDistillerParams">above.</p>
+
+<p>
+<h3><a name="EPS"></a>Encapsulated PostScript (EPS) file output</h3>
+<p>
+The eps2write device is the same as the ps2write device, except that it produces Encapsulated PostScript, which is intended
+to be imported into another document and treated as a 'black box'. There are certain restrictions which EPS
+files must follow, the primary one being that they must be DSC conformant. This means that you must not set <code>-dProduceDSC</code>
+to false.
+<p>In addition EPS files may only contain a single page and may not contain device-specific PostScript. You should therefore not
+use the <code>PSDocOptions</code> or <code>PSPageOptions</code> or any of the switches noted in the ps2write section
+above under  <a href="#printer_control">Controlling device specific behaviour</a>
+</p>
+<hr>
+<h2><a name="PDFX"></a>Creating a PDF/X-3 document</h2>
+
+<p>
+
+To create a PDF/X-3 document from a Postscript or a PDF file, you should :
+
+<ul>
+<li> Specify the <code>pdfwrite</code> device or use the <code>ps2pdf</code> script.
+<li> Specify the <code>-dPDFX</code> option. It provides the document conformity
+     and forces <code>-dCompatibilityLevel=1.3</code>.
+<li> Specify <code>-sColorConversionStrategy=Gray</code>, <code>-sColorConversionStrategy=CMYK</code>
+     or <code>-sColorConversionStrategy=UseDeviceIndependentColor</code>(<code>RGB</code> is not allowed).
+     If you plan to create a device-independent color PDF file then you should set the ProcessColorModel
+     using <code>-sProcessColorModel=DeviceGray</code> or <code>-sProcessColorModel=DeviceCMYK</code>.
+<li> Specify a PDF/X definition file before running the input document.
+     It provides additional information to be included into the output document.
+     A sample PDF/X definition file may be found in <code>gs/lib/PDFX_def.ps</code>.
+     You will need to modify the content of this file; in particular you must alter the
+     /ICCProfile so that it points to a valid ICC profile for your OutputCondition. The
+     string '(...)' defining the ICCProfile must be a fully qualified device and path
+     specification appropriate for your Operating System.
+<li> If a registered printing condition is applicable, specify its identifier
+     in the PDF/X definition file. Otherwise provide an ICC profile and
+     specify it in the PDF/X definition file as explained below.
+<li> Provide a <code>DefaultRGB</code> resource file in the ColorSpace resource category.
+     Either define it in the PDF/X definition file, or provide
+     a definition of <code>gs/Resource/ColorSpace/DefaultRGB</code> .
+     <code>gs/Resource/ColorSpace/DefaultRGB</code> is usually
+     distributed with Ghostscript, its content may not necessarily satisfy your needs, see below.
+</ul>
+
+<p>
+NOTE: Unless <code>-dNOSAFER</code> is specified (NOT reccomended!)
+the ICC profile will be read using the <code>SAFER</code> file permissions; you must ensure that the profile is
+in a directory which is readable according to the <code>SAFER</code> permissions, or that the file itself
+is specifically made readable. See Use.htm for details of how to set file permissions for <code>SAFER</code>.
+</p>
+
+<p>
+As mentioned above, the PDF/X definition file provides special information,
+which the PDF/X-3 standard requires. You can find a sample file in
+<code>gs/lib/PDFX_def.ps</code>, and edit it according to your needs.
+The file follows Postscript syntax and uses the operator <code>pdfmark</code>
+to pass the special information. To ease customisation
+the lines likely to need editing in the sample file are marked with the comment <code>% Customize</code>.
+They are explained below.
+
+<dl>
+<dt><code>OutputCondition</code> <em>string</em>
+<dd>Defines an <code>OutputCondition</code> value for the output intent dictionary.
+</dl>
+
+
+<dl>
+<dt><code>OutputConditionIdentifier</code> <em>string</em>
+<dd>Defines an <code>OutputConditionIdentifier</code> value for the output intent dictionary.
+</dl>
+
+<dl>
+<dt><code>ICCProfile</code> <em>string</em>
+<dd> May be omitted if <code>OutputConditionIdentifier</code>
+specifies a registered identifier of characterized printing condition
+(see http://www.color.org/IPA_2003-11_PDFX.pdf).
+Defines a file name of an ICC profile file to be included into the output document.
+You may specify either an absolute file name, or a relative
+path from the working directory.
+</dl>
+
+<dl>
+<dt><code>Title</code> <em>string</em>
+<dd>Defines the document title. Only useful if the source Postscript file doesn't
+define a title with DSC comments. Otherwise remove entire line from definition file.
+</dl>
+
+<dl>
+<dt><code>Info</code> <em>string</em>
+<dd>Defines an <code>Info</code> value for the output intent dictionary.
+</dl>
+
+<p>The Ghostscript distribution does not contain an ICC profile to be used
+for creating a PDF/X-3 document. Users should either create an appropriate one themselves,
+or use one from a public domain, or create one with the PDF/X-3 inspector freeware.
+
+<p>The PDF/X-3 standard requires a <code>TrimBox</code> entry
+to be written for all page descriptions.
+This is an array of four offsets
+that specify how the page is to be trimmed
+after it has been printed.
+It is set to the same as <code>MediaBox</code> by default
+unless the <code>PDFXTrimBoxToMediaBoxOffset</code>
+distiller parameter is present.
+It accepts offsets to the <code>MediaBox</code> as an array
+[<i>left&nbsp;right&nbsp;top&nbsp;bottom</i>],
+e.g., the PostScript input code
+<code>&lt;&lt;&nbsp;/PDFXTrimBoxToMediaBoxOffset
+[10&nbsp;20&nbsp;30&nbsp;40]&nbsp;&gt;&gt;&nbsp;setdistillerparams</code>
+specifies that 10 points will be trimmed at the left,
+20 points at the right,
+30 points at the top,
+and 40 points at the bottom.
+
+<p>Another page entry is the <code>BleedBox</code>.
+It gives the area of the page
+to which actual output items may extend;
+cut marks, color bars etc.
+must be positioned in the area between the <code>BleedBox</code>
+and the <code>MediaBox</code>.
+The <code>TrimBox</code> is always contained within the
+<code>BleedBox</code>.
+By default,
+the <code>PDFXSetBleedBoxToMediaBox</code> distiller parameter
+is <code>true</code>,
+and the <code>BleedBox</code> is set to the same values
+as the <code>MediaBox</code>.
+If it is set to <code>false</code>,
+the <code>PDFXBleedBoxToTrimBoxOffset</code>
+parameter gives offset to the <code>TrimBox</code>.
+It accepts a four-value array in the same format as the
+<code>PDFXTrimBoxToMediaBoxOffset</code> parameter.
+
+<p>
+
+Here is a sample command line to invoke Ghostscript for generating a PDF/X-3 document :
+<blockquote><code>
+gs -dPDFX -dBATCH -dNOPAUSE -sColorConversionStrategy=CMYK -sDEVICE=pdfwrite -sOutputFile=out-x3.pdf PDFX_def.ps input.ps
+</code></blockquote>
+
+<p>
+Please also see the <code>PDFACompatibilityPolicy</code> control described under "Creating a PDF/A document" below. The same control is now used to specify the desired behaviour when an input file cannot be converted 'as is' into a PDF/X file.
+<p>
+
+<hr>
+<h2><a name="PDFA"></a>Creating a PDF/A document</h2>
+
+<p>
+To create a PDF/A document, please follow the instructions for <a href="#PDFX">creating a PDF/X-3 document</a>,
+with the following exceptions :
+
+<ul>
+<li> Specify the <code>pdfwrite</code> device or use the <code>ps2pdf</code> script.
+<li> Specify the <code>-dPDFA</code> option to specify PDF/A-1, <code>-dPDFA=2</code> for PDF/A-2 or <code>-dPDFA=3</code> for PDF/A-3
+<li> Specify <code>-sColorConversionStrategy=RGB</code>, <code>-sColorConversionStrategy=CMYK</code>
+     or <code>-sColorConversionStrategy=UseDeviceIndependentColor</code>.
+     If you plan to create a device-independent color PDF file then you should set the ProcessColorModel
+     using <code>-sProcessColorModel=DeviceRGB</code> or <code>-sProcessColorModel=DeviceCMYK</code>.
+<li> Specify a PDF/A definition file before running the input document.
+     It provides additional information to be included in the output document.
+     A sample PDF/A definition file may be found in <code>gs/lib/PDFA_def.ps</code>.
+     You will need to modify the content of this file; in particular you must alter the
+     /ICCProfile so that it points to a valid ICC profile for your OutputIntent. The
+     string '(...)' defining the ICCProfile must be a fully qualified device and path
+     specification appropriate for your Operating System.
+</ul>
+
+There is one additional control for PDF/A output:
+
+<dl>
+<dt><code>PDFACompatibilityPolicy</code> <em>integer</em>
+<dd>When an operation (eg pdfmark) is encountered which cannot be emitted in a PDF/A compliant file, this policy is consulted, there are currently three possible values:
+
+<blockquote>0 - (default) Include the feature or operation in the output file, the file will not be PDF/A compliant. Because the document Catalog is emitted before this is encountered, the file will still contain PDF/A metadata but will not be compliant. A warning will be emitted in this case.
+</blockquote>
+<dd>
+<blockquote>1 - The feature or operation is ignored, the resulting PDF file will be PDF/A compliant. A warning will be emitted for every elided feature.
+</blockquote>
+<dd>
+<blockquote>2 - Processing of the file is aborted with an error, the exact error may vary
+depending on the nature of the PDF/A incompatibility.
+</blockquote>
+</dl>
+
+Here is a sample command line to invoke Ghostscript for generating a PDF/A document :
+<blockquote><code>
+gs -dPDFA=1 -dBATCH -dNOPAUSE -sColorConversionStrategy=RGB -sDEVICE=pdfwrite -sOutputFile=out-a.pdf PDFA_def.ps input.ps
+</code></blockquote>
+
+<p>
+
+<hr>
+<h2><a name="PPD"></a>Ghostscript PDF Printer Description</h2>
+<p>
+To assist with creating a PostScript file suitable for conversion
+to PDF, ghostscript includes <a href="../lib/ghostpdf.ppd">ghostpdf.ppd</a>,
+a PostScript Printer Description (PPD) file.
+This allows some <a href="#Options">distiller parameters</a>
+to be set when a PostScript file is generated.
+
+<h4>Windows XP or 2000</h4>
+<p>
+To install a "Ghostscript PDF" printer on Windows XP,
+select the Windows Control Panel,
+Printers and Faxes,
+Add a Printer,
+Local Printer,
+Use port FILE: (Print to File),
+Have Disk...,
+select the directory containing
+<a href="../lib/ghostpdf.ppd">ghostpdf.ppd</a>
+and
+<a href="../lib/ghostpdf.inf">ghostpdf.inf</a>,
+select "Ghostscript PDF",
+Replace existing driver (if asked),
+and answer the remaining questions appropriately.
+After installing, open the "Ghostscript PDF" properties,
+select the Device Settings tab,
+set "Minimum Font Size to Download as Outline" to 0 pixels.
+<p>
+To set distiller parameters, select the "Ghostscript PDF"
+Printing Preferences, then the Advanced button.
+The PDF settings are under "Printer Features".
+
+
+<hr>
+<h2><a name="Extensions"></a>pdfmark extensions</h2>
+<p>
+In order to better support the ZugFERD electronic invoice standard (http://www.ferd-net.de/front_content.php?idcat=231&changelang=4)
+and potentially other standards in the future, a new non-standard pdfmark has been defined for use by pdfwrite.
+</p>
+<p>
+This pdfmark allows additional Metadata to be defined which will be inserted into the Metadata generated by
+the pdfwrite device. This is necessary because the standard requires a PDF/A-3 file be produced, with an extension
+schema (and some additional XML data) contained within the Metadata referenced from the Catalog object.
+</p>
+<p>
+While it would be possible to use the existing Metadata pdfmark to write a completely new set of metadata
+into the Catalog, creating a conformant set of XML, with all the information synchronised with the /Info
+dictionary would be challenging, this pdfmark allows the pdfwrite device to generate all the normal information
+leaving the user with only the task of specifying the additional data.
+
+<dt><code>[ /XML (string containing additional XMP data) /Ext_Metadata pdfmark</code>
+</p>
+
+<hr>
+<h2><a name="Limitations"></a>Limitations</h2>
+
+<p>
+<code>The pdfwrite family</code> will sometimes convert input constructs to
+lower-level ones, even if a higher-level construct is available.  For
+example, if the PostScript file uses <code>charpath</code> to set a
+clipping path consisting of text, <code>pdfwrite</code> may write the
+clipping path as a path in the PDF file, rather than as text, even though
+PDF is able to express clipping with text.  This is only a performance
+issue, and will be improved incrementally over time.
+
+<p>
+Some applications, such as HIGZ, produce PostScript files that use
+ridiculously large coordinates.  On such files, <code>pdfwrite</code> may
+cause a <code>limitcheck</code> error.  If this occurs, try reducing the
+default internal resolution of 720 dpi by using the <code>-r</code>
+switch, e.g., <code>-r300&nbsp;somefile.ps</code>.
+
+<p>
+<code>pdfwrite</code> ignores the PDF 1.3 (Acrobat 4.x) pdfmarks related to
+document content structure: <code>StRoleMap</code>,
+<code>StClassMap</code>, <code>StPNE</code>,
+<code>StBookmarkRoot</code>, <code>StPush</code>,
+<code>StPop</code>, <code>StPopAll</code>, <code>StBMC</code>,
+<code>StBDC</code>, <code>EMC</code>, <code>StOBJ</code>,
+<code>StAttr</code>, <code>StStore</code>, <code>StRetrieve</code>,
+<code>NamespacePush</code>, <code>NamespacePop</code>, and
+<code>NI</code>.  While this causes some structural information to be
+omitted from the output file, the displayed and printed output are normally
+not affected.
+
+<!-- [2.0 end contents] ==================================================== -->
+
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+
+<p>
+<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

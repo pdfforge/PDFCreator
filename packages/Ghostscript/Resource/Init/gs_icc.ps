@@ -1,0 +1,111 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% We need LanguageLevel 2 or higher in order to have setuserparams and
+% << >> dictionaries
+languagelevel dup 2 .max .setlanguagelevel
+
+% ICCBased color space method dictionaries.
+% This assumes gs_ciecs2.ps has already been processed.
+
+.currentglobal //true .setglobal
+
+% gs_res.ps uses these entries in colorspacedict
+% to populate the ColorSpaceFamily resource, so we need
+% to add the supported spaces.
+%
+systemdict /colorspacedict get begin
+/ICCBased [] def
+end
+
+NOPSICC { (%END PSICC) .skipeof } if
+% Now set up ICC profile loading for PostScript %%BeginICCProfile sections.
+
+/cs-sig-dict <<
+  (XYZ ) 3
+  (Lab ) 3
+  (Luv ) 3
+  (YCbr) 3
+  (Yxy ) 3
+  (RGB ) 3
+  (GRAY) 1
+  (HSV ) 3
+  (HLS ) 3
+  (CMYK) 4
+  (CMY ) 3
+>> readonly def
+
+systemdict begin
+/.ProcessICCcomment { % file comment --  file comment
+  dup
+  (%%BeginICCProfile) anchorsearch {
+    pop pop
+    DEBUG { (.ProcessICCcomment found %%BeginICCProfile) print flush } if
+
+    % load an ICC profile defined as comments (hex encoded).
+    % Ends with %%End at the start of a line. Read the data into
+    % an array of strings. This string can be used directly as a
+    % source for ReusableStreamDecode filter.
+    %
+    % stack: --file-- (%%BeginICCProfile: ...)
+    1 index 0 (%%EndICCProfile) /SubFileDecode filter
+    [ { counttomark 1 add index
+        64000 string readhexstring
+        not { exit } if
+      } loop
+    ] exch closefile
+
+    % make a seekable -file- out of the string array
+    mark /AsyncRead //true .dicttomark /ReusableStreamDecode filter
+    % stack: --file-- (%%BeginICCProfile: ...) --icc_subfile--
+
+    dup 16 setfileposition
+    dup (1234) readstring pop
+    1 index 0 setfileposition
+
+    //cs-sig-dict exch .knownget {
+      3 dict begin
+      /Alternate {0 /DeviceGray 0 /DeviceRGB /DeviceCMYK } 2 index get def
+      /N exch def
+      /DataSource exch def
+      [/ICCBased currentdict]
+      end
+      { setcolorspace } stopped {
+        pop
+        QUIET not { (   *** Unable to load ICC profile from PostScript DSC comments ***) = flush } if
+      } if
+    } {
+      pop
+    } ifelse
+  } {
+    pop % Not interested in this DSC comment
+  } ifelse
+} bind def
+
+currentdict /cs-sig-dict undef
+
+% Merge ProcessICCcomment with existing handler
+/.ProcessICCcomment load /exec load
+currentuserparams /ProcessDSCComment get
+dup //null eq {pop {pop pop}} if /exec load
+4 array astore cvx readonly
+<< /ProcessDSCComment 3 -1 roll >> setuserparams
+
+currentdict /.ProcessICCcomment .undef
+
+end	% systemdict
+%END PSICC
+.setglobal
+.setlanguagelevel

@@ -1,0 +1,56 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Number the h2/h3 -- doesn't work on v4/5 browsers */
+h2
+{
+   counter-increment: h2-count;
+   counter-reset:     h3-count;
+}
+
+h2:before
+{
+   content: counter(h2-count) " ";
+}
+
+h3
+{
+   counter-increment: h3-count;
+}
+
+h3:before
+{
+   content: counter(h2-count) "." counter(h3-count) " ";
+   
+}
+
+/* table formatting hints */
+
+table {
+    border-collapse: collapse;
+	border: 1px solid #F2F2F2; 
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+	background-color: #506B80;
+	color: white;
+	font-size: 17px;
+	border-bottom: 1px solid #F2F2F2;
+}
+
+.table-alt {
+	border-collapse: collapse;
+	border: none;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+}

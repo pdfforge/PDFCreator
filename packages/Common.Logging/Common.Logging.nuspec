@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Common.Logging</id>
+    <version>3.4.1</version>
+    <authors>Aleksandar Seovic, Mark Pollack, Erich Eichinger, Stephen Bohlen</authors>
+    <owners>Aleksandar Seovic, Mark Pollack, Erich Eichinger, Stephen Bohlen</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>http://net-commons.github.io/common-logging/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/net-commons/common-logging/master/nuget-graphics/common-logging-icon.png</iconUrl>
+    <description>Common.Logging library introduces a simple abstraction to allow you to select a specific logging implementation at runtime.</description>
+    <language>en-US</language>
+    <tags>logging log Common.Logging</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="Common.Logging.Core" version="3.4.1" />
+      </group>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Common.Logging.Core" version="3.4.1" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="Microsoft.CSharp" version="4.0.1" />
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Globalization" version="4.0.11" />
+        <dependency id="System.Reflection.TypeExtensions" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Threading" version="4.0.11" />
+        <dependency id="Common.Logging.Core" version="3.4.1" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

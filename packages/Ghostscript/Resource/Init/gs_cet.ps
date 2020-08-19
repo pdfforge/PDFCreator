@@ -1,0 +1,168 @@
+% Set defaults for Ghostscript to match Adobe CPSI behaviour for CET
+
+% skip if we've already run this -- based on fake "product"
+systemdict /product get (PhotoPRINT SE 5.0v2) readonly eq
+{
+  (%END GS_CET) .skipeof
+} if
+
+% Note: this must be run at save level 0 and when systemdict is writeable
+currentglobal //true setglobal
+systemdict dup dup dup
+/version (3017.102) readonly .forceput		% match CPSI 3017.102
+/product (PhotoPRINT SE 5.0v2) readonly .forceput	% match CPSI 3017.102
+/revision 0 put			% match CPSI 3017.103 Tek shows revision 5
+/serialnumber dup {233640} readonly .makeoperator .forceput % match CPSI 3017.102 Tek shows serialnumber 1401788461
+
+systemdict /.odef {           % <name> <proc> odef -
+  1 index exch //.makeoperator def
+} .bind .forceput          % this will be undefined at the end
+
+300 .sethiresscreen	% needed for language switch build since it
+                        % processes gs_init.ps BEFORE setting the resolution
+
+0 array 0 setdash % CET 09-08 wants local setdash
+
+
+/UNROLLFORMS //true def
+
+(%.defaultbgrucrproc) cvn { } bind def
+
+(%.defaultbgrucrproc) cvn load dup
+setblackgeneration
+setundercolorremoval
+0 array cvx readonly dup dup dup setcolortransfer
+
+% CPSI doesn't define "Localization" resource.
+/Localization /Category undefineresource
+
+% Quality Logic test 09-59.ps tries to set each listed /OutputDevice.
+% This can cause problems with some devices (eg mswinpr2 on Windows)
+% so for the CET files we define the OutputDevice resource as
+% being empty. We need to redefine /.definecategory as that definition
+% gets destroyed at the end of gs_res.ps
+/OutputDevice /Category undefineresource
+
+/.definecategory	% <name> -mark- <key1> ... <valuen> .definecategory -
+ { counttomark 2 idiv 2 add		% .Instances, Category
+   /Generic /Category findresource dup maxlength 3 -1 roll add
+   dict .copydict begin
+   counttomark 2 idiv { def } repeat pop	% pop the mark
+   currentdict end /Category defineresource pop
+ } bind def
+
+/OutputDevice mark /InstanceType /dicttype .definecategory
+
+% Redefine Font category to return -1 (unknown) VM usage
+% in all cases to avoid differences between hosts.
+/Font /Category findresource
+dup length dict copy
+dup
+dup /.loadfontresource get
+dup length array copy cvx
+dup 1 0 put
+dup 7 -1 put
+/.loadfontresource exch put
+/Font exch /Category defineresource pop
+
+% Some previously compile time options such as USE_ADOBE_CMYK_RGB
+% and GS_CHAR_FILL are now dynamic. Force CPSI compatibility.
+//true .setCPSImode
+
+% Some QL jobs (/23-12B.PS for example) do:
+% '(%stdin) (r) file'
+% expecting that they are being read from stdin.
+% if that is not the case, they block waiting for input
+% from stdin.
+% This hooks the 'file' operator', so if a job tries to
+% open %stdin, and we're *not* reading the job from stdin
+% it'll return currentfile instead.
+/ofile /file load def
+/file
+{
+   1 index (%stdin) eq 2 index (%stdin%) eq or
+   {
+     ofile dup currentfile eq not
+     {
+       pop currentfile
+     }if
+   }
+   {
+     ofile
+   } ifelse
+} .bind //.odef exec
+currentdict /ofile undef
+
+% One QL job (23-12B.PS) effectively does:
+% (%stdin) (r) file 0 setfileposition
+% expecting it to throw an ioerror (stdin not being a positionable
+% stream.
+% With the above 'file' hook, when running from a file
+% rather than stdin, setfileposition will succeed, and we hit
+% an infinite loop - '0 setfileposition' meaning we restart intepreting
+% from the beginning of the file.
+% Hook setfileposition to throw an error attempting to reposition
+% the current file.
+/osetfileposition /setfileposition load def
+/setfileposition
+{
+    1 index currentfile eq
+    {
+        /setfileposition cvx /ioerror signalerror
+    }
+    {
+      osetfileposition
+    } ifelse
+} .bind //.odef exec
+currentdict /osetfileposition undef
+
+setglobal
+
+% Remove all but the default page size (the 0 entry in the InputAttributes
+% dictionary). This is usually 'letter'.
+<<
+% As we're removing all but the default, make sure we're
+% using the default.
+/PageSize currentpagedevice /InputAttributes get 0 get /PageSize get
+
+currentpagedevice /InputAttributes get
+1 1 2 index length 1 sub {
+  1 index exch undef
+} for
+/InputAttributes exch
+>>
+setpagedevice
+
+% Patch setsmoothness, currentsmoothness for a better view of shadings :
+userdict /.smoothness currentsmoothness put
+/setsmoothness {
+   dup type dup /integertype eq exch /realtype eq or {
+     userdict /.smoothness 3 2 roll cvr put
+   } {
+     /setsmoothness .systemvar /typecheck signalerror
+   } ifelse
+} bind //.odef exec
+/currentsmoothness { userdict /.smoothness get } bind //.odef exec % for 09-55.PS, 09-57.PS .
+
+% slightly nasty hack to give consistent cluster results
+/ofnfa systemdict /filenameforall get def
+
+/filenameforall
+{
+  2 index dup length 1 eq
+  {
+    (*) eq
+    {
+      3 -1 roll pop ( ) 3 1 roll
+    } if
+  }
+  {
+    pop
+  } ifelse
+  ofnfa
+} bind def
+
+systemdict /.odef .undef
+
+% end of slightly nasty hack to give consistent cluster results
+%END GS_CET

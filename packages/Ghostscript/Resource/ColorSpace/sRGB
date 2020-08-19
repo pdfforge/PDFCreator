@@ -1,0 +1,37 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% sRGB color space derived from the public domain HP sample.
+
+currentglobal true setglobal
+
+/sRGB
+[ /CIEBasedABC
+  3 dict begin
+    /WhitePoint [ 0.9505 1 1.0890 ] def % D65
+
+    /DecodeLMN [  % sRGB gamma transform 
+      { dup 0.03928 le { 12.92321 div } { 0.055 add 1.055 div 2.4 exp } ifelse }
+      bind dup dup ] def
+
+    /MatrixLMN [ % sRGB to XYZ (D65) matrix (ITU-R BT.709-2 Primaries)
+      0.412457 0.212673 0.019334
+      0.357576 0.715152 0.119192
+      0.180437 0.072175 0.950301 ] def
+  currentdict end
+] 
+/ColorSpace defineresource pop
+
+setglobal

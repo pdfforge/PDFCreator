@@ -1,0 +1,45 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Define the WinAnsi encoding vector.
+/currentglobal where
+ { pop currentglobal { setglobal } //true setglobal }
+ { { } }
+ifelse
+/WinAnsiEncoding
+ISOLatin1Encoding 0 39 getinterval aload pop
+    /quotesingle
+ISOLatin1Encoding 40 5 getinterval aload pop
+    /hyphen
+ISOLatin1Encoding 46 50 getinterval aload pop
+    /grave
+ISOLatin1Encoding 97 30 getinterval aload pop
+    /bullet
+% \20x
+        % NOTE: /Euro, /Zcaron, and /zcaron are new for PDF 1.3.
+        % We may have to take them out for backward compatibility.
+    /Euro /bullet /quotesinglbase /florin
+        /quotedblbase /ellipsis /dagger /daggerdbl
+    /circumflex /perthousand /Scaron /guilsinglleft
+        /OE /bullet /Zcaron /bullet
+    /bullet /quoteleft /quoteright /quotedblleft
+        /quotedblright /bullet /endash /emdash
+    /tilde /trademark /scaron /guilsinglright
+        /oe /bullet /zcaron /Ydieresis
+ISOLatin1Encoding 160 96 getinterval aload pop
+256 packedarray
+4 1 index .registerencoding
+.defineencoding
+exec

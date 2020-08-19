@@ -1,0 +1,282 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Redefine CIDFont category with cidfmap .
+
+languagelevel 2 .setlanguagelevel
+
+4 dict begin
+/CategoryName /CIDFont def
+
+/MapFileName (cidfmap) def
+
+/IsMyRecord      % <raw_record> -> <raw_record> bool
+{ % Only for client's needs.
+  dup type /stringtype eq exch
+  dup type /nametype eq 3 -1 roll or
+} bind def
+
+/RecordVirtualMethods 3 dict begin
+
+  /MakeInstance   % <Name> <record> MakeInstance <Name> <Instance> <size>
+  { % We know that currentdict is the category.
+    /Substitute get dup type /stringtype eq
+    {
+      (r) file dup cvx exec closefile
+      dup
+    } if
+
+    FindResource            % /Name <<CIDFont>>
+
+    dup length dict copy                    % /Name <<CIDFont>>
+    1 index ResourceStatus pop exch pop     % /Name <<CIDFont>> size
+  } bind def
+
+  /GetFilePath  % <scratch> <Name> <record> GetFilePath <filepath>
+  { % We know that currentdict is the category.
+    exch pop
+    /Substitute get dup type /stringtype eq not
+    {
+      exch ResourceFileName
+    } if
+  } bind def
+
+  /GetSize   % <Name> <record> GetSize <size>
+  { % We know that currentdict is the category.
+    dup /Substitute get dup type /stringtype eq
+    {
+      % The simplest solution is to instantiate the resource
+      pop //MakeInstance exec
+      3 1 roll pop pop
+    }
+    {
+      exch pop
+      ResourceStatus {
+        exch pop exch pop
+      } {
+        /undefinedresource signalerror
+      } ifelse
+    }ifelse
+  } bind def
+
+  /GetCSI   % <record> GetCSI null
+            % <record> GetCSI dict
+  { % We know that currentdict is the category.
+    RESMPDEBUG { (cidfm GetCSI beg ) = } if
+    dup /Substitute get dup type /stringtype eq
+    {
+      pop
+      dup /Name get exch //MakeInstance exec
+      pop exch pop
+      /CIDSystemInfo get
+    }
+    {
+      exch pop                     % /Name
+      GetCIDSystemInfoFromMap
+    } ifelse
+    RESMPDEBUG { (cidfm GetCSI end ) print dup = } if
+  } bind def
+
+  /IsActive % <record> IsActive <bool>
+  { pop //true
+  } bind def
+
+currentdict end def
+
+% This is the default definition of our fallback CIDFont
+/DefaultCIDFallBack
+<<
+  /Path
+  systemdict /CIDFSubstPath .knownget
+  {
+    (/) concatstrings
+  }
+  {
+    (CIDFSUBSTPATH) getenv
+    {
+      (/) concatstrings
+    }
+    {
+      currentsystemparams /GenericResourceDir get (CIDFSubst/) concatstrings
+    } ifelse
+  } ifelse
+
+  systemdict /CIDFSubstFont .knownget not
+  {
+    (CIDFSUBSTFONT) getenv not
+    {
+      (DroidSansFallback.ttf)
+    } if
+  } if
+  % If CIDFSubstFont looks like a path/file (rather than just file)
+  % use it without the CIDFSubstPath string
+  dup .file_name_directory_separator rsearch
+  {pop pop pop exch pop}
+  {pop concatstrings}
+  ifelse
+  % The CSI data just has to be valid, the substition machinery will
+  % generally overwrite it with appropriate values for the missing font.
+  /CSI  [(Identity) 0]
+  /RecordVirtualMethods //RecordVirtualMethods
+  /FileType /TrueType
+
+  (CIDFSUBSTFONTID) getenv
+  {
+    /SubfontID exch cvi
+  } if
+>> def
+
+% <dir.../base.extn> .basename <dir>
+/.splitdirname {
+  (/) rsearch { //true } { (\\) rsearch } ifelse
+  {exch concatstrings exch pop //true}{//false} ifelse
+} bind def
+
+% <file> .addcidfmappath -
+/.addcidfmpermitpath
+{
+  .filename
+  {
+    //.splitdirname exec
+    {dup def} if
+  } if
+} bind def
+
+/VerifyMap  % <raw_map> VerifyMap -
+{
+  % This is where we insert the default fallback into the map
+  % checking first to see if there is a user specified alternative
+  dup /CIDFallBack known not{
+     //DefaultCIDFallBack dup /Path get status
+     {
+       pop pop pop pop
+       /CIDFallBack exch 2 index 3 1 roll put
+     }
+     {
+       pop
+     }ifelse
+  } if
+
+  % Remove any mappings for which we cannot find the font file
+  dup length dict begin
+  dup
+  {
+    % if we have a name1->name2 mapping, follow the "trail",
+    % so if the name2 mapping is known in the .map dict, retrieve
+    % that map value and loop round until we either reach a map
+    % which references a TTF (i.e. a dictionary record) or we have
+    % a name not known in the .map, in which case we have to resort
+    % to the normal Postscript "resourcestatus".
+    {
+      dup type /nametype eq
+      {
+        dup 3 index exch .knownget
+        { exch pop }
+        {
+          /CIDFont resourcestatus
+          { pop pop pop }
+          { 2 index exch .undef }
+          ifelse
+          exit
+        } ifelse
+      }
+      {
+        dup type /dicttype eq
+        {
+          /Path .knownget
+          {
+            .libfile
+            {
+              dup //.addcidfmpermitpath exec closefile pop}
+            {
+              {(r) file} //.internalstopped exec
+              {pop pop 2 index exch .undef}
+              {dup //.addcidfmpermitpath exec closefile pop} ifelse
+            } ifelse
+          }
+          {2 index exch .undef}
+          ifelse
+          exit
+        } if
+      } ifelse
+    } loop
+  } forall
+  currentdict end
+  {exch pop /PermitFileReading exch .addcontrolpath} forall
+
+  % Checks for vicious substitution cycles.
+  dup length dict copy                  % <<map>>
+  dup length dict                       % <<map>> <<temp>>
+  { % Choose a random record :
+    //true 2 index {                    % <<map>> <<temp>> true /Name /Subs
+      3 2 roll pop //false exit         % <<map>> <<temp>> /Name /Subs false
+    } forall
+    { exit                              % <<map>> <<temp>>
+    } if                                % <<map>> <<temp>> /Name /Subs
+    % Move the substitution chain to <<temp>>, checking for a cycle :
+    3 index 2 index undef               % <<map>> <<temp>> /Name /Subs
+    exch 2 index exch 0 put             % <<map>> <<temp>> /Subs
+    { //IsMyRecord exec not {
+        % Not a substitution, the chain terminates.
+        pop exit                        % <<map>> <<temp>>
+      } if                              % <<map>> <<temp>> /Subs
+      1 index 1 index known {
+        (Vicious substitution cycle in map file with the entry ) print =string cvs print ( .) =
+        /VerifyMap cvx /undefinedresource signalerror
+      } if                              % <<map>> <<temp>> /Subs
+      1 index 1 index 0 put
+      dup 3 index exch .knownget not {  % <<map>> <<temp>> /Subs
+        % No more substitutions, the chain terminates.
+        pop exit                        % <<map>> <<temp>>
+      } if                              % <<map>> <<temp>> /Subs /Subs1
+      exch                              % <<map>> <<temp>> /Subs1 /Subs
+      3 index exch undef                % <<map>> <<temp>> /Subs1
+    } loop
+    % Not cycled, now purge the <<temp>> :
+    { % Choose a random record :
+      //true 1 index {                  % <<map>> <<temp>> true /Name /Subs
+        3 2 roll pop //false exit       % <<map>> <<temp>> /Name /Subs false
+      } forall
+      { exit                            % <<map>> <<temp>>
+      } if                              % <<map>> <<temp>> /Name /Subs
+      % Remove it :
+      pop 1 index exch undef            % <<map>> <<temp>>
+    } loop
+  } loop
+  pop pop
+} bind def
+
+currentdict /.splitdirname undef
+currentdict /.addcidfmpermitpath undef
+
+/PreprocessRecord  % <map> <Name> <raw_record> PreprocessRecord <map> <Name> <record> <bool>
+{
+  //IsMyRecord exec {
+    1 dict begin
+    /Substitute exch def
+    dup /Name exch def
+    /RecordVirtualMethods //RecordVirtualMethods def
+    currentdict end
+    //true
+  } {
+    //false
+  } ifelse
+} bind def
+
+currentdict end
+
+/MappedCategoryRedefiner /ProcSet findresource /Redefine get exec
+
+.setlanguagelevel

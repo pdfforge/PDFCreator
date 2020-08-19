@@ -1,0 +1,2710 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Initialization file for the interpreter.
+% When this is run, systemdict is still writable.
+
+% Comment lines of the form
+%	%% Replace <n> <file(s)>
+% indicate places where the next <n> lines should be replaced by
+% the contents of <file(s)>, when creating a single merged init file.
+%
+% For reasons not clear to me, some cases of %% are being treated as
+% DSC comments when (and only when) the resource files are disk based
+% This can kill DSC parsing for pdfwrite at least, so avoid using
+% double % comments in this file.
+
+% The interpreter can call out to PostScript code.  All procedures
+% called in this way, and no other procedures defined in these
+% initialization files, have names that begin with %, e.g.,
+% (%Type1BuildChar) cvn.
+
+% Interpreter library version number
+% NOTE: the interpreter code requires that the first non-comment token
+% in this file be an integer, and that it match the compiled-in version!
+952
+
+% Check the interpreter revision.
+dup revision ne
+ { (gs: Interpreter revision \() print revision 10 string cvs print
+   (\) does not match gs_init.ps revision \() print 10 string cvs print
+   (\).\n) print flush //null 1 .quit
+ }
+if pop
+
+% Acquire userdict, and set its length if necessary.
+/userdict where
+ { pop userdict maxlength 0 eq }
+ { //true }
+ifelse
+systemdict exch
+ {		% userdict wasn't already set up by iinit.c.
+   dup /userdict
+   currentdict dup 200 .setmaxlength		% userdict
+   .forceput			% userdict is local, systemdict is global
+ } executeonly
+if begin
+
+% Init to global memory (possibly not needed, but left in for legacy purposes)
+//true .setglobal
+
+% Define .languagelevel if needed.
+systemdict /.languagelevel known not { /.languagelevel 1 def } if
+
+% Optionally choose a default paper size other than U.S. letter.
+% The default page size for many devices is set at compile time to
+% letter, but this can be changed to A4 although this is rarely done.
+% Some devices such as bbox have a different default page size,
+% and should not be set to A4 or letter.
+% When ghostscript is used in countries that use the international
+% standard page size A4 rather than US letter, the page size of
+% devices that default to letter or A4 can be changed by setting
+% DEFAULTPAPERSIZE.
+% /DEFAULTPAPERSIZE (a4) def
+
+% Turn on array packing for the rest of initialization.
+//true setpacking
+
+% Define the old MS-DOS EOF character as a no-op.
+% This is a hack to get around the absurd habit of MS-DOS editors
+% of adding an EOF character at the end of the file.
+<1a> cvn { } def
+
+% Acquire the debugging flags.
+currentdict /DEBUG known   /DEBUG exch def
+
+% if DEBUG is set, set ALL of the subset debugging flags
+mark	% '[' isn't defined yet
+  /CCFONTDEBUG		% Compiled Fonts
+  /CFFDEBUG		% CFF Fonts
+  /CMAPDEBUG		% CMAP
+  /DOCIEDEBUG		% CIE color
+  /EPSDEBUG		% EPS handling
+  /FAPIDEBUG		% Font API
+  /INITDEBUG		% Initialization
+  /PDFDEBUG		% PDF Interpreter
+  /PDFWRDEBUG		% PDF Writer
+  /SETPDDEBUG		% setpagedevice
+  /TTFDEBUG		% TTF Fonts
+  /VGIFDEBUG		% ViewGIF
+  /VJPGDEBUG		% ViewJPEG
+  /RESMPDEBUG		% Resource map
+counttomark array astore exch pop % ']' isn't defined yet
+{ dup currentdict exch known DEBUG or def } forall
+
+currentdict /PDFSTEP known /PDFSTEP exch def
+% if PDFSTEP is on, turn on PDFDEBUG
+PDFSTEP { /PDFDEBUG //true def } if
+
+currentdict /PDFSTOPONERROR known /PDFSTOPONERROR exch def
+currentdict /PDFSTOPONWARNING known {/PDFSTOPONWARNING //true def /PDFSTOPONERROR //true def}{/PDFSTOPONWARNING //false def} ifelse
+currentdict /PDFNOCIDFALLBACK known /PDFNOCIDFALLBACK exch def
+/.bind /bind load def
+
+  /VMDEBUG
+    INITDEBUG {{print mark
+            systemdict /level2dict known
+             { .currentglobal dup //false .setglobal vmstatus
+               //true .setglobal vmstatus 3 -1 roll pop
+               6 -2 roll pop .setglobal
+             }
+             { vmstatus 3 -1 roll pop
+             }
+            ifelse usertime 16#fffff and counttomark
+              { ( ) print (           ) cvs print }
+            repeat pop
+            ( ) print systemdict length (    ) cvs print
+            ( ) print countdictstack (  ) cvs print
+            ( <) print count (    ) cvs print (>\n) print flush
+          }}
+          {{pop
+          }}
+         ifelse
+  .bind def
+
+% This was a debugging switch removed in 9.22, no other software
+% should have had any regard for it, and even if testing its value
+% should have checked its existence first. However pstotext, an
+% ancient and no longer maintained piece of softare, did check
+% its value unconditionally. So we retain this key in the dictionary
+% purely for backward compatibility.
+/NOBIND //false def
+
+currentdict /BATCH known   /BATCH exch def
+currentdict /DELAYBIND known   /DELAYBIND exch def
+currentdict /DOINTERPOLATE .knownget { { -1 } { 0 } ifelse /InterpolateControl exch def } if
+currentdict /ESTACKPRINT known   /ESTACKPRINT exch def
+currentdict /FAKEFONTS known   /FAKEFONTS exch def
+currentdict /FIXEDMEDIA known   /FIXEDMEDIA exch def
+currentdict /FIXEDRESOLUTION known   /FIXEDRESOLUTION exch def
+currentdict /LOCALFONTS known   /LOCALFONTS exch def
+currentdict /JOBSERVER known   /JOBSERVER exch def
+currentdict /NOCACHE known   /NOCACHE exch def
+currentdict /NOCCFONTS known   /NOCCFONTS exch def
+currentdict /NOCIE known   /NOCIE exch def
+currentdict /NOPSICC known   /NOPSICC exch def
+currentdict /NODISPLAY known   not /DISPLAYING exch def
+currentdict /NOFONTMAP known   /NOFONTMAP exch def
+currentdict /NOFONTPATH known   /NOFONTPATH exch def
+currentdict /NOGC known   /NOGC exch def
+currentdict /NOINTERPOLATE .knownget { /InterpolateControl 0 def } if
+currentdict /NOMEDIAATTRS known /NOMEDIAATTRS exch def
+currentdict /NOOUTERSAVE known   /NOOUTERSAVE exch def
+currentdict /NOPAGEPROMPT known   /NOPAGEPROMPT exch def
+currentdict /NOPAUSE known   /NOPAUSE exch def
+currentdict /NOPLATFONTS known   /NOPLATFONTS exch def
+currentdict /NOPROMPT known   /NOPROMPT exch def
+currentdict /NOTRANSPARENCY known   /NOTRANSPARENCY exch def
+currentdict /DOPS known   /DOPS exch def
+currentdict /NOSUBSTDEVICECOLORS known   /NOSUBSTDEVICECOLORS exch def
+% The default value of ORIENT1 is true, not false.
+currentdict /ORIENT1 known not { /ORIENT1 //true def } if
+currentdict /OSTACKPRINT known   /OSTACKPRINT exch def
+currentdict /OUTPUTFILE known	% obsolete
+ { /OutputFile /OUTPUTFILE load def
+   currentdict /OUTPUTFILE .undef
+ } if
+currentdict /QUIET known   /QUIET exch def
+% DELAYSAFER is effectively the same as newer NOSAFER
+currentdict /DELAYSAFER known { /DELAYSAFER //true def /NOSAFER //true def } if
+/SAFER currentdict /NOSAFER known {
+  //false
+} {
+  //true
+}
+ifelse def
+
+/OLDSAFER currentdict /OLDSAFER known def
+
+/SAFERERRORS
+currentdict /NOSAFERERRORS known
+{
+  //false
+}
+{
+  currentdict /SAFERERRORS known
+} ifelse def
+
+currentdict /ALLOWPSTRANSPARENCY known not
+{
+  /ALLOWPSTRANSPARENCY //false def
+} if
+
+currentdict /SHORTERRORS known   /SHORTERRORS exch def
+currentdict /TTYPAUSE known   /TTYPAUSE exch def
+currentdict /WRITESYSTEMDICT known   /WRITESYSTEMDICT exch def
+currentdict /RENDERTTNOTDEF known /RENDERTTNOTDEF exch def
+currentdict /SCANCONVERTERTYPE known
+{
+  currentdict /SCANCONVERTERTYPE get .setscanconverter
+} if
+
+currentdict /EPSFitPage known { /PSFitPage //true def } if
+% This is a "convenience" option that sets a combination of EPSFitPage, PDFFitPage and PSFitPage
+currentdict /FitPage known { /EPSFitPage //true def /PDFFitPage //true def /PSFitPage //true def } if
+
+% Acquire environment variables.
+currentdict /DEVICE known not
+ { (GS_DEVICE) getenv { /DEVICE exch def } if } if
+
+(START) VMDEBUG
+
+% Open the standard files, so they will be open at the outermost save level.
+(%stdin) (r) file pop
+(%stdout) (w) file pop
+(%stderr) (w) file pop
+
+/.currentuserparams where {
+  pop mark
+        % The Adobe implementations appear to have very large maximum
+        % stack sizes.  This turns out to actually make a difference,
+        % since some badly-behaved files include extremely long procedures,
+        % or construct huge arrays on the operand stack.
+        % We reset the stack sizes now so that we don't have to worry
+        % about overflowing the (rather small) built-in stack sizes
+        % during initialization.
+  /MaxDictStack 500
+  /MaxExecStack 5000
+  /MaxOpStack 300000
+  .dicttomark .setuserparams
+} if
+
+% Define a procedure for skipping over an unneeded section of code.
+% This avoids allocating space for the skipped procedures.
+% We can't use readline, because that imposes a line length limit.
+/.skipeof	% <string> .skipeof -
+ { currentfile exch 1 exch .subfiledecode flushfile
+ } .bind def
+
+% Define procedures to assist users who don't read the documentation.
+userdict begin
+/help
+ { (Enter PostScript commands.  '(filename) run' runs a file, 'quit' exits.\n)
+   print flush
+ } .bind def
+end
+
+% Define =string, which is used by some PostScript programs even though
+% it isn't documented anywhere.
+% Put it in userdict so that each context can have its own copy.
+userdict /=string 256 string put
+
+% Print the greeting.
+
+/printgreeting
+ { mark
+   product (GPL Ghostscript) search
+    { pop pop pop
+      (This software is supplied under the GNU AGPLv3 and comes with NO WARRANTY:\nsee the file COPYING for details.\n)
+    }
+    { pop
+    }
+   ifelse
+   (\n) copyright
+   (\)\n) revisiondate 10 mod revisiondate 10 idiv 10 mod (-)
+   revisiondate 100 idiv 10 mod revisiondate 1000 idiv 10 mod (-)
+   revisiondate 10000 idiv ( \()
+   revision 10 mod
+   revision 100 mod 10 idiv (.)
+   revision 100 idiv ( )
+   product
+   counttomark
+    { (%stdout) (w) file exch 0 .writecvp
+    } repeat pop
+ } .bind def
+
+QUIET not { //printgreeting exec flush } if
+currentdict /printgreeting .undef
+
+% Define a special version of def for making operator procedures.
+/obind {	% <name> <proc> obind <name> <oper>
+  1 index exch .makeoperator
+} .bind def
+/odef {		% <name> <proc> odef -
+  1 index exch .makeoperator def
+} .bind def
+
+% Define procedures for accessing variables in systemdict and userdict
+% regardless of the contents of the dictionary stack.
+/.systemvar {		% <name> .systemvar <value>
+  //systemdict exch get
+} .bind executeonly odef
+/.systemexec {
+  .systemvar exec
+} .bind executeonly odef
+/.userdict {		% - .userdict <dict>
+  /userdict .systemvar
+} .bind executeonly odef
+/.uservar {		% <name> .uservar <value>
+  .userdict exch get
+} .bind executeonly odef
+
+% If we're delaying binding, remember everything that needs to be bound later.
+DELAYBIND
+{
+   SAFER {
+       (\n *** WARNING - you have selected SAFER, indicating you want Ghostscript\n) print
+       (               to execute in a safer environment, but at the same time\n) print
+       (               have selected DELAYBIND. Unless you use this option with\n) print
+       (               care \(and specifically, remember to call .bindnow\) it is\n) print
+       (               possible that malicious code may be able to evade the\n) print
+       (               limited security offered by the SAFER option.\n) print flush
+   } if
+   .currentglobal //false .setglobal
+   systemdict /.delaybind 2000 array .forceput
+   .setglobal
+   userdict /.delaycount 0 put
+        % When we've done the delayed bind, we want to stop saving.
+        % Detect this by the disappearance of .delaybind.
+   /bind
+    { /.delaybind .systemvar dup length 0 ne
+       { .delaycount 2 index put
+         .userdict /.delaycount .delaycount 1 add put
+       }
+       { pop /.bind cvx exec
+       }
+      ifelse
+    } .bind odef
+} executeonly if
+
+.currentglobal //true .setglobal
+/.undefinternalnameslist 10 dict def
+.setglobal
+
+% Under normal operation .undefinternalnames simply removes
+% the keys in the array parameter from the dictionary parameter.
+% Under DELAYBIND operation, we accumulate the names in dictionaries,
+% stored in .undefinternalnameslist, and then .bindow calls
+% .applyundefinternalnames once all binds have been applied.
+% The .undefinternalnameslist dictionary is a little odd in that it
+% uses the dictionary from which the keys should be undefined as the
+% 'key' and then the value is a dictionary whose key/value pairs are
+% both the names to be undefined.
+%
+% [array of names] <<dict from which to undef>> .undefinternalnames -
+/.undefinternalnames
+{
+  DELAYBIND
+  {
+    .currentglobal //true .setglobal 3 1 roll
+    dup //.undefinternalnameslist exch .knownget not
+    {
+      128 dict dup 3 1 roll
+      //.undefinternalnameslist 3 1 roll put
+    }{exch pop} ifelse
+    exch
+    {
+      dup 2 index 3 1 roll put
+    } forall
+    pop
+    .setglobal
+  }
+  {
+    exch
+    {
+      1 index exch .forceundef
+    } executeonly forall
+    pop
+  } executeonly ifelse
+} .bind executeonly def
+
+/.applyundefinternalnames
+{
+  //.undefinternalnameslist
+  {
+    {
+      pop
+      1 index exch .forceundef
+    } executeonly forall
+    pop
+  } executeonly forall
+} .bind executeonly def
+
+%**************** BACKWARD COMPATIBILITY ****************
+/hwsizedict mark /HWSize //null .dicttomark readonly def
+/copyscanlines {		% <device> <y> <string> copyscanlines <substr>
+  0 3 1 roll 3 index //hwsizedict .getdeviceparams
+  exch pop exch pop aload pop 3 2 roll
+  0 exch //null exch .getbitsrect exch pop
+} bind odef
+currentdict /hwsizedict .undef
+/getdeviceprops
+ { //null .getdeviceparams
+ } bind odef
+
+% NOTE: Note sure why/if this needs to be a separate operator.  Consider rolling this
+% implementation into /putdeviceprops ?
+/.putdeviceprops
+ { //null //true counttomark 1 add 3 roll .putdeviceparams
+   dup type /booleantype ne
+    { dup mark eq { /unknown /rangecheck } if
+      counttomark 4 add 1 roll cleartomark pop pop pop
+      /.putdeviceprops .systemvar exch signalerror
+    }
+   if
+ } bind executeonly odef
+/.writecvs { 0 .writecvp } bind odef
+
+%**************** DEPRECATED PROCEDURES ****************
+%**************** DO NOT USE THESE IN NEW CODE ****************
+% Keeping these because they have been around a long time and we don't want to break old code that's out in the wild
+/max { .max } bind def		% use .max instead
+/min { .min } bind def		% use .min instead
+%**************** END OF BACKWARD COMPATIBILITY SECTION ****************
+
+% Utility for removing all entries from a dictionary
+/.PurgeDict   % <dict> .PurgeDict -
+{ { //true
+    1 index { pop exch pop //false exit
+    } forall
+    { exit
+    } if
+    1 index exch undef
+  } loop
+  pop
+} bind def
+
+% Define predefined procedures substituting for operators,
+% in alphabetical order.
+
+userdict /#copies 1 put
+% Adobe implementations don't accept /[ or /], so we don't either.
+([) cvn
+        /mark load def
+(]) cvn
+        {counttomark array astore exch pop} odef
+%
+%   -   initgraphics   -
+%
+% Although the internal routine gs_initgraphics resets the color space,
+% it does not reset the color space we store in the 'interpreter'
+% graphics state (so that we can hand it back in currentcolorspace).
+% So we need to do that in the PostScript world.
+%
+%
+/initgraphics
+  { initgraphics systemdict /DeviceGray_array get setcolorspace }
+.bind executeonly odef
+
+/currentmatrix {
+        dup type /arraytype ne
+        { /currentmatrix load  /typecheck signalerror } if
+        dup length 6 ne
+        { /currentmatrix load  /rangecheck signalerror } if
+        .currentmatrix 6 .argindex astore pop
+} odef
+
+% We have to guard against the BeginPage procedure not popping its operand.
+% This is really stupid, but the Genoa CET does it.
+/.beginpage {		% - .beginpage -
+  .currentshowpagecount {
+    .currentpagedevice pop
+    dup //null ne { /BeginPage .knownget } { pop //false } ifelse {
+                % Stack: ... pagecount proc
+       count 2 .execn
+                % Stack: ... ..???.. oldcount
+       count 1 add exch sub { pop } repeat
+    } {
+      pop
+    } ifelse
+  } if
+} .bind executeonly odef
+
+% Guard similarly against EndPage not popping its operand.
+/.endpage {		% <reason> .endpage <print_bool>
+  .currentshowpagecount {
+    1 index .currentpagedevice pop
+    dup //null ne { /EndPage .knownget } { pop //false } ifelse {
+                % Stack: ... reason pagecount reason proc
+      count 2 .execn
+                % Stack: ... ..???.. print oldcount
+      count 2 add exch sub { exch pop } repeat
+    } {
+      pop pop 2 ne
+    } ifelse
+  } {
+    2 ne
+  } ifelse
+} .bind executeonly odef
+
+% Define .currentnumcopies so it consults the NumCopies device parameter.
+/.numcopiesdict mark
+  /NumCopies dup
+.dicttomark readonly def
+/.currentnumcopies
+ { currentdevice //.numcopiesdict .getdeviceparams
+   dup type /integertype eq
+    { exch pop exch pop }
+    { cleartomark #copies }
+   ifelse
+} .bind executeonly odef
+
+/setcolorscreen where { pop		% not in all Level 1 configurations
+   /currentcolorscreen
+        { .currenthalftone
+           { { 60.0 exch 0.0 exch 3 copy 6 copy }	% halftone - not possible
+             { 3 copy 6 copy }			% screen
+             { }				% colorscreen
+           }
+          exch get exec
+        } odef
+} if
+/currentscreen
+        { .currenthalftone
+           { { 60.0 exch 0.0 exch }			% halftone - not possible
+             { }				% screen
+             { 12 3 roll 9 { pop } repeat }	% colorscreen
+           }
+          exch get exec
+        } odef
+/.echo /echo load def
+userdict /.echo.mode //true put
+/echo	{dup /.echo.mode exch store .echo} odef
+/.eexec_param_dict mark
+  /eexec //true
+  /seed 55665
+.dicttomark readonly def
+/eexec {
+        % Rebind .currentresourcefile if it is the source for the eexec.
+  dup //.eexec_param_dict //filterdict /eexecDecode get exec
+  cvx exch .currentresourcefile eq
+  //systemdict begin { {exec} .execasresource } { exec } ifelse
+        % Only pop systemdict if it is still the top element,
+        % because this is apparently what Adobe interpreters do.
+  currentdict //systemdict eq { end } if
+} odef
+% erasepage mustn't use gsave/grestore, because we call it before
+% the graphics state stack has been fully initialized.
+/erasepage
+        { /currentcolor where
+           { pop currentcolor currentcolorspace { setcolorspace setcolor } }
+           { /currentcmykcolor where
+              { pop currentcmykcolor { setcmykcolor } }
+              { currentrgbcolor { setrgbcolor } }
+             ifelse
+           }
+          ifelse
+          currentoverprint //false setoverprint 1 setgray .fillpage setoverprint
+          exec
+        } odef
+% Define a procedure for clearing the error indication.
+/.clearerror
+ { $error /newerror //false put
+   $error /errorname //null put
+   $error /errorinfo //null put
+   0 .setoserrno
+ } bind executeonly def
+
+% To satisfy the Genoa FTS, executive must be a procedure, not an operator.
+% Define the procedure used by .runfile, .runstdin and .runstring
+% for executing user input.
+% This is called with a procedure or executable file on the operand stack.
+/.execute {		% <obj> .execute <stopped>
+  stopped $error /newerror get and
+   { /handleerror .systemvar exec flush //true } { //false } ifelse
+} bind def
+% Define an execute analogue of runlibfile0.
+/execute0 {		% <obj> execute0 -
+  //.execute exec { /execute0 cvx 1 .quit } if
+} bind def
+/executive
+        { { prompt
+             { (%statementedit) (r) .systemvmfile } stopped
+             { pop pop $error /errorname get /undefinedfilename eq
+                { //.clearerror exec exit } if		% EOF
+               /handleerror .systemvar exec //null		% ioerror??
+             }
+            if
+            cvx { .runexec } //.execute exec pop
+          } loop
+        } bind def
+currentdict /.execute .undef
+
+/filter
+        { //filterdict 1 .argindex .knownget
+           { exch pop exec }
+           { /filter .systemvar /undefined signalerror }
+          ifelse
+        } odef
+% Internal uses of stopped that aren't going to do a stop if an error occurs
+% should use .internalstopped to avoid setting newerror et al.
+/.internalstopped { //null 1 .stopped //null ne } bind executeonly def
+% handleerror procedure as mentioned in the "Operators" section of the PLRM Section 8.2
+% This invokes the handleerror procedure from errordict (unless we are running under a
+% JOBSERVER where we want to always use a defined error handler (many error handlers in
+% 'wild' PostScript files are broken and don't indicate the error in any useful fashion).
+%
+% We run the handleerror procedure using .internalstopped so that broken error handlers
+% won't cause nested errors (Unexpected Error conditions).
+/handleerror
+        //systemdict /JOBSERVER get{
+          { /.GShandleerror .systemvar //.internalstopped exec pop } bind % always use .GShandleerror.
+        } {
+          { /errordict .systemvar /handleerror get //.internalstopped exec pop } bind % PLRM standard errorhandling
+        } ifelse def
+/identmatrix [1.0 0.0 0.0 1.0 0.0 0.0] readonly def
+/identmatrix {
+        dup type /arraytype ne { /identmatrix load  /typecheck signalerror } if
+        dup length 6 ne { /identmatrix load  /rangecheck signalerror } if
+        dup 0 //identmatrix putinterval
+} odef
+/languagelevel 1 def		% gs_lev2.ps may change this
+/makeimagedevice { //false makewordimagedevice } odef
+/matrix	{ 6 array identmatrix } odef
+
+/.promptmsg {
+        (GS) print
+        count 0 ne { (<) print count =only } if
+        (>) print flush
+} bind def
+/prompt	{ flush flushpage //systemdict /NOPROMPT get not { //.promptmsg exec} if } bind def
+currentdict /.promptmsg .undef
+
+/pstack	{ 0 1 count 3 sub { index == } for } bind def
+/putdeviceprops
+        { .putdeviceprops { erasepage } if } bind executeonly odef
+/quit	{ /quit load 0 .quit } odef
+/run	{ dup type /filetype ne { (r) .systemvmfile } if
+                % We must close the file when execution terminates,
+                % regardless of the state of the stack,
+                % and then propagate an error, if any.
+          cvx //null {.runexec} .errorexec
+        } odef
+% Execute a file.
+% Level 2 uses 2 .stop to clear the e-stack for a successful startjob:
+% we detect that here, since we need to handle this even if we start out
+% without job control in effect.
+%
+% What we push on the e-stack is the following to be executed in this order:
+%	<lit-file|fileproc> .runexec1 <lit-file|fileproc> .runexec2
+/.runexec1 {		% <file|fileproc> .runexec1 -
+  dup type /filetype ne { cvx exec } if
+  cvx //null 2 .stopped
+        % If we got back here from a startjob, just keep going.
+        % startjob replaces the null on the o-stack with a procedure
+        % to be executed when we get back here.
+  dup //null ne { exec //true } { pop //false } ifelse
+} bind executeonly def
+/.runexec2 {		% <continue> <file|fileproc> .runexec2 -
+  exch {
+    .runexec
+  } {
+    dup type /filetype ne { cvx exec } if
+    closefile
+  } ifelse
+} bind def
+/.runexec {		% <file|fileproc> .runexec -
+  cvlit /.runexec1 cvx 1 index /.runexec2 cvx 4 .execn
+} bind def
+% The following is only for compatibility with Adobe interpreters.
+/setdash {
+        0 .argindex type dup /integertype eq exch /realtype eq or not {
+          /setdash .systemvar /typecheck signalerror
+        } if
+        //setdash
+} odef
+/setdevice
+  {
+    .setdevice
+      {
+        mark
+          { 		% Reset the halftone since the device may differ
+            currenthalftone
+            dup type /dicttype eq
+              { sethalftone }
+              { pop }
+            ifelse
+          }
+        stopped
+        cleartomark
+        erasepage
+      }
+    if
+  }
+odef
+/setlinecap {
+        dup 2 gt { /setlinecap .systemvar /rangecheck signalerror } if
+        .setlinecap
+} odef
+/setlinejoin {
+        dup 2 gt { /setlinejoin .systemvar /rangecheck signalerror } if
+        .setlinejoin
+} odef
+/setmatrix {
+        dup type /arraytype ne {
+          dup type /packedarraytype ne {
+            /setmatrix load  /typecheck signalerror
+          } if
+        } if
+        dup length 6 ne { /setmatrix load  /rangecheck signalerror } if
+        dup aload pop .setmatrix pop
+} odef
+
+/.confirmread {
+  //systemdict /TTYPAUSE get {
+    (/dev/tty) (r) file dup read pop pop closefile
+  } {
+    .echo.mode //false echo
+    (%stdin) (r) file dup read {
+      dup (\n) 0 get eq { pop pop } { .unread } ifelse
+    } {
+      pop
+    } ifelse echo
+  } ifelse
+} bind executeonly def
+
+/.confirm {
+  //systemdict /DISPLAYING get //systemdict /NOPAUSE get not //systemdict /TTYPAUSE get or and {
+        % Print a message (unless NOPAGEPROMPT or NOPROMPT is true)
+        % and wait for the user to type something.
+        % If the user just types a newline, flush it.
+    //systemdict /NOPAGEPROMPT get //systemdict /NOPROMPT get or { pop } { print flush } ifelse
+    //.confirmread exec
+  } {
+    pop
+  } ifelse
+} bind executeonly def
+
+% In LanguageLevel 3, copypage erases the page.
+/copypage {
+        .languagelevel 3 ge
+        dup { 0 } { 1 } ifelse .endpage .doneshowpage {
+          .currentnumcopies 1 index .outputpage
+          (>>copypage, press <return> to continue<<\n) //.confirm exec
+          dup { erasepage } if
+        } if pop
+    systemdict /..page_default_spaces .knownget { //.PurgeDict exec } if
+    .beginpage
+} .bind executeonly odef
+
+/showpage {
+        0 .endpage .doneshowpage {
+          .currentnumcopies //true .outputpage
+          (>>showpage, press <return> to continue<<\n) //.confirm exec
+          % Uncomment the following line, and use a Memento build to track
+          % blocks that are created and not destroyed between each successive
+          % page.
+          % 2 .vmreclaim .mementolistnewblocks
+          initgraphics
+          currentoverprint //false setoverprint 1 setcolor
+          .fillpage
+          setoverprint 0 setcolor
+        }
+        { initgraphics } ifelse
+    systemdict /..page_default_spaces .knownget { //.PurgeDict exec } if
+    .beginpage
+} .bind executeonly odef
+
+% Code output by Adobe Illustrator relies on the fact that
+% `stack' is a procedure, not an operator!!!
+/stack	{ 0 1 count 3 sub { index = } for } bind def
+/start	{ //systemdict /BATCH get { //null 0 .quit } { executive } ifelse } def
+/store {	% Don't alter operands before completing.
+        1 .argindex where { 2 index 2 index put pop pop } { def } ifelse
+} odef
+/.typenames mark .typenames counttomark packedarray exch pop def
+/type {
+        //.typenames .type
+} odef
+currentdict /.typenames .undef
+% When running in Level 1 mode, this interpreter is supposed to be
+% compatible with PostScript "version" 54.0 (I think).
+/version (54.0) readonly def
+/.wheredict 10 dict def
+/.where /where load def
+/where {
+        //.wheredict 1 .argindex .knownget { exec } { .where } ifelse
+} odef
+
+% internaldict is defined in systemdict, but the dictionary is allocated
+% in local VM.  However, the procedure must be global, since it is an
+% "operator" and must be bind-able into global procedures.
+/.makeinternaldict {
+  .currentglobal //true .setglobal
+    [ /dup .systemvar 1183615869 /eq .systemvar
+        [ /pop .systemvar //null ] cvx
+        //false .setglobal
+        dup 1 10 dict .forceput	% proc is global, dict is local
+        //true .setglobal
+        [ /internaldict /cvx .systemvar /invalidaccess /signalerror cvx ] cvx
+      /ifelse .systemvar
+    ] cvx executeonly
+  exch .setglobal
+} executeonly def
+systemdict /internaldict dup .makeinternaldict .makeoperator
+.forceput		% proc is local, systemdict is global
+currentdict /.makeinternaldict .undef
+
+% Define some additional built-in procedures (beyond the ones defined by
+% the PostScript Language Reference Manual).
+% Warning: these are not guaranteed to stay the same from one release
+% to the next!
+/concatstrings	%	(str1) (str2) concatstrings (str1str2)
+        { exch dup length 2 index length add string	% str2 str1 new
+          dup dup 4 2 roll copy		% str2 new new new1
+          length 4 -1 roll putinterval
+        } bind def
+/copyarray
+        { dup length array copy } bind def
+% Copy a dictionary per the Level 2 spec even in Level 1.
+/.copydict		% <fromdict> <todict> .copydict <todict>
+        { dup 3 -1 roll { put dup } forall pop } bind def
+/findlibfile {
+  .systemvmlibfile { dup .filename pop exch //true } { //false } ifelse
+} odef
+/.growdictlength	% get size for growing a dictionary
+        { length 3 mul 2 idiv 1 add
+        } bind def
+/.growdict		% grow a dictionary
+        { dup //.growdictlength exec .setmaxlength
+        } bind def
+/.growput		% put, grow the dictionary if needed
+        { 2 index length 3 index maxlength eq
+           { 3 copy pop known not { 2 index //.growdict exec} if
+           } if
+          put
+        } bind def
+% .localvmarray may be an operator: see zsysvm.c.
+/.localvmarray where {
+  pop
+} {
+  /.localvmarray {
+    .currentglobal //false .setglobal
+    exch array exch .setglobal
+  } bind def
+} ifelse
+/.localvmdict where {
+  pop
+} {
+  /.localvmdict {
+    .currentglobal //false .setglobal
+    exch dict exch .setglobal
+  } bind def
+} ifelse
+/.packtomark
+        { counttomark packedarray exch pop } bind def
+/runlibfile
+        {		% We don't want to bind 'run' into this procedure,
+                        % since run may get redefined.
+          findlibfile
+           { exch pop /run .systemvar exec }
+           { /undefinedfilename signalerror }
+          ifelse
+        } bind def
+/selectdevice
+        { finddevice setdevice .setdefaultscreen } bind def
+/signalerror		% <object> <errorname> signalerror -
+        { /errordict .systemvar exch get exec } bind def
+/signaloperror {	% <object> <errorname> signaloperror -
+    % Same as signalerror, except that if we are inside a pseudo-operator
+    % or .errorexec, we use its error object, just as errors generated by
+    % real operators do.
+    /errordict .systemvar exch get
+    .finderrorobject { 3 -1 roll pop exch } if
+    exec
+} bind def
+
+% Define the =[only] procedures.  Also define =print,
+% which is used by some PostScript programs even though
+% it isn't documented anywhere.
+/write=only {
+        .writecvs
+} bind def
+/write= {
+        1 index exch write=only (\n) writestring
+} bind def
+/=only	{ (%stdout) (w) file exch write=only } bind def
+/=	{ =only (\n) print } bind def
+/=print	/=only load def
+% Temporarily define == as = for the sake of runlibfile0.
+/== /= load def
+
+% The following procedures are documented.
+/copydevice {		% <device> copydevice <newdevice>
+  //false .copydevice2
+} odef
+/finddevice {		% <devicename> finddevice <device>
+  /devicedict .systemvar exch get
+  dup 1 get //null eq {
+                % This is the first request for this type of device.
+                % Create a default instance now.
+                % Stack: [proto null]
+    .currentglobal //true .setglobal exch
+    dup dup 0 get copydevice 1 exch put
+    exch .setglobal
+  } if 1 get
+} bind def
+/findprotodevice {	% <devicename> findprotodevice <protodevice>
+  /devicedict .systemvar exch get 0 get
+} bind def
+
+% Run a resource file.  This allows us to distinguish resource objects
+% from objects coming from input files.
+userdict /.currentresourcefile //null put
+/.execasresource {	% <file> <proc|runfile> .execasresource -
+  /stopped .systemvar
+  /.currentresourcefile .uservar
+                % Stack: file proc -stopped- currfile
+  .userdict /.currentresourcefile 5 index cvlit put
+  2 .execn		% stopped <file>
+  .userdict /.currentresourcefile 3 -1 roll put
+  { stop } if
+} bind executeonly def
+/.runresource {		% <file> .runresource -
+  { /run .systemvar exec } .execasresource
+} bind def
+
+% Convenience function (documented extension)
+/.shellarguments		% -> shell_arguments true (or) false
+        { /ARGUMENTS where
+           { /ARGUMENTS get dup type /arraytype eq
+              { aload pop /ARGUMENTS //null store //true }
+              { pop //false }
+             ifelse }
+           { //false } ifelse
+        } bind def
+
+% Define the procedure that the C code uses for running files
+% named on the command line.
+/.runfile {
+  { runlibfile } execute0
+} def
+% Define the procedure that the C code uses for running piped input.
+% We don't use the obvious { (%stdin) run }, because we want the file to be
+% reopened if a startjob does a restore.
+/.runstdin {
+  { { (%stdin) (r) file cvx } .runexec } execute0
+} bind def
+% Define the procedure that the C code uses for running commands
+% given on the command line with -c.  We turn the string into a file so that
+% .runexec can do the right thing with a startjob.
+/.runstring {
+  0 0 .systemvmstring .systemvmSFD cvx { .runexec } execute0
+} bind def
+
+% Define the procedure that the C code uses to set up for executing
+% a string that may be received in pieces.
+%
+% Immediate evaluation doesn't work on operators (like .needinput)
+% so calling .runstringbegin will throw an undefined error if we
+% undefined .needinput so it cannot be accessed outside the init
+% code. But, we can store the operator in an array, use immediate
+% evaluation on the array to get the operator, then undefined the
+% array (and because they are both of the same name, the operator
+% get undefined too).
+% This prevents random Postscript from erroneously calling .needinput
+% and forcing the interpreter into an invalid state.
+/.needinput
+1 .systemvmarray dup 0 /.needinput load put
+def
+/.runstringbegin {
+  1 .systemvmarray dup 0 //.needinput 0 get put cvx	% { .needinput } in systemvm
+  0 0 .systemvmstring .systemvmSFD cvx .runexec
+} bind executeonly def
+
+% Define a special version of runlibfile that aborts on errors.
+/runlibfile0
+        { cvlit dup dup /.currentfilename exch def
+           { findlibfile not { stop } if }
+          stopped
+           { (Can't find \(or open\) initialization file ) print
+             .currentfilename == flush /runlibfile0 cvx 1 .quit
+           } if
+          exch pop cvx
+          { stopped } 0 get 3 -1 roll 2 array astore cvx exec
+          /.currentfilename exch store
+           { (While reading ) print .currentfilename print (:\n) print flush
+             /handleerror .systemvar exec /runlibfile0 1 .quit
+           } if
+        } bind def
+% Temporarily substitute it for the real runlibfile.
+/.runlibfile /runlibfile load def
+/runlibfile //runlibfile0 def
+currentdict /runlibfile0 .undef
+
+% Create the error handling machinery.
+% Define the standard error handlers.
+% The interpreter has created the ErrorNames array.
+/.unstoppederrorhandler	% <command> <errorname> .unstoppederrorhandler -
+ {	% This is the handler that gets used for recursive errors,
+        % or errors outside the scope of a 'stopped'.
+   2 copy //systemdict /SHORTERRORS get
+    { (%%[ Error: ) print =only flush
+      (; OffendingCommand: ) print =only ( ]%%) =
+    }
+    { (Unrecoverable error: ) print =only flush
+      ( in ) print = flush
+      count 2 gt
+       { (Operand stack:\n  ) print
+         count 1 sub -1 2 { (  ) print index =only flush } for
+         () = flush
+       } if
+    }
+   ifelse
+   -1 0 1 //ErrorNames length 1 sub
+    { dup //ErrorNames exch get 3 index eq
+       { not exch pop exit } { pop } ifelse
+    }
+   for exch pop .quit
+ } bind executeonly def
+/.errorhandler		% <command> <errorname> .errorhandler -
+  {		% Detect an internal 'stopped'.
+    1 .instopped { //null eq { pop pop stop } if } if
+    $error /.inerror get 1 .instopped { pop } { pop //true } ifelse
+     { //.unstoppederrorhandler exec
+     } if	% detect error recursion
+    $error /globalmode .currentglobal //false .setglobal put
+    $error /.inerror //true put
+    $error /newerror //true put
+    $error exch /errorname exch put
+    $error exch /command exch put
+    $error /errorinfo known not { $error /errorinfo //null put } if
+    $error /recordstacks get $error /errorname get /VMerror ne and
+     {		% Attempt to store the stack contents atomically.
+       count array astore dup $error /ostack 4 -1 roll
+       % Grab the execstack, then remove to two elements that are from
+       % this error handler (not interesting).
+       countexecstack array execstack dup length 2 sub 0 exch getinterval
+       $error /estack 3 -1 roll
+       countdictstack array dictstack $error /dstack 3 -1 roll
+       put put put aload pop
+     }
+     { $error /dstack .undef
+       $error /estack .undef
+       $error /ostack .undef
+     }
+    ifelse
+    $error /position currentfile status
+     { currentfile { fileposition } //.internalstopped exec { pop //null } if
+     }
+     {		% If this was a scanner error, the file is no longer current,
+                % but the command holds the file, which may still be open.
+       $error /command get dup type /filetype eq
+        { { fileposition } //.internalstopped exec { pop //null } if }
+        { pop //null }
+       ifelse
+     }
+    ifelse put
+                % During initialization, we don't reset the allocation
+                % mode on errors.
+    $error /globalmode get $error /.nosetlocal get and .setglobal
+    $error /.inerror //false put
+    stop
+  } bind executeonly def
+currentdict /.unstoppederrorhandler .undef
+
+% Define the standard handleerror.  We break out the printing procedure
+% (.printerror) so that it can be extended for binary output
+% if the Level 2 facilities are present.
+/.printerror_long			% long error printout,
+                                        % $error is on the dict stack
+{	% Push the (anonymous) stack printing procedure.
+        %  <heading> <==flag> <override-name> <stackname> proc
+       {
+         currentdict exch .knownget	% stackname defined in $error?
+         {
+           4 1 roll			% stack: <stack> <head> <==flag> <over>
+           /errordict .systemvar exch .knownget	% overridename defined?
+           {
+             exch pop exch pop exec	% call override with <stack>
+           }
+           {
+             exch print exch		% print heading. stack <==flag> <stack>
+             1 index not { () = } if
+             { 1 index { (\n    ) } { (   ) } ifelse print
+               dup type /dicttype eq
+               {
+                 (--dict:) print
+                 dup rcheck {
+                   dup length =only (/) print dup maxlength =only
+                   dup wcheck not { ((ro)) print } if
+                 } if
+                 /gcheck where {
+                   pop gcheck { ((G)) } { ((L)) } ifelse print
+                 } {
+                   pop
+                 } ifelse (--) print
+               }
+               {
+                 dup type /stringtype eq 2 index or
+                 { ==only } { =only } ifelse
+               } ifelse
+             } forall
+             pop
+           }
+           ifelse			% overridden
+         }
+         { pop pop pop
+         }
+         ifelse				% stack known
+       }
+
+       (\nOperand stack:) OSTACKPRINT /.printostack /ostack 4 index exec
+       (\nExecution stack:) ESTACKPRINT /.printestack /estack 4 index exec
+       (\nBacktrace:) //true /.printbacktrace /backtrace 4 index exec
+       (\nDictionary stack:) //false /.printdstack /dstack 4 index exec
+       () =
+       pop	% printing procedure
+
+       errorname /VMerror eq
+        { (VM status:) print mark vmstatus
+          counttomark { ( ) print counttomark -1 roll dup =only } repeat
+          cleartomark () =
+        } if
+
+       .languagelevel 2 ge
+        { (Current allocation mode is ) print
+          globalmode { (global\n) } { (local\n) } ifelse print
+        } if
+
+       .oserrno dup 0 ne
+        { (Last OS error: ) print
+          errorname /VMerror ne
+           { dup .oserrorstring { = pop } { = } ifelse }
+           { = }
+          ifelse
+        }
+        { pop
+        }
+       ifelse
+
+       position //null ne
+        { (Current file position is ) print position = }
+       if
+
+} bind executeonly def
+/.printerror
+{ $error begin newerror
+     {
+       /command load errorname //systemdict /SHORTERRORS get
+        { (%%[ Error: ) print =only flush
+          (; OffendingCommand: ) print =only
+          errorinfo dup //null eq {
+            pop
+          } {
+            (;\nErrorInfo:) print
+            dup type /arraytype eq
+              { { ( ) print =only } forall }
+              { ( ) print =only }
+            ifelse
+          } ifelse
+          ( ]%%) = flush
+        }
+        { (Error: ) print ==only flush
+          ( in ) print ==only flush
+          errorinfo dup //null eq {
+            pop
+          } {
+            (\nAdditional information: ) print ==only flush
+          } ifelse
+          //.printerror_long exec
+        }
+       ifelse
+       //.clearerror exec flush
+     }
+     { % newerror is //false, test to see if user has set handleerror to a different
+       % routine, if so execute it, otherwise, just return.  This code deals with the
+       % Genoa issue of setting /handleerror, and then calling it, without an error
+       % being set.  We were erroring in this case, due to /command load failing.
+
+        //JOBSERVER {
+            /errordict .systemvar /handleerror get /.GShandleerror .systemvar ne
+        } {
+            //false
+        } ifelse
+         { /errordict .systemvar begin /handleerror load //.internalstopped exec pop end
+         }
+         if
+     }
+     ifelse	% newerror
+     end
+     flush
+} bind executeonly def
+currentdict /.printerror_long .undef
+
+% Define $error.  This must be in local VM.
+.currentglobal //false .setglobal
+currentdict /$error 40 dict .forceput	% $error is local, systemdict is global
+                % newerror, errorname, command, errorinfo,
+                % ostack, estack, dstack, recordstacks,
+                % binary, globalmode,
+                % .inerror, .nosetlocal, position,
+                % plus extra space for badly designed error handers.
+$error begin
+  /newerror //false def
+  /recordstacks //true def
+  /binary //false def
+  /globalmode .currentglobal def
+  /.inerror //false def
+  /.nosetlocal //true def
+  /position //null def
+  /errorinfo //null def
+end
+% Define errordict similarly.  It has one entry per error name,
+%   plus handleerror.  However, some astonishingly badly written PostScript
+%   files require it to have at least one empty slot.
+currentdict /errordict ErrorNames length 3 add dict
+.forceput		% errordict is local, systemdict is global
+.setglobal		% back to global VM
+%  gserrordict contains all the default error handling methods, but unlike
+%  errordict it is noaccess after creation (also it is in global VM).
+%  When running 'SAFER', we'll ignore the contents of errordict, which
+%  may have been tampered with by the running job, and always use gserrordict
+%  gserrordict also contains any non-standard errors, for better compatibility
+%  with Adobe.
+%
+%   NOTE: the name gserrordict is known to the interpreter.
+/gserrordict ErrorNames length 3 add dict def
+% Register an error in errordict.  We make this a procedure because we only
+% register the Level 1 errors here: the rest are registered by "feature"
+% files.  However, ErrorNames contains all of the error names regardless of
+% what features are included, so we have to "know" that VMerror is the last
+% Level 1 error.
+/.registererror2	% <dict> <name> .registererror -
+ { .currentglobal //true .setglobal	% create procs in global VM
+   3 1 roll
+   mark 1 index systemdict /.errorhandler get /exec load //.packtomark exec cvx put
+   .setglobal
+ } bind def
+/.registererror		% <name> .registererror -
+ { errordict exch //.registererror2 exec
+ } bind def
+currentdict /.registererror2 .undef
+
+ErrorNames
+ { .registererror} forall
+errordict begin
+% The handlers for interrupt and timeout are special; there is no
+% 'current object', so they push their own name.
+   { /interrupt /timeout }
+   { mark 1 index dup systemdict /.errorhandler get /exec load //.packtomark exec cvx def
+   } forall
+/handleerror	% this key is 'well known' and some PS may redefine it
+ { /.printerror .systemvar exec
+ } bind def
+end		% errordict
+
+gserrordict /unknownerror errordict /unknownerror get put
+errordict /unknownerror .undef
+
+/.SAFERERRORLIST ErrorNames def
+/.setsafererrors
+{
+% Put all the requested handlers in gserrordict
+  gserrordict
+  //.SAFERERRORLIST
+  {
+    dup /unknownerror eq
+    {pop}
+    {
+      dup errordict exch get 2 index 3 1 roll put
+    }ifelse
+  }forall
+  noaccess pop
+  //systemdict /.setsafeerrors .forceundef
+  //systemdict /.SAFERERRORLIST .forceundef
+} bind executeonly odef
+
+SAFERERRORS {.setsafererrors} if
+
+% Define a stable private copy of handleerror that we will always use under
+% JOBSERVER mode.
+/.GShandleerror errordict /handleerror get def
+
+% Define the [write]==[only] procedures.
+/.dict 8 dict dup
+begin def
+  /.cvp {1 index exch 1 .writecvp} bind def
+  /.p {1 index exch writestring} bind def
+  /.p1 {2 index exch writestring} bind def
+  /.p2 {3 index exch writestring} bind def
+  /.print
+        { dup type .dict exch .knownget { exec } { .cvp } ifelse
+        } bind def
+  /arraytype
+        {dup rcheck
+          {() exch dup xcheck
+            {({) .p2
+             {exch .p1
+              1 index exch .print pop ( )} forall
+             (})}
+            {([) .p2
+             {exch .p1
+              1 index exch .print pop ( )} forall
+             (])}
+           ifelse exch pop .p}
+          {.cvp}
+         ifelse} bind def
+  /packedarraytype /arraytype load def
+{//.dict begin .print pop end}
+  bind
+end
+
+/write==only exch def
+/write== {1 index exch write==only (\n) writestring} bind def
+/==only { (%stdout) (w) file exch write==only } bind def
+/== {==only (\n) print} bind def
+
+% Define [write]===[only], an extension that prints dictionaries
+% in readable form and doesn't truncate strings.
+/.dict /write==only load 0 get dup length 2 add dict .copydict dup
+begin def
+  /dicttype
+        { dup rcheck
+           { (<< ) .p1
+              { 2 index 3 -1 roll .print pop ( ) .p1
+                1 index exch .print pop ( ) .p
+              }
+             forall (>>) .p
+           }
+           { .cvp
+           }
+          ifelse
+        } bind def
+  /stringtype
+        { 1 index exch 2 .writecvp
+        } bind def
+
+{//.dict begin .print pop end}
+  bind
+end
+
+/write===only exch def
+/write=== {1 index exch write===only (\n) writestring} bind def
+/===only { (%stdout) (w) file exch write===only } bind def
+/=== { ===only (\n) print } bind def
+
+% Create the initialization queue.
+1183615869 internaldict dup
+/.delayed_init_queue 10 dict put
+
+/.schedule_init   %   <priority> <proc> .schedule_init -
+{
+   1183615869 internaldict begin
+  .delayed_init_queue 2 index known {
+    end
+    (.delayed_init_queue priority conflict with ) print 1 index =
+    /.schedule_init cvx /configurationerror signalerror
+  } if
+  .delayed_init_queue 3 1 roll .growput
+  end
+} bind def
+
+begin
+/.execute_scheduled_inits %   - .execute_scheduled_inits -
+{
+  2 dict begin
+  /.newdelayed_init_queue
+  mark
+  1183615869 internaldict /.delayed_init_queue get {} forall
+  .dicttomark def
+  {
+    0 //null .newdelayed_init_queue {     % maxp {} p {}
+      3 index 2 index lt {
+        4 2 roll
+      } if
+      pop pop
+    } forall
+    exch .newdelayed_init_queue exch undef
+    dup //null eq {
+      pop exit
+    } if
+    exec
+  } loop
+  currentdict /.newdelayed_init_queue undef
+  end
+} bind def
+end
+
+(END PROCS) VMDEBUG
+
+% Define the font directory.
+currentdict
+/FontDirectory //false .setglobal 100 dict //true .setglobal
+.forceput		% FontDirectory is local, systemdict is global
+
+% Define the encoding dictionary.
+/EncodingDirectory 16 dict def	% enough for Level 2 + PDF standard encodings
+
+% Define .findencoding.  (This is redefined in Level 2.)
+/.findencoding
+ { //EncodingDirectory exch get exec
+ } bind def
+/.defineencoding
+ { //EncodingDirectory 3 1 roll put
+ } bind def
+% If we've got the composite font extensions, define findencoding.
+% To satisfy the Genoa FTS, findencoding must be a procedure, not an operator.
+/rootfont where { pop /findencoding { .findencoding } def } if
+
+% Define .registerencoding.
+% NOTE: This procedure no longer does anything, but it must continue to
+% exist for the sake of toolbin/encs2c.ps.
+/.registerencoding {	% <index> <array> .registerencoding -
+  pop pop
+} bind odef
+
+% Load StandardEncoding.
+%% Replace 1 (gs_std_e.ps)
+(gs_std_e.ps) dup runlibfile VMDEBUG
+
+% Load ISOLatin1Encoding.
+%% Replace 1 (gs_il1_e.ps)
+(gs_il1_e.ps) dup runlibfile VMDEBUG
+
+% Define stubs for the Symbol and Dingbats encodings.
+% Note that the first element of the procedure must be the file name,
+% since gs_lev2.ps extracts it to set up the Encoding resource category.
+
+  /SymbolEncoding { /SymbolEncoding .findencoding } bind def
+%% Replace 3 (gs_sym_e.ps)
+  EncodingDirectory /SymbolEncoding
+   { (gs_sym_e.ps) //systemdict begin runlibfile SymbolEncoding end }
+  bind put
+
+  /DingbatsEncoding { /DingbatsEncoding .findencoding } bind def
+%% Replace 3 (gs_dbt_e.ps)
+  EncodingDirectory /DingbatsEncoding
+   { (gs_dbt_e.ps) //systemdict begin runlibfile DingbatsEncoding end }
+  bind put
+
+(END FONTDIR/ENCS) VMDEBUG
+
+% Special handling for device parameters. Must follow definition of 'type'
+% make -dPDFA equivalent to -dPDFA=1 (backwards compatible)
+currentdict /PDFA known { PDFA type /booleantype eq { /PDFA 1 def } if } if
+
+% Construct a dictionary of all available devices.
+% These are (read-only) device prototypes that can't be
+% installed or have their parameters changed.  For this reason,
+% the value in the dictionary is actually a 2-element writable array,
+% to allow us to create a default instance of the prototype on demand.
+
+        % Loop until the .getdevice gets a rangecheck.
+errordict /rangecheck 2 copy get
+errordict /rangecheck { pop stop } put	% pop the command
+  0 { {dup .getdevice exch 1 add} loop} //.internalstopped exec pop
+  1 add dict  /devicedict 1 index def
+  begin			% 2nd copy of count is on stack
+   { dup .devicename exch
+     dup wcheck { dup } { //null } ifelse 2 array astore def
+   } repeat
+  end
+put		% errordict /rangecheck
+.clearerror
+/devicenames devicedict { pop } forall devicedict length packedarray def
+
+% Determine the default device.
+/defaultdevice //systemdict /DISPLAYING get
+ { //systemdict /DEVICE .knownget
+    { devicedict 1 index known not
+       { (Unknown device: ) print =
+         flush /defaultdevice cvx 1 .quit
+       }
+      if
+    }
+    { .getdefaultdevice .devicename
+    }
+   ifelse
+ }
+ { /nullpage
+ }
+ifelse
+/.defaultdevicename 1 index def
+finddevice	% make a copy
+def
+devicedict /Default devicedict .defaultdevicename get put
+
+(END DEVS) VMDEBUG
+
+% Define statusdict, for the benefit of programs
+% that think they are running on a LaserWriter or similar printer.
+%% Replace 1 (gs_statd.ps)
+(gs_statd.ps) runlibfile
+
+(END STATD) VMDEBUG
+
+% Load the standard font environment.
+%% Replace 1 (gs_fonts.ps)
+(gs_fonts.ps) runlibfile
+
+(END GS_FONTS) VMDEBUG
+
+% Define the default halftone screen and BG/UCR functions now, so that
+% it will bind in the original definitions of set[color]screen.
+% We make this a procedure so we can call it again when switching devices.
+
+% Use an ordered dither for low-resolution devices.
+/.setloreshalftone {	% <dpi> .setloreshalftone -
+        % The following 'ordered dither' spot function was contributed by
+        % Gregg Townsend.  Thanks, Gregg!
+   16.001 div 0			% not 16: avoids rounding problems
+    { 1 add 7.9999 mul cvi exch 1 add 7.9999 mul cvi 16 mul add <
+        0E 8E 2E AE 06 86 26 A6 0C 8C 2C AC 04 84 24 A4
+        CE 4E EE 6E C6 46 E6 66 CC 4C EC 6C C4 44 E4 64
+        3E BE 1E 9E 36 B6 16 96 3C BC 1C 9C 34 B4 14 94
+        FE 7E DE 5E F6 76 D6 56 FC 7C DC 5C F4 74 D4 54
+        01 81 21 A1 09 89 29 A9 03 83 23 A3 0B 8B 2B AB
+        C1 41 E1 61 C9 49 E9 69 C3 43 E3 63 CB 4B EB 6B
+        31 B1 11 91 39 B9 19 99 33 B3 13 93 3B BB 1B 9B
+        F1 71 D1 51 F9 79 D9 59 F3 73 D3 53 FB 7B DB 5B
+        0D 8D 2D AD 05 85 25 A5 0F 8F 2F AF 07 87 27 A7
+        CD 4D ED 6D C5 45 E5 65 CF 4F EF 6F C7 47 E7 67
+        3D BD 1D 9D 35 B5 15 95 3F BF 1F 9F 37 B7 17 97
+        FD 7D DD 5D F5 75 D5 55 FF 7F DF 5F F7 77 D7 57
+        02 82 22 A2 0A 8A 2A AA 00 80 20 A0 08 88 28 A8
+        C2 42 E2 62 CA 4A EA 6A C0 40 E0 60 C8 48 E8 68
+        32 B2 12 92 3A BA 1A 9A 30 B0 10 90 38 B8 18 98
+        F2 72 D2 52 FA 7A DA 5A F0 70 D0 50 F8 78 D8 58
+     > exch get 256 div
+    }
+   bind
+                % Use correct, per-plane screens for CMYK devices only.
+   //systemdict /setcolorscreen known processcolors 4 eq and
+    { 3 copy 6 copy //setcolorscreen }
+    { //setscreen }
+   ifelse
+} bind def
+/.setloresscreen {	% <dpi> .setloresscreen -
+  .setloreshalftone
+  0 array cvx settransfer	% Genoa CET won't accept a packed array!
+  /setstrokeadjust where { pop //true setstrokeadjust } if
+} bind def
+% Use a 45-degree spot screen for high-resolution devices.
+% The PS3 CET insists that the screen be an array and not a packedarray (!).
+currentpacking //false setpacking
+/.linescreen
+% The following screen algorithm is used by permission of the author.
+    { ((C) 1989 Berthold K.P. Horn) pop
+      1 add 180 mul cos 1 0.08 add mul exch 2 add 180 mul cos
+      1 0.08 sub mul add 2 div
+    }
+bind readonly def
+setpacking
+/.sethireshalftone {	% <dpi> .sethireshalftone <doscreen>
+        % According to information published by Hewlett-Packard,
+        % they use a 60 line screen on 300 DPI printers and
+        % an 85 line screen on 600 DPI printers.
+        % However, we use a 106 line screen, which produces smoother-
+        % looking shades but fewer of them (32 vs. 50).
+        % 46 was suggested as a good frequency value for printers
+        % between 200 and 400 DPI, so we use it for lower resolutions.
+        % Imagesetters need even higher frequency screens.
+   //systemdict /DITHERPPI known
+    { //systemdict /DITHERPPI get
+    }
+    { dup cvi 100 idiv 15 .min
+       {//null 46 46 60 60 60 106 106 106 106 133 133 133 133 133 150}
+      exch get
+     }
+   ifelse
+   1 index 4.01 div .min	% at least a 4x4 cell
+   45
+   //.linescreen
+        % Determine whether we have lots of process colors.
+        % If so, don't bother with color screening or gamma correction.
+        % Also don't do gamma correction on very high-resolution devices.
+        % (This should depend on dot gain, not resolution, but we don't
+        % currently have a way to determine this.) Ignore missing components
+        % (*Values = 1).
+   currentdevice mark
+     /RedValues 0 /GreenValues 0 /BlueValues 0 /GrayValues 0
+   .dicttomark .getdeviceparams
+   counttomark 2 idiv 1 sub
+    { exch pop dup 1 le
+       { pop }
+       { exch dup 1 le
+          { pop }
+          { .min }
+        ifelse
+       }
+      ifelse
+    }
+   repeat
+   exch pop exch pop 32 lt 4 index 800 lt and 5 1 roll
+        % Stack: doscreen dpi freq angle proc
+        % Ghostscript currently doesn't use correct, per-plane halftones
+        % unless setcolorscreen has been executed.  Since these are
+        % computationally much more expensive than binary halftones,
+        % we check to make sure they are really warranted, i.e., we have
+        % a high-resolution CMYK device (i.e., not a display) with
+        % fewer than 5 bits per plane (i.e., not a true-color device).
+   4 -1 roll 150 ge
+    { /setcolorscreen where
+       { pop //systemdict /COLORSCREEN known
+          { //systemdict /COLORSCREEN get}
+          { 3 index }
+         ifelse
+         dup //false ne
+          { 4 1 roll 3 copy 6 copy 13 -1 roll
+        % For really high-quality screening on printers, we need to
+        % give each plane its own screen angle.  Unfortunately,
+        % this currently has very large space and time costs.
+            //true eq		% true => different angles,
+                                % 0 => same angles
+             { { 45 90 15 75 } { 3 1 roll exch pop 12 3 roll } forall
+             }
+            if //setcolorscreen
+          }
+          { pop //setscreen	% false => single binary screen
+          }
+         ifelse
+       }
+       { //setscreen		% setcolorscreen not known
+       }
+      ifelse
+    }
+    { //setscreen			% not high resolution
+    }
+   ifelse
+} bind def
+/.sethiresscreen {	% <dpi> .sethiresscreen
+  .sethireshalftone     % pushes true if a screen halftone used
+                        % Stack: doscree
+  {
+    % Set the transfer function to lighten up the grays.
+    % Parameter values closer to 1 are better for devices with
+    % less dot spreading; lower values are better with more spreading.
+    % The value 0.8 is a compromise that will probably please no one!
+    %
+    % Because of a bug in FrameMaker, we have to accept operands
+    % outside the valid range of [0..1].
+    {
+      dup dup 0.0 gt exch 1.0 lt and
+      {
+        0.8 exp
+      }
+      if
+    }
+  }
+  {
+     % Set the transfer function to the identity.
+     0 array cvx     % Genoa CET won't accept a packed array!
+  }
+  ifelse
+  settransfer
+  /setstrokeadjust where
+  { pop //false setstrokeadjust }
+  if
+
+  % Increase fill adjustment so that we effectively use Adobe's
+  % any-part-of-pixel rule.
+  0.5 dup .setfilladjust2
+} bind def
+
+% Set the default screen and BG/UCR.
+% We define the proc here, rather than inline in .setdefaultbgucr
+% for the benefit of gs_cet.ps so jobs that do anything that causes
+% .setdefaultbgucr to be called will still get the redefined proc
+% in gs_cet.ps
+(%.defaultbgrucrproc) cvn { pop 0 } def
+
+/.setdefaultbgucr {
+  systemdict /setblackgeneration known {
+    (%.defaultbgrucrproc) cvn load dup
+    setblackgeneration setundercolorremoval
+  } if
+} bind def
+/.useloresscreen {	% - .useloresscreen <bool>
+        % Compute min(|dpi x|,|dpi y|) as the definition of the resolution.
+  72 72 matrix defaultmatrix dtransform abs exch abs .min
+  dup 150 lt //systemdict /DITHERPPI known not and
+} bind def
+
+/.gsgetdeviceprop	% <device> <propname> gsgetdeviceprop <value>
+ { 2 copy mark exch //null .dicttomark .getdeviceparams
+   dup mark eq		% if true, not found
+    { pop dup /undefined signalerror }
+    { 5 1 roll pop pop pop pop }
+   ifelse
+ } bind def
+
+% The following implementation uses LL2 extensions, but only in stopped
+% contexts so that with LL1, the .set??reshalftone will be used.
+%
+%	- .getdefaulthalftone <halftonedict> true	if default found
+%			      false
+/.getdefaulthalftone {
+  % try the device to see if it has a default halftone
+  { currentdevice /HalftoneDefault //.gsgetdeviceprop exec } //.internalstopped exec
+  { pop pop //false }		% no device property
+  { dup type /dicttype eq { //true } { pop //false } ifelse }
+  ifelse
+  % stack: <halftonedict> true    if default found
+  %         false		  not found
+  dup not
+  { % device did not provide a default, try Resource
+    pop { /Default /Halftone /findresource .systemvar exec } //.internalstopped exec
+    { pop pop //false } { //true } ifelse
+  }
+  if
+} bind def
+currentdict /.gsgetdeviceprop .forceundef
+
+/.setdefaulthalftone {
+  //.getdefaulthalftone exec
+  { sethalftone }
+  { % default not found
+    //.useloresscreen exec { .setloreshalftone } { .sethireshalftone pop } ifelse
+  }
+  ifelse
+} bind def
+
+/.setdefaultscreen {
+  //.useloresscreen exec { .setloresscreen } { .sethiresscreen } ifelse
+  //.setdefaultbgucr exec
+} bind def
+currentdict /.setdefaultbgucr .undef
+currentdict /.useloresscreen .undef
+
+% Rendering intent mapping for setcolorrendering1 and PDF interpreter
+/.renderingintentdict mark
+  /Perceptual 0
+  /RelativeColorimetric 1
+  /Saturation 2
+  /AbsoluteColorimetric 3
+.dicttomark readonly def
+
+% Load basic color support
+%% Replace 1 (gs_cspace.ps)
+(gs_cspace.ps) runlibfile
+
+(END BASIC COLOR) VMDEBUG
+
+% Load image support
+%% Replace 1 (gs_img.ps)
+(gs_img.ps) runlibfile
+
+(END IMAGE) VMDEBUG
+
+% Auxiliary procedures for generating file name templates.
+
+% Convert a path name into a string suitable for filenameforall
+% For example: (a\\b*?c) to (a\\\\b\\*\\?c)
+/.makepathtemplate {	% str1 -- str2
+   dup length dup add string 0	% result string up to twice the size
+   0 1 4 index length 1 sub {
+     3 index exch get
+     dup 92 eq {		% \ -> \\
+        2 index 2 index 92
+        put
+        exch 1 add exch
+     }
+     if
+     dup 42 eq {		% * -> \*
+        2 index 2 index 92
+        put
+        exch 1 add exch
+     }
+     if
+     dup 63 eq {		% ? -> \?
+        2 index 2 index 92
+        put
+        exch 1 add exch
+     }
+     if
+     2 index 2 index 3 -1 roll put 1 add
+   } for
+   0 exch getinterval exch pop
+} bind def
+
+%   false <dir_list> <template> .generate_dir_list_templates_with_length <t1> ... <tN>
+%   true  <dir_list> <template> .generate_dir_list_templates_with_length <t1> <l1> ... <tN> <ln>
+%
+% Generates various valid templates combining a directory list with a given template.
+% With 'true' operand it also returns lengths of directory pathes.
+%
+% Example1 (DOS, Windows) :
+%       false [(/gs/lib) (/gs/Resource/) (\gs8.00\Resource)] (*/*) -->
+%       (/gs/lib/*/*) (/gs/Resource/*/*) (\\gs8.00\\Resource/*/*)
+%
+% Example2 (OpenVMS) :
+%       false [(gs:[lib]) (gs:[Resource]) (gs800:[Resource)] (*]*) -->
+%       ((gs:[lib.*]*) [gs:[Resource.*]*) ([gs800:[Resource.*]*)
+%
+/.generate_dir_list_templates_with_length
+{                                                  % [dl] (templ)
+  % We need to convert paths into templates,
+  % because it can include '\' on DOS.
+  % In same time, the <template> must not convert,
+  % because it is already a template.
+  % Besides that, we cannot combine template using .file_name_combine,
+  % because template syntax breaks the platform path syntax.
+  % To resolve this, we first convert the <template> into
+  % a fake filename, and combine it with path,
+  % obtaining a correct separator. Then we replace
+  % the fake file name with the given template.
+  %
+
+  % Create the fake file name :
+  dup dup length string copy                       % b [dl] (templ) (ffn)
+  (*) 0 get (?) 0 get (\\) 0 get (x) 0 get 0 0     % b [dl] (templ) (ffn) * ? \ x i j
+  { 1 index 7 index length ge { exit } if
+    6 index 2 index get                            % b [dl] (templ) (ffn) * ? \ x i j c
+    dup 7 index eq                                 % b [dl] (templ) (ffn) * ? \ x i j c bool
+    1 index 7 index eq or { % *?
+      pop 2 index
+    } if                                           % b [dl] (templ) (ffn) * ? \ x i j C
+    dup 5 index eq {        % \
+      3 2 roll 1 add 3 1 roll                      % b [dl] (templ) (ffn) * ? \ x i' j C
+      2 index 8 index length ge { pop exit } if
+      pop 6 index 2 index get                      % b [dl] (templ) (ffn) * ? \ x i' j C'
+    } if
+    7 index 2 index 3 2 roll put                   % b [dl] (templ) (ffn) * ? \ x i' j
+    1 add exch 1 add exch                          % b [dl] (templ) (ffn) * ? \ x i'' j'
+  } loop                                           % b [dl] (templ) (ffn) * ? \ x i j
+  6 1 roll pop                                     % b [dl] (templ) (ffn) j * ? \ x
+  exch pop exch pop exch pop exch                  % b [dl] (templ) (ffn) x j
+  { dup 3 index length ge { exit } if
+    3 copy exch put
+    1 add
+  } loop
+  pop pop                                          % b [dl] (templ) (ffn)
+
+  % An internal procedure :
+  {                                 % {} b [dl] (templ) (ffn) (dffn)
+    dup length
+    2 index length sub % drop "ffn", remaining "ldffn" = length of the "directory" part
+    exch                            % {} b [dl] (templ) (ffn) ldffn (dffn)
+    //.makepathtemplate exec        % {} b [dl] (templ) (ffn) ldffn (Dffn)
+    dup                             % {} b [dl] (templ) (ffn) ldffn (Dffn) (Dffn)
+    4 index length dup              % {} b [dl] (templ) (ffn) ldffn (Dffn) (Dffn) templL templL
+    2 index length                  % {} b [dl] (templ) (ffn) ldffn (Dffn) (Dffn) templL templL DffnL
+    exch sub                        % {} b [dl] (templ) (ffn) ldffn (Dffn) (Dffn) templL i
+    exch getinterval                % {} b [dl] (templ) (ffn) ldffn (Dffn) (suffix)
+    4 index exch copy pop           % {} b [dl] (templ) (ffn) ldffn (dt)
+    5 index {
+      exch                          % {} b [dl] (templ) (ffn) (dt) ldffn
+      7 2 roll                      % (dt) ldffn {} b [dl] (templ) (ffn)
+    } {
+      exch pop                      % {} b [dl] (templ) (ffn) (dt)
+      6 1 roll                      % (dt) {} b [dl] (templ) (ffn)
+    } ifelse
+  }
+  5 1 roll                                         % {} b [dl] (templ) (ffn)
+
+  % Generate templates :
+  dup .file_name_is_absolute {
+    dup                                            % {} b [dl] (templ) (ffn) (ffn)
+    5 index exec                                   % (t1) {} b [dl] (templ) (ffn)
+  } {
+    2 index {                                      % ... {} b [dl] (templ) (ffn) (d)
+      1 index                                      % ... {} b [dl] (templ) (ffn) (d) (ffn)
+      //false .file_name_combine {                 % ... {} b [dl] (templ) (ffn) (dffn)
+        5 index exec                               % ... (t1) ?l1 {} b [dl] (templ) (ffn)
+      } {                                          % ... {} b [dl] (templ) (ffn) (d) (ffn)
+        pop pop                                    % ... {} b [dl] (templ) (ffn)
+      } ifelse
+    } forall
+  } ifelse                                         % (t1) ?l1 (t2) ?l2 ... (tN) ?ln {} b [dl] (templ) (ffn)
+  pop pop pop pop pop                              % (t1) ?l1 (t2) ?l2 ... (tN) ?ln
+} .bind executeonly odef
+currentdict /.makepathtemplate .undef
+
+%   <dir_list> <template> .generate_dir_list_templates <t1> ... <tN>
+%
+% Generates various valid templates combining a directory list with a given template.
+% It's the 'false' case of the function above.
+%
+/.generate_dir_list_templates
+{ //false 3 1 roll //.generate_dir_list_templates_with_length
+} .bind executeonly odef
+
+% Load the initialization files for optional features.
+%% Replace 4 INITFILES
+systemdict /INITFILES known
+ { INITFILES { <00> search { exch pop dup runlibfile VMDEBUG }{ dup runlibfile VMDEBUG exit } ifelse } .bind loop
+ }
+if
+
+% If Level 2 (or higher) functionality is implemented, enable it now.
+/.setlanguagelevel where {
+  pop 2 .setlanguagelevel
+        % If the resource machinery is loaded, fix up some things now.
+  /.fixresources where { pop .fixresources } if
+} if
+/ll3dict where {
+  pop 3 .setlanguagelevel
+} if
+
+(END INITFILES) VMDEBUG
+
+% Create a null font.  This is the initial font.
+8 dict dup begin
+  /FontMatrix [ 1 0 0 1 0 0 ] readonly def
+  /FontType 3 def
+  /FontName () def
+  /Encoding StandardEncoding def
+  /FontBBox { 0 0 0 0 } readonly def % executable is bogus, but customary ...
+  /BuildChar { pop pop 0 0 setcharwidth } bind def
+  /PaintType 0 def		% shouldn't be needed!
+end
+/NullFont exch definefont setfont
+
+% Define NullFont as the font.
+/NullFont currentfont def
+
+% Load initial fonts from FONTPATH directories, Fontmap file,
+% and/or .getccfont as appropriate.
+.loadinitialfonts
+currentdict /.loadinitialfonts .undef
+
+% Remove NullFont from FontDirectory, so it can't be accessed by mistake.
+/undefinefont where {
+  pop /NullFont undefinefont
+} {
+  FontDirectory /NullFont .undef
+} ifelse
+
+(END FONTS) VMDEBUG
+
+% Restore the real definition of runlibfile.
+/runlibfile /.runlibfile load def
+currentdict /.runlibfile .undef
+
+% Bind all the operators defined as procedures.
+/.bindoperators		% binds operators in currentdict
+ {
+   currentdict
+    { dup type /operatortype eq
+       {
+         % This might be a real operator, so bind might cause a typecheck
+         {.bind} //.internalstopped exec pop
+       }
+      if pop pop
+    } forall
+ } def
+DELAYBIND not {
+    .bindoperators
+    %% if not DELAYBIND, undef this now. Otherwise defer to .bindnow
+    //systemdict /.bindoperators .undef
+}  if
+
+% Establish a default environment.
+
+defaultdevice
+% The following line used to skip setting of page size and resolution if
+% NODISPLAY was selected.  We think this was only to save time and memory,
+% and it is a bad idea because it prevents setting the resolution in this
+% situation, which pstoedit (among other programs) relies on.
+%DISPLAYING not { setdevice (%END DISPLAYING) .skipeof } if
+
+% If the paper size is not specifed and the device defaults to
+% letter or A4 paper, select the DEFAULTPAPERSIZE.
+systemdict /DEFAULTPAPERSIZE known not {
+  % Use .defaultpapersize if it returns a known paper size
+  .defaultpapersize {
+     statusdict /.pagetypeprocs get 1 index known {
+       systemdict exch /DEFAULTPAPERSIZE exch put
+     } {
+       QUIET {
+         pop
+       } {
+         (Unknown .defaultpapersize: ) print ==only (.) =
+       } ifelse
+     } ifelse
+  } if
+} if
+systemdict /DEFAULTPAPERSIZE known
+systemdict /PAPERSIZE known not and
+systemdict /DEVICEWIDTH known not and
+systemdict /DEVICEHEIGHT known not and
+systemdict /DEVICEWIDTHPOINTS known not and
+systemdict /DEVICEHEIGHTPOINTS known not and
+ {
+   defaultdevice mark /PageSize //null .dicttomark .getdeviceparams
+   .dicttomark /PageSize get
+   dup 0 get 0.5 add cvi 612 eq 1 index 1 get 0.5 add cvi 792 eq and
+   1 index 0 get 0.5 add cvi 595 eq 2 index 1 get 0.5 add cvi 842 eq and
+   or exch pop
+   {
+     % the default paper size was letter, so replace it with DEFAULTPAPERSIZE
+     /PAPERSIZE DEFAULTPAPERSIZE def
+   } if
+ }
+if
+
+systemdict /DEVICEWIDTH known
+systemdict /DEVICEHEIGHT known or
+systemdict /DEVICEWIDTHPOINTS known or
+systemdict /DEVICEHEIGHTPOINTS known or
+systemdict /DEVICEXRESOLUTION known or
+systemdict /DEVICEYRESOLUTION known or
+systemdict /PAPERSIZE known or
+not { (%END DEVICE) .skipeof } if
+% Let DEVICE{WIDTH,HEIGHT}[POINTS] override PAPERSIZE.
+systemdict /PAPERSIZE known
+systemdict /DEVICEWIDTH known not and
+systemdict /DEVICEHEIGHT known not and
+systemdict /DEVICEWIDTHPOINTS known not and
+systemdict /DEVICEHEIGHTPOINTS known not and {
+  % Convert the paper size to device dimensions.
+  statusdict /.pagetypeprocs get PAPERSIZE .knownget {
+    dup 0 get /DEVICEWIDTHPOINTS exch def
+    1 get /DEVICEHEIGHTPOINTS exch def
+  } {
+    (Unknown paper size: ) print PAPERSIZE ==only (.) =
+  } ifelse
+} if
+% Adjust the device parameters per the command line.
+% It is possible to specify resolution, pixel size, and page size;
+% since any two of these determine the third, conflicts are possible.
+% We simply pass them to .setdeviceparams and let it sort things out.
+   mark /HWResolution //null /HWSize //null /PageSize //null .dicttomark
+   .getdeviceparams .dicttomark begin
+   mark
+        % Check for resolution.
+   /DEVICEXRESOLUTION where dup
+    { exch pop HWResolution 0 DEVICEXRESOLUTION put }
+   if
+   /DEVICEYRESOLUTION where dup
+    { exch pop HWResolution 1 DEVICEYRESOLUTION put }
+   if
+   or { /HWResolution HWResolution } if
+        % Check for device sizes specified in pixels.
+   /DEVICEWIDTH where dup
+    { exch pop HWSize 0 DEVICEWIDTH put }
+   if
+   /DEVICEHEIGHT where dup
+    { exch pop HWSize 1 DEVICEHEIGHT put }
+   if
+   or { /HWSize HWSize } if
+        % Check for device sizes specified in points.
+   /DEVICEWIDTHPOINTS where dup
+    { exch pop PageSize 0 DEVICEWIDTHPOINTS put }
+   if
+   /DEVICEHEIGHTPOINTS where dup
+    { exch pop PageSize 1 DEVICEHEIGHTPOINTS put }
+   if
+   or { /PageSize PageSize } if
+        % Check whether any parameters were set.
+   dup mark eq { pop defaultdevice } { defaultdevice putdeviceprops } ifelse
+   end
+%END DEVICE
+% Set any device properties defined on the command line.
+% If BufferSpace is defined but not MaxBitmap, set MaxBitmap to BufferSpace.
+systemdict /BufferSpace known
+systemdict /MaxBitmap known not and
+ { systemdict /MaxBitmap BufferSpace put
+ } if
+dup getdeviceprops
+counttomark 2 idiv
+ { systemdict 2 index known
+    { pop dup load counttomark 2 roll }
+    { pop pop }
+   ifelse
+ } repeat
+counttomark dup 0 ne
+ { 2 add -1 roll putdeviceprops }
+ { pop pop }
+ifelse
+% If the initial device parameters are invalid, the setdevice may fail.
+% Trap this and produce a reasonable error message.
+{ setdevice }		% does an erasepage
+INITDEBUG { exec //false } { //.internalstopped exec } ifelse {
+  (%stderr) (w) file dup
+  (**** Unable to open the initial device, quitting.\n) writestring
+  flushfile
+  1 .quit
+} if
+
+% If the media size is fixed, update the current page device dictionary.
+FIXEDMEDIA
+dup { pop systemdict /.currentpagedevice known } if
+dup { pop .currentpagedevice exch pop } if
+not { (%END MEDIA) .skipeof } if
+currentpagedevice dup length dict .copydict
+dup /Policies
+        % Stack: <pagedevice> <pagedevice> /Policies
+1 index /InputAttributes
+2 copy get dup length dict .copydict
+        % Stack: <pagedevice> <pagedevice> /Policies <pagedevice>
+        %   /InputAttributes <inputattrs'>
+dup 0 2 copy get dup length dict .copydict
+        % Stack: <pagedevice> <pagedevice> /Policies <pagedevice>
+        %   /InputAttributes <inputattrs'> <inputattrs'> 0 <attrs0'>
+dup /PageSize 7 index /PageSize get
+put				% PageSize in 0
+put				% 0 in InputAttributes
+put				% InputAttributes in pagedevice
+% Also change the page size policy so we don't get an error.
+        % Stack: <pagedevice> <pagedevice> /Policies
+2 copy get dup length dict .copydict
+        % Stack: <pagedevice> <pagedevice> /Policies <policies'>
+dup /PageSize 7 put		% PageSize in Policies
+put				% Policies in pagedevice
+.setpagedevice
+%END MEDIA
+
+% Set up the interpreter context version of -dUSeCIEColor option
+% so that .getuseciecolor has the correct value (see gs_setpd.ps)
+/setpagedevice where {
+  pop systemdict /UseCIEColor known {
+    mark /UseCIEColor UseCIEColor /..StartupGlobal //true .dicttomark setpagedevice
+  } if
+} if
+
+%END DISPLAYING
+
+(END DEVICE) VMDEBUG
+
+% Establish a default upper limit in the character cache,
+% namely, enough room for a 18-point character at the resolution
+% of the default device, or for a character consuming 1% of the
+% maximum cache size, whichever is larger.
+mark
+        % Compute limit based on character size.
+  18 dup dtransform
+  exch abs cvi 31 add 32 idiv 4 mul	% X raster
+  exch abs cvi mul		% Y
+        % Compute limit based on allocated space.
+  cachestatus pop pop pop pop pop exch pop 0.01 mul cvi
+  .max dup 10 idiv exch
+setcacheparams
+% Conditionally disable the character cache.
+NOCACHE { 0 setcachelimit } if
+
+(END CONFIG) VMDEBUG
+
+% Initialize graphics.
+
+.setdefaultscreen
+initgraphics
+
+% The interpreter relies on there being at least 2 entries
+% on the graphics stack.  Establish the second one now.
+gsave
+
+% Define some control sequences as no-ops.
+% This is a hack to get around problems
+% in some common PostScript-generating applications.
+<04> cvn JOBSERVER {
+    { { clear cleardictstack //false 0 .startnewjob } 2 .stop } bind
+  } {
+    { }
+  } ifelse def
+<1b> cvn
+.actonuel % UEL is <esc>%-12345X and acts the same as ^D
+{systemdict (.forceinterp_exit) cvn known {//true} {//false} ifelse}
+{//false} ifelse
+
+{
+  {
+    currentfile (%-12345X) .peekstring pop (%-12345X) eq
+    { currentfile .forceinterp_exit } if
+  }
+}
+{
+  {currentfile (%-12345X) .peekstring pop (%-12345X) eq <04> cvn load if}
+} ifelse bind def
+
+<1b45> cvn { } def		% PJL reset prologue (ESC E)
+<1b451b> cvn <1b> cvn load def	% PJL reset epilogue (ESC E + UEL)
+(\001M) cvn			% TBCP initiator
+ { currentfile /TBCPDecode filter cvx exec
+ } bind def
+/@PJL				% H-P job control
+ {
+   % Windows 2000 driver includes PJL into %%BeginFeature block.
+   % Identify this from the pattern on the stack: countdictstack lucas mark
+   % and fail the feature request.
+
+   count 3 ge {
+     dup mark eq {
+       2 index countdictstack eq {
+          1 index /lucas where { /lucas get eq } { pop //false } ifelse {
+            stop
+         } if
+       } if
+     } if
+   } if
+   currentfile //=string readline pop pop
+ } bind def
+
+% Install the EPS handler if needed
+systemdict /EPSBoundingBoxInit known { EPSBoundingBoxInit } if
+systemdict /EPSBoundingBoxInit .forceundef
+
+%% ---------------- SAFER stuff BEGIN -------------------%%
+% If we want a "safer" system, disable some obvious ways to cause havoc.
+.currentglobal //true .setglobal
+/SAFETY 2 dict
+  dup /safe //false put
+  dup /tempfiles 10 dict noaccess put
+readonly def
+.setglobal
+
+/SAFERUndefinePostScriptOperators {
+  [
+  % Used by our own test suite files
+  /.setdotlength             % Bug687720.ps
+  /.sort /.setdebug /.mementolistnewblocks /getenv
+  /unread
+  ]
+  {systemdict exch .forceundef} forall
+
+  //systemdict /SAFERUndefinePostScriptOperators .forceundef
+} .bind executeonly def % must be bound and hidden for .forceundef
+
+/tempfilepaths
+[
+  (TMPDIR) getenv not
+  {
+    (TEMP) getenv not
+    {
+      (TMP) getenv not
+      {
+        (/temp) (/tmp)
+      } if
+    } if
+  } if
+] def
+
+/.lockfileaccess {
+  .currentpathcontrolstate
+  {
+    //QUIET not
+    {
+      (\n **** WARNING: .lockfileaccess or .setsafe called ****\n) print
+      ( **** when file access controls are already active ****\n) print flush
+    } if
+  }
+  {
+    [
+      //tempfilepaths (*) .generate_dir_list_templates
+      /FONTPATH .systemvar (*) .generate_dir_list_templates
+      /level2dict where {
+          pop
+          % Default resources :
+        [ currentsystemparams /GenericResourceDir get] (*) .generate_dir_list_templates
+      } if
+      /LIBPATH  .systemvar (*) .generate_dir_list_templates
+      currentuserparams /ICCProfilesDir known {
+        [currentuserparams /ICCProfilesDir get] (*)
+        .generate_dir_list_templates
+      } if
+    ] {/PermitFileReading exch .addcontrolpath} forall
+
+    [
+      //tempfilepaths (*) .generate_dir_list_templates
+    ] {/PermitFileWriting exch .addcontrolpath} forall
+
+    [
+      //tempfilepaths (*) .generate_dir_list_templates
+    ] {/PermitFileControl exch .addcontrolpath} forall
+
+    .activatepathcontrol
+  } ifelse
+} bind def
+
+/.locksafe_userparams {
+  SAFETY /safe get not {
+    <<
+      /PermitFileReading [
+        currentuserparams /PermitFileReading get aload pop
+        //tempfilepaths (*) .generate_dir_list_templates
+        /FONTPATH .systemvar (*) .generate_dir_list_templates
+          % Library files :
+        /LIBPATH  .systemvar (*) .generate_dir_list_templates
+          % Resource files on OpenVMS requires a separate template (gs:[dir.*]*)
+          % because the (gs:[dir]*) doesn't cover them.
+        /LIBPATH  .systemvar (*) .file_name_separator (*)
+          concatstrings concatstrings .generate_dir_list_templates
+        .languagelevel 2 ge {
+            % Default resources :
+          [ currentsystemparams /GenericResourceDir get] (*) .generate_dir_list_templates
+            % Default resources (OpenVMS, see comment above.) :
+          [ currentsystemparams /GenericResourceDir get] (*) .file_name_separator (*)
+            concatstrings concatstrings .generate_dir_list_templates
+        } if
+        currentuserparams /ICCProfilesDir known {
+          [currentuserparams /ICCProfilesDir get] (*)
+          .generate_dir_list_templates
+        } if
+      ]
+      /PermitFileWriting [
+          currentuserparams /PermitFileWriting get aload pop
+          //tempfilepaths (*) .generate_dir_list_templates
+      ]
+      /PermitFileControl [
+          currentuserparams /PermitFileControl get aload pop
+          //tempfilepaths (*) .generate_dir_list_templates
+      ]
+      /LockFilePermissions //true
+    >> setuserparams
+  }
+  if
+} .bind executeonly def
+
+currentdict /tempfilepaths undef
+
+%% --- These are documented extensions ---
+/.locksafe {
+  //.locksafe_userparams exec
+  //systemdict /getenv {pop //false} .forceput
+  % setpagedevice has the side effect of clearing the page, but
+  % we will just document that. Using setpagedevice keeps the device
+  % properties and pagedevice .LockSafetyParams in agreement even
+  % after a restore that changes the value to false.
+  currentglobal currentpagedevice gcheck setglobal % use correct VM space
+  << /.LockSafetyParams //true >> setpagedevice
+  setglobal
+  //SAFETY /safe //true .forceput % overrides readonly
+} .bind executeonly odef
+
+/.setsafe
+{
+  OLDSAFER {
+    SAFETY /safe get not {
+      <<
+        /PermitFileReading [ ]
+        /PermitFileWriting [ ]
+        /PermitFileControl [ ]
+      >> setuserparams
+    }
+    if
+    .locksafe
+  }
+  {
+    //.lockfileaccess exec
+    DELAYBIND not {
+        //systemdict /SAFERUndefinePostScriptOperators .knownget {exec} if
+    } if
+  }
+  ifelse
+} .bind executeonly odef
+%% --- End documented extensions ---
+
+% This is only used during startup. Its required so that
+% we can detect in setpagdevice that we are in fact in startup
+% and allocate a *global* instead of local VM. We need it to be
+% global to satisfy Display PostScript (see start of /setpagdevice
+% in gs_setpd.ps)
+%
+/.locksafeglobal {
+  //.locksafe_userparams exec
+  systemdict /getenv {pop //false} put
+  % setpagedevice has the side effect of clearing the page, but
+  % we will just document that. Using setpagedevice keeps the device
+  % properties and pagedevice .LockSafetyParams in agreement even
+  % after a restore that changes the value to false.
+  currentglobal currentpagedevice gcheck setglobal % use correct VM space
+  << /.LockSafetyParams //true
+    /..StartupGlobal //true
+  >> setpagedevice
+  setglobal
+  //SAFETY /safe //true .forceput % overrides readonly
+} .bind def
+
+% See /.locksafeglobal above.
+%
+/.setsafeglobal {
+  OLDSAFER
+  {
+    SAFETY /safe get not {
+      <<
+        /PermitFileReading [ ]
+        /PermitFileWriting [ ]
+        /PermitFileControl [ ]
+      >> setuserparams
+    }
+    if
+    //.locksafeglobal exec
+  }
+  {
+    //.lockfileaccess exec
+    DELAYBIND not {
+        //systemdict /SAFERUndefinePostScriptOperators .knownget {exec} if
+    } if
+  }
+  ifelse
+} .bind executeonly odef
+
+% If we are running in SAFER mode, lock things down
+SAFER { .setsafeglobal } if
+currentdict /.locksafe_userparams .undef
+currentdict /.setsafeglobal .undef
+currentdict /.locksafeglobal .undef
+
+%% ---------------- SAFER stuff END -------------------%%
+
+/UndefinePostScriptOperators {
+  % This list is of operators which no longer appear to be used, and which we do not believe
+  % to have any real use. For now we will undefine the operstors so they cannot easily be used
+  % but can be easily restored (just delete the name from the list in the array). In future
+  % we may remove the operator and the code implementation entirely.
+  [
+  /.bitadd /.charboxpath /.cond /.runandhide /.popdevicefilter
+  /.execfile /.filenamesplit /.file_name_parent
+  /.setdefaultmatrix /.isprocfilter /.unread /.psstringencode
+  /.buildsampledfunction /.isencapfunction /.currentaccuratecurves /.currentcurvejoin /.currentdashadapt /.currentdotlength
+  /.currentlimitclamp /.dotorientation /.setaccuratecurves /.setcurvejoin /.setdashadapt /.setdotorientation
+  /.setlimitclamp /.currentscreenlevels /.dashpath /.pathbbox /.identeq /.identne /.tokenexec /.forgetsave /.pantonecallback
+
+  % Used by our own test suite files
+  %/.setdotlength % Bug687720.ps
+  ]
+  {systemdict exch .forceundef} forall
+
+  % This list of operators are used internally by various parts of the Ghostscript startup code.
+  % Since each operator is a potential security vulnerability, and any operator listed here
+  % is not required once the initialisation is complete and functions are bound, we undefine
+  % the ones that aren't needed at runtime.
+  [
+  /.callinstall /.callbeginpage /.callendpage
+  /.currentstackprotect /.setstackprotect /.errorexec /.finderrorobject /.installsystemnames /.bosobject /.fontbbox
+  /.type1execchar /.type2execchar /.type42execchar /.setweightvector /.getuseciecolor /processcolors /.includecolorspace
+  /.execn /.instopped /.stop /.stopped /.setcolorrendering /.setdevicecolorrendering /.buildcolorrendering1 /.builddevicecolorrendering1
+  /.TransformPQR_scale_WB0 /.TransformPQR_scale_WB1 /.TransformPQR_scale_WB2 /.currentoverprintmode /.copydevice2
+  /.devicename /.doneshowpage /.getbitsrect /.getdevice /.getdefaultdevice /.getdeviceparams /.gethardwareparams
+  /makewordimagedevice /.outputpage /.putdeviceparams /.setdevice /.currentshowpagecount
+  /.setpagedevice /.currentpagedevice /.knownundef /.setmaxlength /.rectappend /.initialize_dsc_parser /.parse_dsc_comments
+  /.fillCIDMap /.fillIdentityCIDMap /.buildcmap /.filenamelistseparator /.libfile /.getfilename
+  /.file_name_combine /.file_name_is_absolute /.file_name_separator /.file_name_directory_separator /.file_name_current /.filename
+  /.peekstring /.writecvp /.subfiledecode /.setupUnicodeDecoder /.jbig2makeglobalctx /.registerfont /.parsecff
+  /.getshowoperator /.getnativefonts /.beginform /.endform /.get_form_id /.repeatform /.reusablestream /.rsdparams
+  /.buildfunction /.sethpglpathmode /.currenthpglpathmode
+  /.currenthalftone /.sethalftone5 /.image1 /.imagemask1 /.image3 /.image4
+  /.getiodevice /.getdevparms /.putdevparams /.bbox_transform /.matchmedia /.matchpagesize /.defaultpapersize
+  /.oserrno /.setoserrno /.oserrorstring /.getCPSImode
+  /.getscanconverter /.setscanconverter /.type1encrypt /.type1decrypt/.languagelevel /.setlanguagelevel /.eqproc /.fillpage
+  /.saslprep
+  /.shfill /.argindex /.bytestring /.namestring /.stringbreak /.stringmatch /.globalvmarray /.globalvmdict /.globalvmpackedarray /.globalvmstring
+  /.localvmarray /.localvmdict /.localvmpackedarray /.localvmstring /.systemvmarray /.systemvmdict /.systemvmpackedarray /.systemvmstring /.systemvmfile /.systemvmlibfile
+  /.systemvmSFD /.settrapparams /.currentsystemparams /.currentuserparams /.getsystemparam /.getuserparam /.setsystemparams /.setuserparams
+  /.checkpassword /.locale_to_utf8 /.currentglobal /.gcheck /.imagepath /.currentoutputdevice
+  /.type /.writecvs /.setSMask /.currentSMask /.needinput /.countexecstack /.execstack
+  /filterdict /.cidfonttypes /.colorrenderingtypes
+  /.formtypes /.halftonetypes /.imagetypes /.imagemasktypes
+  /.patterntypes /.shadingtypes /.wheredict /.renderingintentdict
+  /.currentmatrix /.setmatrix
+  /.setlinecap  /.setlinejoin  /.sizeimagebox  /.systemvmcheck
+  /.forceinterp_exit /.actonuel
+  /.init_otto_font_file
+  /.composefontdict
+  /.type1build
+  /.origdefinefont /.origundefinefont /.origfindfont
+  /.buildnativefontmap
+  /.completefont
+  /.definefakefonts
+  /.fontnameproperties
+  /.growfontdict
+  /.substitutefont /.substitutefontname
+  /.FontDirectory
+  /.charkeys
+  /.makesfnts
+  /.pickcmap
+  /.loadttcidfont
+  /.loadpdfttfont
+  /obind
+  /odef
+  /.packtomark
+  /.putdeviceprops
+  /.growdict /.growdictlength
+  /.userdict /.uservar
+  /.getdefaulthalftone
+  /.registererror
+  /.PurgeDict
+  /.runresource
+  /.numicc_components
+  /.set_outputintent
+  /.internalstopped
+  /.generate_dir_list_templates /.generate_dir_list_templates_with_length
+  /.type11mapcid /.type9mapcid
+  /.clearerror
+  /.beginpage /.endpage
+  /.getpath
+  /.confirm /.confirmread
+
+  % Used by a free user in the Library of Congress. Apparently this is used to
+  % draw a partial page, which is then filled in by the results of a barcode
+  % scanner and SQL database lookup. Its not clear to us exactly why this needs to be
+  % done as a partial page, but its easiest to restore the operator, and it seems like
+  % its a reasonably safe operator to restore, for the *very* few devices on which
+  % it will have any effect. Currently this uses the 'sync_output' device method
+  % to transfer the partial page, in future we may use a spec_op instead.
+  %/flushpage
+
+  % Used by our own test suite files
+  %/.fileposition %image-qa.ps
+
+  % Either our code uses these in ways which mean they can't be undefined, or they are used directly by
+  % test files/utilities, or engineers expressed a desire to keep them visible.
+  %
+  %/currentdevice /.sort /.buildfont0 /.buildfont1 /.buildfont2 /.buildfont3 /.buildfont4 /.buildfont9 /.buildfont10 /.buildfont11
+  %/.buildfont32 /.buildfont42 /.swapcolors
+  %/currentdevice  /.quit /.setuseciecolor /.needinput /.setoverprintmode /.special_op /.dicttomark /.knownget
+  %/.FAPIBuildGlyph /.FAPIBuildChar /.FAPIBuildGlyph9
+  %/.tempfile /.max /.min /.setglobal
+  %/.setdebug /.mementolistnewblocks /getenv
+  ]
+  {systemdict exch .forceundef} forall
+
+  % level 2 operators, undefine from both systemdict and level2dict
+  [
+      /.execform1
+      /.getdevparams
+      /.setuserparams2
+      /.startjob
+      /.checkFilePermitparams
+      /.copyparam
+      /.setdevicecolorrendering1
+      /.buildpattern1
+      /.findcategory
+      /.execinstall
+      /.findfontop
+
+% Couldn't figure out how to do these yet
+%      /.checkparamtype
+%      /.startnewjob
+  ]
+  dup {level2dict exch .forceundef} forall
+  {systemdict exch .forceundef} forall
+
+  % undef stuff from statusdict
+  [
+%      /.setpagesize
+  ]
+  {statusdict exch .forceundef} forall
+
+  //systemdict /UndefinePostScriptOperators .forceundef
+} .bind executeonly def % must be bound and hidden for .forceundef
+
+% If we delayed binding, make it possible to do it later.
+/.bindnow {
+  currentuserparams /IdiomRecognition .knownget {
+    1 dict dup /IdiomRecognition //false put setuserparams
+  } if
+  //systemdict begin .bindoperators end
+  % Temporarily disable the typecheck error.
+  errordict /typecheck 2 copy get
+  errordict /typecheck { pop } put	% pop the command
+  0 1 .delaycount 1 sub { .delaybind exch get .bind pop } for
+  //systemdict /.delaybind {} .forceput	% reclaim the space
+  //systemdict /.bindnow .forceundef	% ditto
+  .applyundefinternalnames
+  put
+  SAFER {
+    //systemdict /SAFERUndefinePostScriptOperators get exec
+  } if
+  //systemdict /UndefinePostScriptOperators get exec
+  //systemdict /.forcecopynew .forceundef	% remove temptation
+  //systemdict /.forceput .forceundef		% ditto
+  //systemdict /.undef .forceundef		    % ditto
+  //systemdict /.bindoperators .forceundef
+  //systemdict /.forceundef .forceundef		% ditto
+  //systemdict /.undefinternalnames .forceundef
+  //systemdict /.applyundefinternalnames .forceundef
+  //systemdict /.undefinternalnameslist .forceundef
+  currentuserparams /IdiomRecognition known {
+    1 dict dup /IdiomRecognition 4 -1 roll put setuserparams
+  } if
+} .bind def
+
+% Turn off array packing, since some PostScript code assumes that
+% procedures are writable.
+//false setpacking
+
+(END INIT) VMDEBUG
+
+/.currentuserparams where {
+  pop
+        % Remove real user params from psuserparams.
+  mark .currentuserparams counttomark 2 idiv {
+    pop psuserparams exch undef
+  } repeat pop
+        % Update the copy of the user parameters.
+  mark .currentuserparams counttomark 2 idiv {
+    userparams 3 1 roll .forceput	% userparams is read-only
+  } executeonly repeat pop
+        % Turn on idiom recognition, if available.
+  currentuserparams /IdiomRecognition known {
+    /IdiomRecognition //true .definepsuserparam
+  } if
+  psuserparams readonly pop
+  systemdict /.definepsuserparam undef
+        % Save a copy of userparams for use with save/restore
+        % (and, if implemented, context switching).
+  .currentglobal //false .setglobal
+     mark userparams { } forall .dicttomark readonly
+     currentdict exch /userparams exch .forceput		% systemdict is read-only
+  .setglobal
+} executeonly if
+/.currentsystemparams where {
+  pop
+        % Remove real system params from pssystemparams.
+  mark .currentsystemparams counttomark 2 idiv {
+    pop pssystemparams exch .forceundef
+  } executeonly repeat pop
+} if
+
+% Set up AlignToPixels :
+
+/AlignToPixels where {
+  mark /AlignToPixels 2 index /AlignToPixels get .dicttomark setuserparams
+  /AlignToPixels undef
+} if
+
+% Set up GridFitTT :
+
+/GridFitTT where {
+  mark /GridFitTT 2 index /GridFitTT get .dicttomark setuserparams
+  /GridFitTT undef
+} if
+
+% Establish local VM as the default.
+//false /setglobal where { pop setglobal } { .setglobal } ifelse
+$error /.nosetlocal //false put
+
+(END GLOBAL) VMDEBUG
+
+% Add the fake fonts to LocalFontDirectory.
+//.definefakefonts exec	% current VM is local
+
+% Execute scheduled inits :
+1183615869 internaldict /.execute_scheduled_inits get exec
+currentdict /.schedule_init undef
+%currentdict /.execute_scheduled_inits undef
+%currentdict /.delayed_init_queue undef
+
+% Make global and local FontDirectory read-only.
+FontDirectory readonly pop
+/GlobalFontDirectory where { pop GlobalFontDirectory readonly pop } if
+
+% If we are using DELAYBIND we have to defer the undefinition
+% until .bindnow.
+DELAYBIND not {
+  //systemdict /UndefinePostScriptOperators get exec
+} if
+end
+
+% Clean up VM, and enable GC. Use .vmreclaim to force the GC.
+/vmreclaim where
+ { pop //systemdict /NOGC get not { 2 .vmreclaim 0 vmreclaim } if
+ } if
+systemdict /.vmreclaim .undef
+level2dict /.vmreclaim .undef
+
+% Do this before systemdict is locked (see below for additional CETMODE setup using gs_cet.ps)
+systemdict /CETMODE .knownget {
+  {
+    (gs_cet.ps) runlibfile
+  } if
+} if
+systemdict /.makeoperator .undef	% must be after gs_cet.ps
+systemdict /.setCPSImode .undef		% must be after gs_cet.ps
+
+DELAYBIND not {
+  systemdict /.bindnow .undef       % We only need this for DELAYBIND
+  systemdict /.forcecopynew .undef	% remove temptation
+  systemdict /.forceput .undef		% ditto
+  systemdict /.forceundef .undef	% ditto
+  systemdict /.undefinternalnames .undef
+  systemdict /.applyundefinternalnames .undef
+  systemdict /.undefinternalnameslist .undef
+} if
+
+% Can't remove this one until the last minute :-)
+DELAYBIND not {
+systemdict /.undef .undef
+} if
+
+WRITESYSTEMDICT {
+   SAFER {
+       (\n *** WARNING - you have selected SAFER, indicating you want Ghostscript\n) print
+       (               to execute in a safer environment, but at the same time\n) print
+       (               have selected WRITESYSTEMDICT. Unless you use this option with\n) print
+       (               care and specifically, remember to execute code like:\n) print
+       (                      "systemdict readonly pop"\n) print
+       (               it is possible that malicious code may be able to evade the\n) print
+       (               limited security offered by the SAFER option.\n) print flush
+   }if
+}
+{
+     systemdict readonly pop
+} ifelse
+
+(END GC) VMDEBUG
+
+% The Adobe AGM_Core used by Illustrator 9 has some code that breaks
+% if the 'product' is not (Adobe PostScript Parser). A bug has been
+% submitted to Adobe since this also fails with Acrobat Distiller.
+% As a temporary work around, the following HACK will work for
+% devices without spot color support. Once Ghostscript can
+% support DeviceN and spot color separations this will need to
+% be 'true' in some cases.
+userdict /AGM_preserve_spots //false put
+
+% The interpreter will run the initial procedure (start).

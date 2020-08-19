@@ -1,0 +1,36 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% DefaultRGB color space resource.
+
+currentglobal true setglobal
+
+/DefaultRGB
+[ /CIEBasedABC
+	3 dict begin
+    /DecodeLMN [ {
+      dup 0.03928 le { 12.92321 div } { 0.055 add 1.055 div 2.4 exp } ifelse
+    } bind dup dup ] def
+    /MatrixLMN [
+      0.4360 0.2225 0.0139
+      0.3851 0.7169 0.09710
+      0.1431 0.0606 0.7139
+    ] def
+    /WhitePoint [0.9642 1.0 0.8249] def
+  currentdict end
+]
+/ColorSpace defineresource pop
+
+setglobal

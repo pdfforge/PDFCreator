@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>Ghostscript: What Is Ghostscript?</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12"> What is Ghostscript?</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<p>
+There are various different products in the Ghostscript family; this document
+attempts to explain what they are, and how they are related.
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.2 begin table of contents] ========================================= -->
+
+<h2>Table of contents</h2>
+
+<blockquote><ul>
+<li><a href="#Ghostscript">What is Ghostscript?</a>
+<li><a href="#GhostPDF">What is GhostPDF?</a>
+<li><a href="#GhostPCL">What is GhostPCL?</a>
+<li><a href="#GhostXPS">What is GhostXPS?</a>
+<li><a href="#GhostPDL">What is GhostPDL?</a>
+</ul></blockquote>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+<h2><a name="Ghostscript"></a>What is Ghostscript?</h2>
+
+<p>Ghostscript is an interpreter for <a href="http://en.wikipedia.org/wiki/PostScript">PostScript</a><a href="#foot1">&trade;</a> and <a href="http://en.wikipedia.org/wiki/Portable_Document_Format">Portable Document Format</a>
+(PDF) files. It is available both under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU GPL Affero license</a>
+and for <a href="http://www.artifex.com/page/licensing-information.html">commercial licensing</a>
+from <a href="http://www.artifex.com.">Artifex</a>. It has been under active
+development for over 20 years and has been ported to many different systems
+during this time.
+
+<p>Ghostscript consists of a PostScript interpreter layer, and a graphics
+library. Sometimes the Ghostscript graphics library is confusingly also referred
+to simply as Ghostscript. Even more confusingly, sometimes people say Ghostscript
+when they really mean GhostPDL.
+
+<p>Binaries for Ghostscript for various systems can be downloaded from
+<a href="http://www.ghostscript.com/download">www.ghostscript.com/download</a>. The
+source code is included in both the Ghostscript and GhostPDL downloads from
+the same site.
+<hr>
+<h2><a name="GhostPDF"></a>What is GhostPDF?</h2>
+
+<p>GhostPDF is an interpreter built on top of Ghostscript that handles PDF files.
+Currently GhostPDF relies on extensions to the PostScript language/imaging model,
+and so cannot be used independently of the Ghostscript PostScript interpreter
+component. As such GhostPDF is an umbrella term used to refer to both these
+extensions and the interpreter code.
+
+<p>Many people (including the authors) frequently just refer to Ghostscript
+as supporting PDF and only specifically mention GhostPDF when wanting to make
+the distinction between the PostScript and PDF support.
+
+<p>GhostPDF is included in the Ghostscript binaries for various systems available
+from <a href="http://www.ghostscript.com/download">www.ghostscript.com/download</a>.
+The source can be found in both the Ghostscript and GhostPDL downloads from
+the same site.
+<hr>
+<h2><a name="GhostPCL"></a>What is GhostPCL?</h2>
+
+<p>GhostPCL is an interpreter for PCL<a href="#foot2">&trade;</a> and PXL files. This consists of an
+PCL/PXL interpreter hooked up to the Ghostscript graphics library.
+
+<p>GhostPCL is available both under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL license</a>
+and for <a href="http://www.artifex.com/page/licesnsing-information.html">commercial licensing</a>
+from <a href="http://www.artifex.com">Artifex</a>.
+
+<p>Binaries for GhostPCL for various systems can be downloaded from
+<a href="http://www.ghostscript.com/download">www.ghostscript.com/download</a>. The
+source can be found in the GhostPCL/GhostPDL downloads from the same site.
+<hr>
+<h2><a name="GhostXPS"></a>What is GhostXPS?</h2>
+
+<p>GhostXPS is an interpreter for XPS (XML Paper Specfication) files. This
+consists of an XPS interpreter hooked up to the Ghostscript graphics library.
+
+<p>GhostXPS is available both under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL license</a>
+and for <a href="http://www.artifex.com/page/licesnsing-information.html">commercial licensing</a>
+from <a href="http://www.artifex.com">Artifex</a>.
+
+<p>Binaries for GhostXPS for various systems can be downloaded from
+<a href="http://www.ghostscript.com/download">www.ghostscript.com/download</a>. The
+source can be found in the GhostXPS/GhostPDL downloads from the same site.
+<hr>
+<h2><a name="GhostPDL"></a>What is GhostPDL?</h2>
+
+<p>GhostPDL (Ghost Page Description Languages) is an umbrella term for all
+the above technologies. As all the above interpreters are built upon a
+single graphics library, there are size and portability benefits to using
+two of more of the languages in a given project. A product that
+includes more than one such language in a single binary and automatically
+chooses between them is sometimes referred to as a "Language Switch" build.
+
+<p>GhostPDL is available both under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero GPL license</a>
+and for <a href="http://www.artifex.com/page/licesnsing-information.html">commercial licensing</a>
+from <a href="http://www.artifex.com">Artifex</a>.
+
+<p>The source code for GhostPDL can be found on
+<a href="http://www.ghostscript.com/download">www.ghostscript.com/download</a>.
+
+<!-- [2.0 end contents] ==================================================== -->
+
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+<p><a name="foot1">PostScript</a> is a registered trademark of Adobe Systems Inc.
+<p><a name="foot2">PCL</a> is a registered trademark of Hewlett-Packard Company.
+<hr>
+
+<p>
+<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

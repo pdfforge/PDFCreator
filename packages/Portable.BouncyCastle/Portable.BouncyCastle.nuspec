@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>Portable.BouncyCastle</id>
+    <version>1.8.1.3</version>
+    <title>Bouncy Castle PCL</title>
+    <authors>Oren Novotny</authors>
+    <owners>BouncyCastle.Crypto</owners>
+    <licenseUrl>https://raw.githubusercontent.com/onovotny/bc-csharp/netstandard/License.html</licenseUrl>
+    <projectUrl>https://github.com/onovotny/bc-csharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>BouncyCastle portable version with support for .NET 4, .NET Standard 1.0-2.0, WP, Silverlight, MonoAndroid, Xamarin.iOS, .NET Core</description>
+    <summary>Portable version of Bouncy Castle with .NET Standard and PCL support</summary>
+    <copyright>Copyright (C) 2000-2017</copyright>
+    <tags>bouncycastle cryptography encryption security PCL wp8 wpa81 coreclr netstandard dnx uwp sl5 netcore monoandroid xamarin xamarin.ios</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETStandard1.0">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETPortable0.0-Profile328" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

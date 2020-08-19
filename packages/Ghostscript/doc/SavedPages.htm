@@ -1,0 +1,356 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>Ghostscript: Sample CMYK 32-bit Device that Supports Post Rendering Processing</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12"> Using Saved Pages ( --saved-pages=... )</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<ul>
+<li><a href="#Keywords">Saved Pages control keywords,</a>
+<li><a href="#Print_Keywords">Printing saved pages.</a>
+<li><a href="#Examples">Examples.</a>
+</ul>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.3 begin hint] ====================================================== -->
+<p>
+Saved pages can be printed in any order, any number of times allowing for copy
+collation, manual 'duplex' printing or selecting a subset of pages.
+</p>
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+<p>
+Many raster printing devices and raster image format devices can use the command
+list (clist) to save the rendering information into files or memory based structures.
+Usually the clist data is rendered as soon as the page is complete, but it is`
+possible to defer rendering, then output (print) after the entire file has been
+converted to clist files.
+<p>
+Since each page is saved separately, the pages can be rendered from the clist
+files in any order, any number of times.
+<p>
+The saved pages are accumulated in clist form as files or in memory. The default
+clist storage is specified by the <code>BAND_LIST_STORAGE=</code> macro in the
+make file, but if <code>BAND_LIST_STORAGE=file</code>, the clist can be forced
+to be in memory using the <code>-sBandListStorage=memory</code> option.
+<hr>
+<h2><a name="Keywords"></a>Saved Pages control keywords</h2>
+<p>
+Deferring printing is controlled using the <code>--saved-page=...</code> option.
+<p>
+The string following the <code>--saved-page=</code> consists of keywords,
+separated by white-space, commas, or other non-alphanumeric characters
+such as ':', '=', ';'. If more than one keyword is given, the string should
+be enclosed in double-quotes (<code>"</code>).
+<p>
+The '<code>-</code>' (dash), and the '<code>*</code>' asterisk), are used in
+page range selections, and cannot be keyword separators.
+<p>
+Keywords are case independent, thus "<b><code>begin</code></b>",
+"<b><code>BEGIN</code></b>", and "<b><code>Begin</code></b>" are all equivalent.
+<p>
+<dl>
+<dt><code>begin</code>
+<dd>Begins accumulating pages to a list. The clist data for each page is
+saved in files or memory as discussed above, but no rendering is performed.
+<p>
+If the device was set for rendering into memory, is will be switched to
+accumulating the page as clist files, thus <code>-dMaxBitmap</code> and
+<code>-dBandingNever</code> will be ignored, as if <code>-dBandingAlways</code>
+was specified.
+</dl>
+
+<dl>
+<dt><code>flush</code>
+<dd>Delete all clist files for all pages on the list, and reset the
+list to empty, but remain in <code>saved-pages</code> mode. Subsequent
+pages will be added to the list.
+</dl>
+
+ <dl>
+<dt><code>end</code>
+<dd>Flush any list, deleting all clist files for any accumulated pages
+and stop accumulating pages, returning to rendering/output as soon as
+the page is complete.
+<p>
+The device may render subsequent pages in memory (page buffer) as
+determined by </code>-dMaxBitmap</code> and </code>-dBandingNever</code>.
+</dl>
+
+<dl>
+<dt><code>copies </code><em>copy_count</em>
+<dd>Set the copy count for the <code>print</code> action. The requested number
+of copies will be generated for all subsequent print actions, thus
+producing <b>collated</b> copies, rather than multiple copies of
+each page as in normal (non-deferred) rendering and output.
+<p>
+A <code>--saved-pages="copies <em>#</em>"</code> option will be applied to all
+print actions until a new <code>copies <em>#</em></code> is encountered
+that sets the copy count to a different value. Since the
+<code>copies</code> can follow the <code>print</code> command, it is
+recommended that only a single <code>copies</code> be in a each
+<code>--saved-pages=</code><em>...</em> string.
+<p>
+Note, that unless <code>-d.IgnoreNumCopies=true</code> is specified
+prior to starting <code>saved-pages</code> mode, the copy count for
+each page will be saved with each page, and the job will contain the
+specified number of copies of each page, as well as producing the
+number of collated copies of the job set by the <code>copies</code>
+in a <code>--saved-pages=</code><em>...</em> string.
+</dl>
+
+<dl>
+<dt><code>print </code><em>print keywords</em>
+<dd>Print from the list of saved pages. The <em>print keywords</em>
+follwing the <code>print</code> action keyword determine what is
+printed, and in what order. The keywords are described in the next
+section.
+</dl>
+
+
+<h3><a name="Print_Keywords"></a>Printing Saved Pages</h3>
+
+<p>
+The string following the <code>print</code> action keyword determines which pages
+from the list are printed, in what order. Any sequence of keywords, page numbers
+or page ranges can follow the <code>print</code> keyword. The first control keyword
+(other than <code>copies</code>) ends the list of printing keywords.
+<p>
+As with control keywords, print keywords can be any mixture of upper or lower case,
+and print keyword, page numbers and page ranges can be seperated by any non-alphanumeric
+character other than '<code>-</code>' or '<code>*</code>'.
+<p>
+The following are all equivalent:
+<blockquote><dl>
+<dt><code>1 3 5 - *</code>
+<dt><code>1, 3, 5-*</code>
+<dt><code>1,3,5-*</code>
+</dl></blockquote>
+
+<dl>
+<dt><code>copies </code><em>copy_count</em>
+<dd>As mentioned above, the <code>copies</code> keyword and count can follow the <code>print</code>
+keyword. See the description of the <code>copies</code> keyword in the previous section.
+<p>
+The copy count will be applied to the entire sequence of print keywords, so it can
+appear anywhere in the sequence of page number, page ranges or print keywords.
+</dl>
+
+<dl>
+<dt><code>normal</code>
+<dd>Print all of the pages, from the first until the last page in the list. This
+keyword is used to print collated copies in the usual page order. This is the
+same as the page range: <code>"1 - *"</code>
+</dl>
+
+<dl>
+<dt><code>reverse</code>
+<dd>Print all of the pages, from the last backwards to the first page in the list. This
+keyword is used to print collated copies in the reverse page order. This is the
+same as the page range: <code>"* - 1"</code>
+</dl>
+
+<dl>
+<dt><code>odd</code>
+<dd>Print all odd number pages, from 1 to the last odd numbered page. This keyword,
+combined with the <code>even</code> keyword and user interaction to place pages that
+were printed into the input tray, can be used for manual duplexing.
+</dl>
+
+<dl>
+<dt><code>even</code>
+<dd>Print all even number pages, from 2 to the last even numbered page, then if the
+list has an odd number of pages print a blank 'pad' page to be the back of the last odd
+page. This keyword, combined with the <code>odd</code> keyword and user interaction to
+place pages that were printed into the input tray, can be used for manual duplexing.
+</dl>
+
+<dl>
+<dt><code>even0pad</code>
+<dd>Print all even number pages, from 2 to the last even numbered page, without any
+blank 'pad' page as with the <code>even</code> keyword.
+</dl>
+
+ <dl>
+<dt><em>page_number</em>
+<dd>A number not followed by '<code>-</code>' specifies a single page from the
+list to be printed. <b> The '<code>*</code>' character represents the last page in
+the list, interpreted as a number, either as a single <em>page_number</em> or as the
+<em>start_page</em> or <em>end_page</em> in a page range.
+</b>
+</dl>
+
+ <dl>
+<dt><em>start_page</em> <code>-</code> <em>end_page</em>
+<dd>A range of pages is two <em>page_number</em>s or <code>*</code> separated by a
+'<code>-</code>', optionally surrounded by non-alphanumeric characters other than
+'<code>-</code>' which is a special character in page range specifications. The
+pages from the <em>start_page</em> to the <em>end_page</em> are printed.
+<p>
+If the <em>start_page</em> is after the <em>end_page</em>, then the order of the
+pages is reversed, from the <em>start_page</em> back to the <em>end_page</em>.
+</dl>
+
+<hr>
+<h2><a name="Examples"></a>Examples</h2>
+The following examples each print 2 collated copies from the first page to the last page:
+<blockquote><dl><code>
+<dt>--saved-pages="print: normal, copies=2"
+<dt>--saved-pages="print copies=2, normal"
+<dt>--saved-pages="copies 2 print normal"
+<dt>--saved-pages="print 1-* 1-*"
+<dt>--saved-pages="print normal normal"
+</code></dl></blockquote>
+
+Print the last page,  followed by all pages in reverse order, then the first page
+(print reverse with two copies of the last and first page):
+<blockquote><dl><code>
+<dt>--saved-pages="print * reverse 1"
+<dt> -or-
+<dt>--saved-pages="print * * - 1 1"
+</code></dl></blockquote>
+
+Using the command line arguments with a PostScript or PDF input file to print
+the odd pages, prompt the operator to reload the printer with the pages that
+were printed, then print the even pages:
+
+<blockquote><dl><code>
+<dt>gs -sDEVICE=pgmraw -o /dev/lp0 --saved-pages="begin" examples/annots.pdf \
+<dt>--saved-pages="print odd" \
+<dt>-c "(Move printed pages to the input tray, then press enter.) = flush \
+<dt> (%stdin) (r) file 256 string readline clear" \
+<dt>--saved-pages="print even"
+</code></dl></blockquote>
+
+Print two collated copies of the first file, followed by 5 copies of the second file:
+<blockquote><dl><code>
+<dt>gs -sDEVICE=pgmraw -o /dev/lp0 --saved-pages="begin" examples/annots.pdf \
+<dt>--saved-pages="copies=2 print normal flush" \
+<dt>examples/colorcir.ps \
+<dt>--saved-pages="copies=5 print normal"
+</code></dl></blockquote>
+
+<!-- [2.0 end contents] ==================================================== -->
+
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+
+<p>
+<small>Copyright &copy; 2013-2019 Artifex Software, Inc.  All rights
+reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied,
+modified or distributed except as expressly authorized under the terms
+of the license contained in the file LICENSE in this distribution.
+
+For more information about licensing, please visit
+http://www.artifex.com/licensing/
+or contact Artifex Software, Inc., 1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

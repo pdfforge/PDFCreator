@@ -1,0 +1,1044 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% The current implementation of setpagedevice has the following limitations:
+%	- It doesn't attempt to "interact with the user" for Policy = 2.
+
+languagelevel 1 .setlanguagelevel
+level2dict begin
+% ---------------- Redefinitions ---------------- %
+
+% Define interpreter callouts for handling gstate-saving operators,
+% to make sure that they create a page device dictionary for use by
+% the corresponding gstate-restoring operator.
+% We'd really like to avoid the cost of doing this, but we don't see how.
+% The names %gsavepagedevice, %savepagedevice, %gstatepagedevice,
+% %copygstatepagedevice, and %currentgstatepagedevice are known to the
+% interpreter.
+
+(%gsavepagedevice) cvn
+ { currentpagedevice pop gsave
+ } bind def
+
+(%savepagedevice) cvn
+ { currentpagedevice pop save
+ } bind def
+
+(%gstatepagedevice) cvn
+ { currentpagedevice pop gstate
+ } bind def
+
+(%copygstatepagedevice) cvn
+ { currentpagedevice pop copy
+ } bind def
+
+(%currentgstatepagedevice) cvn
+ { currentpagedevice pop currentgstate
+ } bind def
+
+% Define interpreter callouts for handling gstate-restoring operators
+% when the current page device needs to be changed.
+% The names %grestorepagedevice, %grestoreallpagedevice,
+% %restorepagedevice, %restore1pagedevice, and %setgstatepagedevice
+% are known to the interpreter.
+
+% ---------------- Keys and Attributes ---------------- %
+
+% We have to deal specially with entries that the driver may change
+% on its own. We also have to deal specially with parameters which the device may
+% change on its own but which we *also* want to transmit to the device. Previously
+% any parameter which was 'dynamic' would not be sent to the device, making it
+% impossible to set a parameter, and later have the device change it. Currently
+% only OutputICCProfile fits this category.
+% This whole area is broken its completely the wrong way round from the way the spec says it should work.
+
+% This dictionary contains the keys we never want to set.
+/.readonlypdkeys mark
+  /.MediaSize dup		% because it changes when PageSize is set
+  /PageCount dup
+  /Colors dup
+  /BitsPerPixel dup
+  /ColorValues dup
+.dicttomark readonly def
+
+% Bonkers, but needed by our ridiculous setpagedevice implementation. There are
+% some keys (at the moment, RedValues, GreenValues and BlueValues are known) which
+% only exist in the page device dictionary under some conditions (ProcessColorModel == DeviceRGB)
+% If we change the conditions, so that these keys are no longer present in the params
+% returned by the device, sending these keys to the device can trigger a fault.
+% This is a problem because of our stored dictionary:
+%
+% 1) Set up the inital dictioanry by retrieving the params from the device
+% 2) Change the conditions (ProcessColorModel == DeviceGray)
+% 3) merge any volatile keys from the device. Note that RedValues etc no longer defined.
+% 4) Call .installpagdevice, use the stored dicitonary to set the params
+% 5) The stored RedValues etc, cause an error.
+%
+% The stored dictioanry is readonly (we use forceput to wedge new keys into it) so
+% we can't 'undef' keys from it. (the dictionary is made readonly by the action of zsetpagedevice
+% '.setpagedevice' in PostScrfipt)
+%
+% So the only solution is to have 'write only' keys. These can be written to the device
+% but are not stored in the saved page device dictionary. This means PostScript programs
+% can't interrogate and take action on these, but there's no solution to that except to
+% rewrite this stuff completely so that it actually works properly.
+
+/.writeonlykeys mark
+  /RedValues dup        % Set by the device when ProcessColorModel changes
+  /GreenValues dup      % Set by the device when ProcessColorModel changes
+  /BlueValues dup       % Set by the device when ProcessColorModel changes
+  /GrayValues dup       % Set by the device when ProcessColorModel changes
+.dicttomark readonly def
+
+% This dictionary contains the keys we always want to read back from the device.
+/.volatilepdkeys mark
+  /.MediaSize dup		% because it changes when PageSize is set
+  /RedValues dup        % Set by the device when ProcessColorModel changes
+  /GreenValues dup      % Set by the device when ProcessColorModel changes
+  /BlueValues dup       % Set by the device when ProcessColorModel changes
+  /GrayValues dup       % Set by the device when ProcessColorModel changes
+  /PageCount dup
+  /Colors dup
+  /BitsPerPixel dup
+  /ColorValues dup
+  /OutputICCProfile dup		% ColorConversionStrategy can change this
+.dicttomark readonly def
+
+% The implementation of setpagedevice is quite complex.  Currently,
+% everything but the media matching algorithm is implemented here.
+
+% By default, we only present the requested changes to the device,
+% but there are some parameters that require special merging action.
+% Define those parameters here, with the procedures that do the merging.
+% The procedures are called as follows:
+%	<merged> <key> <new_value> -proc- <merged> <key> <new_value'>
+/.mergespecial mark
+  /InputAttributes
+   { dup //null eq
+      { pop //null
+      }
+      { 3 copy pop .knownget
+         { dup //null eq
+            { pop dup length dict }
+            { dup length 2 index length add dict .copydict }
+           ifelse
+         }
+         { dup length dict
+         }
+        ifelse .copydict readonly
+      }
+     ifelse
+   } bind
+  /OutputAttributes 1 index
+  /Policies
+    { 3 copy pop .knownget
+       { dup length 2 index length add dict .copydict }
+       { dup length dict }
+      ifelse copy readonly
+    } bind
+.dicttomark readonly def
+
+% M. Sweet, Easy Software Products:
+%
+% Define NOMEDIAATTRS to turn off the default (but unimplementable) media
+% selection policies for setpagedevice.  This is used by CUPS to support
+% the standard Adobe media attributes.
+NOMEDIAATTRS {
+  % Define only PageSize for input attribute matching.
+  /.inputattrkeys [
+    /PageSize
+  ] readonly def
+  % Define no other keys used in media selection.
+  /.inputselectionkeys [
+    /noInputSelectionsKeys
+  ] readonly def
+
+  % Define no keys used in output attribute matching.
+  /.outputattrkeys [
+    /noOutputAttrKeys
+  ] readonly def
+} {
+  % Define the keys used in input attribute matching.
+  /.inputattrkeys [
+    /PageSize /MediaColor /MediaWeight /MediaType /InsertSheet /ManualFeed
+          % The following are documented in Adobe's supplement for v2017.
+    /LeadingEdge /MediaClass
+  ] readonly def
+  % Define other keys used in media selection.
+  /.inputselectionkeys [
+    /MediaPosition /Orientation
+  ] readonly def
+
+  % Define the keys used in output attribute matching.
+  /.outputattrkeys [
+    /OutputType
+  ] readonly def
+} ifelse
+
+% Define all the parameters that should always be copied to the merged
+% dictionary.
+/.copiedkeys [
+  /OutputDevice
+  //.mergespecial { pop } forall
+  .inputattrkeys aload pop
+  .inputselectionkeys aload pop
+  .outputattrkeys aload pop
+] readonly def
+
+% Define the parameters that should not be presented to the device.
+% The procedures are called as follows:
+%	<merged> <key> <value> -proc-
+% The procedure leaves all its operands on the stack and returns
+% true iff the key/value pair should be presented to .putdeviceparams.
+/.presentspecial mark
+  .readonlypdkeys
+      { pop //false }
+  forall
+                        % We must ignore an explicit request for .MediaSize,
+                        % because media matching always handles this.
+  /.MediaSize //false
+  /Name //false
+  /OutputDevice //false
+  /PageDeviceName //false
+  /PageOffset //false
+  /PageSize //false		% obsolete alias for .MediaSize
+  /InputAttributes //false
+  .inputattrkeys
+       { dup dup /PageSize eq exch /LeadingEdge eq or
+       { pop }
+       { { 2 index /InputAttributes .knownget { //null eq } { //true } ifelse } }
+      ifelse
+    }
+  forall
+  .inputselectionkeys { //false } forall
+  /OutputAttributes //false
+  .outputattrkeys
+    { { 2 index /OutputAttributes .knownget { //null eq } { //true } ifelse } }
+  forall
+  /Install //false
+  /BeginPage //false
+  /EndPage //false
+  /Policies //false
+        % Our extensions:
+  /HWColorMap
+    {			% HACK: don't transmit the color map, because
+                        % window systems can change the color map on their own
+                        % incrementally.  Someday we'll have a better
+                        % solution for this....
+      //false
+    }
+  /ViewerPreProcess //false
+  /ImagingBBox //false	% This prevents the ImagingBBox value in the setpagedevice
+                        % from affecting the device's ImagingBBox parameter, but
+                        % does retain a 'shadow' copy at the PostScript level.
+                        % This is done for Adobe compatibility since Adobe does
+                        % render marks outside the ImagingBBox (and QuarkXpress
+                        % relies on it).
+.dicttomark readonly def
+
+% ---------------- End Keys and Attributes ---------------- %
+
+% Prepare to present parameters to the device, by spreading them onto the
+% operand stack and removing any that shouldn't be presented.
+/.prepareparams		% <params> .prepareparams -mark- <key1> <value1> ...
+ { mark exch dup
+    {			% Stack: -mark- key1 value1 ... merged key value
+      //.presentspecial 2 index .knownget
+       { exec { 3 -1 roll } { pop pop } ifelse }
+       { 3 -1 roll }
+      ifelse
+    }
+   forall pop
+ } bind def
+
+currentdict /.presentspecial .undef
+
+% Compute the media size and initial matrix from a merged request (after
+% media selection).
+/.computemediasize	% <request> .computemediasize
+                        %   <request> <matrix> <[width height]>
+ { dup /PageSize get					% requested page size
+   1 index /InputAttributes get
+     2 index (%MediaSource) get get /PageSize get	% media size
+                                                        % (may be a range)
+   2 index /Policies get
+     dup /PageSize .knownget
+      { exch pop } { /PolicyNotFound get } ifelse	% PageSize policy,
+                                                        % affects scaling
+   3 index /Orientation .knownget not { //null } if
+   4 index /RollFedMedia .knownget not { //false } if
+   matrix .matchpagesize not {
+                % This is a "can't happen" condition!
+     /setpagedevice .systemvar /rangecheck signalerror
+   } if
+   2 array astore
+ } bind def
+
+% Try setting the device parameters from the merged request.
+/.trysetparams		% <merged> <(ignored)> <device> <Policies>
+                        %   .trysetparams
+ { //true 4 index //.prepareparams exec
+                        % Add the computed .MediaSize.
+                        % Stack: merged (ignored) device Policies -true-
+                        %   -mark- key1 value1 ...
+   counttomark 5 add index //.computemediasize exec
+   exch pop exch pop /.MediaSize exch
+SETPDDEBUG { (Putting.) = pstack flush } if
+   .putdeviceparamsonly
+SETPDDEBUG { (Result of putting.) = pstack flush } if
+ } bind executeonly odef
+
+/.installpagedevice
+ {	% Since setpagedevice doesn't create new device objects,
+        % we must (carefully) reinstall the old parameters in
+        % the same device.
+   .currentpagedevice pop //null currentdevice //null
+   { //.trysetparams } //.internalstopped exec
+   {
+     //null
+   } if
+   dup type /booleantype eq
+    { pop pop }
+    {
+      SETPDDEBUG { (Error in .trysetparams!) = pstack flush } if
+      {cleartomark pop pop pop} //.internalstopped exec pop
+      % if resetting the entire device state failed, at least put back the
+      % security related key
+      currentdevice //null //false mark /.LockSafetyParams
+      currentpagedevice /.LockSafetyParams .knownget not
+      {systemdict /SAFER .knownget not {//false} } if
+      .putdeviceparamsonly
+      /.installpagedevice cvx /rangecheck signalerror
+    }
+   ifelse pop pop
+        % A careful reading of the Red Book reveals that an erasepage
+        % should occur, but *not* an initgraphics.
+   erasepage .beginpage
+ } bind executeonly def
+
+/.uninstallpagedevice
+ {
+   {2 .endpage { .currentnumcopies //false .outputpage } if} //.internalstopped exec pop
+   nulldevice
+ } bind executeonly def
+
+(%grestorepagedevice) cvn
+ {
+ .uninstallpagedevice
+ grestore
+ //.installpagedevice exec
+ } bind def
+
+(%grestoreallpagedevice) cvn
+ { .uninstallpagedevice grestore //.installpagedevice exec grestoreall
+ } bind def
+
+(%restore1pagedevice) cvn
+ { .uninstallpagedevice grestore //.installpagedevice exec restore
+ } bind def
+
+(%restorepagedevice) cvn
+ { .uninstallpagedevice restore //.installpagedevice exec
+ } bind def
+
+(%setgstatepagedevice) cvn
+ { .uninstallpagedevice setgstate //.installpagedevice exec
+ } bind def
+
+% Redefine .currentpagedevice and .setpagedevice so they convert between
+% null and a fixed empty directionary.
+/.nullpagedevice 0 dict readonly def
+/.currentpagedevice {
+  //.currentpagedevice exch dup //null eq { pop //.nullpagedevice } if exch
+} bind odef
+/.setpagedevice {
+  dup //.nullpagedevice eq { pop //null } if //.setpagedevice
+} bind odef
+
+% ---------------- Auxiliary definitions ---------------- %
+
+% Define the required attributes of all page devices, and their default values.
+% We don't include attributes such as .MediaSize, which all devices
+% are guaranteed to supply on their own.
+/.defaultpolicies mark
+  % M. Sweet, Easy Software Products
+  %
+  % Due to the fact that it is not possible to properly implement
+  % the selection policies from a Ghostscript driver, we have changed
+  % the default policy to "7" (impose) to avoid numerous problems with
+  % printing within CUPS...
+  %
+  % If NOMEDIAATTRS is false, the set the default depending on whether
+  % PSFitPage is true. Policy 13 does best fit with page scaling up or down
+  % so it is only useful if FIXEDMEDIA is also specified, or if the set of
+  % media in the InputAttributes dictionary is the actual available choices
+  % and does not include any "range" page sizes.
+  /PageSize NOMEDIAATTRS { 7 } { //systemdict /PSFitPage known { 13 } { 0 } ifelse } ifelse
+  /PolicyNotFound 1
+  /PolicyReport {
+    dup /.LockSafetyParams known {
+        % Only possible error is invalidaccess
+      /setpagedevice .systemvar /invalidaccess signalerror
+    }
+    if
+    pop
+  } bind
+.dicttomark readonly def
+% Note that the values of .requiredattrs are executed, not just fetched.
+/.requiredattrs mark
+  /PageDeviceName //null
+  /PageOffset [0 0] readonly
+% We populate InputAttributes with all of the known page sizes
+% followed by a dummy media type that handles pages of any size.
+% This will create some duplicates, but that only slightly slows
+% down the media selection (loop is in zmedia2.c).
+%
+% Some PostScript creators assume that slot 0 is the default media
+% size and some can't handle a non-standard 4-element array which
+% is a 'range' type page size (always put last).
+%
+% Real Devices that can only handle specific page sizes will override this.
+  /InputAttributes {
+    mark
+    % First put the device's default page size in slot 0
+    % This satifies those that have devices built with a4 as the default
+    0 mark /PageSize /GetDeviceParam .special_op
+    not {/setpagedevice .systemvar /configurationerror signalerror} if .dicttomark
+    % Only populate the other entries if we aren't FIXEDMEDIA
+    FIXEDMEDIA not {
+      statusdict /.pagetypenames get {
+        statusdict /.pagetypeprocs get
+        exch get 0 2 getinterval cvlit
+        counttomark 1 sub 2 idiv exch mark exch /PageSize exch
+        % stack: mark --dict-- --dict-- ... key mark /PageSize [x y]
+        % see note above about pagetype executable array contents.
+        .dicttomark
+      } forall
+      % If NORANGEPAGESIZE is defined, (-dNORANGEPAGESIZE), then don't add
+      % the 'match any' PageSize entry
+      systemdict /NORANGEPAGESIZE known not {
+        % Add one last entry which is the 4 element range array (non-standard)
+        counttomark 2 idiv
+          % PageSize with either dimension 0 will be detected in
+          % match_page_size, so we can allow it here
+        mark /PageSize [0 dup 16#7ffff dup] .dicttomark
+      } if
+    } if % FIXEDMEDIA false
+    .dicttomark
+  }
+  (%MediaSource) 0
+  /OutputAttributes {
+    mark 0 mark .dicttomark readonly .dicttomark
+  }
+  (%MediaDestination) 0
+  /Install {{.callinstall}} bind
+  /BeginPage {{.callbeginpage}} bind
+  /EndPage {{.callendpage}} bind
+  /Policies .defaultpolicies
+  /ImagingBBox //null		% default value
+  /UseCIEColor /.getuseciecolor load
+.dicttomark readonly def
+
+% Define currentpagedevice so it creates the dictionary on demand if needed,
+% adding all the required entries defined just above.
+
+/.makecurrentpagedevice {	% - .makecurrentpagedevice <dict>
+  currentdevice //null .getdeviceparams
+        % Make the dictionary large enough to add defaulted entries.
+  counttomark 2 idiv //.requiredattrs length add dict
+  counttomark 2 idiv { dup 4 2 roll put } repeat exch pop
+        % Add any missing required attributes.
+        % Make a writable and (if possible) local copy of any default
+        % dictionaries, to work around a bug in the output of WordPerfect,
+        % which assumes that these dictionaries are writable and local.
+  .currentglobal exch dup gcheck .setglobal
+  //.requiredattrs {
+    2 index 2 index known {
+      1 index /Policies eq {
+        % Merge policies from the device driver with defaults
+        2 index             % <<>> /key value <<>>
+        3 2 roll get        % <<>> value <<policies>>
+        exch {
+          2 index 2 index known {
+            pop pop
+          } {
+            2 index 3 1 roll put
+          } ifelse
+        } forall
+        pop
+      } {
+        pop pop
+      } ifelse
+    } {
+      exec 2 index 3 1 roll put
+    } ifelse
+  } forall exch .setglobal
+
+  % Remove any keys we don't want to be stored, before .setpagedevice
+  % makes the dictionary read only
+  .writeonlykeys {2 index exch undef pop} forall
+  dup .setpagedevice
+} bind def
+
+% Copy a dictionary recursively.
+/.copytree {	% <dict> .copytree <dict'>
+  dup length dict exch {
+    dup type /dicttype eq { .copytree } if 2 index 3 1 roll put
+  } forall
+} def
+
+/currentpagedevice {
+  .currentpagedevice {
+    dup length 0 eq {
+      pop //.makecurrentpagedevice exec
+    } {
+                % If any of the dynamic keys have changed,
+                % we must update the page device dictionary.
+      currentdevice //.volatilepdkeys .getdeviceparams .dicttomark {
+                % Stack: current key value
+            2 index 2 index .knownget { 1 index ne } { //true } ifelse
+             { 2 index wcheck not
+                {	% This is the first entry being updated.
+                        % Copy the dictionary to make it writable.
+                  3 -1 roll
+                  currentglobal 1 index dup gcheck currentglobal and setglobal
+                  length dict
+                  exch setglobal
+                  .copydict
+                  3 1 roll
+                }
+               if
+               2 index 3 1 roll put
+             }
+             { pop pop
+             }
+            ifelse
+      } forall
+      % If the device is the distiller device, update distillerparams that
+      % may have been changed by setdistillerparams
+      /IsDistiller /GetDeviceParam .special_op {
+        exch pop
+      }{
+        //false
+      }ifelse
+      {
+          currentdistillerparams {
+              % Stack: current key value
+            2 index 2 index .knownget { 1 index ne } { //true } ifelse
+            { 2 index 3 1 roll put } { pop pop } ifelse
+          } forall
+      } if
+                % If the dictionary was global and is now local, copy
+                % any global subsidiary dictionaries to local VM.  This
+                % too is to work around the Word Perfect bug (see above).
+      dup gcheck not {
+        dup {
+          dup type /dicttype eq { dup gcheck } { //false } ifelse {
+                % Copy-on-write, see above.
+            2 index wcheck not {
+              3 -1 roll dup length dict .copydict
+              3 1 roll
+            } if
+            //.copytree exec 2 index 3 1 roll put
+          } {
+            pop pop
+          } ifelse
+        } forall
+      } if
+                % We would like to do a .setpagedevice so we don't keep
+                % re-creating the dictionary.  Unfortunately, the effect
+                % of this is that if any dynamic key changes (PageCount
+                % in particular), we will do the equivalent of a
+                % setpagedevice at the next restore or grestore.
+                % Therefore, we make the dictionary read-only, but
+                % we don't store it away.  I.e., NOT:
+                % dup wcheck { .setpagedevice .currentpagedevice pop } if
+      readonly
+    } ifelse
+  } if
+} bind odef
+
+% Define access to device defaults.
+/.defaultdeviceparams
+ { finddevice //null .getdeviceparams
+ } bind def
+
+% Select media (input or output).  The hard work is done in an operator:
+%	<pagedict> <attrdict> <policydict> <keys> .matchmedia <key> true
+%	<pagedict> <attrdict> <policydict> <keys> .matchmedia false
+%	<pagedict> null <policydict> <keys> .matchmedia null true
+/.selectmedia		% <orig> <request> <merged> <failed>     <-- retained
+                        %   <attrdict> <policydict> <attrkeys> <mediakey>
+                        %   .selectmedia
+ { 5 index 5 -2 roll 4 index .matchmedia
+                % Stack: orig request merged failed attrkeys mediakey
+                %   (key true | false)
+    { 4 index 3 1 roll put pop
+    }
+    {	% Adobe's implementations have a "big hairy heuristic"
+        % to choose the set of keys to report as having failed the match.
+        % For the moment, we report any keys that are in the request
+        % and don't have the same value as in the original dictionary.
+      5 index 1 index .knownget
+       { 4 index 3 1 roll put }
+       { 3 index exch .undef }
+      ifelse
+       {	% Stack: <orig> <request> <merged> <failed> <attrkey>
+         3 index 1 index .knownget
+          { 5 index 2 index .knownget { ne } { pop //true } ifelse }
+          { //false }
+         ifelse		% Stack: ... <failed> <attrkey> <report>
+          { 2 copy /rangecheck put }
+         if pop
+       }
+      forall
+    }
+   ifelse
+ } bind def
+
+% Apply Policies to any unprocessed failed requests.
+% As we process each request entry, we replace the error name
+% in the <failed> dictionary with the policy value,
+% and we replace the key in the <merged> dictionary with its prior value
+% (or remove it if it had no prior value).
+
+% These procedures are called with the following on the stack:
+%   <orig> <merged> <failed> <Policies> <key> <policy>
+% They are expected to consume the top 2 operands.
+% NOTE: we currently treat all values other than 0, 1, or 7 (for PageSize)
+% the same as 0, i.e., we signal an error.
+/0Policy {		% Set errorinfo and signal a configurationerror.
+  NOMEDIAATTRS {
+    % NOMEDIAATTRS means that the default policy is 7...
+    pop 2 index exch 7 put
+  } {
+    pop dup 4 index exch get 2 array astore
+    $error /errorinfo 3 -1 roll put
+    cleartomark
+    /setpagedevice .systemvar /configurationerror signalerror
+  } ifelse
+} bind executeonly odef
+
+% Making this an operator means we can properly hide
+% the contents - specifically .forceput
+/1Policy
+{
+  % Roll back the failed request to its previous status.
+  SETPDDEBUG { (Rolling back.) = pstack flush } if
+  3 index 2 index 3 -1 roll .forceput
+  4 index 1 index .knownget
+  { 4 index 3 1 roll .forceput } executeonly
+  { 3 index exch .undef }
+  ifelse
+} bind executeonly odef
+
+/7Policy {		% For PageSize only, just impose the request.
+  1 index /PageSize eq
+  { pop pop 1 index /PageSize 7 put }
+  { .policyprocs 0 get exec }
+  ifelse
+} bind executeonly odef
+
+/.applypolicies		% <orig> <merged> <failed> .applypolicies
+                        %   <orig> <merged'> <failed'>
+{
+  1 index /Policies get 1 index
+  { type /integertype eq
+     {
+       pop		% already processed
+     }{
+       2 copy .knownget not { 1 index /PolicyNotFound get } if
+                      % Stack: <orig> <merged> <failed> <Policies> <key>
+                      %   <policy>
+        dup 1 eq {
+          1Policy
+        }{
+          dup 7 eq {
+            7Policy
+          }{
+            0Policy
+          } ifelse
+        } ifelse
+     } ifelse
+  }
+  forall pop
+} .bind executeonly odef
+
+currentdict /0Policy undef
+currentdict /1Policy undef
+currentdict /7Policy undef
+
+% Put device parameters without resetting currentpagedevice.
+% (.putdeviceparams clears the current page device.)
+/.putdeviceparamsonly	% <device> <Policies|null> <require_all> -mark-
+                        %   <key1> <value1> ... .putdeviceparamsonly
+                        % On success: <device> <eraseflag>
+                        % On failure: <device> <Policies|null> <req_all> -mark-
+                        %   <key1> <error1> ...
+ { .currentpagedevice
+    { counttomark 4 add 1 roll .putdeviceparams
+      dup type /booleantype eq { 3 } { counttomark 5 add } ifelse -1 roll
+      .setpagedevice
+    }
+    { pop .putdeviceparams
+    }
+   ifelse
+ } bind def
+
+
+/.postinstall {		% mark ... <failed> <merged> .postinstall -
+   matrix currentmatrix .setdefaultmatrix
+                % Erase and initialize the page.
+   initgraphics
+   currentoverprint //false setoverprint 1 setcolor
+   .fillpage
+   0 setcolor setoverprint
+   .beginpage
+
+                % Clean up, calling PolicyReport if needed.
+                % Stack: mark ... <failed> <merged>
+SETPDDEBUG { (Finishing.) = pstack flush } if
+
+   exch dup length 0 ne
+    { 1 index /Policies get /PolicyReport get
+      counttomark 1 add 2 roll cleartomark
+      exec
+    }
+    { cleartomark
+    }
+   ifelse pop
+
+} def
+
+% ---------------- setpagedevice itself ---------------- %
+
+/setpagedevice
+ {
+                % To avoid VM mismatches caused by copying subsidiary
+                % dictionaries to local VM (see WorPerfect bug in
+                % .makecurrentpagedevice) we want to make the dict
+                % returned by currentpagedevice local. However, if we
+                % run with -dSAFER we get a call to setpagedevice from
+                % .setsafe in gs_init.ps during startup. The dict returned
+                % by currentpagdevice is stored to the graphics state by
+                % .setpagedevice below, and returned by currentpagdevice.
+                % The Display PostScript code insists that the savedinitialgstate
+                % not have any pointers to local VM objects, so if we simply
+                % make the dict local then we fail in gs_dps.ps. The only
+                % solution is to make sure the VM mode is global during
+                % startup (to satisfy gs_dps.ps) and local thereafter
+                % (to satisfy the WordPerfect bug).
+   dup /..StartupGlobal known
+   {
+       currentglobal exch //true setglobal
+       dup /..StartupGlobal undef
+   } {
+                % ensure that we are always in local VM mode to avoid
+                % mismatches. This is because we always create child
+                % dictionaries in local VM, regardless of the current VM state,
+                % (see .makecurrentpagdevice) and we can't store local objects
+                % in a global object, so we must ensure teh dictionary returned
+                % from currentpagedevice is in local VM.
+     currentglobal exch //false setglobal
+   } ifelse
+
+   %% We used to execute endpage after .tsrysetparams, but that actually alters
+   %% the page device dictionary (in particular /PageSize) this is not correct.
+   %% Testing with Adobe Acrobat Distiller shows that EndPage is ececuted if the
+   %% page device dictionary is empty, and indeed even if setpagedevice returns
+   %% an error (caught by stopped), so it seems pretty clear that we should
+   %% run any required EndPage very early in the setpagedevice process.
+   %% Bug 690667.
+   2 .endpage
+   { 1 //true .outputpage
+     (>>setpagedevice, press <return> to continue<<\n) //.confirm exec
+   }
+   if
+                % We mustn't pop the argument until the very end,
+                % so that the pseudo-operator machinery can restore the stack
+                % if an error occurs.
+   mark 1 index currentpagedevice
+
+                % Check whether we are changing OutputDevice;
+                % also handle the case where the current device
+                % is not a page device.
+                % Stack: mark <request> <current>
+SETPDDEBUG { (Checking.) = pstack flush } if
+
+   dup /OutputDevice .knownget
+    {		% Current device is a page device.
+      2 index /OutputDevice .knownget
+       {	% A specific OutputDevice was requested.
+         2 copy eq
+          { pop pop //null }
+          { exch pop }
+         ifelse
+       }
+       { pop //null
+       }
+      ifelse
+    }
+    {		% Current device is not a page device.
+                % Use the default device.
+      1 index /OutputDevice .knownget not { .defaultdevicename } if
+    }
+   ifelse
+   dup //null eq
+    { pop
+    }
+    { exch pop //.defaultdeviceparams exec
+                % In case of duplicate keys, .dicttomark takes the entry
+                % lower on the stack, so we can just append the defaults here.
+      //.requiredattrs { exec } forall .dicttomark
+    }
+   ifelse
+
+                % Check whether a viewer wants to intervene.
+                % We must check both the request (which takes precedence)
+                % and the current dictionary.
+                % Stack: mark <request> <orig>
+   exch dup /ViewerPreProcess .knownget
+    { exec }
+    { 1 index /ViewerPreProcess .knownget { exec } if }
+   ifelse exch
+
+                % Construct a merged request from the actual request plus
+                % any keys that should always be propagated.
+                % Stack: mark <request> <orig>
+SETPDDEBUG { (Merging.) = pstack flush } if
+
+   exch 1 index length 1 index length add dict
+   .copiedkeys
+    {		% Stack: <orig> <request> <merged> <key>
+      3 index 1 index .knownget { 3 copy put pop } if pop
+    }
+   forall
+                % Stack: <orig> <request> <merged>
+   dup 2 index
+    {		% stack: <orig> <request> <merged> <merged> <rkey> <rvalue>
+      //.mergespecial 2 index .knownget { exec } if
+      put dup
+    }
+   forall pop
+                % Hack: if FIXEDRESOLUTION is true, discard any attempt to
+                % change HWResolution.
+   FIXEDRESOLUTION { dup /HWResolution .undef } if
+                % Hack: if FIXEDMEDIA is true, discard any attempt to change
+                % PageSize or HWSize unless the PageSize Policy 13 (for FitPage).
+   dup /Policies get /PageSize get 13 ne FIXEDMEDIA and
+    { dup /PageSize 4 index /PageSize get put
+      dup /HWSize 4 index /HWSize get put
+    } if
+                % Hack: to work around some files that take a PageSize
+                % from InputAttributes and impose it, discard any attempt
+                % to set PageSize to a 4-element value.
+                % Stack: mark <orig> <request> <merged>
+    dup /PageSize .knownget {
+      length 2 ne {
+        dup /PageSize 4 index /PageSize get put
+      } if
+    } if
+
+                % Select input and output media.
+                % Stack: mark <orig> <request> <merged>
+SETPDDEBUG { (Selecting.) = pstack flush } if
+
+   0 dict	% <failed>
+   1 index /InputAttributes .knownget
+    { 2 index /Policies get
+      .inputattrkeys (%MediaSource) cvn //.selectmedia exec
+    } if
+   1 index /OutputAttributes .knownget
+    { 2 index /Policies get
+      .outputattrkeys (%MediaDestination) cvn //.selectmedia exec
+     } if
+   3 -1 roll 4 1 roll		% temporarily swap orig & request
+   .applypolicies
+   3 -1 roll 4 1 roll		% swap back
+
+                % Construct the new device, and attempt to set its attributes.
+                % Stack: mark <orig> <request> <merged> <failed>
+SETPDDEBUG { (Constructing.) = pstack flush } if
+
+   % Non-obvious: we need to check the name of the output device, to tell
+   % whether we're going to have to replace the entire device chain (which
+   % may be only one device, or may be multiple devices.
+   % If we're not replacing the entire change, we have to use the device in
+   % the graphics state, so the configuration of the entire device chain is
+   % correctly set.
+   .currentoutputdevice .devicename 2 index /OutputDevice get eq
+    { currentdevice }
+    { 1 index /OutputDevice get finddevice }
+   ifelse
+                %**************** We should copy the device here,
+                %**************** but since we can't close the old device,
+                %**************** we don't.  This is WRONG.
+        %****************copydevice
+   2 index /Policies get
+   //.trysetparams
+   dup type /booleantype ne
+    {		% The request failed.
+                % Stack: ... <orig> <request> <merged> <failed> <device>
+                %   <Policies> true mark <name> <errorname> ...
+SETPDDEBUG { (Recovering.) = pstack flush } if
+      counttomark 4 add index
+      counttomark 2 idiv { dup 4 -2 roll put } repeat
+      pop pop pop
+                % Stack: mark ... <orig> <request> <merged> <failed> <device>
+                %   <Policies>
+      6 2 roll 3 -1 roll 4 1 roll
+      .applypolicies
+      3 -1 roll 4 1 roll 6 -2 roll
+      //.trysetparams		% shouldn't fail!
+      dup type /booleantype ne
+       { 2 { counttomark 1 add 1 roll cleartomark } repeat
+         /setpagedevice .systemvar exch signalerror
+       }
+      if
+    }
+   if
+
+                % The attempt succeeded.  Install the new device.
+                % Stack: mark ... <merged> <failed> <device> <eraseflag>
+SETPDDEBUG { (Installing.) = pstack flush } if
+
+   pop
+                % .setdevice clears the current page device!
+   .currentpagedevice pop exch
+   { .setdevice } stopped {
+     cleartomark exch pop
+     /setpagedevice $error /errorname get
+     signalerror
+   } if
+   pop
+   .setpagedevice
+
+                % Implement UseCIEColor directly if this is a LL3 system.
+                % The color substitution feature is now implemented in
+                % the interpreter, and this is used as an optimization.
+                %
+                % NB: This shoud be the only use of the .setuseciecolor
+                %     operator anywhere.
+                %
+                % Set some color space other than /DeviceGray, to insure
+                % that initgraphics will actually perform a setcolorspace
+                % operation (there is an optimization in setcolorspace
+                % that does nothing if the operand and current color
+                % spaces are the same)
+
+    /.setuseciecolor where
+      {
+        pop 1 index /UseCIEColor .knownget
+          {
+            .setuseciecolor /DeviceRGB setcolorspace
+          }
+        if
+      }
+    if
+
+                % Merge the request into the current page device,
+                % unless we're changing the OutputDevice.
+                % Stack: mark ... <merged> <failed>
+   exch currentpagedevice dup length 2 index length add dict
+                % Stack: mark ... <failed> <merged> <current> <newdict>
+   2 index /OutputDevice .knownget {
+     2 index /OutputDevice .knownget not { //null } if eq
+   } {
+     //true
+   } ifelse {
+                % Same OutputDevice, merge the dictionaries.
+     .copydict
+   } {
+                % Different OutputDevice, discard the old dictionary.
+     exch pop
+   } ifelse .copydict
+                % Initialize the default matrix, taking media matching
+                % into account.
+   //.computemediasize exec pop initmatrix concat
+   dup /PageOffset .knownget
+    {		% Translate by the given number of 1/72" units in device X/Y.
+      dup 0 get exch 1 get
+      2 index /HWResolution get dup 1 get exch 0 get
+      4 -1 roll mul 72 div   3 1 roll mul 72 div
+      idtransform translate
+    }
+   if
+                % We must install the new page device dictionary
+                % before calling the Install procedure.
+  dup .setpagedevice
+  /HighLevelDevice /GetDeviceParam .special_op {
+    exch pop not
+  }{
+    //true
+  }ifelse
+  {
+  .setdefaulthalftone	% Set the default screen before calling Install.
+  } if
+  dup /Install .knownget {
+    { .execinstall } stopped {
+      pop % Install procedure failed. One element will have been left on the stack.
+      % stack: mark <orig> <request> <failed> <merged>
+      1 index /Install $error /errorname get put	% Put it in the "failed" dict
+      % .applypolicies needs stack: <orig> <merged> <failed>
+      exch 4 2 roll exch 4 2 roll .applypolicies exch 4 2 roll exch 4 2 roll
+      % Now execute the old Install -- failures after this are not handled
+      dup /Install .knownget { { .execinstall } stopped { pop } if } if
+      //.postinstall exec stop
+    } {
+      //.postinstall exec
+    } ifelse
+  } {
+    //.postinstall exec
+  } ifelse
+  setglobal           % return to original VM allocation mode
+} .bind executeonly odef
+
+% We break out the code after calling the Install procedure into a
+% separate procedure, since it is executed even if Install causes an error.
+% By making .execinstall a separate operator procedure, we get the stacks
+% mostly restored if it fails, except for one element (the operand).
+% Thus if it fails, there will be one element left on the op stack.
+
+/.execinstall {		% <proc> .execinstall -
+  dup	% element left on the stack if the exec fails.
+
+        % Because the interpreter optimizes tail calls, we can't just let
+        % the body of this procedure be 'exec', because that would lose
+        % the stack protection that is the whole reason for having the
+        % procedure in the first place. The 'pop' for the dummy element
+        % on the op stack suffices.
+  exec
+  pop	% See above.
+} odef
+
+[
+    /.computemediasize
+    /.prepareparams
+    /.selectmedia
+    /.trysetparams
+    /.installpagedevice
+    /.postinstall
+    /.defaultdeviceparams
+    /.makecurrentpagedevice
+    /.mergespecial
+    /.requiredattrs
+    /.applypolicies
+%    /.copytree
+%    /.uninstallpagedevice % (called from C code)
+] dup currentdict .undefinternalnames
+systemdict .undefinternalnames
+
+end				% level2dict
+.setlanguagelevel

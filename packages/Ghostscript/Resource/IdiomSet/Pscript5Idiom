@@ -1,0 +1,175 @@
+%%
+%% Idioms for the Windows PSCRIPT5 PostScript driver
+%%
+
+currentuserparams /IdiomRecognition get
+<</IdiomRecognition false>> setuserparams
+
+/Pscript5Idiom
+<<
+%% replacements for the artificial bold routines. When the current device supports text rendering modes we set the mode to 2 (fill and stroke)
+%% and only show the text once, which improves seaching with pdfwrite. The parameter 'sBdx' is always calculated as the intended print resolution/300.
+%% We can't do that in PDF so we just use a heuristically derived fixed value.
+  /xsB [
+    {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto xshow grestore gsave 0 sBdx rmoveto xshow grestore gsave sBdx sBdx rmoveto xshow grestore xshow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode xshow currentpoint grestore moveto}
+      {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto xshow grestore gsave 0 sBdx rmoveto xshow grestore gsave sBdx dup rmoveto xshow grestore xshow} bind
+      ifelse
+    } bind
+ ]
+  /ysB [
+    {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto yshow grestore gsave 0 sBdx rmoveto yshow grestore gsave sBdx sBdx rmoveto yshow grestore yshow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode yshow currentpoint grestore moveto}
+      {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto yshow grestore gsave 0 sBdx rmoveto yshow grestore gsave sBdx dup rmoveto yshow grestore yshow} bind
+      ifelse
+    } bind
+ ]
+  /zsB [
+    {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto xyshow grestore gsave 0 sBdx rmoveto xyshow grestore gsave sBdx sBdx rmoveto xyshow grestore xyshow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode xyshow currentpoint grestore moveto}
+      {2 copy 2 copy 2 copy gsave sBdx 0 rmoveto xyshow grestore gsave 0 sBdx rmoveto xyshow grestore gsave sBdx dup rmoveto xyshow grestore xyshow} bind
+      ifelse
+    } bind
+ ]
+ /sB [
+    {1 copy 2 copy gsave sBdx 0 rmoveto show grestore gsave 0 sBdx rmoveto show grestore gsave sBdx sBdx rmoveto show grestore show} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode show currentpoint grestore moveto}
+      {1 copy 2 copy gsave sBdx 0 rmoveto show grestore gsave 0 sBdx rmoveto show grestore gsave sBdx dup rmoveto show grestore show} bind
+      ifelse
+    } bind
+  ]
+  /asB [
+    {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto ashow grestore gsave 0 sBdx rmoveto ashow grestore gsave sBdx sBdx rmoveto ashow grestore ashow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode ashow currentpoint grestore moveto}
+      {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto ashow grestore gsave 0 sBdx rmoveto ashow grestore gsave sBdx dup rmoveto ashow grestore ashow} bind
+      ifelse
+    } bind
+   ]
+  /wsB [
+    {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto widthshow grestore gsave 0 sBdx rmoveto widthshow grestore gsave sBdx sBdx rmoveto widthshow grestore widthshow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode widthshow currentpoint grestore moveto}
+      {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto widthshow grestore gsave 0 sBdx rmoveto widthshow grestore gsave sBdx dup rmoveto widthshow grestore widthshow} bind
+      ifelse
+    } bind
+   ]
+
+  /awsB [
+    {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto awidthshow grestore gsave 0 sBdx rmoveto awidthshow grestore gsave sBdx sBdx rmoveto awidthshow grestore awidthshow} bind
+    {
+      /PreserveTrMode /GetDeviceParam .special_op {
+          exch pop
+      }{
+          //false
+      }ifelse
+      { gsave sBdx 2 div dup 0.2 setlinewidth currentcolor currentcolorspace .swapcolors setcolorspace setcolor .swapcolors rmoveto 2 .settextrenderingmode awidthshow currentpoint grestore moveto}
+      {3 copy 3 copy 3 copy gsave sBdx 0 rmoveto awidthshow grestore gsave 0 sBdx rmoveto awidthshow grestore gsave sBdx dup rmoveto awidthshow grestore awidthshow} bind
+      ifelse
+    } bind
+   ]
+
+  /pbf [
+    {
+      gsave pop /fEOFill exch def GDIBWPatternDict begin /yOrg exch def /xOrg exch def /PaintData exch def/OutputBPP exch def
+      /Height exch def/Width exch def/PaintType 1 def/PatternType 1 def/TilingType 1 def/BBox[0 0
+      Width Height]def/XStep Width def/YStep Height def/mx xOrg yOrg matrix translate def 20 dict dup begin
+      /ImageType 1 def/Width Width def/Height Height def/ImageMatrix[1 0 0 1 0 0]def
+      /BitsPerComponent 8 def OutputBPP 24 eq{/Decode[0 1 0 1 0 1]def}{OutputBPP 8 eq{
+      /Decode[0 1]def}{/Decode[0 1 0 1 0 1 0 1]def}ifelse}ifelse/DataSource{PaintData}def end/ImageDict
+      exch def/PaintProc{begin ImageDict image end}b currentdict mx makepattern setpattern end fEOFill{eofill}{fill}
+      ifelse grestore
+    }bind
+    {
+      /IsDistiller /GetDeviceParam .special_op {
+        exch pop
+      }{
+        //false
+      } ifelse
+      {gsave pop /fEOFill exch def GDIBWPatternDict begin /yOrg exch def /xOrg exch def /PaintData exch def/OutputBPP exch def
+      /Height exch def/Width exch def/PaintType 1 def/PatternType 1 def/TilingType 1 def/BBox[0 0
+      1 1]def/XStep 1 def/YStep 1 def/mx xOrg yOrg matrix translateWidth Height 3 -1 roll scale def 20 dict dup begin
+      /ImageType 1 def/Width Width def/Height Height def/ImageMatrix[1 0 0 1 0 0]def
+      /BitsPerComponent 8 def OutputBPP 24 eq{/Decode[0 1 0 1 0 1]def}{OutputBPP 8 eq{
+      /Decode[0 1]def}{/Decode[0 1 0 1 0 1 0 1]def}ifelse}ifelse/DataSource{PaintData}def end/ImageDict
+      exch def/PaintProc{begin ImageDict image end}b currentdict mx makepattern setpattern end fEOFill{eofill}{fill}
+      ifelse grestore
+      }{
+      gsave pop /fEOFill exch def GDIBWPatternDict begin /yOrg exch def /xOrg exch def /PaintData exch def/OutputBPP exch def
+      /Height exch def/Width exch def/PaintType 1 def/PatternType 1 def/TilingType 1 def/BBox[0 0
+      Width Height]def/XStep Width def/YStep Height def/mx xOrg yOrg matrix translate def 20 dict dup begin
+      /ImageType 1 def/Width Width def/Height Height def/ImageMatrix[1 0 0 1 0 0]def
+      /BitsPerComponent 8 def OutputBPP 24 eq{/Decode[0 1 0 1 0 1]def}{OutputBPP 8 eq{
+      /Decode[0 1]def}{/Decode[0 1 0 1 0 1 0 1]def}ifelse}ifelse/DataSource{PaintData}def end/ImageDict
+      exch def/PaintProc{begin ImageDict image end}b currentdict mx makepattern setpattern end fEOFill{eofill}{fill}
+      ifelse grestore
+      } ifelse
+    }bind
+  ]
+
+  /mask_pbf [
+    {gsave /fEOFill exch def 20 dict begin /yOrg exch def /xOrg exch def /PaintData exch def /Height exch def
+     /Width exch def /PatternType 1 def /PaintType 2 def /TilingType 1 def /BBox[0 0 Width Height] def
+     /XStep Width def /YStep Height def /mx xOrg yOrg matrix translate def /PaintProc{begin Width Height T 1 1 dtransform abs exch abs exch 0 0 3 -1 roll 0 0 6 array astore {PaintData}imagemask end} b
+     currentdict mx makepattern setpattern end fEOFill{eofill}{fill}ifelse grestore} bind
+     {
+        /IsDistiller /GetDeviceParam .special_op {
+          exch pop
+        }{
+          //false
+        } ifelse
+        {
+          gsave
+          /fEOFill exch def 20 dict begin /yOrg exch def /xOrg exch def /PaintData exch def
+          /Height exch def /Width exch def /PatternType 1 def /PaintType 2 def /TilingType 1 def
+          /BBox[0 0 1 1] def
+          /XStep 1 def /YStep 1 def
+          /mx xOrg yOrg matrix translate Width Height 3 -1 roll scale def
+          /PaintProc{begin Width Height T Width Height 0 0 3 -1 roll 0 0 6 array astore {PaintData}imagemask end} b
+          currentdict mx makepattern setpattern end fEOFill{eofill}{fill}ifelse grestore
+        }{
+          gsave /fEOFill exch def 20 dict begin /yOrg exch def /xOrg exch def /PaintData exch def /Height exch def
+          /Width exch def /PatternType 1 def /PaintType 2 def /TilingType 1 def /BBox[0 0 Width Height] def
+          /XStep Width def /YStep Height def /mx xOrg yOrg matrix translate def /PaintProc{begin Width Height T 1 1 dtransform abs exch abs exch 0 0 3 -1 roll 0 0 6 array astore {PaintData}imagemask end} b
+          currentdict mx makepattern setpattern end fEOFill{eofill}{fill}ifelse grestore
+        } ifelse
+    } bind
+  ]
+>>
+/IdiomSet defineresource pop
+
+<</IdiomRecognition 3 -1 roll>> setuserparams

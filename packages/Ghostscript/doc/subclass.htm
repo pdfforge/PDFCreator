@@ -1,0 +1,851 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>Ghostscript: Device Subclassing</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12"> Details of Ghostscript Device Subclassing</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<blockquote>
+<li><a href="#Gstate">Devices in the graphcis state</a>
+<li><a href="#Chaining">Chaining devices</a>
+<li><a href="#Subclassing">Subclassing</a>
+<li><a href="#Example_uses">Example uses</a>
+<li><a href="#Observations">Observations</a>
+<li><a href="#Example">Worked example</a>
+</blockquote>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+<hr>
+<h2><a name="Gstate"></a>Devices in the graphics state</h2>
+<p>
+The 'device' is a member of the graphics state in PostScript, and is subject to gsave/grestore, like
+ any other part of the graphics state. This is important for PostScript as it allows us to, for
+ example, push the null device, perform some operations, and then grestore back to the original rendering
+ device.
+</p><p>
+In PostScript and PDF, the graphics state is itself a garbage collected object, as is the device. This
+ means that we store a pointer to the device in the graphics state, which forces the other interpreters
+ to do so as well. Now an important implication of this is that it is then only possible, currently, to
+ change devices by altering the graphics state entry to point at a different device structure, which
+  means that the graphics state must be available in order to do so. Clearly at the interpreter level this
+ isn't a problem, but at lower levels the graphics state may not be available, not all our device methods
+ pass on a graphics state pointer for example. Without that pointer we can't change the graphics state and
+ therefore can't point at a different device.
+</p>
+<hr>
+<h2><a name="Chaining"></a>Chaining devices</h2>
+<p>
+There are times when it is useful to be able to chain devices one after another, examples include the PDF
+ transparency device, the pattern accumulator device and others. Some comments in early code indicate that
+ the ability to chain devices was an original design goal, though its likely that originally this was only
+ intended to work by installing devices from the interpreter level.
+</p><p>
+Currently there are a number of different ways to install devices, and the sheer number, and the methods
+ themselves, show why there is a problem. Lets consider them separately.
+</p>
+<p>
+<dd>
+Forwarding devices. These devices generally intercept the usual graphics marking operations, and pass them
+ on to the underlying device, or record some features of interest. Examples of these include the bbox device
+ and the pattern accumulator. These work very well, but require the graphics state to be available when we
+ need to insert them ahead of the 'underlying' device. This can be a problem, as we'll see later.
+</dd>
+</p><p>
+<dd>
+The device filter stack. This appears to be an early attempt at providing a way to chain devices together.
+ From traces remaining in the code this seems to originally have been intended to implement the PDF 1.4
+ transparency rendering. Its clear, however, that it is no longer used for that purpose and appears to be
+ completely redundant. In any event it also requires access to the graphics state and so would suffer the
+ same limitation.
+</dd></p>
+<p><dd>
+The clist. The clist code uses a very brute force approach to the problem, and only works for a single device.
+ When a device is turned into a clist device, the code essentially guts the device and rewrites it (it replaces
+ the overwritten entries later). This does work (though it seems rather horrendous to me) and doesn't require
+ access to the graphics state because we simply reuse the existing memory of the original device. However this
+ doesn't get us a 'chain', the clist simply morphs the existing device into something different.
+</dd></p>
+<p><dd>
+The PDF transparency compositor. This works in several ways to install itself, but the one of most interest is
+ the case where we return from the device 'create_compositor' method. The interpreter is required to treat the
+ return value as a pointer to a device, and if its not the same as the device currently in the graphics state,
+ then it alters the graphics state to point to the new device. I'm not sure why its done this way as we do
+ actually have access to the graphics state in this method and could presumably install the device ourselves.
+ However it is not useful as a general purpose method for installing devices as it requires the return value
+ to be acted upon by the interpreter. Making this general would require us to modify all the existing device
+ methods, and have the interpreters check the return value, it would almost certainly be simpler (and more useful)
+ to alter the methods to always include a graphics state.
+</dd></p>
+<p><dd>
+The 'spy' device. This is a somewhat non-standard device written by Robin, it works by copying the pointer to the
+ device methods, and then replacing all the device methods, it is thus very similar to the clist device.
+</dd></p>
+<p>
+Taken together we have a number of different routes to install devices, but none of them is totally satisfactory
+ for the goal of creating a chain of devices without access to the graphics state. However I think the existence of
+ these manifold routes do indicate that there has been a recognition in the past that this would be useful to have.
+</p>
+<hr>
+<h2><a name="Subclassing"></a>Subclassing</h2>
+<p>
+From the above, its clear that we need to use some approach similar to the clist and spy devices. We must retain
+ the original device memory, because that is what the graphics state points to, which means that we must reuse that
+ memory in some fashion. By making a copy of the existing device elsewhere, we can then recycle the existing device.
+</p><p>
+As a short summary, that's precisely what the device subclassing code does. It examines the existing device, makes
+ a new device structure sufficiently large to take a copy of it, and copies the existing device and all its state to
+ that new memory. It then uses the prototype supplied for the new class, and writes that into the original device memory.
+</p>
+<h4>New device members</h4>
+<p>
+In order to chain the devices together, I've added three new pointers to the device structure (so that all devices
+ can be chained), a child, a parent and a 'data' pointer (see below). Whenever we subclass a device the copied device
+ gets its parent member set to the original device pointer, and the new device points to the copied one using the child
+ member.</p>
+<p>
+Now a subtle point here is that, because we cannot change the size of the memory allocated for the original device
+ (as that might relocate it, invalidating the graphics state pointer) its absolutely vital that the new device must be no
+ larger than the old device. This means we have to be careful about data which the new device needs, we can't simply store
+ it in the device structure as we usually do. To resolve that I've also added a void pointer to hold private data, the new
+ device should allocate as much data as it requires (eg a structure) and store a pointer to that data in the subclass_data
+ pointer. I'd recommend that this is allocated from non-GC memory except in special cases. This should mean that subclassing
+ devices are never larger than a gx_device structure and so never overflow.
+</p>
+<h4>Subclassing made easy</h4>
+<p>
+In order to minimise the number of methods that a subclassing device needs to define I've created 'default' methods for all
+ the possible device methods. Subclassing devices should use these in their prototype for any methods they don't handle.
+ Additionally these can be used to pass on any methods after processing by the subclassing device, if required.
+</p>
+<hr>
+<h2><a name="Example_uses"></a>Example uses</h2>
+<p>
+The original justification for this work was to create a device which would add 'first page' and 'last page' functionality
+ to all the languages and all the devices. The gdevflp.c file incorporates exactly that, it has been added to gdevprn.c and
+ gdevvec.c so that any device based on either of these two basic devices will simply work. Additionally other devices which
+ are not based on either of these (eg the 'bit' device) have been appropriately modified.
+</p>
+<p>
+If <code>-dFirstPage</code> or <code>-dLastPage</code> is set the parameter is parsed out and the existing device is
+ subclassed by the new First/Last page device. This device simply drops all marking operations, and 'output_page' operations
+ until we reach the page defined by FirstPage, and then passes everything through to the real device until we pass the page
+ defined by LastPage at which point it throws everything away again until the end of the input.
+</p>
+<p>
+Now, this is not as efficient as the PDF interpreter's usage, which only passes those pages required to be rendered. So the
+ old functionality has been preserved in the PDF interpreter, exactly as before. In order to prevent the subclassing device
+ addionally acting on the same parameters, there is a <code>DisablePageHandler</code> flag which is set by the PDF interpreter.
+</p>
+<p>
+In order to test the chaining of devices together, I also created an 'object filtering' device; as with the first/last page
+ device this has been added to all devices and any device based off gdevprn or gdevvec should inherit the functionality
+ directly. This device allows objects to be dropped based on their type (text, image or linework) using the parameters
+ <code>-dFILTERTEXT -dFILTERIMAGE</code> and <code>-dFILTERVECTOR</code>, if a parameter is set then objects of that type
+ will not be rendered.
+</p>
+<p>
+Finally the PCL interpreter now uses a subclassing device to implement the 'monochrome palette' rendering. Previously this
+ directly modified the color_procs in the current device, which I suspect was prone to potential failure (for example if a
+ forwarding device had been pushed). This eliminated a somewhat ugly hack (in fairness its not obvious what would have been
+ better), as well as allowing me to do away with some global variables in the PCL interpreter.
+</p>
+<hr>
+<h2><a name="Observations"></a>Observations</h2>
+<p>
+The monochrome palette device illuminated an interesting problem in the graphics library. Normally the device calls the graphics
+ library for rendering services, but the color_procs work in reverse, the graphics library calls the device directly in order to
+ map the colours. In the case of chained devices this meant that only the final device was being called. This was unacceptable in
+ a situation involving chained devices, it seemed obvious to me that the graphics library should pass the request to the head of
+ the device chain for processing. There is no simple way to do this (no access to the graphics state!) so instead I used the linked
+ list of child/parent pointers to walk up to the head of the list, and then submit the request to that device.
+</p>
+<p>
+The ICC profile code has a 'get_profile' method in the device API to retrieve a profile, but it has no corresponding 'set_profile'
+ method, it simply sets the structure member in the current device. This caused some serious problems. Consider the case where the
+ ICC code executes a get_profile and no profile is yet set (returning NULL). The code would then create a profile and attach it
+ directly to the current device. It then executes 'get_profile' again. If the current device was a subclassing device, or a forwarding
+ device, then the 'set' would have set the profile in that device, but the 'get' would retrieve it from the underlying device, which
+ would still be NULL. Since the ICC code didn't test the result on the second call this caused a segmentation fault. I've modified
+ the ICC code to set the profile in the lowest device, but this probably ought to be improved to define a new 'set_profile' method.
+</p>
+<p>The tag devices write an extra colour plane in the output, where the value of the sample encodes the type of graphic that was
+ rendered at that point (text, image, path, untouched or unknown). This is done by encoding the type in the color, which is performed
+ by the graphics library. Now, when the type of operation changes (eg from image to text) we need to tell the graphics library that
+ there has been a change. We do this by calling the set_graphics_type_tag device method. However, when encoding a color, the graphics
+ library does not, as one might expect call a matching get_graphics_type method, instead it directly inspects the devcie structure and
+ reads the graphics_type_tag member. This means that all devices in the chain must maintain this member, the implication is that if
+ a subclassing device should implement its own set_graphics_type_tag method, it must update the graphics_type_tag in its device
+ structure appropriately, and pass the method on to the next device in the chain. The default method already does this.</p>
+<p>
+Its pretty clear from reading through the code that the original intention of the device methods is that all methods in a device
+ should be filled in, they should never be NULL (exception; fill_rectangle is deliberately excluded from this) if a device does not
+ implement a method then 'fill_in_procs' should set a default method (which may legitimately simply throw an error). Over time this
+ decision has not been enforced with the result that we now have some places where methods may be NULL. This has meant that there
+ are places in the code which have to check for a method being NULL before using it, which is (I think) exactly what we were
+ originally trying to avoid. Worse, since there is no list of which methods may be NULL a sensible developer would have to test all
+ methods before use. Worst of all, it looks like some places may take a NULL method as having specific meaning (gsdparam.c line 272).
+ We should really tidy this up.
+ </p>
+<p>
+General observations are recorded in comments in gdevsclass.c
+</p>
+<hr>
+<h2><a name="Example"></a>Worked example</h2>
+<p>
+To see how to use the device subclassing we'll take a concrete example and implement it in a real device. For the purposes of the
+ example we'll do a 'force black text' device and add it to the TIFF device(s). The reason for choosing the TIFF devices is that
+ these already have an 'open_device' method which we are going to use to install the subclassing device. This isn't essential,
+ you could install the device at any point, but its convenient.
+</p>
+<p>
+The first thing we need to do is add some control to turn this feature off and on, this is normally done by setting device
+ parameters on the command line. To implement this we will need to modify the put_params and get_params methods. Note it is
+ important to add new parameters to both the get and put methods, or an error will occur. We'll call our new parameter
+ <code>ForceBlackText</code>.
+</p>
+<p>
+First we add the new parameter to the TIFF device, defined in gdevtifs.h:
+</p>
+<code>
+typedef struct gx_device_tiff_s {
+<dd>    gx_device_common;<br />
+    gx_prn_device_common;<br />
+    bool ForceBlackText;<br />
+    bool BlackTextHandlerPushed;<br />
+....
+</dd>
+}<br />
+</code><p>
+Note that we also have a boolean value 'BlackTextHandlerPushed' to track whether the device is already pushed or not, we'll want to use this later.
+</p>
+<p>
+We also need to add default values to the device prototypes, which are defined in gdevtfnx.c:
+</p>
+<code>const gx_device_tiff gs_tiff12nc_device = {
+<dd>    prn_device_std_body(gx_device_tiff, tiff12_procs, "tiff12nc",<br />
+                        DEFAULT_WIDTH_10THS, DEFAULT_HEIGHT_10THS,<br />
+                        X_DPI, Y_DPI,<br />
+                        0, 0, 0, 0,<br />
+                        24, tiff12_print_page),<br />
+    0, /* ForceBlacktext */<br />
+    0, /* BlacktextHandlerPushed */<br />
+    arch_is_big_endian          /* default to native endian (i.e. use big endian iff the platform is so*/,
+</dd>
+</code><p>
+Repeat for gs_tiff24nc_device and gs_tiff48nc_device. For unknown reasons, the remaining TIFF devices are in gdevtsep.c, we need to make the
+ same changes to the prototypes there; gs_tiffgray_device gs_tiffscaled_device gs_tiffscaled8_device gs_tiffscaled24_device
+ gs_tiffscaled32_device gs_tiffscaled4_device gs_tiff32nc_device gs_tiff64nc_device and finally tiffsep_devices_body.
+</p>
+<p>Now we add code to put_params and get_params to set the parameter, and report its value back to the interpreter. In gdevtifs.c:</p>
+<code>static int
+tiff_get_some_params(gx_device * dev, gs_param_list * plist, int which)<br />
+{
+<dd>    gx_device_tiff *const tfdev = (gx_device_tiff *)dev;<br />
+    int code = gdev_prn_get_params(dev, plist);<br />
+    int ecode = code;<br />
+    gs_param_string comprstr;<br />
+<br />
+    if ((code = param_write_bool(plist, "ForceBlackText", &tfdev->ForceBlackText)) < 0)<br />
+        ecode = code;<br />
+....
+</dd>
+}
+</code>
+<code>
+<br />static int
+tiff_put_some_params(gx_device * dev, gs_param_list * plist, int which)<br />
+{
+<dd>gx_device_tiff *const tfdev = (gx_device_tiff *)dev;
+    int ecode = 0;<br />
+    int code;<br />
+    const char *param_name;<br />
+    bool big_endian = tfdev->BigEndian;<br />
+    bool usebigtiff = tfdev->UseBigTIFF;<br />
+    uint16 compr = tfdev->Compression;<br />
+    gs_param_string comprstr;<br />
+    long downscale = tfdev->DownScaleFactor;<br />
+    long mss = tfdev->MaxStripSize;<br />
+    long aw = tfdev->AdjustWidth;<br />
+    long mfs = tfdev->MinFeatureSize;<br />
+    bool ForceBlackText = tfdev->ForceBlackText;<br />
+<br />
+    /* Read ForceBlackText option as bool */<br />
+    switch (code = param_read_bool(plist, (param_name = "ForceBlackText"), &ForceBlackText)) {<br />
+        default:<br />
+            ecode = code;<br />
+            param_signal_error(plist, param_name, ecode);<br />
+        case 0:<br />
+        case 1:<br />
+            break;<br />
+    }<br />
+<br />
+    /* Read BigEndian option as bool */<br />
+    switch (code = param_read_bool(plist, (param_name = "BigEndian"), &big_endian)) {<br />
+</dd>...
+<dd>    tfdev->MinFeatureSize = mfs;<br />
+    tfdev->ForceBlackText = ForceBlackText;<br />
+    return code;<br />
+</dd>}
+</code>
+<p>
+Checking the TIFF device's open method (tiff_open) we see that it already potentially has two subclassing devices,
+ this is because it doesn't inherit from gdev_prn, if it did this functionality would be inherited as well. We can
+ just go ahead and add our new subclassing device in here.
+</p>
+<br />
+<code>int
+tiff_open(gx_device *pdev)<br />
+{
+<dd>    gx_device_printer * const ppdev = (gx_device_printer *)pdev;<br />
+    gx_device_tiff *tfdev = (gx_device_tiff *)pdev;<br />
+    int code;<br />
+    bool update_procs = false;<br />
+<br />
+    /* Use our own warning and error message handlers in libtiff */<br />
+    tiff_set_handlers();<br />
+<br />
+    if (!tfdev->BlackTextHandlerPushed && (tfdev->ForceBlackText != 0)) {<br />
+       gx_device *dev;<br />
+<br />
+        gx_device_subclass(pdev, (gx_device *)&gs_black_text_device, sizeof(black_text_subclass_data));<br />
+        tfdev = (gx_device_tiff *)pdev->child;<br />
+        tfdev->BlackTextHandlerPushed = true;<br />
+<br />
+        while(pdev->child)<br />
+            pdev = pdev->child;<br />
+        pdev->is_open = true;<br />
+        update_procs = true;<br />
+    }<br />
+</dd>
+</code><p>
+You might notice that this is a little simpler than the other device installations, that's because the other devices can potentially
+ be installed by any device, and we need to track them more carefully. Our new device can only be installed by the TIFF device, so we
+ don't need to note that its been installed already, in all the parent and child devices. This is only done so that we don't
+ accidentally install these more basic devices more than once.
+</p>
+<p>
+So the first thing we do is check to see if we've already installed the device to force black text (we can potentially call the open
+ method more than once and we don't want to install the device multiple times). If we haven't installed the device yet, and the feature
+ has been requested, then we call the code to subclass the current device using the 'black_text_device' as the prototype for the new
+ device, and pass in the amount of data it requires for its private usage.
+</p>
+<p>
+We will be defining this device as the next steps, for now just notice that after we call this, the 'current' device in the graphics
+ state will be the black_text_device, and its 'child' member will be pointing to the TIFF device. So we note in that child device that
+ we have pushed the black text handling device. We also note that the TIFF device is 'open' (the calling code will do this for the
+ device pointed to by the graphics state, ie the black text device). Finally we set a boolean to 'update procs'. This is needed because
+ the tiff_open routine calls gdev_prn_allocate_memory which resets the device methods, we need to put them back to be correct for our
+ device(s), which is done at the end of the tiff_open code:
+</p>
+<br />
+<code>if (update_procs) {
+<dd>        if (pdev->ObjectHandlerPushed) {<br />
+            gx_copy_device_procs(&pdev->parent->procs, &pdev->procs, (gx_device_procs *)&gs_obj_filter_device.procs);<br />
+            pdev = pdev->parent;<br />
+        }<br />
+        if (pdev->PageHandlerPushed) {<br />
+            gx_copy_device_procs(&pdev->parent->procs, &pdev->procs, (gx_device_procs *)&gs_flp_device.procs);<br />
+            pdev = pdev->parent;<br />
+        }<br />
+        /* set tfdev to the bottom device in the chain */<br />
+        tfdev = (gx_device_tiff *)pdev;<br />
+        while (tfdev->child)<br />
+            tfdev = (gx_device_tiff *)tfdev->child;<br />
+        if (tfdev->BlackTextHandlerPushed)<br />
+            gx_copy_device_procs(&pdev->parent->procs, &pdev->procs, (gx_device_procs *)&gs_black_text_device.procs);<br />
+    }<br />
+</dd>
+</code><p>
+In essence this simply works backwards through the chain of devices, restoring the correct methods  as it goes. Note that because the
+ BlackTextHandlerPushed variable isn't defined in the basic device structure, we have to cast the device pointer to a gx_device_tiff *
+ so that we can set and check the variable which is defined there.
+</p>
+<p>
+That completes the changes we need to make to the TIFF device to add support for our new code. Now we need to create the black_text device which will do the actual work.
+</p>
+<p>We don't need any extras in the device structure, so we'll just define our subclassing device as being a gx_device:</p>
+<code>/* Black Text device */<br />
+typedef struct gx_device_s gx_device_black_text;<br />
+</code>
+<p>
+We also don't need any extra storage, but we do need to carry round the basic storage required by a subclassing device, so we do need to define a structure for that:
+</p>
+<code>typedef struct {
+<dd>    subclass_common;
+</dd>} black_text_subclass_data;
+</code>
+<p>
+Now, we are going to deal with text (obviously) and text, like images, is handled rather awkwardly in the current device interface.
+ Instead of the interpreter calling the various device methods,  the 'text_begin' method creates a text enumerator which it returns
+ to the interpreter. The text enumerator contains its own set of methods for dealing with text, and the interpreter calls these,
+ thus bypassing the device itself. Since our subclassing requires us to pass down a chain of devices, when dealing with text and
+ images we must also implement a chain of enumerators. For subclassing devices which don't process text or images this is catered
+ for in the default_subclass_* methods, but in this case we need to handle the situation.
+</p>
+<p>We start by creating our own text enumerator structure:
+</p>
+<code>
+typedef struct black_text_text_enum_s {
+<dd>    gs_text_enum_common;<br />
+    gs_text_enum_t *child;
+</dd>} black_text_text_enum_t;
+</code>
+<p>Here we have a structure which contains the elements common to all enumerators, and a pointer to the next enumerator in the chain, we'll fill that in later.</p>
+<p>Ghostscript uses several memory managers, but for PostScript and PDF objects we use a garbage collector. Because we may want to
+ store pointers to garbage collected objects in the text enumerator, and our device, we need to make the garbage collector aware of
+ them. This is because the garbage collector can relocate objects in memory, in order to do so safely it needs to update any pointers
+ referencing those objects with the new location and so it needs to be told about those pointers.</p>
+<p>So, we define a garbage collector structure for the text enumerator:</p>
+<code>extern_st(st_gs_text_enum);<br />
+  gs_private_st_suffix_add1(st_black_text_text_enum, black_text_text_enum_t,
+    "black_text_text_enum_t", black_text_text_enum_enum_ptrs, black_text_text_enum_reloc_ptrs,
+    st_gs_text_enum, child);
+</code>
+<p>The macro 'extern_st' simply defines the structure (st_gs_text_enum) as being of type gs_memory_struct_type_t. We need this structure for the 'superstructure' defined below.</p>
+<p>The next macro 'gs_private_st_suffix_add1' is one of a family of macros used to define structures for the garbage collector. These
+ all end up defining the named structure as being of type 'gc_struct_data_t' and fill in various members of that structure. In this case
+ we are declaring that the structure:
+<dd>Has one pointer to additional garbage collected objects (add_1)</dd>
+<dd>Its name is 'st_black_text_text_enum'</dd>
+<dd>It is of type 'black_text_text_enum_t'</dd>
+<dd>Has the readable name for error messages 'black_text_text_enum_t</dd>
+<dd>The routine to be called to enumerate the garbage collected pointers in the structure is 'black_text_text_enum_enum_ptrs'</dd>
+<dd>The routine to be called when relocating garbage collcted objects pointed to by ths structure is 'black_text_text_enum_reloc_ptrs</dd>
+<dd>The 'superstructure' (ie the structure type this is based on) is 'st_gs_text_enum'. Ths means that all the enumeration and relocation methods for any pointers in the 'common' text enumerator structure get handled by this structure.</dd>
+<dd>The one additional pointer to a garbage collected object  is the 'child' member.</dd>
+<br />The macro takes care of creating all the code we need to deal with this object, essentially it will create 'black_text_text_enum_enum_ptrs' and 'black_text_text_enum_reloc_ptrs' for us.
+</p>
+<p>
+So now we have to do a similar job for the actual device itself. We start by defining the enumeration and relocation routines
+ for the structure. There are extensive macros for doing this, and we make use of some of them here. Explaining these is out of
+ the scope of this document, but they are defined and easy to locate in the Ghostscript source tree.
+</p>
+<code>
+static<br />
+ENUM_PTRS_WITH(black_text_enum_ptrs, gx_device *dev);<br />
+return 0; /* default case */<br />
+case 0:ENUM_RETURN(gx_device_enum_ptr(dev->parent));<br />
+case 1:ENUM_RETURN(gx_device_enum_ptr(dev->child));<br />
+ENUM_PTRS_END<br />
+<br />
+static RELOC_PTRS_WITH(black_text_reloc_ptrs, gx_device *dev)<br />
+{
+<dd>    dev->parent = gx_device_reloc_ptr(dev->parent, gcst);<br />
+    dev->child = gx_device_reloc_ptr(dev->child, gcst);
+</dd>}RELOC_PTRS_END
+</code>
+<p>Essentially these simply tell the garbage collector that we are maintaining two pointers to garbage collected objects, the
+ parent and child devices. Now we use those in the garbage collector 'structure descriptor' for the device. Note this is not
+ the actual device structure, its the structure used by the garbage collector when dealing with the device.
+</p>
+<code>
+gs_public_st_complex_only(st_black_text_device, gx_device, "black_text",
+    0, black_text_enum_ptrs, black_text_reloc_ptrs, gx_device_finalize);
+</code>
+<p>
+Again 'gs_public_st_complex_only' is a macro, and its one of a family, these end up defining structures of type 'gs_memory_struct_t'.
+In this case we are declaring:
+<dd>The structure type is named 'st_black_text_device'</dd>
+<dd>The structure is of size 'gx_device' (ths only works because we don;t need any other storage, otherwise we would have to define the device structure and pass that here).</dd>
+<dd>The human readable name for error messages is 'black_text'</dd>
+<dd>We don't define a 'clear' routine.</dd>
+<dd>The enumerator for GC objects is called 'black_text_enum_ptrs'</dd>
+<dd>The relocator for GC objects is called 'black_text_reloc_ptrs'</dd>
+<dd>We use the regular 'gx_device_finalize' routine when freeing the object, we don't declare a special one of our own.</dd><br />
+Now we've got all the garbage collector machinery out of the way we can deal with the actual device itself. Because we're only interested in
+ text, there's only one device method we want to handle, the text_begin method, so we start by prototyping that:
+</p>
+<code>
+/* Device procedures */<br />
+static dev_proc_text_begin(black_text_text_begin);
+</code>
+<p>Then we define the actual device:
+</p>
+<code>
+const
+gx_device_black_text gs_black_text_device =
+{
+<dd>    std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
+                        MAX_COORD, MAX_COORD,<br />
+                        MAX_RESOLUTION, MAX_RESOLUTION,<br />
+                        1, 8, 255, 0, 256, 1),<br />
+    {default_subclass_open_device,<br />
+     default_subclass_get_initial_matrix,<br />
+     default_subclass_sync_output,            /* sync_output */<br />
+     default_subclass_output_page,<br />
+     default_subclass_close_device,<br />
+     default_subclass_map_rgb_color,<br />
+     default_subclass_map_color_rgb,<br />
+     default_subclass_fill_rectangle,<br />
+     default_subclass_tile_rectangle,            /* tile_rectangle */<br />
+     default_subclass_copy_mono,<br />
+     default_subclass_copy_color,<br />
+     default_subclass_draw_line,            /* draw_line */<br />
+     default_subclass_get_bits,            /* get_bits */<br />
+     default_subclass_get_params,<br />
+     default_subclass_put_params,<br />
+     default_subclass_map_cmyk_color,<br />
+     default_subclass_get_xfont_procs,            /* get_xfont_procs */<br />
+     default_subclass_get_xfont_device,            /* get_xfont_device */<br />
+     default_subclass_map_rgb_alpha_color,<br />
+     default_subclass_get_page_device,<br />
+     default_subclass_get_alpha_bits,            /* get_alpha_bits */<br />
+     default_subclass_copy_alpha,<br />
+     default_subclass_get_band,            /* get_band */<br />
+     default_subclass_copy_rop,            /* copy_rop */<br />
+     default_subclass_fill_path,<br />
+     default_subclass_stroke_path,<br />
+     default_subclass_fill_mask,<br />
+     default_subclass_fill_trapezoid,<br />
+     default_subclass_fill_parallelogram,<br />
+     default_subclass_fill_triangle,<br />
+     default_subclass_draw_thin_line,<br />
+     default_subclass_begin_image,<br />
+     default_subclass_image_data,            /* image_data */<br />
+     default_subclass_end_image,            /* end_image */<br />
+     default_subclass_strip_tile_rectangle,<br />
+     default_subclass_strip_copy_rop,<br />
+     default_subclass_get_clipping_box,            /* get_clipping_box */<br />
+     default_subclass_begin_typed_image,<br />
+     default_subclass_get_bits_rectangle,            /* get_bits_rectangle */<br />
+     default_subclass_map_color_rgb_alpha,<br />
+     default_subclass_create_compositor,<br />
+     default_subclass_get_hardware_params,            /* get_hardware_params */<br />
+     black_text_text_begin,<br />
+     default_subclass_finish_copydevice,            /* finish_copydevice */<br />
+     default_subclass_begin_transparency_group,            /* begin_transparency_group */<br />
+     default_subclass_end_transparency_group,            /* end_transparency_group */<br />
+     default_subclass_begin_transparency_mask,            /* begin_transparency_mask */<br />
+     default_subclass_end_transparency_mask,            /* end_transparency_mask */<br />
+     default_subclass_discard_transparency_layer,            /* discard_transparency_layer */<br />
+     default_subclass_get_color_mapping_procs,            /* get_color_mapping_procs */<br />
+     default_subclass_get_color_comp_index,            /* get_color_comp_index */<br />
+     default_subclass_encode_color,            /* encode_color */<br />
+     default_subclass_decode_color,            /* decode_color */<br />
+     default_subclass_pattern_manage,            /* pattern_manage */<br />
+     default_subclass_fill_rectangle_hl_color,            /* fill_rectangle_hl_color */<br />
+     default_subclass_include_color_space,            /* include_color_space */<br />
+     default_subclass_fill_linear_color_scanline,            /* fill_linear_color_scanline */<br />
+     default_subclass_fill_linear_color_trapezoid,            /* fill_linear_color_trapezoid */<br />
+     default_subclass_fill_linear_color_triangle,            /* fill_linear_color_triangle */<br />
+     default_subclass_update_spot_equivalent_colors,            /* update_spot_equivalent_colors */<br />
+     default_subclass_ret_devn_params,            /* ret_devn_params */<br />
+     default_subclass_fillpage,        /* fillpage */<br />
+     default_subclass_push_transparency_state,                      /* push_transparency_state */<br />
+     default_subclass_pop_transparency_state,                      /* pop_transparency_state */<br />
+     default_subclass_put_image,                      /* put_image */<br />
+     default_subclass_dev_spec_op,                      /* dev_spec_op */<br />
+     default_subclass_copy_planes,                      /* copy_planes */<br />
+     default_subclass_get_profile,                      /* get_profile */<br />
+     default_subclass_set_graphics_type_tag,                      /* set_graphics_type_tag */<br />
+     default_subclass_strip_copy_rop2,<br />
+     default_subclass_strip_tile_rect_devn,<br />
+     default_subclass_copy_alpha_hl_color,<br />
+     default_subclass_process_page
+</dd>    }
+};
+</code>
+<p>Much of this is simply boilerplate, defining the device methods as being the default methods for a subclassing device. The
+ exception being the text_begin method. The main body of the macro is:</p>
+<code>
+const
+gx_device_black_text gs_black_text_device =
+{
+<dd>    std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
+                        MAX_COORD, MAX_COORD,<br />
+                        MAX_RESOLUTION, MAX_RESOLUTION,<br />
+                        1, 8, 255, 0, 256, 1),
+</dd></code>
+<p>This simply defines an instance of the 'gx_device_black_text' structure (which is simply a gx_device_s structure) initialised
+ using a macro (yet another family of macros). Here we use the 'st_black_text_device' structure descriptor we created above,
+ and some dummy values for the resolution, colour depth etc. Since this device doesn't do rendering these values aren't useful
+ and these defaults should be fine.
+</p>
+<p>Now, for text we need to fill in all the procedures in the text enumerator, we'll start by defining the 'resync' method, and
+ then use this as a template for most of the other methods in the text enumerator:
+</p>
+<code>
+static int
+black_text_text_resync(gs_text_enum_t *pte, const gs_text_enum_t *pfrom)
+{
+<dd>    black_text_text_enum_t *penum;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->resync(child, pfrom);<br />
+    gs_text_enum_copy_dynamic(pte, child, true);<br />
+    return code;<br />
+</dd>}
+</code>
+<p>The routine starts by casting the generic text enumerator to our specific type of text enumerator. From that we can get the child
+ enumerator, and we simply pass the operation on directly to the child (remembering to pass the child enumerator as an argument, not our own one!).
+</p>
+<p>
+Now, on return it may be that the child has modified the contents of the enumerator, so we must copy anything that might have changed
+ from the child enumerator to our own. That's what the 'gs_text_enum_copy_dynamic' routine does. After that we simply return the saved return value.
+</p>
+<p>
+All the other routines are basically the same as this, we don't really want to do anything in the text enumeration so we just hand off the processing to the child.
+</p>
+<code>
+static int
+black_text_text_process(gs_text_enum_t *pte)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->process(child);<br />
+    gs_text_enum_copy_dynamic(pte, child, true);<br />
+    return code;<br />
+</dd>}<br />
+static bool
+black_text_text_is_width_only(const gs_text_enum_t *pte)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->is_width_only(child);<br />
+    gs_text_enum_copy_dynamic((gs_text_enum_t *)pte, child, true);<br />
+    return code;<br />
+</dd>}<br />
+static int
+black_text_text_current_width(const gs_text_enum_t *pte, gs_point *pwidth)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->current_width(child, pwidth);<br />
+    gs_text_enum_copy_dynamic((gs_text_enum_t *)pte, child, true);<br />
+    return code;<br />
+</dd>}<br />
+static int
+black_text_text_set_cache(gs_text_enum_t *pte, const double *pw,
+                   gs_text_cache_control_t control)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->set_cache(child, pw, control);<br />
+    gs_text_enum_copy_dynamic(pte, child, true);<br />
+    return code;<br />
+</dd>}<br />
+static int
+black_text_text_retry(gs_text_enum_t *pte)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+    int code;<br />
+<br />
+    code = child->procs->retry(child);<br />
+    gs_text_enum_copy_dynamic(pte, child, true);<br />
+    return code;<br />
+</dd>}<br />
+static void
+black_text_text_release(gs_text_enum_t *pte, client_name_t cname)
+{
+<dd>    black_text_text_enum_t *penum = (black_text_text_enum_t *)pte;<br />
+    gs_text_enum_t * child = penum->child;<br />
+<br />
+    child->procs->release(child, cname);<br />
+    gx_default_text_release(pte, cname);<br />
+</dd>}
+</code>
+<p>The 'release' method is very slightly different, because we need to free the numerator, so we call 'gx_default_text_release'</p>
+<p>Now, finally, we can define the 'text_begin' device method, the first thing we do is a convenience, we define a
+ 'gs_text_enum_procs' instance which is initialised to point to all the text enumerator methods we defined above:
+</p>
+<code>
+static const gs_text_enum_procs_t black_text_text_procs = {
+<dd>    black_text_text_resync, black_text_text_process,
+    black_text_text_is_width_only, black_text_text_current_width,
+    black_text_text_set_cache, black_text_text_retry,
+    black_text_text_release
+</dd>};</code>
+<p>So on to the text_begin method:
+</p>
+<code>
+/* The device method which we do actually need to define.
+ */<br />
+int black_text_text_begin(gx_device *dev, gs_imager_state *pis, const gs_text_params_t *text,<br />
+    gs_font *font, gx_path *path, const gx_device_color *pdcolor, const gx_clip_path *pcpath,<br />
+    gs_memory_t *memory, gs_text_enum_t **ppte)<br />
+{<br />
+<dd>    black_text_text_enum_t *penum;<br />
+    int code;<br />
+    gs_text_enum_t *p;<br />
+<br />
+    rc_alloc_struct_1(penum, black_text_text_enum_t, &st_black_text_text_enum, memory,<br />
+                  return_error(gs_error_VMerror), "black_text_text_begin");<br />
+    penum->rc.free = rc_free_text_enum;<br />
+    code = gs_text_enum_init((gs_text_enum_t *)penum, &black_text_text_procs,<br />
+                         dev, pis, text, font, path, pdcolor, pcpath, memory);<br />
+    if (code < 0) {<br />
+        gs_free_object(memory, penum, "black_text_text_begin");<br />
+        return code;<br />
+    }<br />
+    *ppte = (gs_text_enum_t *)penum;<br />
+<br />
+    code = default_subclass_text_begin(dev, pis, text, font, path, pdcolor, pcpath, memory, &p);<br />
+    if (code < 0) {<br />
+        gs_free_object(memory, penum, "black_text_text_begin");<br />
+        return code;<br />
+    }<br />
+    penum->child = p;<br />
+<br />
+    return 0;<br />
+</dd>}
+</code>
+<p>This uses library macros to create and initialise the text enumerator. Text enumerators are reference counted
+ (and garbage collected.....) so we use the rc_alloc_struct family of macros, the '1' is the initial reference
+ count that we want to have. We then call 'gs_text_enum_init' to initialise the newly created structure, passing
+ in the text procs we just created as one of the arguments.
+</p>
+<p>We then set the returned enumerator to point to the newly created text enumerator. Finally we pass the 'text_begin'
+ method on to the child device using the 'default_subclass_text_begin' method and we store the returned text enumerator
+ in the child pointer of our own enumerator.
+</p>
+<p>At this point the code should compile and run properly, but it won;t actually do anything yet. For that we need to
+ modify the current colour before we run the text. Fortunately we don't need to deal with the graphics state, the text_begin
+ method is given the colour index to be used so all we need to do is alter that. We do, however, have to cater for what the
+ device thinks 'black' actually is, but there are graphics library calls to deal with both finding that information and
+ setting a colour index from it:
+</p>
+<code>
+int black_text_text_begin(gx_device *dev, gs_imager_state *pis, const gs_text_params_t *text,<br />
+    gs_font *font, gx_path *path, const gx_device_color *pdcolor, const gx_clip_path *pcpath,<br />
+    gs_memory_t *memory, gs_text_enum_t **ppte)<br />
+{
+<dd>    black_text_text_enum_t *penum;<br />
+    int code;<br />
+    gs_text_enum_t *p;<br />
+<br />
+    /* Set the colour index in 'pdcolor' to be whatever the device thinks black shoudl be */<br />
+    set_nonclient_dev_color((gx_device_color *)pdcolor, gx_device_black((gx_device *)dev));<br />
+</dd>
+</code>
+<p>That concludes the worked example and the documentation on device subclassing.
+</p>
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+
+<p>
+<small>Copyright &copy; 2013-2019 Artifex Software, Inc.  All rights
+reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied,
+modified or distributed except as expressly authorized under the terms
+of the license contained in the file LICENSE in this distribution.
+
+For more information about licensing, please visit
+http://www.artifex.com/licensing/
+or contact Artifex Software, Inc., 1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

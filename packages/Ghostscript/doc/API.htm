@@ -1,0 +1,1186 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>The Ghostscript Interpreter Application Programming Interface (API)</title>
+    <!-- Supercedes the API in DLL.htm -->
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+    <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12">The Ghostscript Interpreter Application Programming Interface (API)</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<ul>
+<li><a href="#API">What is the Ghostscript Interpreter API?</a></li>
+<li><a href="#Exported_functions ">Exported functions</a></li>
+
+<ul>
+<li><a href="#revision"><code>gsapi_revision</code></a></li>
+<li><a href="#new_instance"><code>gsapi_new_instance</code></a></li>
+<li><a href="#delete_instance"><code>gsapi_delete_instance</code></a></li>
+<li><a href="#set_stdio"><code>gsapi_set_stdio</code></a></li>
+<li><a href="#set_poll"><code>gsapi_set_poll</code></a></li>
+<li><a href="#set_display_callback"><code>gsapi_set_display_callback</code></a></li>
+<li><a href="#set_arg_encoding"><code>gsapi_set_arg_encoding</code></a></li>
+<li><a href="#run"><code>gsapi_run_string_begin</code></a></li>
+<li><a href="#run"><code>gsapi_run_string_continue</code></a></li>
+<li><a href="#run"><code>gsapi_run_string_end</code></a></li>
+<li><a href="#run"><code>gsapi_run_string_with_length</code></a></li>
+<li><a href="#run"><code>gsapi_run_string</code></a></li>
+<li><a href="#init"><code>gsapi_init_with_args</code></a></li>
+<li><a href="#run"><code>gsapi_run_*</code></a></li>
+<li><a href="#exit"><code>gsapi_exit</code></a></li>
+<li><a href="#add_fs"><code>gsapi_add_fs</code></a></li>
+<li><a href="#remove_fs"><code>gsapi_remove_fs</code></a></li>
+<li><a href="#return_codes">Return codes</a></li>
+</ul>
+<li><a href="#Example_usage">Example usage</a></li>
+<li><a href="#stdio">Standard input and output</a></li>
+<li><a href="#display">Display device</a></li>
+</ul>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.3 begin hint] ====================================================== -->
+
+<p>For other information, see the <a href="Readme.htm">Ghostscript overview</a>.</p>
+
+<p>
+<b>WARNING:</b> The API described in this document is subject to changes in
+future releases, possibly ones that are not backward compatible with what
+is described here.</p>
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+
+<h2><a name="API"></a>What is the Ghostscript Interpreter API?</h2>
+
+<p>
+The Ghostscript interpreter can be built as a dynamic link library
+(DLL) on Microsoft Windows, as a shared object on the
+Linux, Unix and MacOS X platforms. With some changes, it could be built
+as a static library. This document describes the Application Programming
+Interface (API) for the Ghostscript interpreter library.
+This should not be confused with the
+<a href="Lib.htm">Ghostscript library</a> which provides a graphics
+library but not the interpreter.</p>
+<p>
+This supercedes the old <a href="DLL.htm">DLL</a> interface.</p>
+<p>
+To provide the interface described in the
+<a href="Use.htm">usage documentation</a>, a smaller independent
+executable loads the DLL/shared object.
+This executable must provide all the interaction with the windowing system,
+including image windows and, if necessary, a text window.</p>
+
+<p>
+The Ghostscript interpreter library's name and characteristics differ
+for each platform:</p>
+
+<ul>
+<li>The Win32 DLL <code>gsdll32.dll</code>
+can be used by multiple programs simultaneously, but only once
+within each process.</li>
+
+<li>The OS/2 DLL <code>gsdll2.dll</code> has
+MULTIPLE NONSHARED data segments and can be called by multiple programs
+simultaneously.</li>
+
+<li>The Linux shared object <code>libgs.so</code>
+can be used by multiple programs simultaneously.</li>
+        </ul>
+<p>
+The source for the executable is in <code>dw</code>*.* (Windows),
+<code>dp</code>*.* (OS/2) and  <code>dx</code>*.* (Linux/Unix).
+See these source files for examples of how to use the DLL.</p>
+
+<p>
+The source file <tt>dxmainc.c</tt> can also serve as an example of how to use the
+shared library component on MacOS X, providing the same command-line tool it does
+on any linux, bsd or similar operating system.</p>
+<p>
+At this stage, Ghostscript does not support multiple instances
+of the interpreter within a single process.</p>
+
+<hr>
+
+<h2><a name="Exported_functions"></a>Exported functions</h2>
+
+<p>
+The functions exported by the DLL/shared object are described
+in the header file <a href="../psi/iapi.h"><code>iapi.h</code></a>
+and are summarised below.  Omitted from the summary are
+the calling convention (e.g. __stdcall), details of return
+values and error handling.</p>
+
+
+<ul>
+<li><code>
+int
+<a href="#revision">gsapi_revision</a>
+(gsapi_revision_t *pr, int len);
+</code></li>
+
+<li><code>
+int
+<a href="#new_instance">gsapi_new_instance</a>
+(void **pinstance, void *caller_handle);
+</code></li>
+
+<li><code>
+void
+<a href="#delete_instance">gsapi_delete_instance</a>
+(void *instance);
+</code></li>
+
+<li><code>
+int
+<a href="#set_stdio">gsapi_set_stdio</a>
+(void *instance,
+    int(*stdin_fn)(void *caller_handle, char *buf, int len),
+    int(*stdout_fn)(void *caller_handle, const char *str, int len),
+    int(*stderr_fn)(void *caller_handle, const char *str, int len));
+</code></li>
+
+<li><code>
+int
+<a href="#set_poll">gsapi_set_poll</a>
+(void *instance, int(*poll_fn)(void *caller_handle));
+</code></li>
+
+<li><code>
+int
+<a href="#set_display_callback">gsapi_set_display_callback</a>
+(void *instance, display_callback *callback);
+</code></li>
+
+<li><code>
+int
+<a href="#set_arg_encoding">gsapi_set_arg_encoding</a>
+(void *instance, int encoding);
+</code></li>
+
+<li><code>
+int
+<a href="#init">gsapi_init_with_args</a>
+(void *instance, int argc, char **argv);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_string_begin</a>
+(void *instance, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_string_continue</a>
+(void *instance,
+    const char *str, unsigned int length, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_string_end</a>
+(void *instance, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_string_with_length</a>
+(void *instance,
+    const char *str, unsigned int length, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_string</a>
+(void *instance,
+    const char *str, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#run">gsapi_run_file</a>
+(void *instance,
+    const char *file_name, int user_errors, int *pexit_code);
+</code></li>
+
+<li><code>
+int
+<a href="#exit">gsapi_exit</a>
+(void *instance);
+</code></li>
+
+<li><code>
+int
+<a href="#add_fs">gsapi_add_fs</a>
+(void *instance,
+    gsapi_fs_t *fs, void *secret);
+</code></li>
+
+<li><code>
+void
+<a href="#remove_fs">gsapi_remove_fs</a>
+(void *instance,
+    gsapi_fs_t *fs, void *secret);
+</code></li>
+
+</ul>
+
+<h3><a name="revision"></a><code>gsapi_revision()</code></h3>
+
+<blockquote>
+This function returns the revision numbers and strings of the Ghostscript
+interpreter library; you should call it before any other interpreter
+library functions to make sure that the correct version of the
+Ghostscript interpreter has been loaded.
+
+<blockquote>
+<pre>
+typedef struct gsapi_revision_s {
+    const char *product;
+    const char *copyright;
+    long revision;
+    long revisiondate;
+} gsapi_revision_t;
+gsapi_revision_t r;
+
+if (gsapi_revision(&amp;r, sizeof(r)) == 0) {
+    if (r.revision &lt; 650)
+       printf("Need at least Ghostscript 6.50");
+}
+else {
+    printf("revision structure size is incorrect");
+}
+</pre></blockquote>
+</blockquote>
+
+
+<h3><a name="new_instance"></a><code>gsapi_new_instance()</code></h3>
+<blockquote>
+Create a new instance of Ghostscript.
+This instance is passed to most other gsapi functions.
+The caller_handle will be provided to callback functions.
+
+<b>Unless Ghostscript has been compiled with the </code>GS_THREADSAFE</code>
+define, only one instance at a time is supported.</b>
+
+<p>Historically, Ghostscript has only supported a single instance; any
+attempt to create more than one at a time would result in gsapi_new_instance
+returning an error. Experimental work has been done to lift this
+restriction; if Ghostscript is compiled with the GS_THREADSAFE define
+then multiple concurrent instances are permitted.</p>
+
+<p>While the core Ghostscript devices are believed to be thread safe
+now, certain devices are known not to be (particularly the contrib
+devices). The makefiles currently make no attempt to exclude these
+from builds. If you enable GS_THREADSAFE then you should check to ensure
+that you do not rely on such devices (check for global variable use).</p>
+<p>
+The first parameter, is a pointer to an opaque pointer (&quot;<code>void **</code>&quot;).
+The opaque pointer (&quot;<code>void *</code>&quot;) must be initialised to <code>NULL</code> before
+the call to <code>gsapi_new_instance()</code>. See <a href="#Example_1">Example 1</a>.
+</blockquote>
+
+
+<h3><a name="delete_instance"></a><code>gsapi_delete_instance()</code></h3>
+<blockquote>
+Destroy an instance of Ghostscript.
+Before you call this, Ghostscript must have finished.
+If Ghostscript has been initialised, you must call
+<code>gsapi_exit</code> before <code>gsapi_delete_instance</code>.
+</blockquote>
+
+
+<h3><a name="set_stdio"></a><code>gsapi_set_stdio()</code></h3>
+<blockquote>
+Set the callback functions for stdio
+The stdin callback function should return the number of
+characters read, 0 for EOF, or -1 for error.
+The stdout and stderr callback functions should return
+the number of characters written.
+</blockquote>
+
+
+<h3><a name="set_poll"></a><code>gsapi_set_poll()</code></h3>
+<blockquote>
+Set the callback function for polling. This function will only be called if
+the Ghostscript interpreter was compiled with <code>CHECK_INTERRUPTS</code>
+as described in <code><a href="../base/gpcheck.h">gpcheck.h</a></code>.
+<p>
+The polling function should return zero if all is well, and return
+negative if it wants ghostscript to abort. This is often
+used for checking for a user cancel. This can also be used for
+handling window events or cooperative multitasking.</p>
+<p>
+The polling function is called very frequently during interpretation and
+rendering so it must be fast. If the function is slow, then using a counter
+to return 0 immediately some number of times can be used to reduce the
+performance impact.</p>
+</blockquote>
+
+<h3><a name="set_display_callback"></a><code>gsapi_set_display_callback()</code></h3>
+<blockquote>
+Set the callback structure for the <a href="#display">display</a>
+device.  If the <a href="#display">display</a> device is used,
+this must be called after
+<code>gsapi_new_instance()</code>
+and before <code>gsapi_init_with_args()</code>.
+See <code><a href="../base/gdevdsp.h">gdevdsp.h</a></code>
+for more details.
+</blockquote>
+
+<h3><a name="set_arg_encoding"></a><code>gsapi_set_arg_encoding()</code></h3>
+<blockquote>
+Set the encoding used for the interpretation of all subsequent args
+supplied via the gsapi interface on this instance. By default we
+expect args to be in encoding 0 (the 'local' encoding for this OS).
+On Windows this means "the currently selected codepage". On Linux this
+typically means utf8. This means that omitting to call this function
+will leave Ghostscript running exactly as it always has. Please note
+that use of the 'local' encoding is now deprecated and should be
+avoided in new code.
+This must be called after  <code>gsapi_new_instance()</code>
+and before <code>gsapi_init_with_args()</code>.
+</blockquote>
+
+<h3><a name="init"></a><code>gsapi_init_with_args()</code></h3>
+<blockquote>
+Initialise the interpreter.
+This calls <code>gs_main_init_with_args()</code> in
+<code><a href="../psi/imainarg.c">imainarg.c</a></code>.
+See below for <a href="#return_codes">return codes</a>.
+The arguments are the same as the "C" main function:
+argv[0] is ignored and the user supplied arguments
+are argv[1] to argv[argc-1].
+</blockquote>
+
+<h3><a name="run"></a><code>gsapi_run_*()</code></h3>
+<blockquote>
+The <code>gsapi_run_*</code> functions are like
+<code>gs_main_run_*</code> except that the error_object is omitted.
+If these functions return &lt;= -100, either quit or a fatal
+error has occured.  You must call <code>gsapi_exit()</code> next.
+The only exception is <code>gsapi_run_string_continue()</code>
+which will return <code>gs_error_NeedInput</code> if all is well.
+See below for <a href="#return_codes">return codes</a>.
+<p>
+The address passed in <code>pexit_code</code> will be used to return the
+exit code for the interpreter in case of a quit or fatal error. The
+<code>user_errors</code>  argument is normally set to zero to indicate that
+errors should be handled through the normal mechanisms within the
+interpreted code. If set to a negative value, the functions will return
+an error code directly to the caller, bypassing the interpreted
+language. The interpreted language's error handler is bypassed, regardless of
+<code>user_errors</code> parameter, for the <code>gs_error_interrupt</code>
+generated when <a href="#set_poll">the polling callback</a> returns a negative
+value. A positive <code>user_errors</code> is treated the same as zero.</p>
+<p>
+There is a 64 KB length limit on any buffer submitted to a
+<code>gsapi_run_*</code> function for processing. If you have more
+than 65535 bytes of input then you must split it into smaller
+pieces and submit each in a separate
+<code>gsapi_run_string_continue()</code> call.</p>
+</blockquote>
+
+<h3><a name="exit"></a><code>gsapi_exit()</code></h3>
+<blockquote>
+Exit the interpreter.
+This must be called on shutdown if <code>gsapi_init_with_args()</code>
+has been called, and just before <code>gsapi_delete_instance()</code>.
+</blockquote>
+
+<h3><a name="add_fs"></a><code>gsapi_add_fs()</code></h3>
+<blockquote>
+Adds a new 'Filing System' to the interpreter.
+This enables callers to implement their own filing systems. The system
+starts with just the conventional 'file' handlers installed, to allow
+access to the local filing system. Whenever files are to be opened
+from the interpreter, the file paths are offered around each registered
+filing system in turn (from most recently registered to oldest), until
+either an error is given, or the file is opened successfully.
+<p>
+Details of the <code>gsapi_fs_t</code> are given
+<a href="#gsapi_fs_t">below</a>.
+</blockquote>
+
+<h3><a name="remove_fs"></a><code>gsapi_remove_fs()</code></h3>
+<blockquote>
+Remove a previously registered 'Filing System' from the interpreter.
+Both the function pointers within the <code>gs_fs_t</code> and the
+secret value must match exactly.
+<p>
+</blockquote>
+
+<h3><a name="return_codes"></a>Return codes</h3>
+
+<p>
+The <code>gsapi_init_with_args</code>, <code>gsapi_run_*</code> and
+<code>gsapi_exit</code> functions return an integer code.</p>
+
+<table>
+<tr>
+    <th colspan="3">Return Codes from gsapi_*()</th>
+</tr>
+<tr>
+    <th>CODE</th>
+    <th colspan="2">STATUS</th>
+</tr>
+<tr>
+    <td>0</td>
+    <td colspan="2">No errors</td>
+</tr>
+<tr>
+    <td>gs_error_Quit</td>
+    <td colspan="2">"<code>quit</code>" has been executed. This is not an error. <code>gsapi_exit()</code> must be called next.</td>
+</tr>
+<tr>
+    <td>gs_error_interrupt</td>
+    <td colspan="2"><a href="#set_poll">The polling callback function</a> returned a negative value, requesting Ghostscript to abort.</td>
+</tr>
+<tr>
+    <td>gs_error_NeedInput</td>
+    <td colspan="2">More input is needed by <code>gsapi_run_string_continue()</code>. This is not an error.</td>
+</tr>
+<tr>
+    <td>gs_error_Info</td>
+    <td colspan="2">"<code>gs -h</code>" has been executed. This is not an error. <code>gsapi_exit()</code> must be called next.</td>
+</tr>
+<tr>
+    <td>&lt; 0</td>
+    <td colspan="2">Error</td>
+</tr>
+<tr>
+    <td>&lt;= gs_error_Fatal</td>
+    <td colspan="2">Fatal error. <code>gsapi_exit()</code> must be called next.</td>
+</tr>
+</table>
+
+<p>
+The <code>gsapi_run_*()</code> functions do not flush stdio.
+If you want to see output from Ghostscript you
+must do this explicitly as shown in the example below.</p>
+
+<p>
+When executing a string with <code>gsapi_run_string_*()</code>,
+<code>currentfile</code> is the input from the string.
+Reading from <code>%stdin</code> uses the stdin callback.</p>
+
+<h3><a name="gsapi_fs_t"></a>gsapi_fs_t</h3>
+<p>Each 'filing system' within gs is a structure of function
+pointers; each function pointer gives a handler from taking a
+different named resource (a file, a pipe, a printer, a scratch
+file etc) and attempts to open it.
+
+<pre>
+typedef struct
+{
+    int (*open_file)(const gs_memory_t *mem,
+                           void        *secret,
+                     const char        *fname,
+                     const char        *mode,
+                           gp_file    **file);
+    int (*open_pipe)(const gs_memory_t *mem,
+                           void        *secret,
+                     const char        *fname,
+                           char        *rfname, /* 4096 bytes */
+                     const char        *mode,
+                           gp_file    **file);
+    int (*open_scratch)(const gs_memory_t *mem,
+                              void        *secret,
+                        const char        *prefix,
+                              char        *rfname, /* 4096 bytes */
+                        const char        *mode,
+                              int          rm,
+                              gp_file    **file);
+    int (*open_printer)(const gs_memory_t *mem,
+                              void        *secret,
+                              char        *fname, /* 4096 bytes */
+                              int          binary,
+                              gp_file    **file);
+    int (*open_handle)(const gs_memory_t *mem,
+                             void        *secret,
+                             char        *fname, /* 4096 bytes */
+                       const char        *mode,
+                             gp_file    **file);
+} gsapi_fs_t;
+</pre>
+  
+<p>If the filename (always given in utf-8 format) is recognised as
+being one that the filing system handles (perhaps by the prefix used),
+then it should open the file, fill in the <code>gp_file</code>
+pointer and return 0.
+<p>If the filename is not-recognised as being one that the filing
+system handles, then returning 0 will cause the filename to be
+offered to other registered filing systems.
+<p>If an error is returned (perhaps gs_error_invalidfileaccess),
+then no other filing system will be allowed to try to open the
+file. This provides a mechanism whereby a caller to gsapi can
+completely control access to all files accessed via <code>gp_fopen</code>
+at runtime.
+<p>Note, that while most file access within ghostscript will be
+redirected via these functions, stdio will not; see the existing
+mechanisms within Ghostscript for intercepting/replacing this.
+<ul>
+<li>The <code>open_file</code> function pointer will be called when
+something (most often a call to <code>gp_fopen</code>) attempts to
+open a file.
+<li>The <code>open_pipe</code> function pointer will be called when
+something (most often a call to <code>gp_popen</code>) attempts to
+open a pipe. <code>rfname</code> points to a 4K buffer in which the
+actual name of the opened pipe should be returned.
+<li>The <code>open_scratch</code> function pointer will be called when
+something (most often a call to <code>gp_open_scratch_file</code> or
+<code>gp_open_scratch_file_rm</code>) attempts to open a temporary file.
+<code>rfname</code> points to a 4K buffer in which the actual name of
+the opened pipe should be returned. If <code>rm</code> is true, then
+the file should be set to delete itself when all handles to it are closed.
+<li>The <code>open_printer</code> function pointer will be called when
+something (most often a call to <code>gp_open_printer</code>) attempts
+to open a stream to a printer. If <code>binary</code> is true, then
+the stream should be opened as binary; most streams will be binary by
+default - this has historical meaning on OS/2.
+<li>The <code>open_handle</code> function pointer will be called when
+something (most often a call via the postscript <code>%handle%</code>
+IO device) attempts to open a Windows handle. This entry point will
+never be called on non-Windows builds.
+</ul>
+<p>Any of these which are left as NULL will never be called; a filing
+system with all of the entries left as NULL is therefore pointless.
+<p>The most complex part of the implementation of these functions
+is the creation of a <code>gp_file</code> instance to return. There are
+some helper functions for this, best explained by example.
+<p>Let us consider a hypothetical filing system that encrypts data as
+it is written, and decrypts it as it is read back. As each file is
+read and written the encryption/decryption routines will need to use
+some state, carried between calls to the filing system. We therefore
+might define a new type 'derived' from <code>gp_file</code> as follows:
+
+<pre>
+typedef struct
+{
+   gp_file base;
+   /* State private to the implementation of this file for encryption/decryption */
+   /* For example: */
+   int foo;
+   char *bar;
+} gp_file_crypt;
+</pre>
+
+<p>An implementation of <code>gs_fs_t</code> for our 'crypt' filing system
+might then look like this:
+
+<pre>
+gsapi_fs_t gs_fs_crypt =
+{
+    crypt_open_file,
+    NULL,            /* open_pipe */
+    NULL,            /* open_scratch */
+    NULL,            /* open_printer */
+    NULL             /* open_handle */
+};
+</pre>
+
+<p>In the above definition, we define a single handler, to cope with the
+opening of our input/output files. If we wanted to encrypt/decrypt
+other files too (perhaps the temporary files we produce) we'd need to
+define additional handlers (such as <code>open_scratch</code>).
+
+<p>Our handler might look as follows:
+  
+<pre>
+int crypt_open_file(const gs_memory_t  *mem,
+                          void         *secret,
+                    const char         *filename,
+                    const char         *mode,
+                          gp_file     **file)
+{
+    gp_file_crypt crypt;
+
+    /* Ignore any filename not starting with "crypt://" */
+    if (strncmp(filename, "crypt://", 8) != 0)
+        return 0;
+
+    /* Allocate us an instance (and fill in the non-crypt-specific
+     * internals) */
+    crypt = (gp_file_crypt *)gp_file_alloc(mem, &crypt_ops, sizeof(*crypt), "gp_file_crypt");
+    if (crypt == NULL)
+        return gs_error_VMerror; /* Allocation failed */
+
+    /* Setup the crypt-specific state */
+    crypt->foo = 1;
+    crypt->bar = gs_alloc_bytes(mem->non_gc_memory, 256, "bar");
+    /* If allocations fail, we need to clean up before exiting */
+    if (crypt->bar) {
+        gp_file_dealloc(crypt);
+	return gs_error_VMerror;
+    }
+
+    /* Return the new instance */
+    *file = &crypt.base;
+    return 0;
+}
+</pre>
+
+<p>The crucial part of this function is the definition of <code>crypt_ops</code>,
+an instance of the <code>gp_file_ops_t</code> type; a table of function pointers
+that implement the actual operations required.
+
+<pre>
+typedef struct {
+    int          (*close)(gp_file *);
+    int          (*getc)(gp_file *);
+    int          (*putc)(gp_file *, int);
+    int          (*read)(gp_file *, size_t size, unsigned int count, void *buf);
+    int          (*write)(gp_file *, size_t size, unsigned int count, const void *buf);
+    int          (*seek)(gp_file *, gs_offset_t offset, int whence);
+    gs_offset_t  (*tell)(gp_file *);
+    int          (*eof)(gp_file *);
+    gp_file     *(*dup)(gp_file *, const char *mode);
+    int          (*seekable)(gp_file *);
+    int          (*pread)(gp_file *, size_t count, gs_offset_t offset, void *buf);
+    int          (*pwrite)(gp_file *, size_t count, gs_offset_t offset, const void *buf);
+    int          (*is_char_buffered)(gp_file *file);
+    void         (*fflush)(gp_file *file);
+    int          (*ferror)(gp_file *file);
+    FILE        *(*get_file)(gp_file *file);
+    void         (*clearerr)(gp_file *file);
+    gp_file     *(*reopen)(gp_file *f, const char *fname, const char *mode);
+} gp_file_ops_t;
+</pre>
+
+<p>These functions generally follow the same patterns as the posix functions that match them,
+and so in many cases we will describe these with references to such.
+Whenever these routines are called, they will be passed a <code>gp_file</code> pointer.
+This pointer will have originated from the <code>crypt_open_file</code> call, and so can
+safely be cast back to a <code>gp_file_crypt</code> pointer to allow private data to be accessed.
+
+<dl>
+<dt><code>close(gp_file *)</code>
+<dd>close the given file; free any storage in the crypt specific parts of <code>gp_file_crypt</code>,
+but not the gp_file_crypt structure itself.
+
+<dt><code>int getc(gp_file *)</code>
+<dd>Get a single character from the file, returning it as an int (or -1 for EOF).
+Behaves like <code>fgetc(FILE *)</code>.
+
+<dt><code>int putc(gp_file *, int)</code>
+<dd>Put a single character to the file, returning the character on success, or
+EOF (and setting the error indicator) on error.
+Behaves like <code>fgetc(FILE *)</code>.
+
+<dt><code>int read(gp_file *, size_t size, unsigned int count, void *buf)</code>
+<dd>Reads count entries of size bytes the file into buf, returning the number
+of entries read. Behaves like <code>fread(FILE *, size, count, buf)</code>.
+
+<dt><code>int write(gp_file *, size_t size, unsigned int count, const void *buf)</code>
+<dd>Writes count entries of size bytes from buf into the file, returning the
+number of entries written. Behaves like <code>fwrite(FILE *, size, count, buf)</code>.
+
+<dt><code>int seek(gp_file *, gs_offset_t offset, int whence)</code>
+<dd>Seeks within the file. Behaves like <code>fseek(FILE *, offset, whence)</code>.
+
+<dt><code>gs_offset_t tell(gp_file *)</code>
+<dd>Returns the current offset within the file. Behaves like <code>ftell(FILE *)</code>.
+
+<dt><code>int eof(gp_file *)</code>
+<dd>Returns 1 if we are at the end of the file, 0 otherwise. Behaves like
+<code>feof(FILE *)</code>.
+
+<dt><code>gp_file * dup(gp_file *, const char *mode)</code>
+<dd>Optional function, only used if clist files are to be stored in this filing system.
+Behaves like <code>fdup(FILE *)</code>. Leave NULL if not implemented.
+
+<dt><code>int seekable(gp_file *)</code>
+<dd>Returns 1 if the file is seekable, 0 otherwise. Certain output devices will
+only work with seekable files.
+
+<dt><code>int pread(gp_file *, size_t count, gs_offset_t offset, void *buf)</code>
+<dd>Optional function, only used if clist files are to be stored in this filing system.
+Behaves like an atomic <code>fseek(FILE *, offset, 0)</code> and <code>fread(FILE *, 1, count, buf)</code>.
+Akin to <code>pread</code>.
+
+<dt><code>int pwrite(gp_file *, size_t count, gs_offset_t offset, const void *buf)</code>
+<dd>Optional function, only used if clist files are to be stored in this filing system.
+Behaves like an atomic <code>fseek(FILE *, offset, 0)</code> and <code>fwrite(FILE *, 1, count, buf)</code>.
+Akin to <code>pwrite</code>.
+
+<dt><code>int is_char_buffered(gp_file *file)</code>
+<dd>Returns 1 if the file is character buffered, 0 otherwise. Used for handling
+reading from terminals. Very unlikely to be used, so returning 0 all the time
+should be safe. Leave NULL to indicate "always 0".
+
+<dt><code>void fflush(gp_file *file)</code>
+<dd>Ensures that any buffered data is written to the file. Behaves like <code>fflush(FILE *)</code>.
+Leave NULL to indicate that no flushing is ever required.
+
+<dt><code>int ferror(gp_file *file)</code>
+<dd>Returns non-zero if there has been an error, or 0 otherwise. Behaves like <code>ferror(FILE *)</code>.
+
+<dt><code>FILE * get_file(gp_file *file)</code>
+<dd>Optional: Gets the FILE * pointer that backs this file. Required for a few devices
+that insist on working with FILE *'s direct. Generally safe to leave this set to NULL, and those
+devices will fail gracefully.
+
+<dt><code>void clearerr(gp_file *file)</code>
+<dd>Clear the error and EOF values for a file. Behaves like <code>clearerror(FILE *)</code>.
+
+<dt><code>gp_file * reopen(gp_file *f, const char *fname, const char *mode)</code>
+<dd>Optional function, only used if the <code>gp_file</code> came from an <code>open_scratch</code>
+call; can be left as NULL if the <code>open_scratch</code> pointer is set to NULL.
+Reopen a stream with a different mode. Behaves like
+<code>freopen(fname, mode, FILE *)</code>.
+</dl>
+
+<hr>
+<h2><a name="Example_usage"></a>Example Usage</h2>
+<p>To try out the following examples in a development environment like Microsoft's
+developer tools or Metrowerks Codewarrior, create a new project, save the example
+source code as a <tt>.c</tt> file and add it, along with the Ghostscript dll or shared
+library. You will also need to make sure the Ghostscript headers are available, either
+by adding their location (the <tt>src</tt> directory in the Ghostscript source
+distribution) to the project's search path, or by copying ierrors.h and iapi.h into the
+same directory as the example source.</p>
+
+<h3><a name="Example_1"></a>Example 1</h3>
+<pre>
+/* Example of using GS DLL as a ps2pdf converter.  */
+
+#if defined(_WIN32) &amp;&amp; !defined(_Windows)
+# define _Windows
+#endif
+#ifdef _Windows
+/* add this source to a project with gsdll32.dll, or compile it directly with:
+ *   cl -D_Windows -Isrc -Febin\ps2pdf.exe ps2pdf.c bin\gsdll32.lib
+ */
+# include &lt;windows.h&gt;
+# define GSDLLEXPORT __declspec(dllimport)
+#endif
+
+#include "ierrors.h"
+#include "iapi.h"
+
+void *minst = NULL;
+
+int main(int argc, char *argv[])
+{
+    int code, code1;
+    const char * gsargv[7];
+    int gsargc;
+    gsargv[0] = "";
+    gsargv[1] = "-dNOPAUSE";
+    gsargv[2] = "-dBATCH";
+    gsargv[3] = "-dSAFER";
+    gsargv[4] = "-sDEVICE=pdfwrite";
+    gsargv[5] = "-sOutputFile=out.pdf";
+    gsargv[6] = "input.ps";
+    gsargc=7;
+
+    code = gsapi_new_instance(&amp;minst, NULL);
+    if (code &lt; 0)
+        return 1;
+    code = gsapi_set_arg_encoding(minst, GS_ARG_ENCODING_UTF8);
+    if (code == 0)
+        code = gsapi_init_with_args(minst, gsargc, gsargv);
+    code1 = gsapi_exit(minst);
+    if ((code == 0) || (code == gs_error_Quit))
+        code = code1;
+
+    gsapi_delete_instance(minst);
+
+    if ((code == 0) || (code == gs_error_Quit))
+        return 0;
+    return 1;
+}
+</pre>
+
+<h3>Example 2</h3>
+<pre>
+/* Similar to command line gs */
+
+#if defined(_WIN32) &amp;&amp; !defined(_Windows)
+# define _Windows
+#endif
+#ifdef _Windows
+/* Compile directly with:
+ *   cl -D_Windows -Isrc -Febin\gstest.exe gstest.c bin\gsdll32.lib
+ */
+# include &lt;windows.h&gt;
+# define GSDLLEXPORT __declspec(dllimport)
+#endif
+#include &lt;stdio.h&gt;
+#include "ierrors.h"
+#include "iapi.h"
+
+/* stdio functions */
+static int GSDLLCALL
+gsdll_stdin(void *instance, char *buf, int len)
+{
+    int ch;
+    int count = 0;
+    while (count &lt; len) {
+        ch = fgetc(stdin);
+        if (ch == EOF)
+            return 0;
+        *buf++ = ch;
+        count++;
+        if (ch == '\n')
+            break;
+    }
+    return count;
+}
+
+static int GSDLLCALL
+gsdll_stdout(void *instance, const char *str, int len)
+{
+    fwrite(str, 1, len, stdout);
+    fflush(stdout);
+    return len;
+}
+
+static int GSDLLCALL
+gsdll_stderr(void *instance, const char *str, int len)
+{
+    fwrite(str, 1, len, stderr);
+    fflush(stderr);
+    return len;
+}
+
+void *minst = NULL;
+const char start_string[] = "systemdict /start get exec\n";
+
+int main(int argc, char *argv[])
+{
+    int code, code1;
+    int exit_code;
+
+    code = gsapi_new_instance(&amp;minst, NULL);
+    if (code &lt; 0)
+        return 1;
+    gsapi_set_stdio(minst, gsdll_stdin, gsdll_stdout, gsdll_stderr);
+    code = gsapi_set_arg_encoding(minst, GS_ARG_ENCODING_UTF8);
+    if (code == 0)
+        code = gsapi_init_with_args(minst, argc, argv);
+    if (code == 0)
+        code = gsapi_run_string(minst, start_string, 0, &amp;exit_code);
+    code1 = gsapi_exit(minst);
+    if ((code == 0) || (code == gs_error_Quit))
+        code = code1;
+
+    gsapi_delete_instance(minst);
+
+    if ((code == 0) || (code == gs_error_Quit))
+        return 0;
+    return 1;
+}
+</pre>
+
+<h3>Example 3</h3>
+
+<p>Replace main() in either of the above with the following code,
+showing how you can feed Ghostscript piecemeal:</p>
+<pre>
+const char *command = "1 2 add == flush\n";
+
+int main(int argc, char *argv[])
+{
+    int code, code1;
+    int exit_code;
+
+    code = gsapi_new_instance(&amp;minst, NULL);
+    if (code &lt; 0)
+        return 1;
+    code = gsapi_set_arg_encoding(minst, GS_ARG_ENCODING_UTF8);
+    if (code == 0)
+        code = gsapi_init_with_args(minst, argc, argv);
+
+    if (code == 0) {
+        gsapi_run_string_begin(minst, 0, &amp;exit_code);
+        gsapi_run_string_continue(minst, command, strlen(command), 0, &amp;exit_code);
+        gsapi_run_string_continue(minst, "qu", 2, 0, &amp;exit_code);
+        gsapi_run_string_continue(minst, "it", 2, 0, &amp;exit_code);
+        gsapi_run_string_end(minst, 0, &amp;exit_code);
+    }
+
+    code1 = gsapi_exit(minst);
+    if ((code == 0) || (code == gs_error_Quit))
+        code = code1;
+
+    gsapi_delete_instance(minst);
+
+    if ((code == 0) || (code == gs_error_Quit))
+        return 0;
+    return 1;
+}
+</pre>
+
+<h3>Example 4</h3>
+
+<p>When feeding Ghostscript piecemeal buffers, one can use the normal
+operators to configure things and invoke library routines. For example,
+to parse a PDF file one could say:</p>
+
+<pre>
+    code = gsapi_run_string(minst, "(example.pdf) .runlibfile", 0, &amp;exit_code);
+</pre>
+
+<p>and Ghostscript would open and process the file named "example.pdf" as
+if it had been passed as an argument to
+<code>gsapi_init_with_args()</code>.</p>
+<hr>
+<h2><a name="Multiple_threads"></a>Multiple threads</h2>
+<p>The Ghostscript library should have been compiled with a
+thread safe run time library.
+Synchronisation of threads is entirely up to the caller.
+The exported <a href="#Exported_functions "><code>gsapi_*()</code></a>
+functions must be called from one thread only.</p>
+<hr>
+<h2><a name="stdio"></a>Standard input and output</h2>
+<p>
+When using the Ghostscript interpreter library interface, you have a
+choice of two standard input/output methods.</p>
+<ul>
+<li>If you do nothing, the "C" stdio will be used.</li>
+<li>If you use <code>gsapi_set_stdio()</code>,  all stdio will
+ be redirected to the callback functions you provide.
+ This would be used in a graphical user interface environment
+ where stdio is not available, or where you wish to process
+ Ghostscript input or output.</li>
+</ul>
+<p>
+The callback functions are described in
+<a href="../psi/iapi.h"><code>iapi.h</code></a>.</p>
+
+<hr>
+<h2><a name="display"></a>Display device</h2>
+<p>
+The <code>display</code> device is available for use with
+the Ghostscript interpreter library.  This is described in the file
+<code><a href="../base/gdevdsp.h">gdevdsp.h</a></code>.
+This device provides you with access to the raster output of
+Ghostscript.  It is your responsibility to copy this raster
+to a display window or printer.</p>
+<p>
+To use this device, you must provide a callback structure
+with addresses of a number of callback functions.
+The address of the callback structure is provided using
+<code>gsapi_set_display_callback()</code>.
+This must be called after
+<code>gsapi_new_instance()</code>
+and before
+<code>gsapi_init_with_args()</code>.</p>
+<p>
+The callbacks are for device open, close, resize, sync, page,
+memory allocation and updating.
+Each callback function contains a handle can be set using</p>
+<blockquote>
+  -sDisplayHandle=1234
+</blockquote>
+<p>
+Where "1234" is a string. The API was changed to use a string
+rather than an integer/long value when support for 64 bit systems
+arrived. A display "handle" is often a pointer, and since these
+command line options have to survive being processed by Postscript
+machinery, and Postscript only permits 32 bit number values, a
+different representation was required. Hence changing the value
+to a string, so that 64 bit values can be supported. The string
+formats allowed are:</p>
+<blockquote>
+<code>1234</code> - implicit base 10
+</blockquote>
+<blockquote>
+<code>10#1234</code> - explicit base 10
+</blockquote>
+<blockquote>
+<code>16#04d2</code> - explicit base 16
+</blockquote>
+<p>
+The "number string" is parsed by the display device to retrieve
+the number value, and is then assigned to the void pointer
+parameter "pHandle" in the display device structure. Thus, for
+a trivial example, passing <code>-sDisplayHandle=0</code> will result
+in the first parameter passed to your display device callbacks being:
+<code>(void *)0</code>.</p>
+<p>
+The previous API, using a number value:</p>
+<blockquote>
+  -dDisplayHandle=1234
+</blockquote>
+<p>
+is still supported on 32 bit systems, but will cause a "typecheck"
+error on 64 bit systems, and is considered deprecated. It should
+not be used in new code.</p>
+
+<p>
+The device raster format can be configured using</p>
+<blockquote>
+  -dDisplayFormat=NNNN
+</blockquote>
+<p>Options include</p>
+<ul>
+<li> native, gray, RGB, CMYK or separation color spaces.</li>
+<li> alpha byte (ignored).</li>
+<li> 1 to 16 bits/component.</li>
+<li> bigendian (RGB) or littleendian (BGR) order.</li>
+<li> top first or bottom first raster.</li>
+<li> 16 bits/pixel with 555 or 565 bitfields.</li>
+</ul>
+<p>The format values are described in
+<code><a href="../base/gdevdsp.h">gdevdsp.h</a></code>.
+The format is flexible enough to support common Windows, OS/2, Linux
+and Mac raster formats.  To select the display device with a
+Windows 24-bit RGB raster:</p>
+<pre>
+    char **nargv;
+    char arg1[64];
+    char arg2[64];
+    char arg3[64];
+    code = gsapi_new_instance(&amp;minst, NULL);
+    gsapi_set_stdio(minst, gsdll_stdin, gsdll_stdout, gsdll_stderr);
+    code = gsapi_set_display_callback(minst, &amp;display_callback);
+    sprintf(arg1, "-sDEVICE=display");
+    sprintf(arg2, "-dDisplayHandle=%d", 0);
+    sprintf(arg3, "-dDisplayFormat=%d",
+        DISPLAY_COLORS_RGB | DISPLAY_ALPHA_NONE | DISPLAY_DEPTH_8 |
+        DISPLAY_LITTLEENDIAN | DISPLAY_BOTTOMFIRST);
+    nargv = (char **)malloc((argc + 4) * sizeof(char *));
+    nargv[0] = argv[0];
+    nargv[1] = arg1;
+    nargv[2] = arg2;
+    nargv[3] = arg3;
+    memcpy(nargv + 4, argv + 1, argc * sizeof(char *));
+    argc += 3;
+    code = gsapi_init_with_args(minst, argc, nargv);
+</pre>
+
+<p>
+The display device provides you with the address and size of the
+raster using the <code>display_size()</code> callback.
+You are then responsible for displaying this raster.
+Some examples are in
+<code><a href="../psi/dwmain.c">dwmain.c</a></code> (Windows),
+<code><a href="../psi/dpmain.c">dpmain.c</a></code> (OS/2) and
+<code><a href="../psi/dxmain.c">dxmain.c</a></code> (X11/Linux), and
+<code><a href="../psi/dmmain.c">dmmain.c</a></code> (MacOS Classic or Carbon).</p>
+<p>
+On some platforms, the calling convention for the display device callbacks in
+<code><a href="../base/gdevdsp.h">gdevdsp.h</a></code>
+is not the same as the exported
+<a href="#Exported_functions "><code>gsapi_*()</code></a>
+functions in <a href="../psi/iapi.h"><code>iapi.h</code></a>.</p></p>
+
+<!-- [2.0 end contents] ==================================================== -->
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+<p>
+<small>Copyright &copy; 2000-2019 Artifex Software, Inc. All rights reserved.</small></p>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.</p>
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.</p>
+
+<p>
+<small>Ghostscript version 9.23, 21 March 2018</p>
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

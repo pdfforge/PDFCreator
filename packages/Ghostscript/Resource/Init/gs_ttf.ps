@@ -1,0 +1,2025 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Support code for direct use of TrueType fonts.
+% (Not needed for Type 42 fonts.)
+
+% Note that if you want to use this file without including the ttfont.dev
+% option when you built Ghostscript, you will need to load the following
+% files before this one:
+%	lib/gs_mgl_e.ps
+%	lib/gs_mro_e.ps
+%	lib/gs_wan_e.ps
+
+% Thanks to B. Jackowski and GUST (the Polish TeX Users' Group) for
+% the glyf-splitting code.
+
+% ---------------- Font loading machinery ---------------- %
+
+% Augment the FONTPATH machinery so it recognizes TrueType fonts.
+
+/.scanfontheaders where {
+  /.scanfontheaders [
+   /.scanfontheaders .systemvar aload pop (\000\001\000\000*) (true*) (wOFF*)
+  ] put
+} if
+
+% ---------------- Automatic Type 42 generation ---------------- %
+
+% Load a TrueType font from a file as a Type 42 PostScript font.
+% The thing that makes this really messy is the handling of encodings.
+% There are 2 interacting tables that affect the encoding:
+%       'cmap' provides multiple maps from character codes to glyph indices
+%       'post' maps glyph indices to glyph names (if present)
+% What we need to get out of this is:
+%       Encoding mapping character codes to glyph names
+%         (the composition of cmap and post)
+%       CharStrings mapping glyph names to glyph indices
+%         (the inverse of post)
+% If the post table is missing, we have to take a guess based on the cmap
+% table.
+
+/.loadttfontdict 50 dict dup begin
+
+/orgXUID AladdinEnterprisesXUID def
+/maxstring 32764 def    % half the maximum length of a PostScript string,
+                        % must be a multiple of 4 (for hmtx / loca / vmtx)
+
+/.invert_encoding   % <array> invert_encoding <dict>
+{ dup 256 dict exch
+  0 exch 1 exch length 1 sub {     % [] <> i
+    dup 3 index exch get           % [] <> i v
+    dup /.notdef ne {
+      exch 2 index 2 index .knownget {
+        dup type /arraytype eq {
+        [ exch aload pop counttomark 2 add -1 roll ]
+        } {
+        exch 2 array astore
+        } ifelse
+      } if 2 index 3 1 roll put
+    } {
+      pop pop
+    } ifelse
+  } for
+  exch pop
+} .bind def
+
+% Make /MacRomanEncodingForTrueType including additional
+% characters in Mac OS Roman encoding, which is missing
+% in /MacRomanEncoding. See PDF spec 1.7, p. 431 or
+% "Inside Macintosh: Text" 1-55, Figure 1-36.
+% This is useful to exploit the glyphs via Apple Roman
+% TrueType cmap subtable, but not appropriate for information
+% interchange.
+
+/MacRomanEncodingForTrueType
+  /MacRomanEncoding .findencoding
+  dup length array copy
+  <<
+        /notequal	173
+        /infinity	176
+        /lessequal	178
+        /greaterequal	179
+        /partialdiff	182
+        /summation	183
+        /product	184
+        /pi		185
+        /integral	186
+        /Omega		189
+        /radical	195
+        /approxequal	197
+        /Delta		198
+        /lozenge	215
+        /Euro		219
+        /apple		240
+  >> {
+    TTFDEBUG { (Extend MacRomanEncodingForTrueType for TrueType: ) =only } if
+
+    % check /.notdef to avoid overwriting
+    2 index 1 index get dup /.notdef eq {
+      TTFDEBUG { (insert /) =only 2 index =only ( @ ) =only 1 index //== exec } if
+      pop
+      exch 2 index 3 1 roll put
+    } {
+      TTFDEBUG { (cannot insert /) =only 2 index =only ( @ ) =only 1 index =only ( used for ) =only dup //== exec } if
+      pop
+      pop pop
+    } ifelse
+  } forall
+  aload pop
+  256 packedarray
+  5 1 index .registerencoding
+.defineencoding
+
+% Define the Macintosh standard mapping from characters to glyph indices.
+/MacRomanEncoding dup .findencoding def
+/MacGlyphEncoding dup .findencoding def
+/MacRomanEncodingForTrueType dup .findencoding def
+
+% Invert the MacRomanEncoding.
+/.romanmacdict MacRomanEncodingForTrueType .invert_encoding def
+/.latin1isodict ISOLatin1Encoding .invert_encoding def
+
+% Define remapping for misnamed glyphs in TrueType 'post' tables.
+% There are probably a lot more than this!
+/postremap mark
+  /Eoverdot /Edotaccent
+  /eoverdot /edotaccent
+.dicttomark readonly def
+
+% Array used for fast pre-filling of cmap array
+/.array1024z [ 1024 { 0 } repeat ] def
+
+% ---- Utilities ---- %
+
+% Define a serial number for creating unique XUIDs for TrueType fonts.
+% We used to use the checkSumAdjustment value from the font, but this is
+% not reliable, since some fonts don't set it correctly.
+% Note that we must do this in a string to make it immune to save/restore.
+
+% handle 64 bit integer objects
+/xuidstring 16#ffffffff 0 gt
+{
+  <8000000000000000>
+}
+{
+  <80000000>
+} ifelse def
+/curxuid {		% - curxuid <int>
+  //.getCPSImode
+  //false //.setCPSImode
+  0 xuidstring { exch 8 bitshift exch add } forall
+  % for tbe benefit of pdfwrite/ps2write we want the resulting XUID contents
+  % to fit into a 32 bit value
+  16#ffffffff 0 gt
+  {
+    16#ffffffff idiv
+  } if
+  exch //.setCPSImode
+} .bind def
+/nextxuid {		% - nextxuid -
+  3 -1 0 {
+    xuidstring 1 index 2 copy get dup 255 ne {
+      1 add put pop exit
+    } if pop 0 put pop
+  } for
+} bind def
+
+% <string> <index> getu16 <integer>
+/getu16 {
+  2 copy get 8 bitshift 3 1 roll 1 add get add
+} .bind def
+
+% <string> <index> gets16 <integer>
+/gets16 {
+  getu16 16#8000 xor 16#8000 sub
+} .bind def
+
+% <string> <index> getu32 <integer>
+/getu32 {
+  2 copy getu16 16 bitshift 3 1 roll 2 add getu16 add
+} .bind def
+
+% <string> <index> gets32 <integer>
+/gets32 {
+  2 copy gets16 16 bitshift 3 1 roll 2 add getu16 add
+} .bind def
+
+% <string|array> <index> getu16 <integer>
+/getu16a {
+  2 getinterval_from_stringarray 0 getu16
+} .bind def
+
+% <string|array> <index> gets16 <integer>
+/gets16a {
+  2 getinterval_from_stringarray 0 gets16
+} .bind def
+
+% <string|array> <index> getu32a <integer>
+/getu32a {
+  4 getinterval_from_stringarray 0 getu32
+} .bind def
+
+% <string|array> <index> gets32a <integer>
+/gets32a {
+  4 getinterval_from_stringarray 0 gets32
+} .bind def
+
+16#ffffffff 0 gt {  % 64-bit sign extension
+  { /gets32 /gets32a} {
+    mark 1 index load aload pop { 16#80000000 xor 16#80000000 sub } aload pop
+    //.packtomark exec cvx def
+  } .bind forall
+} if
+
+% <string> <index> <integer> putu16 -
+/putu16 {
+  3 copy -8 bitshift put
+  exch 1 add exch 16#ff and put
+} .bind def
+
+% <string> <index> <integer> putu32 -
+/putu32 {
+  3 copy -16 bitshift putu16
+  exch 2 add exch 16#ffff and putu16
+} .bind def
+
+% <nametable> <nameid> findname <string> true
+% <nametable> <nameid> findname false
+/findname {
+  TTFDEBUG { (findname: ) print dup =only  } if
+  //false 3 1 roll
+  1 index length 0 gt {	% check for zero length name table
+    0 1 3 index 2 getu16 1 sub {
+                % Stack: false table id index
+      12 mul 6 add 2 index exch 12 getinterval
+      dup 6 getu16 2 index eq 1 index 8 getu16 0 ne and {
+                  % We found the name we want.
+        exch pop
+                  % Stack: false table record
+        dup 10 getu16 2 index 4 getu16 add
+        1 index 8 getu16 4 -1 roll 3 1 roll
+            3 copy add 1 index length
+            le {
+              pop
+              getinterval exch
+                  % Stack: false string record
+                  % Check for 8- vs. 16-bit characters.
+          is2byte { //true } { dup is2byte2 } ifelse { string2to1 } if //true //null 4 -1 roll exit
+            } {
+              pop pop pop pop
+              //false
+                  exit
+            } ifelse
+      } if pop
+    } for
+  } if
+  pop pop
+  TTFDEBUG {
+    dup { ( = ) print 1 index //== exec } { ( not found) = } ifelse
+  } if
+} .bind def
+
+% <namerecord> is2byte <bool>
+/is2byte {
+  dup 0 getu16
+  {
+    { pop //true }		% Apple Unicode
+    { pop //false }		% Macintosh Script manager
+    { 1 getu16 1 eq }		% ISO
+    { 1 getu16 1 eq }		% Microsoft
+    { pop //false }		% default - *MUST* be last
+  }
+  % check for a valid Platform ID, if we don't get one, assume single byte encoding
+  dup length 1 sub
+  2 index lt {exch pop dup length 1 sub}{exch} ifelse
+  get exec
+} .bind def
+
+% <string> is2byte2 <bool>
+/is2byte2 {
+  dup length
+  dup 2 mod 0 ne {
+    pop pop //false
+  } {            % s l
+    //true exch  % s b l
+    1 sub 0 exch 2 exch {
+      2 index exch get 0 ne {
+        pop //false exit
+      } if
+    } for
+    exch pop
+  } ifelse
+} .bind def
+
+% <string2> string2to1 <string>
+/string2to1 {
+  dup length 2 idiv string dup
+  0 1 3 index length 1 sub {
+    3 index 1 index 2 mul 1 add get put dup
+  } for pop exch pop
+} .bind def
+
+% Each procedure in this dictionary is called as follows:
+%       <encodingtable> proc <glyph dictionary>
+/cmapformats mark
+  0 {		% Apple standard 1-to-1 mapping.
+    6 256 getinterval_from_stringarray
+    mark 0 3 -1 roll
+    { 1 index 1 add } forall pop
+    .dicttomark
+  } .bind
+  2 {		% Apple 16bit CJK (ShiftJIS etc)
+
+    % /sHK_sz		subHeaderKey_size	% 1 * uint16
+    % /sH_sz		subHeader_size		% 4 * uint16
+    % /sH_len		subHeader_length
+    % /cmapf2_tblen	total table length
+    % /cmapf2_lang	language code (not used)
+    % /sHKs		subHeaderKeys
+
+    /sHK_sz 2 def
+    /sH_sz 8 def
+    dup 2 getu16a /cmapf2_tblen exch def
+
+    dup 4 getu16a /cmapf2_lang exch def
+
+    dup 6 256 sHK_sz mul getinterval_from_stringarray /sHKs exch def
+
+    0		% initialization value for /sH_len
+    0 1 255 {
+       sHKs exch
+       2 mul getu16a
+       1 index	% get current max
+       1 index	% get current subHeaderKey
+       lt {exch} if pop
+    } for
+    /sH_len exch def
+
+    dup 6 256 sHK_sz mul add
+    cmapf2_tblen 1 index sub getinterval_from_stringarray
+    /sH_gIA exch def
+
+    /cmapf2_glyph_array 0 dict def
+
+    /.cmapf2_putGID {
+        /cmapf2_ch cmapf2_ch_hi 8 bitshift cmapf2_ch_lo add def
+        firstCode cmapf2_ch_lo le
+        cmapf2_ch_lo firstCode entryCount add lt
+        and { % true: j is inside
+            sH_offset idRangeOffset add		% offset to gI
+            cmapf2_ch_lo firstCode sub 2 mul	% rel. pos. in range
+            add 6 add				% offset in sH_gIA
+            sH_gIA exch getu16a
+            dup 0 gt { %
+                idDelta add
+                cmapf2_glyph_array exch cmapf2_ch exch put
+            } {
+                pop
+                % cmapf2_glyph_array cmapf2_ch 0 put
+            } ifelse
+        } {   % false: j is outside
+            % cmapf2_glyph_array cmapf2_ch 0 put
+        } ifelse
+    } def
+
+    16#00 1 16#ff { % hi_byte scan
+        /cmapf2_ch_hi exch def
+        sHKs cmapf2_ch_hi sHK_sz mul getu16a
+        /sH_offset exch def
+        sH_gIA sH_offset sH_sz getinterval
+            dup 0 getu16a /firstCode exch def
+            dup 2 getu16a /entryCount exch def
+            dup 4 gets16a /idDelta exch def
+            dup 6 getu16a /idRangeOffset exch def
+        pop
+        sH_offset 0 eq {
+           /cmapf2_ch_lo cmapf2_ch_hi def
+           /cmapf2_ch_hi 0 def
+           .cmapf2_putGID
+        } {
+           16#00 1 16#ff { % lo_byte scan
+               /cmapf2_ch_lo exch def
+               .cmapf2_putGID
+           } for
+        } ifelse
+     } for
+     pop
+     cmapf2_glyph_array
+  } .bind
+  4 {		% Microsoft/Adobe segmented mapping.
+    /etab exch def
+    /nseg2 etab 6 getu16a def
+    14 /endc etab 2 index nseg2 getinterval_from_stringarray def
+                % The Apple TrueType documentation omits the 2-byte
+                % 'reserved pad' that follows the endCount vector!
+    2 add
+    nseg2 add /startc etab 2 index nseg2 getinterval_from_stringarray def
+    nseg2 add /iddelta etab 2 index nseg2 getinterval_from_stringarray def
+    nseg2 add /idroff etab 2 index nseg2 getinterval_from_stringarray def
+                % The following hack allows us to properly handle
+                % idiosyncratic fonts that start at 0xf000:
+    pop
+    /firstcode startc 0 getu16a 16#ff00 and dup 16#f000 ne { pop 0 } if def
+    /putglyph {
+      glyphs code 3 -1 roll put /code code 1 add def
+    } bind def
+    /glyphs 0 dict def
+
+    % neg2 is number of segments x 2. A format 4 cmap, with usable
+    % mappings cannot (according to the spec) have only 1 segment,
+    % since format 4 requires a closing segment with start and end
+    % codes being 0xffff. Unfortunately, we have found badly subsetted
+    % TTF fonts which have one segment with valid mappings, and no
+    % closing segment.
+    % In such a case, force the loop to work as though as we have two
+    % segments - this works as we don't rely on the terminating segment
+    % but use the loop counter to spot completion - effrectively, we
+    % ignore the closing segment when it's present, anyway.
+    %
+    % This loop and/or putglyph do not account for out of spec fonts
+    % that have repeated or overlapping ranges in the segments. As we
+    % write the code/gid to a PS dictionary, later encounters with a
+    % given code will overwrite the earlier one(s). As this is outside
+    % of the spec, it's not clear how other consumers handle this
+    % condition, so we'll await a suitable example before making changes.
+    % Two choices are: drop later repeated/overlapping segments entirely,
+    % or only use codes from later, overlapping segments not already set
+    % by the earlier segment. (Inspired by Bug 700968).
+    0 2 nseg2 dup 4 lt {pop 4}if 3 sub {
+      /i2 exch def
+      /scode startc i2 getu16a def
+      /ecode endc i2 getu16a def
+      % Bug 693538: see above
+      scode 0 eq ecode 0 eq and not {
+        scode ecode 1 add gt { /ecode scode 1 add def } if % Bug 691326. See above.
+        /code scode def
+        /delta iddelta i2 gets16a def
+        TTFDEBUG {
+          (scode=) print scode =only
+          ( ecode=) print ecode =only
+          ( delta=) print delta =only
+          ( droff=) print idroff i2 getu16 =
+        } if
+        idroff i2 getu16a dup 0 eq {
+          pop scode delta add 65535 and 1 ecode delta add 65535 and
+          { putglyph } for
+        } {       % The +2 is for the 'reserved pad'.
+          /gloff exch 14 nseg2 3 mul add 2 add i2 add add def
+          0 1 ecode scode sub {
+            2 mul gloff add etab exch getu16a
+            dup 0 ne { delta add 65535 and } if putglyph
+          } for
+        } ifelse
+      } if
+    } for glyphs /glyphs //null def	% for GC
+  } .bind
+  6 {		% Single interval lookup.
+    dup 6 getu16a /firstcode exch def
+    dup 8 getu16a /ng exch def
+    ng dict
+    dup
+                % Stack: tab dict dict
+                % Fill elements firstcode .. firstcode+nvalue-1 with glyph values
+    0 1 ng 1 sub {
+      dup firstcode add exch
+      2 mul 10 add 4 index exch getu16a 3 copy put pop pop
+    } for pop exch pop
+  } .bind
+  12 {		% Microsoft/Adobe segmented mapping.
+    /etab exch def
+    /glyphs 0 dict def
+
+    0 1
+    etab 12 getu32a % nGroups
+    1 sub {
+      /ind exch def
+      /gid etab 12 ind mul 8 add 16 add getu32a def % startGlyphID
+      etab 12 ind mul 16 add getu32a % startCharCode
+      1
+      etab 12 ind mul 4 add 16 add getu32a % endCharCode
+      {
+        gid glyphs 3 1 roll put
+        /gid gid 1 add def
+      } for
+    } for
+    glyphs /glyphs //null def	% for GC
+  } .bind
+.dicttomark readonly def                % cmapformats
+
+% <cmaptab> cmapdict <glyph dictionary>
+/cmapdict {
+  dup 0 getu16a cmapformats exch .knownget {
+    TTFDEBUG {
+      (cmap: format ) print 1 index 0 getu16a = flush
+    } if exec
+  } {
+    (Can't handle format ) print 0 getu16a = flush
+    mark 0 1 255 { dup } for .dicttomark
+  } ifelse
+  TTFDEBUG {
+    (cmap: length=) print dup length = dup ===
+  } if
+} .bind def
+
+/get_from_stringarray % <array|string> <offset> get_from_stringarray <int>
+{ 1 index type /stringtype eq {
+    get
+  } {
+    exch {                % o ()
+      2 copy length ge {
+        length sub
+      } {
+        exch get exit
+      } ifelse
+    } forall
+  } ifelse
+} .bind def
+
+/getinterval_from_stringarray % <array|string> <offset> <length> getinterval_from_stringarray <string>
+{ % May allocate a string in VM.
+  2 index type /stringtype eq {
+    getinterval
+  } {
+    dup 65535 le {
+      string exch 0                                 % [] s o p
+      4 3 roll {                                    % s o p Si
+        dup length                                  % s o p Si lSi
+        dup 4 index lt {
+          3 index exch sub                          % s o p Si o'
+          exch pop 3 1 roll exch pop                % s o' p
+        } {                                         % s o p Si lSi
+          dup 3 1 roll                              % s o p lSi Si lSi
+          4 index sub                               % s o p lSi Si lSi-o
+          5 index length 4 index sub                % s o p lSi Si lSi-o ls-p
+          2 copy gt { exch } if pop                 % s o p lSi Si minl
+          dup 3 1 roll                              % s o p lSi minl Si minl
+          5 index exch getinterval                  % s o p lSi minl from
+          5 index 4 index 3 index                   % s o p lSi minl from s p minl
+          getinterval                               % s o p lSi minl from to
+          copy pop                                  % s o p lSi minl
+          exch pop add exch pop 0 exch              % s 0 p'
+          dup 3 index length ge { exit } if
+        } ifelse
+      } forall
+      pop pop                                       % s
+    } {
+      [ 4 1 roll
+        {
+          dup 0 eq {
+            pop pop pop exit
+          } if
+          3 copy
+          dup 65535 ge {
+            pop 65535
+          } if
+          getinterval_from_stringarray 4 1 roll
+          3 index length sub
+          exch
+          3 index length add
+          exch
+        } loop
+      ]
+    } ifelse
+  } ifelse
+} .bind def
+
+/string_array_size  % <array|string> string_array_size <int>
+{ dup type /stringtype eq {
+    length
+  } {
+    0 exch { length add } forall
+  } ifelse
+} .bind def
+
+% Each procedure in this dictionary is called as follows:
+%       posttable <<proc>> glyphencoding
+/postformats mark
+  16#00010000  {	% 258 standard Macintosh glyphs.
+    pop MacGlyphEncoding
+  }
+  16#00020000  {	% Detailed map, required by Microsoft fonts.
+    dup dup type /arraytype  eq { 0 get } if length 36 lt {
+      TTFDEBUG { (post format 2.0 invalid.) = flush } if
+      pop [ ]
+    } {
+      /postglyphs exch def
+      /post_first postglyphs dup type /arraytype eq { 0 get } if def
+      post_first 32 getu16 /numglyphs exch def
+      % Build names array in the order they occur in the 'post' table
+      /postpos numglyphs 2 mul 34 add  def
+      /total_length postglyphs //string_array_size exec def
+
+      % the number of names in a post table is not declared up front
+      % and there are fonts with more names than glyph indices <sigh>
+      % so we have to pre-process and find the highest index used.
+      % We start with a base value of numglyphs as it's most common,
+      % and we can safely have a array that's too large.
+      % Rather than parse out the indices twice, we store them in an
+      % array on the stack, which we then reuse, overwriting entries
+      % as we go later on.
+      numglyphs array numglyphs postglyphs
+      0 1 numglyphs 1 sub {
+        dup 2 mul 34 add 2 index exch 2 //getinterval_from_stringarray exec
+        dup 0 get 8 bitshift exch 1 get add
+        dup 5 index exch
+        4 -1 roll exch put
+        258 sub dup 3 index gt
+        % if we find a reference to an index higher than the value
+        % already on the stack, replace the value on the stack
+        { 3 -1 roll pop 2 1 roll} {pop} ifelse
+      } for
+      pop
+      1 add array 0 1 2 index length 1 sub {
+        postpos total_length ge {
+          % Fill the rest with .notdef
+          1 2 index length 1 sub { 1 index exch /.notdef put } for
+          exit
+        } if
+        % No name available, /postnames will be defined as an empty
+        % array and the glyph won't get a name attached.
+        postglyphs postpos //get_from_stringarray exec
+        postglyphs postpos 1 add 2 index
+        2 copy add total_length gt {
+          TTFDEBUG { (post table ends in the middle of the entry.) print flush } if
+          pop pop pop pop
+          % Fill the rest with .notdef
+          1 2 index length 1 sub { 1 index exch /.notdef put } for
+          exit
+        } if
+        //getinterval_from_stringarray exec cvn
+        exch postpos add 1 add /postpos exch def
+        2 index 3 1 roll
+        put
+      } for
+      /postnames exch def
+        % Some TrueType fonts converted by "Windows Type 1 Installer" have
+        % problematic post table including MacGlyphEncoding entries which
+        % should be omitted. Such extra entries in the beginning of glyphName
+        % array make /Encoding broken. If we find populary predefined
+        % ISOLatin1Encoding glyph name in the post table, empty encoding is
+        % returned. Some TrueType fonts for Microsoft Windows redefines
+        % MacGlyphEncoding glyph name out of predefined range). To permit
+        % such fonts, ISOLatin1Encoding is used to find broken post. Bug 689495.
+      /.broken_post //false def
+      tabdict /name .knownget {
+        (Windows Type 1 Installer V1.0) search {
+          pop pop pop
+          .latin1isodict postnames {
+            dup /.notdef ne {
+              2 copy known {
+                TTFDEBUG { (ignore post table that redefines ISOLatin1Encoding glyph name ) print dup //== exec flush } if
+                /.broken_post //true def
+                pop exit
+              } if
+            } if
+            pop
+          } forall
+          pop
+        } {
+          pop
+        } ifelse
+      } if
+      % Loop through the array of name indices we created above.
+      % This loop replaces name index in the array with the name
+      % it references.
+      0 1 2 index length 1 sub {
+        dup 2 index exch get dup 258 lt {
+          MacGlyphEncoding exch get
+        } {
+          258 sub postnames exch get
+          % At least some of Microsoft's TrueType fonts use incorrect
+          % (Adobe-incompatible) names for some glyphs.
+          % Correct for this here.
+          postremap 1 index .knownget { exch pop } if
+        } ifelse
+        2 index 3 1 roll
+        put
+      } for
+
+      .broken_post {
+        pop
+        [ postnames aload length 1 roll ]
+      } if
+    }
+    ifelse
+  } .bind
+  16#00030000  {	% No map.
+    pop [ ]
+  } .bind
+.dicttomark readonly def                % postformats
+
+/call.readtable
+{ .readtable
+} .bind def
+/call.readbigtable
+{ .readbigtable
+} .bind def
+
+% Each procedure in this dictionary is called as follows:
+%	<file> <length> -proc- <string|array_of_strings>
+% Note that each table must have an even length, because of a strange
+% Adobe requirement that each sfnts entry have even length.
+/readtables mark
+        % Ordinary tables
+  (head) //call.readtable
+  (hhea) 1 index
+  (maxp) 1 index
+  (name) 1 index
+  (OS/2) 1 index
+  (post) //call.readbigtable
+  (vhea) //call.readtable
+        % Big tables
+  (cmap) //call.readbigtable
+  (GSUB) //call.readbigtable
+  (glyf) //call.readbigtable
+  (loca) 1 index
+  (hmtx) 1 index
+  (vmtx) 1 index
+  (cvt ) //call.readtable
+  (fpgm) 1 index
+  (prep) 1 index
+.dicttomark
+% Normally there would be a 'readonly' here, but the ttf2pf utility wants
+% to include the 'kern' table as well, so we leave the readtables dictionary
+% writable.
+def                % readtables
+
+/readtables_stripped readtables dup length dict copy
+dup (loca) { .skiptable } put
+dup (glyf) { .skiptable } put
+def
+
+% Read a table as a single string.
+% <file> <length> .skiptable <string>
+/.skiptable {
+  pop pop ()
+} .bind def
+
+% Read a table as a single string.
+% <file> <length> .readtable <string>
+/.readtable {
+  dup dup 1 and add string
+                % Stack: f len str
+  dup 0 4 -1 roll getinterval
+                % Stack: f str str1
+        % Because of the absurd PostScript specification that gives an
+        % error for reading into an empty string, we have to check for
+        % this explicitly here.
+  3 -1 roll exch
+  dup () ne { readstring } if pop pop
+} .bind def
+
+% Read a big table (one that may exceed 64K).
+% <file> <length> .readbigtable <string[s]>
+/.readbigtable {
+  dup 65400 lt {
+    .readtable
+  } {
+    currentuserparams /VMReclaim get -2 vmreclaim
+    [ 4 2 roll {
+                % Stack: mark ... f left
+      dup maxstring le { exit } if
+      1 index maxstring string readstring pop 3 1 roll maxstring sub
+    } loop .readtable ]
+    exch vmreclaim
+  } ifelse
+} .bind def
+
+end readonly def                % .loadttfontdict
+
+% <tab> .printtab -
+/.printtab {
+  dup 0 4 getinterval print ( ) print
+  dup 8 getu32 =only ( ) print
+  12 getu32 =
+} bind def
+
+% <file> <bool> <SubfontID> .loadttfonttables -
+% Pushes .loadttfontdict & scratch dict on d-stack.
+% Defines f, offsets, tables, tabdict, tabs, tthdrlen.
+% Skips loca and glyf if <bool> is true.
+/.loadttfonttables {
+  //.loadttfontdict begin
+  40 dict begin
+  /SubfontID exch def
+  /load_stripped exch def
+  /f exch def
+  /offsets f 12 string readstring pop def
+  /tthdrlen offsets length def
+  load_stripped { readtables_stripped } { readtables } ifelse /readtables_ exch def
+  offsets 0 4 getinterval (ttcf) eq {
+    offsets 8 getu32 /num_fonts exch def
+    SubfontID num_fonts ge {
+      QUIET not { (True Type collection contains insufficient fonts.) = } if
+      /.loadttfonttables cvx /invalidfont signalerror
+    } if
+    f SubfontID 4 mul dup 0 ne {
+      () /SubFileDecode filter flushfile
+    } {
+      pop pop
+    } ifelse
+
+    f 4 string readstring pop
+    0 getu32 /ttc_offset exch def
+
+    f ttc_offset SubfontID 4 mul sub 16 sub
+    dup 0 ne {
+      () /SubFileDecode filter flushfile
+    } {
+      pop pop
+    } ifelse
+    /offsets f 12 string readstring pop def
+  } {
+    SubfontID 0 gt {
+      QUIET not { (SubfontID > 0 with a True Type file which is not a collection.) = } if
+      /.loadttfonttables cvx /invalidfont signalerror
+    } if
+    /ttc_offset 0 def
+  } ifelse
+        % Peek because table counter may be incorrect.
+  /tables f offsets 4 getu16 16 mul string .peekstring pop def
+  /tabdict tables length 16 idiv dict def
+        % tabs = tables we want to keep, sorted by file position.
+  /tabs [ 0 16 tables length 1 sub {
+    tables exch 16 getinterval
+    TTFDEBUG { dup //.printtab exec } if
+    dup 0 4 getinterval readtables_ 1 index known {
+      % put all 0 length tables at 0 to avoid overlap
+      1 index 12 getu32 0 eq { 1 index 8 0 putu32 } if
+      tabdict exch 2 index put
+    } {
+      pop pop
+    } ifelse
+  } for ] {
+    exch 8 getu32 exch 8 getu32 lt
+  } .sort def
+        % In certain malformed TrueType fonts, tables overlap.
+        % Truncate tables if necessary.
+  0 1 tabs length 2 sub {
+    dup tabs exch get exch 1 add tabs exch get
+    1 index 8 getu32 2 index 12 getu32 add
+    1 index 8 getu32 gt {
+      (**** Warning: ) print 1 index 0 4 getinterval print
+      ( overlaps ) print dup 0 4 getinterval print
+      (, truncating.) = flush
+      dup 8 getu32 2 index 8 getu32 sub
+      2 index 12 3 -1 roll putu32
+    } if pop pop
+  } for
+} .bind executeonly def
+
+
+
+% <file> <bool> <SubfontID> .loadwofftables -
+% Pushes .loadttfontdict & scratch dict on d-stack.
+% Defines f, offsets, tables, tabdict, tabs, tthdrlen.
+% Skips loca and glyf if <bool> is true.
+/.loadwofftables {
+  //.loadttfontdict begin
+  40 dict begin
+  /SubfontID exch def
+  /load_stripped exch def
+  /f exch def
+  % loading WOFFs "stripped" only works for .findfontvalue - we cannot
+  % (currently) use a stripped wOFF font
+  load_stripped { readtables_stripped } { readtables } ifelse /readtables_ exch def
+  /offsets 12 string def
+  /woffhdr f 44 string readstring pop def
+  /tthdrlen woffhdr length def
+  /ttc_offset 0 def
+  woffhdr 0 4 getinterval (wOFF) eq not
+  % allow loading wOFFOTTO fonts "stripped" for .findfontvalue
+  woffhdr 4 4 getinterval (OTTO) eq load_stripped not and or
+  {/.loadwofftables cvx /invalidfont signalerror}
+  {
+    offsets 0 woffhdr 4 4 getinterval putinterval
+    /tables f woffhdr 12 getu16 20 mul string .peekstring pop def
+    offsets 4 tables length 20 idiv putu16
+    /tabdict tables length 20 idiv dict def
+    /tabs [ 0 20 tables length 1 sub
+      {
+        tables exch 20 getinterval
+        TTFDEBUG { dup //.printtab exec } if
+        dup  0 4 getinterval readtables_ 1 index known
+        {
+          % put all 0 length tables at 0 to avoid overlap
+          1 index 12 getu32 0 eq { 1 index 8 0 putu32 } if
+          tabdict exch 2 index put
+         }
+         {pop pop}
+         ifelse
+      }for
+    ]
+    { exch 4 getu32 exch 4 getu32 lt } .sort
+    def
+  } ifelse
+} .bind def
+
+/.file_table_pos_names
+mark
+/glyf 0
+/loca 0
+.dicttomark readonly def
+
+% - .readttdata -
+% Read data.  Updates offsets, tabs; stores data in tabdict.
+/.readttdata {
+  /file_table_pos 10 dict def
+  /fpos tthdrlen ttc_offset add def
+  /sfpos offsets length tabs length 16 mul add def
+  offsets 4 tabs length putu16
+  0 1 tabs length 1 sub {
+    dup tabs exch get
+    dup 0 4 getinterval /tname exch def
+    dup length 20 eq
+    {
+      dup 4 getu32 /tpos exch def
+      dup 8 getu32 /tclen exch def
+      dup 12 getu32 /tlen exch def
+    }
+    {
+      dup 8 getu32 /tpos exch def
+      dup 12 getu32 /tlen exch def
+      /tclen tlen def
+    } ifelse
+    load_stripped //.file_table_pos_names tname known and {
+        pop
+        file_table_pos tname [tpos tlen tclen] put
+        tabdict tname () put
+        pop
+    } {
+      dup length 20 eq
+      {
+        0 16 getinterval dup 8 sfpos putu32
+        tabs 3 -2 roll put
+      }
+      {8 sfpos putu32 pop}
+      ifelse
+        % Skip data between the end of the previous table and
+        % the beginning of this one, if any.
+      tpos fpos gt {
+        load_stripped {
+          % 'setfileposition' is faster for skipping a big data.
+          f tpos setfileposition
+        } {
+          f tpos fpos sub () /SubFileDecode filter dup flushfile closefile
+          /fpos tpos def
+        } ifelse
+      } if
+      /ff
+      tlen tclen eq not
+      {f tclen () /SubFileDecode filter /FlateDecode filter}
+      {f tlen  () /SubFileDecode filter}
+      ifelse
+      def
+      ff tlen readtables_ tname get exec
+      ff closefile
+      tabdict tname 3 -1 roll put
+        % Round up the table length to an even value.
+      /sfpos sfpos tlen dup 1 and add add def
+    } ifelse
+    /fpos fpos tclen add def
+  } for
+} .bind def
+
+% Find the string in a list of strings that includes a given index.
+% <strings> <index> .findseg <string> <index'>
+/.findseg {
+  exch {
+    dup length 2 index gt { exch exit } if
+    length sub
+  } forall
+} .bind def
+
+% - .makesfnts -
+% Defines checksum, getloca, head, locatable, numloca, post, sfnts, upem
+% Note that the 'loca' table may be out of order.
+/.makesfnts {
+  //.readttdata exec
+  /head tabdict /head get def
+  /post tabdict /post .knownget {
+    dup 0 get /post_first_part exch def
+  } {
+    //null
+  } ifelse def
+  load_stripped not {
+    /locatable tabdict /loca get def
+    /numloca
+      locatable dup type /stringtype eq
+       { length }
+       { 0 exch { length add } forall }
+      ifelse	% no def yet
+    locatable type /stringtype eq {
+      /.indexloca {} def
+    } {
+      /.indexloca //.findseg def
+    } ifelse
+    head 50 getu16 0 ne {
+      /getloca {
+        2 bitshift locatable exch .indexloca getu32
+      } def
+      4 idiv 1 sub
+    } {
+      /getloca {
+        dup add locatable exch .indexloca getu16 dup add
+      } def
+      2 idiv 1 sub
+    } ifelse def		% numloca
+  } {
+    % We did not load loca, take the number of glyphs from maxp.
+    /numloca tabdict /maxp get 4 getu16 def
+  } ifelse
+  /sfnts [
+    offsets tabs { concatstrings } forall
+    tabs {
+      0 4 getinterval tabdict exch get
+      dup type /stringtype ne { aload pop } if
+    } forall
+  ] def
+} .bind executeonly odef
+
+/first_post_string % - first_post_string <string>
+{
+  post dup type /arraytype eq { 0 get } if
+} bind def
+
+% - .getpost -
+% Uses post, defines glyphencoding
+/.getpost {
+  /glyphencoding post //null eq {
+    TTFDEBUG { (post missing) = flush } if [ ]
+  } {
+    postformats first_post_string 0 getu32 .knownget {
+      TTFDEBUG {
+        (post: format ) print
+        first_post_string
+        dup 0 getu16 =only (,) print 2 getu16 = flush
+      } if
+      post exch exec
+    } {
+      TTFDEBUG { (post: unknown format ) print post 0 getu32 = flush } if [ ]
+    } ifelse
+  } ifelse
+  TTFDEBUG { (post=) print dup //== exec } if
+  def
+} .bind def
+
+% - .ttkeys <key> <value> ...
+/.ttkeys {
+  count /ttkeycount exch def
+  /upem head 18 getu16 def
+  /FontMatrix matrix
+  /FontBBox [ 36 2 42 { head exch gets16 upem div } for ]
+  nextxuid
+  tabdict /name .knownget {
+                % Find the names from the 'name' table.
+    /names exch def
+    /FontName names 6 findname not { names 4 findname not { curxuid 16#ffffffff and 16 32 string cvrs } if } if
+      /fontname 1 index def
+    /FontInfo mark
+      names 0 findname { /Notice exch } if
+      names 1 findname { /FamilyName exch } if
+      names 4 findname { /FullName exch } if
+      names 5 findname { /Version exch } if
+  } {
+                % No name table, fabricate a FontName.
+    /FontName curxuid 16#ffffffff and 16 32 string cvrs
+      /fontname 1 index def
+    /FontInfo mark
+  } ifelse
+                % Stack: ... /FontInfo mark key1 value1 ...
+  post //null ne {
+    /ItalicAngle first_post_string 4 gets32 65536.0 div
+    /isFixedPitch first_post_string 12 getu32 0 ne
+    /UnderlinePosition first_post_string 8 gets16 upem div
+    /UnderlineThickness first_post_string 10 gets16 upem div
+  } if
+  counttomark 0 ne { .dicttomark } { pop pop } ifelse
+  /XUID [orgXUID 42 curxuid]
+  TTFDEBUG {
+    tabs { //.printtab exec } forall
+    [ sfnts { length } forall ] //== exec
+    count ttkeycount sub array astore dup { //== exec } forall aload pop
+  } if
+  /sfnts sfnts
+} .bind def
+
+% ---------------- Standard TrueType font loading ---------------- %
+
+% - .pickcmap_with_no_xlatmap -
+% Defines cmapsub, cmaptab
+/.pickcmap_with_no_xlatmap {
+  tabdict /cmap get
+                % The Apple cmap format is no help in determining the encoding.
+                % Look for a Microsoft table.  If we can't find one,
+                % just use the first table, whatever it is.
+  dup 4 8 getinterval_from_stringarray exch  % () [] % the default
+  0 1 2 index 2 getu16a 1 sub {              % () [] i
+    8 mul 4 add 1 index exch 8 getinterval_from_stringarray % () [] ()
+    TTFDEBUG {
+      (cmap: platform ) print dup 0 getu16 =only
+      ( encoding ) print dup 2 getu16 = flush
+    } if
+    dup 0 getu16 3 eq { exch 3 -1 roll pop exit } if pop
+  } for
+                % Stack: subentry table
+  /cmapsub 2 index def  % () []
+  exch 4 getu32 1 index string_array_size 1 index sub getinterval_from_stringarray
+  /cmaptab exch def
+} .bind def
+
+% - .pickcmap_with_xlatmap -
+% Defines cmapsub, cmaptab
+/.pickcmap_with_xlatmap {
+  .xlatmap_dict /TrueType known not {
+    (Emulating a CID font with a True Type file, ) print
+    (the file gs/lib/xlatmap must contain /TrueType key.) =
+    /.pickcmap_with_xlatmap cvx /configurationerror signalerror
+  } if
+  //false
+  .xlatmap_dict /TrueType get
+  dup length 2 sub 0 exch 2 exch {                       % bool [] i
+    2 copy get                                           % bool [] i ()
+    (.) search {                                         % bool [] i post match pre
+      cvi exch pop exch cvi                              % bool [] i PlatID SpecID
+    } {
+      (gs/lib/xlatmap containg a record with an invalid (PlatformID.SpecificID)) =
+      /.pickcmap_with_xlatmap cvx /configurationerror signalerror
+    } ifelse
+    TTFDEBUG {
+      (Seeking a cmap for platform=) print 1 index =only ( encoding=) print dup =
+    } if
+    tabdict /cmap get                                    % bool [] i PlatID SpecID (cmap)
+    dup /cmaptab exch def % temporary
+    0 1 2 index 2 getu16a 1 sub {                        % bool [] i PlatID SpecID (cmap) j
+      8 mul 4 add 1 index exch 8
+      getinterval_from_stringarray                       % bool [] i PlatID SpecID (cmap) (cmapsub)
+      TTFDEBUG {
+        (cmap: platform ) print dup 0 getu16 =only
+        ( encoding ) print dup 2 getu16 = flush
+      } if
+      dup 0 getu16 4 index eq {
+        dup 2 getu16 3 index eq {                        % bool [] i PlatID SpecID (cmap) (cmapsub)
+          TTFDEBUG {
+            (Choosen a cmap for platform=) print 3 index =only
+            ( encoding=) print 2 index =
+          } if
+          /cmapsub 1 index def
+          dup 4 getu32                                   % bool [] i PlatID SpecID (cmap) (cmapsub) p
+          cmaptab 1 index getu16a                        %     get cmap format
+          8 lt {                                         %     length for traditional 16bit format 0, 2, 4, 6
+            cmaptab 1 index 2 add getu16a
+          } {                                            %     length for advanced 32bit format 8, 10, 12
+            cmaptab 1 index 4 add getu32a
+          } ifelse                                       % bool [] i PlatID SpecID (cmap) (cmapsub) p l
+          cmaptab 3 1 roll getinterval_from_stringarray
+          /cmaptab exch def                              % bool [] i PlatID SpecID (cmap) (cmapsub)
+          5 index 5 index 1 add get                      % bool [] i PlatID SpecID (cmap) (cmapsub) /Decoding
+          /Decoding exch def                             % bool [] i PlatID SpecID (cmap) (cmapsub)
+          7 -1 roll pop //true 7 1 roll                  % true [] i PlatID SpecID (cmap) (cmapsub)
+        } if
+      } if
+      pop                                                % true [] i PlatID SpecID (cmap)
+      5 index { exit } if
+    } for                                                % bool [] i PlatID SpecID (cmap)
+    pop pop pop pop                                      % bool []
+    1 index { exit } if
+  } for                                                  % bool []
+  pop                                                    % bool
+  not {
+    QUIET not { (True Type font doesn't contain a charset listed in gs/lib/xlatmap.) = } if
+    /.pickcmap_with_xlatmap cvx /invalidfont signalerror
+  } if                                                   %
+} .bind def
+
+% - .pickcmap -
+% Defines cmapsub, cmaptab
+/.pickcmap {
+  % Currently we use xlatmap only for emulation CIDFontType 2 with
+  % a disk True Type font files, and use load_stripped
+  % to check this regime. We would like to do so
+  % while emulating a Type 42, but first the old code
+  % about handling them to be changed
+  % with adding a handling of a Decoding.
+  % fixme : A correct way to fix this is to implenent
+  % the Type 42 emulation with gs_fntem.ps .
+  % Also note that PDF embedded fonts probably don't need a xlatmap -
+  % see PDF spec, "Encodings for True Type fonts".
+  load_stripped {
+    //.pickcmap_with_xlatmap exec
+  } {
+    //.pickcmap_with_no_xlatmap exec
+  } ifelse
+} .bind executeonly odef
+currentdict /.pickcmap_with_xlatmap .undef
+currentdict /.pickcmap_with_no_xlatmap .undef
+
+% <glyph> .nname <_name>
+/.nname {
+  =string cvs (_) exch concatstrings cvn
+} bind def
+
+
+% - .charkeys /CharStrings <charstrings> /Encoding <encoding>
+% Resets glyphencoding
+/.charkeys {
+  TTFDEBUG {
+    (glyphencoding: length=) print glyphencoding dup length = === flush
+  } if
+                % Hack: if there is no usable post table but the cmap uses
+                % the Microsoft Unicode encoding, use ISOLatin1Encoding.
+     % if 'post' presents, .charkeys computes (with dropping minor details) :
+     %     CharStrings = glyphencoding^-1
+     %     Encoding = cmap*glyphencoding
+     % because 'post' maps glyph indices to glyph names.
+     % Otherwise .charkeys must compute (with dropping same details) :
+     %     CharStrings = glyphencoding^-1 * cmap
+     %     Encoding = glyphencoding
+     % because glyphencoding is stubbed with an encoding,
+     % which maps char codes to glyph names.
+  glyphencoding length 0 eq {
+    /have_post //false def
+    cmapsub 0 4 getinterval <00030001> eq {
+    TTFDEBUG { (No post but have cmap 3.1, so use ISOLatin1Encoding) = } if
+      /glyphencoding ISOLatin1Encoding dup length array copy def
+    } {
+      TTFDEBUG { (No encoding info, use .GS_extended_SymbolEncoding) = } if
+      /glyphencoding /.GS_extended_SymbolEncoding findencoding dup length array copy def
+    } ifelse
+  } {
+    /have_post //true def
+  } ifelse
+                % If necessary, fabricate additional glyphencoding entries
+                % to cover all of loca
+  glyphencoding length numloca lt {
+    /glyphencoding numloca array
+      glyphencoding length dup 1 sub 0 1 3 2 roll {
+        dup glyphencoding exch get
+        3 index 3 1 roll put
+      } for
+      % /glyphencoding <newarray> <glyphencoding length>
+      1 numloca 1 sub {
+        1 index exch dup //.nname exec put
+      } for
+    def
+  } if
+
+  /cmapa cmaptab cmapdict def
+                % Some badly designed Chinese fonts have a post table
+                % in which all glyphs other than 0 are named .null.
+                % Use CharStrings to keep track of the reverse map from
+                % names to glyphs, and don't let any name be used for
+                % more than one glyph.
+  /CharStrings glyphencoding dup length 1 add dict	% +1 for .notdef
+    0 1 3 index length 1 sub {
+                % Stack: glyphencoding dict index
+      dup 3 index 1 index get
+      have_post not {
+        exch
+        cmapa exch .knownget not {
+          0   % a stub for a while. Must skip the entry.
+        } if
+        exch
+      } if
+      3 index 1 index known
+      { % The same name maps to more than one glyph. Change the name.
+        % No special treatment for /.notdef glyph. Bug 689408.
+        pop //.nname exec 3 index 2 index 2 index put
+        2 index exch 3 -1 roll put
+      } {
+        3 index exch 3 -1 roll put	% unique name
+        pop
+      } ifelse
+    } for exch pop
+                % If there is no .notdef entry, map it to glyph 0.
+  dup /.notdef known not { dup /.notdef 0 put } if
+
+  TTFDEBUG {
+    (CharStrings:)= dup { exch =string cvs print ( ) print //== exec } forall
+  } if
+
+  % Provide all known aliases for each glyph
+  cmapsub 0 4 getinterval <00030001> eq % is the cmap table a unicode one?
+  cmapa //ReverseAdobeGlyphList //AdobeGlyphList
+  {                                  %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) gname(name) codep(integer)
+    exch
+    dup 6 index exch .knownget
+    {                                %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) codep(integer) gname(name) gindex(integer)
+      3 index 3 index .knownget
+      {                              %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) codep(integer) gname(name) gindex(integer) gnames(array)
+        {                            %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) codep(integer) gname(name) gindex(integer) gname(name)
+          TTFDEBUG { (\n1 setting alias: ) print dup ==only
+                ( to be the same as  ) print 2 index //== exec } if
+
+          7 index 2 index 3 -1 roll exch put
+        } forall
+        pop pop pop
+      }
+      {
+        pop pop
+      } ifelse
+    }
+    {                                %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) gname(name) codep(integer)
+      exch
+      % Only do this for Unicode cmap table
+      4 index
+      {
+        dup 4 index exch .knownget
+        {                            %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) gname(name) codep(integer) gindex(integer)
+          exch pop
+          TTFDEBUG { (\n2 setting alias: ) print 1 index ==only
+                     ( to use glyph index: ) print dup //== exec } if
+          5 index 3 1 roll put
+          //false
+        }
+        {
+          //true
+        }ifelse
+      }
+      {
+        //true
+      } ifelse
+
+      {                        %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) gname(name) codep(integer)
+        16 4 string cvrs dup length neg 7 add (uni0000) dup
+        4 -2 roll exch putinterval cvn 3 index 1 index .knownget
+        {                            %  CharStrings(dict) isunicode(boolean) cmap(dict) RAGL(dict) gname(name) codep(integer) gindex(integer)
+          TTFDEBUG { (\3 nsetting alias: ) print 1 index ==only
+                ( to be index: ) print dup //== exec } if
+          exch pop 5 index 3 1 roll put
+        }
+        {
+          pop pop
+        } ifelse
+      } if
+    } ifelse
+  } forall
+  pop pop pop
+
+  readonly
+
+  /Encoding [
+      have_post {
+        0 1 255 {
+          cmapa exch .knownget not { 0 } if
+          glyphencoding dup length
+          2 index le {
+            pop pop /.notdef
+          } {
+            exch get
+          } ifelse
+        } for
+      } {
+        glyphencoding  dup length 256 gt { 0 256 getinterval } if
+        aload pop
+        counttomark 256 exch sub { /.notdef } repeat
+      } ifelse
+    ]
+  TTFDEBUG { (Encoding: ) print dup === flush } if
+} .bind odef
+
+% ---------------- CIDFontType 2 font loading ---------------- %
+
+% Fill a string with sequential CIDs starting from the initial value.
+% <string> <value> .fill_identity_cmap <string>
+/.fill_identity_cmap {             % () v
+  1 index length 2 sub          % () v n-2
+  0 2 3 2 roll {                % () v 0 2 n-1
+      3 copy exch               % () v i () i v
+      -8 bitshift               % () v i () i v>>8
+      put                       % () v i
+      3 copy 1 add              % () v i () v i+1
+      exch 255 and              % () v i () i+1 v&255
+      put                       % () v i
+      pop 1 add                 % () v+1
+  } for
+  pop
+} .bind def
+
+% <CIDSystemInfo dict> <dict> .definettcidfont <font>
+/.definettcidfont {
+  dup begin
+  /CIDFontName fontname def
+  /CIDFontType 2 def
+  /CIDSystemInfo 4 -1 roll def
+  /CharStrings mark /.notdef 0 .dicttomark def
+                % The cmap isn't of any use even if it is present.
+                % Just construct an identity CIDMap covering all the glyphs.
+
+  /CIDCount numloca % Wrong if a CIDFontType2 embedded into PDF with a non-Identity CIDToGIDMap.
+  def               % processCIDToGIDMap may replace.
+  /CIDMap numloca maxstring le {
+                % Use a single string.
+      numloca 2 mul string 0 //.fill_identity_cmap exec
+  } {
+                % We must use 2 strings.
+      maxstring 2 mul string 0 //.fill_identity_cmap exec
+      numloca maxstring sub 2 mul string maxstring //.fill_identity_cmap exec
+      2 array astore
+  } ifelse
+  def
+
+  /GDBytes 2 def
+  end
+
+  end end dup /CIDFontName get exch /CIDFont defineresource
+} .bind def
+
+% <CIDSystemInfo dict> <file> <Substite name> .loadttcidfont <cidtype2font>
+/.loadttcidfont {
+  exch
+  //false 0 .loadttfonttables
+  .makesfnts
+        % CIDFontType2 fonts don't have a cmap: they are indexed by CID.
+  mark
+  //.ttkeys exec
+  .dicttomark dup              % convert keys to dict and copy dict
+  3 -1 roll                    % Bring PDF substitute name to top of stack
+
+  dup
+  /fontname exch def
+  /FontName exch put           % replace any definition of /FontName
+  //.definettcidfont exec
+} .bind executeonly odef
+
+% <file> <SubfontID> .load_tt_font_stripped <font_data>
+% The font_data includes sfnts, NumGlyphs, TT_cmap, file_table_pos, Decoding.
+% CIDMap to be created later from TT_cmap.
+/.load_tt_font_stripped {
+  //true exch .loadttfonttables
+  .makesfnts
+  .pickcmap
+  mark
+  //.ttkeys exec
+  /NumGlyphs numloca
+  /TT_cmap cmaptab cmapdict
+  /file_table_pos file_table_pos
+  /Decoding Decoding
+  .dicttomark
+  end end
+} .bind executeonly def
+
+/.load_woff_for_cid {
+  //false exch //.loadwofftables exec
+  .makesfnts
+  % we have to set load_stripped here so
+  % .pickcmap will follow the right logic
+  % for emulating a CIDFont
+  /load_stripped //true def
+  .pickcmap
+  /load_stripped //false def
+  mark
+  //.ttkeys exec
+  /NumGlyphs numloca
+  /TT_cmap cmaptab cmapdict
+%  /file_table_pos file_table_pos
+  /Decoding Decoding
+  .dicttomark
+  end end
+} .bind executeonly def
+
+% ---------------- PDF TrueType font loading ---------------- %
+
+% Strictly speaking, this code should be loaded only if we have a PDF
+% interpreter, but it's so closely tied to the rest of the code in this
+% file that we always include it.
+
+% <plat+enc> .findcmap <subtable> true
+% <plat+enc> .findcmap false
+/.findcmap {
+  //false exch tabdict /cmap get
+                % Some fonts have multiple cmaps with the same platform and
+                % encoding.  Use the first one we find.
+  0 1 2 index 2 getu16a 1 sub {
+                % Stack: false plat+enc cmap index
+    8 mul 4 add 1 index exch 8 getinterval_from_stringarray
+    dup 0 4 getinterval 3 index eq {
+      4 getu32 1 index exch 1 index string_array_size 1 index sub getinterval_from_stringarray
+      4 -1 roll not 4 2 roll exit
+    } if pop
+  } for
+                % Stack: false plat+enc cmap || subtable true plat+enc cmap
+  pop pop
+} .bind def
+
+% Build .symbol_list for .pdfcharkeys .
+% It is a dictionary containing all SymbolEncoding glyph names
+% and random names for filling gaps in the character code range.
+/.symbol_list 256 dict def
+{
+  =string 0 (x) 0 get put
+  /SymbolEncoding .findencoding
+  0 1 255 {
+    dup 2 index exch get
+    dup /.notdef eq {
+      pop dup
+      =string 1 3 getinterval cvs length 1 add
+      =string exch 0 exch getinterval cvn
+    } if
+    exch //.symbol_list 3 1 roll put
+  } for
+  pop
+} .bind exec
+
+% Create .GS_extended_SymbolEncoding as inverse of .symbol_list .
+{
+  /.GS_extended_SymbolEncoding 256 array
+  //.symbol_list {
+    exch 2 index 3 1 roll put
+  } forall
+  .defineencoding
+} .bind exec
+
+/.hexdigits (0123456789ABCDEF) def
+
+/.is_hex_digit { %   <int> .is_hex_digit <bool>
+  dup 48 ge exch
+  dup 57 le exch
+  dup 65 ge exch
+  70 le and
+  3 1 roll
+  and or
+} .bind def
+
+/.popfex { pop //false exit } bind def
+/.pop3ex { pop pop pop exit } bind def
+
+/.addglyph {  % <dict> <name> <glyph#> .addglyph -
+  1 index .namestring     % d n g s
+  dup length 7 eq {
+    % Bug688467.ps doesn't work if the uniXXXX mapping is allowed with any cmap.
+    % Allow it with cmap 3.1 only.
+    currentdict /.allow_uniXXXX_glyph_names .knownget not { //false } if
+    } { //false
+    } ifelse              % d n g s b
+  {
+    % An undocumented Adobe feature (not sure) :
+    % if the name is uniXXXX, obtain Unicode code from it.
+    % See bug 688946.
+    TTFDEBUG { (Try uniXXXX:) print dup print } if
+    { dup 0 get 117 ne //.popfex if % u
+      dup 1 get 110 ne //.popfex if % n
+      dup 2 get 105 ne //.popfex if % i
+      dup 3 get //.is_hex_digit exec not //.popfex if
+      dup 4 get //.is_hex_digit exec not //.popfex if
+      dup 5 get //.is_hex_digit exec not //.popfex if
+      dup 6 get //.is_hex_digit exec not //.popfex if
+      dup 3 1 getinterval .hexdigits exch search pop length exch pop exch pop 12 bitshift exch
+      dup 4 1 getinterval .hexdigits exch search pop length exch pop exch pop  8 bitshift exch
+      dup 5 1 getinterval .hexdigits exch search pop length exch pop exch pop  4 bitshift exch
+      dup 6 1 getinterval .hexdigits exch search pop length exch pop exch pop exch pop
+      add add add
+
+      cmapencoding exch .knownget not { 0 } if
+      dup 0 eq //.popfex if
+
+      TTFDEBUG { ( index=) print dup =string cvs print } if
+      exch pop
+      put //true exit
+    } loop
+    TTFDEBUG { ()= } if
+  } {
+    pop //false
+  } ifelse
+  not {                   % d n g
+    {
+      cmapencoding exch .knownget not { 0 } if
+      dup 0 eq //.pop3ex if
+      3 copy pop known //.pop3ex if
+      put exit
+    } loop
+  } if
+} .bind def
+
+% <chartoglyphmap> <subcmap> <AGL> .pdfmapchars /CharStrings <charstrings>
+/.pdfmapchars {
+  exch cmapdict /cmapencoding exch def     % c2g
+  /CharStrings 0 dict                       % c2g /CS <<>>
+  % Add glyphs of <AGL>*<subcmap> :
+  3 2 roll {                               % /CS <<>> v
+    dup type /arraytype eq {               % /CS <<>> /name []
+      { 3 copy //.addglyph exec
+        pop
+      } forall
+    } {
+      3 copy //.addglyph exec pop
+    } ifelse
+    pop
+  } forall
+  % Add glyphs of 'post' with lower priority :
+  0 1 glyphencoding length 1 sub {
+    dup glyphencoding exch get exch
+    dup 0 ne {
+      3 copy pop known not {
+        3 copy put
+      } if
+    } if
+    pop pop
+  } for
+
+  % Finally, add glyphs from the prebuilt_encoding with lowest priority
+  % this is a catch-all for poorly matched font/PDF combos
+  3 2 roll {                               % /CS <<>> v
+    dup type /arraytype eq {               % /CS <<>> /name []
+      { 3 copy //.addglyph exec
+        pop
+      } forall
+    } {
+      3 copy //.addglyph exec pop
+    } ifelse
+    pop
+  } forall
+
+  dup /.notdef 0 put
+} .bind def
+
+% <subtable> .pdfmapsymbolic  /Encoding [] /CharStrings <<>>
+/.pdfmapsymbolic {
+  //true /.render_notdef gput
+  cmapdict
+  dup length 1 add dict begin
+  [ 64 { /.notdef /.notdef /.notdef /.notdef } repeat ]
+  exch {                              % [] char glyph
+    exch
+    dup 255 gt {
+      255 and
+      2 index 1 index get /.notdef ne {
+        pop pop
+        //false
+      } {
+        //true
+      } ifelse
+    } {
+      //true
+    } ifelse {
+      dup (01234567) cvs cvn          % glyph char /char
+      3 1 roll                        % /char glyph char
+      3 index exch                    % /char glyph [] char
+      3 index put                     % /char glyph
+      def                             % -
+    } if
+  } forall
+  /.notdef 0 def
+  /Encoding exch
+  /CharStrings currentdict end
+} .bind def
+
+% - .pdfcharkeys /CharStrings <charstrings> /Encoding <encoding>
+/.pdfcharkeys {
+        % The following algorithms are per the PDF 1.7 Reference.
+  TTFDEBUG { (.pdfcharkeys beg) = } if
+
+  % if the flags say symbolic, *and* the font contains a symbol or UCS-2
+  % cmap table, ignore Encoding if there is one, treat as symbolic.
+  % If the flags say symbolic, and the font doesn't have a symbol cmap
+  % and we have an Encoding, treat it as non-symbolic
+  % if we don't have an Encoding, try the MacRoman cmap table.
+  % Finally, if none of that works, remove the Encoding, and treat it
+  % as non-symbolic.
+  is_symbolic {
+    <00030000> //.findcmap exec
+    { //true }
+    {
+      prebuilt_encoding //null eq {
+        <00030001> //.findcmap exec
+        {//true}
+        {<00010000> //.findcmap exec}
+        ifelse
+      }
+      {//false}
+      ifelse
+    } ifelse
+
+    {
+      //.pdfmapsymbolic exec
+      /prebuilt_encoding //null def
+      //false
+    } {
+      /prebuilt_encoding //null def
+      //true
+    } ifelse
+  } {
+    //true
+  }
+  ifelse
+  {
+    <00030001> //.findcmap exec {
+      prebuilt_encoding //null ne {
+        TTFDEBUG { (Using cmap 3.1 with prebuilt_encoding for non-symbolic.) = } if
+        //true /.render_notdef gput
+        % The character code in /prebuilt_encoding[] is not guaranteed to be
+        % compatible with the Microsoft UCS2 TrueType cmap subtable.
+        % If the glyphname is known by AdobeGlyphList, the charcode for the glyph
+        % is replaced by UCS2 charcode from AdobeGlyphList. Otherwise it is left
+        % as in /prebuilt_encoding[]. /.pdfmapchars should dredge them.
+
+        /.allow_uniXXXX_glyph_names //true def
+        AdobeGlyphList prebuilt_encoding .invert_encoding dup {    % <<AGL>> <<pbe>> <glyphname> <pbecode>
+          pop                                                      % <<AGL>> <<pbe>> <glyphname>
+          TTFDEBUG { (check glypname /) print dup =only flush } if
+          2 index 1 index .knownget {                              % <<AGL>> <<pbe>> <glyphname> <AGLcode>
+            2 index 3 1 roll                                       % <<AGL>> <<pbe>> <<pbe>> <glyphname> <AGLcode>
+            TTFDEBUG { ( redefine codepoint by AdobeGlyphList, ) print dup //== exec flush } if
+            put                                                    % <<AGL>> <<pbe>>
+          } {                                                      % <<AGL>> <<pbe>> <glyphname>
+            TTFDEBUG { ( unknown glyphname, leave as it is ) = flush } if
+            pop                                                    % <<AGL>> <<pbe>>
+          } ifelse
+        } forall
+        exch pop                                                   % <<pbe>>
+        TTFDEBUG { dup (<<\n) print { exch (    ) print =only (\t) print //== exec } forall (>>\n) print flush } if
+        exch AdobeGlyphList
+        //.pdfmapchars exec
+        /Encoding prebuilt_encoding
+      } {
+        % Likely this branch is now obsolete.
+        TTFDEBUG { (Using cmap 3.1 for non-symbolic.) = } if
+        0 dict exch
+        AdobeGlyphList //.pdfmapchars exec
+        /Encoding /WinAnsiEncoding .findencoding
+          % WinAnsiEncoding is just a stub here.
+          % It will be replaced with one from font resource,
+          % because PDF spec requires it.
+      } ifelse
+    } {
+      <00010000> //.findcmap exec {
+        TTFDEBUG { (Using cmap 1.0 for non-symbolic.) = } if
+        prebuilt_encoding //null ne {
+          prebuilt_encoding .invert_encoding exch .romanmacdict //.pdfmapchars exec
+          prebuilt_encoding
+        } {
+          0 dict exch
+          /MacRomanEncodingForTrueType .findencoding
+        } ifelse
+        /Encoding exch
+      } {
+        % Apply the default algorithm for using the 'post'.
+        .charkeys
+        % But use PDF encoding when available.
+        prebuilt_encoding //null ne {
+          pop prebuilt_encoding
+        } if
+      } ifelse
+    } ifelse
+  } if
+  TTFDEBUG { (.pdfcharkeys end) = } if
+} .bind executeonly def
+
+% <file> <is_symbolic> <Encoding|null> <FontName> .loadpdfttfont <type42font>
+/.loadpdfttfont {
+  TTFDEBUG { (.loadpdfttfont FontName=) print dup == } if
+  /font_name gput
+  TTFDEBUG { (.loadpdfttfont Encoding=) print dup //== exec } if
+  /prebuilt_encoding gput     % for .pdfcharkeys
+  /is_symbolic gput
+  % init key for whether to display the TTF notdef
+  //false /.render_notdef gput
+  //false 0 .loadttfonttables
+  .makesfnts
+  tabdict /cmap known not {
+    (   **** Warning: Embedded TT font lacks required cmap table. Using identity cmap.\n)
+        pdfformaterror
+    % Unknown (i.e. not 0 ) language ID brings in post table.
+    % Fields: cmap_version, number_of_subtables,
+    %  plarform_id, encoding_id, offset,
+    %  format, subtable_length, language,
+    %  256 bytes of identity mapping.
+    tabdict /cmap
+    < 0000 0001
+      0001 D00D 0000000c
+      0000 0106 0000
+      00 01 02 03 04 05 06 07 08 09 0a 0d 0c 0d 0e 0f
+      10 11 12 13 14 15 16 17 18 19 1a 1d 1c 1d 1e 1f
+      20 21 22 23 24 25 26 27 28 29 2a 2d 2c 2d 2e 2f
+      30 31 32 33 34 35 36 37 38 39 3a 3d 3c 3d 3e 3f
+      40 41 42 43 44 45 46 47 48 49 4a 4d 4c 4d 4e 4f
+      50 51 52 53 54 55 56 57 58 59 5a 5d 5c 5d 5e 5f
+      60 61 62 63 64 65 66 67 68 69 6a 6d 6c 6d 6e 6f
+      70 71 72 73 74 75 76 77 78 79 7a 7d 7c 7d 7e 7f
+      80 81 82 83 84 85 86 87 88 89 8a 8d 8c 8d 8e 8f
+      90 91 92 93 94 95 96 97 98 99 9a 9d 9c 9d 9e 9f
+      a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 aa ad ac ad ae af
+      b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bd bc bd be bf
+      c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 ca cd cc cd ce cf
+      d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da dd dc dd de df
+      e0 e1 e2 e3 e4 e5 e6 e7 e8 e9 ea ed ec ed ee ef
+      f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 fa fd fc fd fe ff
+    > readonly put
+  } if
+  .getpost
+  .pickcmap
+  mark
+  //.pdfcharkeys exec
+  //.ttkeys exec
+  /FontType 42
+  /PaintType 0
+  /.render_notdef .render_notdef
+  TTFDEBUG {
+    (numloca=) print numloca =
+  } if
+  .dicttomark
+  dup /FontName font_name put        % replace any definition of /FontName
+  end end
+ .completefont
+} .bind executeonly odef
+
+%--------- Define main type42font loading routines, after their dependencies ------------
+% <file> .loadttfont <type42font>
+/.loadttfont {
+  TTFDEBUG { (.loadttfont) = } if
+  //false
+  % if this came from Fontmap, there may be a dictionary on the dict stack
+  % with a SubfontID in it. Validate it *is* a Fontmap record by also
+  % checking for a Path key
+  /SubfontID where
+  {
+    dup /Path known
+    {/SubfontID get}
+    {pop 0} ifelse
+  }
+  {0} ifelse
+  .loadttfonttables
+  .makesfnts
+  .getpost
+  .pickcmap
+  mark
+  % if we're loading to substitute for TTF in a PDF,
+  % load the font the "PDF way"
+  /prebuilt_encoding where
+  {pop //.pdfcharkeys exec}
+  {.charkeys} ifelse
+  //.ttkeys exec
+  /FontType 42
+  /PaintType 0
+  TTFDEBUG {
+    (numloca=) print numloca =
+  } if
+  .dicttomark
+  end end dup /FontName get exch definefont
+} .bind executeonly def
+
+% <file> .loadwofffont <type42font>
+/.loadwofffont
+{
+  TTFDEBUG { (.loadwofffont) = } if
+  //false 0 //.loadwofftables exec
+  .makesfnts
+  .getpost
+  .pickcmap
+  mark
+  .charkeys
+  //.ttkeys exec
+  /FontType 42
+  /PaintType 0
+  TTFDEBUG {
+    (numloca=) print numloca =
+  } if
+  .dicttomark
+  end end dup /FontName get exch
+  definefont
+} .bind executeonly def
+
+% ----- Utilities for loading possible TrueType font ------
+% <file> .findttfontname <fname> true
+% <file> .findttfontname false
+% Closes the file in either case.
+/.findttfontname {
+  //true 0 .loadttfonttables
+  tabdict /name .knownget {
+    dup 8 getu32 f exch setfileposition
+    12 getu32
+    dup 65535 gt { pop 65535 } if % protect against extremely large name
+    string f exch readstring pop
+    dup
+    6 findname not {
+      4 findname	% Try FullName
+    } {
+      exch pop //true
+    }
+    ifelse
+  } {
+    //false
+  } ifelse
+  f closefile end end
+} .bind def
+
+/.findwoffname {
+  //true 0 //.loadwofftables exec
+  tabdict /name .knownget {
+    dup /clen exch 8 getu32 def
+    dup /olen exch 12 getu32 def
+    4 getu32 f exch setfileposition
+    olen dup 65535 gt { pop 65535 } if % protect against extremely large name
+    /fs
+    clen olen ne
+    {f clen () /SubFileDecode filter /FlateDecode filter}
+    {f clen () /SubFileDecode filter}
+    ifelse def
+    string fs exch readstring pop
+    fs closefile
+    dup
+    6 findname not {
+      4 findname	% Try FullName
+    } {
+      exch pop //true
+    }
+    ifelse
+  } {
+    //false
+  } ifelse
+  f closefile end end
+} .bind def
+
+/tt_tag_dict << <00010000> 0 (true) 0 (typ1) 0 (ttcf) 0 >> readonly def
+/ttf_otf_tag_dict << <00010000> 0 (true) 0 (typ1) 0 (ttcf) 0 (OTTO) 0>> readonly def
+% The wOFF tag is immediately followed by the sfnt "flavour" so for simplicity
+% combine them
+/woff_tag_dict <<
+  (wOFF) 0
+  <774F464600010000> 0 % (wOFF)<00010000> .concatstrings
+  (wOFFtrue) 0
+  (wOFFtyp1) 0
+>> readonly def
+
+% <file> .is_ttf_or_otf <bool>
+/.is_ttf_or_otf {
+    dup 0 setfileposition (1234) .peekstring { //ttf_otf_tag_dict exch known } { //false } ifelse
+} .bind def
+
+/.is_woff {
+    dup 0 setfileposition (1234) .peekstring { //woff_tag_dict exch known } { //false } ifelse
+} .bind def
+
+% <file> <key> .findfontvalue <value> true
+% <file> <key> .findfontvalue false
+% Closes the file in either case.
+/.findnonttfontvalue /.findfontvalue load def
+/.findfontvalue {
+  1 index //.is_woff exec {
+    dup /FontType eq {
+      pop closefile 42 //true
+    } {
+      dup /FontName eq { pop //.findwoffname exec} { pop closefile //false } ifelse
+    } ifelse
+  }
+  {
+    1 index //.is_ttf_or_otf exec {
+                  % If this is a font at all, it's a TrueType font.
+        dup /FontType eq {
+          pop closefile 42 //true
+        } {
+          dup /FontName eq { pop //.findttfontname exec} { pop closefile //false } ifelse
+        } ifelse
+    } {
+                  % Not a TrueType font.
+        .findnonttfontvalue
+    } ifelse
+  } ifelse
+} .bind executeonly def
+
+% Load a font file that might be a TrueType font.
+% <file> .loadfontfile -
+/.loadnonttfontfile /.loadfontfile load def
+/.loadfontfile {
+  dup (12345678) .peekstring { //woff_tag_dict exch known } { //false } ifelse
+  {
+    //.loadwofffont exec pop
+  }
+  {
+    dup (1234) .peekstring { //tt_tag_dict exch known } { //false } ifelse {
+                  % If this is a font at all, it's a TrueType font.
+      //.loadttfont exec pop
+    } {
+                  % Not a TrueType font.
+      .loadnonttfontfile
+    } ifelse
+  } ifelse
+} .bind def
+
+% Undef the local utility funcs
+[
+    /.findttfontname
+    /.findwoffname
+    /ttf_otf_tag_dict
+    /tt_tag_dict
+    /woff_tag_dict
+    /.is_ttf_or_otf
+    /.is_woff
+] currentdict .undefinternalnames
+% ----- END .loadfontfile that supports possible TrueType font ------
+
+% Undef these, not needed outside this file
+[
+ /.addglyph
+ /.definettcidfont
+ /.fill_identity_cmap
+ /.findseg
+ /.loadttfontdict
+ /.is_hex_digit
+ /.pop3ex
+ /.popfex
+ /.ttkeys
+ /.printtab
+ /.readttdata
+ /.nname
+ /.loadttfont
+ /.loadwofffont
+ /.loadwofftables
+ /.findcmap
+ /.pdfmapsymbolic
+ /.pdfcharkeys
+ /.pdfmapchars
+] systemdict .undefinternalnames

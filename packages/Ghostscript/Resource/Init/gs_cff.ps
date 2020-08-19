@@ -1,0 +1,252 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Loader for CFF (compressed) fonts, including OpenType CFFs.
+% The following are not implemented yet:
+%	Deleted entries in the Name Index
+%	Embedded PostScript
+%	Multiple Master fonts
+%	Chameleon fonts
+%	Synthetic fonts
+
+% ---------------- Font loading machinery ---------------- %
+
+% Augment the FONTPATH machinery so it recognizes OpenType CFF font sets.
+
+/.scanfontheaders where {
+  /.scanfontheaders [
+   /.scanfontheaders .systemvar aload pop (OTTO*)
+  ] put
+} if
+
+% Load a font file that might be an OpenType CFF font set.
+
+% <file> .init_otto_font_file <file>
+/.init_otto_font_file {
+  /FontSetInit /ProcSet findresource begin
+  2 dict begin
+  /f exch def /cff //null def
+  card32 pop card16 6 { next pop } repeat dup {
+                % Stack: numtables tablesleft
+    dup 0 eq {
+      pop pop /.loadottofontfile cvx /invalidfont signalerror
+    } if
+    f 4 string readstring pop (CFF ) eq { sub exit } if
+    f 12 string readstring pop pop 1 sub	% skip to next table
+  } loop
+                % Stack: tablesread
+  card32 pop card32 card32
+                % Stack: tablesread start length
+  exch 3 -1 roll 1 add 16 mul 12 add sub
+  f exch subfilefilter flushfile	% skip to start
+  f exch subfilefilter end
+} .bind executeonly odef
+
+% <file> .init_otto_font_file <file>
+/.init_wOFF_otto_font_file {
+  /FontSetInit /ProcSet findresource begin
+  2 dict begin
+  /f exch def /cff //null def
+  3 {card32 pop} repeat % (wOFF), (OTTO) and file length
+
+  card16
+  30 { next pop } repeat
+  dup
+  {
+                % Stack: numtables tablesleft
+    dup 0 eq {
+      pop pop /.loadottofontfile cvx /invalidfont signalerror
+    } if
+    f 4 string readstring pop (CFF ) eq { sub exit } if
+    f 12 string readstring pop pop 1 sub	% skip to next table
+  } loop
+                % Stack: tablesread
+  4 { card32 } repeat
+                % Stack: tablesread start complen len checksum
+  pop
+                % Stack: tablesread start complen len
+  4 -2 roll exch
+                % Stack: complen len start tablesread
+  1 add 20 mul 44 add sub
+                % Stack: complen len offset
+  f exch subfilefilter flushfile	% skip to start
+                % Stack: complen len
+  % the table can legally be uncompressed: complen == len
+  1 index 1 index eq
+  { exch pop f exch subfilefilter}
+  { pop f exch subfilefilter /FlateDecode filter} ifelse
+  end
+} bind def
+
+% <file> .loadfontfile -
+/.loadnonottofontfile /.loadfontfile load def
+/.loadfontfile {
+  dup (12345678) .peekstring pop (wOFFOTTO) eq
+  {
+    //.init_wOFF_otto_font_file exec
+    //true //false
+  }{//true} ifelse
+
+  {
+    dup 4 string .peekstring pop (OTTO) eq
+    {
+                  % If this is a font at all, it's an OpenType CFF font set.
+      .init_otto_font_file //true
+    }
+    { //false } ifelse
+  } if
+
+  {      % Use a random FontSet resource name.  ****** WRONG ******
+    realtime rand xor =string cvs exch //false //false
+    ReadData pop
+  } {
+                % Not a TrueType font.
+    .loadnonottofontfile
+  } ifelse
+} bind executeonly def
+
+currentdict /.init_wOFF_otto_font_file .forceundef
+
+20 dict begin
+% ------ Utilities ------ %
+
+/subfilefilter {	% <file> <length> subfilefilter <filter>
+        % SubFileDecode interprets a length of 0 as infinite.
+  dup 0 le { pop pop () 0 } if () /SubFileDecode filter
+} bind def
+
+
+/advance {	% <n> advance -
+  f cff eq { pos add /pos exch store } { pop } ifelse
+} bind def
+/next {		% - next <byte>
+  f read {
+    1 advance
+    CFFDEBUG { (  ) print dup = } if
+  } {
+    0
+    CFFDEBUG { (  Out of range access, assuming 0) = } if
+    /pdfformaterror where {
+      pop
+      (   **** Warning: Out of range access to a CFF table, assuming 0.\n)
+      pdfformaterror
+    } if
+  } ifelse
+} bind def
+/next2 {	% - next2 <byte1> <byte2>
+  f read {
+    f read {
+      2 advance
+      CFFDEBUG { (  ) print 1 index =only (,) print dup = } if
+    } {
+      1 advance
+      CFFDEBUG { (  ) print dup = } if
+    } ifelse
+  } if
+} bind def
+/nextstring {	% <length> nextstring <string>
+  dup 0 eq {
+    pop ()
+  } {
+    string f exch readstring pop dup length advance
+    CFFDEBUG { (  ) print dup //== exec } if
+  } ifelse
+} bind def
+
+/card8		% - card8 <card8>
+ /next load
+def
+/card16 {	% - card16 <card16>
+  next2 exch 8 bitshift add
+} bind def
+/card32 {	% - card32 <card32>
+  card16 16 bitshift card16 add
+} bind def
+/offsetprocs [
+  /card8 load
+  /card16 load
+  { card8 16 bitshift card16 add } bind
+  /card32 load
+] readonly def
+/offsetproc {	% <offsize> offsetproc <proc>
+  1 sub //offsetprocs exch get
+} bind def
+/offset {	% <offsize> offset <offset>
+  offsetproc exec
+} bind def
+/sid		% - <sid> sid
+  /card16 load
+def
+
+% ------ Main program ------ %
+
+% We need to pass the file as a parameter for the sake of the PDF
+% interpreter. Also for the sake of PDF, a flag forces the font
+% to be defined as <resname> instead of the name embedded in the data.
+% This is needed for subsetted fonts; it is valid if the CFF
+% contains only a single font.
+% Finally, PDF interpreter may request creation of CIDFont out of an
+% ordinary CFF font.
+/StartData {          % <resname> <nbytes> StartData -
+  currentfile exch subfilefilter //false //false ReadData pop
+} bind executeonly def
+/ReadData {           % <resname> <file> <forceresname> <forcecid> ReadData <fontset>
+        % Initialize.
+
+  30 dict begin
+  /forcecidfont exch def
+  /forceresname exch def
+  /cff exch def
+  /pos 0 def
+  /resname exch cvlit def
+  /DEBUG CFFDEBUG def	% bring the binding closer
+  /StringCache 1 dict def % Private DICT may be reused.
+
+  forcecidfont
+  [ { cff 1024 string readstring not { exit } if } loop ]
+  .parsecff /fonts exch def
+
+  resname
+  mark fonts {
+    forceresname { exch pop resname exch } if
+    dup /CIDFontType known { % This is a CIDFont.
+      dup /CIDFontName 3 index put
+      1 index exch /CIDFont defineresource
+    } {      	             % This is a font.
+      dup /FontName 3 index put
+      dup /FontType 2 put
+      1 index exch
+      definefont
+    } ifelse
+  } forall .dicttomark
+
+  end		% temporary dict
+  end		% FontSetInit ProcSet
+  /FontSet defineresource
+
+} bind executeonly def
+
+% ---------------- Resource category definition ---------------- %
+
+currentdict end readonly
+
+languagelevel exch 2 .setlanguagelevel
+
+/FontSet /Generic /Category findresource dup length dict .copydict
+/Category defineresource pop
+
+/FontSetInit exch /ProcSet defineresource pop
+
+.setlanguagelevel

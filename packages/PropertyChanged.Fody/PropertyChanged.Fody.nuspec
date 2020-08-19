@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>PropertyChanged.Fody</id>
+    <version>2.6.1</version>
+    <authors>Simon Cropp</authors>
+    <owners>Simon Cropp</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>http://github.com/Fody/PropertyChanged</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Fody/PropertyChanged/master/package_icon.png</iconUrl>
+    <description>Add property notification to all classes that implement INotifyPropertyChanged.</description>
+    <tags>Xaml, MVVM, INotifyPropertyChanged, DataBinding, ILWeaving, Cecil</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Fody" version="4.2.1" include="All" />
+      </group>
+      <group targetFramework=".NETStandard1.0">
+        <dependency id="Fody" version="4.2.1" include="All" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

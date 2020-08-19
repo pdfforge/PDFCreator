@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>Ghostscript: Sample CMYK 32-bit Device that Supports Post Rendering Processing</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12"> Sample CMYK 32-bit Device that Supports Post Rendering Processing</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<blockquote><ul>
+<li><a href="#Description">Description</a>
+<li><a href="#Features">Features</a>
+<li><a href="#devs_mak">Changes to devices/devs.mak</a>
+<li><a href="#Building">Building Ghostscript with the driver</a>
+<li><a href="#Source">Source code</a>
+</ul></blockquote>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.3 begin hint] ====================================================== -->
+
+<p>For other information, see the <a href="Drivers.htm">Ghostscript
+device drivers</a> and the documentation on <a href="Make.htm">how to build
+Ghostscript</a>.
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+<h2><a name="Description"></a>Description</h2>
+
+<p>
+This device is a basic CMYK 32-bit (8-bits per component) device that uses the <code>downscaler</code>
+features to provide post-rendering operations on the raster data produced by Ghostscript.
+<p>
+It is designed to allow a developer to add code to handle the resulting raster data
+and perform any desired formatting and transmission to some destination, for example
+DMA to a printer or sending over a network link.
+<p>
+<hr>
+
+<h2><a name="Features"></a>Features</h2>
+
+<p>
+The <code>downscaler</code> modules provide for the following optional post-rendering
+manipulation:
+
+<blockquote><dl>
+<dt><code>-dDownScaleFactor=<em>factor</em></code> (small non-negative integer; default = 1)
+<dd>If this option set then the page is downscaled by the given factor on both
+axes. For example rendering with <tt>-r600</tt> and then specifying <tt>-dDownScaleFactor=3</tt> will produce
+a 200dpi image.
+<p>
+2 additional &quot;special&quot; ratios are available, 32 and 34. 32 provides a 3:2 downscale
+(so from 300 to 200 dpi, if the resolution is 300 dpi as with <code>-r300</code>). 34 produces a 3:4 upscale (so from 300 to 400 dpi, similarly).
+</dl></blockquote>
+
+<blockquote><dl>
+<dt><code>-sPostRenderProfile=<em>path</em></code> (path to an ICC profile)
+<dd>If this option set then the page will be color transformed using that
+profile <b>after</b> downscaling.
+<p>
+This is useful when the file uses overprint to separately paint to some
+subset of the C, M, Y, and K colorants, but the final CMYK is to be color
+corrected for printing or display.
+</dl></blockquote>
+
+<p>The <code>ds32</code> device can perform rudimentary automatic bitmap
+'trapping' on the final rendered bitmap. This code is disabled by default; see
+the <a href="#trapping_patent_note">note</a> below as to why.
+
+<p>Trapping is a process whereby the output is adjusted to minimise the
+visual impact of offsets between each printed plane. Typically this involves
+slightly extending abutting regions that are rendered in different inks. The
+intent of this is to avoid the unsightly gaps that might be otherwise be
+revealed in the final printout if the different color plates do not exactly
+line up.
+
+<p>This trapping is controlled by 3 device parameters. Firstly the maximum
+X and Y offsets are specified using:
+<blockquote><dl>
+<dt><code>-dTrapX=N</code>
+<dd>and
+<dt> <code>-dTrapY=N</code>
+<dd>(where <code>N</code> is a figure in pixels, <b>before</b> the downscaler is applied).
+</dl></blockquote>
+
+<p>The final control is to inform the trapping process in what order inks
+should be processed, from darkest to lightest. For a typical CMYK device
+this order would be [ 3 1 0 2 ] (K darker than M darker than C darker than Y).
+This is the default.
+
+<p>To override these defaults, the <code>TrapOrder</code> parameter can be used. Since
+this parameter requires an array, it must be specified using a different method. For
+example, if Cyan is darker than Magenta:
+
+<blockquote><code>
+    gs -sDEVICE=ds32 -dTrapX=2 -dTrapY=2 -c "&lt;&lt; /TrapOrder [ 3 0 1 2 ] &gt;&gt; setpagedevice" -f examples\colorcir.ps
+</code></blockquote>
+
+<h4><a name="trapping_patent_note"></a>Trapping patents</h4>
+
+<p>Trapping is an technology area encumbered by many patents. Until
+we can convince ourselves that our trapping code is not covered by
+any of these patents, the functionality is disabled by default.</p>
+
+<p>It can be enabled by building with the <tt>ENABLE_TRAPPING</tt>
+define, but before you do so you should convince yourself that
+either:</p>
+
+<ul>
+<li>The trapping code is not covered by any existing patent.
+<li>Any patents that do cover the code are invalid in your
+jurisdiction.
+<li>That you have appropriate patent licenses for any patents
+  that do apply.
+</ul>
+
+<p>You bear full responsibility for choosing to build with
+<tt>ENABLE_TRAPPING</tt>.
+
+<p>
+
+<p>
+<hr>
+
+<h2><a name="devs_mak"></a>Changes to devices/devs.mak</h2>
+
+<p>
+The make files used to build Ghostscript use the file devices/devs.mak to
+describe what is needed for devices that can be built into the executable,
+such as source code files, header files, libraries and dependencies on
+other parts of Ghostscript.
+<p>
+The section below can be added to the end of the devices/devs.mak file:
+
+<blockquote>
+<pre>
+### -------- Example 32-bit CMYK downscaled device --------------------- ###
+# NB: downscale_ is standard in the lib (LIB1s)
+&#36;(DD)ds32.dev : &#36;(DEVOBJ)gdevds32.&#36;(OBJ) &#36;(GLD)page.dev \
+ &#36;(GDEV) &#36;(DEVS_MAK) &#36;(MAKEDIRS)
+        &#36;(SETPDEV2) &#36;(DD)ds32 &#36;(DEVOBJ)gdevds32.&#36;(OBJ)
+        &#36;(ADDMOD) &#36;(DD)ds32 -include &#36;(GLD)page
+
+&#36;(DEVOBJ)gdevds32.&#36;(OBJ) : &#36;(DEVSRC)gdevds32.c &#36;(gsicc_cache_h) &#36;(gxdownscale_h) &#36;(AK) \
+  &#36;(arch_h) &#36;(gdevprn_h) &#36;(stdio__h)  &#36;(stdint__h) &#36;(DEVS_MAK) &#36;(MAKEDIRS)
+        &#36;(DEVCC) &#36;(DEVO_)gdevds32.&#36;(OBJ) &#36;(C_) &#36;(DEVSRC)gdevds32.c
+</blockquote>
+
+This snippet is also in a commented block at the top of the source code file.
+<p>
+<hr>
+
+<h2><a name="Building"></a>Building Ghostscript with the driver</h2>
+
+<p>
+The make system also needs to be told to include the <code>ds32</code> device. This can
+either be added to the top level make file on one of the <code>DEVICE_DEVS</code> lines,
+for example, in <code>psi/msvc.mak</code> for the Windows build:
+<blockquote>
+<pre>
+DEVICE_DEVS21=$(DD)ds32.dev $(DD)spotcmyk.dev $(DD)devicen.dev $(DD)bmpsep1.dev $(DD)bmpsep8.dev $(DD)bmp16m.dev $(DD)bmp32b.dev $(DD)psdcmyk.dev $(DD)psdrgb.dev $(DD)cp50.dev $(DD)gprf.dev
+</blockquote>
+
+Rather than editing a make file, there is a convenient macro that allows the extra device
+to be added to the build command line, <code>DEVICE_DEVS_EXTRA</code>. For example, on
+linux:
+<blockquote>
+<pre>
+make DEVICE_DEVS_EXTRA=obj/ds32.dev
+</blockquote>
+or, on Windows:
+<blockquote>
+<pre>
+nmake -f psi/msvc32.mak DEVICE_DEVS_EXTRA=obj\ds32.dev
+</blockquote>
+<hr>
+
+<h2><a name="Source"></a>Source code</h2>
+
+<p>
+The source for this device driver is in: <a href="gdevds32.c">doc/gdevds32.c</a>
+
+<p>
+<hr>
+
+<!-- [2.0 end contents] ==================================================== -->
+
+<!-- [3.0 begin visible trailer] =========================================== -->
+
+<p>
+  <small>Copyright &copy; 2016-2019 Artifex Software, Inc.  All rights reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

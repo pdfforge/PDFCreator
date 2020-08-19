@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-54391264-2');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>Recent Changes in Ghostscript</title>
+    <!-- Originally: NEWS -->
+    <!--
+    WARNING: do not use Pete Kaiser's emacs function "gs-toc" alone to
+    re-create the table of contents here, because it will replace the
+    hand-edited TOC subheads with a separate subhead for each H2 in
+    the body of the file.  Or if you do, first look at the original
+    TOC to see how to edit it for visual conciseness.
+    -->
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+        <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12">Changes in the Most Recent Release of Ghostscript</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<p>
+This document is news about the most recent Ghostscript release.  For
+earlier versions, see the history documents:
+
+<blockquote>
+<a href="History9.htm">History of Ghostscript versions 9.n</a><br>
+<a href="History8.htm">History of Ghostscript versions 8.n</a><br>
+<a href="History7.htm">History of Ghostscript versions 7.n</a><br>
+<a href="History6.htm">History of Ghostscript versions 6.n</a><br>
+<a href="History5.htm">History of Ghostscript versions 5.n</a><br>
+<a href="History4.htm">History of Ghostscript versions 4.n</a><br>
+<a href="History3.htm">History of Ghostscript versions 3.n</a><br>
+<a href="History2.htm">History of Ghostscript versions 2.n</a><br>
+<a href="History1.htm">History of Ghostscript versions 1.n</a>
+</blockquote>
+
+<p>For other information, see the <a href="Readme.htm">Ghostscript
+overview</a>.
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+<h2><a name="Version9.52"></a>Version 9.52 (2020-03-19)</h2>
+<p> Highlights in this release include:
+<ul>
+<li>
+<p>The 9.52 release replaces the 9.51 release after a problem was reported with 9.51
+which warranted the quick turnaround. Thus, like 9.51, 9.52 is primarily a maintenance
+release, consolidating the changes we introduced in 9.50.
+</li>
+<li>
+<p>We have continued our work on code hygiene for this release, with a focus on the
+static analysis tool Coverity (from <a href="https://www.synopsys.com">Synopsys, Inc</a>)
+and we have now adopted a policy of maintaining zero Coverity issues in the
+Ghostscript/GhostPDL source base.
+</li>
+<li>
+<p><b>IMPORTANT:</b> In consultation with a representative of
+(<a href="http://www.openprinting.org">OpenPrinting</a>) it is
+our intention to deprecate and, in the not distant future, remove the
+OpenPrinting Vector/Raster Printer Drivers (that is, the <code>opvp</code>
+and <code>oprp</code> devices).
+<p> If you rely on either of these devices, <b><i>please</i></b> get in touch with
+us, so we can discuss your use case, and revise our plans accordingly.
+</li>
+<li>
+<p>IMPORTANT: We have forked LittleCMS2 into LittleCMS2mt (the "mt" indicating "multi-thread").
+LCMS2 is not thread-safe, and cannot be made thread-safe without breaking the ABI. Our fork
+will be thread-safe and include performance enhancements (these changes have all be been
+offered and rejected upstream). We will maintain compatibility between Ghostscript and LCMS2
+for a time, but not in perpetuity. If there is sufficient interest, our fork will be
+available as its own package separately from Ghostscript (and MuPDF).
+</li>
+<li>
+<p>The usual round of bug fixes, compatibility changes, and incremental improvements.
+</li>
+</ul>
+<p>For a list of open issues, or to report problems,
+please visit <a href="http://bugs.ghostscript.com/">bugs.ghostscript.com</a>.
+<h3><a name="9.52_Incompatible_changes"></a>Incompatible changes</h3>
+<h4>Included below are incompatible changes from recent releases (the
+specific release in question listed in parentheses). We include these,
+for now, as we are aware that not everyone upgrades with every release.</h4>
+<ul>
+<li>
+<p>(9.52) As of 9.52, the Windows binaries released by the Ghostscript development
+team are built with Microsoft Visual Studio 2019. As a result Microsoft Windows XP and
+earlier are no longer supported by these binaries. This does not imply we are or will
+start relying upon features only available in VS2019, so the <code>nmake</code> Makefiles
+will continue to allow older Visual Studio versions (back to VS2005) to build Ghostscript.
+</li>
+<li>
+<p>(9.52) <code>-dALLOWPSTRANSPARENCY</code>: The transparency compositor (and related
+features), whilst we are improving it, remains sensitive to being driven correctly, and
+incorrect use can have unexpected/undefined results. Hence, as part of improving security,
+we limited access to these operators, originally using the <code>-dSAFER</code> feature.
+As we made "SAFER" the default mode, that became unacceptable, hence the new option
+<a href="Use.htm#ALLOWPSTRANSPARENCY">-dALLOWPSTRANSPARENCY</a> which enables
+access to the operators.
+</li>
+<li>
+<p>(9.50) There are a couple of subtle incompatibilities between the old and new SAFER
+implementations. Firstly, as mentioned in the 9.50 release notes, SAFER now leaves
+standard Postscript functionality unchanged (except for the file access limitations).
+Secondly, the interaction with <code>save</code>&sol;<code>restore</code> operations,
+see <a href="Use.htm#Safer">SAFER</a>.
+<p><strong>Important Note for Windows Users</strong>:
+<br>
+The file/path pattern matching is case sensitive, even on Windows. This is a
+change in behaviour compared to the old code which, on Windows, was case
+<i>in</i>sensitive. This is in recognition of changes in Windows behaviour,
+in that it now supports (although does not enforce) case sensitivity.
+</li>
+<li>
+<p>(9.27) The process of &quot;tidying&quot; the Postscript name space should have removed
+only non-standard and undocumented operators. Nevertheless, it is possible that
+any integrations or utilities that rely on those non-standard and undocumented
+operators may stop working, or may change behaviour.
+<p>If you encounter such a case, please contact us (either the #ghostscript IRC channel,
+or the gs-devel mailing list would be best), and we'll work with you to either find an
+alternative solution or return the previous functionality if there is genuinely no other
+option.
+<p>One case we know this has occurred is GSView 5 (and earlier). GSView 5 support for PDF
+files relied upon internal use only features that are no longer available. GSView 5 will
+still work as previously for Postscript files. For PDF files, users are encouraged to look
+at <a href="https://www.mupdf.com">MuPDF</a>.
+</li>
+</ul>
+<h3><a name="9.52_changelog"></a>Changelog</h3>
+
+<p>See the <a href="History9.htm">history file</a> for complete log
+of changes.
+
+<!-- [2.0 end contents] ==================================================== -->
+
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+
+<p>
+<small>Copyright &copy; 2005-2020 Artifex Software, Inc.
+All rights reserved.</small>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
+
+<p>
+<small>Ghostscript version 9.52, 19 March 2020
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

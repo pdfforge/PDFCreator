@@ -1,0 +1,382 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% This file provides statusdict, serverdict, and assorted LaserWriter
+% operators, mostly for the benefit of poorly designed PostScript programs
+% that 'know' they are running on a LaserWriter.
+
+systemdict begin
+        % We make statusdict a little larger for Level 2 stuff.
+        % Note that it must be allocated in local VM.
+ .currentglobal //false .setglobal
+ currentdict /statusdict 91 dict .forceput		% statusdict is local, sys'dict global
+        % To support the Level 2 job control features,
+        % serverdict must also be in local VM.
+ currentdict /serverdict 10 dict .forceput		% serverdict is local, sys'dict global
+ .setglobal
+end
+
+statusdict begin
+
+/.setpagesize
+{ 2 copy 2 array astore /PageSize exch mark 3 1 roll .dicttomark
+  { setpagedevice } stopped {
+     pop	% the setpagedevice dict
+     /setpagesize $error /errorname get signalerror
+   } {
+     pop pop	% success -- pop the arguments
+   } ifelse
+} bind def
+
+% Keep the table of named paper sizes as procedures. Reuse them later
+% as compatibility operators.
+/.pagetypeprocs 70 dict begin
+
+% Define various paper formats.  The Adobe documentation defines only these:
+% 11x17, a3, a4, a4small, b5, ledger, legal, letter, lettersmall, note.
+% These procedures are also accessed as data structures during initialization,
+% so the page dimensions must be the first two elements of the procedure.
+
+                % Page sizes defined by Adobe documentation
+                % Note: these executable arrays should all begin with two
+                % integers which are the width and height (see gs_setpd.ps).
+ /11x17 {792 1224 //.setpagesize stopped { pop pop /11x17 $error /errorname get signalerror } if } bind def  % 11x17 portrait
+ /a3 {842 1191 //.setpagesize stopped { pop pop /a3 $error /errorname get signalerror } if } bind def
+ /a4 {595 842 //.setpagesize stopped { pop pop /a4 $error /errorname get signalerror } if } bind def
+% a4small should be a4 with an ImagingBBox of [25 25 570 817].
+ /a4small /a4 load def
+% b5 see below.
+ /ledger {1224 792 //.setpagesize stopped { pop pop /ledger $error /errorname get signalerror } if } bind def  % 11x17 landscape
+ /legal {612 1008 //.setpagesize stopped { pop pop /legal $error /errorname get signalerror } if } bind def
+ /letter {612 792 //.setpagesize stopped { pop pop /letter $error /errorname get signalerror } if } bind def
+% lettersmall should be letter with an ImagingBBox of [25 25 587 767].
+ /lettersmall /letter load def
+% note should be letter (or some other size) with the ImagingBBox
+% shrunk by 25 units on all 4 sides.
+ /note /letter load def
+                % End of Adobe-defined page sizes
+
+                % Other page sizes
+        % ISO standard paper sizes
+ /a0 {2384 3370 //.setpagesize stopped { pop pop /a0 $error /errorname get signalerror } if } bind def
+ /a1 {1684 2384 //.setpagesize stopped { pop pop /a1 $error /errorname get signalerror } if } bind def
+ /a2 {1191 1684 //.setpagesize stopped { pop pop /a2 $error /errorname get signalerror } if } bind def
+% /a3 {842 1191 //.setpagesize stopped { pop pop /a3 $error /errorname get signalerror } if } bind def	% defined by Adobe
+% /a4 {595 842 //.setpagesize stopped { pop pop /a4 $error /errorname get signalerror } if } bind def	% defined by Adobe
+ /a5 {420 595 //.setpagesize stopped { pop pop /a5 $error /errorname get signalerror } if } bind def
+ /a6 {297 420 //.setpagesize stopped { pop pop /a6 $error /errorname get signalerror } if } bind def
+ /a7 {210 297 //.setpagesize stopped { pop pop /a7 $error /errorname get signalerror } if } bind def
+ /a8 {148 210 //.setpagesize stopped { pop pop /a8 $error /errorname get signalerror } if } bind def
+ /a9 {105 148 //.setpagesize stopped { pop pop /a9 $error /errorname get signalerror } if } bind def
+ /a10 {73 105 //.setpagesize stopped { pop pop /a10 $error /errorname get signalerror } if } bind def
+% ISO and JIS B sizes are different....
+ /isob0 {2835 4008 //.setpagesize stopped { pop pop /isob0 $error /errorname get signalerror } if } bind def
+ /b0 /isob0 load def
+ /isob1 {2004 2835 //.setpagesize stopped { pop pop /isob1 $error /errorname get signalerror } if } bind def
+ /b1 /isob1 load def
+ /isob2 {1417 2004 //.setpagesize stopped { pop pop /isob2 $error /errorname get signalerror } if } bind def
+ /b2 /isob2 load def
+ /isob3 {1001 1417 //.setpagesize stopped { pop pop /isob3 $error /errorname get signalerror } if } bind def
+ /b3 /isob3 load def
+ /isob4 {709 1001 //.setpagesize stopped { pop pop /isob4 $error /errorname get signalerror } if } bind def
+ /b4 /isob4 load def
+ /isob5 {499 709 //.setpagesize stopped { pop pop /isob5 $error /errorname get signalerror } if } bind def
+ /b5 /isob5 load def
+ /isob6 {354 499 //.setpagesize stopped { pop pop /isob6 $error /errorname get signalerror } if } bind def
+ /b6 /isob6 load def
+ /jisb0 {2920 4127 //.setpagesize stopped { pop pop /jisb0 $error /errorname get signalerror } if } bind def
+ /jisb1 {2064 2920 //.setpagesize stopped { pop pop /jisb1 $error /errorname get signalerror } if } bind def
+ /jisb2 {1460 2064 //.setpagesize stopped { pop pop /jisb2 $error /errorname get signalerror } if } bind def
+ /jisb3 {1032 1460 //.setpagesize stopped { pop pop /jisb3 $error /errorname get signalerror } if } bind def
+ /jisb4 {729 1032 //.setpagesize stopped { pop pop /jisb4 $error /errorname get signalerror } if } bind def
+ /jisb5 {516 729 //.setpagesize stopped { pop pop /jisb5 $error /errorname get signalerror } if } bind def
+ /jisb6 {363 516 //.setpagesize stopped { pop pop /jisb6 $error /errorname get signalerror } if } bind def
+ /c0 {2599 3677 //.setpagesize stopped { pop pop /c0 $error /errorname get signalerror } if } bind def
+ /c1 {1837 2599 //.setpagesize stopped { pop pop /c1 $error /errorname get signalerror } if } bind def
+ /c2 {1298 1837 //.setpagesize stopped { pop pop /c2 $error /errorname get signalerror } if } bind def
+ /c3 {918 1298 //.setpagesize stopped { pop pop /c3 $error /errorname get signalerror } if } bind def
+ /c4 {649 918 //.setpagesize stopped { pop pop /c4 $error /errorname get signalerror } if } bind def
+ /c5 {459 649 //.setpagesize stopped { pop pop /c5 $error /errorname get signalerror } if } bind def
+ /c6 {323 459 //.setpagesize stopped { pop pop /c6 $error /errorname get signalerror } if } bind def
+        % U.S. CAD standard paper sizes
+ /archE {2592 3456 //.setpagesize stopped { pop pop /archE $error /errorname get signalerror } if } bind def
+ /archD {1728 2592 //.setpagesize stopped { pop pop /archD $error /errorname get signalerror } if } bind def
+ /archC {1296 1728 //.setpagesize stopped { pop pop /archC $error /errorname get signalerror } if } bind def
+ /archB {864 1296 //.setpagesize stopped { pop pop /archB $error /errorname get signalerror } if } bind def
+ /archA {648 864 //.setpagesize stopped { pop pop /archA $error /errorname get signalerror } if } bind def
+        % Other paper sizes
+ /flsa {612 936 //.setpagesize stopped { pop pop /flsa $error /errorname get signalerror } if } bind def  % U.S. foolscap
+ /flse {612 936 //.setpagesize stopped { pop pop /flse $error /errorname get signalerror } if } bind def  % European foolscap
+ /halfletter {396 612 //.setpagesize stopped { pop pop /halfletter $error /errorname get signalerror } if } bind def
+        % minimum of a4 and letter (a4 width, letter length)
+ /pa4 {595 792 //.setpagesize stopped { pop pop /pa4 $error /errorname get signalerror } if } bind def
+        % Japanese postcard size, 100mm x 148mm
+ /hagaki {283 420 //.setpagesize stopped { pop pop /hagaki $error /errorname get signalerror } if } bind def
+        % U.S. ANSI/ASME Y14.1 paper sizes
+ /ANSI_A  //letter def
+ /ANSI_B  //11x17  def
+ /tabloid //11x17  def
+ /ANSI_C {1224 1585 //.setpagesize stopped { pop pop /ANSI_C $error /errorname get signalerror } if } bind def
+ /ANSI_D {1585 2448 //.setpagesize stopped { pop pop /ANSI_D $error /errorname get signalerror } if } bind def
+ /ANSI_E {2448 3168 //.setpagesize stopped { pop pop /ANSI_E $error /errorname get signalerror } if } bind def
+ /ANSI_F {2016 2880 //.setpagesize stopped { pop pop /ANSI_F $error /errorname get signalerror } if } bind def
+%END SIZES
+currentdict end
+userdict begin dup { def } forall end  % reuse!
+readonly def
+
+% Define the pagetype values for the known page formats.
+% This array is now used for deterministic enumeration of .pagetypeprocs
+/.pagetypenames [ .pagetypeprocs { pop } bind forall ]
+  { .namestring exch .namestring gt } bind .sort
+  readonly def
+
+%%%%%% The following items were suggested by a user as useful.
+
+% Permanent definitions
+
+/ramsize         4194304 def
+/hardwareiomode        0 def
+        /sethardwareiomode     {pop} bind def
+/softwareiomode        0 def
+        /setsoftwareiomode     {pop} bind def
+/dosysstart        //false def
+        /setdosysstart         {pop} bind def
+/allowjobreset      //true def
+        /setallowjobreset      {pop} bind def
+/defaultpaperfamily    0 def
+        /setdefaultpaperfamily {pop} bind def
+/defaultpapertray      0 def
+        /setdefaultpapertray   {pop} bind def
+/defaulttrayswitch //false def
+        /setdefaulttrayswitch  {pop} bind def
+
+% Tray and format selection
+
+/11x17tray {/11x17 .uservar stopped { pop pop /11x17tray $error /errorname get signalerror } if } bind executeonly def
+/a3tray {/a3 .uservar stopped { pop pop /a3tray $error /errorname get signalerror } if } bind executeonly def
+/a4tray {/a4 .uservar stopped { pop pop /a4tray $error /errorname get signalerror } if } bind executeonly def
+/a5tray {/a5 .uservar stopped { pop pop /a5tray $error /errorname get signalerror } if } bind executeonly def
+/a6tray {/a6 .uservar stopped { pop pop /a6tray $error /errorname get signalerror } if } bind executeonly def
+/b4tray {/b4 .uservar stopped { pop pop /b4tray $error /errorname get signalerror } if } bind executeonly def
+/b5tray {/b5 .uservar stopped { pop pop /b5tray $error /errorname get signalerror } if } bind executeonly def
+/flsatray {/flsa .uservar stopped { pop pop /flsatray $error /errorname get signalerror } if } bind executeonly def
+/flsetray {/flse .uservar stopped { pop pop /flsetray $error /errorname get signalerror } if } bind executeonly def
+/halflettertray {/halfletter .uservar stopped { pop pop /halflettertray $error /errorname get signalerror } if } bind executeonly def
+/ledgertray {/ledger .uservar stopped { pop pop /ledgertray $error /errorname get signalerror } if } bind executeonly def
+/legaltray {/legal .uservar stopped { pop pop /legaltray $error /errorname get signalerror } if } bind executeonly def
+/lettertray {/letter .uservar stopped { pop pop /lettertray $error /errorname get signalerror } if } bind executeonly def
+
+% Per-job parameters
+
+/paperfamily 0 def	% 0 is US, 1 is European
+/papertray 1 def
+        /setpapertray {statusdict exch /papertray exch put} bind def
+/trayswitch //false def	% paperout feeds from another tray
+% We don't implement the (undocumented by Adobe) papersize 'operator',
+% because it's very awkward to make it interact properly with all the
+% different ways of setting the paper size.
+%/papersize {/letter //true} bind def	% <name of paper size>, <short-edge-first-p>
+/appletalktype (LaserWriter) def
+
+%%%%%% The following items are defined in the PostScript Language
+%%%%%% Reference Manual, First Edition, and subsequent 'compatibility'
+%%%%%% documentation from Adobe.
+
+ /checkpassword {statusdict begin .password eq end} bind def
+ /defaulttimeouts {statusdict begin .timeouts aload pop end} bind def
+ /diskonline {
+    //false (%disk*%) { pop not exit } 8192 string /IODevice resourceforall
+ } bind def
+ /diskstatus {10240 2097152 } bind odef %  - diskstatus <free> <total> (in 1024 byte pages)
+
+%/dostartpage
+ /eescratch {pop 0} bind def
+ /idlefonts {statusdict begin mark .idlefonts aload pop end} bind def
+ /jobname () def
+%/jobtimeout
+ /manualfeed //false def
+ /manualfeedtimeout 60 def
+ /margins {statusdict begin .topmargin .leftmargin end} bind def
+ /pagecount {4711} bind def
+ /pagestackorder {//false} bind def
+ /pagetype 0 def
+ /prefeed //false def
+ /printererror {pop pop} bind def
+ /printername {statusdict /.printername get exch copy} bind def
+ /processcolors /processcolors load def		% defined in systemdict
+ /product product def		% product is defined in systemdict
+ /revision revision def		% revision is defined in systemdict
+ /sccbatch {pop 9600 0} bind def
+ /sccinteractive {pop 9600 0} bind def
+ /setdefaulttimeouts {statusdict begin .timeouts astore pop end} bind def
+ /setdostartpage {statusdict exch /dostartpage exch put} bind def
+ /setduplexmode {mark /Duplex 3 -1 roll currentdevice putdeviceprops} bind def
+ /seteescratch {pop pop} bind def
+ /setidlefonts {] statusdict exch /.idlefonts exch put} bind def
+ /setjobtimeout {statusdict exch /jobtimeout exch put} bind def
+ /setmargins
+  { statusdict begin
+    /.leftmargin exch def /.topmargin exch def
+    end
+  } bind def
+
+% The following compatibility operators are only documented by Adobe in a
+% supplement to the Red Book.
+%
+%	- pagemargin <offset>
+%	- pageparams <width> <height> <offset> <orientation>
+%	<width> <height> <orientation> setpage -
+%	<offset> setpagemargin -
+%	<width> <height> <offset> <orientation> setpageparams -
+%
+% width and height are in default units (and if orientation is odd, are
+% exchanged!).  offset is the x margin, also in default units.
+% Unfortunately, because orientation is relative to the device paper feed,
+% it does not have a consistent meaning in terms of image orientation.
+% We follow the convention that ORIENT1 determines the orientation value
+% that means portait: false means 0, true means 1.
+
+ /pagemargin { 0 } bind def
+ /pageparams
+  { currentdevice 1 dict dup /.MediaSize dup put .getdeviceparams
+    exch pop exch pop aload pop 0 ORIENT1 { 1 } { 0 } ifelse
+  } bind def
+ /setpage
+  { ORIENT1 { 1 } { 0 } ifelse ne {exch} if
+    //.setpagesize exec
+  } bind def
+ /setpagemargin {pop} bind def	% can't do better without setpagedevice
+ /setpageparams
+  { exch pop ORIENT1 { 1 } { 0 } ifelse ne {exch} if
+    //.setpagesize exec
+  } bind def
+ /setpagetype
+  { statusdict begin
+                % The Adobe documentation only defines setpagetype
+                % (a Level 1 operator) as accepting the values 0 and 1,
+                % so we do too.
+      dup type /integertype ne {
+        /setpage /typecheck signalerror
+      } {
+        dup 0 ne 1 index 1 ne or {
+          /setpage /rangecheck signalerror
+        } {
+          {/letter /note} 1 index get
+          //systemdict /userdict get exch get cvx exec
+        } ifelse
+        /pagetype exch def
+    } ifelse
+    end
+  } bind def
+
+ /setpassword
+  {exch checkpassword
+    {statusdict exch /.password exch put //true}
+    {pop //false}
+   ifelse} bind def
+ /setprintername
+  {dup length string copy statusdict exch /.printername exch put} bind def
+
+% setresolution is not documented by Adobe, but some applications
+% use it anyway, without testing whether or not it is present.
+%
+%	<pixels_per_inch> setresolution -
+%
+% sets the resolution of the device.
+
+ /setresolution
+  { mark /HWResolution [ 4 -1 roll dup ] currentdevice putdeviceprops pop
+    initmatrix erasepage
+  } bind def
+ /setsccbatch {pop pop pop} bind def
+ /setsccinteractive {pop pop pop} bind def
+ /settumble {pop} bind def
+ /waittimeout 300 def
+
+%%%%%% End of documented items.
+
+/.password 0 def
+/.timeouts [0 60 30] def
+//true setdostartpage
+mark setidlefonts
+0 setjobtimeout
+0 0 setmargins
+product setprintername
+
+currentdict /.setpagesize .undef
+end	% statusdict
+
+%%%%%% The following documented compatibility "operators" are in systemdict,
+%%%%%% not in statusdict.
+
+systemdict begin
+.currentglobal //true .setglobal
+
+/devformat //true def
+/devforall {		% <pattern> <proc> <scratch> devforall -
+  exch {
+    1 index currentdevparams
+    /Type .knownget { /FileSystem eq } { //false } ifelse
+    { exec } { pop pop } ifelse
+  } /exec load 3 packedarray cvx exch
+  (*) 3 1 roll /IODevice resourceforall
+} odef
+
+/devstatus {		% <(%disk*%)> devstatus <searchable> <writable>
+                        %   <hasNames> <mounted> <removable> <searchOrder>
+                        %   <freePages> <size> //true
+                        % <string> devstatus //false
+  dup length 5 ge {
+    dup 0 5 getinterval (%disk) eq {
+      dup /IODevice resourcestatus {
+        pop pop dup currentdevparams
+        dup /Searchable get
+        exch dup /Writeable get
+        exch dup /HasNames get
+        exch dup /Mounted get
+        exch dup /Removable get
+        exch dup /SearchOrder get
+        exch dup /Free get
+        exch /LogicalSize get
+        9 -1 roll pop //true
+      } {
+        pop //false
+      } ifelse
+    } {
+      pop //false
+    } ifelse
+  } {
+    pop //false
+  } ifelse
+} odef
+
+.setglobal end	% systemdict
+
+% The following contents of serverdict are a complete guess,
+% based on some observed LaserWriter boilerplate.
+
+serverdict begin
+
+ /execjob { } bind def
+% The Red Book implies that something like the following is
+% an appropriate definition of exitserver.
+ /exitserver { clear stop } bind def
+% However, this interacts badly with our standard error handler,
+% so we override it with the following less appropriate definition.
+ /exitserver { 0 ne { clear cleardictstack } if } bind def
+ /setrealdevice { } bind def
+
+end	% serverdict

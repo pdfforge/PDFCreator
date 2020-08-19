@@ -1,0 +1,433 @@
+@charset "UTF-8";
+/* CSS Document */
+
+* {
+    box-sizing: border-box;
+	}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+	}
+
+[class*="col-"] {
+    float: left;
+	}
+
+.col-1 {width: 10%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-ft-3 {width: 20%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-lt-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 55%;}
+.col-9 {width: 55%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+body {
+	font-family: "Source Sans Pro", sans-serif;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	max-width: 1200px;
+	}
+p {
+	color: #333333;
+	font-size: 14px;
+}
+
+dt {
+	font-weight: 600;
+	}
+
+h1 { 
+	margin-top: 0px; 
+	margin-bottom: 14px; 
+	font-size: 24px;
+	font-weight: 600;
+	color: #565656; 
+	}
+
+h2 {
+	font-size: 22px;
+	font-weight: 600;
+	color: #565656; 
+	}
+
+h3 { 
+	font-size: 18px;
+	font-weight: 600;
+	color: #565656;
+	}	
+
+h4 {
+	font-size: 16px;
+	font-weight: 400;
+	color: #565656;
+	}
+
+h5 {
+	font-size: 16px;
+	font-weight: 400;
+	color: #565656;
+	}
+
+pre {
+	font-family: "Source Code Pro", Consolas, "Andale Mono", Monaco, monospace;
+	color: #565656;
+	font-size: 14px;
+	}
+
+code {
+	font-family: "Source Code Pro", Consolas, "Andale Mono", Monaco, monospace;
+	color: #565656;
+	font-size: 14px;
+	}
+
+a {
+	color: #0068BD;
+	text-decoration: none;
+	font-size: 14px;
+	}
+
+a:visited {
+	color: #007FE7;
+	text-decoration: none;
+	}
+
+a:hover { 
+	text-decoration: underline; 
+	}
+
+ul li {
+	list-style-type: disc; 
+	font-size: 14px; 
+	padding-right: 12px; 
+	color: #666;
+	}
+	
+hr { 
+	color: #e6e6e6; 
+	background-color: #e6e6e6; 
+	height: 2px; 
+	border: none; 
+	}		
+
+.header {
+	width: 100%;
+	padding: 10px 20px 10px 15px;
+	}
+
+.artifexlogo {
+	padding: 25px 8px 10px 0px;
+	float: right;
+	}
+
+.button {
+	float: right;
+	border: none;
+	border-radius: 4px;
+	color: #fff;
+	text-align: center;
+	width: 100px;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+	padding: 8px 10px;
+	display: inline;
+	}
+
+.button a {
+	color: #fff;
+	font-size: 16px;
+	text-decoration: none;
+	}
+
+.button2 {
+	background-color: #00b3e3;
+	margin-right: 5px;	
+	}
+
+.button2:hover {
+	background-color: #0075cf;
+	text-decoration: none;
+	}	
+
+.button2:visited {
+	background-color: #00b3e3;
+	}	
+
+.button1 {
+	background-color: #77c11f;
+	float: right;
+	}
+
+.button1:hover {
+	background-color: #009818;
+	text-decoration: none;
+	}
+
+.button1:visited {
+	background-color: #77c11f;
+	}
+
+.banner {
+	background-color: #506B80;
+	font-size: 20px;
+	font-weight: 400;
+	color: #fff;
+	padding: 20px 0px 20px 15px;
+	}
+
+.main {
+	width: 100%;
+	}
+
+.page {
+	font-size: 14px;
+	padding: 15px 10px 15px 25px;
+	}
+
+.leftnav {
+	background-color: #f0f0f0;
+	list-style-type: none;
+	padding-left: 8px;
+	}	
+
+.leftnav ul {
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+	}
+
+.leftnav li {
+    font-size: 14px;
+	list-style-type: none;
+	}		
+
+.leftnav li a {
+	list-style-type: none;
+	display: block;
+    color: #000;
+    padding: 11px 11px;
+	}
+
+.leftnav li a:hover {
+	background-color: #555;
+	text-decoration: none;
+	color: #fff;
+	}
+
+.footer {
+	background-color: #f1f1f1;
+	padding: 10px 0px;
+	font-size: 9px;
+	color: #333;
+	margin: 0px;
+	}
+	
+.footer li {
+    color: #333;
+	list-style-type: none;
+	padding-bottom: 5px;
+	}
+
+.footer li a {
+	font-size: 11px;
+	list-style-type: none;
+	color: #333;
+	}
+
+.footer li a:hover {
+	color: #666;
+	text-decoration: none;
+	}
+
+.footleft {
+	text-align: right;
+	}
+
+.footcenter {
+	text-align: left;
+}
+
+.footright {
+	padding: 10px 0px 0px 0px;
+	margin: 0px 20px 0px 40px;
+}
+
+.col-ft-3 img {
+		max-width: 150px;
+		max-height: 31px;
+	}
+
+.accordion {
+    background-color: #f0f0f0;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 75%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+	margin-bottom: 10px;
+}
+
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2212";
+}
+
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+	width: 75%;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.menuTrigger {display:none;}
+@media screen and (min-width: 480px){
+#sidebar {display:block!important}
+}
+@media screen and (max-width: 480px){
+
+#sidebar{display:none;} 
+  
+.menuTrigger {display:block; background-color: #506b80;}
+.menuTrigger:before{content: url(images/hamburger-light.png); padding: 9px 0px 6px 18px; background: #506b80; display: inline-block; }
+.menuTrigger.selected:before{content:url(images/x-light.png); }
+
+}
+
+/*TABLET*/
+@media (max-width:768px){
+
+.col-1 {width: 25%;}
+.col-2 {width: 25%;}
+.col-ft-3 {width: 30%;}
+.col-7 {width: 30%;}	
+.col-10 {width: 75%;}
+	
+.col button button1 button2 {
+		display: inline;
+	}	
+
+.footright {
+		padding: 10px 0px 10px 0px;
+		margin-right: 10px;	}
+
+.col-ft-3 img {
+		max-width: 130px;
+		max-height: 27px;
+	}
+
+.hidden-lg {
+	display: none;
+	}	
+}
+
+/*MOBILE*/
+@media (max-width:480px){
+
+.col-1 {width: 50%;}
+.col-2 {width: 100%;}
+.col-ft-3 {width: 50%;}
+.col-6 {width: 50%;}
+.col-7 {width: 50%;}	
+.col-10 {width: 100%;}
+
+.col-6 img {
+		max-width: 150px;
+		max-height: 31px;
+	}	
+
+.col-lt-6 img 	{
+		max-width: 79px;
+		max-height: 85px;
+	}
+
+.col-ft-3 img 	{
+		max-width: 125px;
+		max-height: 25px;
+	}
+
+h1 {
+	font-size: 22px;
+	}
+
+h2 {
+	font-size: 16px;
+	}
+
+h3 {
+	font-size: 14px;
+	}
+	
+.header {
+	margin: 0px;
+	}	
+	
+.hidden-xs {
+	display: none;
+	}
+
+.hidden-lg {
+	display: inline;
+	}	
+
+.logo {
+	padding: 0px 0px 0px 0px;
+	}	
+	
+.artifexlogo {
+	padding: 15px 0px 5px 10px;
+	}	
+
+.footright {
+	padding: 10px 0px 0px 0px;
+	}	
+	
+.button {
+	padding: 4px 10px 5px;
+	font-size: 13px;
+	margin-right: 6px;
+	}
+
+.banner {
+	background-color: #506B80;
+	font-size: 18px;
+	font-weight: 400;
+	color: #fff;
+	padding: 5px 0px 0px 18px;
+	}
+}
+
+/*DESKTOP*/
+@media (min-width:769px){ 
+	.hidden-lg {
+	display: none;
+	}	
+}

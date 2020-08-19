@@ -1,0 +1,306 @@
+% Copyright (C) 2001-2019 Artifex Software, Inc.
+% All Rights Reserved.
+%
+% This software is provided AS-IS with no warranty, either express or
+% implied.
+%
+% This software is distributed under license and may not be copied,
+% modified or distributed except as expressly authorized under the terms
+% of the license contained in the file LICENSE in this distribution.
+%
+% Refer to licensing information at http://www.artifex.com or contact
+% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
+% CA 94945, U.S.A., +1(415)492-9861, for further information.
+%
+
+% Type 1 font support code.
+
+% The standard representation for PostScript compatible fonts is described
+% in the book "Adobe Type 1 Font Format", published by Adobe Systems Inc.
+
+/t1_glyph_equivalence mark   % Exported for pf2afm.ps
+  /Odblacute /Ohungarumlaut
+  /Udblacute /Uhungarumlaut
+  /odblacute /ohungarumlaut
+  /udblacute /uhungarumlaut
+.dicttomark def
+
+% Define an augmented version of .buildfont1 that inserts UnderlinePosition
+% and UnderlineThickness entries in FontInfo if they aren't there already,
+% and FontBBox isn't degenerate.
+% (This works around the incorrect assumption, made by many word processors,
+% that these entries are present in the built-in fonts.)
+% Also add alternative names to some glyphs.
+/.buildfont1
+ {
+   .currentglobal 3 1 roll
+   dup .gcheck .setglobal
+   dup .fontbbox {
+     pop pop pop pop
+     dup /FontInfo known not
+      { //.growfontdict exec dup /FontInfo 2 dict put }
+     if
+     dup dup /FontInfo get dup dup
+     /UnderlinePosition known exch /UnderlineThickness known and
+      { pop pop		% entries already present
+      }
+      { dup length 2 add dict .copydict
+        dup /UnderlinePosition known not
+         { dup /UnderlinePosition 3 index /FontBBox get
+           1 get 2 div put 			% 1/2 the font descent
+         }
+        if
+        dup /UnderlineThickness known not
+         { dup /UnderlineThickness 3 index /FontBBox get
+           dup 3 get exch 1 get sub 20 div put 	% 1/20 the font height
+         }
+        if
+        1 index /FontInfo get wcheck not { readonly } if
+        /FontInfo exch put
+      }
+     ifelse
+   } if
+
+   % We want to skip this process if we've already done it, and
+   % not do it for embedded fonts.
+   dup /.AGLprocessed~GS known not 1 index /PathLoad known and
+   {
+     dup /CharStrings get
+     % Provide all known aliases for each glyph if
+     % substitution is allowed (pf2afm.ps has code
+     % to disables it by modifying t1_glyph_equivalence).
+     t1_glyph_equivalence length 0 ne
+     {
+         % 16 byte scratch string
+         % 16 bytes is arbitrary, but should be large enough to hold any "uniXXXX" style name
+         //ReverseAdobeGlyphList //AdobeGlyphList 3 -1 roll
+                                                             % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict)
+         dup
+         {                                                   % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) gname cstring
+           exch dup                                          % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname gname
+           4 index exch .knownget
+           { //true}
+           {                                                 % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname
+             dup length 16 gt
+             { //false }
+             {
+               % if we couldn't derive the code point from the AGL, we might derive it
+               % from a formatted "uniXXXX" name.
+               dup <00000000000000000000000000000000> cvs dup flush (uni) anchorsearch
+               {
+                 % as luck would have it, we can just replace the "uni" with "16#"
+                 % to get something we can convert to a number
+                 pop pop dup 0 (16#) putinterval {cvi} //.internalstopped exec
+                 { pop //false}
+                 {                                             % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname cpoint
+                   dup 5 index exch known
+                   { //true }
+                   { pop //false }
+                   ifelse
+                 } ifelse
+               }
+               { pop pop //false}
+               ifelse
+             } ifelse
+           } ifelse
+
+           {
+                                                             % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname cpoint
+             % loop through the array of names for this codepoint
+             % if the CharStrings dict doesn't contain an entry for the name
+             % create one.
+             5 index exch .knownget
+             {                                                   % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname aglnames(array)
+               {                                                 % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname aglname
+                 dup 4 index exch known not
+                 {                                               % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname aglname
+                   CFFDEBUG { (\nsetting alias: ) print dup ==only
+                         ( to be the same as glyph: ) print 1 index //== exec } if
+                   3 index exch 3 index .forceput
+                                                                 % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname
+                 }executeonly
+                 {pop} ifelse
+               } executeonly forall
+               pop pop
+             } executeonly
+             {
+               pop pop pop
+             } ifelse
+           } executeonly
+           {
+                                                               % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname
+             pop pop
+           } ifelse
+         } executeonly forall
+         3 1 roll pop pop
+     } executeonly if
+     pop
+     dup /.AGLprocessed~GS //true .forceput
+   } executeonly if
+
+   %% We need to excute the C .buildfont1 in a stopped context so that, if there
+   %% are errors we can put the stack back sanely and exit. Otherwise callers won't
+   %% be able to execute this redefinied .buildfont1 in a stopped context and still
+   %% usefully continue (because the stack will be altered, which it shold not be).
+   %%
+   %% Uncovered working on bug #696306 and fixed as part of that bug.
+   %%
+   {//.buildfont1} stopped
+   4 3 roll .setglobal
+   {//.buildfont1 $error /errorname get signalerror} if
+ } .bind executeonly def	% hide .forceput
+
+ % container for CloseSource flag (default //true to prevent buildup of file handles)
+ /closesourcedict mark
+   /CloseSource //true
+ .dicttomark readonly def
+/.loadfont1 {		% <file> .loadfont1 <errorflag>
+  {	% We would like to use `false /PFBDecode filter',
+        % but this occasionally produces a whitespace character as
+        % the first of an eexec section, so we can't do it.
+        % Also, since the real input file never reaches EOF if we are using
+        % a PFBDecode filter (the filter stops just after reading the last
+        % character), we must explicitly close the real file in this case.
+        % Since the file might leave garbage on the operand stack,
+        % we have to create a procedure to close the file reliably.
+    dup read not { -1 } if
+    2 copy .unread 16#80 eq {
+        dup //closesourcedict //true /PFBDecode filter cvx
+        exch .currentresourcefile eq {
+          dup /.execasresource .systemvar
+        } {
+          {exec}
+        } ifelse
+        2 index cvlit
+        /closefile .systemvar 3 .execn
+      } {
+        cvx exec
+    } ifelse
+  } stopped
+} bind executeonly def
+
+% If the diskfont feature isn't included, define a dummy .loadfontdict.
+/.loadfontdict where
+ { pop }
+ { /.loadfontdict 0 dict readonly def }
+ifelse
+/.loadfontfile		% <file> .loadfontfile -
+ { mark exch
+
+        % In order to load fonts reliably, we should push systemdict
+        % here.  However, Ed Taft says that Adobe implementations
+        % push userdict and nothing else!
+        % We really would just like systemdict on the stack,
+        % but fonts produced by Fontographer require a writable dictionary.
+        % However, we can't use any of the other well-known dictionaries
+        % (such as userdict), since the whole point of pushing systemdict
+        % is to make sure that nothing important has been redefined.
+   32 dict begin
+        % We can't just use `run', because we want to check for .PFB files.
+   currentpacking
+    { //false setpacking //.loadfont1 exec //true setpacking }
+    { //.loadfont1 exec }
+   ifelse
+    end
+    { stop } if
+   cleartomark
+ } bind def
+% undefine stuff that is only used internally, and is immediately bound
+currentdict /closesourcedict .undef
+currentdict /.loadfont1 .undef
+
+% Note: this procedure is used for both Type 1 and Type 2 fonts.
+/.type1build {		% <font> <code|name> <name> .type1build
+                        %   <font> <code|name> <name> <charstring>
+  2 index begin
+    dup CharStrings exch .knownget not {
+      2 copy eq { exch pop /.notdef exch } if
+       QUIET not
+        { (Substituting .notdef for ) print
+          =string cvs print ( in the font ) print
+          1 index /FontName get = flush
+        }
+        { pop }
+       ifelse
+       /.notdef CharStrings /.notdef get
+    } if
+  end
+} bind def
+
+% Here are the BuildChar and BuildGlyph implementation for Type 1 fonts.
+% The names %Type1BuildChar and %Type1BuildGlyph are known to the interpreter.
+% The real work is done in an operator:
+%	<font> <code|name> <name> <charstring> .type1execchar -
+
+(%Type1BuildChar)  cvn {	% <font> <code> %Type1BuildChar -
+  1 index /Encoding get 1 index get //.type1build exec .type1execchar
+} bind executeonly def
+(%Type1BuildGlyph) cvn {	% <font> <name> %Type1BuildGlyph -
+  dup //.type1build exec .type1execchar
+} bind executeonly def
+
+1183615869 internaldict begin
+% CCRun is an undocumented procedure provided for Type 4 and Type 0 fonts.
+% Apparently there are two different argument lists for CCRun.
+% Handling the one with the extra Private dictionary requires fabricating
+% a Type 1 font on the fly, since we aren't currently prepared to parse the
+% dictionary any other way.
+/CCRun {	% <font> <code|name> <charstring> CCRun -
+                % <font> <code|name> <charstring> <Private> CCRun -
+  dup type /dicttype eq {
+    dup 4 index /Private .knownget { ne } { pop //true } ifelse {
+                % The Private dictionary was supplied, and is different
+                % from the Private dictionary of the font.  Fabricate a
+                % Type 1 font with this Private dictionary.  Most of the
+                % font entries are arbitrary or not needed.
+      .currentglobal //false .setglobal 10 dict exch .setglobal begin
+        /Private exch def
+        /FontType 1 def
+        /FontMatrix 3 index /FontMatrix get def
+        /Encoding 3 index /Encoding .knownget not { StandardEncoding } if def
+        /FontBBox 3 index /FontBBox .knownget not { {0 0 0 0} } if def
+        /PaintType 0 def
+        /CharStrings 1 dict dup /.notdef () put def
+      3 -1 roll pop () currentdict end .buildfont1 exch pop 3 1 roll
+    } {
+      pop
+    } ifelse
+  } if
+  1 index dup type /integertype eq {
+    3 index /Encoding get exch get
+  } if exch .type1execchar
+} bind def
+
+% setweightvector is an undocumented procedure that force writes
+% weight vector to the font. Do extra checks for safety.
+/setweightvector { % <font> <vector> setweightvector -
+  dup type dup /arraytype ne exch /packedarraytype ne and
+  2 index type /dicttype ne or {
+    /setweightvector cvx /typecheck signalerror
+  } if
+  1 index /FontType known not {
+    /setweightvector cvx /invalidfont signalerror
+  } if
+  dup gcheck 2 index gcheck not and {
+    /setweightvector cvx /invalidaccess signalerror
+  } if
+  2 copy /WeightVector exch .forceput
+  .setweightvector
+} .bind executeonly odef
+end
+
+% Register the font types for definefont.
+buildfontdict 1 /.buildfont1 cvx put
+buildfontdict 4 /.buildfont4 cvx put
+
+% Add Type 2 support if applicable.
+/.buildfont2 where not { (%END2) .skipeof } if
+pop
+(%Type2BuildChar)  cvn {	% <font> <code> %Type2BuildChar -
+  1 index /Encoding get 1 index get //.type1build exec .type2execchar
+} bind executeonly def
+(%Type2BuildGlyph) cvn {	% <font> <name> %Type2BuildGlyph -
+  dup //.type1build exec .type2execchar
+} bind executeonly def
+buildfontdict 2 /.buildfont2 cvx put
+%END2
