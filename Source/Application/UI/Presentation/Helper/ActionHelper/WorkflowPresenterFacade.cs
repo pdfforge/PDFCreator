@@ -18,6 +18,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper
             set => SettingsActionComponent.SetSettings(value);
         }
 
+        public IProfileSetting GetProfileSettingByConversionProfile(ConversionProfile profile)
+        {
+            return SettingsActionComponent.GetProfileSettingByConversionProfile(profile);
+        }
+
         public string Description => GetComponent<DescriptionActionComponent>().GetDescription();
 
         public bool IsEnabled

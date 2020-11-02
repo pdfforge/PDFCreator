@@ -106,7 +106,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             return defaultProfile;
         }
 
-        protected void SetDefaultProperties(ConversionProfile profile, bool isDeletable)
+        protected virtual void SetDefaultProperties(ConversionProfile profile, bool isDeletable)
         {
             profile.Properties.Renamable = false;
             profile.Properties.Deletable = isDeletable;

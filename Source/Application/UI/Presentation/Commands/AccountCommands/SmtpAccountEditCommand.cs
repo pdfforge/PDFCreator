@@ -13,7 +13,7 @@ using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class SmtpAccountEditCommand : TranslatableCommandBase<SmtpTranslation>, IWaitableCommand, IMountable
+    public class SmtpAccountEditCommand : TranslatableCommandBase<MailTranslation>, IWaitableCommand, IMountable
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<Accounts> _accountsProvider;

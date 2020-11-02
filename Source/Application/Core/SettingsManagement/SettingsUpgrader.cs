@@ -114,6 +114,27 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             }
         }
 
+        protected IList<string> GetList(string pathOffset,string settingName)
+        {
+            var list = new List<string>();
+
+            int.TryParse(Data.GetValue( $@"{pathOffset}{settingName}\numClasses"), out var listCount);
+            for (int i = 0; i < listCount; i++)
+            {
+                list.Add(Data.GetValue($@"{pathOffset}{settingName}\{i}\{settingName}"));
+            }
+            return list;
+        }
+
+        protected void SetList(string pathOffset, IList<string> list, string settingName)
+        {
+            Data.SetValue($@"{pathOffset}{settingName}\numClasses", list.Count().ToString());
+            for (int i = 0; i < list.Count(); i++)
+            {
+                Data.SetValue($@"{pathOffset}{settingName}\{i}\{settingName}", list.ElementAt(i));
+            }
+        }
+
         protected void MapSettingInAllProfiles(string path, Func<string, string> mapFunction)
         {
             var numProfiles = GetInt(Data.GetValue(@"ConversionProfiles\numClasses"));

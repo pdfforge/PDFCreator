@@ -29,7 +29,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
     {
         private static readonly SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
 
-        protected abstract IDirectory Directory { get; }
+        protected abstract IUniqueFilenameFactory UniqueFilenameFactory { get; }
         protected abstract IDirectoryHelper DirectoryHelper { get; }
         protected abstract IFile File { get; }
 
@@ -80,7 +80,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             {
                 fileNumber++;
 
-                var extension = Path.GetExtension(tempOutputFile);
+                var extension = PathSafe.GetExtension(tempOutputFile);
                 var numberSuffix = DetermineNumWithDigits(job, tempOutputFile);
 
                 var currentOutputFile = _outfilebody + numberSuffix + extension;
@@ -88,7 +88,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
                 await SemaphoreSlim.WaitAsync();
                 try
                 {
-                    var uniqueFilename = new UniqueFilename(currentOutputFile, Directory, File, PathUtil);
+                    var uniqueFilename = UniqueFilenameFactory.Build(currentOutputFile);
                     if (ApplyUniqueFilename(job))
                     {
                         currentOutputFile = EnsureUniqueFilename(uniqueFilename);
@@ -151,7 +151,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
         /// </summary>
         /// <param name="uniqueFilename">The UniqueFilename object that should be used</param>
         /// <returns>unique outputfilename</returns>
-        private string EnsureUniqueFilename(UniqueFilename uniqueFilename)
+        private string EnsureUniqueFilename(IUniquePath uniqueFilename)
         {
             try
             {
@@ -199,14 +199,14 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 
         private string DetermineOutfileBody(string outputFilenameTemplate)
         {
-            var outputDir = Path.GetDirectoryName(outputFilenameTemplate) ?? "";
-            var filenameBase = Path.GetFileNameWithoutExtension(outputFilenameTemplate) ?? "output";
-            return Path.Combine(outputDir, filenameBase);
+            var outputDir = PathSafe.GetDirectoryName(outputFilenameTemplate) ?? "";
+            var filenameBase = PathSafe.GetFileNameWithoutExtension(outputFilenameTemplate) ?? "output";
+            return PathSafe.Combine(outputDir, filenameBase);
         }
 
         private string DetermineNumWithDigits(Job job, string tempOutputFile)
         {
-            var tempFileBase = Path.GetFileNameWithoutExtension(tempOutputFile) ?? "output";
+            var tempFileBase = PathSafe.GetFileNameWithoutExtension(tempOutputFile) ?? "output";
             var num = tempFileBase.Replace(job.JobTempFileName, "");
 
             if (job.TempOutputFiles.Count == 1)

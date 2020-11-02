@@ -38,6 +38,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public static string BusinessHintStatusBarRegion => NameOfProperty();
         public static string TestButtonWorkflowEditorRegion => NameOfProperty();
+        public static string AddActionWorkflowEditorRegion => NameOfProperty();
 
         public static string RssFeedRegion => NameOfProperty();
 

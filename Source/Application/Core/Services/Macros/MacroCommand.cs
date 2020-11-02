@@ -49,9 +49,7 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
 
         private void Next(object sender, MacroCommandIsDoneEventArgs e)
         {
-            var previousCommand = sender as IWaitableCommand;
-
-            if (previousCommand != null)
+            if (sender is IWaitableCommand previousCommand)
                 previousCommand.IsDone -= Next;
 
             if (e.ResponseStatus == ResponseStatus.Cancel || e.ResponseStatus == ResponseStatus.Error)
@@ -70,16 +68,18 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
             if (CommandList.Count > _runIndex)
             {
                 var command = CommandList.ElementAt(_runIndex);
-                var macroCommand = command as IWaitableCommand;
-                if (macroCommand != null)
+
+                switch (command)
                 {
-                    macroCommand.IsDone += Next;
-                    macroCommand.Execute(_parameter);
-                }
-                else
-                {
-                    command.Execute(_parameter);
-                    Next(command, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+                    case IWaitableCommand waitableCommand:
+                        waitableCommand.IsDone += Next;
+                        waitableCommand.Execute(_parameter);
+                        break;
+
+                    default:
+                        command.Execute(_parameter);
+                        Next(command, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+                        break;
                 }
             }
             else
@@ -156,7 +156,7 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
         {
             foreach (var command in CommandList)
             {
-                if(command is IMountable mountable)
+                if (command is IMountable mountable)
                     mountable.MountView();
             }
         }
@@ -176,7 +176,6 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
         public event EventHandler CanExecuteChanged;
 
 #pragma warning restore 67
-        
     }
 
     public enum ResponseStatus

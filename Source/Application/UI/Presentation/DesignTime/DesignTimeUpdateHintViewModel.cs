@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint;
 using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
@@ -15,7 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 new DesignTimeVersionHelper(),
                 new DesignTimeUpdateLauncher(),
                 null,
-                null,
+                new DisabledOnlineVersionHelper(new DesignTimeVersionHelper()),
                 new AssemblyHelper(Assembly.GetExecutingAssembly()))
         {
         }

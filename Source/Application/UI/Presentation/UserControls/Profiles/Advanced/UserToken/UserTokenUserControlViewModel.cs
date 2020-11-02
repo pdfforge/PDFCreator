@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Use
 
     public class DesignTimeUserTokenUserControlViewModel : UserTokenUserControlViewModel
     {
-        public DesignTimeUserTokenUserControlViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new UserGuideLauncher(), null, null)
+        public DesignTimeUserTokenUserControlViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new UserGuideLauncher(), null, new EditionHelper(false))
         {
         }
     }

@@ -1,3 +1,5 @@
+using System;
+
 namespace pdfforge.PDFCreator.UI.ComWrapper
 {
 	public class PrintJobInfo

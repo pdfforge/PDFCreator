@@ -18,6 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         public string ShowLogFileButtonContent { get; private set; } = "Show log file";
         public string ShowEventLogButtonContent { get; private set; } = "Open Event Log";
         public string TestPagesControlHeader { get; private set; } = "Test Pages";
+        public string AddAction { get; protected set; } = "Add Action";
         public string WindowsTestpageButtonContent { get; private set; } = "Print Windows Test Page";
         public string RestoreDefaultSettingsMessage { get; private set; } = "Do you really want to restore the default settings? The current settings will be lost.";
         public string NoLogFile { get; private set; } = "No log file";

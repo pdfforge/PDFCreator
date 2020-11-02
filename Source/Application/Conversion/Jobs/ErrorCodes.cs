@@ -16,6 +16,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No compatible e-mail client installed.")]
         MailClient_NoCompatibleEmailClientInstalled = 11101,
 
+        [Translation("At least one of the attachment files for the mail client action is unavailable.")]
+        MailClient_InvalidAttachmentFiles = 11102,
+
         [Translation("Unknown error in e-mail client action.")]
         MailClient_GenericError = 11999,
 
@@ -202,22 +205,22 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No cover file is specified.")]
         Cover_NoFileSpecified = 22100,
 
-        [Translation("Cover file does not exist.")]
+        [Translation("One of the cover files does not exist.")]
         Cover_FileDoesNotExist = 22101,
 
-        [Translation("The cover file is no PDF file.")]
+        [Translation("One of the cover files is no PDF file.")]
         Cover_NoPdf = 22102,
 
-        [Translation("Cover path is invalid absolute path.")]
+        [Translation("One of the cover paths is an invalid absolute path.")]
         Cover_InvalidRootedPath = 22103,
 
-        [Translation("Cover path is too long.")]
+        [Translation("One of the cover paths is too long.")]
         Cover_PathTooLong = 22104,
 
-        [Translation("Cover path contains illegal characters.")]
+        [Translation("One of the cover paths contains illegal characters.")]
         Cover_IllegalCharacters = 22105,
 
-        [Translation("Unable to add the cover. The documents' PDF format version is not compatible.")]
+        [Translation("Unable to add one of the cover files. The documents' PDF format version is not compatible.")]
         Cover_ConformanceError = 22106,
 
         [Translation("Error while adding cover to the document.")]
@@ -226,22 +229,22 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No attachment file is specified.")]
         Attachment_NoFileSpecified = 23100,
 
-        [Translation("Attachment file does not exist.")]
+        [Translation("One of the attachment files does not exist.")]
         Attachment_FileDoesNotExist = 23101,
 
-        [Translation("Attachment file is no PDF file.")]
+        [Translation("One of the attachment files is no PDF file.")]
         Attachment_NoPdf = 23102,
 
-        [Translation("Unable to add the attachment. The documents' PDF format version is not compatible.")]
+        [Translation("Unable to add one of the attachment files. The documents' PDF format version is not compatible.")]
         Attachment_ConformanceError = 23103,
 
-        [Translation("Attachment path is invalid rooted path.")]
+        [Translation("One of the attachment paths is an invalid absolute path.")]
         Attachment_InvalidRootedPath = 23104,
 
-        [Translation("Attachment path is too long.")]
+        [Translation("One of the attachment paths is too long.")]
         Attachment_PathTooLong = 23105,
 
-        [Translation("Attachment path contains illegal characters.")]
+        [Translation("One of the attachment paths contains illegal characters.")]
         Attachment_IllegalCharacters = 23106,
 
         [Translation("Error while adding attachment to the document.")]

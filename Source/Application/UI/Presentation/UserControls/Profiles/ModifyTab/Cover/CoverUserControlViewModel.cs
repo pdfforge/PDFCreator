@@ -1,37 +1,35 @@
-﻿using Optional;
-using pdfforge.PDFCreator.Conversion.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using pdfforge.PDFCreator.Utilities.Pdf;
 using pdfforge.PDFCreator.Utilities.Tokens;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover
 {
     public class CoverUserControlViewModel : ProfileUserControlViewModel<CoverSettingsTranslation>
     {
-        private readonly IOpenFileInteractionHelper _openFileInteractionHelper;
         private readonly ITokenHelper _tokenHelper;
-        private readonly ITokenViewModelFactory _tokenViewModelFactory;
-        private readonly EditionHelper _editionHelper;
         private readonly IPdfVersionHelper _pdfVersionHelper;
+        private readonly ISelectFilesUserControlViewModelFactory _selectFilesUserControlViewModelFactory;
 
         public TokenReplacer TokenReplacer { get; private set; }
 
-        public TokenViewModel<ConversionProfile> CoverPageTokenViewModel { get; set; }
+        public SelectFilesUserControlViewModel CoverPageSelectFilesUserControlViewModel { get; set; }
 
-        public CoverUserControlViewModel(IOpenFileInteractionHelper openFileInteractionHelper, ITranslationUpdater translationUpdater,
+        public CoverUserControlViewModel(ITranslationUpdater translationUpdater,
             ISelectedProfileProvider selectedProfile, ITokenHelper tokenHelper,
-            ITokenViewModelFactory tokenViewModelFactory, IDispatcher dispatcher,
-            EditionHelper editionHelper, IPdfVersionHelper pdfVersionHelper) : base(translationUpdater, selectedProfile, dispatcher)
+            IDispatcher dispatcher, IPdfVersionHelper pdfVersionHelper,
+            ISelectFilesUserControlViewModelFactory selectFilesUserControlViewModelFactory)
+            : base(translationUpdater, selectedProfile, dispatcher)
         {
-            _openFileInteractionHelper = openFileInteractionHelper;
             _tokenHelper = tokenHelper;
-            _tokenViewModelFactory = tokenViewModelFactory;
-            _editionHelper = editionHelper;
             _pdfVersionHelper = pdfVersionHelper;
+            _selectFilesUserControlViewModelFactory = selectFilesUserControlViewModelFactory;
         }
 
         public override void MountView()
@@ -40,16 +38,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Co
             {
                 TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
                 var tokens = _tokenHelper.GetTokenListForExternalFiles();
+                var filter = Translation.PDFFiles
+                             + @" (*.pdf)|*.pdf|"
+                             + Translation.AllFiles
+                             + @" (*.*)|*.*";
 
-                CoverPageTokenViewModel = _tokenViewModelFactory.BuilderWithSelectedProfile()
-                    .WithSelector(p => p.CoverPage.File)
-                    .WithTokenList(tokens)
-                    .WithTokenReplacerPreview(TokenReplacer)
-                    .WithButtonCommand(SelectCoverPageAction)
+                CoverPageSelectFilesUserControlViewModel = _selectFilesUserControlViewModelFactory.Builder()
+                    .WithTitleGetter(() => Translation.SelectCoverFile)
+                    .WithFileListGetter(profile => profile.CoverPage.Files)
+                    .WithFileFilter(filter)
+                    .WithTokens(tokens)
                     .Build();
+                CoverPageSelectFilesUserControlViewModel.PropertyChanged += (s, a) =>
+                {
+                    if (a.PropertyName == nameof(CoverPageSelectFilesUserControlViewModel.FileListDictionary))
+                    {
+                        CheckIfVersionIsPdf20();
+                    }
+                };
 
-                RaisePropertyChanged(nameof(CoverPageTokenViewModel));
-                CoverPageTokenViewModel.MountView();
+                RaisePropertyChanged(nameof(CoverPageSelectFilesUserControlViewModel));
+                CoverPageSelectFilesUserControlViewModel.MountView();
             }
 
             CheckIfVersionIsPdf20();
@@ -60,45 +69,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Co
         public override void UnmountView()
         {
             base.UnmountView();
-            CoverPageTokenViewModel.UnmountView();
-        }
-
-        private Option<string> SelectCoverPageAction(string s1)
-        {
-            var title = Translation.SelectCoverFile;
-            var filter = Translation.PDFFiles
-                         + @" (*.pdf)|*.pdf|"
-                         + Translation.AllFiles
-                         + @" (*.*)|*.*";
-
-            var interactionResult = _openFileInteractionHelper.StartOpenFileInteraction(CurrentProfile.CoverPage.File, title, filter);
-
-            interactionResult.MatchSome(s =>
-            {
-                CoverPageTokenViewModel.Text = s;
-                CoverPageTokenViewModel.RaiseTextChanged();
-            });
-
-            CheckIfVersionIsPdf20();
-
-            return interactionResult;
+            CoverPageSelectFilesUserControlViewModel.UnmountView();
         }
 
         private void CheckIfVersionIsPdf20()
         {
-            IsPdf20 = _pdfVersionHelper.CheckIfVersionIsPdf20(CurrentProfile.CoverPage.File);
+            Pdf20Files = CurrentProfile.CoverPage.Files.FindAll(_pdfVersionHelper.CheckIfVersionIsPdf20);
 
-            RaisePropertyChanged(nameof(IsPdf20));
+            RaisePropertyChanged(nameof(IsAnyPdf20));
+            RaisePropertyChanged(nameof(Pdf20Files));
         }
 
-        public bool IsPdf20 { get; set; }
+        public bool IsAnyPdf20 => Pdf20Files?.Any() ?? false;
+
+        public List<string> Pdf20Files
+        {
+            get;
+            set;
+        }
     }
 
     public class DesignTimeCoverUserControlViewModel : CoverUserControlViewModel
     {
-        public DesignTimeCoverUserControlViewModel() : base(null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(),
-                                                null, null, null,
-                                                new EditionHelper(false), new PdfVersionHelper())
+        public DesignTimeCoverUserControlViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(),
+                                                null, null,
+                                                new PdfVersionHelper(), new DesignTimeSelectFilesUserControlViewModelFactory())
         {
         }
     }

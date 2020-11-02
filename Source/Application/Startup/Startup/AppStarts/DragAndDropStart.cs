@@ -18,7 +18,11 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         protected override string ComposePipeMessage()
         {
-            return "DragAndDrop|" + string.Join("|", DroppedFiles);
+            var pipeMessage = "DragAndDrop";
+            if (AppStartParameters.ManagePrintJobs)
+                pipeMessage += "+ManagePrintJobs";
+
+            return pipeMessage + "|" + string.Join("|", DroppedFiles);
         }
 
         protected override bool StartApplication()

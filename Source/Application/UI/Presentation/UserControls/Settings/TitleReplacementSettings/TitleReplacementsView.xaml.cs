@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings
 {
@@ -9,6 +10,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         {
             DataContext = vm;
             InitializeComponent();
+            TransposerHelper.Register(this, vm);
         }
 
         private void FrameworkElement_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

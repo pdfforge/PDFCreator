@@ -74,7 +74,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
                 var printerNameString = GetPrinterNameString(printerNames);
 
-                var installParams = $"/RepairPrinter {printerNameString} /PortApplication \"{pdfcreatorPath}\"";
+                var installParams = $"RepairPrinter -name={printerNameString} -PortApplication=\"{pdfcreatorPath}\"";
                 var installResult = _shellExecuteHelper.RunAsAdmin(printerHelperPath, installParams);
                 Logger.Debug("Done: {0}", installResult);
             }
@@ -103,7 +103,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             if (!printers.Any())
                 printers.Add(DefaultPrinterName);
 
-            return string.Join(" ", printers.Select(printerName => "\"" + printerName + "\""));
+            return string.Join(",", printers.Select(printerName => $"\"{printerName}\""));
         }
 
         private MessageResponse ShowMessage(string message, string title, MessageOptions buttons, MessageIcon icon)

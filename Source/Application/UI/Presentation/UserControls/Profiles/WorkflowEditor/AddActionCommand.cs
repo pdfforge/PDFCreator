@@ -1,11 +1,11 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
-using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Workflow;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using Prism.Events;
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
@@ -15,23 +15,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         private readonly ISelectedProfileProvider _selectedProfileProvider;
         private readonly IInteractionRequest _interactionRequest;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ICurrentSettings<ApplicationSettings> _settingsProvider;
         private readonly IActionOrderHelper _actionOrderHelper;
         private readonly EditionHelper _editionHelper;
 
         public AddActionCommand(ISelectedProfileProvider selectedProfileProvider, IInteractionRequest interactionRequest, IEventAggregator eventAggregator,
-            ICurrentSettings<ApplicationSettings> settingsProvider, IActionOrderHelper actionOrderHelper, EditionHelper editionHelper)
+            IActionOrderHelper actionOrderHelper, EditionHelper editionHelper)
         {
             _selectedProfileProvider = selectedProfileProvider;
             _interactionRequest = interactionRequest;
             _eventAggregator = eventAggregator;
-            _settingsProvider = settingsProvider;
             _actionOrderHelper = actionOrderHelper;
             _editionHelper = editionHelper;
         }
 
         public bool CanExecute(object parameter)
         {
+            return true;
+        }
+
+        private bool IsSupported(IPresenterActionFacade actionFacade)
+        {
+            if (_editionHelper.IsFreeEdition)
+            {
+                return !typeof(IBusinessFeatureAction).IsAssignableFrom(actionFacade.Action);
+            }
+
             return true;
         }
 
@@ -42,32 +50,35 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
             if (!profile.ActionOrder.Exists(x => x == actionFacade.SettingsType.Name))
             {
-                if (!_editionHelper.IsFreeEdition || !typeof(IBusinessFeatureAction).IsAssignableFrom(actionFacade.Action))
+                var isDisabled = false;
+                if (IsSupported(actionFacade))
                 {
                     actionFacade.IsEnabled = true;
                     profile.ActionOrder.Add(actionFacade.SettingsType.Name);
                 }
+                else
+                {
+                    isDisabled = true;
+                }
 
                 _actionOrderHelper.EnsureEncryptionAndSignatureOrder(profile);
 
-                if (profile.EnableWorkflowEditor)
+                var interaction = await _interactionRequest.RaiseAsync(new WorkflowEditorOverlayInteraction(actionFacade.Translation, actionFacade.OverlayView, isDisabled, true));
+                if (interaction.Result != WorkflowEditorOverlayResult.Success)
                 {
-                    var result = await _interactionRequest.RaiseAsync(new WorkflowEditorOverlayInteraction(false, actionFacade.Translation, actionFacade.OverlayView));
-                    if (!result.Success)
-                    {
-                        actionFacade.IsEnabled = false;
-                        _selectedProfileProvider.SelectedProfile.ActionOrder.RemoveAll(x => x == actionFacade.SettingsType.Name);
+                    actionFacade.IsEnabled = false;
+                    _selectedProfileProvider.SelectedProfile.ActionOrder.RemoveAll(x => x == actionFacade.SettingsType.Name);
 
-                        if ("CoverPage" == actionFacade.SettingsType.Name)
-                            _selectedProfileProvider.SelectedProfile.CoverPage.File = string.Empty;
-                    }
-                }
-                else
-                {
-                    _actionOrderHelper.ForceDefaultOrder(profile);
+                    if ("CoverPage" == actionFacade.SettingsType.Name)
+                        _selectedProfileProvider.SelectedProfile.CoverPage.Files = new List<string>();
                 }
 
                 _eventAggregator.GetEvent<ActionAddedToWorkflowEvent>().Publish();
+
+                if (interaction.Result == WorkflowEditorOverlayResult.Back)
+                {
+                    await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
+                }
             }
         }
 

@@ -28,7 +28,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
             || DropboxSettings.Enabled
             || Printing.Enabled;
 
-     
     }
 
 }

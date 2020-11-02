@@ -1,8 +1,10 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
 {
@@ -16,6 +18,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
     public class PdfProcessingHelper : IPdfProcessingHelper
     {
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly IEnumerable<IAction> _actions;
+
+        public PdfProcessingHelper(IEnumerable<IAction> actions)
+        {
+            _actions = actions;
+        }
 
         /// <summary>
         /// Must be applied before determining passwords
@@ -88,32 +96,23 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
         {
             var profile = job.Profile;
 
-            if (ConversionActionsEnabled(profile))
-                return true;
-
+            ApplyFormatRestrictionsToProfile(job);
             if (profile.OutputFormat.IsPdfA())
                 return true; //Always true because of the metadata update
 
-            switch (profile.OutputFormat)
-            {
-                case OutputFormat.Pdf:
-                    return profile.PdfSettings.Security.Enabled
-                           || profile.PdfSettings.Signature.Enabled;
+            return ConversionActionsEnabled(profile);
+        }
 
-                case OutputFormat.PdfX:
-                    return profile.PdfSettings.Signature.Enabled;
+        private bool ConversionActionsEnabled(ConversionProfile profile)
+        {
+            foreach (var action in _actions)
+            {
+                if (action is IConversionAction conversionAction)
+                    if (conversionAction.IsEnabled(profile))
+                        return true;
             }
 
             return false;
-        }
-
-        private static bool ConversionActionsEnabled(ConversionProfile profile)
-        {
-            return profile.AttachmentPage.Enabled ||
-                   profile.CoverPage.Enabled ||
-                   profile.BackgroundPage.Enabled ||
-                   profile.Watermark.Enabled ||
-                   profile.Stamping.Enabled;
         }
     }
 }

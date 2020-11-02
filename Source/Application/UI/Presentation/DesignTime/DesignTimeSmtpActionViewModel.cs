@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeSmtpActionViewModel : SmtpActionViewModel
     {
-        public DesignTimeSmtpActionViewModel() : base(null, null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), null, new DesignTimeCommandLocator(), new DesignTimeTokenViewModelFactory(), null, new GpoSettingsDefaults(), null)
+        public DesignTimeSmtpActionViewModel() : base(null, null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), null, new DesignTimeCommandLocator(), new DesignTimeTokenViewModelFactory(), null, new GpoSettingsDefaults(), new DesignTimeSelectFilesUserControlViewModelFactory())
         {
         }
     }

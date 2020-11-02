@@ -8,9 +8,9 @@
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeFtpActionViewModel, IsDesignTimeCreatable=True}"
-             IsEnabled="{Binding CurrentProfile.Ftp.Enabled}"
              help:HelpProvider.HelpTopic="UploadWithFtp">
 
     <UserControl.Resources>
@@ -19,9 +19,9 @@
                 <ResourceDictionary Source="../../../../Styles/LightGreyButton.xaml" />
                 <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
         </ResourceDictionary>
     </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.UploadWithFtp}">
@@ -56,6 +56,12 @@
                         Visibility="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
                 </Grid>
             </DockPanel>
+
+            <StackPanel Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Right"
+                        Visibility="{Binding ShowAutosaveRequiresPasswords, Converter={StaticResource HiddenWhenFalseConverter}}">
+                <ContentPresenter Content="{DynamicResource WarningIcon}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding Translation.AutosaveRequiresPasswords}" />
+            </StackPanel>
 
             <StackPanel>
                 <Label Content="{Binding Translation.DirectoryLabel}" />

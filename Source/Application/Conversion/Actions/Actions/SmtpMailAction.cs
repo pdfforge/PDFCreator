@@ -30,13 +30,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         public override void ApplyPreSpecifiedTokens(Job job)
         {
-            job.Profile.EmailSmtpSettings.Recipients = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.Recipients)
-                                                                        .Replace(';', ',');
-            job.Profile.EmailSmtpSettings.RecipientsCc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.RecipientsCc)
-                                                                          .Replace(';', ',');
-            job.Profile.EmailSmtpSettings.RecipientsBcc = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.RecipientsBcc)
-                                                                           .Replace(';', ',');
-            job.Profile.EmailSmtpSettings.AdditionalAttachments = job.Profile.EmailSmtpSettings.AdditionalAttachments;
+            _mailHelper.ReplaceTokensInMailSettings(job, job.Profile.EmailSmtpSettings);
         }
 
         public override ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)

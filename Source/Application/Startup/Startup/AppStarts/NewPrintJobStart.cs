@@ -13,19 +13,21 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
     public class NewPrintJobStart : MaybePipedStart
     {
         private readonly IJobInfoManager _jobInfoManager;
+        private readonly IUniqueDirectory _uniqueDirectory;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ISettingsProvider _settingsProvider;
         private readonly ISpoolerProvider _spoolerProvider;
 
         public NewPrintJobStart(ISettingsProvider settingsProvider, IJobInfoQueue jobInfoQueue, ISpoolerProvider spoolerProvider,
-            IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager)
+            IMaybePipedApplicationStarter maybePipedApplicationStarter, IJobInfoManager jobInfoManager, IUniqueDirectory uniqueDirectory)
             : base(maybePipedApplicationStarter)
         {
             _settingsProvider = settingsProvider;
             _jobInfoQueue = jobInfoQueue;
             _spoolerProvider = spoolerProvider;
             _jobInfoManager = jobInfoManager;
+            _uniqueDirectory = uniqueDirectory;
         }
 
         public string NewJobInfoFile { get; internal set; }
@@ -85,7 +87,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             var jobName = Path.GetFileNameWithoutExtension(infFile);
             var jobFolder = Path.Combine(spoolFolder, jobName);
 
-            jobFolder = new UniqueDirectory(jobFolder).MakeUniqueDirectory();
+            jobFolder = _uniqueDirectory.MakeUniqueDirectory(jobFolder);
             Directory.CreateDirectory(jobFolder);
 
             foreach (var sourceFile in ji.SourceFiles)

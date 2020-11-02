@@ -24,4 +24,17 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="IconOnlyEditControl" TargetType="{x:Type ContentControl}">
+        <Setter Property="Foreground" Value="#BBBBBB" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}"
+                         Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

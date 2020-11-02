@@ -14,19 +14,26 @@
     d:DataContext="{d:DesignInstance designTime:DesignTimeEncryptUserControlViewModel, IsDesignTimeCreatable=True}"
     help:HelpProvider.HelpTopic="PdfSecurity">
     <UserControl.Resources>
-        <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="BoolToVisibilityConverter" />
+        <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="CollapsedWhenFalseConverter" />
     </UserControl.Resources>
-    <Grid IsEnabled="{Binding CurrentProfile.PdfSettings.Security.Enabled}">
+    <Grid>
         <StackPanel>
             <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.PasswordTitle}">
                 <StackPanel>
 
-                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.RequireUserPassword, Mode=TwoWay}"
+                    <CheckBox IsChecked="{Binding RequireUserPassword, Mode=TwoWay}"
                           Margin="0,0,0,10"
                           Content="{Binding Translation.UserPasswordCheckBox}" />
-                    <Button Command="{Binding SecurityPasswordCommand}"
-                        HorizontalAlignment="Left" MaxWidth="231" Margin="0,0,0,10" Padding="10,0,10,0"
-                        Content="{Binding Translation.SecurityPasswordsButton}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Command="{Binding SecurityPasswordCommand}"
+                                HorizontalAlignment="Left" MaxWidth="231" Padding="10,0,10,0"
+                                Content="{Binding Translation.SecurityPasswordsButton}" />
+                        <StackPanel Orientation="Horizontal" Margin="10 0 0 0" VerticalAlignment="Center"
+                                    Visibility="{Binding ShowPasswordHint,Converter={StaticResource CollapsedWhenFalseConverter}}">
+                            <ContentPresenter Content="{DynamicResource WarningIcon}" />
+                            <TextBlock Text="{Binding Translation.AutosaveRequiresPasswords}" Margin="5 0 0 0" />
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </HeaderedContentControl>
 
@@ -37,8 +44,8 @@
                             <TextBlock Margin="5 0 0 0" DockPanel.Dock="Left" Text="{Binding Translation.Rc128BitEncryptionText}" />
 
                             <StackPanel Orientation="Horizontal"
-                                        Visibility="{Binding LowEncryptionEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <ContentControl IsTabStop="False" Content="{DynamicResource WarningIcon}" Height="16" Margin="10 0 5 0" />
+                                        Visibility="{Binding LowEncryptionEnabled, Converter={StaticResource CollapsedWhenFalseConverter}}">
+                                <ContentPresenter Content="{DynamicResource WarningIcon}" Margin="5 0 5 0" />
                                 <TextBlock Text="{Binding Translation.Rc128BitEncryptionHint}"
                                            VerticalAlignment="Center" />
                             </StackPanel>

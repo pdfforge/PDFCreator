@@ -14,17 +14,17 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
     {
         private readonly IDispatcher _dispatcher;
 
-        public InteractiveOutputFileMover(IDirectory directory, IFile file, IPathUtil pathUtil, IRetypeFileNameQuery retypeFileNameQuery, IDispatcher dispatcher, IDirectoryHelper directoryHelper)
+        public InteractiveOutputFileMover(IUniqueFilenameFactory uniqueFilenameFactory, IFile file, IPathUtil pathUtil, IRetypeFileNameQuery retypeFileNameQuery, IDispatcher dispatcher, IDirectoryHelper directoryHelper)
         {
             _dispatcher = dispatcher;
-            Directory = directory;
+            UniqueFilenameFactory = uniqueFilenameFactory;
             DirectoryHelper = directoryHelper;
             File = file;
             PathUtil = pathUtil;
             RetypeFileNameQuery = retypeFileNameQuery;
         }
 
-        protected override IDirectory Directory { get; }
+        protected override IUniqueFilenameFactory UniqueFilenameFactory { get; }
         protected override IDirectoryHelper DirectoryHelper { get; }
         protected override IFile File { get; }
         protected override IPathUtil PathUtil { get; }

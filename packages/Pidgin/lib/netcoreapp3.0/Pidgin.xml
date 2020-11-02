@@ -1,0 +1,2265 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pidgin</name>
+    </assembly>
+    <members>
+        <member name="T:Pidgin.Comment.CommentParser">
+            <summary>
+            Contains functions to build parsers which skip over comments
+            </summary>
+        </member>
+        <member name="M:Pidgin.Comment.CommentParser.SkipLineComment``1(Pidgin.Parser{System.Char,``0})">
+            <summary>
+            Creates a parser which runs <paramref name="lineCommentStart"/>, then skips the rest of the line.
+            </summary>
+            <param name="lineCommentStart">A parser to recognise a lexeme which starts a line comment</param>
+            <returns>A parser which runs <paramref name="lineCommentStart"/>, then skips the rest of the line.</returns>
+        </member>
+        <member name="M:Pidgin.Comment.CommentParser.SkipBlockComment``2(Pidgin.Parser{System.Char,``0},Pidgin.Parser{System.Char,``1})">
+            <summary>
+            Creates a parser which runs <paramref name="blockCommentStart"/>,
+            then skips everything until <paramref name="blockCommentEnd"/>.
+            </summary>
+            <param name="blockCommentStart">A parser to recognise a lexeme which starts a multi-line block comment</param>
+            <param name="blockCommentEnd">A parser to recognise a lexeme which ends a multi-line block comment</param>
+            <returns>
+            A parser which runs <paramref name="blockCommentStart"/>, then skips everything until <paramref name="blockCommentEnd"/>.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Comment.CommentParser.SkipNestedBlockComment``2(Pidgin.Parser{System.Char,``0},Pidgin.Parser{System.Char,``1})">
+            <summary>
+            Creates a parser which runs <paramref name="blockCommentStart"/>,
+            then skips everything until <paramref name="blockCommentEnd"/>, accounting for nested comments.
+            </summary>
+            <param name="blockCommentStart">A parser to recognise a lexeme which starts a multi-line block comment</param>
+            <param name="blockCommentEnd">A parser to recognise a lexeme which ends a multi-line block comment</param>
+            <returns>
+            A parser which runs <paramref name="blockCommentStart"/>,
+            then skips everything until <paramref name="blockCommentEnd"/>, accounting for nested comments.
+            </returns>
+        </member>
+        <member name="T:Pidgin.Expected`1">
+            <summary>
+            Represents a parsing expectation for error reporting.
+            Expected values are either a sequence of expected tokens (in which case <c>Label == null &amp;&amp; Tokens != null</c>),
+            a custom-named parser (<c>Label != null &amp;&amp; Tokens == null</c>),
+            or the end of the input stream (<c>Label == null &amp;&amp; Tokens == null</c>)
+            </summary>
+        </member>
+        <member name="P:Pidgin.Expected`1.Label">
+            <summary>
+            The custom name of the parser that produced this error, or null if the expectation was a sequence of tokens.
+            </summary>
+            <returns>The label</returns>
+        </member>
+        <member name="P:Pidgin.Expected`1.Tokens">
+            <summary>
+            The sequence of tokens that were expected at the point of the error, null if the parser had a custom name.
+            </summary>
+            <returns>The sequence of tokens that were expected</returns>
+        </member>
+        <member name="P:Pidgin.Expected`1.IsEof">
+            <summary>
+            Did the parser expect the end of the input stream?
+            </summary>
+            <returns>True if the parser expected the end of the input stream</returns>
+        </member>
+        <member name="M:Pidgin.Expected`1.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.Equals(Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_Equality(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_Inequality(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.CompareTo(Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_GreaterThan(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_LessThan(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_GreaterThanOrEqual(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Expected`1.op_LessThanOrEqual(Pidgin.Expected{`0},Pidgin.Expected{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pidgin.Expression.BinaryOperatorType">
+            <summary>
+            The associativity of the binary operator: left-associative, right-associative, or non-associative
+            </summary>
+        </member>
+        <member name="F:Pidgin.Expression.BinaryOperatorType.NonAssociative">
+            <summary>
+            Denotes a non-associative binary operator
+            </summary>
+        </member>
+        <member name="F:Pidgin.Expression.BinaryOperatorType.LeftAssociative">
+            <summary>
+            Denotes a left-associative binary operator
+            </summary>
+        </member>
+        <member name="F:Pidgin.Expression.BinaryOperatorType.RightAssociative">
+            <summary>
+            Denotes a right-associative binary operator
+            </summary>
+        </member>
+        <member name="T:Pidgin.Expression.ExpressionParser">
+            <summary>
+            Contains tools for parsing expression languages with associative infix operators.
+            </summary>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTable"/>.
+            <paramref name="operatorTable"/> is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            </summary>
+            <param name="term">A parser for a single term in an expression language</param>
+            <param name="operatorTable">A table of operators</param>
+            <returns>A parser for expressions built from the operators in <paramref name="operatorTable"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTable"/>.
+            <paramref name="operatorTable"/> is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            </summary>
+            <param name="term">A parser for a single term in an expression language</param>
+            <param name="operatorTable">A table of operators</param>
+            <returns>A parser for expressions built from the operators in <paramref name="operatorTable"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(System.Func{Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``1}},System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTable"/>.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="termFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="termFactory">A function which produces a parser for a single term</param>
+            <param name="operatorTable">A table of operators</param>
+            <returns>A parser for expressions built from the operators in <paramref name="operatorTable"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(System.Func{Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``1}},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTable"/>.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="termFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="termFactory">A function which produces a parser for a single term</param>
+            <param name="operatorTable">A table of operators</param>
+            <returns>A parser for expressions built from the operators in <paramref name="operatorTable"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(Pidgin.Parser{``0,``1},System.Func{Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTableFactory"/>'s result.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="operatorTableFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="term">A parser for a single term in an expression language</param>
+            <param name="operatorTableFactory">A function which produces a table of operators</param>
+            <returns>A parser for expressions built from the operators in the operator table</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(Pidgin.Parser{``0,``1},System.Func{Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="operatorTableFactory"/>'s result.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="operatorTableFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="term">A parser for a single term in an expression language</param>
+            <param name="operatorTableFactory">A function which produces a table of operators</param>
+            <returns>A parser for expressions built from the operators in the operator table</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(System.Func{Pidgin.Parser{``0,``1},System.ValueTuple{Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="termAndOperatorTableFactory"/>'s second result.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="termAndOperatorTableFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="termAndOperatorTableFactory">A function which produces a parser for a single term and a table of operators</param>
+            <returns>A parser for expressions built from the operators in the operator table</returns>
+        </member>
+        <member name="M:Pidgin.Expression.ExpressionParser.Build``2(System.Func{Pidgin.Parser{``0,``1},System.ValueTuple{Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{Pidgin.Expression.OperatorTableRow{``0,``1}}}}})">
+            <summary>
+            Builds a parser for expressions built from the operators in <paramref name="termAndOperatorTableFactory"/>'s second result.
+            The operator table is a sequence of operators in precedence order:
+            the operators in the first row have the highest precedence and operators in later rows have lower precedence.
+            
+            This overload is useful for recursive expressions (for example, languages with parenthesised subexpressions).
+            <paramref name="termAndOperatorTableFactory"/>'s argument will be a parser which parses a full subexpression.
+            </summary>
+            <param name="termAndOperatorTableFactory">A function which produces a parser for a single term and a table of operators</param>
+            <returns>A parser for expressions built from the operators in the operator table</returns>
+        </member>
+        <member name="T:Pidgin.Expression.Operator">
+            <summary>
+            Methods to create <see cref="T:Pidgin.Expression.OperatorTableRow`2"/> values.
+            </summary>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.Binary``2(Pidgin.Expression.BinaryOperatorType,Pidgin.Parser{``0,System.Func{``1,``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single binary infix operator with the specified associativity.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="type">The associativity of the infix operator</param>
+            <param name="opParser">A parser for an infix operator</param>
+            <returns>A row in a table of operators which contains a single infix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.Unary``2(Pidgin.Expression.UnaryOperatorType,Pidgin.Parser{``0,System.Func{``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single unary operator - either a prefix operator or a postfix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="type">The type of the unary operator</param>
+            <param name="opParser">A parser for a unary operator</param>
+            <returns>A row in a table of operators which contains a single unary operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.InfixN``2(Pidgin.Parser{``0,System.Func{``1,``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single non-associative infix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="opParser">A parser for an infix operator</param>
+            <returns>A row in a table of operators which contains a single infix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.InfixL``2(Pidgin.Parser{``0,System.Func{``1,``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single left-associative infix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="opParser">A parser for an infix operator</param>
+            <returns>A row in a table of operators which contains a single infix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.InfixR``2(Pidgin.Parser{``0,System.Func{``1,``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single right-associative infix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="opParser">A parser for an infix operator</param>
+            <returns>A row in a table of operators which contains a single infix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.Prefix``2(Pidgin.Parser{``0,System.Func{``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single prefix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="opParser">A parser for an prefix operator</param>
+            <returns>A row in a table of operators which contains a single prefix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.Postfix``2(Pidgin.Parser{``0,System.Func{``1,``1}})">
+            <summary>
+            Creates a row in a table of operators which contains a single postfix operator.
+            Can be combined with other <see cref="T:Pidgin.Expression.OperatorTableRow`2"/>s using
+            <see cref="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})"/> to build a larger row.
+            </summary>
+            <param name="opParser">A parser for an postfix operator</param>
+            <returns>A row in a table of operators which contains a single postfix operator.</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.PrefixChainable``2(System.Collections.Generic.IEnumerable{Pidgin.Parser{``0,System.Func{``1,``1}}})">
+            <summary>
+            Creates a row in a table of operators which contains a chainable collection of prefix operators.
+            By default <see cref="M:Pidgin.Expression.Operator.Prefix``2(Pidgin.Parser{``0,System.Func{``1,``1}})"/> operators can only appear onc, so <c>- - 1</c> would not be parsed as "minus minus 1".
+            
+            This method is equivalent to:
+            <code>
+            Prefix(
+                OneOf(opParsers)
+                    .AtLeastOnce()
+                    .Select&lt;Func&lt;T, T&gt;&gt;(fs => z => fs.AggregateR(z, (f, x) => f(x)))
+            )
+            </code>
+            </summary>
+            <param name="opParsers">A collection of parsers for individual prefix operators</param>
+            <returns>A row in a table of operators which contains a chainable collection of prefix operators</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.PrefixChainable``2(Pidgin.Parser{``0,System.Func{``1,``1}}[])">
+            <summary>
+            Creates a row in a table of operators which contains a chainable collection of prefix operators.
+            By default <see cref="M:Pidgin.Expression.Operator.Prefix``2(Pidgin.Parser{``0,System.Func{``1,``1}})"/> operators can only appear onc, so <c>- - 1</c> would not be parsed as "minus minus 1".
+            
+            This method is equivalent to:
+            <code>
+            Prefix(
+                OneOf(opParsers)
+                    .AtLeastOnce()
+                    .Select&lt;Func&lt;T, T&gt;&gt;(fs => z => fs.AggregateR(z, (f, x) => f(x)))
+            )
+            </code>
+            </summary>
+            <param name="opParsers">A collection of parsers for individual prefix operators</param>
+            <returns>A row in a table of operators which contains a chainable collection of prefix operators</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.PostfixChainable``2(System.Collections.Generic.IEnumerable{Pidgin.Parser{``0,System.Func{``1,``1}}})">
+            <summary>
+            Creates a row in a table of operators which contains a chainable collection of postfix operators.
+            By default <see cref="M:Pidgin.Expression.Operator.Postfix``2(Pidgin.Parser{``0,System.Func{``1,``1}})"/> operators can only appear onc, so <c>foo()()</c> would not be parsed as "call(call(foo))".
+            
+            This method is equivalent to:
+            <code>
+            Postfix(
+                OneOf(opParsers)
+                    .AtLeastOnce()
+                    .Select&lt;Func&lt;T, T&gt;&gt;(fs => z => fs.Aggregate(z, (x, f) => f(x)))
+            )
+            </code>
+            </summary>
+            <param name="opParsers">A collection of parsers for individual postfix operators</param>
+            <returns>A row in a table of operators which contains a chainable collection of postfix operators</returns>
+        </member>
+        <member name="M:Pidgin.Expression.Operator.PostfixChainable``2(Pidgin.Parser{``0,System.Func{``1,``1}}[])">
+            <summary>
+            Creates a row in a table of operators which contains a chainable collection of postfix operators.
+            By default <see cref="M:Pidgin.Expression.Operator.Postfix``2(Pidgin.Parser{``0,System.Func{``1,``1}})"/> operators can only appear onc, so <c>foo()()</c> would not be parsed as "call(call(foo))".
+            
+            This method is equivalent to:
+            <code>
+            Postfix(
+                OneOf(opParsers)
+                    .AtLeastOnce()
+                    .Select&lt;Func&lt;T, T&gt;&gt;(fs => z => fs.Aggregate(z, (x, f) => f(x)))
+            )
+            </code>
+            </summary>
+            <param name="opParsers">A collection of parsers for individual postfix operators</param>
+            <returns>A row in a table of operators which contains a chainable collection of postfix operators</returns>
+        </member>
+        <member name="T:Pidgin.Expression.OperatorTableRow`2">
+            <summary>
+            Represents a row in a table of operators.
+            Contains a collection of parsers for operators at a single precendence level.
+            </summary>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.InfixNOps">
+            <summary>
+            A collection of parsers for the non-associative infix operators at this precedence level
+            </summary>
+            <returns>A collection of parsers for the non-associative infix operators at this precedence level</returns>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.InfixLOps">
+            <summary>
+            A collection of parsers for the left-associative infix operators at this precedence level
+            </summary>
+            <returns>A collection of parsers for the left-associative infix operators at this precedence level</returns>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.InfixROps">
+            <summary>
+            A collection of parsers for the right-associative infix operators at this precedence level
+            </summary>
+            <returns>A collection of parsers for the right-associative infix operators at this precedence level</returns>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.PrefixOps">
+            <summary>
+            A collection of parsers for the prefix operators at this precedence level
+            </summary>
+            <returns>A collection of parsers for the prefix operators at this precedence level</returns>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.PostfixOps">
+            <summary>
+            A collection of parsers for the postfix operators at this precedence level
+            </summary>
+            <returns>A collection of parsers for the postfix operators at this precedence level</returns>
+        </member>
+        <member name="M:Pidgin.Expression.OperatorTableRow`2.#ctor(System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,System.Func{`1,`1,`1}}},System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,System.Func{`1,`1,`1}}},System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,System.Func{`1,`1,`1}}},System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,System.Func{`1,`1}}},System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,System.Func{`1,`1}}})">
+            <summary>
+            Creates a row in a table of operators containing a collection of parsers for operators at a single precedence level.
+            </summary>
+            <param name="infixNOps">A collection of parsers for the non-associative infix operators at this precedence level</param>
+            <param name="infixLOps">A collection of parsers for the left-associative infix operators at this precedence level</param>
+            <param name="infixROps">A collection of parsers for the right-associative infix operators at this precedence level</param>
+            <param name="prefixOps">A collection of parsers for the prefix operators at this precedence level</param>
+            <param name="postfixOps">A collection of parsers for the postfix operators at this precedence level</param>
+        </member>
+        <member name="P:Pidgin.Expression.OperatorTableRow`2.Empty">
+            <summary>
+            An empty row in a table of operators
+            </summary>
+            <returns>An empty row in a table of operators</returns>
+        </member>
+        <member name="M:Pidgin.Expression.OperatorTableRow`2.And(Pidgin.Expression.OperatorTableRow{`0,`1})">
+            <summary>
+            Combine two rows at the same precedence level
+            </summary>
+            <param name="otherRow">A collection of parsers for operators</param>
+            <returns>The current collection of parsers combined with <paramref name="otherRow"/></returns>
+        </member>
+        <member name="T:Pidgin.Expression.UnaryOperatorType">
+            <summary>
+            The type of the unary operator: prefix or postfix
+            </summary>
+        </member>
+        <member name="F:Pidgin.Expression.UnaryOperatorType.Prefix">
+            <summary>
+            Denotes a prefix operator
+            </summary>
+        </member>
+        <member name="F:Pidgin.Expression.UnaryOperatorType.Postfix">
+            <summary>
+            Denotes a postfix operator
+            </summary>
+        </member>
+        <member name="T:Pidgin.InplaceStringBuilder">
+            <summary>
+            A mutable struct! Careful!
+            </summary>
+        </member>
+        <member name="M:Pidgin.InternalResult.Failure``1(System.Boolean)">
+            <summary>
+            NB! Remember to set IParseState.Error when you return a failure result
+            </summary>
+        </member>
+        <member name="T:Pidgin.Maybe">
+            <summary>
+            Constructor functions, extension methods and utilities for working with <see cref="T:Pidgin.Maybe`1"/>
+            </summary>
+        </member>
+        <member name="M:Pidgin.Maybe.Just``1(``0)">
+            <summary>
+            Creates a <see cref="T:Pidgin.Maybe`1"/> containing a value
+            </summary>
+            <param name="value">The value of the new <see cref="T:Pidgin.Maybe`1"/></param>
+            <typeparam name="T">The type of the contained value</typeparam>
+            <returns>A <see cref="T:Pidgin.Maybe`1"/> containing the specified value</returns>
+        </member>
+        <member name="M:Pidgin.Maybe.Nothing``1">
+            <summary>
+            Creates a <see cref="T:Pidgin.Maybe`1"/> containing no value
+            </summary>
+            <typeparam name="T">The type of the absent value</typeparam>
+            <returns>A <see cref="T:Pidgin.Maybe`1"/> containing no</returns>
+        </member>
+        <member name="T:Pidgin.Maybe`1">
+            <summary>
+            Represents a single possibly absent value. Like <c>Nullable</c> but works for reference types as well as value types.
+            </summary>
+            <typeparam name="T">The type of the contained value</typeparam>
+        </member>
+        <member name="P:Pidgin.Maybe`1.HasValue">
+            <summary>
+            Does the <see cref="T:Pidgin.Maybe`1"/> contain a value?
+            </summary>
+            <returns>True if and only if the <see cref="T:Pidgin.Maybe`1"/> contains a value.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.#ctor(`0)">
+            <summary>
+            Create a <see cref="T:Pidgin.Maybe`1"/> containing a value
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="P:Pidgin.Maybe`1.Value">
+            <summary>
+            Get the value from the <see cref="T:Pidgin.Maybe`1"/>, throwing <see cref="T:System.InvalidOperationException" /> if the value is absent.
+            </summary>
+            <returns>The value</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when the <see cref="T:Pidgin.Maybe`1"/> does not contain a value</exception>
+        </member>
+        <member name="M:Pidgin.Maybe`1.GetValueOrDefault">
+            <summary>
+            Get the value from the <see cref="T:Pidgin.Maybe`1"/>, or return a default value.
+            </summary>
+            <returns>The value if <see cref="P:Pidgin.Maybe`1.HasValue"/> is true, or a default value.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.GetValueOrDefault(`0)">
+            <summary>
+            Get the value from the <see cref="T:Pidgin.Maybe`1"/>, or return <paramref name="value"/>.
+            </summary>
+            <param name="value">The default value to return, if the <see cref="T:Pidgin.Maybe`1"/> does not contain a value</param>
+            <returns>The value if <see cref="P:Pidgin.Maybe`1.HasValue"/> is true, or <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.GetValueOrDefault(System.Func{`0})">
+            <summary>
+            Get the value from the <see cref="T:Pidgin.Maybe`1"/>, or return the result of calling <paramref name="value"/>.
+            </summary>
+            <param name="value">A function to call to create a default value, if the <see cref="T:Pidgin.Maybe`1"/> does not contain a value</param>
+            <returns>The value if <see cref="P:Pidgin.Maybe`1.HasValue"/> is true, or the result of calling <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Match``1(System.Func{`0,``0},System.Func{``0})">
+            <summary>
+            Tear down this <see cref="T:Pidgin.Maybe`1"/> using a function for the two possible outcomes.
+            If <see cref="P:Pidgin.Maybe`1.HasValue"/> is true, <paramref name="just"/> will be called. Otherwise, <paramref name="nothing"/> will be called.
+            </summary>
+            <typeparam name="U">The return type</typeparam>
+            <param name="just">Called when the result has a value</param>
+            <param name="nothing">Called when the result does not have a value</param>
+            <returns>The result of calling the <paramref name="just"/> or <paramref name="nothing"/> function</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Select``1(System.Func{`0,``0})">
+            <summary>
+            Project the value contained in the <see cref="T:Pidgin.Maybe`1"/> using the specified transformation function.
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <typeparam name="U">The type of the resulting value</typeparam>
+            <returns>The result of applying the transformation function to the contained value, or <see cref="M:Pidgin.Maybe.Nothing``1"/></returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Where(System.Func{`0,System.Boolean})">
+            <summary>
+            Filter a <see cref="T:Pidgin.Maybe`1"/> according to a predicate.
+            </summary>
+            <param name="predicate">A predicate to apply to the value contained within the <see cref="T:Pidgin.Maybe`1"/>.</param>
+            <returns>A <see cref="T:Pidgin.Maybe`1"/> containing the current <see cref="T:Pidgin.Maybe`1"/>'s <see cref="P:Pidgin.Maybe`1.Value"/>, if the <see cref="P:Pidgin.Maybe`1.HasValue"/> property returns true and the value satisfies the predicate, or <see cref="M:Pidgin.Maybe.Nothing``1"/></returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.SelectMany``1(System.Func{`0,Pidgin.Maybe{``0}})">
+            <summary>
+            Projects the element of the <see cref="T:Pidgin.Maybe`1"/> into a possibly-absent value, and flattens the resulting value into a single <see cref="T:Pidgin.Maybe`1"/>.
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <typeparam name="U">The type of the resulting possibly-absent value</typeparam>
+            <returns>The resulting <see cref="T:Pidgin.Maybe`1"/>, or <see cref="M:Pidgin.Maybe.Nothing``1"/> if the <see cref="P:Pidgin.Maybe`1.HasValue"/> property returns false or the selector returns an absent value</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.SelectMany``2(System.Func{`0,Pidgin.Maybe{``0}},System.Func{`0,``0,``1})">
+            <summary>
+            Projects the element of the <see cref="T:Pidgin.Maybe`1"/> into a possibly-absent value, and flattens the resulting value into a single <see cref="T:Pidgin.Maybe`1"/>, applying a result selector function to the two values.
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <param name="result">A transformation function to apply to the contained value and the value contained in the selected <see cref="T:Pidgin.Maybe`1"/></param>
+            <typeparam name="U">The type of the value to select</typeparam>
+            <typeparam name="R">The type of the resulting possibly-absent value</typeparam>
+            <returns>The result of applying <paramref name="selector"/> to the contained value and <paramref name="result"/> to the intermediate values, or <see cref="M:Pidgin.Maybe.Nothing``1"/> if the <see cref="P:Pidgin.Maybe`1.HasValue"/> property returns false or the selector returns an absent value</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Cast``1">
+            <summary>
+            Cast the value contained in the <see cref="T:Pidgin.Maybe`1"/> to the specified result type
+            </summary>
+            <typeparam name="U">The type to cast the contained value to</typeparam>
+            <exception cref="T:System.InvalidCastException">Thrown when the contained value is not an instance of <typeparamref name="U"/></exception>
+            <returns>A <see cref="T:Pidgin.Maybe`1"/> containing this <see cref="T:Pidgin.Maybe`1"/>'s value casted to <typeparamref name="U"/>, if the <see cref="P:Pidgin.Maybe`1.HasValue"/> property returns true, or <see cref="M:Pidgin.Maybe.Nothing``1"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.OfType``1">
+            <summary>
+            Cast the value contained in the <see cref="T:Pidgin.Maybe`1"/> to the specified result type, or return <see cref="M:Pidgin.Maybe.Nothing``1"/> if the contained value is not an instance of <typeparamref name="U"/>.
+            </summary>
+            <typeparam name="U">The type to cast the contained value to</typeparam>
+            <returns>A <see cref="T:Pidgin.Maybe`1"/> containing this <see cref="T:Pidgin.Maybe`1"/>'s value casted to <typeparamref name="U"/>, if the <see cref="P:Pidgin.Maybe`1.HasValue"/> property returns true and the contained value is an instance of <typeparamref name="U"/>, or <see cref="M:Pidgin.Maybe.Nothing``1"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Equals(Pidgin.Maybe{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Maybe`1.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Maybe`1.op_Equality(Pidgin.Maybe{`0},Pidgin.Maybe{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Maybe`1.op_Inequality(Pidgin.Maybe{`0},Pidgin.Maybe{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.Maybe`1.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pidgin.ParseError`1">
+            <summary>
+            Represents an error encountered during parsing.
+            </summary>
+            <typeparam name="TToken">The type of tokens in the input stream</typeparam>
+        </member>
+        <member name="P:Pidgin.ParseError`1.EOF">
+            <summary>
+            Was the parse error due to encountering the end of the input stream while parsing?
+            </summary>
+            <returns>True if and only if the parse error was due to encountering the end of the input stream while parsing</returns>
+        </member>
+        <member name="P:Pidgin.ParseError`1.Unexpected">
+            <summary>
+            The token which caused the parse error.
+            </summary>
+            <returns>The token which caused the parse error, or <see cref="M:Pidgin.Maybe.Nothing``1"/> if the parse error was not caused by an unexpected token.</returns>
+        </member>
+        <member name="P:Pidgin.ParseError`1.Expected">
+            <summary>
+            A collection of expected inputs
+            </summary>
+            <returns>The collection of expected inputs</returns>
+        </member>
+        <member name="P:Pidgin.ParseError`1.ErrorPos">
+            <summary>
+            The position in the input stream at which the parse error occurred
+            </summary>
+            <returns>The position in the input stream at which the parse error occurred</returns>
+        </member>
+        <member name="P:Pidgin.ParseError`1.Message">
+            <summary>
+            A custom error message
+            </summary>
+            <returns>A custom error message, or null if the error was created without a custom error message</returns>
+        </member>
+        <member name="M:Pidgin.ParseError`1.ToString">
+            <summary>
+            Render the parse error as a string
+            </summary>
+            <returns>An error message</returns>
+        </member>
+        <member name="M:Pidgin.ParseError`1.RenderErrorMessage">
+            <summary>
+            Render the parse error as a string
+            </summary>
+            <returns>An error message</returns>
+        </member>
+        <member name="M:Pidgin.ParseError`1.Equals(Pidgin.ParseError{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.ParseError`1.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.ParseError`1.op_Equality(Pidgin.ParseError{`0},Pidgin.ParseError{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.ParseError`1.op_Inequality(Pidgin.ParseError{`0},Pidgin.ParseError{`0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.ParseError`1.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pidgin.ParseException">
+            <summary>
+            Thrown when a parse error is encountered during parsing
+            </summary>
+        </member>
+        <member name="T:Pidgin.Parser`1">
+            <summary>
+            Constructor functions, extension methods and utilities for <see cref="T:Pidgin.Parser`2"/>
+            This class is intended to be imported statically, with the type parameter set to the type of tokens in your input stream ("using static Pidgin.Parser&lt;char&gt;").
+            </summary>
+            <typeparam name="TToken">The type of the tokens in the input stream for parsers created by methods in this class</typeparam>
+        </member>
+        <member name="P:Pidgin.Parser`1.Any">
+            <summary>
+            Creates a parser that parses any single character
+            </summary>
+            <returns>A parser that parses any single character</returns>
+        </member>
+        <member name="P:Pidgin.Parser`1.CurrentOffset">
+            <summary>
+            A parser which returns the number of input tokens which have been consumed.
+            </summary>
+            <returns>A parser which returns the number of input tokens which have been consumed</returns>
+        </member>
+        <member name="P:Pidgin.Parser`1.CurrentPos">
+            <summary>
+            A parser which returns the current source position
+            </summary>
+            <returns>A parser which returns the current source position</returns>
+        </member>
+        <member name="P:Pidgin.Parser`1.End">
+            <summary>
+            Creates a parser which parses the end of the input stream
+            </summary>
+            <returns>A parser which parses the end of the input stream and returns <see cref="P:Pidgin.Unit.Value"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Fail``1(System.String)">
+            <summary>
+            Creates a parser which always fails without consuming any input.
+            </summary>
+            <param name="message">A custom error message</param>
+            <typeparam name="T">The return type of the resulting parser</typeparam>
+            <returns>A parser which always fails</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.FromResult``1(``0)">
+            <summary>
+            Creates a parser which returns the specified value without consuming any input
+            </summary>
+            <param name="result">The value to return</param>
+            <typeparam name="T">The type of the value to return</typeparam>
+            <returns>A parser which returns the specified value without consuming any input</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Return``1(``0)">
+            <summary>
+            Creates a parser which returns the specified value without consuming any input
+            </summary>
+            <param name="value">The value to return</param>
+            <typeparam name="T">The type of the value to return</typeparam>
+            <returns>A parser which returns the specified value without consuming any input</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Sequence(`0[])">
+            <summary>
+            Creates a parser that parses and returns a literal sequence of tokens
+            </summary>
+            <param name="tokens">A sequence of tokens</param>
+            <returns>A parser that parses a literal sequence of tokens</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Sequence``1(``0)">
+            <summary>
+            Creates a parser that parses and returns a literal sequence of tokens.
+            The input enumerable is enumerated and copied to a list.
+            </summary>
+            <typeparam name="TEnumerable">The type of tokens to parse</typeparam>
+            <param name="tokens">A sequence of tokens</param>
+            <returns>A parser that parses a literal sequence of tokens</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Sequence``1(Pidgin.Parser{`0,``0}[])">
+            <summary>
+            Creates a parser that applies a sequence of parsers and collects the results.
+            This parser fails if any of its constituent parsers fail
+            </summary>
+            <typeparam name="T">The return type of the parsers</typeparam>
+            <param name="parsers">A sequence of parsers</param>
+            <returns>A parser that applies a sequence of parsers and collects the results</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Sequence``1(System.Collections.Generic.IEnumerable{Pidgin.Parser{`0,``0}})">
+            <summary>
+            Creates a parser that applies a sequence of parsers and collects the results.
+            This parser fails if any of its constituent parsers fail
+            </summary>
+            <typeparam name="T">The return type of the parsers</typeparam>
+            <param name="parsers">A sequence of parsers</param>
+            <returns>A parser that applies a sequence of parsers and collects the results</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Token(`0)">
+            <summary>
+            Creates a parser that parses and returns a single token
+            </summary>
+            <param name="token">The token to parse</param>
+            <returns>A parser that parses and returns a single token</returns>
+        </member>
+        <member name="M:Pidgin.Parser`1.Token(System.Func{`0,System.Boolean})">
+            <summary>
+            Creates a parser that parses and returns a single token satisfying a predicate
+            </summary>
+            <param name="predicate">A predicate function to apply to a token</param>
+            <returns>A parser that parses and returns a single token satisfying a predicate</returns>
+        </member>
+        <member name="T:Pidgin.Parser`2">
+            <summary>
+            Represents a parser which consumes a stream of values of type <typeparamref name="TToken"/> and returns a value of type <typeparamref name="T"/>.
+            A parser can either succeed, and return a value of type <typeparamref name="T"/>, or fail and return a <see cref="T:Pidgin.ParseError`1"/>.
+            </summary>
+            <typeparam name="TToken">The type of the tokens in the parser's input stream</typeparam>
+            <typeparam name="T">The type of the value returned by the parser</typeparam>
+            <remarks>This type is not intended to be subclassed by users of the library</remarks>
+        </member>
+        <member name="M:Pidgin.Parser`2.Assert(System.Func{`1,System.Boolean})">
+            <summary>
+            Creates a parser that fails if the value returned by the current parser fails to satisfy a predicate.
+            </summary>
+            <param name="predicate">The predicate to apply to the value returned by the current parser</param>
+            <returns>A parser that fails if the value returned by the current parser fails to satisfy <paramref name="predicate"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Assert(System.Func{`1,System.Boolean},System.String)">
+            <summary>
+            Creates a parser that fails if the value returned by the current parser fails to satisfy a predicate.
+            </summary>
+            <param name="predicate">The predicate to apply to the value returned by the current parser</param>
+            <param name="message">A custom error message to return when the value returned by the current parser fails to satisfy the predicate</param>
+            <returns>A parser that fails if the value returned by the current parser fails to satisfy <paramref name="predicate"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Assert(System.Func{`1,System.Boolean},System.Func{`1,System.String})">
+            <summary>
+            Creates a parser that fails if the value returned by the current parser fails to satisfy a predicate.
+            </summary>
+            <param name="predicate">The predicate to apply to the value returned by the current parser</param>
+            <param name="message">A function to produce a custom error message to return when the value returned by the current parser fails to satisfy the predicate</param>
+            <returns>A parser that fails if the value returned by the current parser fails to satisfy <paramref name="predicate"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Before``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser that applies the current parser followed by the specified parser.
+            The resulting parser returns the result of the current parser, ignoring the result of the second parser.
+            </summary>
+            <param name="parser">The parser to apply after applying the current parser.</param>
+            <typeparam name="U">The type of the value returned by the second parser</typeparam>
+            <returns>A parser that applies the current parser followed by the specified parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Between``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser that applies the specified parser both before and after applying the current parser.
+            The resulting parser returns the result of the current parser, ignoring the return value of the bracketing parser.
+            </summary>
+            <param name="parser">The parser to apply before and after applying the current parser</param>
+            <typeparam name="U">The type of the value returned by the bracketing parser</typeparam>
+            <returns>A parser that applies the specified parser before and after applying the current parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Between``2(Pidgin.Parser{`0,``0},Pidgin.Parser{`0,``1})">
+            <summary>
+            Creates a parser that applies the specified parsers before and after applying the current parser.
+            The resulting parser returns the result of the current parser, ignoring the return values of the bracketing parsers.
+            </summary>
+            <param name="parser1">The parser to apply before applying the current parser</param>
+            <param name="parser2">The parser to apply after applying the current parser</param>
+            <typeparam name="U">The type of the value returned by the first parser</typeparam>
+            <typeparam name="V">The type of the value returned by the second parser</typeparam>
+            <returns>A parser that applies the specified parsers before and after applying the current parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Bind``1(System.Func{`1,Pidgin.Parser{`0,``0}})">
+            <summary>
+            Creates a parser that applies a transformation function to the return value of the current parser.
+            The transformation function dynamically chooses a second parser, which is applied after applying the current parser.
+            </summary>
+            <param name="selector">A transformation function which returns a parser to apply after applying the current parser</param>
+            <typeparam name="U">The type of the return value of the second parser</typeparam>
+            <returns>A parser which applies the current parser before applying the result of the <paramref name="selector"/> function.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Bind``2(System.Func{`1,Pidgin.Parser{`0,``0}},System.Func{`1,``0,``1})">
+            <summary>
+            Creates a parser that applies a transformation function to the return value of the current parser.
+            The transformation function dynamically chooses a second parser, which is applied after applying the current parser.
+            </summary>
+            <param name="selector">A transformation function which returns a parser to apply after applying the current parser</param>
+            <param name="result">A function to apply to the return values of the two parsers</param>
+            <typeparam name="U">The type of the return value of the second parser</typeparam>
+            <typeparam name="R">The type of the return value of the resulting parser</typeparam>
+            <returns>A parser which applies the current parser before applying the result of the <paramref name="selector"/> function</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Cast``1">
+            <summary>
+            Cast the return value of the current parser to the specified result type
+            </summary>
+            <typeparam name="U">The type to cast the return value to</typeparam>
+            <exception cref="T:System.InvalidCastException">Thrown when the return value is not an instance of <typeparamref name="U"/></exception>
+            <returns>A parser which returns this parser's return value casted to <typeparamref name="U"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Labelled(System.String)">
+            <summary>
+            Creates a parser equivalent to the current parser, with a custom label.
+            The label will be reported in an error message if the parser fails, instead of the default error message.
+            <seealso cref="P:Pidgin.ParseError`1.Expected"/>
+            <seealso cref="P:Pidgin.Expected`1.Label"/>
+            </summary>
+            <param name="label">The custom label to apply to the current parser</param>
+            <returns>A parser equivalent to the current parser, with a custom label</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Many">
+            <summary>
+            Creates a parser which applies the current parser zero or more times.
+            The resulting parser fails if the current parser fails after consuming input.
+            </summary>
+            <returns>A parser which applies the current parser zero or more times</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.AtLeastOnce">
+            <summary>
+            Creates a parser that applies the current parser one or more times.
+            The resulting parser fails if the current parser fails the first time it is applied, or if the current parser fails after consuming input
+            </summary>
+            <returns>A parser that applies the current parser one or more times</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SkipMany">
+            <summary>
+            Creates a parser which applies the current parser zero or more times, discarding the results.
+            This is more efficient than <see cref="M:Pidgin.Parser`2.Many"/>, if you don't need the results.
+            The resulting parser fails if the current parser fails after consuming input.
+            </summary>
+            <returns>A parser which applies the current parser zero or more times</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SkipAtLeastOnce">
+            <summary>
+            Creates a parser that applies the current parser one or more times, discarding the results.
+            This is more efficient than <see cref="M:Pidgin.Parser`2.AtLeastOnce"/>, if you don't need the results.
+            The resulting parser fails if the current parser fails the first time it is applied, or if the current parser fails after consuming input
+            </summary>
+            <returns>A parser that applies the current parser one or more times, discarding the results</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.MapWithInput``1(Pidgin.ReadOnlySpanFunc{`0,`1,``0})">
+            <summary>
+            Returns a parser which runs the current parser and applies a selector function.
+            The selector function receives a <see cref="T:System.ReadOnlySpan`1"/> as its first argument, and the result of the current parser as its second argument.
+            The <see cref="T:System.ReadOnlySpan`1"/> represents the sequence of input tokens which were consumed by the parser.
+            
+            This allows you to write "pattern"-style parsers which match a sequence of tokens and return a view of the part of the input stream which they matched.
+            
+            This function is an alternative name for <see cref="M:Pidgin.Parser`2.Slice``1(Pidgin.ReadOnlySpanFunc{`0,`1,``0})"/>.
+            </summary>
+            <param name="selector">
+            A selector function which computes a result of type <typeparamref name="U"/>.
+            The arguments of the selector function are a <see cref="T:System.ReadOnlySpan`1"/> containing the sequence of input tokens which were consumed by this parser,
+            and the result of this parser.
+            </param>
+            <typeparam name="U">The result type</typeparam>
+            <returns>A parser which runs the current parser and applies a selector function.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.OfType``1">
+            <summary>
+            Creates a parser which casts the return value of the current parser to the specified result type, or fails if the return value is not an instance of <typeparamref name="U"/>.
+            </summary>
+            <typeparam name="U">The type to cast the return value of the current parser to</typeparam>
+            <returns>A parser which returns the current parser's return value casted to <typeparamref name="U"/>, if the value is an instance of <typeparamref name="U"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Optional">
+            <summary>
+            Creates a parser which applies the current parser and returns <see cref="M:Pidgin.Maybe.Nothing``1"/> if the current parser fails without consuming any input.
+            The resulting parser fails if the current parser fails after consuming input.
+            </summary>
+            <returns>A parser which applies the current parser and returns <see cref="M:Pidgin.Maybe.Nothing``1"/> if the current parser fails without consuming any input</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Or(Pidgin.Parser{`0,`1})">
+            <summary>
+            Creates a parser which tries to apply the current parser, applying the specified parser if the current parser fails without consuming any input.
+            The resulting parser fails if both the current parser and the alternative parser fail, or if the current parser fails after consuming input.
+            </summary>
+            <param name="parser">The alternative parser to apply if the current parser fails without consuming any input</param>
+            <returns>A parser which tries to apply the current parser, and applies <paramref name="parser"/> if the current parser fails without consuming any input.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.RecoverWith(System.Func{Pidgin.ParseError{`0},Pidgin.Parser{`0,`1}})">
+            <summary>
+            Creates a parser which runs the current parser, running <paramref name="errorHandler" /> on failure.
+            </summary>
+            <param name="errorHandler">A function which returns a parser to apply when the current parser fails.</param>
+            <returns>A parser which runs the current parser, running <paramref name="errorHandler" /> on failure.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Repeat(System.Int32)">
+            <summary>
+            Creates a parser which applies the current parser <paramref name="count"/> times.
+            </summary>
+            <param name="count">The number of times to apply the current parser</param>
+            <exception cref="T:System.InvalidOperationException"><paramref name="count"/> is less than 0</exception>
+            <returns>A parser which applies the current parser <paramref name="count"/> times.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Select``1(System.Func{`1,``0})">
+            <summary>
+            Creates a parser which applies the specified transformation function to the result of the current parser.
+            This is an infix synonym for <see cref="M:Pidgin.Parser.Map``3(System.Func{``1,``2},Pidgin.Parser{``0,``1})"/>.
+            </summary>
+            <typeparam name="U">The return type of the transformation function</typeparam>
+            <param name="selector">A transformation function</param>
+            <returns>A parser which applies <paramref name="selector"/> to the result of the current parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Map``1(System.Func{`1,``0})">
+            <summary>
+            Creates a parser which applies the specified transformation function to the result of the current parser.
+            This is an infix synonym for <see cref="M:Pidgin.Parser.Map``3(System.Func{``1,``2},Pidgin.Parser{``0,``1})"/>.
+            </summary>
+            <typeparam name="U">The return type of the transformation function</typeparam>
+            <param name="selector">A transformation function</param>
+            <returns>A parser which applies <paramref name="selector"/> to the result of the current parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SelectMany``2(System.Func{`1,Pidgin.Parser{`0,``0}},System.Func{`1,``0,``1})">
+            <summary>
+            Creates a parser that applies a transformation function to the return value of the current parser.
+            The transformation function dynamically chooses a second parser, which is applied after applying the current parser.
+            </summary>
+            <param name="selector">A transformation function which returns a parser to apply after applying the current parser</param>
+            <param name="result">A function to apply to the return values of the two parsers</param>
+            <typeparam name="U">The type of the return value of the second parser</typeparam>
+            <typeparam name="R">The type of the return value of the resulting parser</typeparam>
+            <returns>A parser which applies the current parser before applying the result of the <paramref name="selector"/> function</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Separated``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser repeatedly, interleaved with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser repeatedly, interleaved by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SeparatedAtLeastOnce``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser at least once, interleaved with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser at least once, interleaved by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SeparatedAndTerminated``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser repeatedly, interleaved and terminated with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser repeatedly, interleaved and terminated by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SeparatedAndTerminatedAtLeastOnce``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser at least once, interleaved and terminated with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser at least once, interleaved and terminated by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SeparatedAndOptionallyTerminated``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser repeatedly, interleaved and optionally terminated with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser repeatedly, interleaved and optionally terminated by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SeparatedAndOptionallyTerminatedAtLeastOnce``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser at least once, interleaved and optionally terminated with a specified parser.
+            The resulting parser ignores the return value of the separator parser.
+            </summary>
+            <typeparam name="U">The return type of the separator parser</typeparam>
+            <param name="separator">A parser which parses a separator to be interleaved with the current parser</param>
+            <returns>A parser which applies the current parser at least once, interleaved and optionally terminated by <paramref name="separator"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Slice``1(Pidgin.ReadOnlySpanFunc{`0,`1,``0})">
+             <summary>
+             Returns a parser which runs the current parser and applies a selector function.
+             The selector function receives a <see cref="T:System.ReadOnlySpan`1"/> as its first argument, and the result of the current parser as its second argument.
+             The <see cref="T:System.ReadOnlySpan`1"/> represents the sequence of input tokens which were consumed by the parser.
+             
+             This allows you to write "pattern"-style parsers which match a sequence of tokens and return a view of the part of the input stream which they matched.
+            
+             This function is an alternative name for <see cref="M:Pidgin.Parser`2.MapWithInput``1(Pidgin.ReadOnlySpanFunc{`0,`1,``0})"/>.
+             </summary>
+             <param name="selector">
+             A selector function which computes a result of type <typeparamref name="U"/>.
+             The arguments of the selector function are a <see cref="T:System.ReadOnlySpan`1"/> containing the sequence of input tokens which were consumed by this parser,
+             and the result of this parser.
+             </param>
+             <typeparam name="U">The result type</typeparam>
+             <returns>A parser which runs the current parser and applies a selector function.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Then``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies the current parser followed by a specified parser.
+            The resulting parser returns the result of the second parser, ignoring the result of the current parser.
+            </summary>
+            <typeparam name="U">The return type of the second parser</typeparam>
+            <param name="parser">A parser to apply after applying the current parser</param>
+            <returns>A parser which applies the current parser followed by <paramref name="parser"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Then``2(Pidgin.Parser{`0,``0},System.Func{`1,``0,``1})">
+            <summary>
+            Creates a parser which applies the current parser followed by a specified parser, applying a function to the two results.
+            </summary>
+            <remarks>
+            This is a synonym for <see cref="M:Pidgin.Parser.Map``4(System.Func{``1,``2,``3},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2})"/>
+            with the arguments rearranged.
+            </remarks>
+            <typeparam name="U">The return type of the second parser</typeparam>
+            <typeparam name="R">The return type of the composed parser</typeparam>
+            <param name="parser">A parser to apply after applying the current parser</param>
+            <param name="result">A function to apply to the two parsed values</param>
+            <returns>A parser which applies the current parser followed by <paramref name="parser"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Then``1(System.Func{`1,Pidgin.Parser{`0,``0}})">
+            <summary>
+            Creates a parser that applies a transformation function to the return value of the current parser.
+            The transformation function dynamically chooses a second parser, which is applied after applying the current parser.
+            </summary>
+            <remarks>This function is a synonym for <see cref="M:Pidgin.Parser`2.Bind``1(System.Func{`1,Pidgin.Parser{`0,``0}})"/></remarks>
+            <param name="selector">A transformation function which returns a parser to apply after applying the current parser</param>
+            <typeparam name="U">The type of the return value of the second parser</typeparam>
+            <returns>A parser which applies the current parser before applying the result of the <paramref name="selector"/> function.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Then``2(System.Func{`1,Pidgin.Parser{`0,``0}},System.Func{`1,``0,``1})">
+            <summary>
+            Creates a parser that applies a transformation function to the return value of the current parser.
+            The transformation function dynamically chooses a second parser, which is applied after applying the current parser.
+            </summary>
+            <remarks>This function is a synonym for <see cref="M:Pidgin.Parser`2.Bind``2(System.Func{`1,Pidgin.Parser{`0,``0}},System.Func{`1,``0,``1})"/></remarks>
+            <param name="selector">A transformation function which returns a parser to apply after applying the current parser</param>
+            <param name="result">A function to apply to the return values of the two parsers</param>
+            <typeparam name="U">The type of the return value of the second parser</typeparam>
+            <typeparam name="R">The type of the return value of the resulting parser</typeparam>
+            <returns>A parser which applies the current parser before applying the result of the <paramref name="selector"/> function</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Trace(System.Func{`1,System.String})">
+            <summary>
+            For debugging use.
+            
+            Creates a new parser which runs the current parser and prints the given message to the console.
+            </summary>
+            <returns>A parser which runs the current parser and prints the given message to the console.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Trace(System.String)">
+            <summary>
+            For debugging use.
+            
+            Creates a new parser which runs the current parser and prints the given message to the console.
+            </summary>
+            <returns>A parser which runs the current parser and prints the given message to the console.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.TraceResult">
+            <summary>
+            For debugging use.
+            
+            Creates a new parser which runs the current parser and prints the result to the console.
+            </summary>
+            <returns>A parser which runs the current parser and prints the result to the console.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Until``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies this parser zero or more times until <paramref name="terminator"/> succeeds.
+            Fails if this parser fails or if <paramref name="terminator"/> fails after consuming input.
+            The return value of <paramref name="terminator"/> is ignored.
+            </summary>
+            <typeparam name="U">The return type of <paramref name="terminator"/></typeparam>
+            <param name="terminator">A parser to parse a terminator</param>
+            <returns>A parser which applies this parser repeatedly until <paramref name="terminator"/> succeeds</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.AtLeastOnceUntil``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies this parser one or more times until <paramref name="terminator"/> succeeds.
+            Fails if this parser fails or if <paramref name="terminator"/> fails after consuming input.
+            The return value of <paramref name="terminator"/> is ignored.
+            </summary>
+            <param name="terminator">A parser to parse a terminator</param>
+            <returns>A parser which applies this parser repeatedly until <paramref name="terminator"/> succeeds</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SkipUntil``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies this parser zero or more times until <paramref name="terminator"/> succeeds, discarding the results.
+            This is more efficient than <see cref="M:Pidgin.Parser`2.Until``1(Pidgin.Parser{`0,``0})"/> if you don't need the results.
+            Fails if this parser fails or if <paramref name="terminator"/> fails after consuming input.
+            The return value of <paramref name="terminator"/> is ignored.
+            </summary>
+            <typeparam name="U">The return type of <paramref name="terminator"/></typeparam>
+            <param name="terminator">A parser to parse a terminator</param>
+            <returns>A parser which applies this parser repeatedly until <paramref name="terminator"/> succeeds, discarding the results</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.SkipAtLeastOnceUntil``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Creates a parser which applies this parser one or more times until <paramref name="terminator"/> succeeds, discarding the results.
+            This is more efficient than <see cref="M:Pidgin.Parser`2.AtLeastOnceUntil``1(Pidgin.Parser{`0,``0})"/> if you don't need the results.
+            Fails if this parser fails or if <paramref name="terminator"/> fails after consuming input.
+            The return value of <paramref name="terminator"/> is ignored.
+            </summary>
+            <param name="terminator">A parser to parse a terminator</param>
+            <returns>A parser which applies this parser repeatedly until <paramref name="terminator"/> succeeds, discarding the results</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.Where(System.Func{`1,System.Boolean})">
+            <summary>
+            Creates a parser that fails if the value returned by the current parser fails to satisfy a predicate.
+            </summary>
+            <remarks>This function is a synonym of <see cref="M:Pidgin.Parser`2.Assert(System.Func{`1,System.Boolean})"/></remarks>
+            <param name="predicate">The predicate to apply to the value returned by the current parser</param>
+            <returns>A parser that fails if the value returned by the current parser fails to satisfy <paramref name="predicate"/></returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.WithResult``1(``0)">
+            <summary>
+            Creates a parser which behaves like the current parser but returns <paramref name="result"/> after a successful parse.
+            This is a synonym for <see cref="M:Pidgin.Parser`2.ThenReturn``1(``0)"/>.
+            </summary>
+            <example>
+            Equivalent to using <see cref="M:Pidgin.Parser`2.Select``1(System.Func{`1,``0})"/> with a function that returns a fixed value,
+            or <see cref="M:Pidgin.Parser`2.Then``1(Pidgin.Parser{`0,``0})"/> with <see cref="M:Pidgin.Parser`1.Return``1(``0)"/>.
+            <code>
+            p.WithResult(x) == p.Select(_ => x) == p.Then(Return(x));
+            </code>
+            </example>
+            <param name="result">The result</param>
+            <returns>A parser which behaves like the current parser but returns <paramref name="result"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.ThenReturn``1(``0)">
+            <summary>
+            Creates a parser which behaves like the current parser but returns <paramref name="result"/> after a successful parse.
+            This is a synonym for <see cref="M:Pidgin.Parser`2.WithResult``1(``0)"/>.
+            </summary>
+            <example>
+            Equivalent to using <see cref="M:Pidgin.Parser`2.Select``1(System.Func{`1,``0})"/> with a function that returns a fixed value,
+            or <see cref="M:Pidgin.Parser`2.Then``1(Pidgin.Parser{`0,``0})"/> with <see cref="M:Pidgin.Parser`1.Return``1(``0)"/>.
+            <code>
+            p.ThenReturn(x) == p.Select(_ => x) == p.Then(Return(x));
+            </code>
+            </example>
+            <param name="result">The result</param>
+            <returns>A parser which behaves like the current parser but returns <paramref name="result"/>.</returns>
+        </member>
+        <member name="M:Pidgin.Parser`2.IgnoreResult">
+            <summary>
+            Creates a parser which behaves like the current parser but returns <see cref="P:Pidgin.Unit.Value"/>.
+            Equivalent to <c>p.WithResult(Unit.Value)</c>.
+            </summary>
+            <returns>A parser which behaves like the current parser but returns <see cref="P:Pidgin.Unit.Value"/>.</returns>
+        </member>
+        <member name="T:Pidgin.Parser">
+            <summary>
+            Constructor functions, extension methods and utilities for <see cref="T:Pidgin.Parser`2"/>.
+            This class is intended to be imported statically ("using static Pidgin.Parser").
+            </summary>
+        </member>
+        <member name="M:Pidgin.Parser.Char(System.Char)">
+            <summary>
+            Creates a parser which parses and returns a single character.
+            </summary>
+            <param name="character">The character to parse</param>
+            <returns>A parser which parses and returns a single character</returns>
+        </member>
+        <member name="M:Pidgin.Parser.CIChar(System.Char)">
+            <summary>
+            Creates a parser which parses and returns a single character, in a case insensitive manner.
+            The parser returns the actual character parsed.
+            </summary>
+            <param name="character">The character to parse</param>
+            <returns>A parser which parses and returns a single character</returns>
+        </member>
+        <member name="M:Pidgin.Parser.AnyCharExcept(System.Char[])">
+            <summary>
+            Creates a parser which parses and returns a character if it is not one of the specified characters.
+            When the character is one of the given characters, the parser fails without consuming input.
+            </summary>
+            <param name="chars">A sequence of characters that should not be matched</param>
+            <returns>A parser which parses and returns a character that does not match one of the specified characters</returns>
+        </member>
+        <member name="M:Pidgin.Parser.AnyCharExcept(System.Collections.Generic.IEnumerable{System.Char})">
+            <summary>
+            Creates a parser which parses and returns a character if it is not one of the specified characters.
+            When the character is one of the given characters, the parser fails without consuming input.
+            </summary>
+            <param name="chars">A sequence of characters that should not be matched</param>
+            <returns>A parser which parses and returns a character that does not match one of the specified characters</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Digit">
+            <summary>
+            A parser that parses and returns a single digit character (0-9)
+            </summary>
+            <returns>A parser that parses and returns a single digit character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Letter">
+            <summary>
+            A parser that parses and returns a single letter character
+            </summary>
+            <returns>A parser that parses and returns a single letter character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.LetterOrDigit">
+            <summary>
+            A parser that parses and returns a single letter or digit character
+            </summary>
+            <returns>A parser that parses and returns a single letter or digit character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Lowercase">
+            <summary>
+            A parser that parses and returns a single lowercase letter character
+            </summary>
+            <returns>A parser that parses and returns a single lowercase letter character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Uppercase">
+            <summary>
+            A parser that parses and returns a single uppercase letter character
+            </summary>
+            <returns>A parser that parses and returns a single uppercase letter character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Punctuation">
+            <summary>
+            A parser that parses and returns a single Unicode punctuation character
+            </summary>
+            <returns>A parser that parses and returns a single Unicode punctuation character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Symbol">
+            <summary>
+            A parser that parses and returns a single Unicode symbol character
+            </summary>
+            <returns>A parser that parses and returns a single Unicode symbol character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Separator">
+            <summary>
+            A parser that parses and returns a single Unicode separator character
+            </summary>
+            <returns>A parser that parses and returns a single Unicode separator character</returns>
+        </member>
+        <member name="M:Pidgin.Parser.SetDefaultPosCalculator``1(System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Set the default position calculator for tokens of type <typeparamref name="TToken"/>
+            </summary>
+            <typeparam name="TToken">The type of tokens for which to set the default position calculator</typeparam>
+            <param name="posCalculator">A function which calculates the position after consuming a token</param>
+        </member>
+        <member name="M:Pidgin.Parser.ResetDefaultPosCalculator``1">
+            <summary>
+            Resets the default position caluclator for tokens of type <typeparamref name="TToken"/>
+            </summary>
+            <typeparam name="TToken">The type of tokens for which to reset the default position calculator</typeparam>
+        </member>
+        <member name="P:Pidgin.Parser.EndOfLine">
+            <summary>
+            A parser that parses and returns either the literal string "\r\n" or the literal string "\n"
+            </summary>
+            <returns>A parser that parses and returns either the literal string "\r\n" or the literal string "\n"</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Lookahead``2(Pidgin.Parser{``0,``1})">
+            <summary>
+            If <paramref name="parser"/> succeeds, <c>Lookahead(parser)</c> backtracks,
+            behaving as if <paramref name="parser"/> had not consumed any input.
+            No backtracking is performed upon failure.
+            </summary>
+            <param name="parser">The parser to look ahead with</param>
+            <returns>A parser which rewinds the input stream if <paramref name="parser"/> succeeds.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.ManyString``1(Pidgin.Parser{``0,System.Char})">
+            <summary>
+            Creates a parser which applies the current parser zero or more times, packing the resulting characters into a string.
+            Equivalent to <c>parser.Many().Select(cs => string.Concat(cs))</c>
+            </summary>
+            <param name="parser">A parser returning a single character</param>
+            <returns>A parser which applies the current parser zero or more times, packing the resulting characters into a string.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.ManyString``1(Pidgin.Parser{``0,System.String})">
+            <summary>
+            Creates a parser which applies the current parser zero or more times, concatenating the resulting string pieces.
+            Equivalent to <c>parser.Many().Select(cs => string.Concat(cs))</c>
+            </summary>
+            <param name="parser">A parser returning a single character</param>
+            <returns>A parser which applies the current parser zero or more times, concatenating the resulting string pieces.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.AtLeastOnceString``1(Pidgin.Parser{``0,System.Char})">
+            <summary>
+            Creates a parser which applies the current parser one or more times, packing the resulting characters into a string.
+            Equivalent to <c>parser.Many().Select(cs => string.Concat(cs))</c>
+            </summary>
+            <param name="parser">A parser returning a single character</param>
+            <returns>A parser which applies the current parser one or more times, packing the resulting characters into a string.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.AtLeastOnceString``1(Pidgin.Parser{``0,System.String})">
+            <summary>
+            Creates a parser which applies the current parser one or more times, concatenating the resulting string pieces.
+            Equivalent to <c>parser.Many().Select(cs => string.Concat(cs))</c>
+            </summary>
+            <param name="parser">A parser returning a single character</param>
+            <returns>A parser which applies the current parser one or more times, concatenating the resulting string pieces.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Map``3(System.Func{``1,``2},Pidgin.Parser{``0,``1})">
+            <summary>
+            Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+            </summary>
+            <param name="func">A function to apply to the return values of the specified parsers</param>
+            <param name="parser1">The first parser</param>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``4(System.Func{``1,``2,``3},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``5(System.Func{``1,``2,``3,``4},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``6(System.Func{``1,``2,``3,``4,``5},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3},Pidgin.Parser{``0,``4})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <param name="parser4">The fourth parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+            <typeparam name="T4">The return type of the fourth parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``7(System.Func{``1,``2,``3,``4,``5,``6},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3},Pidgin.Parser{``0,``4},Pidgin.Parser{``0,``5})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <param name="parser4">The fourth parser</param>
+             <param name="parser5">The fifth parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+            <typeparam name="T4">The return type of the fourth parser</typeparam>
+            <typeparam name="T5">The return type of the fifth parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``8(System.Func{``1,``2,``3,``4,``5,``6,``7},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3},Pidgin.Parser{``0,``4},Pidgin.Parser{``0,``5},Pidgin.Parser{``0,``6})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <param name="parser4">The fourth parser</param>
+             <param name="parser5">The fifth parser</param>
+             <param name="parser6">The sixth parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+            <typeparam name="T4">The return type of the fourth parser</typeparam>
+            <typeparam name="T5">The return type of the fifth parser</typeparam>
+            <typeparam name="T6">The return type of the sixth parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``9(System.Func{``1,``2,``3,``4,``5,``6,``7,``8},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3},Pidgin.Parser{``0,``4},Pidgin.Parser{``0,``5},Pidgin.Parser{``0,``6},Pidgin.Parser{``0,``7})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <param name="parser4">The fourth parser</param>
+             <param name="parser5">The fifth parser</param>
+             <param name="parser6">The sixth parser</param>
+             <param name="parser7">The seventh parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+            <typeparam name="T4">The return type of the fourth parser</typeparam>
+            <typeparam name="T5">The return type of the fifth parser</typeparam>
+            <typeparam name="T6">The return type of the sixth parser</typeparam>
+            <typeparam name="T7">The return type of the seventh parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Map``10(System.Func{``1,``2,``3,``4,``5,``6,``7,``8,``9},Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``2},Pidgin.Parser{``0,``3},Pidgin.Parser{``0,``4},Pidgin.Parser{``0,``5},Pidgin.Parser{``0,``6},Pidgin.Parser{``0,``7},Pidgin.Parser{``0,``8})">
+             <summary>
+             Creates a parser that applies the specified parsers sequentially and applies the specified transformation function to their results.
+             </summary>
+             <param name="func">A function to apply to the return values of the specified parsers</param>
+             <param name="parser1">The first parser</param>
+             <param name="parser2">The second parser</param>
+             <param name="parser3">The third parser</param>
+             <param name="parser4">The fourth parser</param>
+             <param name="parser5">The fifth parser</param>
+             <param name="parser6">The sixth parser</param>
+             <param name="parser7">The seventh parser</param>
+             <param name="parser8">The eighth parser</param>
+             <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+             <typeparam name="T1">The return type of the first parser</typeparam>
+            <typeparam name="T2">The return type of the second parser</typeparam>
+            <typeparam name="T3">The return type of the third parser</typeparam>
+            <typeparam name="T4">The return type of the fourth parser</typeparam>
+            <typeparam name="T5">The return type of the fifth parser</typeparam>
+            <typeparam name="T6">The return type of the sixth parser</typeparam>
+            <typeparam name="T7">The return type of the seventh parser</typeparam>
+            <typeparam name="T8">The return type of the eighth parser</typeparam>
+             <typeparam name="R">The return type of the resulting parser</typeparam>
+        </member>
+        <member name="M:Pidgin.Parser.Not``2(Pidgin.Parser{``0,``1})">
+            <summary>
+            Creates a parser which succeeds only if the given parser fails.
+            The resulting parser does not perform any backtracking; it consumes the same amount of input as the supplied parser.
+            Combine this function with <see cref="M:Pidgin.Parser.Try``2(Pidgin.Parser{``0,``1})"/> if this behaviour is undesirable.
+            </summary>
+            <param name="parser">The parser that is expected to fail</param>
+            <returns>A parser which succeeds only if the given parser fails.</returns>
+        </member>
+        <member name="P:Pidgin.Parser.DecimalNum">
+            <summary>
+            A parser which parses a base-10 integer with an optional sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <returns>A parser which parses a base-10 integer with an optional sign</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Num">
+            <summary>
+            A parser which parses a base-10 integer with an optional sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <returns>A parser which parses a base-10 integer with an optional sign</returns>
+        </member>
+        <member name="P:Pidgin.Parser.LongNum">
+            <summary>
+            A parser which parses a base-10 long integer with an optional sign.
+            </summary>
+            <returns>A parser which parses a base-10 long integer with an optional sign</returns>
+        </member>
+        <member name="P:Pidgin.Parser.OctalNum">
+            <summary>
+            A parser which parses a base-8 (octal) integer with an optional sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <returns>A parser which parses a base-8 (octal) integer with an optional sign</returns>
+        </member>
+        <member name="P:Pidgin.Parser.HexNum">
+            <summary>
+            A parser which parses a base-16 (hexadecimal) integer with an optional sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <returns>A parser which parses a base-16 (hexadecimal) integer with an optional sign</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Int(System.Int32)">
+            <summary>
+            A parser which parses an integer in the given base with an optional sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <param name="base">The base in which the number is notated, between 1 and 36</param>
+            <returns>A parser which parses an integer with an optional sign</returns>
+        </member>
+        <member name="M:Pidgin.Parser.UnsignedInt(System.Int32)">
+            <summary>
+            A parser which parses an integer in the given base without a sign.
+            The resulting <c>int</c> is not checked for overflow.
+            </summary>
+            <param name="base">The base in which the number is notated, between 1 and 36</param>
+            <returns>A parser which parses an integer without a sign.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Long(System.Int32)">
+            <summary>
+            Creates a parser which parses a long integer in the given base with an optional sign.
+            The resulting <see cref="T:System.Int64" /> is not checked for overflow.
+            </summary>
+            <param name="base">The base in which the number is notated, between 1 and 36</param>
+            <returns>A parser which parses a long integer with an optional sign</returns>
+        </member>
+        <member name="M:Pidgin.Parser.UnsignedLong(System.Int32)">
+            <summary>
+            A parser which parses a long integer in the given base without a sign.
+            The resulting <see cref="T:System.Int64" /> is not checked for overflow.
+            </summary>
+            <param name="base">The base in which the number is notated, between 1 and 36</param>
+            <returns>A parser which parses a long integer without a sign.</returns>
+        </member>
+        <member name="F:Pidgin.Parser.Real">
+            <summary>
+            A parser which parses a floating point number with an optional sign.
+            </summary>
+            <returns>A parser which parses a floating point number with an optional sign</returns>
+        </member>
+        <member name="M:Pidgin.Parser.OneOf(System.Char[])">
+            <summary>
+            Creates a parser which parses and returns one of the specified characters.
+            </summary>
+            <param name="chars">A sequence of characters to choose between</param>
+            <returns>A parser which parses and returns one of the specified characters</returns>
+        </member>
+        <member name="M:Pidgin.Parser.OneOf(System.Collections.Generic.IEnumerable{System.Char})">
+            <summary>
+            Creates a parser which parses and returns one of the specified characters.
+            </summary>
+            <param name="chars">A sequence of characters to choose between</param>
+            <returns>A parser which parses and returns one of the specified characters</returns>
+        </member>
+        <member name="M:Pidgin.Parser.CIOneOf(System.Char[])">
+            <summary>
+            Creates a parser which parses and returns one of the specified characters, in a case insensitive manner.
+            The parser returns the actual character parsed.
+            </summary>
+            <param name="chars">A sequence of characters to choose between</param>
+            <returns>A parser which parses and returns one of the specified characters, in a case insensitive manner.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.CIOneOf(System.Collections.Generic.IEnumerable{System.Char})">
+            <summary>
+            Creates a parser which parses and returns one of the specified characters, in a case insensitive manner.
+            The parser returns the actual character parsed.
+            </summary>
+            <param name="chars">A sequence of characters to choose between</param>
+            <returns>A parser which parses and returns one of the specified characters, in a case insensitive manner.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.OneOf``2(Pidgin.Parser{``0,``1}[])">
+            <summary>
+            Creates a parser which applies one of the specified parsers.
+            The resulting parser fails if all of the input parsers fail without consuming input, or if one of them fails after consuming input
+            </summary>
+            <typeparam name="TToken">The type of tokens in the parsers' input stream</typeparam>
+            <typeparam name="T">The return type of the parsers</typeparam>
+            <param name="parsers">A sequence of parsers to choose between</param>
+            <returns>A parser which applies one of the specified parsers</returns>
+        </member>
+        <member name="M:Pidgin.Parser.OneOf``2(System.Collections.Generic.IEnumerable{Pidgin.Parser{``0,``1}})">
+            <summary>
+            Creates a parser which applies one of the specified parsers.
+            The resulting parser fails if all of the input parsers fail without consuming input, or if one of them fails after consuming input.
+            The input enumerable is enumerated and copied to a list.
+            </summary>
+            <typeparam name="TToken">The type of tokens in the parsers' input stream</typeparam>
+            <typeparam name="T">The return type of the parsers</typeparam>
+            <param name="parsers">A sequence of parsers to choose between</param>
+            <returns>A parser which applies one of the specified parsers</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1}})">
+            <summary>
+            Creates a parser which lazily calls the supplied function and applies the resulting parser.
+            This is primarily useful to allow mutual recursion in parsers.
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Lazy{Pidgin.Parser{``0,``1}})"/>
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``1}})"/>
+            </summary>
+            <param name="parser">A function which returns a parser</param>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <typeparam name="T">The return type of the parser</typeparam>
+            <returns>A parser which lazily calls the supplied function and applies the resulting parser</returns>
+            <example>
+            This example shows how to use mutual recursion to create a parser equivalent to <see cref="M:Pidgin.Parser`2.Many"/>
+            <code>
+            // many is equivalent to String("foo").Separated(Char(' '))
+            Parser&lt;char, string&gt; rest = null;
+            var many = String("foo").Then(Rec(() => rest).Optional(), (x, y) => x + y.GetValueOrDefault(""));
+            rest = Char(' ').Then(many);
+            </code>
+            </example>
+        </member>
+        <member name="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``1}})">
+            <summary>
+            Creates a parser which passes itself to the supplied function and applies the resulting parser.
+            This is the Y combinator for parsers.
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Lazy{Pidgin.Parser{``0,``1}})"/>
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1}})"/>
+            </summary>
+            <param name="func">A function whose argument is a parser which behaves the same way as its result</param>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <typeparam name="T">The return type of the parser</typeparam>
+            <returns>A parser which lazily calls the supplied function and applies the resulting parser</returns>
+            <example>
+            This example shows how to use mutual recursion to create a parser equivalent to <see cref="M:Pidgin.Parser`2.Many"/>
+            <code>
+            // many is equivalent to String("foo").Separated(Char(' '))
+            var many = Rec(self =>
+                String("foo").Then(
+                    Char(' ').Then(self).Optional(),
+                    (x, y) => x + y.GetValueOrDefault("")
+                )
+            );
+            </code>
+            </example>
+        </member>
+        <member name="M:Pidgin.Parser.Rec``2(System.Lazy{Pidgin.Parser{``0,``1}})">
+            <summary>
+            Creates a parser which lazily calls the supplied function and applies the resulting parser.
+            This is primarily useful to allow mutual recursion in parsers.
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1}})"/>
+            <seealso cref="M:Pidgin.Parser.Rec``2(System.Func{Pidgin.Parser{``0,``1},Pidgin.Parser{``0,``1}})"/>
+            </summary>
+            <param name="parser">A lazy parser value</param>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <typeparam name="T">The return type of the parser</typeparam>
+            <returns>A parser which lazily applies the specified parser</returns>
+        </member>
+        <member name="M:Pidgin.Parser.RepeatString``1(Pidgin.Parser{``0,System.Char},System.Int32)">
+            <summary>
+            Creates a parser which applies <paramref name="parser"/> <paramref name="count"/> times,
+            packing the resulting <c>char</c>s into a <c>string</c>.
+            
+            <para>
+            Equivalent to <c>parser.Repeat(count).Select(string.Concat)</c>.
+            </para>
+            </summary>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <param name="parser">The parser</param>
+            <param name="count">The number of times to apply the parser</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="count"/> was less than 0</exception>
+            <returns>
+            A parser which applies <paramref name="parser"/> <paramref name="count"/> times,
+            packing the resulting <c>char</c>s into a <c>string</c>.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Parser.String(System.String)">
+            <summary>
+            Creates a parser that parses and returns a literal string
+            </summary>
+            <param name="str">The string to parse</param>
+            <returns>A parser that parses and returns a literal string</returns>
+            
+        </member>
+        <member name="M:Pidgin.Parser.CIString(System.String)">
+            <summary>
+            Creates a parser that parses and returns a literal string, in a case insensitive manner.
+            The parser returns the actual string parsed.
+            </summary>
+            <param name="str">The string to parse</param>
+            <returns>A parser that parses and returns a literal string, in a case insensitive manner.</returns>
+        </member>
+        <member name="M:Pidgin.Parser.Try``2(Pidgin.Parser{``0,``1})">
+            <summary>
+            Creates a parser which applies <paramref name="parser"/> and backtracks upon failure
+            </summary>
+            <typeparam name="TToken">The type of tokens in the parser's input stream</typeparam>
+            <typeparam name="T">The return type of the parser</typeparam>
+            <param name="parser">The parser</param>
+            <returns>A parser which applies <paramref name="parser"/> and backtracks upon failure</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Whitespace">
+            <summary>
+            A parser that parses and returns a single whitespace character
+            </summary>
+            <returns>A parser that parses and returns a single whitespace character</returns>
+        </member>
+        <member name="P:Pidgin.Parser.Whitespaces">
+            <summary>
+            A parser that parses and returns a sequence of whitespace characters
+            </summary>
+            <returns>A parser that parses and returns a sequence of whitespace characters</returns>
+        </member>
+        <member name="P:Pidgin.Parser.WhitespaceString">
+            <summary>
+            A parser that parses and returns a sequence of whitespace characters packed into a string
+            </summary>
+            <returns>A parser that parses and returns a sequence of whitespace characters packed into a string</returns>
+        </member>
+        <member name="P:Pidgin.Parser.SkipWhitespaces">
+            <summary>
+            A parser that discards a sequence of whitespace characters
+            </summary>
+            <returns>A parser that discards a sequence of whitespace characters</returns>
+        </member>
+        <member name="T:Pidgin.ParserExtensions">
+            <summary>
+            Extension methods for running parsers
+            </summary>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``1(Pidgin.Parser{System.Char,``0},System.String,System.Func{System.Char,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input string</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IList{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input list</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseReadOnlyList``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IReadOnlyList{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input list</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input enumerable</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerator{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input enumerator</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``1(Pidgin.Parser{System.Byte,``0},System.IO.Stream,System.Func{System.Byte,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>.
+            Note that more characters may be consumed from <paramref name="input"/> than were required for parsing.
+            You may need to manually rewind <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input stream</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``1(Pidgin.Parser{System.Char,``0},System.IO.TextReader,System.Func{System.Char,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input reader</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``2(Pidgin.Parser{``0,``1},``0[],System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input array</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.Parse``2(Pidgin.Parser{``0,``1},System.ReadOnlySpan{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input span</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``1(Pidgin.Parser{System.Char,``0},System.String,System.Func{System.Char,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input string</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IList{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input list</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseReadOnlyListOrThrow``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IReadOnlyList{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input list</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerable{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input enumerable</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``2(Pidgin.Parser{``0,``1},System.Collections.Generic.IEnumerator{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input enumerator</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``1(Pidgin.Parser{System.Byte,``0},System.IO.Stream,System.Func{System.Byte,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input stream</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``1(Pidgin.Parser{System.Char,``0},System.IO.TextReader,System.Func{System.Char,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input reader</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``2(Pidgin.Parser{``0,``1},``0[],System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input array</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="M:Pidgin.ParserExtensions.ParseOrThrow``2(Pidgin.Parser{``0,``1},System.ReadOnlySpan{``0},System.Func{``0,Pidgin.SourcePos,Pidgin.SourcePos})">
+            <summary>
+            Applies <paramref name="parser"/> to <paramref name="input"/>
+            </summary>
+            <param name="parser">A parser</param>
+            <param name="input">An input span</param>
+            <param name="calculatePos">A function to calculate the new position after consuming a token, or null to use the default</param>
+            <exception cref="T:Pidgin.ParseException">Thrown when an error occurs during parsing</exception>
+            <returns>The result of parsing</returns>
+        </member>
+        <member name="T:Pidgin.ParseState`1">
+            <summary>
+            A mutable struct! Careful!
+            </summary>
+        </member>
+        <member name="P:Pidgin.ParseState`1.Location">
+            <summary>
+            How many tokens have been consumed in total?
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Pidgin.Permutation.PermutationParser">
+            <summary>
+            Contains tools for running sequences of parsers in an order-insensitive manner
+            </summary>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser.Create``1">
+            <summary>
+            Creates an empty instance of <see cref="T:Pidgin.Permutation.PermutationParser`2"/>.
+            </summary>
+            <typeparam name="TToken">The type of tokens to be consumed by the permutation parser.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Pidgin.Permutation.PermutationParser`2">
+            <summary>
+            A permutation parser represents a collection of parsers which can be run in an order-insensitive manner.
+            
+            Declaration modifiers in C# are an example of an order-insensitive grammar.
+            Modifiers can appear in any order: <c>protected internal static readonly int x;</c>
+            means the same as <c>internal readonly protected static int x;</c>.
+            
+            Usage of this class involves calling <see cref="M:Pidgin.Permutation.PermutationParser`2.Add``1(Pidgin.Parser{`0,``0})"/>
+            or <see cref="M:Pidgin.Permutation.PermutationParser`2.AddOptional``1(Pidgin.Parser{`0,``0},``0)"/> to add parsers to the permutation parser,
+            and then calling <see cref="M:Pidgin.Permutation.PermutationParser`2.Build"/> to create a parser which runs them in an order-insensitive manner
+            and returns the results in a nested tuple.
+            
+            Note that the parsers that are added to the permutation parser must always consume input before succeeding.
+            If a parser succeeds on empty input the permutation parser will not work correctly.
+            If you want to run a parser optionally, use <see cref="M:Pidgin.Permutation.PermutationParser`2.AddOptional``1(Pidgin.Parser{`0,``0},``0)"/>.
+            
+            This class is immutable.
+            </summary>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.Build">
+            <summary>
+            Creates a <see cref="T:Pidgin.Parser`2"/> which runs the current
+            collection of parsers in an order-insensitive manner.
+            </summary>
+            <returns>
+            A <see cref="T:Pidgin.Parser`2"/> which runs the current collection of parsers in an order-insensitive manner.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.Add``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Adds a parser to the collection.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.Add``2(Pidgin.Parser{`0,``0},System.Func{`1,``0,``1})">
+            <summary>
+            Adds a parser to the collection.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="resultSelector">
+            A transformation function to apply to the result of the current permutation parser and the result of <paramref name="parser"/>.
+            </param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``1(Pidgin.Parser{`0,``0})">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <see cref="M:Pidgin.Maybe.Nothing``1"/> will be returned.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``1(Pidgin.Parser{`0,``0},``0)">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <paramref name="defaultValue"/> will be returned.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="defaultValue">A default value to return if <paramref name="parser"/> fails.</param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``1(Pidgin.Parser{`0,``0},System.Func{``0})">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <paramref name="defaultValueFactory"/> will be called to get a value to return.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="defaultValueFactory">A factory for a default value to return if <paramref name="parser"/> fails.</param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``2(Pidgin.Parser{`0,``0},System.Func{`1,Pidgin.Maybe{``0},``1})">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <see cref="M:Pidgin.Maybe.Nothing``1"/> will be returned.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="resultSelector">
+            A transformation function to apply to the result of the current permutation parser and the result of <paramref name="parser"/>.
+            </param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``2(Pidgin.Parser{`0,``0},``0,System.Func{`1,``0,``1})">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <paramref name="defaultValue"/> will be returned.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="defaultValue">A default value to return if <paramref name="parser"/> fails.</param>
+            <param name="resultSelector">
+            A transformation function to apply to the result of the current permutation parser and the result of <paramref name="parser"/>.
+            </param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="M:Pidgin.Permutation.PermutationParser`2.AddOptional``2(Pidgin.Parser{`0,``0},System.Func{``0},System.Func{`1,``0,``1})">
+            <summary>
+            Adds an optional parser to the collection.
+            
+            The resulting permutation parser will successfully parse a phrase even if <paramref name="parser"/> never succeeds.
+            In that case, <paramref name="defaultValueFactory"/> will be called to get a value to return.
+            </summary>
+            <param name="parser">The parser to add to the collection.</param>
+            <param name="defaultValueFactory">A factory for a default value to return if <paramref name="parser"/> fails.</param>
+            <param name="resultSelector">
+            A transformation function to apply to the result of the current permutation parser and the result of <paramref name="parser"/>.
+            </param>
+            <returns>
+            A new permutation parser representing the current collection of parsers with <paramref name="parser"/> added optionally.
+            </returns>
+        </member>
+        <member name="T:Pidgin.PooledList`1">
+            <summary>
+            A mutable struct! Careful!
+            </summary>
+        </member>
+        <member name="T:Pidgin.ReadOnlySpanFunc`3">
+            <summary>
+            A function which computes a result from a <see cref="T:System.ReadOnlySpan`1"/> and an additional argument.
+            </summary>
+            <param name="span">The input span</param>
+            <param name="param">An additional argument</param>
+            <typeparam name="T">The type of elements of the span</typeparam>
+            <typeparam name="TParam">The type of the additional argument</typeparam>
+            <typeparam name="TReturn">The type of the result computed by the function</typeparam>
+            <returns>The result</returns>
+        </member>
+        <member name="T:Pidgin.Result`2">
+            <summary>
+            Represents the result of parsing.
+            A parse result may be successful (<see cref="P:Pidgin.Result`2.Success"/> == true), in which case it contains a value, or it may be a failure, in which case it contains an error
+            </summary>
+            <typeparam name="TToken"></typeparam>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Pidgin.Result`2.Success">
+            <summary>
+            Did the parse succeed?
+            </summary>
+            <returns>A value indicating whether the parse was successful</returns>
+        </member>
+        <member name="P:Pidgin.Result`2.Value">
+            <summary>
+            The parser's return value
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the result was not a successful one</exception>
+            <returns>The parser's return value</returns>
+        </member>
+        <member name="P:Pidgin.Result`2.Error">
+            <summary>
+            The parse error
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown when the result was a successful one</exception>
+            <returns>The parse error</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.GetValueOrDefault">
+            <summary>
+            Get the value, or return a default value.
+            </summary>
+            <returns>The value if <see cref="P:Pidgin.Result`2.Success"/> is true, or a default value.</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.GetValueOrDefault(`1)">
+            <summary>
+            Get the value, or return the specified default value.
+            </summary>
+            <returns>The value if <see cref="P:Pidgin.Result`2.Success"/> is true, or the specified default value.</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.GetValueOrDefault(System.Func{`1})">
+            <summary>
+            Get the value, or return the result of calling the specified function.
+            </summary>
+            <returns>The value if <see cref="P:Pidgin.Result`2.Success"/> is true, or the result of calling the specified function.</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.Match``1(System.Func{`1,``0},System.Func{Pidgin.ParseError{`0},``0})">
+            <summary>
+            Tear down this parse result using a function for the two possible outcomes.
+            If <see cref="P:Pidgin.Result`2.Success"/> == true, <paramref name="success"/> will be called. Otherwise, <paramref name="failure"/> will be called.
+            </summary>
+            <typeparam name="U">The return type</typeparam>
+            <param name="success">Called when the result has a value</param>
+            <param name="failure">Called when the result does not have a value</param>
+            <returns>The result of calling the <paramref name="success"/> or <paramref name="failure"/> function</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.Select``1(System.Func{`1,``0})">
+            <summary>
+            Project the value contained in the result
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <typeparam name="U">The type of the resulting value</typeparam>
+            <returns>The result of applying the transformation function to the contained value</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.SelectMany``1(System.Func{`1,Pidgin.Result{`0,``0}})">
+            <summary>
+            Projects the value of the result into a result, and flattens the resulting value into a single result.
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <typeparam name="U">The type of the resulting possibly-absent value</typeparam>
+            <returns>The final result</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.SelectMany``2(System.Func{`1,Pidgin.Result{`0,``0}},System.Func{`1,``0,``1})">
+            <summary>
+            Projects the value of the result into a result, and flattens the resulting value into a single result, applying a result selector function to the two values.
+            </summary>
+            <param name="selector">A transformation function to apply to the contained value</param>
+            <param name="result">A transformation function to apply to the contained value and the value contained in the selected <see cref="T:Pidgin.Maybe`1"/></param>
+            <typeparam name="U">The type of the value to select</typeparam>
+            <typeparam name="R">The type of the resulting possibly-absent value</typeparam>
+            <returns>The result of applying <paramref name="selector"/> to the contained value and <paramref name="result"/> to the intermediate values</returns>
+        </member>
+        <member name="M:Pidgin.Result`2.Or(System.Func{Pidgin.Result{`0,`1}})">
+            <summary>
+            Choose the first successful result
+            </summary>
+            <param name="result">A fallback result if this one has an error</param>
+            <returns>This result, if <see cref="P:Pidgin.Result`2.Success"/> == true, or the result of calling <paramref name="result"/></returns>
+        </member>
+        <member name="M:Pidgin.Result`2.Or(Pidgin.Result{`0,`1})">
+            <summary>
+            Choose the first successful result
+            </summary>
+            <param name="result">A fallback result if this one has an error</param>
+            <returns>This result, if <see cref="P:Pidgin.Result`2.Success"/> == true, or <paramref name="result"/></returns>
+        </member>
+        <member name="M:Pidgin.Result`2.Cast``1">
+            <summary>
+            Cast the value contained in the result to the specified output type
+            </summary>
+            <typeparam name="U">The type to cast the contained value to</typeparam>
+            <exception cref="T:System.InvalidCastException">Thrown when the contained value is not an instance of <typeparamref name="U"/></exception>
+            <returns>A result containing this result's value casted to <typeparamref name="U"/></returns>
+        </member>
+        <member name="T:Pidgin.SourcePos">
+            <summary>
+            Represents a (line, col) position in an input stream
+            </summary>
+        </member>
+        <member name="P:Pidgin.SourcePos.Line">
+            <summary>
+            Gets the line of the position in the input stream.
+            The value is 1-indexed: a Line value of 1 refers to the first line of the input document.
+            </summary>
+            <returns>The line</returns>
+        </member>
+        <member name="P:Pidgin.SourcePos.Col">
+            <summary>
+            Gets the column of the position in the input stream
+            The value is 1-indexed: a Col value of 1 refers to the first column of the line.
+            </summary>
+            <returns>The column</returns>
+        </member>
+        <member name="M:Pidgin.SourcePos.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create a new <see cref="T:Pidgin.SourcePos"/> with the specified 1-indexed line and column number.
+            </summary>
+            <param name="line">The 1-indexed line number</param>
+            <param name="col">The 1-indexed column number</param>
+        </member>
+        <member name="M:Pidgin.SourcePos.IncrementCol">
+            <summary>
+            Creates a <see cref="T:Pidgin.SourcePos"/> with the column number incremented by one
+            </summary>
+            <returns>A <see cref="T:Pidgin.SourcePos"/> with the column number incremented by one</returns>
+        </member>
+        <member name="M:Pidgin.SourcePos.NewLine">
+            <summary>
+            Creates a <see cref="T:Pidgin.SourcePos"/> with the line number incremented by one and the column number reset to 1
+            </summary>
+            <returns>A <see cref="T:Pidgin.SourcePos"/> with the line number incremented by one and the column number reset to 1</returns>
+        </member>
+        <member name="M:Pidgin.SourcePos.Equals(Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_Equality(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_Inequality(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.CompareTo(Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_GreaterThan(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_LessThan(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_GreaterThanOrEqual(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Pidgin.SourcePos.op_LessThanOrEqual(Pidgin.SourcePos,Pidgin.SourcePos)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pidgin.Unit">
+            <summary>
+            An uninteresting type with only one value (<see cref="P:Pidgin.Unit.Value"/>) and no fields.
+            Like <c>void</c>, but valid as a type parameter
+            </summary>
+        </member>
+        <member name="P:Pidgin.Unit.Value">
+            <summary>
+            The single unique <see cref="T:Pidgin.Unit"/> value.
+            </summary>
+        </member>
+    </members>
+</doc>

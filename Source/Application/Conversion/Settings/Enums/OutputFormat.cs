@@ -58,5 +58,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
                     throw new NotImplementedException($"OutputFormat '{format}' is not known to {nameof(IsPdfA)}!");
             }
         }
+
+        public static string GetDescription(this OutputFormat format)
+        {
+            var type = typeof(OutputFormat);
+            var memInfo = type.GetMember(format.ToString());
+            var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+            var description = ((DescriptionAttribute) attributes[0]).Description;
+            return description;
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     public interface ISharedSettingsLoader
     {
         void ApplySharedSettings(PdfCreatorSettings currentSettings);
+
+        IEnumerable<PrinterMapping> GetSharedPrinterMappings();
     }
 
     public class SharedSettingsLoader : ISharedSettingsLoader
@@ -37,25 +39,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             if (!_gpoSettings.LoadSharedAppSettings && !_gpoSettings.LoadSharedProfiles)
                 return;
 
-            var iniFile = GetSharedSettingsIniFile();
-            if (iniFile == null)
+            _logger.Info("Apply shared settings.");
+            var sharedSettings = GetSharedSettings();
+            if (sharedSettings == null)
                 return;
 
-            try
-            {
-                var sharedSettings = (PdfCreatorSettings)_iniSettingsLoader.LoadIniSettings(iniFile);
-                foreach (var profile in sharedSettings.ConversionProfiles)
-                    profile.Properties.IsShared = true;
-
-                ApplyAppSettings(currentSettings, sharedSettings);
-                ApplyProfiles(currentSettings, sharedSettings);
-
-                _logger.Info("Apply shared settings from '" + iniFile + "'.");
-            }
-            catch
-            {
-                _logger.Warn("Could not load settings from '" + iniFile + "'.");
-            }
+            ApplyAppSettings(currentSettings, sharedSettings);
+            ApplyProfiles(currentSettings, sharedSettings);
         }
 
         private string GetSharedSettingsIniFile()
@@ -76,6 +66,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             if (!_gpoSettings.LoadSharedAppSettings)
                 return;
 
+            _logger.Info("Apply shared app settings.");
             currentSettings.ApplicationSettings = sharedSettings.ApplicationSettings;
         }
 
@@ -84,6 +75,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             if (!_gpoSettings.LoadSharedProfiles)
                 return;
 
+            _logger.Info("Apply shared profiles.");
             if (_gpoSettings.AllowUserDefinedProfiles)
             {
                 var additionalProfiles = new List<ConversionProfile>();
@@ -104,6 +96,56 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         private bool ProfileExists(ConversionProfile profile, IList<ConversionProfile> profiles)
         {
             return profiles.Any(p => p.Name == profile.Name || p.Guid == profile.Guid);
+        }
+
+        public IEnumerable<PrinterMapping> GetSharedPrinterMappings()
+        {
+            if (_gpoSettings.LoadSharedAppSettings)
+            {
+                var sharedSettings = GetSharedSettings();
+                if (sharedSettings != null)
+                    return sharedSettings.ApplicationSettings.PrinterMappings;
+            }
+
+            return new List<PrinterMapping>();
+        }
+
+        private PdfCreatorSettings GetSharedSettings()
+        {
+            var iniFile = GetSharedSettingsIniFile();
+            if (iniFile == null)
+            {
+                _logger.Debug("Could not find shared settings.ini.");
+                return null;
+            }
+
+            try
+            {
+                _logger.Info("Get shared settings from '" + iniFile + "'.");
+
+                var sharedSettings = (PdfCreatorSettings)_iniSettingsLoader.LoadIniSettings(iniFile);
+                foreach (var profile in sharedSettings.ConversionProfiles)
+                    profile.Properties.IsShared = true;
+
+                return sharedSettings;
+            }
+            catch
+            {
+                _logger.Warn("Could not load settings from '" + iniFile + "'.");
+                return null;
+            }
+        }
+    }
+
+    public class FreeSharedSettingsLoader : ISharedSettingsLoader
+    {
+        public void ApplySharedSettings(PdfCreatorSettings currentSettings)
+        {
+        }
+
+        public IEnumerable<PrinterMapping> GetSharedPrinterMappings()
+        {
+            return new List<PrinterMapping>();
         }
     }
 }

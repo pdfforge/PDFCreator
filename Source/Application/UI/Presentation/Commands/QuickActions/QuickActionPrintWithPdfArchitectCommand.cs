@@ -13,16 +13,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
     public class QuickActionPrintWithPdfArchitectCommand : QuickActionCommandBase<FtpActionTranslation>
     {
         private readonly IPdfArchitectCheck _architectCheck;
-        private readonly IRecommendArchitect _recommendArchitect;
+        private readonly IRecommendArchitectAssistant _recommendArchitectAssistant;
         private readonly IRecommendArchitectUpgrade _recommendArchitectUpgrade;
         private readonly IProcessStarter _processStarter;
         private static Logger Logger = LogManager.GetCurrentClassLogger();
         private static readonly Version MinimumArchitectPrintDialogVersion = new Version(6, 1, 24, 0);
 
-        public QuickActionPrintWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IPdfArchitectCheck architectCheck, IRecommendArchitect recommendArchitect, IRecommendArchitectUpgrade recommendArchitectUpgrade, IProcessStarter processStarter) : base(translationUpdater)
+        public QuickActionPrintWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IPdfArchitectCheck architectCheck, IRecommendArchitectAssistant recommendArchitectAssistant, IRecommendArchitectUpgrade recommendArchitectUpgrade, IProcessStarter processStarter) : base(translationUpdater)
         {
             _architectCheck = architectCheck;
-            _recommendArchitect = recommendArchitect;
+            _recommendArchitectAssistant = recommendArchitectAssistant;
             _recommendArchitectUpgrade = recommendArchitectUpgrade;
             _processStarter = processStarter;
         }
@@ -51,7 +51,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
             }
             else
             {
-                _recommendArchitect.Show();
+                _recommendArchitectAssistant.Show();
             }
         }
 

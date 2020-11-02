@@ -21,6 +21,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IDirectory _directory;
         private readonly IPathUtil _pathUtil;
+        private readonly IActionOrderChecker _actionOrderChecker;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
@@ -39,7 +40,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         private readonly IComWorkflowFactory _workflowFactory;
 
-        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil)
+        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil, IActionOrderChecker actionOrderChecker)
         {
             _settingsProvider = settingsProvider;
             _workflowFactory = workflowFactory;
@@ -48,6 +49,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             _errorCodeInterpreter = errorCodeInterpreter;
             _directory = directory;
             _pathUtil = pathUtil;
+            _actionOrderChecker = actionOrderChecker;
         }
 
         public Job Job { get; set; }
@@ -96,6 +98,20 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             }
         }
 
+        public void SetProfileListSetting(string name, IEnumerable<string> value)
+        {
+            var valueReflector = new ValueReflector();
+
+            if (HasAccess(name) && valueReflector.HasProperty(Job.Profile, name))
+            {
+                valueReflector.SetListPropertyValue(Job.Profile, name, value);
+            }
+            else
+            {
+                throw new COMException($"The property '{name}' does not exist!");
+            }
+        }
+
         public string GetProfileSetting(string name)
         {
             var valueReflector = new ValueReflector();
@@ -103,6 +119,18 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             if (HasAccess(name) && valueReflector.HasProperty(Job.Profile, name))
             {
                 return valueReflector.GetPropertyValue(Job.Profile, name);
+            }
+
+            throw new COMException($"The property '{name}' does not exist!");
+        }
+
+        public string[] GetProfileListSetting(string name)
+        {
+            var valueReflector = new ValueReflector();
+
+            if (HasAccess(name) && valueReflector.HasProperty(Job.Profile, name))
+            {
+                return valueReflector.GetPropertyListValue(Job.Profile, name).ToArray();
             }
 
             throw new COMException($"The property '{name}' does not exist!");
@@ -186,7 +214,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             profile.AutoSave.Enabled = false;
             profile.AutoSave.EnsureUniqueFilenames = false;
 
-            profile.OpenViewer = false;
+            profile.OpenViewer.Enabled = false;
         }
 
         /// <summary>
@@ -219,6 +247,11 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             Logger.Trace("COM: Setting the full name of the job:" + fileName);
 
             return _outputFormatHelper.EnsureValidExtension(fileName, Job.Profile.OutputFormat);
+        }
+
+        public void SortAndUpdateActions()
+        {
+            _actionOrderChecker.Check(new[] { Job.Profile });
         }
     }
 }

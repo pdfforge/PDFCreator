@@ -148,12 +148,48 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
                     CurrentProfile.PdfSettings.Security.OwnerPassword = "";
                     break;
             }
+
+            RaisePropertyChanged(nameof(ShowPasswordHint));
         }
 
         protected override void OnCurrentProfileChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             base.OnCurrentProfileChanged(sender, propertyChangedEventArgs);
             RaisePropertyChangedForEncryptionProperties();
+            RaisePropertyChanged(nameof(RequireUserPassword));
+            RaisePropertyChanged(nameof(ShowPasswordHint));
+        }
+
+        public bool RequireUserPassword
+        {
+            get
+            {
+                return CurrentProfile != null && CurrentProfile.PdfSettings.Security.RequireUserPassword;
+            }
+
+            set
+            {
+                CurrentProfile.PdfSettings.Security.RequireUserPassword = value;
+                RaisePropertyChanged(nameof(ShowPasswordHint));
+            }
+        }
+
+        public bool ShowPasswordHint
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return false;
+
+                if (!CurrentProfile.AutoSave.Enabled)
+                    return false;
+
+                if (CurrentProfile.PdfSettings.Security.RequireUserPassword
+                    && string.IsNullOrWhiteSpace(CurrentProfile.PdfSettings.Security.UserPassword))
+                    return true;
+
+                return string.IsNullOrWhiteSpace(CurrentProfile.PdfSettings.Security.OwnerPassword);
+            }
         }
 
         private void RaisePropertyChangedForEncryptionProperties()

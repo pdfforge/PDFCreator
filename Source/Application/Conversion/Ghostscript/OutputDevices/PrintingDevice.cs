@@ -16,14 +16,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     {
         public const string PasswordParameter = "-sPDFPassword=";
 
-        private readonly PrinterWrapper _printer;
+        private readonly IPrinterWrapper _printer;
 
         public PrintingDevice(Job job) : base(job, ConversionMode.ImmediateConversion)
         {
             _printer = new PrinterWrapper();
         }
 
-        public PrintingDevice(Job job, PrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
+        public PrintingDevice(Job job, IPrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
             : base(job, ConversionMode.ImmediateConversion, file, osHelper, commandLineUtil)
         {
             _printer = printer;

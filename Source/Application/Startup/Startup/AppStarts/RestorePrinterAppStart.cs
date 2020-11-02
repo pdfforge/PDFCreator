@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,20 +18,29 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         private readonly IUacAssistant _uacAssistant;
         private readonly IPrinterProvider _printerProvider;
         private readonly IInstallationPathProvider _installationPathProvider;
+        private readonly ISharedSettingsLoader _sharedSettingsLoader;
 
-        public RestorePrinterAppStart(ICheckAllStartupConditions checkAllStartupConditions, IPrinterProvider printerProvider, IUacAssistant uacAssistant, IInstallationPathProvider installationPathProvider) : base(checkAllStartupConditions)
+        public RestorePrinterAppStart(ICheckAllStartupConditions checkAllStartupConditions, IPrinterProvider printerProvider,
+            IUacAssistant uacAssistant, IInstallationPathProvider installationPathProvider,
+            ISharedSettingsLoader sharedSettingsLoader) : base(checkAllStartupConditions)
         {
             _uacAssistant = uacAssistant;
             _printerProvider = printerProvider;
             _installationPathProvider = installationPathProvider;
+            _sharedSettingsLoader = sharedSettingsLoader;
+            SkipStartupConditionCheck = true;
         }
 
         public override Task<ExitCode> Run()
         {
             try
             {
+                var allMissingPrinters = new List<string>();
+                allMissingPrinters.AddRange(FindMissingPrinters(_sharedSettingsLoader.GetSharedPrinterMappings()));
+
                 var missingPrinters = FindMissingPrinters(GetMappingsFromRegistry());
-                _uacAssistant.AddPrinters(missingPrinters.ToArray());
+                allMissingPrinters.AddRange(missingPrinters.Except(allMissingPrinters));
+                _uacAssistant.AddPrinters(allMissingPrinters.ToArray());
             }
             catch (Exception)
             {

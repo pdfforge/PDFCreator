@@ -21,6 +21,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 
         private string[] DropboxGetsDisabled { get; set; } = { "The Dropbox upload will be disabled for this profile.", "The Dropbox upload will be disabled for this profiles." };
 
+        public string DropboxReturnToApp { get; private set; } = "Thank you for granting access. Please return to PDFCreator.";
+        public string DropboxYouCanCloseWindow { get; private set; } = "You can now close this window.";
+
         public string GetDropboxGetsDisabledMessage(int numberOfProfiles)
         {
             return PluralBuilder.GetFormattedPlural(numberOfProfiles, DropboxGetsDisabled);

@@ -36,18 +36,46 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                     }
                 }
 
-                var list = new List<string>();
-                CheckAllChildSettings(list, settingsConversionProfile);
-                CheckSingleSetting(list, settingsConversionProfile.PdfSettings.Security);
-                CheckSingleSetting(list, settingsConversionProfile.PdfSettings.Signature);
-                var hasCorruptOrder = _actionOrderHelper.HasCorruptOrder(settingsConversionProfile);
+                var enabledActionsList = GetListOfActiveActions(settingsConversionProfile);
 
-                if (list.Count != settingsConversionProfile.ActionOrder.Count || hasCorruptOrder)
-                {
-                    settingsConversionProfile.ActionOrder = list;
-                    _actionOrderHelper.ForceDefaultOrder(settingsConversionProfile);
-                }
+                // get an action ordered list with only distinct and enabled actions
+                var actionOrderList = settingsConversionProfile
+                    .ActionOrder
+                    .Distinct()
+                    .Where(s => enabledActionsList.Contains(s))
+                    .ToList();
+
+                AddMissingActiveActions(actionOrderList, enabledActionsList);
+                UpdateActionOrderList(settingsConversionProfile, actionOrderList);
+
+                if (_actionOrderHelper.HasCorruptOrder(settingsConversionProfile))
+                    _actionOrderHelper.EnsureEncryptionAndSignatureOrder(settingsConversionProfile);
             }
+        }
+
+        private void UpdateActionOrderList(ConversionProfile profile, IEnumerable<string> newOrderList)
+        {
+            profile.ActionOrder.Clear();
+            profile.ActionOrder.AddRange(newOrderList);
+        }
+
+        private void AddMissingActiveActions(List<string> targetActionOrderList, List<string> enabledActionsList)
+        {
+            if (enabledActionsList.Count == targetActionOrderList.Count)
+                return;
+
+            var missingActions = enabledActionsList.Except(targetActionOrderList).ToList();
+            _actionOrderHelper.ForceDefaultOrder(missingActions);
+            targetActionOrderList.AddRange(missingActions);
+        }
+
+        private List<string> GetListOfActiveActions(ConversionProfile settingsConversionProfile)
+        {
+            var enabledActionsList = new List<string>();
+            CheckAllChildSettings(enabledActionsList, settingsConversionProfile);
+            CheckSingleSetting(enabledActionsList, settingsConversionProfile.PdfSettings.Security);
+            CheckSingleSetting(enabledActionsList, settingsConversionProfile.PdfSettings.Signature);
+            return enabledActionsList;
         }
 
         private void CheckAllChildSettings(List<string> list, object source)

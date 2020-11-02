@@ -7,6 +7,8 @@
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              Unloaded="WorkflowEditorOverlayView_OnUnloaded"
@@ -14,15 +16,41 @@
              Width="800"
              MaxHeight="600"
              KeyboardNavigation.TabNavigation="None"
-             d:DataContext="{d:DesignInstance profiles:DesignTimeWorkflowEditorOverlayViewModel}"
-             help:HelpProvider.HelpTopic="Attachment"
-             Name="ActionContainer">
+             d:DataContext="{d:DesignInstance designTime:DesignTimeWorkflowEditorOverlayViewModel}"
+             help:HelpProvider.HelpTopic="WorkflowEditor">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../../Styles/LightGreyButton.xaml"></ResourceDictionary>
+    </UserControl.Resources>
     <StackPanel>
 
         <ContentControl  Margin="20 20 20 0"
             x:Name="ContentControl"
+            IsTabStop="False"
             regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileWorkflowEditorOverlayRegion}" />
 
-        <Button  HorizontalAlignment="Right" Padding="8" Margin="0 0 10 10" Command="{Binding OkCommand}" Content="{Binding Translation.Ok}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrue" TrueValue="Visible" FalseValue="Collapsed" />
+                <converter:BoolToVisibilityConverter x:Key="VisibleWhenFalse" TrueValue="Collapsed" FalseValue="Visible" />
+
+                <Style TargetType="Button" BasedOn="{StaticResource LightGreyButton}">
+                    <Setter Property="Margin" Value="0 10 10 20" />
+                    <Setter Property="MinWidth" Value="80" />
+                </Style>
+            </StackPanel.Resources>
+
+            <Button Command="{Binding BackCommand}"
+                    Content="{Binding Translation.Back}"
+                    Visibility="{Binding Interaction.ShowBackButton, Converter={StaticResource VisibleWhenTrue}}" />
+
+            <Button Command="{Binding CloseCommand}"
+                    Content="{Binding Translation.Close}"
+                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource VisibleWhenTrue}}" />
+
+            <Button Margin="0 10 20 20"
+                    Command="{Binding OkCommand}"
+                    Content="{Binding Translation.Ok}"
+                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource VisibleWhenFalse}}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

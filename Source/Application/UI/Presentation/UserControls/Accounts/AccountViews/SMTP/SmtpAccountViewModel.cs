@@ -5,7 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
-    public class SmtpAccountViewModel : AccountViewModelBase<SmtpAccountInteraction, SmtpTranslation>
+    public class SmtpAccountViewModel : AccountViewModelBase<SmtpAccountInteraction, MailTranslation>
     {
         private SmtpAccount _smtpAccount;
 

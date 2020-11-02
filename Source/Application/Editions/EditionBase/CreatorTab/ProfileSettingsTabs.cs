@@ -20,6 +20,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs;
@@ -31,9 +32,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
     {
         public ProfileSettingsTabs() : base(RegionNames.ProfileTabContentRegion)
         {
-            Add(new SimpleTab<SaveTab, SaveTabViewModel>(RegionNames.SaveTabContentRegion, HelpTopic.ProfileSave));
-            Add(new MultiTab<ConvertTabViewModel>(RegionNames.ConvertTabContentRegion, HelpTopic.Convert, typeof(OutputFormatTab), typeof(ConvertPdfView), typeof(ConvertJpgView), typeof(ConvertPngView), typeof(ConvertTiffView), typeof(ConvertTextView)));
-            Add(new SimpleTab<MetadataTab, MetadataViewModel>(RegionNames.MetadataTabContentRegion, HelpTopic.ProfileMetadata));
+            Add(new SimpleTab<SaveView, SaveViewModel>(RegionNames.SaveTabContentRegion, HelpTopic.ProfileSave));
+            Add(new MultiTab<ConvertTabViewModel>(RegionNames.ConvertTabContentRegion, HelpTopic.OutputFormat, typeof(OutputFormatTab), typeof(ConvertPdfView), typeof(ConvertJpgView), typeof(ConvertPngView), typeof(ConvertTiffView), typeof(ConvertTextView)));
+            Add(new SimpleTab<MetadataView, MetadataViewModel>(RegionNames.MetadataTabContentRegion, HelpTopic.ProfileMetadata));
 
             var modifyTab = new MasterTab<ModifyMasterTabViewModel>(RegionNames.ModifyMasterTabItemsRegion, RegionNames.ModifyMasterTabContentRegion);
             modifyTab.AddSubTab(new SubTab<CoverUserControl, ProfileModifyTranslation>(t => t.Cover, p => p.CoverPage));
@@ -45,9 +46,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
 
             var sendTab = new MasterTab<SendMasterTabViewModel>(RegionNames.SendMasterTabItemsRegion, RegionNames.SendMasterTabContentRegion);
             sendTab.AddSubTab(new SubTab<FTPActionUserControl, ProfileSendSubTabTranslation>(t => t.Ftp, p => p.Ftp));
-            sendTab.AddSubTab(new SubTab<MailClientUserControl, MailClientTabTranslation>(t => t.Email, p => p.EmailClientSettings));
+            sendTab.AddSubTab(new SubTab<MailClientUserControl, MailTranslation>(t => t.Email, p => p.EmailClientSettings));
             sendTab.AddSubTab(new SubTab<HttpActionUserControl, HttpTranslation>(t => t.HttpSubTabTitle, p => p.HttpSettings));
-            sendTab.AddSubTab(new SubTab<SmtpActionUserControl, SmtpTranslation>(t => t.SmtpSubTabTitle, p => p.EmailSmtpSettings));
+            sendTab.AddSubTab(new SubTab<SmtpActionUserControl, MailTranslation>(t => t.SmtpSubTabTitle, p => p.EmailSmtpSettings));
             sendTab.AddSubTab(new SubTab<DropboxUserControl, DropboxTranslation>(t => t.Dropbox, p => p.DropboxSettings));
             sendTab.AddSubTab(new SubTab<PrintUserControl, PrintTabTranslation>(t => t.Print, p => p.Printing));
             Add(sendTab);
@@ -61,6 +62,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
             advancedTab.AddSubTab(new SubTab<ScriptUserControl, ProfileAdvancedTranslation>(t => t.Script, p => p.Scripting));
             advancedTab.AddSubTab(new SubTab<ForwardToFurtherProfileView, ProfileAdvancedTranslation>(t => t.Forward, p => p.ForwardToFurtherProfile));
             advancedTab.AddSubTab(new SubTab<UserTokenUserControl, ProfileAdvancedTranslation>(t => t.UserToken, p => p.UserTokens));
+            advancedTab.AddSubTab(new SubTab<OpenViewerActionUserControl, OpenViewerActionTranslation>(t => t.OpenFileActionTitle, p => p.OpenViewer));
             Add(advancedTab);
         }
     }

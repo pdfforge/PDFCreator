@@ -35,55 +35,57 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
         // Profile settings
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/index")] ProfileSettings,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/workflow-editor")] WorkflowEditor,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/index")] WorkflowEditor,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Stamp,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/stamp")] Stamp,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/metadata")] ProfileMetadata,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/save")] ProfileSave,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Cover,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/cover")] Cover,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Background,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/background")] Background,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Watermark,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/watermark")] Watermark,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/save")] OpenViewer,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/open-file")] OpenViewer,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/modify")] Attachment,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/attachment")] Attachment,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/print-document")] PrintDocument,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/print")] PrintDocument,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/dropbox")] Dropbox,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/dropbox")] Dropbox,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/open-email-client")] OpenEmailClient,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/e-mail")] OpenEmailClient,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/send-email-over-smtp")] SendEmailOverSmtp,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/smtp")] SendEmailOverSmtp,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/advanced-features/run-script")] RunScript,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/run-program")] RunScript,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/upload-with-ftp")] UploadWithFtp,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/forwardtoprofile")] ForwardToProfile,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/send/upload-with-http")] UploadWithHttp,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/ftp")] UploadWithFtp,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/advanced-features/user-tokens")] UserTokens,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/http")] UploadWithHttp,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] JpegOutput,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/user-tokens")] UserTokens,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] PngOutput,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] JpegOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] TiffOutput,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] PngOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] TextOutput,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] TiffOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] PdfOutput,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] TextOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/convert")] Convert,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] PdfOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/security")] PdfSecurity,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] OutputFormat,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/security")] PdfSignature,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/encryption")] PdfSecurity,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/signature")] PdfSignature,
 
         //Using-PdfCreator
         [HelpTopic("pdfcreator/using-pdfcreator/index")] ConvertDocuments,

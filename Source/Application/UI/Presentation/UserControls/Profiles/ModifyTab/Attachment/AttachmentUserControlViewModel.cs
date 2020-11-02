@@ -1,38 +1,35 @@
-﻿using Optional;
-using pdfforge.PDFCreator.Conversion.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using pdfforge.PDFCreator.Utilities.Pdf;
 using pdfforge.PDFCreator.Utilities.Tokens;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment
 {
     public class AttachmentUserControlViewModel : ProfileUserControlViewModel<AttachmentSettingsAndActionTranslation>
     {
-        private readonly IOpenFileInteractionHelper _openFileInteractionHelper;
         private readonly ITokenHelper _tokenHelper;
-        private readonly ITokenViewModelFactory _tokenViewModelFactory;
-        private readonly EditionHelper _editionHelper;
         private readonly IPdfVersionHelper _pdfVersionHelper;
+        private readonly ISelectFilesUserControlViewModelFactory _selectFilesUserControlViewModelFactory;
 
         public TokenReplacer TokenReplacer { get; private set; }
 
-        public TokenViewModel<ConversionProfile> AttachmentFileTokenViewModel { get; set; }
+        public SelectFilesUserControlViewModel AttachmentFileSelectFilesUserControlViewModel { get; set; }
 
-        public AttachmentUserControlViewModel(IOpenFileInteractionHelper openFileInteractionHelper, ITranslationUpdater translationUpdater,
-                                              ISelectedProfileProvider selectedProfile,
-                                              ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory,
-                                              IDispatcher dispatcher, EditionHelper editionHelper, IPdfVersionHelper pdfVersionHelper)
+        public AttachmentUserControlViewModel(ITranslationUpdater translationUpdater,
+            ISelectedProfileProvider selectedProfile, ITokenHelper tokenHelper,
+            IDispatcher dispatcher, IPdfVersionHelper pdfVersionHelper,
+            ISelectFilesUserControlViewModelFactory selectFilesUserControlViewModelFactory)
             : base(translationUpdater, selectedProfile, dispatcher)
         {
-            _openFileInteractionHelper = openFileInteractionHelper;
             _tokenHelper = tokenHelper;
-            _tokenViewModelFactory = tokenViewModelFactory;
-            _editionHelper = editionHelper;
             _pdfVersionHelper = pdfVersionHelper;
+            _selectFilesUserControlViewModelFactory = selectFilesUserControlViewModelFactory;
         }
 
         public override void MountView()
@@ -41,16 +38,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.At
             {
                 TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
                 var tokens = _tokenHelper.GetTokenListForExternalFiles();
+                var filter = Translation.PDFFiles
+                             + @" (*.pdf)|*.pdf|"
+                             + Translation.AllFiles
+                             + @" (*.*)|*.*";
 
-                AttachmentFileTokenViewModel = _tokenViewModelFactory.BuilderWithSelectedProfile()
-                    .WithSelector(p => p.AttachmentPage.File)
-                    .WithTokenList(tokens)
-                    .WithTokenReplacerPreview(TokenReplacer)
-                    .WithButtonCommand(SelectAttatchmentAction)
+                AttachmentFileSelectFilesUserControlViewModel = _selectFilesUserControlViewModelFactory.Builder()
+                    .WithTitleGetter(() => Translation.SelectAttachmentFile)
+                    .WithFileListGetter(profile => profile.AttachmentPage.Files)
+                    .WithFileFilter(filter)
+                    .WithTokens(tokens)
                     .Build();
+                AttachmentFileSelectFilesUserControlViewModel.PropertyChanged += (s, a) =>
+                {
+                    if (a.PropertyName == nameof(AttachmentFileSelectFilesUserControlViewModel.FileListDictionary))
+                    {
+                        CheckIfVersionIsPdf20();
+                    }
+                };
 
-                RaisePropertyChanged(nameof(AttachmentFileTokenViewModel));
-                AttachmentFileTokenViewModel.MountView();
+                RaisePropertyChanged(nameof(AttachmentFileSelectFilesUserControlViewModel));
+                AttachmentFileSelectFilesUserControlViewModel.MountView();
             }
 
             CheckIfVersionIsPdf20();
@@ -61,44 +69,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.At
         public override void UnmountView()
         {
             base.UnmountView();
-            AttachmentFileTokenViewModel.UnmountView();
-        }
-
-        private Option<string> SelectAttatchmentAction(string s1)
-        {
-            var title = Translation.SelectAttachmentFile;
-            var filter = Translation.PDFFiles
-                         + @" (*.pdf)|*.pdf|"
-                         + Translation.AllFiles
-                         + @" (*.*)|*.*";
-
-            var interactionResult = _openFileInteractionHelper.StartOpenFileInteraction(CurrentProfile.AttachmentPage.File, title, filter);
-
-            interactionResult.MatchSome(s =>
-            {
-                AttachmentFileTokenViewModel.Text = s;
-                AttachmentFileTokenViewModel.RaiseTextChanged();
-            });
-
-            CheckIfVersionIsPdf20();
-
-            return interactionResult;
+            AttachmentFileSelectFilesUserControlViewModel.UnmountView();
         }
 
         private void CheckIfVersionIsPdf20()
         {
-            IsPdf20 = _pdfVersionHelper.CheckIfVersionIsPdf20(CurrentProfile.AttachmentPage.File);
+            Pdf20Files = CurrentProfile.AttachmentPage.Files.FindAll(_pdfVersionHelper.CheckIfVersionIsPdf20);
 
-            RaisePropertyChanged(nameof(IsPdf20));
+            RaisePropertyChanged(nameof(IsAnyPdf20));
+            RaisePropertyChanged(nameof(Pdf20Files));
         }
 
-        public bool IsPdf20 { get; set; }
+        public bool IsAnyPdf20 => Pdf20Files?.Any() ?? false;
+
+        public List<string> Pdf20Files
+        {
+            get;
+            set;
+        }
     }
 
     public class DesignTimeAttachmentUserControlViewModel : AttachmentUserControlViewModel
     {
-        public DesignTimeAttachmentUserControlViewModel() : base(null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(),
-                                                        null, null, null, new EditionHelper(false), new PdfVersionHelper())
+        public DesignTimeAttachmentUserControlViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(),
+                                                        null, null, new PdfVersionHelper(), new DesignTimeSelectFilesUserControlViewModelFactory())
         {
         }
     }

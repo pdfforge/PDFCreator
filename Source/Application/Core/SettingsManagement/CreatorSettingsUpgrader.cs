@@ -1,6 +1,9 @@
 ﻿using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -27,6 +30,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV6ToV7);
             UpgradeMethods.Add(UpgradeV7ToV8);
             UpgradeMethods.Add(UpgradeV8ToV9);
+            UpgradeMethods.Add(UpgradeV9ToV10);
         }
 
         private void UpgradeV0ToV1()
@@ -166,5 +170,106 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             },
                 "ConversionProfiles");
         }
+
+        private void UpgradeV9ToV10()
+        {
+            ForAllProfiles
+            (
+                (profileOffset, i) =>
+                {
+                    MigrateValueToList(profileOffset, "AttachmentPage", "File", "Files");
+                    MigrateValueToList(profileOffset, "CoverPage", "File", "Files");
+
+                    // Migrate BackgroundOnCover and BackgroundOnAttachment
+                    var orderedList = GetOrderedList(profileOffset, GetList(profileOffset, "ActionOrder"));
+
+                    MigrateOpenViewer(profileOffset, orderedList);
+
+                    SetList(profileOffset, orderedList,"ActionOrder");
+                },
+                "ConversionProfiles"
+
+            );
+
+            Data.SetValue(SettingsVersionPath, "10");
+        }
+
+        private void MigrateOpenViewer(string profileOffset, IList<string> orderedList)
+        {
+            var isOpenWithArchitectEnabled = Data.GetValue(profileOffset + "OpenWithPdfArchitect");
+            Data.SetValue(profileOffset + @"OpenViewer\OpenWithPdfArchitect", isOpenWithArchitectEnabled);
+
+            var isOpenViewerEnabled = Data.GetValue(profileOffset + "OpenViewer");
+            Data.SetValue(profileOffset + @"OpenViewer\Enabled", isOpenViewerEnabled);
+
+
+            bool.TryParse(isOpenViewerEnabled, out var openViewerEnabled);
+            if (openViewerEnabled)
+                orderedList.Add(nameof(OpenViewer));
+        }
+
+        private void MigrateValueToList(string profileOffset, string settingName, string valueName, string listName) 
+        {
+            var coverOffset = $@"{profileOffset}{settingName}\";
+            var convertCoverValueToList = ConvertValueToList(coverOffset, valueName);
+            SetList(coverOffset, convertCoverValueToList, listName);
+            Data.RemoveValue($@"{coverOffset}{valueName}");
+        }
+
+        private IList<string> ConvertValueToList(string offset, string valueName)
+        {
+            var value = Data.GetValue($@"{offset}{valueName}");
+
+            return new List<string>{value};
+        }
+
+        private IList<string> GetOrderedList(string registryOffset, IList<string> list)
+        {
+            var actionList = list.ToList();
+            var bgEnabled = bool.Parse(Data.GetValue(registryOffset + @"BackgroundPage\Enabled"));
+
+            bool.TryParse(Data.GetValue(registryOffset + "EnableWorkflowEditor"), out var enableWorkflowEditor);
+
+            if (!bgEnabled || enableWorkflowEditor)
+                return actionList;
+
+            var orderedActionList = new List<string>();
+
+            var bgSettingName = nameof(BackgroundPage);
+            actionList.Remove(bgSettingName);
+
+            bool.TryParse(Data.GetValue(registryOffset + @"BackgroundPage\OnCover"), out var coverWithBackground);
+            if (coverWithBackground)
+            {
+                var coverName = nameof(CoverPage);
+                orderedActionList.Add(coverName);
+                actionList.Remove(coverName);
+            }
+
+            bool.TryParse(Data.GetValue(registryOffset + @"BackgroundPage\OnAttachment"), out var attachmentWithBackground);
+            if (attachmentWithBackground)
+            {
+                var coverName = nameof(AttachmentPage);
+                orderedActionList.Add(coverName);
+                actionList.Remove(coverName);
+            }
+
+            orderedActionList.Add(bgSettingName);
+            orderedActionList.AddRange(actionList);
+            return orderedActionList;
+        }
+
+        protected IList<string> GetActionOrder(string profileOffset)
+        {
+            var list = new List<string>();
+
+            int.TryParse(Data.GetValue(profileOffset + @"ActionOrder\numClasses"), out var actionCount);
+            for (int i = 0; i < actionCount; i++)
+            {
+                list.Add(Data.GetValue($@"{profileOffset}ActionOrder\{i}\ActionOrder"));
+            }
+            return list;
+        }
+
     }
 }

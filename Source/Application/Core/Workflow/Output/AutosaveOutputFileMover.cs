@@ -10,15 +10,15 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 {
     public class AutosaveOutputFileMover : OutputFileMoverBase
     {
-        public AutosaveOutputFileMover(IDirectory directory, IFile file, IPathUtil pathUtil, IDirectoryHelper directoryHelper)
+        public AutosaveOutputFileMover(IUniqueFilenameFactory uniqueFilenameFactory, IFile file, IPathUtil pathUtil, IDirectoryHelper directoryHelper)
         {
-            Directory = directory;
+            UniqueFilenameFactory = uniqueFilenameFactory;
             File = file;
             PathUtil = pathUtil;
             DirectoryHelper = directoryHelper;
         }
 
-        protected override IDirectory Directory { get; }
+        protected override IUniqueFilenameFactory UniqueFilenameFactory { get; }
         protected override IDirectoryHelper DirectoryHelper { get; }
         protected override IFile File { get; }
         protected override IPathUtil PathUtil { get; }

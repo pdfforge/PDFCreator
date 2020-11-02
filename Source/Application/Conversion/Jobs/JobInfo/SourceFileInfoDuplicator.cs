@@ -10,12 +10,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
     public class SourceFileInfoDuplicator : ISourceFileInfoDuplicator
     {
-        private readonly IUniqueFilePathBuilder _uniqueFilePathBuilder;
+        private readonly IUniqueFilenameFactory _uniqueFilenameFactory;
         private readonly IFile _file;
 
-        public SourceFileInfoDuplicator(IUniqueFilePathBuilder uniqueFilePathBuilder, IFile file)
+        public SourceFileInfoDuplicator(IUniqueFilenameFactory uniqueFilenameFactory, IFile file)
         {
-            _uniqueFilePathBuilder = uniqueFilePathBuilder;
+            _uniqueFilenameFactory = uniqueFilenameFactory;
             _file = file;
         }
 
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
             var duplicateFilename = PathSafe.GetFileNameWithoutExtension(sfi.Filename);
             var duplicateFilePath = PathSafe.Combine(duplicateFolder, duplicateFilename);
-            duplicateFilePath = _uniqueFilePathBuilder.Build(duplicateFilePath).Unique;
+            duplicateFilePath = _uniqueFilenameFactory.Build(duplicateFilePath).CreateUniqueFileName();
             _file.Copy(sfi.Filename, duplicateFilePath);
             duplicate.Filename = duplicateFilePath;
 

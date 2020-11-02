@@ -13,11 +13,13 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.FolderProvider
     {
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IDirectory _directory;
+        private readonly IUniqueDirectory _uniqueDirectory;
         private readonly ISpoolerProvider _spoolerProvider;
 
-        public JobFolderBuilder(IDirectory directory, ISpoolerProvider spoolerProvider)
+        public JobFolderBuilder(IDirectory directory, IUniqueDirectory uniqueDirectory, ISpoolerProvider spoolerProvider)
         {
             _directory = directory;
+            _uniqueDirectory = uniqueDirectory;
             _spoolerProvider = spoolerProvider;
         }
 
@@ -27,7 +29,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.FolderProvider
             if (psFilename.Length > 23)
                 psFilename = psFilename.Substring(0, 23);
             var jobFolder = PathSafe.Combine(_spoolerProvider.SpoolFolder, psFilename);
-            jobFolder = new UniqueDirectory(jobFolder).MakeUniqueDirectory();
+            jobFolder = _uniqueDirectory.MakeUniqueDirectory(jobFolder);
             _directory.CreateDirectory(jobFolder);
             Logger.Trace("Created spool directory for job: " + jobFolder);
 

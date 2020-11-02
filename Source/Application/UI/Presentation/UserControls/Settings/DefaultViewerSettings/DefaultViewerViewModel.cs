@@ -4,6 +4,8 @@ using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -16,22 +18,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
     public class DefaultViewerViewModel : TranslatableViewModelBase<DefaultViewerTranslation>, ITabViewModel
     {
         private readonly ICurrentSettings<ObservableCollection<DefaultViewer>> _defaultViewerProvider;
+        private readonly ISettingsProvider _settingsProvider;
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IOpenFileInteractionHelper _fileInteractionHelper;
         public IGpoSettings GpoSettings { get; }
 
-        private ObservableCollection<DefaultViewer> _defaultViewers => _defaultViewerProvider?.Settings;
+        private ObservableCollection<DefaultViewer> _defaultViewers => _settingsProvider?.Settings.DefaultViewerList;
 
         public DefaultViewerViewModel(
             ITranslationUpdater translationUpdater,
-            ICurrentSettings<ObservableCollection<DefaultViewer>> defaultViewerProvider,
+            ISettingsProvider settingsProvider,
             ICurrentSettingsProvider currentSettingsProvider,
             IGpoSettings gpoSettings, 
             IOpenFileInteractionHelper fileInteractionHelper)
             : base(translationUpdater)
         {
-            _defaultViewerProvider = defaultViewerProvider;
+            _settingsProvider = settingsProvider;
             _currentSettingsProvider = currentSettingsProvider;
+
+           
             _fileInteractionHelper = fileInteractionHelper;
             GpoSettings = gpoSettings;
 
@@ -87,6 +92,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
         public void MountView()
         {
             _currentSettingsProvider.SettingsChanged += OnSettingsChanged;
+            UpdateDefaultViewer();
         }
 
         private void OnSettingsChanged(object sender, EventArgs args)

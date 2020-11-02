@@ -4,11 +4,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class AddActionOverlayInteraction : IInteraction
     {
-        public bool Success;
-
-        public AddActionOverlayInteraction(bool success)
-        {
-            Success = success;
-        }
+        public bool Success { get; set; } = false;
     }
 }

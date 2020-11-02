@@ -1,14 +1,24 @@
-﻿using pdfforge.PDFCreator.Core.Services;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.Utilities.Threading;
-using Translatable;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
+using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class DesignTimeProfilesViewModel : ProfilesViewModel
     {
-        public DesignTimeProfilesViewModel() : base(new CurrentSettingsProvider(new DefaultSettingsProvider()), new TranslationUpdater(new TranslationFactory(), new ThreadManager()), new DesignTimeCommandLocator(), null, null, null, null, null)
+        public DesignTimeProfilesViewModel()
+            : base(new CurrentSettingsProvider(new DefaultSettingsProvider()),
+                new DesignTimeTranslationUpdater(),
+                new DesignTimeCommandLocator(),
+                new DesignTimeCurrentSettings<ObservableCollection<ConversionProfile>>(),
+                new GpoSettingsDefaults(),
+                new Prism.Regions.RegionManager(),
+                new WorkflowEditorSubViewProvider("save", "metadata", "outputformat"),
+                new DesignTimeCommandBuilderProvider())
         {
         }
     }

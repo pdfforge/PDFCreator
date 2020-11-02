@@ -15,7 +15,7 @@
         <converter:BoolToVisibilityConverter x:Key="BooleanNegationToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
     </UserControl.Resources>
-    <Grid IsEnabled="{Binding CurrentProfile.Watermark.Enabled}">
+    <Grid>
         <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Watermark}">
             <StackPanel>
                 <Label Content="{Binding Translation.WatermarkFileLabel}" />

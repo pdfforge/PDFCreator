@@ -132,10 +132,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                     printFiles.Add(file.path);
             }
 
+            var directConversionFilesList = new List<string>();
             foreach (var directConversionFile in directConversionFiles)
             {
-                _directConversion.ConvertDirectly(directConversionFile.Item1, directConversionFile.Item2);
+                if (directConversionFile.Item2 != null && directConversionFile.Item2.Merge)
+                    directConversionFilesList.Add(directConversionFile.Item1);
+                else
+                    _directConversion.ConvertDirectly(new List<string>() { directConversionFile.Item1 }, directConversionFile.Item2);
             }
+
+            if (directConversionFilesList.Count > 0)
+                _directConversion.ConvertDirectly(directConversionFilesList, directConversionFiles.First().Item2);
 
             if (printFiles.Any())
                 PrintPrintableFiles(printFiles);

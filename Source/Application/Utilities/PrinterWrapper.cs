@@ -2,7 +2,14 @@
 
 namespace pdfforge.PDFCreator.Utilities
 {
-    public class PrinterWrapper
+    public interface IPrinterWrapper
+    {
+        string PrinterName { get; set; }
+        bool IsValid { get; }
+        bool CanDuplex { get; }
+    }
+
+    public class PrinterWrapper : IPrinterWrapper
     {
         private readonly PrinterSettings _printer;
 

@@ -3,6 +3,7 @@ using pdfforge.DataStorage;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -83,6 +84,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public JpegSettings JpegSettings { get; set; } = new JpegSettings();
 		
 		/// <summary>
+		/// Opens the printed file in a viewer
+		/// </summary>
+		public OpenViewer OpenViewer { get; set; } = new OpenViewer();
+		
+		/// <summary>
 		/// Settings for the PDF output format
 		/// </summary>
 		public PdfSettings PdfSettings { get; set; } = new PdfSettings();
@@ -139,8 +145,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// </summary>
 		public string AuthorTemplate { get; set; } = "<PrintJobAuthor>";
 		
-		public bool EnableWorkflowEditor { get; set; } = true;
-		
 		/// <summary>
 		/// Template of which the filename will be created. This may contain Tokens.
 		/// </summary>
@@ -160,16 +164,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// Name of the profile
 		/// </summary>
 		public string Name { get; set; } = "NewProfile";
-		
-		/// <summary>
-		/// Open the default viewer after converting the document
-		/// </summary>
-		public bool OpenViewer { get; set; } = true;
-		
-		/// <summary>
-		/// If the output is a PDF, use PDF Architect instead of the default PDF viewer
-		/// </summary>
-		public bool OpenWithPdfArchitect { get; set; } = true;
 		
 		/// <summary>
 		/// Default format for this print job.
@@ -236,6 +230,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.ReadValues(data, path + @"Ghostscript\");
 			HttpSettings.ReadValues(data, path + @"HttpSettings\");
 			JpegSettings.ReadValues(data, path + @"JpegSettings\");
+			OpenViewer.ReadValues(data, path + @"OpenViewer\");
 			PdfSettings.ReadValues(data, path + @"PdfSettings\");
 			PngSettings.ReadValues(data, path + @"PngSettings\");
 			Printing.ReadValues(data, path + @"Printing\");
@@ -256,13 +251,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				}
 			}catch{}
 			try { AuthorTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"AuthorTemplate")); } catch { AuthorTemplate = "<PrintJobAuthor>";}
-			EnableWorkflowEditor = bool.TryParse(data.GetValue(@"" + path + @"EnableWorkflowEditor"), out var tmpEnableWorkflowEditor) ? tmpEnableWorkflowEditor : true;
 			try { FileNameTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"FileNameTemplate")); } catch { FileNameTemplate = "<Title>";}
 			try { Guid = Data.UnescapeString(data.GetValue(@"" + path + @"Guid")); } catch { Guid = "";}
 			try { KeywordTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"KeywordTemplate")); } catch { KeywordTemplate = "";}
 			try { Name = Data.UnescapeString(data.GetValue(@"" + path + @"Name")); } catch { Name = "NewProfile";}
-			OpenViewer = bool.TryParse(data.GetValue(@"" + path + @"OpenViewer"), out var tmpOpenViewer) ? tmpOpenViewer : true;
-			OpenWithPdfArchitect = bool.TryParse(data.GetValue(@"" + path + @"OpenWithPdfArchitect"), out var tmpOpenWithPdfArchitect) ? tmpOpenWithPdfArchitect : true;
 			OutputFormat = Enum.TryParse<OutputFormat>(data.GetValue(@"" + path + @"OutputFormat"), out var tmpOutputFormat) ? tmpOutputFormat : OutputFormat.Pdf;
 			SaveFileTemporary = bool.TryParse(data.GetValue(@"" + path + @"SaveFileTemporary"), out var tmpSaveFileTemporary) ? tmpSaveFileTemporary : false;
 			ShowAllNotifications = bool.TryParse(data.GetValue(@"" + path + @"ShowAllNotifications"), out var tmpShowAllNotifications) ? tmpShowAllNotifications : true;
@@ -289,6 +281,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.StoreValues(data, path + @"Ghostscript\");
 			HttpSettings.StoreValues(data, path + @"HttpSettings\");
 			JpegSettings.StoreValues(data, path + @"JpegSettings\");
+			OpenViewer.StoreValues(data, path + @"OpenViewer\");
 			PdfSettings.StoreValues(data, path + @"PdfSettings\");
 			PngSettings.StoreValues(data, path + @"PngSettings\");
 			Printing.StoreValues(data, path + @"Printing\");
@@ -304,13 +297,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			data.SetValue(path + @"ActionOrder\numClasses", ActionOrder.Count.ToString());
 			data.SetValue(@"" + path + @"AuthorTemplate", Data.EscapeString(AuthorTemplate));
-			data.SetValue(@"" + path + @"EnableWorkflowEditor", EnableWorkflowEditor.ToString());
 			data.SetValue(@"" + path + @"FileNameTemplate", Data.EscapeString(FileNameTemplate));
 			data.SetValue(@"" + path + @"Guid", Data.EscapeString(Guid));
 			data.SetValue(@"" + path + @"KeywordTemplate", Data.EscapeString(KeywordTemplate));
 			data.SetValue(@"" + path + @"Name", Data.EscapeString(Name));
-			data.SetValue(@"" + path + @"OpenViewer", OpenViewer.ToString());
-			data.SetValue(@"" + path + @"OpenWithPdfArchitect", OpenWithPdfArchitect.ToString());
 			data.SetValue(@"" + path + @"OutputFormat", OutputFormat.ToString());
 			data.SetValue(@"" + path + @"SaveFileTemporary", SaveFileTemporary.ToString());
 			data.SetValue(@"" + path + @"ShowAllNotifications", ShowAllNotifications.ToString());
@@ -339,6 +329,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Ghostscript = Ghostscript.Copy();
 			copy.HttpSettings = HttpSettings.Copy();
 			copy.JpegSettings = JpegSettings.Copy();
+			copy.OpenViewer = OpenViewer.Copy();
 			copy.PdfSettings = PdfSettings.Copy();
 			copy.PngSettings = PngSettings.Copy();
 			copy.Printing = Printing.Copy();
@@ -351,13 +342,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Watermark = Watermark.Copy();
 			copy.ActionOrder = new List<string>(ActionOrder);
 			copy.AuthorTemplate = AuthorTemplate;
-			copy.EnableWorkflowEditor = EnableWorkflowEditor;
 			copy.FileNameTemplate = FileNameTemplate;
 			copy.Guid = Guid;
 			copy.KeywordTemplate = KeywordTemplate;
 			copy.Name = Name;
-			copy.OpenViewer = OpenViewer;
-			copy.OpenWithPdfArchitect = OpenWithPdfArchitect;
 			copy.OutputFormat = OutputFormat;
 			copy.SaveFileTemporary = SaveFileTemporary;
 			copy.ShowAllNotifications = ShowAllNotifications;
@@ -386,6 +374,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.ReplaceWith(source.Ghostscript);
 			HttpSettings.ReplaceWith(source.HttpSettings);
 			JpegSettings.ReplaceWith(source.JpegSettings);
+			OpenViewer.ReplaceWith(source.OpenViewer);
 			PdfSettings.ReplaceWith(source.PdfSettings);
 			PngSettings.ReplaceWith(source.PngSettings);
 			Printing.ReplaceWith(source.Printing);
@@ -405,9 +394,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(AuthorTemplate != source.AuthorTemplate)
 				AuthorTemplate = source.AuthorTemplate;
 				
-			if(EnableWorkflowEditor != source.EnableWorkflowEditor)
-				EnableWorkflowEditor = source.EnableWorkflowEditor;
-				
 			if(FileNameTemplate != source.FileNameTemplate)
 				FileNameTemplate = source.FileNameTemplate;
 				
@@ -419,12 +405,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				
 			if(Name != source.Name)
 				Name = source.Name;
-				
-			if(OpenViewer != source.OpenViewer)
-				OpenViewer = source.OpenViewer;
-				
-			if(OpenWithPdfArchitect != source.OpenWithPdfArchitect)
-				OpenWithPdfArchitect = source.OpenWithPdfArchitect;
 				
 			if(OutputFormat != source.OutputFormat)
 				OutputFormat = source.OutputFormat;
@@ -476,6 +456,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Ghostscript.Equals(v.Ghostscript)) return false;
 			if (!HttpSettings.Equals(v.HttpSettings)) return false;
 			if (!JpegSettings.Equals(v.JpegSettings)) return false;
+			if (!OpenViewer.Equals(v.OpenViewer)) return false;
 			if (!PdfSettings.Equals(v.PdfSettings)) return false;
 			if (!PngSettings.Equals(v.PngSettings)) return false;
 			if (!Printing.Equals(v.Printing)) return false;
@@ -488,13 +469,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Watermark.Equals(v.Watermark)) return false;
 			if (!ActionOrder.SequenceEqual(v.ActionOrder)) return false;
 			if (!AuthorTemplate.Equals(v.AuthorTemplate)) return false;
-			if (!EnableWorkflowEditor.Equals(v.EnableWorkflowEditor)) return false;
 			if (!FileNameTemplate.Equals(v.FileNameTemplate)) return false;
 			if (!Guid.Equals(v.Guid)) return false;
 			if (!KeywordTemplate.Equals(v.KeywordTemplate)) return false;
 			if (!Name.Equals(v.Name)) return false;
-			if (!OpenViewer.Equals(v.OpenViewer)) return false;
-			if (!OpenWithPdfArchitect.Equals(v.OpenWithPdfArchitect)) return false;
 			if (!OutputFormat.Equals(v.OutputFormat)) return false;
 			if (!SaveFileTemporary.Equals(v.SaveFileTemporary)) return false;
 			if (!ShowAllNotifications.Equals(v.ShowAllNotifications)) return false;

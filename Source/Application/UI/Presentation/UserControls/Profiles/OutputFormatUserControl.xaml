@@ -7,8 +7,11 @@
              xmlns:regions="http://prismlibrary.com/"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:workflowEditor="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor"
+             MinWidth="{x:Static workflowEditor:ProfileWizardSizes.MinWidth}"
+             MinHeight="{x:Static workflowEditor:ProfileWizardSizes.MinHeight}"
              mc:Ignorable="d"
-             help:HelpProvider.HelpTopic="Convert"
+             help:HelpProvider.HelpTopic="OutputFormat"
              d:DesignHeight="450" d:DesignWidth="800" x:Name="UserControl" Unloaded="OnUnloaded">
     <Grid>
         <ItemsControl Margin="20 20 0 0"  regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ConvertTabOverlayContentRegion}" />

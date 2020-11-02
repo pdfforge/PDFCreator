@@ -3,14 +3,15 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using Prism.Regions;
 using System;
-using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class WorkflowEditorOverlayViewModel : OverlayViewModelBase<WorkflowEditorOverlayInteraction, WorkflowEditorOverlayViewTranslation>
     {
         private readonly IRegionManager _regionManager;
-        public ICommand OkCommand { get; }
+        public DelegateCommand OkCommand { get; }
+        public DelegateCommand CloseCommand { get; }
+        public DelegateCommand BackCommand { get; }
 
         public Action UpdateHelpTopic;
 
@@ -19,7 +20,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             _regionManager = regionManager;
             OkCommand = new DelegateCommand((x) =>
             {
-                Interaction.Success = true;
+                Interaction.Result = WorkflowEditorOverlayResult.Success;
+                FinishInteraction();
+            }, x => Interaction?.IsDisabled == false);
+
+            CloseCommand = new DelegateCommand(x =>
+            {
+                Interaction.Result = WorkflowEditorOverlayResult.Close;
+                FinishInteraction();
+            }, x => Interaction?.IsDisabled == true);
+
+            BackCommand = new DelegateCommand(x =>
+            {
+                Interaction.Result = WorkflowEditorOverlayResult.Back;
                 FinishInteraction();
             });
         }
@@ -29,15 +42,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             base.HandleInteractionObjectChanged();
             _regionManager.RequestNavigate(RegionNames.ProfileWorkflowEditorOverlayRegion, Interaction.View);
             UpdateHelpTopic?.Invoke();
+            OkCommand.RaiseCanExecuteChanged();
+            CloseCommand.RaiseCanExecuteChanged();
         }
 
         public override string Title => $"{Translation.ModifySettings} {Interaction.Title}";
-    }
-
-    public class DesignTimeWorkflowEditorOverlayViewModel : WorkflowEditorOverlayViewModel
-    {
-        public DesignTimeWorkflowEditorOverlayViewModel(IRegionManager regionManager, ITranslationUpdater translationUpdater) : base(regionManager, translationUpdater)
-        {
-        }
     }
 }

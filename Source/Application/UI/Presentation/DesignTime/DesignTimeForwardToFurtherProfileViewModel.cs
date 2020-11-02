@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                    new DesignTimeCurrentSettingsProvider(),
                    new DispatcherWrapper(),
                    new DesignTimeCurrentSettings<ObservableCollection<ConversionProfile>>(),
-                   null)
+                   new EditionHelper(false))
         {
         }
     }

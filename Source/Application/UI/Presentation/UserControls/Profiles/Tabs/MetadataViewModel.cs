@@ -9,26 +9,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs
 {
     public class MetadataViewModel : ProfileNotSupportedFeaturesUserControlViewModel<MetadataTabTranslation>, ITabViewModel
     {
-        private readonly ITokenHelper _tokenHelper;
-        private readonly ITokenViewModelFactory _tokenViewModelFactory;
-
         public string Title => Translation.Title;
         public IconList Icon => IconList.MetadataSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
-        public override bool HasNotSupportedFeatures => CurrentProfile.HasNotSupportedMetadata();
+
+        public override bool HasNotSupportedFeatures => CurrentProfile?.HasNotSupportedMetadata() ?? false;
 
         public TokenViewModel<ConversionProfile> TitleTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> AuthorTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> SubjectTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> KeywordsTokenViewModel { get; private set; }
 
-        public MetadataViewModel(ITranslationUpdater translationUpdater, ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory,
+        public MetadataViewModel(ITranslationUpdater translationUpdater, ITokenViewModelFactory tokenViewModelFactory,
             ISelectedProfileProvider selectedProfileProvider, IDispatcher dispatcher) : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
-            _tokenHelper = tokenHelper;
-            _tokenViewModelFactory = tokenViewModelFactory;
-
             translationUpdater?.RegisterAndSetTranslation(tf => SetTokenViewModels(tokenViewModelFactory));
         }
 

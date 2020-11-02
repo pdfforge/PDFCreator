@@ -85,6 +85,12 @@ msgstr "En ny uppdatering är tillgänglig"
 msgid "A printer with the name '{0}' is already installed on your system. Please enter a new printer name:"
 msgstr "En skrivare som heter '{0}' är redan installerad på Ert system. Ange ett nytt skrivarnamn:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#, fuzzy
+#| msgid "Target directory is too long."
+msgid "A target directory is required for automatic saving."
+msgstr "Målmappens namn är för långt."
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 msgid "Access Denied"
 msgstr "Åtkomst nekas"
@@ -93,6 +99,12 @@ msgstr "Åtkomst nekas"
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "Accounts"
 msgstr "Konton"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#, fuzzy
+#| msgid "Add Action"
+msgid "Actions"
+msgstr "Lägg till åtgärd"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Activate RSS news feed"
@@ -165,12 +177,12 @@ msgstr "Lägg till"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Account"
 msgstr "Lägg till konto"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Add Action"
 msgstr "Lägg till åtgärd"
 
@@ -178,7 +190,7 @@ msgstr "Lägg till åtgärd"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Dropbox Account"
 msgstr "Lägg till Dropbox-konto"
@@ -187,16 +199,21 @@ msgstr "Lägg till Dropbox-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add FTP Account"
 msgstr "Lägg till FTP-konto"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
+#, fuzzy
+msgid "Add File"
+msgstr "Alla filer"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add HTTP Account"
 msgstr "Lägg till HTTP-konto"
@@ -213,7 +230,7 @@ msgstr "Lägg till skrivare"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add SMTP Account"
 msgstr "Lägg till SMTP-konto"
@@ -222,7 +239,7 @@ msgstr "Lägg till SMTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Time Server Account"
 msgstr "Lägg till tidsserverkonto"
@@ -230,6 +247,10 @@ msgstr "Lägg till tidsserverkonto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
 msgid "Add Token"
 msgstr "Lägg till token"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Add actions to modify, send or prepare your documents"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Add attachment"
@@ -259,14 +280,17 @@ msgstr "Lägg till skrivare"
 msgid "Added to context menu"
 msgstr "Tillagd till Explorer-kontextmenyn"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#, fuzzy
+msgid "Additional Attachment File"
+msgstr "Ytterligare parametrar:"
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
 #, fuzzy
 msgid "Additional Data:"
 msgstr "Ytterligare parametrar:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase.MailBaseTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #, fuzzy
 msgid "Additional E-mail Attachments:"
 msgstr "Ytterligare parametrar:"
@@ -296,8 +320,7 @@ msgstr "Administratörsbehörighet krävs"
 msgid "Advanced"
 msgstr "Avancerat"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase.MailBaseTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #, fuzzy
 msgid "All Files"
 msgstr "Alla filer"
@@ -306,7 +329,7 @@ msgstr "Alla filer"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
@@ -325,9 +348,6 @@ msgstr "Allt Ni önskar är skicka era PDFdokument med e-mail, ftp eller liknand
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Allow PDFCreator to temporarily change the default printer"
 msgstr "Tillåt PDFCreator att tillfälligt byta standardskrivare"
-
-msgid "Allow editing of shared profiles during print job. The changes will not be saved."
-msgstr ""
 
 msgid "Allow further profiles defined by User"
 msgstr "Tillåt ytterligare profiler definierade av användare"
@@ -367,6 +387,10 @@ msgstr "Lägger till en eller flera sidor i slutet av dokumentet."
 msgid "Application Settings"
 msgstr "Programinställningar"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
+msgid "Apply"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.PrinterActionsAssistantTranslation
 msgid "Are you sure that you want to delete the printer '{0}'?"
 msgstr "Är Ni säker på att Ni vill ta bort skrivaren '{0}'?"
@@ -381,7 +405,7 @@ msgstr[1] "Är Ni säker på att Ni vill radera följande filer?"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Are you sure you want to delete this account?"
 msgstr "Är Ni säker på, att Ni vill radera detta konto?"
@@ -411,11 +435,15 @@ msgstr ""
 msgid "At least one of the attachment files for the SMTP action is unavailable."
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "At least one of the attachment files for the mail client action is unavailable."
+msgstr ""
+
 #: pdfforge.PDFCreatorShell.ContextMenuTranslation
 msgid "At least one of the selected items is not convertible! For more information about the unprintable files, see the list below."
 msgstr "Minst ett av de valda objekten är ej konverterbart. Ytterligare information om de icke printbara filerna finner ni i listan nedan."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Attach pdfforge signature"
 msgstr "Bifoga pdfforge signatur"
 
@@ -424,33 +452,10 @@ msgid "Attachment"
 msgstr "Bilaga"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment file (PDF):"
-msgstr "Bilagefil (PDF):"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Attachment file does not exist."
-msgstr "Bilagefilen finns inte."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Attachment file is no PDF file."
-msgstr "Bilagefilen är ingen PDF-fil."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Attachment path contains illegal characters."
-msgstr "Sökvägen till bilagan innehåller ogiltiga tecken."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "Attachment path is invalid rooted path."
-msgstr "Sökvägen till bilagefilen är ogiltig som absolut sökväg."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Attachment path is too long."
-msgstr "Sökvägen till bilagefilen är för lång."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-msgid "AttachmentFile"
-msgstr "Bilagefil"
+#| msgid "Attachment file (PDF):"
+msgid "Attachment files (PDF):"
+msgstr "Bilagefil (PDF):"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.DocumentView
 msgid "Attachments panel visible"
@@ -464,7 +469,7 @@ msgstr "Autentifera med Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Authentication"
@@ -478,34 +483,37 @@ msgstr "Författare"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Author:"
 msgstr "Författare:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Author: {0}"
-msgstr "Författare: (0)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
 msgid "Auto-Detect"
 msgstr "Automatavkänning"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Auto-Save: Disabled"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Auto-Save: Enabled"
-msgstr ""
-
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Automatic"
 msgstr "Automatisk"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid "Automatic Saving"
 msgstr "Automatisk lagring"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#, fuzzy
+#| msgid "Automatic saving without user password."
+msgid "Automatic saving requires the passwords to be set"
+msgstr "Automatisk lagring utan användarlösenord."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Automatic saving without FTP server password."
@@ -535,14 +543,17 @@ msgstr "Automatisk lagring utan målmapp."
 msgid "Automatic saving without user password."
 msgstr "Automatisk lagring utan användarlösenord."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "BCC:"
 msgstr "BCC:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
 msgid "BUSINESS FEATURE"
 msgstr "BUSINESS FEATURE"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Back"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
@@ -599,8 +610,7 @@ msgstr "Svart-vitt (2 Bit)"
 msgid "By loading the file all settings and profiles will be overwritten. Do you want to continue?"
 msgstr "Genom att ladda filen kommer alla inställningar och profiler att skrivas över. Vill Ni fortsätta?"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "CC:"
 msgstr "CC:"
 
@@ -647,11 +657,12 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobPasswordButtonTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
@@ -670,10 +681,6 @@ msgstr "Katalanska"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "Certificate File:"
 msgstr "Välj certifikatfil:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
-msgid "Certificate Password:"
-msgstr "Certifikatlösenord:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
 msgid "Certificate _Password:"
@@ -699,17 +706,13 @@ msgstr "Certifikatfilens sökväg är för lång."
 msgid "Changes not effective yet"
 msgstr "Ändringar har ännu inte trätt i kraft"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Check E-mail Client"
 msgstr "Testa e-postklient"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid "Check Script"
 msgstr "Kontrollera script"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
-msgid "Check e-mail client"
-msgstr "Kontrollera e-mailklienten"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Check for updates:"
@@ -718,6 +721,9 @@ msgstr "Sök uppdateringar:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Check now"
 msgstr "Sök nu"
+
+msgid "Chinese (Simplified)"
+msgstr ""
 
 msgid "Chinese (Traditional)"
 msgstr "Kinesiska (traditionell)"
@@ -733,10 +739,6 @@ msgstr "Välj en mapp"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "Choose a file to convert"
 msgstr "Välj en fil att konvertera"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Choose a folder"
-msgstr "Välj en mapp"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
 msgid "Choose an Action"
@@ -755,6 +757,12 @@ msgstr "Rensa loggfilen"
 msgid "Click here for more information on tokens"
 msgstr "Klicka här för att erhålla ytterligare information angående token"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+#, fuzzy
+#| msgid "Close Now"
+msgid "Close"
+msgstr "Stäng nu"
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.Update.RestartApplicationInteractionTranslation
 msgid "Close Now"
 msgstr "Stäng nu"
@@ -770,12 +778,19 @@ msgstr "Färgmodell:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertJpgTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPngTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertTiffTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Colors:"
 msgstr "Färger:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "Community Support"
 msgstr "Användargruppsupport"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#, fuzzy
+#| msgid "ZIP Compression"
+msgid "Compression:"
+msgstr "ZIP-komprimering"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
@@ -825,7 +840,11 @@ msgid "Converting..."
 msgstr "Konverterar..."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Converts all documents without asking for settings. This requires more settings to be defined in the profile."
+#, fuzzy
+#| msgid "Converts all documents without asking for settings. This requires more settings to be defined in the profile."
+msgid ""
+"Converts all documents without asking for settings.\r\n"
+"This requires all necessary settings to be set in advance."
 msgstr "Konverterar alla dokument, utan att efterfråga inställningar. Detta kräver att mera inställningar angetts i profilen."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -865,7 +884,7 @@ msgstr[1] ""
 "Kanske filerna används för närvarande.\n"
 "Var god försök igen senare."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Could not find MAPI client (e.g. Thunderbird or Outlook)."
 msgstr "Kunde inte hitta någon MAPI-klient (t.ex. Thunderbird el. Outlook)."
 
@@ -894,24 +913,10 @@ msgid "Cover"
 msgstr "Omslag"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
-msgid "Cover file (PDF):"
+#, fuzzy
+#| msgid "Cover file (PDF):"
+msgid "Cover files (PDF):"
 msgstr "Försättsbladfil (PDF):"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Cover file does not exist."
-msgstr "Försättsbladfil saknas."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Cover path contains illegal characters."
-msgstr "Försättsbladfilens sökväg innehåller ogiltiga tecken."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Cover path is invalid absolute path."
-msgstr "Omslagsfilens sökväg är ogiltig som absolut sökväg."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Cover path is too long."
-msgstr "Omslagsfilens sökväg är för lång."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 msgid "Create PDF files"
@@ -929,7 +934,7 @@ msgstr "Skapa egna formulär"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Create new accounts"
 msgstr "Skapa nya konton"
@@ -982,10 +987,6 @@ msgstr "Standardvisningsprogram"
 msgid "Default printer"
 msgstr "Standardskrivare"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Define actions for the workflow"
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "Delete"
 msgstr "Radera"
@@ -1022,7 +1023,7 @@ msgstr "Signerar PDF-filer digitalt för att till exempel verifiera avsändarens
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Directory:"
 msgstr "Mapp:"
@@ -1065,10 +1066,6 @@ msgstr "Inaktivera Titelflik"
 msgid "Disable usage statistics"
 msgstr "Stäng av användningsstatistik"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.SwitchLayoutTranslation
-msgid "Disable workflow editor"
-msgstr "Inaktivera Workflow Editor"
-
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Gpo.GpoTranslation
 msgid "Disabled by Administrator"
 msgstr "Avaktiverat av administratör"
@@ -1089,10 +1086,6 @@ msgstr "Vill Ni återskapa standardinställningarna? De aktuella inställningarn
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Do you want to clear the history? All records will be removed, but the documents will not be deleted."
 msgstr "Vill Ni radera historiken? Alla noteringar tas bort, men dokumenten raderas ej."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.SwitchLayoutTranslation
-msgid "Do you want to continue?"
-msgstr "Vill Ni fortsätta?"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
@@ -1121,6 +1114,12 @@ msgstr "Vill Ni trots allt spara?"
 msgid "Do you want to save?"
 msgstr "Vill Ni lagra?"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#, fuzzy
+#| msgid "Document view:"
+msgid "Document File"
+msgstr "Dokumentvisning:"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Document Info"
@@ -1134,7 +1133,6 @@ msgstr "Bokmärken synliga"
 msgid "Document view:"
 msgstr "Dokumentvisning:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Don't overwrite existing files"
 msgstr "Skriv ej över existerande filer"
@@ -1143,7 +1141,7 @@ msgstr "Skriv ej över existerande filer"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't overwrite files (adds an increasing number in case of conflict)"
 msgstr "Skriv inte över filer (ett ökande nummer läggs till vid konflikt)"
@@ -1160,7 +1158,7 @@ msgstr "Lagra eller efterfråga inte lösenord under konverteringsförloppet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't save password and request it during upload."
 msgstr "Lagra ej lösenord, eller efterfråga dessa, medan konvertering pågår."
@@ -1194,7 +1192,7 @@ msgstr "Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Dropbox Account"
 msgstr "Dropbox-konto"
@@ -1210,11 +1208,11 @@ msgstr "Dubbelsidig utskrift (om skrivaren stöder detta)"
 msgid "Dutch"
 msgstr "Nederländska"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "E-mail"
 msgstr "E-post"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "E-mail Address:"
 msgstr "E-postadress:"
 
@@ -1238,13 +1236,12 @@ msgstr "Redigera"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Edit Account"
 msgstr "Redigera konto"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Edit E-mail Text"
 msgstr "Redigera e-postmeddelande"
 
@@ -1260,7 +1257,7 @@ msgstr "Redigera HTTP-konto"
 msgid "Edit PDF files"
 msgstr "Redigera PDF-filer"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Edit SMTP Account"
 msgstr "Redigera SMTP-konto"
 
@@ -1304,6 +1301,16 @@ msgstr "Engelska"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 msgid "Enjoy our free features:"
 msgstr "Upplev våra gratis funktioner:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Ensure unique filenames"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#, fuzzy
+#| msgid "Don't overwrite existing files"
+msgid "Ensure unique filenames - don't overwrite existing files"
+msgstr "Skriv ej över existerande filer"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Enter license key"
@@ -1489,7 +1496,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "FTP Account"
 msgstr "FTP-konto"
@@ -1568,6 +1575,7 @@ msgstr "Mallfilens filnamn innehåller ogiltiga tecken."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Filename:"
 msgstr "Filnamn:"
@@ -1632,6 +1640,11 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 #, fuzzy
 msgid "Forward to Profile"
+msgstr "Ny profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
+#, fuzzy
+msgid "Forward to another profile"
 msgstr "Ny profil"
 
 msgid "French"
@@ -1732,7 +1745,7 @@ msgstr "HTTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "HTTP Account"
 msgstr "HTTP-konto"
@@ -1811,8 +1824,11 @@ msgstr "Hög kvalitet (stor fil)"
 msgid "Hint"
 msgstr "Tips"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+msgid "Hint: Leave the target directory blank, to use the recently used target directory."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Hint: Multiple recipients can be separated by commas"
 msgstr "Anvisning: Flera mottagare kan åtskiljas med kommatecken"
 
@@ -1848,9 +1864,6 @@ msgstr "INI filer (*.ini)|*.ini"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "If a file already exists, an incrementing number is added to the filename, i.e. 'file_5.pdf'"
 msgstr "Om en fil redan finns, läggs ett ökande tal till filnamnet, t.ex. 'fil_5.pdf'"
-
-msgid "If set, the user can temporarily edit the distributed profiles. The changes are not saved. After restarting the PDFCreator, the profiles match the profiles from the .ini file."
-msgstr "Om markerad, kan användaren redigera de fördelade profilerna tillfälligt. Ändringarna sparas inte. Efter omstart av PDFCreator överensstämmer profilerna med profilerna från .ini-filen."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "If you want to know more you can take a look at our manual:"
@@ -1890,6 +1903,7 @@ msgid "Install new Update"
 msgstr "Installera ny uppdatering"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Interactive"
 msgstr "Interaktiv"
 
@@ -1976,7 +1990,7 @@ msgstr "Exempelstatistik för utskriftsjobb:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Key file"
@@ -1986,7 +2000,7 @@ msgstr "Textfil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Key file requires passphrase"
 msgstr ""
@@ -1997,12 +2011,9 @@ msgid "Keywords"
 msgstr "Nyckelord"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Keywords:"
 msgstr "Nyckelord:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Keywords: {0}"
-msgstr "Nyckelord: {0}"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "Knowledge Base"
@@ -2151,7 +2162,7 @@ msgstr "Dator-ID:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage Accounts"
 msgstr "Behandla användarkonton"
@@ -2173,7 +2184,7 @@ msgstr "Hantera licenser"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles."
 msgstr "Behandla Era tillgångsdata för motsvarande åtgärder. Tillagda konton och ändringar blir åtkomliga från alla profiler."
@@ -2207,10 +2218,6 @@ msgstr "Sammanfogade filer"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Metadata"
 msgstr "Metadata"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Metadata:"
-msgstr "Metadata:"
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 msgid "Missing Printers"
@@ -2431,7 +2438,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
@@ -2451,11 +2458,71 @@ msgstr "Offlineaktivering"
 msgid "Ok"
 msgstr "Ok"
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Attachment file does not exist."
+msgid "One of the attachment files does not exist."
+msgstr "Bilagefilen finns inte."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Attachment file is no PDF file."
+msgid "One of the attachment files is no PDF file."
+msgstr "Bilagefilen är ingen PDF-fil."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Attachment path contains illegal characters."
+msgid "One of the attachment paths contains illegal characters."
+msgstr "Sökvägen till bilagan innehåller ogiltiga tecken."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "One of the attachment paths is an invalid absolute path."
+msgstr "Sökvägen till bilagefilen är ogiltig som absolut sökväg."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Attachment path is too long."
+msgid "One of the attachment paths is too long."
+msgstr "Sökvägen till bilagefilen är för lång."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Cover file does not exist."
+msgid "One of the cover files does not exist."
+msgstr "Försättsbladfil saknas."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "The cover file is no PDF file."
+msgid "One of the cover files is no PDF file."
+msgstr "Försättsbladfilen är ingen PDF-fil."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Cover path contains illegal characters."
+msgid "One of the cover paths contains illegal characters."
+msgstr "Försättsbladfilens sökväg innehåller ogiltiga tecken."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Cover path is invalid absolute path."
+msgid "One of the cover paths is an invalid absolute path."
+msgstr "Omslagsfilens sökväg är ogiltig som absolut sökväg."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Cover path is too long."
+msgid "One of the cover paths is too long."
+msgstr "Omslagsfilens sökväg är för lång."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Online activation"
 msgstr "Onlineaktivering"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Only save file temporarily"
 msgstr "Spara filen endast tillfälligt"
 
@@ -2482,9 +2549,17 @@ msgstr "Öppna mapp för CS-Skript"
 msgid "Open Event Log"
 msgstr "Öppna händelseloggen"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Open file after saving"
-msgstr "Öppna filen efter att den sparats"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#, fuzzy
+#| msgid "Open folder"
+msgid "Open File"
+msgstr "Öppna mapp"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#, fuzzy
+#| msgid "Open with default viewer"
+msgid "Open file in viewer."
+msgstr "Öppna med standardvisningsprogram"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
@@ -2504,6 +2579,10 @@ msgstr "Öppna med PDF Architekt"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Open with default viewer"
 msgstr "Öppna med standardvisningsprogram"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+msgid "Opens the PDF file in a Viewer."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
 msgid "Opens the default e-mail client with the converted document as attachment."
@@ -2542,10 +2621,6 @@ msgstr "Bredd för textram:"
 msgid "Output Format"
 msgstr "Utmatningsformat"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Output Format:"
-msgstr "Utmatningsformat:"
-
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
 msgid "OutputFilename.jpg"
 msgstr "UtmatningsFilnamn.jpg"
@@ -2571,10 +2646,6 @@ msgstr "Ägarlösenord (för redigering):"
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "PDF Architect could not open output file."
 msgstr "PDF Architect kunde inte öppna utmatningsfilen."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
-msgid "PDF Signature"
-msgstr "PDF-signatur"
 
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
 msgid "PDF file"
@@ -2617,6 +2688,10 @@ msgstr "PDFCreator Online"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
 msgid "PDFCreator Server"
 msgstr "PDFCreatorServer"
+
+#: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
+msgid "PDFCreator can automatically forward the original document to another profile, for example to convert to another format."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "PDFCreator is free software consisting of multiple components with individual licenses."
@@ -2686,7 +2761,7 @@ msgstr "Sidor:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Passphrase:"
@@ -2704,7 +2779,7 @@ msgstr "Lösenordsstyrka:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Password:"
 msgstr "Lösenord:"
@@ -2808,7 +2883,7 @@ msgstr "Var god välj ett Dropbox-konto:"
 msgid "Please select a FTP account:"
 msgstr "Var god välj ett FTP-konto:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Please select a SMTP account:"
 msgstr "Var god välj ett SMTP-konto:"
 
@@ -2825,7 +2900,7 @@ msgstr ""
 msgid "Polish"
 msgstr "Polska"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Port:"
 msgstr "Port:"
 
@@ -2927,7 +3002,7 @@ msgstr "Privatsfärspolicy"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Private key file:"
@@ -2953,7 +3028,7 @@ msgstr "Programfil:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Protocol:"
 msgstr ""
@@ -3040,6 +3115,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobPasswordButtonTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
 msgid "Remove"
@@ -3049,7 +3125,7 @@ msgstr "Tag bort"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Remove Account"
 msgstr "Ta bort konto"
@@ -3074,7 +3150,7 @@ msgstr "Ta bort HTTP-konto"
 msgid "Remove Profile"
 msgstr "Ta bort profil"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Remove SMTP Account"
 msgstr "Ta bort SMTP-konto"
 
@@ -3175,6 +3251,12 @@ msgstr "Omkalkylera bilder till"
 msgid "Resolution (DPI):"
 msgstr "Upplösning (DPI):"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#, fuzzy
+#| msgid "Resolution (DPI):"
+msgid "Resolution:"
+msgstr "Upplösning (DPI):"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Restore"
 msgstr "Återskapar"
@@ -3218,7 +3300,7 @@ msgstr "Ryska"
 msgid "SFTP - SSH File Transfer Protocol"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "SMTP"
 msgstr "SMTP"
@@ -3227,24 +3309,24 @@ msgstr "SMTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "SMTP Account"
 msgstr "SMTP-konto"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "SMTP Account:"
 msgstr "SMTP-konto:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "SMTP Mail"
 msgstr "SMTP-mail"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "SMTP Server Password:"
 msgstr "SMTP-serverlösenord:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "SSL"
 msgstr "SSL"
 
@@ -3264,7 +3346,7 @@ msgstr "Exempeltitel:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
@@ -3291,12 +3373,6 @@ msgstr "Spara till skrivbord"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPdfTranslation
 msgid "Save validation report"
 msgstr "Spara valideringsrapporten"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#, fuzzy
-#| msgid "Save"
-msgid "Save:"
-msgstr "Spara"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Script file contains illegal characters."
@@ -3356,11 +3432,15 @@ msgstr "Säkra PDFerna med ett lösenord och välj vilka behörigheter som tilld
 msgid "Security"
 msgstr "Säkerhet"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase.MailBaseTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #, fuzzy
-msgid "Select E-Mail Attachment"
+msgid "Select E-mail Attachment File"
 msgstr "Välj bilagefil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
+#, fuzzy
+msgid "Select File:"
+msgstr "Välj skrivare:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "Select HTTP Account:"
@@ -3378,19 +3458,12 @@ msgstr "Välj tidsserver:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "Select account or create a new one ->"
 msgstr "Välj konto eller skapa ett nytt ->"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#, fuzzy
-#| msgid "Select actions for your custom profile by clicking on “Add Action” and drag them into the order in which you would like them to be executed."
-msgid "Select actions for your profile by clicking on “Add Action”. You can then drag the actions into the order in which you would like them to be executed."
-msgstr "Välj åtgärder för din anpassade profil genom att klicka på \"Lägg till åtgärd\" och dra dem till den ordning i vilken Ni önskar att de skall utföras."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Select attachment file"
 msgstr "Välj bilagefil"
@@ -3415,7 +3488,7 @@ msgstr "Välj destination"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Select key file"
@@ -3442,17 +3515,25 @@ msgstr "Välj skrivare:"
 msgid "Select program"
 msgstr "Välj program"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#, fuzzy
+#| msgid "Target Directory:"
+msgid "Select target directory"
+msgstr "Målmapp:"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Select the application language:"
 msgstr "Var god välj programspråk:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#, fuzzy
+#| msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail/SMTP"
+msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail"
+msgstr "Välj denna för att endast spara filen i en tillfällig mapp, t.ex. om den sänts via e-mail/SMTP"
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail using SMTP"
 msgstr "Välj denna för att endast spara filen i en tillfällig mapp, t.ex. om den sänts via e-mail via SMTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail/SMTP"
-msgstr "Välj denna för att endast spara filen i en tillfällig mapp, t.ex. om den sänts via e-mail/SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 #, fuzzy
@@ -3470,7 +3551,7 @@ msgstr "Skicka"
 msgid "Send PDFs \"without\" saving"
 msgstr "Skicka PDFer \"utan\" att lagra"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Send Test E-mail"
 msgstr "Send test-e-post"
 
@@ -3486,7 +3567,7 @@ msgstr ""
 msgid "Send by e-mail"
 msgstr "Skicka med e-post"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Send e-mail via SMTP"
 msgstr "Skicka e-mail via SMTP"
 
@@ -3511,7 +3592,7 @@ msgstr "Sänder dokumentet som ett e-mail via SMTP utan användaringripande."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Server:"
 msgstr "Server:"
@@ -3528,7 +3609,7 @@ msgstr "Ange certifikatlösenord"
 msgid "Set Passwords"
 msgstr "Ange lösenord"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Set SMTP Server Password"
 msgstr "Ange SMTP-serverlösenord"
 
@@ -3574,6 +3655,12 @@ msgstr "Visa handboken"
 msgid "Show log file"
 msgstr "Visa loggfilen"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#, fuzzy
+#| msgid "Quick Actions"
+msgid "Show quick actions"
+msgstr "Snabbåtgärder"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
 msgid "Show quick actions after the documents were converted"
 msgstr "Visa snabbåtgärder, efter att dokumenten konverterats"
@@ -3585,6 +3672,12 @@ msgstr "Visa exempelstatistik"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Show tips"
 msgstr "Visa tips"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#, fuzzy
+#| msgid "Show tray notification after converting a document"
+msgid "Show tray notification"
+msgstr "Visa traynotifiering efter att ett dokument konverterats"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.NotificationsLevelSettingsTranslation
 msgid "Show tray notification after converting a document"
@@ -3618,6 +3711,10 @@ msgstr "Storlek"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobPasswordButtonTranslation
 msgid "Skip"
 msgstr "Hoppa över"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Skip print dialog"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
 msgid "Skip print dialog (start with save dialog)"
@@ -3662,6 +3759,11 @@ msgstr "Sortera efter stigande datum"
 msgid "Sort by date descending"
 msgstr "Sortera efter fallande datum"
 
+#, fuzzy
+#| msgid "Danish"
+msgid "Spanish"
+msgstr "Danska"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 msgid "Split and merge files"
 msgstr "Dela och sammanfoga filer"
@@ -3701,12 +3803,9 @@ msgid "Subject from Settings"
 msgstr "Ämne enligt inställningarna"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Subject:"
 msgstr "Ämne:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Subject: {0}"
-msgstr "Ämne: {0}"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Successful:"
@@ -3751,6 +3850,7 @@ msgid "TIFF file"
 msgstr "TIFF-fil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Target Directory:"
 msgstr "Målmapp:"
@@ -3782,6 +3882,12 @@ msgstr "Textinställningar"
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
 msgid "Text file"
 msgstr "Textfil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#, fuzzy
+#| msgid "Thank you for installing PDFCreator {0}."
+msgid "Thank you for granting access. Please return to PDFCreator."
+msgstr "Tack för att Ni installerat PDFCreator {0}."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Welcome.WelcomeWindowTranslation
 msgid "Thank you for installing PDFCreator {0}."
@@ -3821,7 +3927,7 @@ msgstr ""
 "PDFCreatorrutinen körs just nu.\n"
 "De ändrade inställningarna träder i kraft vid varje nytt uppdrag."
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "The SMTP action will be disabled for this profile."
 msgid_plural "The SMTP action will be disabled for this profiles."
 msgstr[0] "SMTP-åtgärden kommer att avaktiveras för denna profil."
@@ -3856,7 +3962,9 @@ msgid "The activation was successful."
 msgstr "Aktiveringen lyckades."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
-msgid "The certificate file does not exist."
+#, fuzzy
+#| msgid "The certificate file does not exist."
+msgid "The certificate file does not exist"
 msgstr "Certifikatfilen finns inte."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -3864,12 +3972,9 @@ msgid "The certificate has no private key."
 msgstr "Certifikatet har ingen privat nyckel."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "The certificate password is wrong."
 msgstr "Certifikatlösenordet är felaktigt."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The cover file is no PDF file."
-msgstr "Försättsbladfilen är ingen PDF-fil."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The default printer is invalid."
@@ -3878,6 +3983,10 @@ msgstr "Standardskrivaren är ogiltig."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
 msgid "The default value will be used in case the user token is not defined in your document."
 msgstr "Standardvärdet kommer att användas, ifall användartoken ej definierats i Ert dokument."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+msgid "The default viewer is determined by Windows. You can set up your own viewer in our viewer section in the settings or change the windows default"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 msgid "The entered profile name is invalid or does already exist."
@@ -4041,6 +4150,12 @@ msgstr "RGB-färgmoduset stöds inte av PDF/X"
 msgid "The selected font is not supported. Please select a different font."
 msgstr "Det valda typsnittet stöds inte. Var god välj ett annat typsnitt."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
+#, fuzzy
+#| msgid "The selected font is not supported. Please select a different font."
+msgid "The selected output format does not support metadata"
+msgstr "Det valda typsnittet stöds inte. Var god välj ett annat typsnitt."
+
 #: pdfforge.PDFCreator.UI.Presentation.Workflow.BrowseFileCommandTranslation
 msgid "The selected path is too long"
 msgstr "Den valda sökvägen är för lång"
@@ -4082,9 +4197,14 @@ msgid "The specified HTTP account is not configured."
 msgstr "Det angivna HTTP-kontot har ej konfigurerats."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
 msgid "The specified SMTP account is not configured."
 msgstr "Det angivna SMTP-kontot har ej konfigurerats."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#, fuzzy
+#| msgid "The specified FTP account is not configured."
+msgid "The specified account is not configured."
+msgstr "Det angivna FTP-kontot har ej konfigurerats."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The specified time server account for signing is not configured."
@@ -4098,7 +4218,7 @@ msgstr ""
 "Åtkomst nekas till den tillfälliga mapp där utskriftsuppdragen för PDFCreator lagras. Det är ett konfigureringsproblem för Er dator, och måste åtgärdas för att PDFCreator skall kunna användas korrekt. Skall PDFCreator försöka reparera mappen?\n"
 "Mappen är: {0}"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "The test e-mail was successfully sent to the following recipients:"
 msgstr "Test-e-posten sändes framgångsrikt till följande mottagare:"
 
@@ -4164,7 +4284,7 @@ msgstr "Miniatyrbilder synliga"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Time Server Account"
 msgstr "Tidsserverkonto"
@@ -4173,7 +4293,7 @@ msgstr "Tidsserverkonto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Timeout in seconds:"
 msgstr "Timeout i sekunder:"
@@ -4199,13 +4319,10 @@ msgstr "Titel från inställningar"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Title:"
 msgstr "Titel:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Title: {0}"
-msgstr "Titel: {0}"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgctxt "DateRange"
@@ -4216,8 +4333,7 @@ msgstr "Till"
 msgid "To proceed you need to save your current settings."
 msgstr "Ni måste spara de aktuella inställningarna för att fortsätta."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient.MailClientTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "To:"
 msgstr "Till:"
 
@@ -4225,9 +4341,12 @@ msgstr "Till:"
 msgid "Total file size:"
 msgstr "Total filstorlek:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
 msgid "Trigger another conversion by forwarding the original source document to an other profile, e.g. to convert to another output format."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+msgid "Trigger another conversion by forwarding the original source document to another profile, e.g. to convert to another output format."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
@@ -4244,8 +4363,16 @@ msgid "UTF-8 text which approximates the original text layout"
 msgstr "UTF-8-text, som försöker efterlikna den ursprungliga textlayouten"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add the attachment. The documents' PDF format version is not compatible."
+#, fuzzy
+#| msgid "Unable to add the attachment. The documents' PDF format version is not compatible."
+msgid "Unable to add one of the attachment files. The documents' PDF format version is not compatible."
 msgstr "Bilagan kunde inte läggas till. Dokumentets PDF-formatversion är icke kompatibel."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "Unable to add the cover. The documents' PDF format version is not compatible."
+msgid "Unable to add one of the cover files. The documents' PDF format version is not compatible."
+msgstr "Försättsbladet kunde inte läggas till. Dokumentets PDF-formatversion är icke kompatibel."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -4255,10 +4382,6 @@ msgstr "Bakgrunden kunde inte läggas till. Dokumentets PDF-formatversion är ic
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Unable to add the background. The documents' PDF format version is not compatible."
 msgstr "Bakgrunden kunde inte läggas till. Dokumentets PDF-formatversion är icke kompatibel."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add the cover. The documents' PDF format version is not compatible."
-msgstr "Försättsbladet kunde inte läggas till. Dokumentets PDF-formatversion är icke kompatibel."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -4344,17 +4467,25 @@ msgstr "Användningsstatistik"
 msgid "Usage statistics"
 msgstr "Användningsstatistik"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Use Html"
 msgstr "Använd Html"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Use PDF Architect for PDF files"
-msgstr "Använd PDF Architect för PDF-filer"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#, fuzzy
+#| msgid "More on PDF Architect"
+msgid "Use PDF Architect"
+msgstr "Mera om PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
 msgid "Use the value in the Profile Settings (e.g. for title or e-mail recipient) via the following token pattern"
 msgstr "Använd värdet i profilinställningarna (t.ex. för titeln eller e-mail-mottagaren) genom följande tokenschema"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#, fuzzy
+#| msgid "Open with default viewer"
+msgid "Use windows default viewer"
+msgstr "Öppna med standardvisningsprogram"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "User Guide"
@@ -4364,7 +4495,7 @@ msgstr "Handboken"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "User Name:"
 msgstr "Användarnamn:"
@@ -4398,7 +4529,7 @@ msgstr "Användaren avbröt återinmatningen av lösenord för SMTP e-mail."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "User name"
@@ -4455,8 +4586,13 @@ msgid "Wait until the program has ended"
 msgstr "Vänta tills programmet har avslutats"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
+#, fuzzy
+#| msgid "Warning: The selected document is a PDF 2.0 file and can't be added to other documents during the conversion."
+msgid "Warning: The following documents are PDF 2.0 files and can't be added to other documents during the conversion:"
+msgstr "Varning: Det valda dokumentet är av formatet PDF 2.0 och kan inte läggas till andra dokument under konverteringen."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 msgid "Warning: The selected document is a PDF 2.0 file and can't be added to other documents during the conversion."
 msgstr "Varning: Det valda dokumentet är av formatet PDF 2.0 och kan inte läggas till andra dokument under konverteringen."
@@ -4529,10 +4665,6 @@ msgstr "Vad är nytt?"
 msgid "When activating the workflow editor you can choose the actions that fit best to your requirements and adjust their order according to your individual workflow."
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.SwitchLayoutTranslation
-msgid "When turning off the workflow editor, the processing order will be reset to its defaults."
-msgstr "Då Workflow Editor är inaktiverad, kommer bearbetningsturordningen att återställas till standardinställningen."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "Width:"
 msgstr "Bredd:"
@@ -4572,6 +4704,10 @@ msgstr "Ni kan lägga till, namnändra eller radera skrivare för denna kö. Obs
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "You can enable the RSS news feed by activating it in the application settings."
 msgstr "Ni kan aktivera RSS-nyheter i användarinställningarna."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+msgid "You can now close this window."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 msgid ""
@@ -4752,11 +4888,11 @@ msgstr "_Spara"
 msgid "_Skip"
 msgstr "_Hoppa över"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "_Subject:"
 msgstr "_Ämne:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "_Text:"
 msgstr "_Text:"
 
@@ -4792,7 +4928,7 @@ msgstr "tum"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "key files"

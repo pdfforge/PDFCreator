@@ -41,4 +41,36 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
 
         public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
     }
+
+    public abstract class WaitableAsyncCommandBase : AsyncCommandBase, IWaitableCommand
+    {
+        public NotifyTaskCompletion<MacroCommandIsDoneEventArgs> Execution { get; private set; }
+
+        public abstract bool QueryCanExecute(object parameter);
+
+        public abstract Task<MacroCommandIsDoneEventArgs> ExecuteWaitableAsync(object parameter);
+
+        public override bool CanExecute(object parameter)
+        {
+            NotifyTaskCompletion<MacroCommandIsDoneEventArgs> execution = Execution;
+            if (execution != null && !execution.IsCompleted)
+                return false;
+
+            return QueryCanExecute(parameter);
+        }
+
+        public override async Task ExecuteAsync(object parameter)
+        {
+            Execution = new NotifyTaskCompletion<MacroCommandIsDoneEventArgs>(ExecuteWaitableAsync(parameter));
+            RaisePropertyChanged("Execution");
+            RaisePropertyChanged("IsExecuting");
+            RaiseCanExecuteChanged();
+            var macroCommandIsDoneEventArgs = await Execution.Task;
+            IsDone?.Invoke(this, macroCommandIsDoneEventArgs);
+            RaiseCanExecuteChanged();
+            RaisePropertyChanged("IsExecuting");
+        }
+
+        public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
+    }
 }

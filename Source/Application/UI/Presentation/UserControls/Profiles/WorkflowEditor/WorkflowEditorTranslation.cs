@@ -1,55 +1,50 @@
-﻿using Translatable;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
     public class WorkflowEditorTranslation : ITranslatable
     {
-        public string ExplanationTitle { get; set; } = "Create your custom profile settings";
-
-        public string ExplanationText { get; set; } = @"Select actions for your custom profile by clicking on “Add Action” " +
-                                          "and drag them into the order in which you would like them to be executed.";
-
-        public string OutputFormatColon { get; set; } = "Output Format:";
-        public string Save { get; set; } = "Save";
-        public string MetaDataColon { get; set; } = "Metadata:";
         public string Modify { get; set; } = "Modify";
-        public string Preparation { get; set; } = "Preparation";
         public string Send { get; set; } = "Send";
-        public string MetadataTab { get; private set; } = "Metadata";
+
+        public string Actions { get; private set; } = "Actions";
+        public string Preparation { get; set; } = "Preparation";
+
+        public string Interactive { get; private set; } = "Interactive";
+        public string Autosave { get; private set; } = "Automatic";
+        public string FilenameLabel { get; private set; } = "Filename:";
+        public string TargetDirectoryLabel { get; private set; } = "Target Directory:";
+
+        public string Save { get; set; } = "Save";
+        public string LastUsedDirectory { get; protected set; } = "Last used directory";
+        public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
+        public string MissingDirectory { get; protected set; } = "Missing directory";
+        public string ShowQuickActions { get; private set; } = "Show quick actions";
+        public string SkipPrintDialog { get; private set; } = "Skip print dialog";
+        public string EnsureUniqueFilenames { get; private set; } = "Ensure unique filenames";
+        public string ShowTrayNotification { get; private set; } = "Show tray notification";
+
         public string OutputFormat { get; private set; } = "Output Format";
+        public string ColorsLabel { get; private set; } = "Colors:";
+        public string ResolutionLabel { get; private set; } = "Resolution:";
+        public string CompressionLabel { get; private set; } = "Compression:";
+
+        public string MetaData { get; set; } = "Metadata";
+        public string TitleLabel { get; protected set; } = "Title:";
+        public string AuthorLabel { get; protected set; } = "Author:";
+        public string SubjectLabel { get; protected set; } = "Subject:";
+        public string KeywordsLabel { get; protected set; } = "Keywords:";
+
         public string Printer { get; private set; } = "Printer";
 
-        public string AddAction { get; protected set; } = "Add Action";
-        public string TargetLocation { get; protected set; } = "Target location:";
-        public string LastUsedDirectory { get; protected set; } = "Last used directory";
-        public string MissingDirectory { get; protected set; } = "Missing directory";
+        public string AddActionHint { get; private set; } = "Add actions to modify, send or prepare your documents";
 
-        public string AutoSaveEnabled { get; protected set; } = "Auto-Save: Enabled";
-        public string AutoSaveDisabled { get; protected set; } = "Auto-Save: Disabled";
+        public EnumTranslation<ColorModel>[] PdfColorValues { get; set; } = EnumTranslation<ColorModel>.CreateDefaultEnumTranslation();
+        public EnumTranslation<JpegColor>[] JpegColorValues { get; set; } = EnumTranslation<JpegColor>.CreateDefaultEnumTranslation();
+        public EnumTranslation<PngColor>[] PngColorValues { get; set; } = EnumTranslation<PngColor>.CreateDefaultEnumTranslation();
+        public EnumTranslation<TiffColor>[] TiffColorValues { get; set; } = EnumTranslation<TiffColor>.CreateDefaultEnumTranslation();
 
-        public string TitlePreview { get; protected set; } = "Title: {0}";
-        public string AuthorPreview { get; protected set; } = "Author: {0}";
-        public string SubjectPreview { get; protected set; } = "Subject: {0}";
-        public string KeywordsPreview { get; protected set; } = "Keywords: {0}";
-
-        public string GetFormattedTitlePreview(string titlePreview)
-        {
-            return string.Format(TitlePreview, titlePreview);
-        }
-
-        public string GetFormattedAuthorPreview(string authorPreview)
-        {
-            return string.Format(AuthorPreview, authorPreview);
-        }
-
-        public string GetFormattedSubjectPreview(string subjectPreview)
-        {
-            return string.Format(SubjectPreview, subjectPreview);
-        }
-
-        public string GetFormattedKeywordsPreview(string keywordsPreview)
-        {
-            return string.Format(KeywordsPreview, keywordsPreview);
-        }
+        public EnumTranslation<CompressionColorAndGray>[] CompressionValues { get; set; } = EnumTranslation<CompressionColorAndGray>.CreateDefaultEnumTranslation();
     }
 }

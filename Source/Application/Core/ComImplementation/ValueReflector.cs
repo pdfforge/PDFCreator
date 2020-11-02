@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace pdfforge.PDFCreator.UI.COM
@@ -20,9 +22,20 @@ namespace pdfforge.PDFCreator.UI.COM
             var pi = FindProperty(parent, propertyName);
 
             if (pi == null)
-                throw new ArgumentException("propertyName");
+                throw new ArgumentException($"unknown property {propertyName} for {parent.GetType().Name}, check if property exists and has a getter.", nameof(propertyName));
 
             SetProperty(pi.Parent, pi.Property, value);
+            return true;
+        }
+
+        public bool SetListPropertyValue(object parent, string propertyName, IEnumerable<string> value)
+        {
+            var propertyInfo = FindProperty(parent, propertyName);
+
+            if (propertyInfo == null)
+                throw new ArgumentException(nameof(propertyName));
+
+            SetListProperty(propertyInfo.Parent, propertyInfo.Property, value);
             return true;
         }
 
@@ -65,6 +78,11 @@ namespace pdfforge.PDFCreator.UI.COM
             }
         }
 
+        private void SetListProperty(object parent, PropertyInfo property, IEnumerable<string> value)
+        {
+            property.SetValue(parent, value.ToList(), null);
+        }
+
         private void SetProperty(object parent, PropertyInfo property, string value)
         {
             object v;
@@ -85,7 +103,7 @@ namespace pdfforge.PDFCreator.UI.COM
         {
             if (!Enum.IsDefined(type, value))
             {
-                throw new ArgumentException("value");
+                throw new ArgumentException($"unknown value {value} for enum {type.Name}", nameof(value));
             }
 
             return Enum.Parse(type, value);
@@ -109,9 +127,19 @@ namespace pdfforge.PDFCreator.UI.COM
             var pInfo = FindProperty(parent, propertyName);
 
             if (pInfo == null)
-                throw new ArgumentException("Property not found.");
+                throw new ArgumentException($"Property with Name {propertyName} not found in object-type {parent.GetType()}.");
 
             return pInfo.Property.GetValue(pInfo.Parent, null).ToString();
+        }
+
+        public IEnumerable<string> GetPropertyListValue(object parent, string propertyName)
+        {
+            var pInfo = FindProperty(parent, propertyName);
+
+            if (pInfo == null)
+                throw new ArgumentException("Property not found.");
+
+            return (IList<string>)pInfo.Property.GetValue(pInfo.Parent, null);
         }
     }
 

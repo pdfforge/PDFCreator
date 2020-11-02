@@ -8,6 +8,8 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
@@ -23,19 +25,19 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private readonly OutputFormatHelper _outputFormatHelper;
         private readonly IProcessStarter _processStarter;
         private readonly IFileAssoc _fileAssoc;
-        private readonly IRecommendArchitect _recommendArchitect;
+        private readonly IRecommendArchitectAssistant _recommendArchitectAssistant;
         private readonly IDefaultViewerCheck _defaultViewerCheck;
 
         /// <summary>
         ///     Creates a new default viewer action.
         /// </summary>
-        public DefaultViewerAction(IFileAssoc fileAssoc, IRecommendArchitect recommendArchitect,
+        public DefaultViewerAction(IFileAssoc fileAssoc, IRecommendArchitectAssistant recommendArchitectAssistant,
             IPdfArchitectCheck pdfArchitectCheck, ISettingsProvider settingsProvider,
             OutputFormatHelper outputFormatHelper, IProcessStarter processStarter,
             IDefaultViewerCheck defaultViewerCheck)
         {
             _fileAssoc = fileAssoc;
-            _recommendArchitect = recommendArchitect;
+            _recommendArchitectAssistant = recommendArchitectAssistant;
             _pdfArchitectCheck = pdfArchitectCheck;
             _settingsProvider = settingsProvider;
             _outputFormatHelper = outputFormatHelper;
@@ -51,44 +53,81 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         public ActionResult ProcessJob(Job job)
         {
             Logger.Debug("Launched Viewer-Action");
-
             var file = job.OutputFiles.First();
 
-            var isPdf = job.Profile.OutputFormat.IsPdf();
-            if (isPdf && job.Profile.OpenWithPdfArchitect && _pdfArchitectCheck.IsInstalled())
-                return OpenWithArchitect(file);
-
-            return OpenOutputFile(file);
+            return OpenOutputFile(file, job.Profile.OpenViewer.OpenWithPdfArchitect);
         }
 
-        public ActionResult OpenWithArchitect(string filePath)
+        public ActionResult OpenWithArchitect(List<string> files)
         {
-            string architectPath = _pdfArchitectCheck.GetInstallationPath();
+            var architectPath = _pdfArchitectCheck.GetInstallationPath();
 
             Logger.Debug("Open with PDF Architect");
-            try
+
+            if (_pdfArchitectCheck.IsInstalled())
             {
-                _processStarter.Start(architectPath, "\"" + filePath + "\"");
-                Logger.Trace("Openend: " + filePath);
+                try
+                {
+                    foreach (var file in files)
+                    {
+                        _processStarter.Start(architectPath, "\"" + file + "\"");
+                        Logger.Trace("Openend: " + file);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "PDF Architect could not open file(s):\r\n" + string.Join("\r\n", files));
+                    return new ActionResult(ErrorCode.Viewer_ArchitectCouldNotOpenOutput);
+                }
             }
-            catch
+            else
             {
-                Logger.Error("PDF Architect could not open file: " + filePath);
-                return new ActionResult(ErrorCode.Viewer_ArchitectCouldNotOpenOutput);
+                _recommendArchitectAssistant.Show();
             }
+
             return new ActionResult();
         }
 
         public bool IsEnabled(ConversionProfile profile)
         {
-            return profile.OpenViewer;
+            return profile.OpenViewer.Enabled;
         }
 
-        public ActionResult OpenOutputFile(string filePath)
+        private bool ShouldOpenWithArchitect(OutputFormat outputFormat, bool openWithPdfArchitectSetting)
+        {
+            if (!outputFormat.IsPdf())
+                return false;
+
+            if (_pdfArchitectCheck.IsInstalled())
+            {
+                if (openWithPdfArchitectSetting)
+                    return true;
+
+                if (!_fileAssoc.HasOpen(".pdf"))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool ShouldRecommendArchitect(OutputFormat outputFormat)
+        {
+            if (!outputFormat.IsPdf())
+                return false;
+
+            if (_pdfArchitectCheck.IsInstalled())
+                return false;
+
+            if (!_fileAssoc.HasOpen(".pdf"))
+                return true;
+
+            return false;
+        }
+
+        public ActionResult OpenOutputFile(string filePath, bool openWithPdfArchitect = false)
         {
             var outputFormatByPath = _outputFormatHelper.GetOutputFormatByPath(filePath);
             var defaultViewer = _settingsProvider.Settings.GetDefaultViewerByOutputFormat(outputFormatByPath);
-
             try
             {
                 if (defaultViewer.IsActive)
@@ -102,17 +141,20 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     return new ActionResult();
                 }
 
-                if (outputFormatByPath.IsPdf() && !_fileAssoc.HasOpen(".pdf"))
+                if (ShouldOpenWithArchitect(outputFormatByPath, openWithPdfArchitect))
                 {
-                    if (_pdfArchitectCheck.IsInstalled())
-                        return OpenWithArchitect(filePath);
-
-                    _recommendArchitect.Show();
-                    return new ActionResult(); //return true, to avoid another message window.
+                    return OpenWithArchitect(new List<string> { filePath });
                 }
 
-                Logger.Debug("Open file with system default application: " + filePath);
-                _processStarter.Start(filePath);
+                if (ShouldRecommendArchitect(outputFormatByPath))
+                {
+                    _recommendArchitectAssistant.Show();
+                }
+                else
+                {
+                    Logger.Debug("Open file with system default application: " + filePath);
+                    _processStarter.Start(filePath);
+                }
             }
             catch
             {

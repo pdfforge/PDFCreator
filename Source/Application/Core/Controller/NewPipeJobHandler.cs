@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Communication;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
@@ -16,12 +17,15 @@ namespace pdfforge.PDFCreator.Core.Controller
         private readonly IFileConversionAssistant _fileConversionAssistant;
         private readonly IJobInfoManager _jobInfoManager;
         private readonly IThreadManager _threadManager;
+        private readonly IJobInfoQueueManager _jobInfoQueueManager;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IMainWindowThreadLauncher _mainWindowThreadLauncher;
         private readonly ISettingsManager _settingsManager;
 
-        public NewPipeJobHandler(IJobInfoQueue jobInfoQueue, ISettingsManager settingsManager, IFileConversionAssistant fileConversionAssistant, IMainWindowThreadLauncher mainWindowThreadLauncher, IJobInfoManager jobInfoManager, IThreadManager threadManager)
+        public NewPipeJobHandler(IJobInfoQueue jobInfoQueue, ISettingsManager settingsManager,
+            IFileConversionAssistant fileConversionAssistant, IMainWindowThreadLauncher mainWindowThreadLauncher,
+            IJobInfoManager jobInfoManager, IThreadManager threadManager, IJobInfoQueueManager jobInfoQueueManager)
         {
             _jobInfoQueue = jobInfoQueue;
             _settingsManager = settingsManager;
@@ -29,6 +33,7 @@ namespace pdfforge.PDFCreator.Core.Controller
             _mainWindowThreadLauncher = mainWindowThreadLauncher;
             _jobInfoManager = jobInfoManager;
             _threadManager = threadManager;
+            _jobInfoQueueManager = jobInfoQueueManager;
         }
 
         public void HandlePipeMessage(string message)
@@ -41,6 +46,10 @@ namespace pdfforge.PDFCreator.Core.Controller
             else if (message.StartsWith("DragAndDrop|", StringComparison.OrdinalIgnoreCase))
             {
                 HandleDroppedFileMessage(message, false);
+            }
+            else if (message.StartsWith("DragAndDrop+ManagePrintJobs|", StringComparison.OrdinalIgnoreCase))
+            {
+                HandleDroppedFileMessage(message, true);
             }
             else if (message.StartsWith("ShowMain|", StringComparison.OrdinalIgnoreCase))
             {
@@ -58,6 +67,11 @@ namespace pdfforge.PDFCreator.Core.Controller
             var droppedFiles = message.Split('|')
                 .Skip(1)
                 .Where(s => !string.IsNullOrWhiteSpace(s));
+
+            if (merge && _mainWindowThreadLauncher.IsPrintJobShellOpen())
+                _mainWindowThreadLauncher.SwitchPrintJobShellToMergeWindow();
+            else if (merge)
+                _jobInfoQueueManager.ManagePrintJobs();
 
             var threadStart = new ThreadStart(() => _fileConversionAssistant.HandleFileList(droppedFiles));
 

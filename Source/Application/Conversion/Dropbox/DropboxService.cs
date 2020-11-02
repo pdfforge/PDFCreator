@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
 
         public Uri GetAuthorizeUri(string appKey, string redirectUri)
         {
-            return DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, appKey, new Uri(redirectUri), string.Empty);
+            return DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Code, appKey, new Uri(redirectUri), string.Empty);
         }
 
         public string ParseAccessToken(Uri uri)

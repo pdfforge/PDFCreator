@@ -38,16 +38,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool FitToPage { get; set; } = true;
 		
 		/// <summary>
-		/// If true, the background will be placed on the attachment as well
-		/// </summary>
-		public bool OnAttachment { get; set; } = false;
-		
-		/// <summary>
-		/// If true, the background will be placed on the cover as well
-		/// </summary>
-		public bool OnCover { get; set; } = false;
-		
-		/// <summary>
 		/// Opacity for background in percent
 		/// </summary>
 		public int Opacity { get; set; } = 100;
@@ -63,8 +53,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			try { File = Data.UnescapeString(data.GetValue(@"" + path + @"File")); } catch { File = "";}
 			FitToPage = bool.TryParse(data.GetValue(@"" + path + @"FitToPage"), out var tmpFitToPage) ? tmpFitToPage : true;
-			OnAttachment = bool.TryParse(data.GetValue(@"" + path + @"OnAttachment"), out var tmpOnAttachment) ? tmpOnAttachment : false;
-			OnCover = bool.TryParse(data.GetValue(@"" + path + @"OnCover"), out var tmpOnCover) ? tmpOnCover : false;
 			Opacity = int.TryParse(data.GetValue(@"" + path + @"Opacity"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpOpacity) ? tmpOpacity : 100;
 			Repetition = Enum.TryParse<BackgroundRepetition>(data.GetValue(@"" + path + @"Repetition"), out var tmpRepetition) ? tmpRepetition : BackgroundRepetition.RepeatLastPage;
 		}
@@ -74,8 +62,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
 			data.SetValue(@"" + path + @"File", Data.EscapeString(File));
 			data.SetValue(@"" + path + @"FitToPage", FitToPage.ToString());
-			data.SetValue(@"" + path + @"OnAttachment", OnAttachment.ToString());
-			data.SetValue(@"" + path + @"OnCover", OnCover.ToString());
 			data.SetValue(@"" + path + @"Opacity", Opacity.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"Repetition", Repetition.ToString());
 		}
@@ -87,8 +73,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.File = File;
 			copy.FitToPage = FitToPage;
-			copy.OnAttachment = OnAttachment;
-			copy.OnCover = OnCover;
 			copy.Opacity = Opacity;
 			copy.Repetition = Repetition;
 			return copy;
@@ -104,12 +88,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				
 			if(FitToPage != source.FitToPage)
 				FitToPage = source.FitToPage;
-				
-			if(OnAttachment != source.OnAttachment)
-				OnAttachment = source.OnAttachment;
-				
-			if(OnCover != source.OnCover)
-				OnCover = source.OnCover;
 				
 			if(Opacity != source.Opacity)
 				Opacity = source.Opacity;
@@ -127,8 +105,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Enabled.Equals(v.Enabled)) return false;
 			if (!File.Equals(v.File)) return false;
 			if (!FitToPage.Equals(v.FitToPage)) return false;
-			if (!OnAttachment.Equals(v.OnAttachment)) return false;
-			if (!OnCover.Equals(v.OnCover)) return false;
 			if (!Opacity.Equals(v.Opacity)) return false;
 			if (!Repetition.Equals(v.Repetition)) return false;
 			return true;

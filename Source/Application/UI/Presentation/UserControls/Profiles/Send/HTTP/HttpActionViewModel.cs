@@ -39,6 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP
             {
                 HttpAccountsView = new ListCollectionView(_httpAccounts);
                 HttpAccountsView.SortDescriptions.Add(new SortDescription(nameof(HttpAccount.AccountInfo), ListSortDirection.Ascending));
+                HttpAccountsView.CurrentChanged += (sender, args) => RaisePropertyChanged(nameof(ShowAutosaveRequiresPasswords));
             }
 
             AddAccountCommand = commandLocator.CreateMacroCommand()
@@ -63,6 +64,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP
             HttpAccountsView.Refresh();
         }
 
+        public bool ShowAutosaveRequiresPasswords
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return false;
+
+                if (!CurrentProfile.AutoSave.Enabled)
+                    return false;
+
+                if (!(HttpAccountsView.CurrentItem is HttpAccount currentAccount))
+                    return false;
+
+                if (!currentAccount.IsBasicAuthentication)
+                    return false;
+
+                return string.IsNullOrWhiteSpace(currentAccount.Password);
+            }
+        }
+
         public override void MountView()
         {
             EditAccountCommand.MountView();
@@ -74,6 +95,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP
             base.UnmountView();
             EditAccountCommand.UnmountView();
         }
-
     }
 }

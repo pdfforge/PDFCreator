@@ -9,6 +9,16 @@ namespace pdfforge.PDFCreator.UI.COM
         {
         }
 
+        public bool IsPrintJobShellOpen()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SwitchPrintJobShellToMergeWindow()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void LaunchMainWindow(StartupRoutine startup)
         {
             throw new System.NotImplementedException();

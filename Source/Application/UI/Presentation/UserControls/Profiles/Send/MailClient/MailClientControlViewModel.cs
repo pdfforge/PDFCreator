@@ -3,44 +3,50 @@ using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient
 {
-    public class MailClientControlViewModel : MailBaseControlViewModel<MailClientTabTranslation>
+    public class MailClientControlViewModel : ProfileUserControlViewModel<MailTranslation>
     {
-        private readonly IClientTestEmail _clientTestEmail;
+        private readonly IClientTestMailAssistant _clientTestMailAssistant;
         private readonly IInteractionRequest _interactionRequest;
 
         public TokenViewModel<ConversionProfile> RecipientsTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsCcTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsBccTokenViewModel { get; private set; }
+        public SelectFilesUserControlViewModel AdditionalAttachmentsViewModel { get; private set; }
 
-        public DelegateCommand EmailClientTestCommand { get; set; }
+        public AsyncCommand EmailClientTestCommand { get; set; }
         public DelegateCommand EditEmailTextCommand { get; set; }
         private EmailClientSettings EmailClientSettings => CurrentProfile?.EmailClientSettings;
 
         public MailClientControlViewModel(IInteractionRequest interactionRequest,
-            IClientTestEmail clientTestEmail,
+            IClientTestMailAssistant clientTestMailAssistant,
             ITranslationUpdater translationUpdater,
             ISelectedProfileProvider selectedProfileProvider,
             ITokenViewModelFactory tokenViewModelFactory,
             IDispatcher dispatcher,
-            IOpenFileInteractionHelper openFileInteractionHelper)
-            : base(translationUpdater, selectedProfileProvider, dispatcher, openFileInteractionHelper)
+            ISelectFilesUserControlViewModelFactory selectFilesUserControlViewModelFactory)
+            : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
             _interactionRequest = interactionRequest;
-            _clientTestEmail = clientTestEmail;
+            _clientTestMailAssistant = clientTestMailAssistant;
 
             CreateTokenViewModels(tokenViewModelFactory);
 
-            EmailClientTestCommand = new DelegateCommand(EmailClientTestExecute);
+            EmailClientTestCommand = new AsyncCommand(EmailClientTestExecute);
             EditEmailTextCommand = new DelegateCommand(EditEmailTextExecute);
-            RemoveSelectedFromListCommand = new DelegateCommand(RemoveSelectedFromList);
+
+            AdditionalAttachmentsViewModel = selectFilesUserControlViewModelFactory.Builder()
+                .WithTitleGetter(() => Translation.MailAttachmentTitle)
+                .WithFileListGetter(profile => profile.EmailClientSettings.AdditionalAttachments)
+                .Build();
         }
 
         private void CreateTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
@@ -60,12 +66,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
             RecipientsBccTokenViewModel = builder
                 .WithSelector(p => p.EmailClientSettings.RecipientsBcc)
                 .Build();
-
-            AdditionalAttachmentsTokenViewModel = builder
-                .WithSelector(p => AdditionalAttachmentsForTextBox)
-                .WithButtonCommand(SelectAttachmentFileAction)
-                .WithSecondaryButtonCommand(AddFilePathToAdditionalAttachments)
-                .Build();
         }
 
         public override void MountView()
@@ -73,7 +73,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
             RecipientsTokenViewModel.MountView();
             RecipientsCcTokenViewModel.MountView();
             RecipientsBccTokenViewModel.MountView();
-            AdditionalAttachmentsTokenViewModel.MountView();
+            AdditionalAttachmentsViewModel.MountView();
 
             base.MountView();
         }
@@ -85,25 +85,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailCli
             RecipientsTokenViewModel.UnmountView();
             RecipientsCcTokenViewModel.UnmountView();
             RecipientsBccTokenViewModel.UnmountView();
-            AdditionalAttachmentsTokenViewModel.UnmountView();
+            AdditionalAttachmentsViewModel.UnmountView();
         }
 
-        private void EmailClientTestExecute(object obj)
+        private Task EmailClientTestExecute(object obj)
         {
-            var success = _clientTestEmail.SendTestEmail(EmailClientSettings);
-            if (!success)
-                DisplayNoClientFoundMessage();
-        }
-
-        protected override IMailActionSettings MailActionSettings => EmailClientSettings;
-
-        private void DisplayNoClientFoundMessage()
-        {
-            var caption = Translation.CheckMailClient;
-            var message = Translation.NoMapiClientFound;
-
-            var interaction = new MessageInteraction(message, caption, MessageOptions.OK, MessageIcon.Warning);
-            _interactionRequest.Raise(interaction);
+            return _clientTestMailAssistant.SendTestEmail(EmailClientSettings);
         }
 
         private void EditEmailTextExecute(object obj)

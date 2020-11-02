@@ -5,23 +5,26 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public interface IMailHelper
     {
         MailInfo CreateMailInfo(Job job, IMailActionSettings mailSettings);
+
+        void ReplaceTokensInMailSettings(Job job, IMailActionSettings mailActionSettings);
     }
 
     public class MailInfo
     {
-        public string Subject;
-        public string Body;
-        public string Recipients;
-        public string RecipientsCc;
-        public string RecipientsBcc;
+        public string Subject = "";
+        public string Body = "";
+        public string Recipients = "";
+        public string RecipientsCc = "";
+        public string RecipientsBcc = "";
         public bool IsHtml;
-        public IList<string> Attachments;
+        public IList<string> Attachments = new List<string>();
     }
 
     public class MailHelper : IMailHelper
@@ -37,17 +40,34 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             _actionOrderHelper = actionOrderHelper;
         }
 
+        public void ReplaceTokensInMailSettings(Job job, IMailActionSettings mailActionSettings)
+        {
+            mailActionSettings.Subject = job.TokenReplacer.ReplaceTokens(mailActionSettings.Subject);
+            mailActionSettings.Content = job.TokenReplacer.ReplaceTokens(mailActionSettings.Content);
+
+            mailActionSettings.Recipients = job.TokenReplacer.ReplaceTokens(mailActionSettings.Recipients)
+                .Replace(';', ',');
+            mailActionSettings.RecipientsCc = job.TokenReplacer.ReplaceTokens(mailActionSettings.RecipientsCc)
+                .Replace(';', ',');
+            mailActionSettings.RecipientsBcc = job.TokenReplacer.ReplaceTokens(mailActionSettings.RecipientsBcc)
+                .Replace(';', ',');
+
+            mailActionSettings.AdditionalAttachments = mailActionSettings.AdditionalAttachments
+                .Select(aA => job.TokenReplacer.ReplaceTokens(aA))
+                .ToList();
+        }
+
         public MailInfo CreateMailInfo(Job job, IMailActionSettings mailSettings)
         {
             _logger.Trace("Create MailInfo for " + mailSettings.GetType().Name.Replace("Settings", " Action."));
 
             var mailInfo = new MailInfo
             {
-                Subject = job.TokenReplacer.ReplaceTokens(mailSettings.Subject),
-                Body = BuildBody(job, mailSettings),
-                Recipients = job.TokenReplacer.ReplaceTokens(mailSettings.Recipients.Replace(';', ',')),
-                RecipientsCc = job.TokenReplacer.ReplaceTokens(mailSettings.RecipientsCc.Replace(';', ',')),
-                RecipientsBcc = job.TokenReplacer.ReplaceTokens(mailSettings.RecipientsBcc.Replace(';', ',')),
+                Subject = mailSettings.Subject,
+                Body = BuildBody(mailSettings),
+                Recipients = mailSettings.Recipients.Replace(';', ','),
+                RecipientsCc = mailSettings.RecipientsCc.Replace(';', ','),
+                RecipientsBcc = mailSettings.RecipientsBcc.Replace(';', ','),
                 IsHtml = mailSettings.Html,
 
                 Attachments = GetFileAttachmentList(job, mailSettings)
@@ -56,9 +76,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return mailInfo;
         }
 
-        private string BuildBody(Job job, IMailActionSettings mailSettings)
+        private string BuildBody(IMailActionSettings mailSettings)
         {
-            var body = job.TokenReplacer.ReplaceTokens(mailSettings.Content);
+            var body = mailSettings.Content;
 
             if (mailSettings.AddSignature)
             {

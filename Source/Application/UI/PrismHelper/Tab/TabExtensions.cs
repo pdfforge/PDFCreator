@@ -67,8 +67,6 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Tab
 
                 tab.Content = contentContainer;
 
-                TransposerHelper.Register(header, viewModel);
-
                 return tab;
             });
         }

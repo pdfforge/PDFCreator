@@ -1,7 +1,11 @@
 ﻿namespace pdfforge.PDFCreator.Conversion.Settings
 {
-    public partial class  EmailSmtpSettings : IProfileSetting, IMailActionSettings
+    public partial class EmailSmtpSettings : IMailActionSettings
     {
+        IMailActionSettings IMailActionSettings.Copy()
+        {
+            return Copy();
+        }
     }
 }
 

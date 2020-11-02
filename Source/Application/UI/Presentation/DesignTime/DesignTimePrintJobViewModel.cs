@@ -1,10 +1,10 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
+using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System.Linq;
 using Translatable;
@@ -18,14 +18,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                   new TranslationUpdater(new TranslationFactory(), new ThreadManager()),
                   new DesignTimeJobInfoQueue(),
                   new DesignTimeCommandLocator(),
-                  null,//IEventAggregator
+                  new DesignTimeEventAggregator(), //IEventAggregator
                   null,//ISelectedProfileProvider
                   null,
                   null,
+                  new DesignTimeTargetFilePathComposer(),
                   null,
-                  null,
-                  null,
-                  null)
+                  new DesignTimeChangeJobCheckAndProceedCommandBuilder(),
+                  new DesignTimeBrowseFileCommandBuilder(),
+                  new DispatcherWrapper(),
+                  new DesignTimeJobDataUpdater()
+                  )
         {
             var jobInfo = new JobInfo()
             {
@@ -37,7 +40,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 OutputFileTemplate = @"C:\My Documents\MyFile.pdf"
             };
 
-            job.Profile = ProfilesWrapper.First().ConversionProfile;
+            job.Profile = ProfilesWrapper != null ? ProfilesWrapper.First().ConversionProfile : new ConversionProfile();
 
             SetNewJob(job);
         }

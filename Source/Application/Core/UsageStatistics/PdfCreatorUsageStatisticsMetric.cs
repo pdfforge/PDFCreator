@@ -53,6 +53,5 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
         public bool LoadSharedAppSettings { get; set; }
         public bool LoadSharedProfiles { get; set; }
         public bool AllowUserDefinedProfiles { get; set; }
-        public bool IsWorkflowEditorActive { get; set; }
     }
 }

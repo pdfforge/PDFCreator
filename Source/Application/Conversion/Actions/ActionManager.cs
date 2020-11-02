@@ -12,25 +12,18 @@ namespace pdfforge.PDFCreator.Conversion.Actions
     {
         private readonly IEnumerable<IAction> _allActions;
         private readonly IList<IActionFacade> _actionFacades;
-        private readonly IAppSettingsProvider _appSettingsProvider;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ActionManager(IEnumerable<IAction> allActions, IEnumerable<IActionFacade> actionFacades, IAppSettingsProvider appSettingsProvider)
+        public ActionManager(IEnumerable<IAction> allActions, IEnumerable<IActionFacade> actionFacades)
         {
             _allActions = allActions.ToList();
             _actionFacades = actionFacades.ToList();
-            _appSettingsProvider = appSettingsProvider;
         }
 
         public IEnumerable<T> GetActions<T>(ConversionProfile profile) where T : IAction
         {
-            var list = _allActions.ToList();
-
-            if (profile.EnableWorkflowEditor)
-            {
-                list = CreateActionListWithOrder(profile)
-                    .AddRemainingActions(_allActions);
-            }
+            var list = CreateActionListWithOrder(profile)
+                   .AddRemainingActions(_allActions);
 
             return list.FilterForEnabledInProfile<T>(profile);
         }

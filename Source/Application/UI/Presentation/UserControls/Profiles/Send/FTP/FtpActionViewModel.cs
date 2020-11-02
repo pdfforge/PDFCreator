@@ -53,6 +53,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP
             {
                 FtpAccountsView = new ListCollectionView(_ftpAccounts);
                 FtpAccountsView.SortDescriptions.Add(new SortDescription(nameof(FtpAccount.AccountInfo), ListSortDirection.Ascending));
+                FtpAccountsView.CurrentChanged += (sender, args) => RaisePropertyChanged(nameof(ShowAutosaveRequiresPasswords));
             }
 
             AddAccountCommand = _commandLocator.CreateMacroCommand()
@@ -90,6 +91,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP
         {
             var latestAccount = _ftpAccounts.Last();
             FtpAccountsView.MoveCurrentTo(latestAccount);
+        }
+
+        public bool ShowAutosaveRequiresPasswords
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return false;
+
+                if (!CurrentProfile.AutoSave.Enabled)
+                    return false;
+
+                if (!(FtpAccountsView.CurrentItem is FtpAccount currentAccount))
+                    return false;
+
+                if (currentAccount.AuthenticationType == AuthenticationType.KeyFileAuthentication
+                    && !currentAccount.KeyFileRequiresPass)
+                    return false;
+
+                return string.IsNullOrWhiteSpace(currentAccount.Password);
+            }
         }
 
         private void RefreshAccountsView()

@@ -4,16 +4,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class WorkflowEditorOverlayInteraction : IInteraction
     {
-        public bool Success;
+        public WorkflowEditorOverlayResult Result { get; set; }
 
-        public string Title;
-        public string View;
+        public string Title { get; set; }
+        public string View { get; }
+        public bool IsDisabled { get; }
+        public bool ShowBackButton { get; }
 
-        public WorkflowEditorOverlayInteraction(bool success, string title, string view)
+        public WorkflowEditorOverlayInteraction(string title, string view, bool isDisabled, bool showBackButton)
         {
-            Success = success;
             Title = title;
             View = view;
+            IsDisabled = isDisabled;
+            ShowBackButton = showBackButton;
         }
+    }
+
+    public enum WorkflowEditorOverlayResult
+    {
+        Close,
+        Back,
+        Success
     }
 }

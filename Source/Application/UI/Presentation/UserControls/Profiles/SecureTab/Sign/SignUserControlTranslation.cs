@@ -7,7 +7,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
     {
         public string SignatureTabHeader { get; private set; } = "Signature";
         public string CertificateFileLabel { get; private set; } = "Certificate File:";
-        public string CertificatePasswordLabel { get; private set; } = "Certificate Password:";
+
+        public string AutosaveRequiresPasswords { get; private set; } = "Automatic saving requires the passwords to be set";
+        public string CertificateDoesNotExist { get; private set; } = "The certificate file does not exist";
+        public string WrongPassword { get; private set; } = "The certificate password is wrong.";
+
         public string DontSavePassword { get; private set; } = "Don't save password and request it during conversion";
         public string ReasonLabel { get; private set; } = "Reason:";
         public string ContactLabel { get; private set; } = "Contact:";
@@ -21,11 +25,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
         public string RightXLabel { get; private set; } = "Width:";
         public string LeftYLabel { get; private set; } = "From bottom:";
         public string RightYLabel { get; private set; } = "Height:";
-        public string PDFSignature { get; private set; } = "PDF Signature";
         public string SelectCertFile { get; private set; } = "Select certificate file";
         public string PfxP12Files { get; private set; } = "PFX/P12 files";
         public string AllFiles { get; private set; } = "All files";
-        public string CertificateDoesNotExist { get; private set; } = "The certificate file does not exist.";
         public string SignaturePasswordButton { get; private set; } = "Set Certificate Password";
 
         public string SelectOrAddTimeServerAccount { get; protected set; } = "Select account or create a new one ->";

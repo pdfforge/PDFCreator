@@ -16,6 +16,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
     public interface IJobInfoQueueManager
     {
         void ManagePrintJobs();
+
+        bool AutoStartProcessing { get; set; }
     }
 
     /// <summary>
@@ -51,15 +53,19 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _jobInfoQueue.OnNewJobInfo += JobInfoQueue_OnNewJobInfo;
         }
 
+        public bool AutoStartProcessing { get; set; } = true;
+
         public void ManagePrintJobs()
         {
+            if (_processingThread != null)
+                return;
             _managePrintJobs = true;
             StartProcessing();
         }
 
         private void JobInfoQueue_OnNewJobInfo(object sender, NewJobInfoEventArgs e)
         {
-            if (_processingThread == null)
+            if (_processingThread == null && AutoStartProcessing)
             {
                 StartProcessing();
             }

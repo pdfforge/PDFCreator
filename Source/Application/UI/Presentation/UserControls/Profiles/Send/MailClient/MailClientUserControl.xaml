@@ -3,54 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:selectFiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeMailClientControlViewModel, IsDesignTimeCreatable=True}"
-             IsEnabled="{Binding CurrentProfile.EmailClientSettings.Enabled}"
              help:HelpProvider.HelpTopic="OpenEmailClient">
-
     <UserControl.Resources>
     </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Email}">
         <StackPanel>
             <TextBlock Margin="0 -20" Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" TextAlignment="Right" />
             <Label>
-                <TextBlock Text="{Binding Translation.RecipientsToText}"></TextBlock>
+                <TextBlock Text="{Binding Translation.RecipientsToText}" />
             </Label>
             <controls:TokenControl DataContext="{Binding RecipientsTokenViewModel}" />
 
             <Label>
-                <TextBlock Text="{Binding Translation.RecipientsCcText}"></TextBlock>
+                <TextBlock Text="{Binding Translation.RecipientsCcText}" />
             </Label>
             <controls:TokenControl DataContext="{Binding RecipientsCcTokenViewModel}" />
 
             <Label>
-                <TextBlock Text="{Binding Translation.RecipientsBccText}"></TextBlock>
+                <TextBlock Text="{Binding Translation.RecipientsBccText}" />
             </Label>
             <controls:TokenControl DataContext="{Binding RecipientsBccTokenViewModel}" />
 
             <Label>
-                <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}"></TextBlock>
+                <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}" />
             </Label>
-            <controls:TokenControlWithAddButton DataContext="{Binding AdditionalAttachmentsTokenViewModel}" Margin="0 0 0 5" />
 
-            <controls:AdditionalAttachmentsUserControl DataContext="{Binding}" />
+            <selectFiles:SelectFilesUserControl DataContext="{Binding AdditionalAttachmentsViewModel}" />
 
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Style="{DynamicResource LightGreyButton}"
                         Padding="12"
                         Command="{Binding EditEmailTextCommand}"
-                        Content="{Binding Translation.EditEmailButtonText}" />
+                        Content="{Binding Translation.EditMailText}" />
 
                 <Button Style="{DynamicResource LightGreyButton}"
                         Padding="12"
                         Margin="20 0"
                         Command="{Binding EmailClientTestCommand}"
-                        Content="{Binding Translation.CheckMailClientButtonText}" />
+                        Content="{Binding Translation.CheckMailClient}" />
             </StackPanel>
         </StackPanel>
     </HeaderedContentControl>

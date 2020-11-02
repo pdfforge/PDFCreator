@@ -7,17 +7,10 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:TestPageSettingsViewModel}">
-
-    <StackPanel Margin="0 5 0 0" HorizontalAlignment="Left">
-        <WrapPanel>
-            <Button Margin="0 10 5 0" 
-                    Style="{DynamicResource LightGreyAnimatedButton}" 
-                    Content="{Binding Translation.PdfCreatorTestpageButtonContent}" 
-                    FontSize="16" Height="40" Padding="15 5 15 5"
-                    ToolTip="{Binding Translation.PrintTestPageTooltip}" 
-                    Command="{Binding PrintPdfCreatorTestPageCommand}"/>
-
-        </WrapPanel>
-    </StackPanel>
-
+    <Button Style="{DynamicResource LightGreyButton}" 
+            Content="{Binding Translation.PdfCreatorTestpageButtonContent}" 
+            FontSize="16" Height="40"
+            ToolTip="{Binding Translation.PrintTestPageTooltip}" 
+            Command="{Binding PrintPdfCreatorTestPageCommand}"
+            HorizontalAlignment="Left" />
 </UserControl>

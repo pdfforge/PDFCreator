@@ -1,8 +1,9 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -23,8 +24,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public int GetNumberOfPages(Job job)
         {
-            var numberOfPages = 0;
-            numberOfPages += NumberOfPagesFromSourceFiles(job.JobInfo);
+            var numberOfPages = NumberOfPagesFromSourceFiles(job.JobInfo);
             numberOfPages += GetNumberOfCoverPages(job.Profile.CoverPage);
             numberOfPages += GetNumberOfAttachmentPages(job.Profile.AttachmentPage);
 
@@ -36,14 +36,13 @@ namespace pdfforge.PDFCreator.Core.Workflow
             var count = 0;
             if (!attachmentPage.Enabled)
                 return count;
-
             try
             {
-                count += _processor.GetNumberOfPages(attachmentPage.File);
+                count = attachmentPage.Files.Select(_processor.GetNumberOfPages).Sum();
             }
             catch
             {
-                _logger.Warn("Problem detecting page number of attachment page file \"" + attachmentPage.File + "\"");
+                _logger.Warn("Problem detecting page number of attachment page file \"" + attachmentPage.Files + "\"");
                 count = 1;
             }
             return count;
@@ -71,11 +70,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             try
             {
-                count += _processor.GetNumberOfPages(coverPage.File);
+                count = coverPage.Files.Select(_processor.GetNumberOfPages).Sum();
             }
             catch
             {
-                _logger.Warn("Problem detecting page number of cover page file \"" + coverPage.File + "\"");
+                _logger.Warn("Problem detecting page number of cover page file \"" + coverPage.Files + "\"");
                 count = 1;
             }
             return count;

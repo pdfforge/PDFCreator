@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp
 {
-    public class EditEmailTextViewModel : OverlayViewModelBase<EditEmailTextInteraction, SmtpTranslation>
+    public class EditEmailTextViewModel : OverlayViewModelBase<EditEmailTextInteraction, MailTranslation>
     {
         private readonly string _signatureText;
         public TokenViewModel<EditEmailTextInteraction> SubjectTokenViewModel { get; set; }

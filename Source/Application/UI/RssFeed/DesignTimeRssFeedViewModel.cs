@@ -1,5 +1,5 @@
-﻿using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.UI.Presentation;
+﻿using pdfforge.PDFCreator.UI.Presentation;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 
 namespace pdfforge.PDFCreator.UI.RssFeed

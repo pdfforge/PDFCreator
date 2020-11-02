@@ -22,6 +22,10 @@
         </Canvas>
     </Viewbox>
 
+    <Viewbox x:Key="WarningIcon" Width="15" Height="15" Stretch="Uniform" x:Shared="False">
+        <Path Data="{DynamicResource WarningIconPath}" Fill="{StaticResource PdfforgeDarkGreyColorBrush}" />
+    </Viewbox>
+
     <GeometryGroup x:Key="WarningIconPath" x:Shared="False">
         <PathGeometry
             Figures="m 22.597357 -0.012812 c -12.454572 0 -22.5937502 10.170427 -22.5937502 22.625 0 12.454572 10.1391782 22.59375 22.5937502 22.59375 12.454573 0 22.625 -10.139178 22.625 -22.59375 0 -12.454573 -10.170427 -22.625 -22.625 -22.625 z m 0 5.3125 c 9.582155 0 17.3125 7.730345 17.3125 17.3125 0 9.582154 -7.730345 17.28125 -17.3125 17.28125 -9.582154 0 -17.2812502 -7.699096 -17.2812502 -17.28125 0 -9.582155 7.6990962 -17.3125 17.2812502 -17.3125 z"
@@ -47,7 +51,7 @@
             FillRule="EvenOdd" />
     </GeometryGroup>
 
-    <Viewbox x:Key="WarningIcon" Stretch="Uniform" x:Shared="False">
+    <Viewbox x:Key="RedWarningIcon" Stretch="Uniform" x:Shared="False">
         <Canvas Width="10.49682" Height="9.1628255">
             <Path Fill="{DynamicResource WarningYellowBrush}">
                 <Path.Data>

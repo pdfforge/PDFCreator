@@ -27,5 +27,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab
         public string ForwardToFurtherProfile { get; private set; } = "Trigger another conversion by forwarding the original source document to an other profile, e.g. to convert to another output format.";
 
         public string Watermark { get; private set; } = "Adds a watermark to the document.";
+        public string OpenFile { get; private set; } = "Opens the PDF file in a Viewer.";
     }
 }

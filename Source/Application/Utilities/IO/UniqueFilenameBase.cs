@@ -4,7 +4,20 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Utilities.IO
 {
-    public abstract class UniqueFilenameBase
+    public interface IUniquePath
+    {
+        string OriginalFilename { get; }
+        string LastUniqueFilename { get; }
+
+        /// <summary>
+        ///     Creates a file path for a file that does not exist yet. It takes a path and appends a counting number (_2, _3, etc)
+        ///     to ensure this in a readable way.
+        /// </summary>
+        /// <returns>A unique filename</returns>
+        string CreateUniqueFileName();
+    }
+
+    public abstract class UniqueFilenameBase : IUniquePath
     {
         private readonly string _directory;
         private readonly string _extension;
@@ -17,7 +30,7 @@ namespace pdfforge.PDFCreator.Utilities.IO
         private int _appendix = 2;
 
         /// <param name="originalFilename">Original file name</param>
-        public UniqueFilenameBase(string originalFilename, IPathUtil pathUtil)
+        protected UniqueFilenameBase(string originalFilename, IPathUtil pathUtil)
         {
             if (originalFilename == null)
                 throw new ArgumentNullException();

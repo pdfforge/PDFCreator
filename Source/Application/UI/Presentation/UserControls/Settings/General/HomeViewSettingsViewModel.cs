@@ -46,6 +46,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         {
             _rssFeedProvider = rssFeedProvider;
             _applicationSettingsProvider = applicationsSettingsProvider;
+
+            // TODO: Use IMountable in AGeneralSettingsItemControlModel
+            _applicationSettingsProvider.SettingsChanged += (sender, args) =>
+            {
+                RaisePropertyChanged(nameof(RssFeedEnabled));
+                RaisePropertyChanged(nameof(TipsEnabled));
+            };
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using System.Windows.Input;
 
-namespace pdfforge.PDFCreator.Core.Services
+namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeCommandLocator : ICommandLocator
     {
@@ -13,7 +14,7 @@ namespace pdfforge.PDFCreator.Core.Services
 
         public IMacroCommandBuilder CreateMacroCommand()
         {
-            return new MacroCommandBuilder(this);
+            return new DesignTimeCommandBuilder();
         }
 
         public ICommand GetCommand<T>() where T : class, ICommand

@@ -9,6 +9,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
     {
         private readonly IActionOrderHelper _actionOrderHelper;
 
+        public bool WithEmailSignature { get; set; } = true;
+
         public PDFCreatorDefaultSettingsBuilder(IActionOrderHelper actionOrderHelper)
         {
             _actionOrderHelper = actionOrderHelper;
@@ -104,6 +106,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             settings.ConversionProfiles.Add(CreatePngProfile());
             settings.ConversionProfiles.Add(CreatePrintProfile());
             settings.ConversionProfiles.Add(CreateTiffProfile());
+
+            foreach (var profile in settings.ConversionProfiles)
+            {
+                profile.EmailClientSettings.AddSignature = WithEmailSignature;
+                profile.EmailSmtpSettings.AddSignature = WithEmailSignature;
+            }
+
             settings.SortConversionProfiles();
         }
 
@@ -116,6 +125,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             profile.OutputFormat = OutputFormat.Pdf;
             _actionOrderHelper.ForceDefaultOrder(profile);
             profile.PdfSettings.Security.Enabled = true;
+            profile.ActionOrder.Add(profile.PdfSettings.Security.GetType().Name);
             profile.PdfSettings.Security.EncryptionLevel = EncryptionLevel.Aes256Bit;
             profile.PdfSettings.Security.RequireUserPassword = true;
 
@@ -151,6 +161,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             printProfile.Guid = ProfileGuids.PRINT_PROFILE_GUID;
 
             printProfile.Printing.Enabled = true;
+            printProfile.ActionOrder.Add(printProfile.Printing.GetType().Name);
             _actionOrderHelper.ForceDefaultOrder(printProfile);
             printProfile.Printing.SelectPrinter = SelectPrinter.ShowDialog;
 
@@ -254,6 +265,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
             SetDefaultProperties(highCompressionProfile, true);
             return highCompressionProfile;
+        }
+
+        // can be used for all profiles
+        protected override void SetDefaultProperties(ConversionProfile profile, bool isDeletable)
+        {
+            base.SetDefaultProperties(profile, isDeletable);
+            profile.OpenViewer.Enabled = true;
+            profile.ActionOrder.Add(profile.OpenViewer.GetType().Name);
+            profile.OpenViewer.OpenWithPdfArchitect = true;
         }
     }
 }

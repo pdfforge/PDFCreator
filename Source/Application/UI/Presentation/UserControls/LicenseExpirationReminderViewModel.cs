@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
-using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities.Web;
@@ -47,13 +46,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
             _licenseExpirationReminder.SetReminderForLicenseExpiration();
             ShowLicenseExpireReminder = false;
             RaisePropertyChanged(nameof(ShowLicenseExpireReminder));
-        }
-    }
-
-    internal class DesignTimeLicenseExpirationReminderViewModel : LicenseExpirationReminderViewModel
-    {
-        public DesignTimeLicenseExpirationReminderViewModel() : base(new DesignTimeLicenseExpirationReminder(), new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), null)
-        {
         }
     }
 }

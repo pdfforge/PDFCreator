@@ -33,8 +33,6 @@
         bool LoadSharedProfiles { get; }
         bool AllowUserDefinedProfiles { get; }
 
-        bool AllowSharedProfilesEditing { get; }
-
         bool DisableLicenseExpirationReminder { get; }
     };
 }

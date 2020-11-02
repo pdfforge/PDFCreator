@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using Prism.Regions;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -17,6 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         {
             InitializeComponent();
             DataContext = viewModel;
+            TransposerHelper.Register(this, viewModel);
         }
     }
 }

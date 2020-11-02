@@ -13,12 +13,11 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Input;
 using SystemInterface.IO;
 using IInteractionRequest = pdfforge.Obsidian.Trigger.IInteractionRequest;
 
@@ -41,7 +40,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
 
         private ISigningPositionToUnitConverter UnitConverter { get; set; }
 
-        private Tuple<string, bool> _lastSignatureCheckHashResult = null;
+        private (string signatureHash, bool isValid) _lastSignatureCheck = ("Not empty", false);
 
         public float LeftX
         {
@@ -107,20 +106,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
             }
         }
 
-        public bool AllowConversionInterrupts
-        {
-            private get
-            {
-                return _allowConversionInterrupts;
-            }
-
-            set
-            {
-                _allowConversionInterrupts = value;
-                AskForPasswordLater = false;
-            }
-        }
-
         public TokenViewModel<ConversionProfile> SignReasonTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> SignContactTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> SignLocationTokenViewModel { get; private set; }
@@ -134,7 +119,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
         public Signature Signature => CurrentProfile?.PdfSettings.Signature;
         public DelegateCommand ChooseCertificateFileCommand { get; private set; }
         public DelegateCommand ChangeUnitConverterCommand { get; private set; }
-        public DelegateCommand SignaturePasswordCommand { get; private set; }
+        public AsyncCommand SignaturePasswordCommand { get; private set; }
 
         public string Password
         {
@@ -144,7 +129,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
                 if (Signature.SignaturePassword != value)
                 {
                     Signature.SignaturePassword = value;
-                    RaisePropertyChanged(nameof(CertificatePasswordIsValid));
+                    RaisePropertyChanged(nameof(PasswordHint));
                 }
             }
         }
@@ -158,13 +143,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
                 {
                     Signature.CertificateFile = value;
                     RaisePropertyChanged(nameof(CertificateFile));
-                    RaisePropertyChanged(nameof(CertificatePasswordIsValid));
+                    RaisePropertyChanged(nameof(PasswordHint));
                     SignaturePasswordCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
         public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
+
+        private bool _allowConversionInterrupts = true;
+
+        public bool AllowConversionInterrupts
+        {
+            private get
+            {
+                return _allowConversionInterrupts;
+            }
+
+            set
+            {
+                _allowConversionInterrupts = value;
+                AskForPasswordLater &= _allowConversionInterrupts;
+            }
+        }
 
         public SignatureUserControlViewModel(
             IOpenFileInteractionHelper openFileInteractionHelper,
@@ -206,15 +207,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
                 .AddCommand(new DelegateCommand(o => RefreshAccountsView()))
                 .Build();
 
-            SignaturePasswordCommand = new DelegateCommand(ShowPasswordEntryInteraction);
+            SignaturePasswordCommand = new AsyncCommand(SignaturePasswordCommandExecute, SignaturePasswordCommandCanExecute);
         }
+
+        private bool _wasInit;
 
         public override void MountView()
         {
-            if (!wasInit)
+            if (!_wasInit)
             {
                 _translationUpdater.RegisterAndSetTranslation(tf => SetTokenViewModels(_tokenViewModelFactory));
-                wasInit = true;
+                _wasInit = true;
             }
 
             _currentSettingsProvider.SelectedProfileChanged += OnCurrentSettingsProviderOnSelectedProfileChanged;
@@ -317,16 +320,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
             });
         }
 
-        private void ShowPasswordEntryInteraction(object obj)
+        private bool SignaturePasswordCommandCanExecute(object o)
+        {
+            if (string.IsNullOrWhiteSpace(CertificateFile))
+                return false;
+
+            if (!_file.Exists(CertificateFile))
+                return false;
+
+            return true;
+        }
+
+        private async Task SignaturePasswordCommandExecute(object obj)
         {
             var interaction =
                 new SignaturePasswordInteraction(PasswordMiddleButton.None, CertificateFile) { Password = Password };
 
-            _interactionRequest.Raise(interaction, SecurityPasswordsCallback);
-        }
+            await _interactionRequest.RaiseAsync(interaction);
 
-        private void SecurityPasswordsCallback(SignaturePasswordInteraction interaction)
-        {
             switch (interaction.Result)
             {
                 case PasswordResult.StorePassword:
@@ -346,7 +357,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
             RaisePropertyChanged(nameof(TimeServerAccountsView));
             RaisePropertyChanged(nameof(Password));
             RaisePropertyChanged(nameof(CertificateFile));
-            RaisePropertyChanged(nameof(CertificatePasswordIsValid));
+            RaisePropertyChanged(nameof(PasswordHint));
             RaisePropertyChanged(nameof(AskForPasswordLater));
 
             RaisePropertyChanged(nameof(LeftX));
@@ -354,39 +365,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
             RaisePropertyChanged(nameof(SignatureWidth));
             RaisePropertyChanged(nameof(SignatureHeight));
 
-            if (string.IsNullOrEmpty(Password))
+            if (CurrentProfile.AutoSave.Enabled)
+                AskForPasswordLater = false;
+            else if (string.IsNullOrEmpty(Password))
                 AskForPasswordLater = true;
         }
 
-        public bool CertificatePasswordIsValid
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(CertificateFile))
-                    return false;
-
-                if (!_file.Exists(CertificateFile))
-                    return false;
-
-                if (AskForPasswordLater)
-                    return true;
-
-                var signatureHash = _hashUtil.GetSha1Hash(Signature.CertificateFile + "|" + Password);
-
-                if (_lastSignatureCheckHashResult != null && _lastSignatureCheckHashResult.Item1 == signatureHash)
-                    return _lastSignatureCheckHashResult.Item2;
-
-                var isValid = _signaturePasswordCheck.IsValidPassword(Signature.CertificateFile, Password);
-
-                _lastSignatureCheckHashResult = new Tuple<string, bool>(signatureHash, isValid);
-
-                return isValid;
-            }
-        }
-
         private bool _askForPasswordLater;
-        private bool _allowConversionInterrupts = true;
-        private bool wasInit;
 
         public bool AskForPasswordLater
         {
@@ -400,7 +385,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Si
                     RaisePropertyChanged(nameof(Password));
                 }
                 RaisePropertyChanged(nameof(AskForPasswordLater));
-                RaisePropertyChanged(nameof(CertificatePasswordIsValid));
+                RaisePropertyChanged(nameof(PasswordHint));
+            }
+        }
+
+        /// <summary>
+        /// PasswordHint returns an empty string if password is ok
+        /// </summary>
+        public string PasswordHint
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CertificateFile))
+                    return "";
+
+                if (!_file.Exists(CertificateFile))
+                    return Translation.CertificateDoesNotExist;
+
+                if (CurrentProfile.AutoSave.Enabled || !AllowConversionInterrupts)
+                    if (string.IsNullOrWhiteSpace(Password))
+                        return Translation.AutosaveRequiresPasswords;
+
+                if (!CurrentProfile.AutoSave.Enabled && AskForPasswordLater && AllowConversionInterrupts)
+                    return "";
+
+                var signatureHash = _hashUtil.GetSha1Hash(Signature.CertificateFile + "|" + Password);
+                if (_lastSignatureCheck.signatureHash != signatureHash)
+                {
+                    var isValid = _signaturePasswordCheck.IsValidPassword(Signature.CertificateFile, Password);
+                    _lastSignatureCheck = (signatureHash, isValid);
+                }
+
+                if (_lastSignatureCheck.isValid)
+                    return "";
+
+                return Translation.WrongPassword;
             }
         }
     }

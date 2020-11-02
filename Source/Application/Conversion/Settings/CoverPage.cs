@@ -3,6 +3,7 @@ using pdfforge.DataStorage;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System;
 
@@ -29,19 +30,30 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Filename of the PDF that will be inserted
 		/// </summary>
-		public string File { get; set; } = "";
+		public List<string> Files { get; set; } = new List<string>();
 		
 		
 		public void ReadValues(Data data, string path = "")
 		{
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			try { File = Data.UnescapeString(data.GetValue(@"" + path + @"File")); } catch { File = "";}
+			try{
+				int numClasses = int.Parse(data.GetValue(@"" + path + @"Files\numClasses"));
+				for (int i = 0; i < numClasses; i++){
+					try{
+						var value = Data.UnescapeString(data.GetValue(path + @"Files\" + i + @"\Files"));
+						Files.Add(value);
+					}catch{}
+				}
+			}catch{}
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"File", Data.EscapeString(File));
+			for (int i = 0; i < Files.Count; i++){
+				data.SetValue(path + @"Files\" + i + @"\Files", Data.EscapeString(Files[i]));
+			}
+			data.SetValue(path + @"Files\numClasses", Files.Count.ToString());
 		}
 		
 		public CoverPage Copy()
@@ -49,7 +61,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CoverPage copy = new CoverPage();
 			
 			copy.Enabled = Enabled;
-			copy.File = File;
+			copy.Files = new List<string>(Files);
 			return copy;
 		}
 		
@@ -58,9 +70,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(File != source.File)
-				File = source.File;
-				
+			Files.Clear();
+			for (int i = 0; i < source.Files.Count; i++)
+			{
+				Files.Add(source.Files[i]);
+			}
+			
 		}
 		
 		public override bool Equals(object o)
@@ -69,7 +84,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CoverPage v = o as CoverPage;
 			
 			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!File.Equals(v.File)) return false;
+			if (!Files.SequenceEqual(v.Files)) return false;
 			return true;
 		}
 		

@@ -49,7 +49,7 @@
         public const string Tip_AutoSaveUrl = "https://go.pdfforge.org/pdfcreator/tips/auto-save";
         public const string Tip_UserTokensUrl = "https://go.pdfforge.org/pdfcreator/tips/user-tokens";
         public const string Tip_WorkflowUrl = "https://go.pdfforge.org/pdfcreator/tips/workflow";
-        public static string Tip_DropBoxUrl = "https://www.pdfforge.org/how-to-send-large-pdf-files";
+        public static string Tip_DropBoxUrl = "https://go.pdfforge.org/pdfcreator/tips/send-large-files";
 
         public const string BannerIndexUrl = "https://go.pdfforge.org/pdfcreator/banners/v1";
         public const string BannerIndexUrlStaging = "https://go.pdfforge.org/pdfcreator/banners-staging/v1";

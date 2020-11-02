@@ -2,7 +2,7 @@
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-    public interface IMailActionSettings
+    public interface IMailActionSettings : IProfileSetting
     {
         bool AddSignature { get; set; }
         List<string> AdditionalAttachments { get; set; }
@@ -12,5 +12,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         string RecipientsBcc { get; set; }
         string RecipientsCc { get; set; }
         string Subject { get; set; }
+
+        IMailActionSettings Copy();
     }
 }

@@ -2,15 +2,14 @@
 using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
-using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
 using pdfforge.PDFCreator.Conversion.Settings.Workflow;
 using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
+using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
-using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.Commands;
 using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
 using System;
@@ -19,48 +18,26 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
-using static System.String;
+using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
-    public class WorkflowEditorViewModel : TranslatableViewModelBase<WorkflowEditorTranslation>, IMountable
+    public class WorkflowEditorViewModel : ProfileUserControlViewModel<WorkflowEditorTranslation>, IMountable
     {
-        private readonly ISelectedProfileProvider _selectedProfileProvider;
-        private readonly ITranslationUpdater _translationUpdater;
         private readonly IInteractionRequest _interactionRequest;
-        private readonly ITokenViewModelFactory _tokenViewModelFactory;
         private readonly IEventAggregator _eventAggregator;
         private readonly ICommandLocator _commandLocator;
-        private readonly MetadataViewModel _metadataViewModel;
 
         private IEnumerable<IActionFacade> ActionFacades { get; }
         public DelegateCommand RemoveActionCommand { get; set; }
         public DelegateCommand EditActionCommand { get; set; }
-        public DelegateCommand SetMetaDataCommand { get; set; }
-        public DelegateCommand SetSaveCommand { get; set; }
-        public DelegateCommand SetOutputFormatCommand { get; set; }
-        public DelegateCommand SetPrinterCommand { get; set; }
+        public ICommand SetMetaDataCommand { get; set; }
+        public ICommand SetSaveCommand { get; set; }
+        public ICommand SetOutputFormatCommand { get; set; }
+        public ICommand SetPrinterCommand { get; set; }
         public ObservableCollection<IPresenterActionFacade> PreparationActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> ModifyActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> SendActions { get; set; }
-        public IWorkflowEditorSubViewProvider ViewProvider;
-
-        public OutputFormat OutputFormatDescription => _selectedProfileProvider.SelectedProfile?.OutputFormat ?? OutputFormat.Pdf;
-
-        public string MetadataDescription => _selectedProfileProvider.SelectedProfile?.AuthorTemplate;
-
-        public string TargetDirectory => GetTargetDirectoryText();
-        public string TargetFilename => GetTargetFilenameText();
-        public string AutoSaveText => GetAutoSaveText();
-
-        public bool HasNotSupportedMetadataFeature => _selectedProfileProvider.SelectedProfile?.HasNotSupportedMetadata() ?? false;
-        public bool HasNotSupportedConvertFeature => _selectedProfileProvider.SelectedProfile?.HasNotSupportedConvert() ?? false;
-
-        public string TitlePreview => Translation.GetFormattedTitlePreview(_metadataViewModel.TitleTokenViewModel.Text);
-        public string AuthorPreview => Translation.GetFormattedAuthorPreview(_metadataViewModel.AuthorTokenViewModel.Text);
-        public string SubjectPreview => Translation.GetFormattedSubjectPreview(_metadataViewModel.SubjectTokenViewModel.Text);
-        public string KeywordsPreview => Translation.GetFormattedKeywordsPreview(_metadataViewModel.KeywordsTokenViewModel.Text);
 
         public DelegateCommand OpenAddActionOverviewCommand { get; set; }
 
@@ -74,29 +51,46 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         public bool HasPreConversion => PreparationActions != null && PreparationActions.Count > 0;
 
         public WorkflowEditorViewModel(ISelectedProfileProvider selectedProfileProvider,
-            ITranslationUpdater translationUpdater, MetadataViewModel metadataViewModel,
-            IEnumerable<IActionFacade> actionFacades, IInteractionRequest interactionRequest,
-             ITokenViewModelFactory tokenViewModelFactory,
-            IEventAggregator eventAggregator, ICommandLocator commandLocator) : base(translationUpdater)
+            ITranslationUpdater translationUpdater,
+            IEnumerable<IActionFacade> actionFacades,
+            IInteractionRequest interactionRequest,
+            IEventAggregator eventAggregator,
+            ICommandLocator commandLocator,
+            IWorkflowEditorSubViewProvider viewProvider,
+            ICommandBuilderProvider commandBuilderProvider,
+            IDispatcher dispatcher
+        ) : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
-            _selectedProfileProvider = selectedProfileProvider;
-            _translationUpdater = translationUpdater;
             _interactionRequest = interactionRequest;
-            _tokenViewModelFactory = tokenViewModelFactory;
             _eventAggregator = eventAggregator;
             _commandLocator = commandLocator;
 
             ActionFacades = actionFacades;
-            _metadataViewModel = metadataViewModel;
 
             RemoveActionCommand = new DelegateCommand(ExecuteRemoveAction);
             EditActionCommand = new DelegateCommand(ExecuteEditAction);
             OpenAddActionOverviewCommand = new DelegateCommand(OpenAddActionOverview);
 
-            SetMetaDataCommand = new DelegateCommand(async _ => await OpenEditDialog(ViewProvider.MetaDataOverlay, Translation.MetadataTab));
-            SetSaveCommand = new DelegateCommand(async _ => await OpenEditDialog(ViewProvider.SaveOverlay, Translation.Save));
-            SetOutputFormatCommand = new DelegateCommand(async _ => await OpenEditDialog(ViewProvider.OutputFormatOverlay, Translation.OutputFormat));
-            SetPrinterCommand = new DelegateCommand(async _ => await OpenEditDialog((ViewProvider as ServerWorkflowEditorSubViewProvider)?.PrinterOverlay, Translation.OutputFormat));
+            var UpdateSettingsPreviewsCommand = new DelegateCommand(o => UpdateSettingsPreviews());
+
+            SetMetaDataCommand = commandBuilderProvider.ProvideBuilder(_commandLocator)
+                .AddInitializedCommand<WorkflowEditorCommand>(c => c.Initialize(viewProvider.MetaDataOverlay, t => t.MetaData))
+                .AddCommand(UpdateSettingsPreviewsCommand)
+                .Build();
+
+            SetSaveCommand = commandBuilderProvider.ProvideBuilder(_commandLocator)
+                .AddInitializedCommand<WorkflowEditorCommand>(c => c.Initialize(viewProvider.SaveOverlay, t => t.Save))
+                .AddCommand(UpdateSettingsPreviewsCommand)
+                .Build();
+
+            SetOutputFormatCommand = commandBuilderProvider.ProvideBuilder(_commandLocator)
+                .AddInitializedCommand<WorkflowEditorCommand>(c => c.Initialize(viewProvider.OutputFormatOverlay, t => t.OutputFormat))
+                .AddCommand(UpdateSettingsPreviewsCommand)
+                .Build();
+
+            SetPrinterCommand = commandBuilderProvider.ProvideBuilder(_commandLocator)
+                .AddInitializedCommand<WorkflowEditorCommand>(c => c.Initialize((viewProvider as ServerWorkflowEditorSubViewProvider)?.PrinterOverlay, t => t.Printer))
+                .Build();
 
             PreparationDropTarget = new WorkflowEditorActionDropTargetHandler<IPreConversionAction>();
             ModifyDropTarget = new WorkflowEditorActionDropTargetHandler<IConversionAction>();
@@ -106,50 +100,164 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
                 var isAssignableFrom = typeof(IFixedOrderAction).IsAssignableFrom(facade.SettingsType);
                 return !isAssignableFrom;
             });
+
             SendDropTarget = new WorkflowEditorActionDropTargetHandler<IPostConversionAction>();
 
-            _translationUpdater.RegisterAndSetTranslation(tf => _metadataViewModel.SetTokenViewModels(tokenViewModelFactory));
+            selectedProfileProvider.SelectedProfileChanged += SelectedProfileOnPropertyChanged;
 
-            if (_selectedProfileProvider != null)
+            eventAggregator.GetEvent<WorkflowSettingsChanged>().Subscribe(() =>
             {
-                _selectedProfileProvider.SelectedProfileChanged += SelectedProfileOnPropertyChanged;
+                GenerateCollectionViewsOfActions();
+                UpdateSettingsPreviews();
+            });
+        }
+
+        #region Save
+
+        public bool AutoSaveEnabled => CurrentProfile != null && CurrentProfile.AutoSave.Enabled;
+
+        public string TargetFilename
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return "";
+
+                var formatHelper = new OutputFormatHelper();
+                return formatHelper.EnsureValidExtension(CurrentProfile.FileNameTemplate, CurrentProfile.OutputFormat);
             }
         }
 
-        private string GetTargetDirectoryText()
+        public string TargetDirectory
         {
-            if (!IsNullOrEmpty(_selectedProfileProvider.SelectedProfile?.TargetDirectory))
-                return _selectedProfileProvider.SelectedProfile?.TargetDirectory;
+            get
+            {
+                if (CurrentProfile == null)
+                    return "";
 
-            if (_selectedProfileProvider.SelectedProfile != null && _selectedProfileProvider.SelectedProfile.AutoSave.Enabled)
-                return Translation.MissingDirectory;
+                if (CurrentProfile.SaveFileTemporary)
+                    return Translation.SaveOnlyTemporary;
 
-            return Translation.LastUsedDirectory;
+                if (!string.IsNullOrEmpty(CurrentProfile.TargetDirectory))
+                    return CurrentProfile.TargetDirectory;
+
+                if (CurrentProfile.AutoSave.Enabled)
+                    return Translation.MissingDirectory;
+
+                return Translation.LastUsedDirectory;
+            }
         }
 
-        private string GetTargetFilenameText()
-        {
-            var profile = _selectedProfileProvider.SelectedProfile;
+        public bool HasMissingDirectory => TargetDirectory == Translation.MissingDirectory;
 
-            if (profile == null)
+        public bool SkipPrintDialog => CurrentProfile != null && CurrentProfile.SkipPrintDialog;
+
+        public bool ShowQuickActions => CurrentProfile != null && CurrentProfile.ShowQuickActions;
+
+        public bool EnsureUniqueFilenames => CurrentProfile != null && CurrentProfile.AutoSave.EnsureUniqueFilenames;
+
+        public bool ShowTrayNotification => CurrentProfile != null && CurrentProfile.ShowAllNotifications;
+
+        #endregion Save
+
+        #region OutputFormat
+
+        public string OutputFormatString => CurrentProfile == null ? "" : CurrentProfile.OutputFormat.GetDescription();
+
+        public string ResolutionCompressionLabel
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return "";
+
+                if (!CurrentProfile.OutputFormat.IsPdf())
+                    return Translation.ResolutionLabel;
+
+                return Translation.CompressionLabel;
+            }
+        }
+
+        public string Colors
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return "";
+
+                try
+                {
+                    if (CurrentProfile.OutputFormat.IsPdf())
+                    {
+                        if (CurrentProfile.OutputFormat == OutputFormat.PdfX
+                            && CurrentProfile.PdfSettings.ColorModel == ColorModel.Rgb)
+                            return Translation.PdfColorValues[(int)ColorModel.Cmyk].Translation;
+
+                        return Translation.PdfColorValues[(int)CurrentProfile.PdfSettings.ColorModel].Translation;
+                    }
+
+                    switch (CurrentProfile.OutputFormat)
+                    {
+                        case OutputFormat.Jpeg:
+                            return Translation.JpegColorValues[(int)CurrentProfile.JpegSettings.Color].Translation;
+
+                        case OutputFormat.Png:
+                            return Translation.PngColorValues[(int)CurrentProfile.PngSettings.Color].Translation;
+
+                        case OutputFormat.Tif:
+                            return Translation.TiffColorValues[(int)CurrentProfile.TiffSettings.Color].Translation;
+
+                        case OutputFormat.Txt:
+                            return "./.";
+                    }
+                }
+                catch { }
+
                 return "";
-
-            var formatHelper = new OutputFormatHelper();
-
-            return formatHelper.EnsureValidExtension(profile.FileNameTemplate, profile.OutputFormat);
+            }
         }
 
-        private string GetAutoSaveText()
+        public string ResolutionCompression
         {
-            var profile = _selectedProfileProvider.SelectedProfile;
+            get
+            {
+                if (CurrentProfile == null)
+                    return "";
 
-            if (profile == null)
+                if (CurrentProfile.OutputFormat.IsPdf())
+                    return Translation.CompressionValues[(int)CurrentProfile.PdfSettings.CompressColorAndGray.Compression].Translation;
+
+                switch (CurrentProfile.OutputFormat)
+                {
+                    case OutputFormat.Jpeg:
+                        return CurrentProfile.JpegSettings.Dpi.ToString();
+
+                    case OutputFormat.Png:
+                        return CurrentProfile.PngSettings.Dpi.ToString();
+
+                    case OutputFormat.Tif:
+                        return CurrentProfile.TiffSettings.Dpi.ToString();
+
+                    case OutputFormat.Txt:
+                        return "./.";
+                }
+
                 return "";
-
-            return profile.AutoSave.Enabled
-                ? Translation.AutoSaveEnabled
-                : Translation.AutoSaveDisabled;
+            }
         }
+
+        #endregion OutputFormat
+
+        #region Metadata
+
+        public bool ShowMetadata => CurrentProfile?.OutputFormat.IsPdf() ?? true;
+
+        public string TitleTemplate => CurrentProfile == null ? "" : CurrentProfile.TitleTemplate;
+        public string AuthorTemplate => CurrentProfile == null ? "" : CurrentProfile.AuthorTemplate;
+        public string SubjectTemplate => CurrentProfile == null ? "" : CurrentProfile.SubjectTemplate;
+        public string KeywordTemplate => CurrentProfile == null ? "" : CurrentProfile.KeywordTemplate;
+
+        #endregion Metadata
 
         private void SelectedProfileOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -159,23 +267,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
                 UpdateActionProperties();
 
-                UpdateConfigurationProperties();
+                UpdateSettingsPreviews();
             }
-        }
-
-        private async Task OpenEditDialog(string targetView, string title)
-        {
-            var settingsCopy = _selectedProfileProvider.SelectedProfile.Copy();
-            var workflowEditorOverlayInteraction = new WorkflowEditorOverlayInteraction(false, title, targetView);
-
-            await _interactionRequest.RaiseAsync(workflowEditorOverlayInteraction);
-            if (!workflowEditorOverlayInteraction.Success && !settingsCopy.Equals(_selectedProfileProvider.SelectedProfile))
-            {
-                _selectedProfileProvider.SelectedProfile.ReplaceWith(settingsCopy);
-            }
-
-            GenerateCollectionViewsOfActions();
-            UpdateConfigurationProperties();
         }
 
         private void GenerateCollectionViewsOfActions()
@@ -209,8 +302,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
         private void UpdateOrder()
         {
-            _selectedProfileProvider.SelectedProfile.ActionOrder.Clear();
-            var newOrder = _selectedProfileProvider.SelectedProfile.ActionOrder;
+            CurrentProfile.ActionOrder.Clear();
+            var newOrder = CurrentProfile.ActionOrder;
 
             foreach (IPresenterActionFacade modifyAction in PreparationActions)
             {
@@ -232,7 +325,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
         private List<IPresenterActionFacade> GenerateCollection()
         {
-            var actionOrder = _selectedProfileProvider.SelectedProfile.ActionOrder;
+            var actionOrder = CurrentProfile.ActionOrder;
             return actionOrder
                 .Select(GetActionFacadeByTypeName)
                 .Where(x => x != null)
@@ -250,19 +343,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             return x => x.Action.GetInterfaces().Contains(typeof(TType)) && x.IsEnabled;
         }
 
-        public void MountView()
+        public override void MountView()
         {
             GenerateCollectionViewsOfActions();
 
             _eventAggregator.GetEvent<ActionAddedToWorkflowEvent>().Subscribe(RefreshView);
             _wasInit = true;
 
-            UpdateConfigurationProperties();
+            UpdateSettingsPreviews();
         }
 
         private async void OpenAddActionOverview(object obj)
         {
-            await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction(false));
+            await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
         }
 
         private void RefreshView()
@@ -280,14 +373,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         {
             var actionFacade = (IPresenterActionFacade)obj;
             var settingsCopy = CopySetting(actionFacade.ProfileSetting);
-            var workflowEditorOverlayInteraction = new WorkflowEditorOverlayInteraction(false, actionFacade.Translation, actionFacade.OverlayView);
+            var workflowEditorOverlayInteraction = new WorkflowEditorOverlayInteraction(actionFacade.Translation, actionFacade.OverlayView, false, false);
 
             await _interactionRequest.RaiseAsync(workflowEditorOverlayInteraction);
-            if (!workflowEditorOverlayInteraction.Success)
+            if (workflowEditorOverlayInteraction.Result != WorkflowEditorOverlayResult.Success)
                 actionFacade.ProfileSetting = settingsCopy;
 
             GenerateCollectionViewsOfActions();
-            UpdateConfigurationProperties();
+            UpdateSettingsPreviews();
         }
 
         private void UpdateActionProperties()
@@ -297,23 +390,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             RaisePropertyChanged(nameof(SendActions));
         }
 
-        private void UpdateConfigurationProperties()
+        private void UpdateSettingsPreviews()
         {
-            _metadataViewModel.SetTokenViewModels(_tokenViewModelFactory);
+            RaisePropertyChanged(nameof(CurrentProfile));
 
-            RaisePropertyChanged(nameof(OutputFormatDescription));
-            RaisePropertyChanged(nameof(TargetDirectory));
+            RaisePropertyChanged(nameof(AutoSaveEnabled));
             RaisePropertyChanged(nameof(TargetFilename));
-            RaisePropertyChanged(nameof(AutoSaveText));
-            RaisePropertyChanged(nameof(MetadataDescription));
+            RaisePropertyChanged(nameof(TargetDirectory));
+            RaisePropertyChanged(nameof(HasMissingDirectory));
+            RaisePropertyChanged(nameof(SkipPrintDialog));
+            RaisePropertyChanged(nameof(ShowQuickActions));
+            RaisePropertyChanged(nameof(EnsureUniqueFilenames));
+            RaisePropertyChanged(nameof(ShowTrayNotification));
 
-            RaisePropertyChanged(nameof(TitlePreview));
-            RaisePropertyChanged(nameof(AuthorPreview));
-            RaisePropertyChanged(nameof(SubjectPreview));
-            RaisePropertyChanged(nameof(KeywordsPreview));
+            RaisePropertyChanged(nameof(OutputFormatString));
+            RaisePropertyChanged(nameof(Colors));
+            RaisePropertyChanged(nameof(ResolutionCompressionLabel));
+            RaisePropertyChanged(nameof(ResolutionCompression));
 
-            RaisePropertyChanged(nameof(HasNotSupportedConvertFeature));
-            RaisePropertyChanged(nameof(HasNotSupportedMetadataFeature));
+            RaisePropertyChanged(nameof(ShowMetadata));
+            RaisePropertyChanged(nameof(TitleTemplate));
+            RaisePropertyChanged(nameof(AuthorTemplate));
+            RaisePropertyChanged(nameof(SubjectTemplate));
+            RaisePropertyChanged(nameof(KeywordTemplate));
         }
 
         private void ExecuteRemoveAction(object actionFacade)
@@ -323,7 +422,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             GenerateCollectionViewsOfActions();
         }
 
-        public void UnmountView()
+        public override void UnmountView()
         {
             _eventAggregator.GetEvent<ActionAddedToWorkflowEvent>().Unsubscribe(RefreshView);
         }

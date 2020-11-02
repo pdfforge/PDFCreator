@@ -36,7 +36,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             foreach (var action in _actions)
             {
-                if (action is ICheckable checkable)
+                if (!(action is ICheckable checkable))
+                    continue;
+                if (checkable.IsEnabled(job.Profile))
                     checkable.ApplyPreSpecifiedTokens(job);
             }
 
@@ -71,6 +73,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
             {
                 if (!(action is ICheckable checkable))
                     continue;
+
+                if (!checkable.IsEnabled(profile))
+                    continue;
+
                 var result = checkable.Check(profile, accounts, checkLevel);
                 actionResult.AddRange(result);
             }

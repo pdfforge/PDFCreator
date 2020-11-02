@@ -61,8 +61,8 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             metric.Mode = GetMode(job.Profile.AutoSave.Enabled);
             metric.QuickActions = job.Profile.ShowQuickActions;
 
-            metric.OpenViewer = job.Profile.OpenViewer;
-            metric.OpenWithPdfArchitect = job.Profile.OpenWithPdfArchitect;
+            metric.OpenViewer = job.Profile.OpenViewer.Enabled;
+            metric.OpenWithPdfArchitect = job.Profile.OpenViewer.OpenWithPdfArchitect;
             metric.TotalPages = job.JobInfo.TotalPages;
             metric.NumberOfCopies = job.NumberOfCopies;
 
@@ -105,8 +105,6 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             metric.LoadSharedAppSettings = _gpoSettings.LoadSharedAppSettings;
             metric.LoadSharedProfiles = _gpoSettings.LoadSharedProfiles;
             metric.AllowUserDefinedProfiles = _gpoSettings.AllowUserDefinedProfiles;
-
-            metric.IsWorkflowEditorActive = job.Profile.EnableWorkflowEditor;
 
             metric.Status = status;
 

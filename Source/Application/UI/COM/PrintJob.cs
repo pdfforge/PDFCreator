@@ -4,6 +4,8 @@ using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.ComImplementation;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace pdfforge.PDFCreator.UI.COM
@@ -34,9 +36,19 @@ namespace pdfforge.PDFCreator.UI.COM
 
         void SetProfileSetting(string name, string value);
 
+        void SetProfileListSetting(string name, ArrayList value);
+
         PrintJobInfo PrintJobInfo { get; }
 
         string GetProfileSetting(string propertyName);
+
+        ArrayList GetProfileListSetting(string propertyName);
+
+        void AddActionToPosition(string actionSettingsName, int addToPosition);
+
+        void AddAction(string actionSettingsName);
+
+        void RemoveAction(string actionSettingsName);
     }
 
     [ComVisible(true)]
@@ -107,6 +119,26 @@ namespace pdfforge.PDFCreator.UI.COM
         public void SetProfileSetting(string name, string value)
         {
             _printJobAdapter.SetProfileSetting(name, value);
+            SortAndUpdateActions();
+        }
+
+        /// <summary>
+        ///     Set a conversion profile property using a string and a list of strings: the single string is used for the name (i.e. PdfSettings.Security.Enable)
+        ///     and the list is used for value
+        /// </summary>
+        /// <param name="name">Name of the setting. This can include subproperties (i.e. PdfSettings.Security.Enable)</param>
+        /// <param name="value">A IEnumerable of string to set the value</param>
+        public void SetProfileListSetting(string name, ArrayList value)
+        {
+            var list = new List<string>();
+
+            for (int i = 0; i < value.Count; i++)
+            {
+                var item = value[i].ToString();
+                list.Add(item);
+            }
+
+            _printJobAdapter.SetProfileListSetting(name, list);
         }
 
         /// <summary>
@@ -122,6 +154,86 @@ namespace pdfforge.PDFCreator.UI.COM
         public string GetProfileSetting(string propertyName)
         {
             return _printJobAdapter.GetProfileSetting(propertyName);
+        }
+
+        /// <summary>
+        ///     Gets the current value of a specific profile property as string list using its name.
+        /// </summary>
+        /// <param name="propertyName">name of the setting. This can include subproperties (i.e. PdfSettings.Security.Enable)</param>
+        /// <returns></returns>
+        public ArrayList GetProfileListSetting(string propertyName)
+        {
+            var profileListSetting = _printJobAdapter.GetProfileListSetting(propertyName);
+            var array = new ArrayList();
+            foreach (var str in profileListSetting)
+            {
+                array.Add(str);
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// Run a helper to add all active actions into actionOrder list and sort it to default sorting
+        /// </summary>
+        private void SortAndUpdateActions()
+        {
+            _printJobAdapter.SortAndUpdateActions();
+        }
+
+        /// <summary>
+        /// Activates an action and puts it in a certain execution position
+        /// It only enables the execution all configurations must be done by user
+        /// </summary>
+        /// <param name="actionSettingsName">setting name of the action that should be activated</param>
+        /// <param name="addToPosition">the position index in which the action gets executed</param>
+        public void AddActionToPosition(string actionSettingsName, int addToPosition)
+        {
+            var profileListSetting = GetProfileListSetting("ActionOrder");
+            if (addToPosition >= profileListSetting.Count || addToPosition < 0)
+            {
+                AddAction(actionSettingsName);
+                return;
+            }
+
+            profileListSetting.Insert(addToPosition, actionSettingsName);
+            SetProfileListSetting("ActionOrder", profileListSetting);
+            SetActionEnabledState(actionSettingsName, true);
+        }
+
+        /// <summary>
+        /// Activates an action and puts it at the end of the execution order
+        /// It only enables the execution all configurations must be done by user
+        /// </summary>
+        /// <param name="actionSettingsName">setting name of the action that should be activated</param>
+        public void AddAction(string actionSettingsName)
+        {
+            var propertyName = "ActionOrder";
+            var profileListSetting = GetProfileListSetting(propertyName);
+            profileListSetting.Add(actionSettingsName);
+            SetProfileListSetting(propertyName, profileListSetting);
+            SetActionEnabledState(actionSettingsName, true);
+        }
+
+        /// <summary>
+        /// Removes an action from the execution list
+        /// </summary>
+        /// <param name="actionSettingsName">setting name of the action that should be deactivated</param>
+        public void RemoveAction(string actionSettingsName)
+        {
+            var actionOrder = GetProfileListSetting("ActionOrder");
+            actionOrder.Remove(actionSettingsName);
+            SetProfileListSetting("ActionOrder", actionOrder);
+
+            SetActionEnabledState(actionSettingsName, false);
+        }
+
+        private void SetActionEnabledState(string actionSettingsName, bool state)
+        {
+            var profileSetting = GetProfileSetting(actionSettingsName);
+            if (profileSetting != null)
+            {
+                SetProfileSetting($"{actionSettingsName}.Enabled", state ? "True" : "False");
+            }
         }
 
 #pragma warning disable CS0067

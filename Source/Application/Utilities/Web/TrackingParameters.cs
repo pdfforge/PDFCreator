@@ -19,7 +19,7 @@ namespace pdfforge.PDFCreator.Utilities.Web
             Keywords = keywords;
         }
 
-        private IDictionary<string, string> ToParamList()
+        public IDictionary<string, string> ToParamList()
         {
             var parameters = new Dictionary<string, string>();
 

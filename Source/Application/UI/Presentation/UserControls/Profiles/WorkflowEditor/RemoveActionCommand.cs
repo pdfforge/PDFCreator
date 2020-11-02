@@ -1,4 +1,6 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings.Workflow;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Workflow;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using System.Windows.Input;
 
@@ -7,10 +9,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
     public class RemoveActionCommand : ICommand
     {
         private readonly ISelectedProfileProvider _selectedProfileProvider;
+        private readonly IDefaultSettingsBuilder _defaultSettingsBuilder;
 
-        public RemoveActionCommand(ISelectedProfileProvider selectedProfileProvider)
+        public RemoveActionCommand(ISelectedProfileProvider selectedProfileProvider, IDefaultSettingsBuilder defaultSettingsBuilder)
         {
             _selectedProfileProvider = selectedProfileProvider;
+            _defaultSettingsBuilder = defaultSettingsBuilder;
         }
 
         public bool CanExecute(object parameter)
@@ -21,7 +25,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         public void Execute(object parameter)
         {
             var facade = (IPresenterActionFacade)parameter;
+            var settingsType = facade.SettingsType;
+
+            var defaultProfile = _defaultSettingsBuilder.CreateDefaultProfile();
+            var defaultSetting = facade.GetProfileSettingByConversionProfile(defaultProfile);
+            var currentSetting = facade.GetProfileSettingByConversionProfile(_selectedProfileProvider.SelectedProfile);
+
+            var replaceWithInfo = settingsType.GetMethod(nameof(ApplicationSettings.ReplaceWith));
+            if (replaceWithInfo != null)
+                replaceWithInfo.Invoke(currentSetting, new object[] { defaultSetting });
+
+            // Important: Set enabled to false after resetting to defaults
             facade.IsEnabled = false;
+
             _selectedProfileProvider.SelectedProfile.ActionOrder.RemoveAll(x => x == facade.SettingsType.Name);
         }
 

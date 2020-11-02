@@ -54,6 +54,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private MainShell MainShell { get; set; }
         private PrintJobShell PrintJobShell { get; set; }
+        public bool PrintJobShellIsOpen => PrintJobShell != null;
 
         public void ShowMainShell()
         {

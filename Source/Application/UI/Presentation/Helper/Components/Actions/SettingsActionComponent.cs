@@ -15,6 +15,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Components.Actions
 
         public IProfileSetting Setting => _getSetting(_currentSettingsProvider.SelectedProfile);
 
+        public IProfileSetting GetProfileSettingByConversionProfile(ConversionProfile profile)
+        {
+            return _getSetting(profile);
+        }
+
         public SettingsActionComponent(ICurrentSettingsProvider currentSettingsProvider, Type settingsType) : base(settingsType)
         {
             _currentSettingsProvider = currentSettingsProvider;

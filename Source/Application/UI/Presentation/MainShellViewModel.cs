@@ -98,6 +98,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             CloseCommand = commandLocator?.CreateMacroCommand()
                 .AddCommand<EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand>()
                 .AddCommand<ISaveChangedSettingsCommand>()
+                .AddCommand<IDeleteTempFolderCommand>()
                 .Build();
 
             DragEnterCommand = new DelegateCommand<DragEventArgs>(dragAndDrop.HandleDragEnter);

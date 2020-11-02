@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -40,7 +41,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
                 ComposeUrlTip(Translation.PDFCreatorOnlineTitle,Translation.PDFCreatorOnlineText, Urls.PdfCreatorOnlineUrl ),
                 ComposeUserGuideTip(Translation.TemporarySaveTitle, Translation.TemporarySaveText,HelpTopic.ProfileSave),
                 ComposeUrlTip(Translation.WorkflowTitle,Translation.WorkflowText, Urls.Tip_WorkflowUrl ),
-                ComposeUrlTip(Translation.DropBoxTitle, Translation.DropBoxText, Urls.Tip_DropBoxUrl )
+                ComposeUrlTip(Translation.DropBoxTitle, Translation.DropBoxText, Urls.Tip_DropBoxUrl ),
+                ComposeUserGuideTip(Translation.ForwardToFurtherProfileTitle, Translation.ForwardToFurtherProfileText, HelpTopic.ForwardToProfile ),
             };
         }
 

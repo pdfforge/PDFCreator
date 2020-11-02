@@ -67,7 +67,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             EnsurePdfDocumentInit(job);
 
             var pdfMerger = new ITextPdfMerger();
-            pdfMerger.AddAttachment(_pdfDocument, job.Profile.AttachmentPage.File);
+            pdfMerger.AddAttachment(_pdfDocument, job.Profile.AttachmentPage.Files.ToArray());
         }
 
         public override void AddCover(Job job)
@@ -78,7 +78,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             EnsurePdfDocumentInit(job);
 
             var pdfMerger = new ITextPdfMerger();
-            pdfMerger.AddCover(_pdfDocument, job.Profile.CoverPage.File);
+            pdfMerger.AddCover(_pdfDocument, job.Profile.CoverPage.Files.ToArray());
         }
 
         public override void AddStamp(Job job)

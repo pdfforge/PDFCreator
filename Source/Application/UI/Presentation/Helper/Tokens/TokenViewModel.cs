@@ -1,6 +1,7 @@
 ﻿using Optional;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -10,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Input;
-using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
@@ -43,11 +43,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
             _generatePreview = generatePreview;
 
+            SetTokens(tokens);
+
+            CurrentValue = initialValue;
+        }
+
+        public void SetTokens(IList<string> tokens)
+        {
             Tokens = new ObservableCollection<TokenWithCommand>();
             foreach (var token in tokens)
                 Tokens.Add(new TokenWithCommand(token, ExecuteMethod));
-
-            CurrentValue = initialValue;
         }
 
         public T CurrentValue

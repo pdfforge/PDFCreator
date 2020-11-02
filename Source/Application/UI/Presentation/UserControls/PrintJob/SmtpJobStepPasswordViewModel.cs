@@ -5,7 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
-    public class SmtpJobStepPasswordViewModel : JobStepPasswordViewModelBase<SmtpTranslation>
+    public class SmtpJobStepPasswordViewModel : JobStepPasswordViewModelBase<MailTranslation>
     {
         public string SmtpAccountInfo { get; set; }
 

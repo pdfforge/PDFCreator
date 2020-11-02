@@ -6,17 +6,17 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance designTime:DesignTimeForwardToFurtherProfileViewModel, IsDesignTimeCreatable=True}"
-             Style="{DynamicResource TabUserControl}"
-             MinHeight="300">
+             help:HelpProvider.HelpTopic="ForwardToProfile">
 
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" IsEnabled="{Binding IsBusinessEdition}">
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
 
         <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
-                <Label Margin="-5"  IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}">
+                <Label Margin="-5">
                     <TextBlock Style="{DynamicResource HeaderTextStyle}" Text="{Binding Translation.DisplayName}" />
                 </Label>
                 <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" DockPanel.Dock="Left" />
@@ -28,7 +28,7 @@
             <Label Content="{Binding Translation.SelectProfile}" Margin="0 5 0 0" />
             <profiles:ProfilesComboBox Profiles="{Binding ProfilesWrapper, Mode=OneWay}"
                                            SelectedProfile="{Binding ForwardProfileWrapper}"
-                                           HorizontalAlignment="Left"/>
+                                           HorizontalAlignment="Left" />
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

@@ -8,11 +8,14 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:workflow="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Workflow;assembly=PDFCreator.Settings"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance local:DesignTimeAddActionOverlayViewModel}"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeAddActionOverlayViewModel}"
              KeyboardNavigation.TabNavigation="None"
-             x:Name="CustomUserControl">
+             x:Name="CustomUserControl"
+             help:HelpProvider.HelpTopic="{x:Static help:HelpTopic.WorkflowEditor}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -24,7 +27,7 @@
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="BorderBrush" Value="Transparent" />
                 <Setter Property="Background" Value="LightGray" />
-                <Setter Property="Foreground" Value="Gray" />
+                <Setter Property="Foreground" Value="#363636" />
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="Margin" Value="2" />
             </Style>

@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
+    <XamlDebuggingInformation>True</XamlDebuggingInformation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -81,6 +82,7 @@
     <Compile Include="Assistants\IUpdateHelper.cs" />
     <Compile Include="Assistants\LicenseExpirationReminder.cs" />
     <Compile Include="Assistants\LoadSettingsTranslation.cs" />
+    <Compile Include="Assistants\MailTestAssistants\TestMailAssistantBase.cs" />
     <Compile Include="Assistants\PrinterActionsAssistant.cs" />
     <Compile Include="Assistants\PrinterActionsAssistantTranslation.cs" />
     <Compile Include="Assistants\PrintFileAssistant.cs" />
@@ -88,7 +90,7 @@
     <Compile Include="Assistants\RecommendArchitectUpgrade.cs" />
     <Compile Include="Assistants\RepairPrinterAssistant.cs" />
     <Compile Include="Assistants\RepairSpoolFolderAssistant.cs" />
-    <Compile Include="Assistants\SmtpTestEmailAssistant.cs" />
+    <Compile Include="Assistants\MailTestAssistants\SmtpTestMailAssistant.cs" />
     <Compile Include="Assistants\UacAssistant.cs" />
     <Compile Include="Assistants\Update\DisabledUpdateHelper.cs" />
     <Compile Include="Assistants\Update\RestartApplicationInteraction.cs" />
@@ -166,8 +168,22 @@
     <Compile Include="Commands\TitleReplacements\TitleReplacementRemoveCommand.cs" />
     <Compile Include="Commands\UrlOpenCommand.cs" />
     <Compile Include="Commands\UserGuide\ShowUserGuideCommand.cs" />
-    <Compile Include="Controls\AdditionalAttachmentsUserControl.xaml.cs">
-      <DependentUpon>AdditionalAttachmentsUserControl.xaml</DependentUpon>
+    <Compile Include="DesignTime\DesignTimeAddActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeJobDataUpdater.cs" />
+    <Compile Include="DesignTime\DesignTimeTestFileDummyHelper.cs" />
+    <Compile Include="Events\ManagePrintJobEvent.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DropboxResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFilesUserControlViewModelBuilder.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxCodeExchanger.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxHttpListener.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxUserInfoManager.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxAuthException.cs" />
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFilesUserControl.xaml.cs">
+      <DependentUpon>SelectFilesUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BindableTextBox.cs" />
     <Compile Include="Controls\Buttons\ColoredDropDownButton.xaml.cs">
@@ -190,16 +206,24 @@
     <Compile Include="Converter\IdToResourceConverter.cs" />
     <Compile Include="Converter\IntValueConverter.cs" />
     <Compile Include="Converter\SigningPositionToUnitConverterFactory.cs" />
+    <Compile Include="DeleteTempFolderCommand.cs" />
     <Compile Include="DesignTime\DesignTimeBackgroundUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeBrowseFileCommandBuilder.cs" />
+    <Compile Include="DesignTime\DesignTimeChangeJobCheckAndProceedCommandBuilder.cs" />
+    <Compile Include="DesignTime\DesignTimeCommandBuilder.cs" />
+    <Compile Include="DesignTime\DesignTimeCommandBuilderProvider.cs" />
     <Compile Include="DesignTime\DesignTimeCommandLocator.cs" />
-    <Compile Include="DesignTime\DesignTimeMailBaseControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeTargetFilePathComposer.cs" />
+    <Compile Include="DesignTime\DesignTimeTokenHelper.cs" />
+    <Compile Include="DesignTime\DesignTimeSelectFilesUserControlViewModelBuilder.cs" />
+    <Compile Include="DesignTime\DesignTimeSelectFileViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeSelectFilesUserControlViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUsageMetricFactory.cs" />
     <Compile Include="DesignTime\DesignTimeForwardToFurtherProfileViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWatermarkViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWorkflowEditorViewModel.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeUpdateLauncher.cs" />
     <Compile Include="Events\SetProfileTabHelpTopicEvent.cs" />
-    <Compile Include="Events\SwitchWorkflowLayoutEvent.cs" />
     <Compile Include="Helper\Components\Actions\DescriptionActionComponent.cs" />
     <Compile Include="Helper\Components\Actions\RestrictableActionComponent.cs" />
     <Compile Include="Helper\Components\Actions\SettingsActionComponent.cs" />
@@ -278,7 +302,6 @@
     <Compile Include="DesignTime\DesignTimeHttpActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeHttpAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeInputBoxWindowViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeDropboxAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeDropboxUserControlViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSmtpAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpAccountViewModel.cs" />
@@ -290,7 +313,7 @@
     <Compile Include="DesignTime\DesignTimeSmtpJobStepPasswordViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpJobStepPasswordViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeHomeViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeMetadataTabViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeMetadataViewModel.cs" />
     <Compile Include="DesignTime\DesignTimePdfJobStepPasswordsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeBusinessFeatureBadgeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeProfessionalHintStepViewModel.cs" />
@@ -324,7 +347,7 @@
     <Compile Include="Events\PrintJobShellTranslation.cs" />
     <Compile Include="Events\ReturnToHomeEvent.cs" />
     <Compile Include="Events\ShowLockLayerEvent.cs" />
-    <Compile Include="Helper\ClientTestEmail.cs" />
+    <Compile Include="Assistants\MailTestAssistants\ClientTestMailAssistant.cs" />
     <Compile Include="Helper\ClipboardService.cs" />
     <Compile Include="Helper\DragAndDropEventHandler.cs" />
     <Compile Include="Helper\EditionHelper.cs" />
@@ -341,7 +364,7 @@
     <Compile Include="Helper\MailSignature\MailSignatureHelperFreeVersion.cs" />
     <Compile Include="Helper\MailSignature\MailSignatureHelperLicensed.cs" />
     <Compile Include="Helper\MailSignature\MailSignatureHelperTranslation.cs" />
-    <Compile Include="Assistants\RecommendArchitect.cs" />
+    <Compile Include="Assistants\RecommendArchitectAssistantAssistant.cs" />
     <Compile Include="Helper\ProfessionalHintHelperDisabled.cs" />
     <Compile Include="Helper\PrismNavigationValueObject.cs" />
     <Compile Include="Helper\SoundPlayer.cs" />
@@ -384,10 +407,6 @@
     <Compile Include="Styles\TextBoxBehavior.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\FTP\FtpAccountViewModel.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\HTTP\HttpTranslation.cs" />
-    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxAccountWindow.xaml.cs">
-      <DependentUpon>DropboxAccountWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxAccountViewModel.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxTranslation.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\SMTP\SmtpAccountView.xaml.cs">
       <DependentUpon>SmtpAccountView.xaml</DependentUpon>
@@ -397,7 +416,7 @@
       <DependentUpon>HttpAccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Accounts\AccountViews\HTTP\HttpAccountViewModel.cs" />
-    <Compile Include="UserControls\Accounts\AccountViews\SMTP\SmtpTranslation.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\SMTP\MailTranslation.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\TimeServer\TimeServerAccountView.xaml.cs">
       <DependentUpon>TimeServerAccountView.xaml</DependentUpon>
     </Compile>
@@ -406,6 +425,7 @@
     <Compile Include="UserControls\ApplicationLogoControl.xaml.cs">
       <DependentUpon>ApplicationLogoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DesignTime\DesignTimeLicenseExpirationReminderViewModel.cs" />
     <Compile Include="UserControls\Dialogs\InputBoxUserControl.xaml.cs">
       <DependentUpon>InputBoxUserControl.xaml</DependentUpon>
     </Compile>
@@ -491,6 +511,8 @@
       <DependentUpon>UserTokenUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\ConversionProfileWrapper.cs" />
+    <Compile Include="DesignTime\DesignTimeAddActionOverlayViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeWorkflowEditorOverlayViewModel.cs" />
     <Compile Include="UserControls\Profiles\ModifyTab\ActionInfoTextTranslation.cs" />
     <Compile Include="UserControls\Profiles\ModifyTab\Watermark\WatermarkTranslation.cs" />
     <Compile Include="UserControls\Profiles\ModifyTab\Watermark\WatermarkView.xaml.cs">
@@ -506,18 +528,26 @@
     <Compile Include="UserControls\Profiles\ProfilesComboBox.xaml.cs">
       <DependentUpon>ProfilesComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFileInteraction.cs" />
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFilesUserControlViewModelFactory.cs" />
     <Compile Include="UserControls\Profiles\Send\HTTP\HttpActionUserControl.xaml.cs">
       <DependentUpon>HttpActionUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\Send\HTTP\HttpActionViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Send\MailBase\MailBaseControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Send\MailBase\MailBaseTabTranslation.cs" />
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFileView.xaml.cs">
+      <DependentUpon>SelectFileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFileViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFilesUserControlViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SelectFiles\SelectFileTranslation.cs" />
     <Compile Include="UserControls\Profiles\Send\MailSmtp\EditEmailTextUserControl.xaml.cs">
       <DependentUpon>EditEmailTextUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\Send\MailSmtp\EditEmailTextViewModel.cs" />
-    <Compile Include="UserControls\Profiles\TabBasedProfileLayoutView.xaml.cs">
-      <DependentUpon>TabBasedProfileLayoutView.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\Send\OpenFile\OpenViewerActionTranslation.cs" />
+    <Compile Include="UserControls\Profiles\Send\OpenFile\OpenViewerActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\Send\OpenFile\OpenViewerActionUserControl.xaml.cs">
+      <DependentUpon>OpenViewerActionUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\Tabs\ConvertTabs\ConvertJpgView.xaml.cs">
       <DependentUpon>ConvertJpgView.xaml</DependentUpon>
@@ -553,7 +583,9 @@
     <Compile Include="UserControls\Profiles\Tabs\NotificationsLevelSettingsViewModel.cs" />
     <Compile Include="UserControls\Profiles\Tabs\NotificationsLevelSettingsTranslation.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ActionAddedToWorkflowEvent.cs" />
+    <Compile Include="UserControls\Profiles\WorkflowEditor\Commands\WorkflowEditorCommand.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\FacadeToVisiblityValueConverter.cs" />
+    <Compile Include="UserControls\Profiles\WorkflowEditor\ProfileWizardSizes.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\RemoveActionCommand.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\AddActionCommand.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditorOverlayViewTranslation.cs" />
@@ -563,16 +595,19 @@
     </Compile>
     <Compile Include="UserControls\Profiles\WorkflowEditorOverlayViewModel.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ServerWorkflowEditorSubViewProvider.cs" />
-    <Compile Include="UserControls\Profiles\WorkflowEditor\SwitchLayoutTranslation.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorActionDragSourceHandler.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorActionDropTargetHandler.cs" />
-    <Compile Include="UserControls\Profiles\WorkflowEditor\SwitchLayoutCommand.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorSubViewProvider.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorTranslation.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorView.xaml.cs">
       <DependentUpon>WorkflowEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorViewModel.cs" />
+    <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowSettingsChanged.cs" />
+    <Compile Include="UserControls\Settings\AddActionUserControl.xaml.cs">
+      <DependentUpon>AddActionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\AddActionViewModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml.cs">
       <DependentUpon>EventLogSettingView.xaml</DependentUpon>
     </Compile>
@@ -614,7 +649,6 @@
       <DependentUpon>FTPActionUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\Send\FTP\FtpActionViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Send\MailClient\MailClientTabTranslation.cs" />
     <Compile Include="UserControls\Profiles\Send\MailClient\MailClientUserControl.xaml.cs">
       <DependentUpon>MailClientUserControl.xaml</DependentUpon>
     </Compile>
@@ -723,8 +757,8 @@
     <Compile Include="UserControls\Profiles\SecureTab\Sign\SignUserControlTranslation.cs" />
     <Compile Include="UserControls\Profiles\SecureTab\Sign\SignatureUserControlViewModel.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\ProfileSubTabViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Tabs\MetadataTab.xaml.cs">
-      <DependentUpon>MetadataTab.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\Tabs\MetadataView.xaml.cs">
+      <DependentUpon>MetadataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\PrintJob\SmtpPasswordView.xaml.cs">
       <DependentUpon>SmtpPasswordView.xaml</DependentUpon>
@@ -739,7 +773,7 @@
     <Compile Include="UserControls\Profiles\ModifyTab\ProfileModifyTranslation.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\MasterIconTabHeader.cs" />
     <Compile Include="UserControls\PrintJob\SmtpJobStepPasswordViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeSaveTabViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeSaveViewModel.cs" />
     <Compile Include="UserControls\Profiles\Tabs\MetadataTabTranslation.cs" />
     <Compile Include="UserControls\Profiles\Tabs\MetadataViewModel.cs" />
     <Compile Include="UserControls\Profiles\Tabs\DebugMasterTabViewModel.cs" />
@@ -749,8 +783,8 @@
       <DependentUpon>OfflineActivationUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\License\OfflineActivationUserControlViewModel.cs" />
-    <Compile Include="UserControls\Settings\Shared\SettingControlsView.xaml.cs">
-      <DependentUpon>SettingControlsView.xaml</DependentUpon>
+    <Compile Include="UserControls\Settings\Shared\SaveCancelButtonsControl.xaml.cs">
+      <DependentUpon>SaveCancelButtonsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\Shared\SettingControlsTranslation.cs" />
     <Compile Include="UserControls\Settings\Shared\SettingControlsViewModel.cs" />
@@ -837,7 +871,7 @@
     <Compile Include="UserControls\Profiles\TabHelper\IconTabHeader.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\IconList.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\ITabViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Tabs\SaveTabViewModel.cs" />
+    <Compile Include="UserControls\Profiles\Tabs\SaveViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeGeneralSettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\ADebugSettingsItemControlModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\DebugSettingView.xaml.cs">
@@ -921,7 +955,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdditionalAttachmentsUserControl.xaml">
+    <Page Include="Styles\CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SettingsPreviewButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Profiles\SelectFiles\SelectFilesUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1033,10 +1075,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Accounts\AccountViews\Dropbox\DropboxAccountWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\Accounts\AccountViews\SMTP\SmtpAccountView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1137,6 +1175,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Profiles\SelectFiles\SelectFileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Profiles\Send\MailClient\MailClientUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1149,13 +1191,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Profiles\Send\OpenFile\OpenViewerActionUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Profiles\Send\Print\PrintUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\Profiles\TabBasedProfileLayoutView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Profiles\Tabs\ConvertTabs\ConvertJpgView.xaml">
       <SubType>Designer</SubType>
@@ -1188,6 +1230,10 @@
     <Page Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Settings\AddActionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1393,7 +1439,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\Tabs\MetadataTab.xaml">
+    <Page Include="UserControls\Profiles\Tabs\MetadataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1409,7 +1455,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\Tabs\SaveTab.xaml">
+    <Page Include="UserControls\Profiles\Tabs\SaveView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1469,7 +1515,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Settings\Shared\SettingControlsView.xaml">
+    <Page Include="UserControls\Settings\Shared\SaveCancelButtonsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1517,6 +1563,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="UserControls\Accounts\AccountViews\Dropbox\DropboxResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DropboxResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="..\..\..\..\packages\test\PDFCreator.UserGuide\content\chm\PDFCreator_english.chm">
       <Link>PDFCreator_english.chm</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1549,6 +1599,10 @@
     <ProjectReference Include="..\..\Conversion\Actions\Actions.csproj">
       <Project>{1DBB980A-80ED-4263-BC5D-B90377466E14}</Project>
       <Name>Actions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Conversion\Dropbox\Dropbox.csproj">
+      <Project>{39E9D8C6-7E30-47DA-9FBD-250E1515C762}</Project>
+      <Name>Dropbox</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
       <Project>{18354054-45F6-4F51-8730-D05643A400A3}</Project>

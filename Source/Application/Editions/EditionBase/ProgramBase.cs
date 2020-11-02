@@ -33,6 +33,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             try
             {
+                CustomBindingResolver.WatchBindingResolution();
+
                 _container = new Container();
                 exitCode = StartApplication(args, getBootstrapperFunc);
             }

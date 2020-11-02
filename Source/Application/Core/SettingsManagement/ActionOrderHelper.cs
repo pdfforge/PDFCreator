@@ -9,6 +9,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
     {
         void ForceDefaultOrder(ConversionProfile conversionWorkflow);
 
+        void ForceDefaultOrder(List<string> actionOrderList);
+
         void EnsureEncryptionAndSignatureOrder(ConversionProfile conversionProfile);
 
         bool IsActionInDefaultOrder(string action);
@@ -30,6 +32,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         public void ForceDefaultOrder(ConversionProfile conversionWorkflow)
         {
             conversionWorkflow.ActionOrder.Sort((x, y) => Comparison(x, y, conversionWorkflow));
+        }
+
+        public void ForceDefaultOrder(List<string> actionOrderList)
+        {
+            actionOrderList.Sort(ComparisonWithoutProfile);
         }
 
         public bool IsActionInDefaultOrder(string action)
@@ -81,26 +88,17 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             return false;
         }
 
+        private int ComparisonWithoutProfile(string x, string y)
+        {
+            var xIndex = _defaultOrder.IndexOf(x);
+            var yIndex = _defaultOrder.IndexOf(y);
+            return xIndex - yIndex;
+        }
+
         private int Comparison(string x, string y, ConversionProfile profile)
         {
             var xIndex = _defaultOrder.IndexOf(x);
             var yIndex = _defaultOrder.IndexOf(y);
-
-            if (profile.BackgroundPage.OnCover)
-            {
-                // Force Cover to front by giving it a negative sorting value
-                xIndex = x == nameof(CoverPage) ? -2 : xIndex;
-                yIndex = y == nameof(CoverPage) ? -2 : yIndex;
-            }
-
-            if (profile.BackgroundPage.OnAttachment)
-            {
-                // Force Attachment to front by giving it a negative sorting value
-                xIndex = x == nameof(AttachmentPage) ? -1 : xIndex;
-                yIndex = y == nameof(AttachmentPage) ? -1 : yIndex;
-            }
-
-            // Cover gets -2 to prevent order switching with Attachment
 
             return xIndex - yIndex;
         }

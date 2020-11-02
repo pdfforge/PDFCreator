@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {
@@ -8,6 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         {
             InitializeComponent();
             DataContext = vm;
+            TransposerHelper.Register(this, vm);
         }
     }
 }

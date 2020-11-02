@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+
 namespace pdfforge.PDFCreator.UI.ComWrapper
 {
 	public class PrintJob
@@ -48,9 +51,34 @@ namespace pdfforge.PDFCreator.UI.ComWrapper
 			_printJob.SetProfileSetting(name, value);
 		}
 		
+		public void SetProfileListSetting(string name, ArrayList value)
+		{
+			_printJob.SetProfileListSetting(name, value);
+		}
+		
 		public string GetProfileSetting(string propertyName)
 		{
 			return _printJob.GetProfileSetting(propertyName);
+		}
+		
+		public ArrayList GetProfileListSetting(string propertyName)
+		{
+			return _printJob.GetProfileListSetting(propertyName);
+		}
+		
+		public void AddActionToPosition(string actionSettingsName, int addToPosition)
+		{
+			_printJob.AddActionToPosition(actionSettingsName, addToPosition);
+		}
+		
+		public void AddAction(string actionSettingsName)
+		{
+			_printJob.AddAction(actionSettingsName);
+		}
+		
+		public void RemoveAction(string actionSettingsName)
+		{
+			_printJob.RemoveAction(actionSettingsName);
 		}
 		
 	}

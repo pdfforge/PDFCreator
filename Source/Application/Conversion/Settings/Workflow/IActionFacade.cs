@@ -24,5 +24,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Workflow
 
         string InfoText { get; }
         IProfileSetting ProfileSetting { get; set; }
+        IProfileSetting GetProfileSettingByConversionProfile(ConversionProfile profile);
     }
 }

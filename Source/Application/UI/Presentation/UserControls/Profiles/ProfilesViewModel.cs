@@ -1,14 +1,12 @@
-﻿using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
-using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.Commands;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using Prism.Events;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
@@ -22,35 +20,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class ProfilesViewModel : TranslatableViewModelBase<ProfileMangementTranslation>, IMountable
     {
-        private readonly ISettingsProvider _settingsProvider;
         private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profileProvider;
         private readonly IRegionManager _regionManager;
-        private readonly IEventAggregator _eventAggregator;
+        private readonly IWorkflowEditorSubViewProvider _viewProvider;
         private IGpoSettings GpoSettings { get; }
 
         public ProfilesViewModel(
             ISelectedProfileProvider selectedProfileProvider,
             ITranslationUpdater translationUpdater,
             ICommandLocator commandLocator,
-            ISettingsProvider settingsProvider,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profileProvider,
             IGpoSettings gpoSettings,
             IRegionManager regionManager,
-            IEventAggregator eventAggregator)
+            IWorkflowEditorSubViewProvider viewProvider,
+            ICommandBuilderProvider commandBuilderProvider)
             : base(translationUpdater)
         {
-            _settingsProvider = settingsProvider;
             _profileProvider = profileProvider;
             _regionManager = regionManager;
-            _eventAggregator = eventAggregator;
+            _viewProvider = viewProvider;
 
             GpoSettings = gpoSettings;
             SelectedProfileProvider = selectedProfileProvider;
 
-            ProfileAddCommand = commandLocator.GetCommand<ProfileAddCommand>();
             ProfileRenameCommand = commandLocator.GetCommand<ProfileRenameCommand>();
             ProfileRemoveCommand = commandLocator.GetCommand<ProfileRemoveCommand>();
-            _switchLayoutCommand = commandLocator.GetCommand<SwitchLayoutCommand>() as IAsyncCommand;
+
+            var macroCommandBuilder = commandBuilderProvider.ProvideBuilder(commandLocator);
+
+            ProfileAddCommand = macroCommandBuilder
+                .AddCommand<ProfileAddCommand>()
+                .AddInitializedCommand<WorkflowEditorCommand>(
+                    c => c.Initialize(_viewProvider.OutputFormatOverlay, t => t.OutputFormat))
+                .AddInitializedCommand<WorkflowEditorCommand>(
+                    c => c.Initialize(_viewProvider.SaveOverlay, t => t.Save))
+                .Build();
         }
 
         public void MountView()
@@ -60,20 +64,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 SelectedProfileProvider.SettingsChanged += OnSettingsChanged;
                 SelectedProfileProvider.SelectedProfileChanged += OnSelectedProfileChanged;
                 _profileProvider.Settings.CollectionChanged += OnCollectionChanged;
-                _settingsProvider.Settings.ApplicationSettings.PropertyChanged += (sender, args) => RaisePropertyChanged(nameof(IsWorkflowEditorEnabled));
 
-                if (SelectedProfileProvider.SelectedProfile.EnableWorkflowEditor)
-                {
-                    _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
-                }
-                else
-                {
-                    _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(TabBasedProfileLayoutView));
-                }
-
-                _eventAggregator.GetEvent<SwitchWorkflowLayoutEvent>().Subscribe(RaiseChanges);
-
-                RaisePropertyChanged(nameof(IsWorkflowEditorEnabled));
+                _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
             }
 
             foreach (var profile in Profiles)
@@ -84,33 +76,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             OnSettingsChanged(this, null);
         }
 
-        public bool IsWorkflowEditorEnabled
-        {
-            get
-            {
-                if (GpoSettings != null && GpoSettings.DisableProfileManagement)
-                    return false;
-
-                if (SelectedProfileProvider?.SelectedProfile == null)
-                    return false;
-
-                return SelectedProfileProvider.SelectedProfile.EnableWorkflowEditor;
-            }
-            set
-            {
-                if (SelectedProfileProvider.SelectedProfile.EnableWorkflowEditor == value)
-                    return;
-
-                OnLayoutSwitchTriggered(value);
-            }
-        }
-
-        private void OnLayoutSwitchTriggered(object parameter)
-        {
-            if (_switchLayoutCommand.CanExecute(parameter))
-                _switchLayoutCommand.ExecuteAsync(parameter);
-        }
-
         private void OnSelectedProfileChanged(object sender, PropertyChangedEventArgs e)
         {
             var selectedProfile = SelectedProfileProvider.SelectedProfile.Guid;
@@ -118,14 +83,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             if (_selectedProfile != null && selectedProfile == _selectedProfile.ConversionProfile.Guid)
                 return;
 
-            if (SelectedProfileProvider.SelectedProfile.EnableWorkflowEditor)
-            {
-                _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
-            }
-            else
-            {
-                _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(TabBasedProfileLayoutView));
-            }
+            _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
 
             _selectedProfile = _profiles.FirstOrDefault(wrapper => wrapper.ConversionProfile.Guid == selectedProfile);
 
@@ -178,7 +136,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 profile.UnmountView();
             }
-            _eventAggregator.GetEvent<SwitchWorkflowLayoutEvent>().Unsubscribe(RaiseChanges);
         }
 
         private void OnSettingsChanged(object sender, EventArgs e)
@@ -209,10 +166,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(Profiles));
 
             RaisePropertyChanged(nameof(EditProfileIsGpoDisabled));
-            RaisePropertyChanged(nameof(WorkflowEditorToggleButtonIsGpoEnabled));
             RaisePropertyChanged(nameof(RenameProfileButtonIsGpoEnabled));
             RaisePropertyChanged(nameof(RemoveProfileButtonIsGpoEnabled));
-            RaisePropertyChanged(nameof(IsWorkflowEditorEnabled));
         }
 
         private ConversionProfileWrapper _selectedProfile = null;
@@ -230,10 +185,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
         }
 
-        public ApplicationSettings AppSettings => _settingsProvider?.Settings?.ApplicationSettings;
-
         private ObservableCollection<ConversionProfileWrapper> _profiles;
-        private IAsyncCommand _switchLayoutCommand;
 
         public ObservableCollection<ConversionProfileWrapper> Profiles
         {
@@ -250,7 +202,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public bool EditProfileIsGpoDisabled => ProfileManagementIsDisabledOrProfileIsShared();
 
-        public bool WorkflowEditorToggleButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
         public bool RenameProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
         public bool AddProfileButtonIsGpoEnabled => GpoSettings == null || !LoadSharedProfilesAndDenyUserDefinedProfiles() && !GpoSettings.DisableProfileManagement;
         public bool RemoveProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
@@ -260,7 +211,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             if (GpoSettings != null && GpoSettings.DisableProfileManagement)
                 return true;
 
-            if (GpoSettings != null && !GpoSettings.AllowSharedProfilesEditing)
+            if (GpoSettings != null)
             {
                 if (SelectedProfile != null && SelectedProfile.ConversionProfile.Properties.IsShared)
                     return true;

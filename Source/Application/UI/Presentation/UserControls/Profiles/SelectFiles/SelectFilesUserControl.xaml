@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFilesUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeSelectFilesUserControlViewModel, IsDesignTimeCreatable=True}">
+    <Grid MinHeight="40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="1"
+                Content="{Binding Translation.AddFile}"
+                Command="{Binding AddAdditionalAttachmentCommand}"
+                VerticalAlignment="Top" />
+        <ListView Grid.Column="0"
+                  ItemsSource="{Binding FileListDictionary}"
+                  x:Name="AdditionalAttachmentListView"
+                  Margin="-1 -1 0 0"
+                  HorizontalAlignment="Left">
+            <ListView.Template>
+                <ControlTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ControlTemplate>
+            </ListView.Template>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0 0 5 5" />
+                    <Setter Property="Padding" Value="-1" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button BorderThickness="1"
+                            BorderBrush="LightGray"
+                            Background="Transparent"
+                            Command="{Binding ElementName=AdditionalAttachmentListView, Path=DataContext.EditAdditionalAttachmentCommand}"
+                            CommandParameter="{Binding Key}"
+                            ToolTip="{Binding Key}"
+                            Content="{Binding Value}"
+                            VerticalContentAlignment="Center"
+                            Cursor="Hand" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

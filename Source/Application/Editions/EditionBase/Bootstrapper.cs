@@ -38,6 +38,7 @@ using pdfforge.PDFCreator.Core.Services.Download;
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
 using pdfforge.PDFCreator.Core.Services.Licensing;
+using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -96,16 +97,17 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
@@ -156,6 +158,7 @@ using ManagePrintJobsWindow = pdfforge.PDFCreator.UI.Presentation.Windows.Manage
 using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
 using SmtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpAccountView;
 using StoreLicenseForAllUsersControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersControl;
+using WorkflowEditorTestPageUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.WorkflowEditorTestPageUserControl;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
 {
@@ -178,7 +181,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IHightlightColorRegistration>(() => new HightlightColorRegistration(EditionHighlightColor));
             container.RegisterSingleton(() => new LicenseOptionProvider(HideLicensing));
             container.RegisterSingleton(() => EditionHelper);
-            container.RegisterSingleton(() => new DropboxAppData(Data.Decrypt(DropboxAppKey.Encrypted_DropboxAppKey), "https://www.dropbox.com/1/oauth2/redirect_receiver"));
+            container.RegisterSingleton(() => new DropboxAppData(Data.Decrypt(DropboxAppKey.Encrypted_DropboxAppKey)));
 
             var regPath = @"Software\pdfforge\PDFCreator";
             container.RegisterSingleton<IInstallationPathProvider>(() => new InstallationPathProvider(regPath, regPath + @"\Settings", "{0001B4FD-9EA3-4D90-A79E-FD14BA3AB01D}", RegistryHive.CurrentUser));
@@ -198,7 +201,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IInteractiveProfileChecker, InteractiveProfileChecker>();
             container.Register<IInteractiveFileExistsChecker, InteractiveFileExistsChecker>();
 
-            container.RegisterSingleton<IRecommendArchitect, RecommendArchitect>();
+            container.RegisterSingleton<IRecommendArchitectAssistant, RecommendArchitectAssistantAssistant>();
             container.RegisterSingleton<IRecommendArchitectUpgrade, RecommendArchitectUpgrade>();
             container.Register<IStartupActionHandler, StartupActionHandler>();
             container.RegisterSingleton<IInteractionInvoker, InteractionInvoker>();
@@ -207,9 +210,11 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<ISoundPlayer, SoundPlayer>();
             container.RegisterSingleton<IWpfTopMostHelper, WpfTopMostHelper>();
-            container.Register<ISmtpTest, SmtpTestEmailAssistant>();
-            container.Register<IClientTestEmail, ClientTestEmail>();
+            container.Register<ISmtpTest, SmtpTestMailAssistant>();
+            container.Register<IClientTestMailAssistant, ClientTestMailAssistant>();
             container.Register<IMailHelper, MailHelper>();
+            container.Register<ITestFileDummyHelper, TestFileDummyHelper>();
+            container.RegisterSingleton<ITempDirectoryHelper, TempDirectoryHelper>();
 
             container.Register<IActionManager, ActionManager>();
 
@@ -322,6 +327,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IJobHistoryActiveRecord, JobHistoryActiveRecord>();
 
             container.RegisterSingleton<IDefaultSettingsBuilder, PDFCreatorDefaultSettingsBuilder>();
+            container.RegisterInitializer<PDFCreatorDefaultSettingsBuilder>(x => x.WithEmailSignature = EditionHelper.IsFreeEdition);
 
             container.RegisterSingleton<ISettingsBackup, SettingsBackup>();
             container.RegisterSingleton<IMigrationStorageFactory>(() =>
@@ -363,7 +369,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterInitializer<HttpAccountViewModel>(model => model.AllowConversionInterrupts = true);
             container.RegisterInitializer<SmtpAccountViewModel>(model => model.AllowConversionInterrupts = true);
             container.RegisterInitializer<PrintUserControlViewModel>(model => model.PrinterDialogOptionEnabled = true);
-            container.RegisterInitializer<WorkflowEditorViewModel>(model => model.ViewProvider = new WorkflowEditorSubViewProvider(nameof(SaveTab), nameof(MetadataTab), nameof(OutputFormatUserControl)));
+            container.RegisterSingleton<IWorkflowEditorSubViewProvider>(() => new WorkflowEditorSubViewProvider(nameof(SaveView), nameof(MetadataView), nameof(OutputFormatUserControl)));
             container.RegisterSingleton<IGpoSettings>(GetGpoSettings);
             container.Register<UsageStatisticsViewModelBase, PdfCreatorUsageStatisticsViewModel>();
             container.RegisterSingleton<ISigningPositionToUnitConverterFactory, SigningPositionToUnitConverterFactory>();
@@ -379,9 +385,18 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IJobFolderBuilder, JobFolderBuilder>();
             container.Register<IJobInfoDuplicator, JobInfoDuplicator>();
             container.Register<ISourceFileInfoDuplicator, SourceFileInfoDuplicator>();
-            container.Register<IUniqueFilePathBuilder, UniqueFilePathBuilder>();
+            container.Register<IUniqueFilenameFactory, UniqueFilenameFactory>();
+            container.Register<IUniqueDirectory, UniqueDirectory>();
+            container.Register<IDeleteTempFolderCommand, DeleteTempFolderCommand>();
 
             container.Register<ILicenseExpirationReminder, LicenseExpirationReminder>();
+
+            container.Register<ICommandBuilderProvider, CommandBuilderProvider>();
+            container.Register<ISelectFilesUserControlViewModelFactory, SelectFilesUserControlViewModelFactory>();
+
+            container.Register<IDropboxHttpListener, DropboxHttpListener>();
+            container.Register<IDropboxCodeExchanger, DropboxCodeExchanger>();
+            container.Register<IDropboxUserInfoManager, DropboxUserInfoManager>();
 
             RegisterSettingsLoader(container);
             RegisterCurrentSettingsProvider(container);
@@ -459,9 +474,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             {
                 (RegionNames.MainRegion, typeof(HomeView)),
                 (RegionNames.HomeViewBannerRegion, typeof(BannerView)),
-                (RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SettingControlsView)),
-                (RegionNames.ProfileSaveCancelButtonsRegion, typeof(SettingControlsView)),
+                (RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
+                (RegionNames.ProfileSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
                 (RegionNames.RssFeedRegion, typeof(RssFeedView)),
+                (RegionNames.AddActionWorkflowEditorRegion, typeof(AddActionUserControl)),
                 (RegionNames.TestButtonWorkflowEditorRegion, typeof(WorkflowEditorTestPageUserControl))
             };
         }
@@ -731,7 +747,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                         translation => translation.Print,
                         infoText => infoText.Print
                     ),
-                    CreateActionFacade<MailClientTabTranslation, ActionInfoTextTranslation, EmailClientSettings>( container,
+                    CreateActionFacade<MailTranslation, ActionInfoTextTranslation, EmailClientSettings>( container,
                         nameof(MailClientUserControl),
                         typeof(EMailClientAction),
                         conversionProfile => conversionProfile.EmailClientSettings,
@@ -788,6 +804,13 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                         translation => translation.Signature,
                         infoText => infoText.Signature,
                         ActionRestrictionEnum.Signature
+                    ),
+                    CreateActionFacade<OpenViewerActionTranslation, OpenViewerActionTranslation, OpenViewer>( container,
+                        nameof(OpenViewerActionUserControl),
+                        typeof(DefaultViewerAction),
+                        conversionProfile => conversionProfile.OpenViewer,
+                        translation => translation.OpenFileActionTitle,
+                        infoText => infoText.OpenInViewer
                     )
                 };
 
@@ -898,7 +921,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(SignaturePasswordInteraction), typeof(SignaturePasswordOverlayView));
             ViewRegistry.RegisterInteraction(typeof(OfflineActivationInteraction), typeof(OfflineActivationUserControl));
             ViewRegistry.RegisterInteraction(typeof(LicenseInteraction), typeof(LicenseUpdateControl));
-            ViewRegistry.RegisterInteraction(typeof(DropboxAccountInteraction), typeof(DropboxAccountWindow));
             ViewRegistry.RegisterInteraction(typeof(StoreLicenseForAllUsersInteraction), typeof(StoreLicenseForAllUsersControl));
             ViewRegistry.RegisterInteraction(typeof(FtpAccountInteraction), typeof(FtpAccountView));
             ViewRegistry.RegisterInteraction(typeof(SmtpAccountInteraction), typeof(SmtpAccountView));
@@ -908,6 +930,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(RestartApplicationInteraction), typeof(RestartApplicationInteractionView));
             ViewRegistry.RegisterInteraction(typeof(WorkflowEditorOverlayInteraction), typeof(WorkflowEditorOverlayView));
             ViewRegistry.RegisterInteraction(typeof(AddActionOverlayInteraction), typeof(AddActionOverlayView));
+            ViewRegistry.RegisterInteraction(typeof(SelectFileInteraction), typeof(SelectFileView));
         }
 
         public ProfileSettingsTabs DefineProfileSettingsTabs()
@@ -975,10 +998,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterTypeForNavigation<ProgressView>();
             container.RegisterTypeForNavigation<DropboxShareLinkStepView>();
             container.RegisterTypeForNavigation<UpdateHintView>();
-            container.RegisterTypeForNavigation<TabBasedProfileLayoutView>();
             container.RegisterTypeForNavigation<WorkflowEditorView>();
-            container.RegisterTypeForNavigation<SaveTab>();
-            container.RegisterTypeForNavigation<MetadataTab>();
+            container.RegisterTypeForNavigation<SaveView>();
+            container.RegisterTypeForNavigation<MetadataView>();
             container.RegisterTypeForNavigation<OutputFormatUserControl>();
             container.RegisterTypeForNavigation<WorkflowEditorTestPageUserControl>();
             RegisterPrismTabs(container);

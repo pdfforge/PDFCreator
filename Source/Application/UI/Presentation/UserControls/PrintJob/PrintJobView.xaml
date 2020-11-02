@@ -238,5 +238,9 @@
                 </buttons:CustomColoredButton>
             </DockPanel>
         </StackPanel>
+
+        <Grid Grid.Row="1" MinHeight="100" MinWidth="100" Background="#55000000" Visibility="{Binding IsUpdatingProfile, Converter={StaticResource CollapsedWhenFalseConverter}}">
+            <controls:ProgressRing Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </UserControl>

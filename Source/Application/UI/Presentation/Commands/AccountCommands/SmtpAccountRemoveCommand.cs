@@ -14,7 +14,7 @@ using System.Text;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class SmtpAccountRemoveCommand : TranslatableCommandBase<SmtpTranslation>, IWaitableCommand
+    public class SmtpAccountRemoveCommand : TranslatableCommandBase<MailTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<Accounts> _accountsProvider;

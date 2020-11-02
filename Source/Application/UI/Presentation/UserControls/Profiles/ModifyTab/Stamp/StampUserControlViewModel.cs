@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -152,7 +153,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.St
 
     public class DesignTimeStampUserControlViewModel : StampUserControlViewModel
     {
-        public DesignTimeStampUserControlViewModel() : base(null, null, null, new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), null, null)
+        public DesignTimeStampUserControlViewModel() : base(null, null, new DesignTimeTokenHelper(), new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), new DesignTimeTokenViewModelFactory(), null)
         {
         }
     }

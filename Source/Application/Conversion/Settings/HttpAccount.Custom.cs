@@ -4,7 +4,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 {
     public partial class HttpAccount
     {
-        public string AccountInfo => IsBasicAuthentication ? $"{UserName}@{Url}" : Url;
+        public string AccountInfo => IsBasicAuthentication ? $"{UserName} | {Url}" : Url;
   
         public void CopyTo(HttpAccount targetAccount)
         {

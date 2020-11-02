@@ -17,13 +17,14 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
     {
         private readonly IDirectory _directory;
         private readonly IPathUtil _pathUtil;
+        private readonly IActionOrderChecker _actionOrderChecker;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly ISettingsProvider _settingsProvider;
         private readonly ThreadPool _threadPool;
         private readonly IComWorkflowFactory _workflowFactory;
 
-        public PrintJobAdapterFactory(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil)
+        public PrintJobAdapterFactory(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil, IActionOrderChecker actionOrderChecker)
         {
             _settingsProvider = settingsProvider;
             _workflowFactory = workflowFactory;
@@ -32,11 +33,12 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             _errorCodeInterpreter = errorCodeInterpreter;
             _directory = directory;
             _pathUtil = pathUtil;
+            _actionOrderChecker = actionOrderChecker;
         }
 
         public PrintJobAdapter BuildPrintJobAdapter(Job job)
         {
-            var printJobAdapter = new PrintJobAdapter(_settingsProvider, _workflowFactory, _threadPool, _jobInfoQueue, _errorCodeInterpreter, _directory, _pathUtil);
+            var printJobAdapter = new PrintJobAdapter(_settingsProvider, _workflowFactory, _threadPool, _jobInfoQueue, _errorCodeInterpreter, _directory, _pathUtil, _actionOrderChecker);
 
             printJobAdapter.Job = job;
             printJobAdapter.SetProfileByGuid(ProfileGuids.DEFAULT_PROFILE_GUID);

@@ -1,14 +1,14 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
 {
-    public class ProfileAddCommand : ProfileCommandBase, ICommand
+    public class ProfileAddCommand : ProfileCommandBase, IWaitableCommand
     {
         public ProfileAddCommand(
             IInteractionRequest interactionRequest,
@@ -23,7 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
         {
         }
 
-        public void Execute(Object obj)
+        public void Execute(object parameter)
         {
             var title = Translation.AddNewProfile;
             var questionText = Translation.EnterProfileName;
@@ -37,26 +37,34 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
 
         private void AddProfileCallback(InputInteraction interaction)
         {
-            if (!interaction.Success)
-                return;
+            if (interaction.Success)
+            {
+                var name = interaction.InputText;
 
-            var name = interaction.InputText;
+                var newProfile = CurrentSettingsProvider.SelectedProfile.Copy();
+                newProfile.Guid = Guid.NewGuid().ToString();
+                newProfile.Name = name;
+                newProfile.Properties.Deletable = true;
+                newProfile.Properties.Renamable = true;
+                newProfile.Properties.IsShared = false;
 
-            var newProfile = CurrentSettingsProvider.SelectedProfile.Copy();
-            newProfile.Guid = Guid.NewGuid().ToString();
-            newProfile.Name = name;
-            newProfile.Properties.Deletable = true;
-            newProfile.Properties.Renamable = true;
-            newProfile.Properties.IsShared = false;
+                _profilesProvider.Settings.Add(newProfile);
+                CurrentSettingsProvider.SelectedProfile = newProfile;
+            }
 
-            _profilesProvider.Settings.Add(newProfile);
-            CurrentSettingsProvider.SelectedProfile = newProfile;
+            var result = interaction.Success
+                ? ResponseStatus.Success
+                : ResponseStatus.Cancel;
+
+            IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(result));
         }
 
         public bool CanExecute(object parameter)
         {
             return true;
         }
+
+        public event EventHandler<MacroCommandIsDoneEventArgs> IsDone;
 
 #pragma warning disable CS0067
 

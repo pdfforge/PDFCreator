@@ -8,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.En
     {
         public string UserPasswordCheckBox { get; private set; } = "Require a password to open the PDF document";
         public string SecurityPasswordsButton { get; private set; } = "Set Passwords";
+        public string AutosaveRequiresPasswords { get; private set; } = "Automatic saving requires the passwords to be set";
 
         public string EncryptionLevelHeader { get; private set; } = "Encryption Level";
         public string Rc128BitEncryptionText { get; private set; } = "Low (128 Bit)";

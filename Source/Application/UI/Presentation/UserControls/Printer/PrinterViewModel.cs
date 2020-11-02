@@ -2,9 +2,9 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Printing.Printer;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -19,7 +19,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
@@ -44,7 +43,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
         private ConversionProfileWrapper _defaultProfile;
 
         private ICollection<string> _pdfCreatorPrinters;
-        private Helper.SynchronizedCollection<PrinterMappingWrapper> _printerMappings;
+        protected Helper.SynchronizedCollection<PrinterMappingWrapper> _printerMappings;
         private ICollectionView _printerMappingView;
 
         protected readonly ICurrentSettings<ObservableCollection<ConversionProfile>> ProfilesProvider;

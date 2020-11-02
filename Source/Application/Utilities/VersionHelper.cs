@@ -59,11 +59,7 @@ namespace pdfforge.PDFCreator.Utilities
         public string FormatWithBuildNumber()
         {
             var v = ApplicationVersion;
-            var currentVersionString = string.Format("v{0}.{1}.{2}", v.Major, v.Minor, v.Build);
-            if (v.Revision == 0)
-                currentVersionString += @" (Developer Preview)";
-            else
-                currentVersionString += string.Format(" Build {0}", v.Revision);
+            var currentVersionString = string.Format("v{0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
 
             return currentVersionString;
         }

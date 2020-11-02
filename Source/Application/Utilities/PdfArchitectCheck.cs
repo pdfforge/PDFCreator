@@ -36,6 +36,7 @@ namespace pdfforge.PDFCreator.Utilities
         // Tuple format: Item1: DisplayName in Registry, Item2: name of the exe file that has to exist in the InstallLocation
         private readonly Tuple<string, string>[] _pdfArchitectCandidates =
         {
+            new Tuple<string, string>("PDF Architect 8", "architect.exe"),
             new Tuple<string, string>("PDF Architect 7", "architect.exe"),
             new Tuple<string, string>("PDF Architect 6", "architect.exe"),
             new Tuple<string, string>("PDF Architect 5", "architect.exe"),

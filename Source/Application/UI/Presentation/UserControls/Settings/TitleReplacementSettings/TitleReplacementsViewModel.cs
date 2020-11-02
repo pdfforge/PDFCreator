@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
@@ -21,7 +22,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
     public class TitleReplacementsViewModel : TranslatableViewModelBase<TitleReplacementsTranslation>, ITabViewModel
     {
         private readonly ICurrentSettings<ObservableCollection<TitleReplacement>> _titleReplacementProvider;
-        private ObservableCollection<TitleReplacement> _titleReplacements => _titleReplacementProvider?.Settings;
         private readonly ICurrentSettingsProvider _settingsProvider;
         public IGpoSettings GpoSettings { get; }
 
@@ -30,7 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         //private string _replacementTypeText;
         private string _sampleText = "Microsoft Word - Sample Text.doc";
         
-        public TitleReplacementsViewModel(ITranslationUpdater transalationUpdater, ICurrentSettings<ObservableCollection<TitleReplacement>> titleReplacementProvider, ICurrentSettingsProvider settingsProvider, ICommandLocator commandLocator, IGpoSettings gpoSettings) : base(transalationUpdater)
+        public TitleReplacementsViewModel(ITranslationUpdater translationUpdater, ICurrentSettings<ObservableCollection<TitleReplacement>> titleReplacementProvider, ICurrentSettingsProvider settingsProvider, ICommandLocator commandLocator, IGpoSettings gpoSettings) : base(translationUpdater)
         {
             _titleReplacementProvider = titleReplacementProvider;
             _settingsProvider = settingsProvider;
@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             TitleDeleteCommand = commandLocator.GetCommand<TitleReplacementRemoveCommand>();
             TitleEditCommand = commandLocator.GetCommand<TitleReplacementEditCommand>();
 
-            if (_titleReplacements != null)
+            if (TitleReplacements != null)
                 UpdateTitleReplacements();
 
         }
@@ -80,10 +80,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
 
         public ICommand TitleDeleteCommand { get; set; }
 
-        public ObservableCollection<TitleReplacement> TitleReplacements
-        {
-            get { return _titleReplacements; }
-        }
+        public ObservableCollection<TitleReplacement> TitleReplacements => _titleReplacementProvider?.Settings;
 
         public string Title { get; set; } = "Title Replacements";
         public IconList Icon { get; set; } = IconList.TitleReplacementSettings;
@@ -105,7 +102,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             titleReplacer.AddReplacements(TitleReplacements);
             ReplacedSampleText = titleReplacer.Replace(SampleText);
 
-            var view = CollectionViewSource.GetDefaultView(_titleReplacements);
+            var view = CollectionViewSource.GetDefaultView(TitleReplacements);
             view.SortDescriptions.Add(new SortDescription("ReplacementType", ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription("Search", ListSortDirection.Descending));
 
@@ -116,7 +113,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         {
             get
             {
-                if (_titleReplacements == null)
+                if (TitleReplacements == null)
                     return true;
 
                 return GpoSettings != null ? !GpoSettings.DisableTitleTab : true;

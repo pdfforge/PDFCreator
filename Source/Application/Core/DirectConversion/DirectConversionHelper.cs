@@ -1,5 +1,5 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using System;
 using SystemInterface.IO;
 

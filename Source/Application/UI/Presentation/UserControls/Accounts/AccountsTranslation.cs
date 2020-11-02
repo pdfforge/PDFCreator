@@ -7,6 +7,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
+        public string AutosaveRequiresPasswords { get; protected set; } = "Automatic saving requires the passwords to be set";
+
         public string ManageAccountsDescription { get; protected set; } = "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles.";
         public string ManageAccounts { get; protected set; } = "Manage Accounts";
         public string AddFtpAccount { get; protected set; } = "Add FTP Account";

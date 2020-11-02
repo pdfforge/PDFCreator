@@ -225,7 +225,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Enables the AttachmentPage action</comment>
           </value>
-          <value name="File" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <value name="Files" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
             <comment>Filename of the PDF that will be appended</comment>
           </value>
         </class>
@@ -249,12 +249,6 @@
           <value name="FitToPage" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Enable to resize the background to fit the document page</comment>
           </value>
-          <value name="OnAttachment" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>If true, the background will be placed on the attachment as well</comment>
-          </value>
-          <value name="OnCover" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>If true, the background will be placed on the cover as well</comment>
-          </value>
           <value name="Opacity" type="value" datatype="Int" enumname="" defaultvalue="100" islist="False">
             <comment>Opacity for background in percent</comment>
           </value>
@@ -267,7 +261,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Enables the CoverPage action</comment>
           </value>
-          <value name="File" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+          <value name="Files" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
             <comment>Filename of the PDF that will be inserted</comment>
           </value>
         </class>
@@ -383,6 +377,15 @@
           </value>
           <value name="EnsureUniqueFilenames" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, files with the same name will not be overwritten on the server. A counter will be appended instead (i.e. document_2.pdf)</comment>
+          </value>
+        </class>
+        <class name="OpenViewer" propertyName="OpenViewer" readonly="False" classtype="Class">
+          <comment>Opens the printed file in a viewer</comment>
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>If true, this action will be executed</comment>
+          </value>
+          <value name="OpenWithPdfArchitect" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>If the output is a PDF, use PDF Architect instead of the default PDF viewer</comment>
           </value>
         </class>
         <class name="Ghostscript" propertyName="Ghostscript" readonly="False" classtype="Class">
@@ -688,9 +691,6 @@
         <value name="AuthorTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobAuthor&gt;" islist="False">
           <comment>Template for the Author field. This may contain tokens.</comment>
         </value>
-        <value name="EnableWorkflowEditor" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-          <comment />
-        </value>
         <value name="FileNameTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;Title&gt;" islist="False">
           <comment>Template of which the filename will be created. This may contain Tokens.</comment>
         </value>
@@ -702,12 +702,6 @@
         </value>
         <value name="Name" type="value" datatype="String" enumname="" defaultvalue="NewProfile" islist="False">
           <comment>Name of the profile</comment>
-        </value>
-        <value name="OpenViewer" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-          <comment>Open the default viewer after converting the document</comment>
-        </value>
-        <value name="OpenWithPdfArchitect" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-          <comment>If the output is a PDF, use PDF Architect instead of the default PDF viewer</comment>
         </value>
         <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
           <comment>Default format for this print job.</comment>
@@ -757,7 +751,7 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="9" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="10" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
         </value>
       </class>

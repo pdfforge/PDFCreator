@@ -1,6 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 
 namespace pdfforge.PDFCreator.Conversion.ActionsInterface

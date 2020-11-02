@@ -1,10 +1,9 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.ProfileHasNotSupportedFeaturesExtension;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using System;
-using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles

@@ -29,7 +29,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter
         public bool LoadSharedAppSettings => _gpoSettings.LoadSharedAppSettings;
         public bool LoadSharedProfiles => _gpoSettings.LoadSharedProfiles;
         public bool AllowUserDefinedProfiles => _gpoSettings.AllowUserDefinedProfiles;
-        public bool AllowSharedProfilesEditing => _gpoSettings.AllowSharedProfilesEditing;
         public bool DisableLicenseExpirationReminder => _gpoSettings.DisableLicenseExpirationReminder;
     }
 }

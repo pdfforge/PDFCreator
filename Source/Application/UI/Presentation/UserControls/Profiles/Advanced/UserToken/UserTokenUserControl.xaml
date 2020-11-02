@@ -7,7 +7,6 @@
     xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken"
     xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="600"
@@ -16,17 +15,17 @@
     <UserControl.Resources>
         <local:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
     </UserControl.Resources>
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" IsEnabled="{Binding IsBusinessEdition}">
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
         <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
-                <Label Margin="-5"  IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}">
+                <Label Margin="-5">
                     <TextBlock Style="{DynamicResource HeaderTextStyle}" Text="{Binding Translation.UserTokenTitle}" />
                 </Label>
                 <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" />
             </StackPanel>
         </HeaderedContentControl.Header>
 
-        <StackPanel IsEnabled="{Binding CurrentProfile.UserTokens.Enabled}" MaxWidth="500" HorizontalAlignment="Left">
+        <StackPanel MaxWidth="500" HorizontalAlignment="Left">
             <Label Padding="0" Margin="0 10 0 0">
                 <TextBlock Text="{Binding Translation.UserTokenIntroduction}" TextWrapping="Wrap" />
             </Label>

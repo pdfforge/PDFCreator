@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Components.Actions
             switch (Restriction)
             {
                 case ActionRestrictionEnum.Conversion:
-                    return conversionProfile.HasNotSupportedConvert();
+                    return conversionProfile.HasNotSupportedColorModel();
 
                 case ActionRestrictionEnum.Metadata:
                     return conversionProfile.HasNotSupportedMetadata();

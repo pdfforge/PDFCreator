@@ -63,10 +63,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         public bool AddPrinters(string[] printerNames, bool singlePort = true)
         {
+            const string command = "addPrinter";
             var escapedPrinterList = printerNames
                 .Select(p => $"\"{p}\"");
 
-            var args = "/AddPrinter " + string.Join(" ", escapedPrinterList);
+            var args = $"{command} -name={string.Join(",", escapedPrinterList)}";
 
             if (singlePort)
                 args += " /SinglePort";
@@ -76,7 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         public bool RenamePrinter(string oldPrinterName, string newPrinterName)
         {
-            return CallPrinterHelper("/RenamePrinter \"" + oldPrinterName + "\" \"" + newPrinterName + "\"");
+            return CallPrinterHelper($"renamePrinter -name=\"{oldPrinterName}\" -newName=\"{newPrinterName}\"");
         }
 
         public bool DeletePrinter(params string[] printerNames)
@@ -85,8 +86,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 return true;
 
             var escapedPrinters = printerNames.Select(p => $"\"{p}\"");
-            var parameters = string.Join(" ", escapedPrinters);
-            return CallPrinterHelper("/DeletePrinter " + parameters);
+            var parameters = string.Join(",", escapedPrinters);
+            return CallPrinterHelper($"deletePrinter -name={parameters}");
         }
 
         /// <summary>

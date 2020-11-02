@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Co
         public string DisplayName { get; private set; } = "Add cover";
         public string PDFFiles { get; private set; } = "PDF files";
         public string SelectCoverFile { get; private set; } = "Select cover file";
-        public string CoverFileText { get; private set; } = "Cover file (PDF):";
-        public string WarningIsPdf20 { get; private set; } = "Warning: The selected document is a PDF 2.0 file and can't be added to other documents during the conversion.";
+        public string CoverFileText { get; private set; } = "Cover files (PDF):";
+        public string WarningIsPdf20 { get; private set; } = "Warning: The following documents are PDF 2.0 files and can't be added to other documents during the conversion:";
     }
 }

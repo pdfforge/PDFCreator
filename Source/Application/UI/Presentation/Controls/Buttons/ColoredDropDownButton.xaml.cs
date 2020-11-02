@@ -120,5 +120,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls.Buttons
             _foregroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _invertedColorAnimation);
             _backgroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _colorAnimation);
         }
+
+        public void Connect(int connectionId, object target)
+        {
+        }
     }
 }

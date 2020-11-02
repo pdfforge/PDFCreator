@@ -103,6 +103,16 @@ namespace pdfforge.PDFCreator.Core.Startup
             AddDirectConversionFiles(files, commandLineParser);
             var parameterlessFiles = commandLineArgs.Where(IsFileArg).ToList();
             files.AddRange(parameterlessFiles);
+
+            if (appStartParameters.Merge)
+            {
+                _logger.Debug("Launched MergeAppStart");
+                var mergeAppStart = _appStartResolver.ResolveAppStart<MergeAppStart>();
+                mergeAppStart.FilesForMerge = files;
+                mergeAppStart.AppStartParameters = appStartParameters;
+                return mergeAppStart;
+            }
+
             if (files.Count > 0)
             {
                 _logger.Debug("Launched DragAndDropStart");

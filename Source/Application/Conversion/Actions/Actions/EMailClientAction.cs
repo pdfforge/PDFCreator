@@ -10,20 +10,22 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public interface IEMailClientAction : IPostConversionAction
+    public interface IEMailClientAction : IPostConversionAction, ICheckable
     {
         ActionResult OpenEmptyClient(IList<string> files, string signature);
     }
 
     public class EMailClientAction : IEMailClientAction
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IEmailClientFactory _emailClientFactory;
         private readonly IFile _file;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private IMailHelper _mailHelper;
+        private readonly IMailHelper _mailHelper;
 
-        public EMailClientAction(IEmailClientFactory emailClientFactory, IMailSignatureHelper mailSignatureHelper, IFile file, IMailHelper mailHelper)
+        public EMailClientAction(IEmailClientFactory emailClientFactory, IFile file, IMailHelper mailHelper)
         {
             _emailClientFactory = emailClientFactory;
             _file = file;
@@ -34,16 +36,14 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         {
             var mailInfo = new MailInfo { Attachments = files, Body = signature };
 
-            return Process(mailInfo);
+            return ProcessMailInfo(mailInfo);
         }
 
         public ActionResult ProcessJob(Job job)
         {
-            _logger.Info("Launched client e-mail action");
-
             var mailInfo = _mailHelper.CreateMailInfo(job, job.Profile.EmailClientSettings);
 
-            return Process(mailInfo);
+            return ProcessMailInfo(mailInfo);
         }
 
         private Email CreateEmail(MailInfo mailInfo)
@@ -59,45 +59,30 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             mail.Recipients.AddCc(mailInfo.RecipientsCc);
             mail.Recipients.AddBcc(mailInfo.RecipientsBcc);
 
-            AddOutputFilesAsAttachmentsForEmailClientAction(mail, mailInfo.Attachments);
+            foreach (var file in mailInfo.Attachments)
+            {
+                var attachment = new Attachment(file);
+                mail.Attachments.Add(attachment);
+                _logger.Debug("Added mail attachment " + file);
+            }
 
             return mail;
         }
 
-        private void AddOutputFilesAsAttachmentsForEmailClientAction(Email mail, IList<string> outputFiles)
+        private ActionResult ProcessMailInfo(MailInfo mailInfo)
         {
-            var i = 1;
-            foreach (var file in outputFiles)
-            {
-                if (_file.Exists(file))
-                {
-                    var attachment = new Attachment(file);
-                    mail.Attachments.Add(attachment);
-                    _logger.Debug("Attachment " + i + "/" + outputFiles.Count + ":" + file);
-                    i++;
-                }
-                else
-                {
-                    _logger.Error("E-Mail Attachment \"" + file + "\" not found.");
-                }
-            }
-        }
-
-        private ActionResult Process(MailInfo mailInfo)
-        {
-            var email = CreateEmail(mailInfo);
-
             try
             {
-                _logger.Info("Launched e-mail client action");
+                _logger.Info("Launch e-mail client action");
 
                 var mailClient = _emailClientFactory.CreateEmailClient();
-
                 if (mailClient == null)
                 {
-                    _logger.Error("No compatible e-mail client installed");
+                    _logger.Error("No compatible e-mail client installed.");
                     return new ActionResult(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
                 }
+
+                var email = CreateEmail(mailInfo);
 
                 var success = mailClient.ShowEmailClient(email);
 
@@ -122,9 +107,32 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return profile.EmailClientSettings.Enabled;
         }
 
-        public bool CheckEmailClientInstalled()
+        public void ApplyPreSpecifiedTokens(Job job)
         {
-            return _emailClientFactory.CreateEmailClient() != null;
+            _mailHelper.ReplaceTokensInMailSettings(job, job.Profile.EmailClientSettings);
+        }
+
+        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        {
+            var result = new ActionResult();
+
+            if (_emailClientFactory.CreateEmailClient() == null)
+                result.Add(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
+
+            if (checkLevel == CheckLevel.Job)
+            {
+                foreach (var attachmentFile in profile.EmailClientSettings.AdditionalAttachments)
+                {
+                    if (!_file.Exists(attachmentFile))
+                    {
+                        Logger.Error("Can't find client mail attachment " + attachmentFile + ".");
+                        result.Add(ErrorCode.MailClient_InvalidAttachmentFiles);
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

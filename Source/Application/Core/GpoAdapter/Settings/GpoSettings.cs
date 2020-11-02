@@ -15,11 +15,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 		public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings();
 		
 		/// <summary>
-		/// Allow editing of shared profiles during print job. The changes will not be saved.
-		/// </summary>
-		public bool AllowSharedProfilesEditing { get; set; } = false;
-		
-		/// <summary>
 		/// Enable to allows own user profiles next to the shared profiles
 		/// </summary>
 		public bool AllowUserDefinedProfiles { get; set; } = true;
@@ -103,7 +98,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 		public void ReadValues(Data data, string path = "")
 		{
 			ApplicationSettings.ReadValues(data, path + @"ApplicationSettings\");
-			AllowSharedProfilesEditing = bool.TryParse(data.GetValue(@"" + path + @"AllowSharedProfilesEditing"), out var tmpAllowSharedProfilesEditing) ? tmpAllowSharedProfilesEditing : false;
 			AllowUserDefinedProfiles = bool.TryParse(data.GetValue(@"" + path + @"AllowUserDefinedProfiles"), out var tmpAllowUserDefinedProfiles) ? tmpAllowUserDefinedProfiles : true;
 			DisableAccountsTab = bool.TryParse(data.GetValue(@"" + path + @"DisableAccountsTab"), out var tmpDisableAccountsTab) ? tmpDisableAccountsTab : false;
 			DisableApplicationSettings = bool.TryParse(data.GetValue(@"" + path + @"DisableApplicationSettings"), out var tmpDisableApplicationSettings) ? tmpDisableApplicationSettings : false;
@@ -125,7 +119,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 		public void StoreValues(Data data, string path)
 		{
 			ApplicationSettings.StoreValues(data, path + @"ApplicationSettings\");
-			data.SetValue(@"" + path + @"AllowSharedProfilesEditing", AllowSharedProfilesEditing.ToString());
 			data.SetValue(@"" + path + @"AllowUserDefinedProfiles", AllowUserDefinedProfiles.ToString());
 			data.SetValue(@"" + path + @"DisableAccountsTab", DisableAccountsTab.ToString());
 			data.SetValue(@"" + path + @"DisableApplicationSettings", DisableApplicationSettings.ToString());
@@ -149,7 +142,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 			GpoSettings copy = new GpoSettings();
 			
 			copy.ApplicationSettings = ApplicationSettings.Copy();
-			copy.AllowSharedProfilesEditing = AllowSharedProfilesEditing;
 			copy.AllowUserDefinedProfiles = AllowUserDefinedProfiles;
 			copy.DisableAccountsTab = DisableAccountsTab;
 			copy.DisableApplicationSettings = DisableApplicationSettings;
@@ -172,9 +164,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 		public void ReplaceWith(GpoSettings source)
 		{
 			ApplicationSettings.ReplaceWith(source.ApplicationSettings);
-			if(AllowSharedProfilesEditing != source.AllowSharedProfilesEditing)
-				AllowSharedProfilesEditing = source.AllowSharedProfilesEditing;
-				
 			if(AllowUserDefinedProfiles != source.AllowUserDefinedProfiles)
 				AllowUserDefinedProfiles = source.AllowUserDefinedProfiles;
 				
@@ -231,7 +220,6 @@ namespace pdfforge.PDFCreator.Core.GpoAdapter.Settings
 			GpoSettings v = o as GpoSettings;
 			
 			if (!ApplicationSettings.Equals(v.ApplicationSettings)) return false;
-			if (!AllowSharedProfilesEditing.Equals(v.AllowSharedProfilesEditing)) return false;
 			if (!AllowUserDefinedProfiles.Equals(v.AllowUserDefinedProfiles)) return false;
 			if (!DisableAccountsTab.Equals(v.DisableAccountsTab)) return false;
 			if (!DisableApplicationSettings.Equals(v.DisableApplicationSettings)) return false;

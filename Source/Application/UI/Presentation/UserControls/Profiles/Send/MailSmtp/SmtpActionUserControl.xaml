@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:selectFiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSmtpActionViewModel, IsDesignTimeCreatable=True}"
-             IsEnabled="{Binding CurrentProfile.EmailSmtpSettings.Enabled}"
              help:HelpProvider.HelpTopic="SendEmailOverSmtp">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -24,6 +23,7 @@
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
         </ResourceDictionary>
     </UserControl.Resources>
     <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.SendEmailViaSmtp}">
@@ -60,6 +60,12 @@
                 </Grid>
             </DockPanel>
 
+            <StackPanel Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Right"
+                        Visibility="{Binding ShowAutosaveRequiresPasswords, Converter={StaticResource HiddenWhenFalseConverter}}">
+                <ContentPresenter Content="{DynamicResource WarningIcon}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding Translation.AutosaveRequiresPasswords}" />
+            </StackPanel>
+
             <Label>
                 <TextBlock Text="{Binding Translation.RecipientsToText}"></TextBlock>
             </Label>
@@ -78,9 +84,8 @@
             <Label>
                 <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}"></TextBlock>
             </Label>
-            <controls:TokenControlWithAddButton DataContext="{Binding AdditionalAttachmentsTokenViewModel}" />
 
-            <controls:AdditionalAttachmentsUserControl />
+            <selectFiles:SelectFilesUserControl DataContext="{Binding AdditionalAttachmentsViewModel}" />
 
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Style="{DynamicResource LightGreyButton}"

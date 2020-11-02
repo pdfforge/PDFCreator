@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
@@ -64,8 +65,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
                 {typeof(CustomScript), GetCustomScriptDescription },
                 {typeof(UserTokens), GetUserTokenDescription },
                 {typeof(ForwardToFurtherProfile), GetForwardToFurtherProfileDescription },
-                {typeof(Watermark), GetWatermarkActionDescription }
+                {typeof(Watermark), GetWatermarkActionDescription },
+                {typeof(OpenViewer), GetOpenViewerDescription}
             };
+        }
+
+        private string GetOpenViewerDescription(IProfileSetting profileSetting)
+        {
+            var openViewerActionTranslation = _translationFactory.CreateTranslation<OpenViewerActionTranslation>();
+            if (profileSetting is OpenViewer openViewerSetting && openViewerSetting.OpenWithPdfArchitect)
+            {
+                return openViewerActionTranslation.OpenWithPdfArchitect;
+            }
+
+            return openViewerActionTranslation.OpenWithDefault;
         }
 
         public string GetDescription(IProfileSetting actionFacade)
@@ -102,7 +115,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 
         private string GetCoverActionDescription(IProfileSetting arg)
         {
-            return _selectedProfileProvider.SelectedProfile.CoverPage.File;
+            return _selectedProfileProvider.SelectedProfile.CoverPage.Files.DefaultIfEmpty()
+                .Aggregate((current, next) => $"{current}\n{next}");
         }
 
         private string GetBackgroundActionDescription(IProfileSetting arg)
@@ -112,7 +126,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 
         private string GetAttachmentActionDescription(IProfileSetting arg)
         {
-            return _selectedProfileProvider.SelectedProfile.AttachmentPage.File;
+            return _selectedProfileProvider.SelectedProfile.AttachmentPage.Files.DefaultIfEmpty()
+                .Aggregate((current, next) => $"{current}\n{next}");
         }
 
         private string GetStampActionDescription(IProfileSetting arg)

@@ -15,5 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         void SetPrintJobShellRegionToViewRegister(List<(string, Type)> regionToViewRegister);
 
         void SetMainShellRegionToViewRegister(List<(string, Type)> regionToViewRegister);
+
+        bool PrintJobShellIsOpen { get; }
     }
 }

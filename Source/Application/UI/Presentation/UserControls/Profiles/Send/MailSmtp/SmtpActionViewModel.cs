@@ -8,11 +8,10 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailBase;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -21,13 +20,14 @@ using System.Windows.Data;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp
 {
-    public class SmtpActionViewModel : MailBaseControlViewModel<SmtpTranslation>
+    public class SmtpActionViewModel : ProfileUserControlViewModel<MailTranslation>
     {
         public ICollectionView SmtpAccountsView { get; private set; }
 
         public TokenViewModel<ConversionProfile> RecipientsTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsCcTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsBccTokenViewModel { get; private set; }
+        public SelectFilesUserControlViewModel AdditionalAttachmentsViewModel { get; private set; }
 
         private ObservableCollection<SmtpAccount> _smtpAccounts;
 
@@ -42,7 +42,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
         public AsyncCommand TestSmtpCommand { get; set; }
 
         private EmailSmtpSettings EmailSmtpSettings => CurrentProfile?.EmailSmtpSettings;
-        protected override IMailActionSettings MailActionSettings => EmailSmtpSettings;
 
         private readonly IGpoSettings _gpoSettings;
         public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
@@ -56,8 +55,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
             ITokenViewModelFactory tokenViewModelFactory,
             IDispatcher dispatcher,
             IGpoSettings gpoSettings,
-            IOpenFileInteractionHelper openFileInteractionHelper)
-            : base(updater, currentSettingsProvider, dispatcher, openFileInteractionHelper)
+            ISelectFilesUserControlViewModelFactory selectFilesUserControlViewModelFactory)
+            : base(updater, currentSettingsProvider, dispatcher)
         {
             _interactionRequest = interactionRequest;
             _smtpTest = smtpTest;
@@ -71,9 +70,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
             {
                 SmtpAccountsView = new ListCollectionView(_smtpAccounts);
                 SmtpAccountsView.SortDescriptions.Add(new SortDescription(nameof(SmtpAccount.AccountInfo), ListSortDirection.Ascending));
+                SmtpAccountsView.CurrentChanged += (sender, args) => RaisePropertyChanged(nameof(ShowAutosaveRequiresPasswords));
             }
 
             SetTokenViewModel(tokenViewModelFactory);
+
+            AdditionalAttachmentsViewModel = selectFilesUserControlViewModelFactory.Builder()
+                .WithTitleGetter(() => Translation.MailAttachmentTitle)
+                .WithFileListGetter(profile => profile.EmailSmtpSettings.AdditionalAttachments)
+                .Build();
 
             AddAccountCommand = _commandLocator.CreateMacroCommand()
                 .AddCommand<SmtpAccountAddCommand>()
@@ -105,18 +110,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
             RecipientsBccTokenViewModel = builder
                 .WithSelector(p => p.EmailSmtpSettings.RecipientsBcc)
                 .Build();
-
-            AdditionalAttachmentsTokenViewModel = builder
-                .WithSelector(p => AdditionalAttachmentsForTextBox)
-                .WithButtonCommand(SelectAttachmentFileAction)
-                .WithSecondaryButtonCommand(AddFilePathToAdditionalAttachments)
-                .Build();
         }
 
         private void SelectNewAccountInView()
         {
             var latestAccount = _smtpAccounts.Last();
             SmtpAccountsView.MoveCurrentTo(latestAccount);
+        }
+
+        public bool ShowAutosaveRequiresPasswords
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return false;
+
+                if (!CurrentProfile.AutoSave.Enabled)
+                    return false;
+
+                if (!(SmtpAccountsView.CurrentItem is SmtpAccount currentAccount))
+                    return false;
+
+                return string.IsNullOrWhiteSpace(currentAccount.Password);
+            }
         }
 
         private void RefreshAccountsView()
@@ -126,7 +142,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
 
         private Task TestSmtpExecute(object obj)
         {
-            return _smtpTest.SendTestMail(CurrentProfile, _accountsProvider.Settings);
+            return _smtpTest.SendTestMail(CurrentProfile.EmailSmtpSettings, _accountsProvider.Settings);
         }
 
         private void EditMailTextExecute(object obj)
@@ -160,7 +176,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
             RecipientsTokenViewModel.MountView();
             RecipientsCcTokenViewModel.MountView();
             RecipientsBccTokenViewModel.MountView();
-            AdditionalAttachmentsTokenViewModel.MountView();
             EditAccountCommand.MountView();
 
             base.MountView();
@@ -173,7 +188,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmt
             RecipientsTokenViewModel.UnmountView();
             RecipientsCcTokenViewModel.UnmountView();
             RecipientsBccTokenViewModel.UnmountView();
-            AdditionalAttachmentsTokenViewModel.UnmountView();
             EditAccountCommand.UnmountView();
         }
     }

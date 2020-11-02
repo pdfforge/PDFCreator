@@ -31,7 +31,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
         public string WorkflowTitle { get; private set; } = "Your individual workflow";
 
         public string WorkflowText { get; private set; } = "When activating the workflow editor you can choose the actions that fit best to your requirements and adjust their order according to your individual workflow.";
+
+        //-------------------
         public string DropBoxTitle { get; private set; } = "Send large PDFs with Dropbox";
+
         public string DropBoxText { get; private set; } = "PDFCreator lets you upload your files directly to Dropbox, where you can save them or share them via a link.";
+
+        //-------------------
+        public string ForwardToFurtherProfileTitle { get; private set; } = "Forward to another profile";
+
+        public string ForwardToFurtherProfileText { get; private set; } = "PDFCreator can automatically forward the original document to another profile, for example to convert to another format.";
     }
 }

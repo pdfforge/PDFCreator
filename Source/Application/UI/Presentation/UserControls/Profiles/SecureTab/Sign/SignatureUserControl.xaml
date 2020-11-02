@@ -11,6 +11,7 @@
     xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
     xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
     mc:Ignorable="d"
     d:DesignHeight="500" d:DesignWidth="500"
     d:DataContext="{d:DesignInstance designTime:DesignTimeSignatureUserControlViewModel, IsDesignTimeCreatable=True}"
@@ -24,12 +25,9 @@
             </ResourceDictionary.MergedDictionaries>
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
-            <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrue" TrueValue="Visible" FalseValue="Collapsed" />
-            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenTrue" TrueValue="Collapsed" FalseValue="Visible" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalse" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
-            <converter:StringIsNullOrWhiteSpaceConverter x:Key="CollapedWhenNullOrWhiteSpace" TrueValue="Collapsed" FalseValue="Visible" />
-            <converter:StringIsNullOrWhiteSpaceConverter x:Key="FalseWhenNullOrWhiteSpace" TrueValue="false" FalseValue="true" />
+            <converter:StringIsNullOrWhiteSpaceConverter x:Key="CollapsedWhenNullOrWhiteSpace" TrueValue="Collapsed" FalseValue="Visible" />
 
             <system:Boolean x:Key="True">True</system:Boolean>
             <system:Boolean x:Key="False">False</system:Boolean>
@@ -38,50 +36,48 @@
                                      x:Key="SignaturePageIsCustomPageConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid IsEnabled="{Binding CurrentProfile.PdfSettings.Signature.Enabled}">
+    <Grid>
         <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.SignatureTabHeader}">
             <StackPanel>
-                <StackPanel IsEnabled="{Binding ElementName=SignatureCheckBox, Path=IsChecked}">
-                    <Label Content="{Binding Translation.CertificateFileLabel}" />
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Width="25" Margin="5 0 0 0"
+                <Label Content="{Binding Translation.CertificateFileLabel}" />
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Width="25" Margin="5 0 0 0"
                             Padding="0" Command="{Binding ChooseCertificateFileCommand}">
-                            ...
-                        </Button>
-                        <TextBox DockPanel.Dock="Left" Name="CertificationFileTextBox"
+                        ...
+                    </Button>
+                    <TextBox DockPanel.Dock="Left" Name="CertificationFileTextBox"
                              Text="{Binding CertificateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        </TextBox>
-                    </DockPanel>
-                    <StackPanel IsEnabled="{Binding Text, ElementName=CertificationFileTextBox, Converter={StaticResource FalseWhenNullOrWhiteSpace}}">
-                        <StackPanel IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource BoolNegationConverter}}"
-                                    Margin="0 5"
-                                    Orientation="Horizontal">
-                            <Button Command="{Binding SignaturePasswordCommand}"
-                                    HorizontalAlignment="Left" MaxWidth="231"  Padding="10,0,10,0"
-                                    Content="{Binding Translation.SignaturePasswordButton}" />
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Right" Margin="5 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                    Visibility="{Binding AskForPasswordLater, Converter={StaticResource CollapsedWhenTrue}}">
-                                    <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                    Visibility="{Binding Text, ElementName=CertificationFileTextBox, Converter={StaticResource CollapedWhenNullOrWhiteSpace}}">
-                                    </StackPanel>
-                                </StackPanel>
-                            </DockPanel>
-                        </StackPanel>
-                        <CheckBox Margin="0 5 0 0" IsChecked="{Binding AskForPasswordLater}" DockPanel.Dock="Bottom"
-                                  Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalse}}" HorizontalAlignment="Left" Width="440">
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
-                        </CheckBox>
-                    </StackPanel>
+                    </TextBox>
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 10 0 0">
+                    <Button Command="{Binding SignaturePasswordCommand}"
+                            Padding="10,0,10,0"
+                            Content="{Binding Translation.SignaturePasswordButton}"
+                            IsEnabled="{Binding AskForPasswordLater, Converter={StaticResource BoolNegationConverter}}" />
 
-                    <StackPanel Margin="0 5 0 0">
-                        <Label>
-                            <TextBlock Text="{Binding Translation.SelectTimeServerLabel}" />
-                        </Label>
-                        <DockPanel LastChildFill="True">
-                            <StackPanel Style="{DynamicResource GpoStyle}"
+                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal" VerticalAlignment="Center"
+                                Visibility="{Binding PasswordHint, Converter={StaticResource CollapsedWhenNullOrWhiteSpace}}">
+                        <ContentPresenter Content="{DynamicResource WarningIcon}" />
+                        <TextBlock Margin="5 0 0 0" Text="{Binding PasswordHint}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <CheckBox Margin="0 10 0 0"
+                          IsChecked="{Binding AskForPasswordLater}"
+                          Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedWhenFalse}}"
+                          IsEnabled="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource BoolNegationConverter}}"
+                          HorizontalAlignment="Left">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
+                </CheckBox>
+
+                <StackPanel Margin="0 10 0 0">
+                    <Label>
+                        <TextBlock Text="{Binding Translation.SelectTimeServerLabel}" />
+                    </Label>
+                    <DockPanel LastChildFill="True">
+                        <StackPanel Style="{DynamicResource GpoStyle}"
                                         IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
-                                <Button DockPanel.Dock="Right" Margin="5 0 0 0"
+                            <Button DockPanel.Dock="Right" Margin="5 0 0 0"
                                     Height="25" Width="25"
                                     IsEnabled="{Binding ElementName=TimeServerAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
                                     Command="{Binding EditTimeServerAccountCommand}"
@@ -89,125 +85,122 @@
                                     Style="{StaticResource LightGreyButton}"
                                     Padding="7"
                                     Content="{StaticResource EditButtonIcon}">
-                                </Button>
-                                <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddTimeServerAccountCommand}"
+                            </Button>
+                            <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddTimeServerAccountCommand}"
                                         Height="25" Width="25">
-                                    <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
-                                </Button>
-                            </StackPanel>
-                            <Grid>
-                                <ComboBox Name="TimeServerAccountsComboBox"
-                                          DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
-                                          SelectedValue="{Binding CurrentProfile.PdfSettings.Signature.TimeServerAccountId}"
-                                          ItemsSource="{Binding TimeServerAccountsView}" IsSynchronizedWithCurrentItem="True" />
-                                <Label
-                                    IsHitTestVisible="False"
-                                    Content="{Binding Translation.SelectOrAddTimeServerAccount}"
-                                    Visibility="{Binding ElementName=TimeServerAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
-                            </Grid>
-                        </DockPanel>
-                    </StackPanel>
+                                <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
+                            </Button>
+                        </StackPanel>
+                        <Grid>
+                            <ComboBox Name="TimeServerAccountsComboBox"
+                                      DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
+                                      SelectedValue="{Binding CurrentProfile.PdfSettings.Signature.TimeServerAccountId}"
+                                      ItemsSource="{Binding TimeServerAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                            <Label IsHitTestVisible="False"
+                                   Content="{Binding Translation.SelectOrAddTimeServerAccount}"
+                                   Visibility="{Binding ElementName=TimeServerAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                        </Grid>
+                    </DockPanel>
+                </StackPanel>
 
-                    <UniformGrid Columns="3" Margin="0 5 0 0">
-                        <DockPanel>
-                            <Label DockPanel.Dock="Top" Content="{Binding Translation.ReasonLabel}" />
-                            <controls:TokenControl DataContext="{Binding SignReasonTokenViewModel}"></controls:TokenControl>
-                        </DockPanel>
-                        <DockPanel Margin="10 0 0 0">
-                            <Label DockPanel.Dock="Top" Content="{Binding Translation.ContactLabel}" />
-                            <controls:TokenControl DataContext="{Binding SignContactTokenViewModel}"></controls:TokenControl>
-                        </DockPanel>
-                        <DockPanel Margin="10 0 0 0">
-                            <Label DockPanel.Dock="Top" Content="{Binding Translation.LocationLabel}" />
-                            <controls:TokenControl DataContext="{Binding SignLocationTokenViewModel}"></controls:TokenControl>
-                        </DockPanel>
-                    </UniformGrid>
+                <UniformGrid Columns="3" Margin="0 10 0 0">
+                    <DockPanel>
+                        <Label DockPanel.Dock="Top" Content="{Binding Translation.ReasonLabel}" />
+                        <controls:TokenControl DataContext="{Binding SignReasonTokenViewModel}"></controls:TokenControl>
+                    </DockPanel>
+                    <DockPanel Margin="10 0 0 0">
+                        <Label DockPanel.Dock="Top" Content="{Binding Translation.ContactLabel}" />
+                        <controls:TokenControl DataContext="{Binding SignContactTokenViewModel}"></controls:TokenControl>
+                    </DockPanel>
+                    <DockPanel Margin="10 0 0 0">
+                        <Label DockPanel.Dock="Top" Content="{Binding Translation.LocationLabel}" />
+                        <controls:TokenControl DataContext="{Binding SignLocationTokenViewModel}"></controls:TokenControl>
+                    </DockPanel>
+                </UniformGrid>
 
-                    <CheckBox Margin="0 10 0 0"
+                <CheckBox Margin="0 10 0 0"
                           IsChecked="{Binding CurrentProfile.PdfSettings.Signature.AllowMultiSigning, Mode=TwoWay}"
                           Content="{Binding Translation.AllowMultiSigningCheckBox}" />
 
-                    <CheckBox Name="DisplaySignatureCheckBox" Margin="0 15 0 0"
+                <CheckBox Name="DisplaySignatureCheckBox" Margin="0 20 0 0"
                           IsChecked="{Binding CurrentProfile.PdfSettings.Signature.DisplaySignatureInDocument}"
                           Content="{Binding Translation.DisplaySignatureCheckBox}" />
-                    <StackPanel Margin="0 10 0 55" IsEnabled="{Binding ElementName=DisplaySignatureCheckBox, Path=IsChecked}">
-                        <Grid>
+                <StackPanel Margin="20 10 0 55" IsEnabled="{Binding ElementName=DisplaySignatureCheckBox, Path=IsChecked}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*"  MinWidth="140" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*"  MinWidth="140" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid.Resources>
+                            <Style x:Key="GridBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="MaxWidth" Value="140" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="4" />
+                                <Setter Property="Width" Value="500" />
+                            </Style>
+                        </Grid.Resources>
+
+                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Translation.SignaturePageLabel}" />
+
+                        <Grid Grid.Column="1" Grid.Row="0" Margin="0 0 0 5">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*"  MinWidth="140" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*"  MinWidth="140" />
-                                <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-
-                            <Grid.Resources>
-                                <Style x:Key="GridBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="MaxWidth" Value="140" />
-                                    <Setter Property="HorizontalAlignment" Value="Left" />
-                                    <Setter Property="TextAlignment" Value="Right" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="Padding" Value="4" />
-                                    <Setter Property="Width" Value="500" />
-                                </Style>
-                            </Grid.Resources>
-
-                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Translation.SignaturePageLabel}" />
-
-                            <Grid Grid.Column="1" Grid.Row="0" Margin="0 0 0 5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="0" Name="SignaturePageComboBox" VerticalAlignment="Center"
+                            <ComboBox Grid.Column="0" Name="SignaturePageComboBox" VerticalAlignment="Center"
                                           SelectedValue="{Binding CurrentProfile.PdfSettings.Signature.SignaturePage}"
                                           DisplayMemberPath="Translation" SelectedValuePath="Value"
                                           ItemsSource="{Binding Translation.SignaturePageValues}" />
 
-                                <TextBox Grid.Column="1" MinWidth="30"
-                                         VerticalAlignment="Center"
-                                         HorizontalContentAlignment="Center"
-                                         Margin="2 0 0 0"
-                                          Text="{Binding CurrentProfile.PdfSettings.Signature.SignatureCustomPage, Mode=TwoWay}"
-                                          IsEnabled="{Binding SelectedItem.Value, ElementName=SignaturePageComboBox,
-                                Converter={StaticResource SignaturePageIsCustomPageConverter}}" />
-                            </Grid>
+                            <TextBox Grid.Column="1" MinWidth="30"
+                                     VerticalAlignment="Center"
+                                     HorizontalContentAlignment="Center"
+                                     Margin="2 0 0 0"
+                                     Text="{Binding CurrentProfile.PdfSettings.Signature.SignatureCustomPage, Mode=TwoWay}"
+                                     IsEnabled="{Binding SelectedItem.Value, ElementName=SignaturePageComboBox, Converter={StaticResource SignaturePageIsCustomPageConverter}}" />
+                        </Grid>
 
-                            <Label Grid.Column="2" Grid.Row="0"
+                        <Label Grid.Column="2" Grid.Row="0"
                                        Margin="15 0 0 0"
                                         Content="{Binding Translation.UnitOfMeasurementLabel}" />
-                            <ComboBox Grid.Column="3" Grid.Row="0"
+                        <ComboBox Grid.Column="3" Grid.Row="0"
                                           Name="SignatureUnitOfMeasurementComboBox"
                                           VerticalAlignment="Center"
                                           SelectedValue="{Binding ApplicationSettings.Settings.UnitOfMeasurement}"
                                           DisplayMemberPath="Translation" SelectedValuePath="Value"
                                           ItemsSource="{Binding Translation.UnitOfMeasurementValues}">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectionChanged">
-                                        <b:InvokeCommandAction
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:InvokeCommandAction
                                                 Command="{Binding ChangeUnitConverterCommand}"
                                                 CommandParameter="{Binding SelectedValue,ElementName=SignatureUnitOfMeasurementComboBox}"></b:InvokeCommandAction>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                            </ComboBox>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ComboBox>
 
-                            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Translation.LeftXLabel}" />
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="0 0 0 5" Text="{Binding LeftX, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
+                        <Label Grid.Column="0" Grid.Row="1" Content="{Binding Translation.LeftXLabel}" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Margin="0 0 0 5" Text="{Binding LeftX, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
-                            <Label  Grid.Column="0" Grid.Row="2" Content="{Binding Translation.LeftYLabel}" />
-                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LeftY, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
+                        <Label  Grid.Column="0" Grid.Row="2" Content="{Binding Translation.LeftYLabel}" />
+                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LeftY, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
-                            <Label   Grid.Column="2" Grid.Row="1" Margin="15 0 0 0" Content="{Binding Translation.RightXLabel}" />
-                            <TextBox  Grid.Column="3" Grid.Row="1" Text="{Binding SignatureWidth, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
+                        <Label   Grid.Column="2" Grid.Row="1" Margin="15 0 0 0" Content="{Binding Translation.RightXLabel}" />
+                        <TextBox  Grid.Column="3" Grid.Row="1" Text="{Binding SignatureWidth, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
 
-                            <Label  Grid.Column="2"  Grid.Row="2" Margin="15 0 0 0" Content="{Binding Translation.RightYLabel}" />
-                            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SignatureHeight, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
-                        </Grid>
-                    </StackPanel>
+                        <Label  Grid.Column="2"  Grid.Row="2" Margin="15 0 0 0" Content="{Binding Translation.RightYLabel}" />
+                        <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding SignatureHeight, StringFormat='{}{0:N2}'}" Style="{StaticResource GridBox}" />
+                    </Grid>
                 </StackPanel>
             </StackPanel>
         </HeaderedContentControl>
