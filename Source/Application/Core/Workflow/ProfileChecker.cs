@@ -11,11 +11,13 @@ namespace pdfforge.PDFCreator.Core.Workflow
 {
     public interface IProfileChecker
     {
-        ActionResultDict CheckProfileList(IList<ConversionProfile> profileList, Accounts accounts);
+        ActionResultDict CheckProfileList(CurrentCheckSettings settings);
+
+        ActionResult CheckFileNameAndTargetDirectory(ConversionProfile profile);
+
+        ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
         ActionResult CheckJob(Job job);
-
-        ActionResult ProfileCheck(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel);
     }
 
     public class ProfileChecker : IProfileChecker
@@ -30,54 +32,30 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _actions = actions;
         }
 
-        public ActionResult CheckJob(Job job)
-        {
-            job.Profile.FileNameTemplate = job.TokenReplacer.ReplaceTokens(job.Profile.FileNameTemplate);
-
-            foreach (var action in _actions)
-            {
-                if (!(action is ICheckable checkable))
-                    continue;
-                if (checkable.IsEnabled(job.Profile))
-                    checkable.ApplyPreSpecifiedTokens(job);
-            }
-
-            var actionResult = job.Profile.SaveFileTemporary ? new ActionResult() : CheckJobOutputFilenameTemplate(job.OutputFileTemplate);
-
-            actionResult.AddRange(ProfileCheck(job.Profile, job.Accounts, CheckLevel.Job));
-            return actionResult;
-        }
-
-        public ActionResultDict CheckProfileList(IList<ConversionProfile> profileList, Accounts accounts)
-        {
-            var nameResultDict = new ActionResultDict();
-
-            foreach (var profile in profileList)
-            {
-                var result = ProfileCheck(profile, accounts, CheckLevel.Profile);
-                if (!result)
-                    nameResultDict.Add(profile.Name, result);
-            }
-
-            return nameResultDict;
-        }
-
-        public ActionResult ProfileCheck(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        private ActionResult CheckFileNameAndTargetDirectory(ConversionProfile profile, CheckLevel checkLevel)
         {
             var actionResult = new ActionResult();
 
             actionResult.AddRange(CheckTargetDirectory(profile, checkLevel));
             actionResult.AddRange(CheckFileNameTemplate(profile, checkLevel));
 
+            return actionResult;
+        }
+
+        private ActionResult ProfileCheck(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
+        {
+            var actionResult = CheckFileNameAndTargetDirectory(profile, checkLevel);
+
             foreach (var action in _actions)
             {
-                if (!(action is ICheckable checkable))
+                if (!action.IsEnabled(profile))
                     continue;
 
-                if (!checkable.IsEnabled(profile))
-                    continue;
+                if (checkLevel == CheckLevel.RunningJob)
+                    if (action.IsRestricted(profile))
+                        continue;
 
-                var result = checkable.Check(profile, accounts, checkLevel);
+                var result = action.Check(profile, settings, checkLevel);
                 actionResult.AddRange(result);
             }
 
@@ -114,7 +92,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         private ActionResult CheckTargetDirectory(ConversionProfile profile, CheckLevel checkLevel)
         {
-            if (checkLevel == CheckLevel.Job)
+            if (checkLevel == CheckLevel.RunningJob)
                 return new ActionResult(); //Job uses Job.OutputFileTemplate
 
             if (profile.SaveFileTemporary)
@@ -151,7 +129,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         private ActionResult CheckFileNameTemplate(ConversionProfile profile, CheckLevel checkLevel)
         {
-            if (checkLevel == CheckLevel.Job)
+            if (checkLevel == CheckLevel.RunningJob)
                 return new ActionResult(); //Job uses Job.OutputFileTemplate
 
             if (profile.AutoSave.Enabled)
@@ -170,6 +148,47 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 return new ActionResult(ErrorCode.FilenameTemplate_IllegalCharacters);
 
             return new ActionResult();
+        }
+
+        public ActionResult CheckFileNameAndTargetDirectory(ConversionProfile profile)
+        {
+            return CheckFileNameAndTargetDirectory(profile, CheckLevel.EditingProfile);
+        }
+
+        public ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings)
+        {
+            return ProfileCheck(profile, settings, CheckLevel.EditingProfile);
+        }
+
+        public ActionResultDict CheckProfileList(CurrentCheckSettings settings)
+        {
+            var nameResultDict = new ActionResultDict();
+
+            foreach (var profile in settings.Profiles)
+            {
+                var result = ProfileCheck(profile, settings, CheckLevel.EditingProfile);
+                if (!result)
+                    nameResultDict.Add(profile.Name, result);
+            }
+
+            return nameResultDict;
+        }
+
+        public ActionResult CheckJob(Job job)
+        {
+            job.Profile.FileNameTemplate = job.TokenReplacer.ReplaceTokens(job.Profile.FileNameTemplate);
+
+            foreach (var action in _actions)
+            {
+                if (action.IsEnabled(job.Profile) && !action.IsRestricted(job.Profile))
+                    action.ApplyPreSpecifiedTokens(job);
+            }
+
+            var actionResult = job.Profile.SaveFileTemporary ? new ActionResult() : CheckJobOutputFilenameTemplate(job.OutputFileTemplate);
+
+            var settings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
+            actionResult.AddRange(ProfileCheck(job.Profile, settings, CheckLevel.RunningJob));
+            return actionResult;
         }
     }
 }

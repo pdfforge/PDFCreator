@@ -6,48 +6,23 @@ namespace pdfforge.PDFCreator.UI.Presentation
     public class RegionNames : RegionNameCollection
     {
         public static string MainRegion => NameOfProperty();
-        public static string ProfileTabContentRegion => NameOfProperty();
         public static string ApplicationSettingsTabsRegion => NameOfProperty();
-        public static string SaveTabContentRegion => NameOfProperty();
-        public static string ConvertTabContentRegion => NameOfProperty();
         public static string ConvertTabOverlayContentRegion => NameOfProperty();
         public static string GeneralSettingsTabContentRegion => NameOfProperty();
         public static string DebugSettingsTabContentRegion => NameOfProperty();
-
         public static string ApplicationSaveCancelButtonsRegion => NameOfProperty();
         public static string ProfileSaveCancelButtonsRegion => NameOfProperty();
-
-        public static string ModifyMasterTabItemsRegion => NameOfProperty();
-        public static string ModifyMasterTabContentRegion => NameOfProperty();
-
-        public static string SecureMasterTabItemsRegion => NameOfProperty();
-        public static string SecureMasterTabContentRegion => NameOfProperty();
-
-        public static string AdvancedMasterTabItemsRegion => NameOfProperty();
-        public static string AdvancedMasterTabContentRegion => NameOfProperty();
-        public static string WorkflowEditorSideBarRegion => NameOfProperty();
-
-        public static string SendMasterTabItemsRegion => NameOfProperty();
-        public static string SendMasterTabContentRegion => NameOfProperty();
-
-        public static string MetadataTabContentRegion => NameOfProperty();
         public static string TitleReplacementTabContentRegion => NameOfProperty();
         public static string DefaultViewerTabContentRegion => NameOfProperty();
-
         public static string LicenseSettingsRegion => NameOfProperty();
-
         public static string BusinessHintStatusBarRegion => NameOfProperty();
         public static string TestButtonWorkflowEditorRegion => NameOfProperty();
         public static string AddActionWorkflowEditorRegion => NameOfProperty();
-
         public static string RssFeedRegion => NameOfProperty();
-
         public static string HomeViewBannerRegion => NameOfProperty();
-
         public static string ProfileWorkflowEditorOverlayRegion => NameOfProperty();
-
-        public static string ProfileLayoutRegion => NameOfProperty();
-
+        public static string SaveOutputFormatMetadataView => nameof(UserControls.Profiles.SaveOutputFormatMetadataView);
+        public static string WorkflowEditorView => nameof(UserControls.Profiles.WorkflowEditor.WorkflowEditorView);
         public static string AboutView => nameof(UserControls.AboutView);
         public static string AccountsView => nameof(UserControls.Accounts.AccountsView);
         public static string ArchitectView => nameof(UserControls.Architect.ArchitectView);

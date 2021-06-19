@@ -194,6 +194,13 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
                 jobInfo.ProfileParameter = storedParameters.Profile;
                 jobInfo.OutputFileParameter = storedParameters.Outputfile;
                 jobInfo.OriginalFilePath = storedParameters.OriginalFilePath;
+
+                foreach (var sourceFileInfo in jobInfo.SourceFiles)
+                {
+                    sourceFileInfo.ProfileParameter = storedParameters.Profile;
+                    sourceFileInfo.OutputFileParameter = storedParameters.Outputfile;
+                    sourceFileInfo.OriginalFilePath = storedParameters.OriginalFilePath;
+                }
             }
             catch (InvalidOperationException)
             {

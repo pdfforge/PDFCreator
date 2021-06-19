@@ -1,4 +1,5 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -11,26 +12,22 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
 {
-    public class CoverAction : IConversionAction, ICheckable
+    public class CoverAction : ActionBase<CoverPage>, IConversionAction
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IFile _file;
         private readonly IPathUtil _pathUtil;
 
         public CoverAction(IFile file, IPathUtil pathUtil)
+            : base(p => p.CoverPage)
         {
             _file = file;
             _pathUtil = pathUtil;
         }
 
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             throw new System.NotImplementedException();
-        }
-
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.CoverPage.Enabled;
         }
 
         public void ProcessJob(IPdfProcessor processor, Job job)
@@ -38,12 +35,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             processor.AddCover(job);
         }
 
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             job.Profile.CoverPage.Files = job.Profile.CoverPage.Files.Select(job.TokenReplacer.ReplaceTokens).ToList();
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             if (!profile.CoverPage.Enabled)
                 return new ActionResult();
@@ -58,7 +55,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
         private ActionResult CheckFile(string file, CheckLevel checkLevel)
         {
-            var isJobLevelCheck = checkLevel == CheckLevel.Job;
+            var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
             if (string.IsNullOrEmpty(file))
             {
@@ -102,5 +99,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
             return new ActionResult();
         }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

@@ -1,4 +1,5 @@
-﻿using pdfforge.Obsidian;
+﻿using pdfforge.DataStorage;
+using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -8,19 +9,13 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
-    public interface IIniSettingsAssistant
-    {
-        bool LoadIniSettings();
-
-        void SaveIniSettings();
-    }
-
     public class CreatorIniSettingsAssistant : IniSettingsAssistantBase
     {
-        private readonly IDataStorageFactory _dataStorageFactory;
         private readonly IIniSettingsLoader _iniSettingsLoader;
         private readonly IPrinterProvider _printerProvider;
         private readonly IUacAssistant _uacAssistant;
@@ -37,12 +32,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             IIniSettingsLoader iniSettingsLoader,
             IPrinterProvider printerProvider,
             IUacAssistant uacAssistant,
-            IActionOrderChecker actionOrderChecker)
-            : base(interactionInvoker, dataStorageFactory, translationUpdater)
+            IActionOrderChecker actionOrderChecker,
+            EditionHelper editionHelper)
+            : base(interactionInvoker, dataStorageFactory, translationUpdater, editionHelper)
         {
             _settingsManager = settingsManager;
             _settingsProvider = settingsManager.GetSettingsProvider();
-            _dataStorageFactory = dataStorageFactory;
             _iniSettingsLoader = iniSettingsLoader;
             _printerProvider = printerProvider;
             _uacAssistant = uacAssistant;
@@ -87,6 +82,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             }
 
             return true;
+        }
+
+        protected override ISettings GetSettingsCopy()
+        {
+            return _settingsProvider.Settings.Copy();
         }
 
         private List<string> GetUnusedPrinters(IEnumerable<PrinterMapping> loadedPrinterMappings)
@@ -139,18 +139,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             {
                 _uacAssistant.AddPrinters(missingPrinters.ToArray());
             }
-        }
-
-        public override void SaveIniSettings()
-        {
-            var fileName = QuerySaveFileName();
-            if (string.IsNullOrWhiteSpace(fileName))
-                return;
-
-            var iniStorage = _dataStorageFactory.BuildIniStorage(fileName);
-
-            var settings = _settingsProvider.Settings.Copy();
-            settings.SaveData(iniStorage);
         }
     }
 }

@@ -1,5 +1,6 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Output;
@@ -52,13 +53,13 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 // Can throw ProcessingException. Use GetAwaiter().GetResult() to unwrap an occuring AggregateException.
                 _jobRunner.RunJob(job, _outputFileMover).GetAwaiter().GetResult();
 
-                WorkflowResult = WorkflowResult.Finished;
-                OnJobFinished(EventArgs.Empty);
+                FinishSuccessfulWorkflow(job, currentProfile);
+            }
+            catch (AggregateProcessingException)
+            {
+                FinishSuccessfulWorkflow(job, currentProfile);
 
-                documentName = Path.GetFileName(job.OutputFiles.First());
-
-                if (currentProfile.ShowAllNotifications && !currentProfile.ShowOnlyErrorNotifications)
-                    _notificationService?.ShowInfoNotification(documentName, job.OutputFiles.First());
+                throw;
             }
             catch (Exception)
             {
@@ -67,6 +68,17 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 throw;
             }
+        }
+
+        private void FinishSuccessfulWorkflow(Job job, ConversionProfile currentProfile)
+        {
+            WorkflowResultState = WorkflowResultState.Finished;
+            OnJobFinished(EventArgs.Empty);
+
+            var documentName = Path.GetFileName(job.OutputFiles.First());
+
+            if (currentProfile.ShowAllNotifications && !currentProfile.ShowOnlyErrorNotifications)
+                _notificationService?.ShowInfoNotification(documentName, job.OutputFiles.First());
         }
     }
 }

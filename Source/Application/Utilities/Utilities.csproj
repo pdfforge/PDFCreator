@@ -53,11 +53,9 @@
     <Compile Include="ApplicationNameProvider.cs" />
     <Compile Include="AssemblyHelper.cs" />
     <Compile Include="CommandLineParser.cs" />
+    <Compile Include="CustomMethodGenerator.cs" />
     <Compile Include="DateTimeProvider.cs" />
     <Compile Include="FontHelper.cs" />
-    <Compile Include="Ftp\FtpClientWrap.cs" />
-    <Compile Include="Ftp\FtpConnectionFactory.cs" />
-    <Compile Include="Ftp\SftpClientWrap.cs" />
     <Compile Include="IO\DirectoryAccessControl.cs" />
     <Compile Include="IO\IDirectoryHelper.cs" />
     <Compile Include="IO\UniqueFilenameBase.cs" />
@@ -76,7 +74,7 @@
     <Compile Include="ProgramDataDirectoryHelper.cs" />
     <Compile Include="Retry.cs" />
     <Compile Include="SemaphoreExtensions.cs" />
-    <Compile Include="SignaturePasswordCheck.cs" />
+    <Compile Include="SignaturePasswordCheckCached.cs" />
     <Compile Include="StringValueAttribute.cs" />
     <Compile Include="TempDirectoryHelper.cs" />
     <Compile Include="TestFileDummyHelper.cs" />
@@ -87,7 +85,6 @@
     <Compile Include="UpdateProgressChangedEventArgs.cs" />
     <Compile Include="UserGuide\HelpTopicAttribute.cs" />
     <Compile Include="CommandLineUtil.cs" />
-    <Compile Include="Ftp\FtpConnectionWrap.cs" />
     <Compile Include="HashUtil.cs" />
     <Compile Include="IO\FolderCleaner.cs" />
     <Compile Include="IO\UniqueDirectory.cs" />
@@ -110,7 +107,6 @@
     <Compile Include="Tokens\SingleEnvironmentToken.cs" />
     <Compile Include="Tokens\StringToken.cs" />
     <Compile Include="Tokens\TokenReplacer.cs" />
-    <Compile Include="IO\UniqueFileNameForFtp.cs" />
     <Compile Include="UserGuide\IUserGuideLauncher.cs" />
     <Compile Include="UserGuide\UserGuideLauncher.cs" />
     <Compile Include="ValidName.cs" />
@@ -142,20 +138,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Web">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="FluentFTP">
-          <HintPath>..\..\..\packages\FluentFTP\lib\net45\FluentFTP.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
@@ -213,17 +195,6 @@
       <ItemGroup>
         <Reference Include="Optional">
           <HintPath>..\..\..\packages\Optional.StrongNamed\lib\net461\Optional.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Renci.SshNet">
-          <HintPath>..\..\..\packages\SSH.NET\lib\net40\Renci.SshNet.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

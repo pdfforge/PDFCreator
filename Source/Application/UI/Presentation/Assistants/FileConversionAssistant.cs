@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IPrintFileHelper _printFileHelper;
         private FileConversionAssistantTranslation _translation = new FileConversionAssistantTranslation();
 
-        private const int LargeListWarningLimit = 100;
+        private const int LargeListWarningLimit = 40;
 
         public FileConversionAssistant(IDirectConversion directConversion,
             IPrintFileHelper printFileHelper,
@@ -45,107 +45,101 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
         }
 
-        public void HandleFileList(IEnumerable<string> droppedFiles)
+        public void HandleFileListWithoutTooManyFilesWarning(IEnumerable<string> droppedFiles, AppStartParameters appStartParameters)
         {
-            if (droppedFiles == null)
-                return;
-
-            var list = new List<(string path, AppStartParameters paramters)>();
-            foreach (var droppedFile in droppedFiles)
-            {
-                list.Add((droppedFile, null));
-            }
-            HandleFileList(list);
+            appStartParameters.Silent = true;
+            HandleFileList(droppedFiles, appStartParameters);
         }
 
         /// <summary>
         ///     Removes invalid files and launches print jobs for the files that needs to be printed.
         ///     If successful, the direct convertable files are added to the current JobInfoQueue.
         /// </summary>
-        public void HandleFileList(IEnumerable<(string path, AppStartParameters paramters)> droppedFiles)
+        public void HandleFileList(IEnumerable<string> droppedFiles, AppStartParameters appStartParameters)
         {
             if (droppedFiles == null)
                 return;
 
             Logger.Debug("Launched Drag & Drop");
-            var files = GetExistingFiles(droppedFiles);
+            var existingFiles = GetExistingFiles(droppedFiles);
 
-            if (files.Count > LargeListWarningLimit)
+            if (!appStartParameters.Silent && existingFiles.Count > LargeListWarningLimit)
             {
-                var message = _translation.GetFormattedMoreThanXFilesQuestion(files.Count);
+                var message = _translation.GetFormattedMoreThanXFilesQuestion(existingFiles.Count);
                 var interaction = new MessageInteraction(message, "PDFCreator", MessageOptions.YesNo, MessageIcon.Question);
                 _interactionInvoker.Invoke(interaction);
 
                 if (interaction.Response != MessageResponse.Yes)
                     return;
             }
-            HandleFiles(files);
+
+            HandleFiles(existingFiles, appStartParameters);
         }
 
-        private List<(string path, AppStartParameters paramters)> GetExistingFiles(IEnumerable<(string path, AppStartParameters paramters)> droppedFiles)
+        private List<string> GetExistingFiles(IEnumerable<string> droppedFiles)
         {
-            var validFiles = new List<(string path, AppStartParameters paramters)>();
-            foreach (var pathTuple in droppedFiles)
+            var existingFiles = new List<string>();
+            foreach (var droppedFile in droppedFiles)
             {
-                if (_file.Exists(pathTuple.path))
+                if (_file.Exists(droppedFile))
                 {
-                    validFiles.Add(pathTuple);
+                    existingFiles.Add(droppedFile);
                 }
-                else if (_directory.Exists(pathTuple.path))
+                else if (_directory.Exists(droppedFile))
                 {
-                    var directoryFiles = _directory.GetFiles(pathTuple.path);
+                    var directoryFiles = _directory.GetFiles(droppedFile);
                     foreach (var file in directoryFiles)
                     {
-                        validFiles.Add((file, pathTuple.paramters));
+                        existingFiles.Add(file);
                     }
                 }
                 else
                 {
-                    Logger.Warn("The file " + pathTuple.path + " does not exist.");
+                    Logger.Warn("The file or directory " + droppedFile + " does not exist.");
                 }
             }
 
-            return validFiles;
+            return existingFiles;
         }
 
         /// <summary>
         ///     Launches a print job for all dropped files that can be printed.
         ///     Return false if cancelled because of unprintable files
         /// </summary>
-        private void PrintPrintableFiles(IList<string> printFiles)
+        private void PrintPrintableFiles(IList<string> printFiles, AppStartParameters appStartParameters)
         {
-            if (!_printFileHelper.AddFiles(printFiles))
+            if (!_printFileHelper.AddFiles(printFiles, appStartParameters.Silent))
                 return;
-            _storedParametersManager.SaveParameterSettings("", "", printFiles.FirstOrDefault());
-            _printFileHelper.PrintAll();
+            _storedParametersManager.SaveParameterSettings(appStartParameters.OutputFile, appStartParameters.Profile, printFiles.FirstOrDefault());
+            _printFileHelper.PrintAll(appStartParameters.Silent);
         }
 
-        private void HandleFiles(IList<(string path, AppStartParameters paramters)> droppedFiles)
+        private void HandleFiles(IEnumerable<string> droppedFiles, AppStartParameters appStartParameters)
         {
-            var directConversionFiles = new List<(string path, AppStartParameters paramters)>();
+            var directConversionFiles = new List<string>();
             var printFiles = new List<string>();
             foreach (var file in droppedFiles)
             {
-                if (_directConversion.CanConvertDirectly(file.path))
+                if (_directConversion.CanConvertDirectly(file))
                     directConversionFiles.Add(file);
                 else
-                    printFiles.Add(file.path);
+                    printFiles.Add(file);
             }
 
             var directConversionFilesList = new List<string>();
             foreach (var directConversionFile in directConversionFiles)
             {
-                if (directConversionFile.Item2 != null && directConversionFile.Item2.Merge)
-                    directConversionFilesList.Add(directConversionFile.Item1);
+                if (appStartParameters != null && appStartParameters.Merge)
+                    directConversionFilesList.Add(directConversionFile);
                 else
-                    _directConversion.ConvertDirectly(new List<string>() { directConversionFile.Item1 }, directConversionFile.Item2);
+                    _directConversion.ConvertDirectly(new List<string>() { directConversionFile }, appStartParameters);
             }
 
             if (directConversionFilesList.Count > 0)
-                _directConversion.ConvertDirectly(directConversionFilesList, directConversionFiles.First().Item2);
+                _directConversion.ConvertDirectly(directConversionFilesList, appStartParameters);
 
             if (printFiles.Any())
-                PrintPrintableFiles(printFiles);
+                PrintPrintableFiles(printFiles, appStartParameters);
         }
     }
 }

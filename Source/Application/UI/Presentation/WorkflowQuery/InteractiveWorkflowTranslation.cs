@@ -5,7 +5,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
     public class InteractiveWorkflowTranslation : ITranslatable
     {
         public string AnErrorOccured { get; private set; } = "An error occurred:";
+        public string ErrorsSkipped { get; private set; } = "Errors occurred, but were ignored:";
         public string Error { get; private set; } = "Error";
+        public string Warning { get; private set; } = "Warning";
         public string JpegFile { get; private set; } = "JPEG file";
         public string PdfA1bFile { get; private set; } = "PDF/A-1b file";
         public string PdfA2bFile { get; private set; } = "PDF/A-2b file";

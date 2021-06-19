@@ -2,7 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         MailInfo CreateMailInfo(Job job, IMailActionSettings mailSettings);
 
         void ReplaceTokensInMailSettings(Job job, IMailActionSettings mailActionSettings);
+
+        MailInfo CreateMailInfo(IList<string> files, IMailActionSettings mailActionSettings);
     }
 
     public class MailInfo
@@ -23,7 +25,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         public string Recipients = "";
         public string RecipientsCc = "";
         public string RecipientsBcc = "";
-        public bool IsHtml;
+        public EmailFormatSetting Format;
         public IList<string> Attachments = new List<string>();
     }
 
@@ -32,12 +34,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMailSignatureHelper _mailSignatureHelper;
-        private readonly IActionOrderHelper _actionOrderHelper;
 
-        public MailHelper(IMailSignatureHelper mailSignatureHelper, IActionOrderHelper actionOrderHelper)
+        public MailHelper(IMailSignatureHelper mailSignatureHelper)
         {
             _mailSignatureHelper = mailSignatureHelper;
-            _actionOrderHelper = actionOrderHelper;
         }
 
         public void ReplaceTokensInMailSettings(Job job, IMailActionSettings mailActionSettings)
@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 .ToList();
         }
 
-        public MailInfo CreateMailInfo(Job job, IMailActionSettings mailSettings)
+        public MailInfo CreateMailInfo(IList<string> files, IMailActionSettings mailSettings)
         {
             _logger.Trace("Create MailInfo for " + mailSettings.GetType().Name.Replace("Settings", " Action."));
 
@@ -68,12 +68,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 Recipients = mailSettings.Recipients.Replace(';', ','),
                 RecipientsCc = mailSettings.RecipientsCc.Replace(';', ','),
                 RecipientsBcc = mailSettings.RecipientsBcc.Replace(';', ','),
-                IsHtml = mailSettings.Html,
-
-                Attachments = GetFileAttachmentList(job, mailSettings)
+                Format = mailSettings.Format,
+                Attachments = files
             };
 
             return mailInfo;
+        }
+
+        public MailInfo CreateMailInfo(Job job, IMailActionSettings mailSettings)
+        {
+            return CreateMailInfo(GetFileAttachmentList(job, mailSettings), mailSettings);
         }
 
         private string BuildBody(IMailActionSettings mailSettings)
@@ -83,7 +87,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             if (mailSettings.AddSignature)
             {
                 var signature = _mailSignatureHelper.ComposeMailSignature();
-                if (mailSettings.Html)
+                if (mailSettings.Format.IsHtml())
                     signature = signature.Replace(Environment.NewLine, "<br>");
 
                 body += signature;
@@ -114,7 +118,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 return false;
 
             var mailTypeName = mailSettings.GetType().Name;
-            if (!_actionOrderHelper.IsFirstActionBeforeSecond(job.Profile, nameof(DropboxSettings), mailTypeName))
+            if (!job.Profile.IsFirstActionBeforeSecond(nameof(DropboxSettings), mailTypeName))
             {
                 _logger.Warn("To use the share links instead of mail attachments, the Dropbox action must be executed before the mail action.");
                 return false;

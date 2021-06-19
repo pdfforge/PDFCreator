@@ -60,9 +60,9 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             }
         }
 
-        private JobUsageStatisticsMetric CreateJobUsageStatisticsMetric(Job job, TimeSpan duration, string status)
+        private ServerJobFinishedMetric CreateJobUsageStatisticsMetric(Job job, TimeSpan duration, string status)
         {
-            var metric = _usageMetricFactory.CreateMetric<JobUsageStatisticsMetric>();
+            var metric = _usageMetricFactory.CreateMetric<ServerJobFinishedMetric>();
             metric.OutputFormat = job.Profile.OutputFormat.ToString();
 
             metric.TotalPages = job.JobInfo.TotalPages;
@@ -94,9 +94,9 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             return metric;
         }
 
-        private ServiceUsageStatisticsMetric SerializeServiceUsageStatistics(TimeSpan serviceUptime)
+        private ServiceStoppedMetric SerializeServiceUsageStatistics(TimeSpan serviceUptime)
         {
-            var metric = _usageMetricFactory.CreateMetric<ServiceUsageStatisticsMetric>();
+            var metric = _usageMetricFactory.CreateMetric<ServiceStoppedMetric>();
             metric.TotalDocuments = _processedJobCounter;
             metric.TotalUsers = _activeUsers.Count;
             metric.OperatingSystem = _osHelper.GetWindowsVersion();

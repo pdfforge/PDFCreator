@@ -13,5 +13,7 @@
         public bool ManagePrintJobs { get; set; }
 
         public bool Merge { get; set; }
+
+        public bool Silent { get; set; }
     }
 }

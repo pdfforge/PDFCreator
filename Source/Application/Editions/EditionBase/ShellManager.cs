@@ -19,7 +19,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         private readonly IRegionManager _regionManager;
         private readonly IWhitelistedServiceLocator _serviceLocator;
         private readonly IWpfTopMostHelper _topMostHelper;
-        private readonly IProfileSettingsTabs _profileSettingsTabs;
         private readonly IApplicationSettingsTabs _applicationSettingsTabs;
         private readonly IStartupRoutine _startupRoutine;
         private readonly IEventAggregator _eventAggregator;
@@ -30,12 +29,11 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         private List<(string, Type)> _regionToViewRegister;
         private List<(string, Type)> _printJobRegionToViewRegister;
 
-        public ShellManager(IWhitelistedServiceLocator serviceLocator, IRegionManager regionManager, IWpfTopMostHelper topMostHelper, IProfileSettingsTabs profileSettingsTabs, IApplicationSettingsTabs applicationSettingsTabs, IStartupRoutine startupActions, IEventAggregator eventAggregator)
+        public ShellManager(IWhitelistedServiceLocator serviceLocator, IRegionManager regionManager, IWpfTopMostHelper topMostHelper, IApplicationSettingsTabs applicationSettingsTabs, IStartupRoutine startupActions, IEventAggregator eventAggregator)
         {
             _regionManager = regionManager;
             _serviceLocator = serviceLocator;
             _topMostHelper = topMostHelper;
-            _profileSettingsTabs = profileSettingsTabs;
             _applicationSettingsTabs = applicationSettingsTabs;
             _startupRoutine = startupActions;
             _eventAggregator = eventAggregator;
@@ -173,7 +171,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             _regionToViewRegister.ForEach(action: x =>
                 _regionManager.RegisterViewWithRegion(x.Item1, x.Item2));
 
-            _profileSettingsTabs.RegisterTabs(_regionManager, _serviceLocator, _eventAggregator);
             _applicationSettingsTabs.RegisterTabs(_regionManager, _serviceLocator, _eventAggregator);
         }
     }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SimpleInjector;
+using System;
 using System.Collections.Generic;
-using SimpleInjector;
 
 namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
 {
@@ -12,6 +12,11 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
         {
             var type = typeof(T);
 
+            RegisterTypeForNavigation(container, type, name);
+        }
+
+        public static void RegisterTypeForNavigation(this Container container, Type type, string name = null)
+        {
             if (name == null)
                 name = type.Name;
 

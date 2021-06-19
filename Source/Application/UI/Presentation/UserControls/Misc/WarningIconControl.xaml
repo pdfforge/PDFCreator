@@ -1,10 +1,8 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.WarningIconControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
-             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Colors.xaml" />
@@ -21,9 +19,8 @@
                 <TextBlock Text="{Binding ToolTipText,  UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" TextAlignment="Center" />
             </Button.ToolTip>
         </Button>
-
         <Viewbox Stretch="Uniform" IsHitTestVisible="False">
-            <Path Data="{DynamicResource WarningIconPath}" Fill="{StaticResource PdfforgeDarkGreyColorBrush}" />
+            <ContentPresenter Content="{DynamicResource WarningIconGray}" />
         </Viewbox>
     </Grid>
 </UserControl>

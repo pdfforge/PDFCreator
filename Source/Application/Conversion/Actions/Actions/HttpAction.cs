@@ -14,9 +14,12 @@ using System.Web;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public class HttpAction : RetypePasswordActionBase, IPostConversionAction, ICheckable
+    public class HttpAction : RetypePasswordActionBase<HttpSettings>, IPostConversionAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public HttpAction() : base(p => p.HttpSettings)
+        { }
 
         protected override string PasswordText => "HTTP";
 
@@ -29,17 +32,17 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         ///     Check if the profile is configured properly for this action
         /// </summary>
         /// <param name="profile">The profile to check</param>
-        /// <param name="accounts">Current accounts</param>
+        /// <param name="settings">Current settings</param>
         /// <param name="checkLevel"></param>
         /// <returns>ActionResult with configuration problems</returns>
-        public override ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var actionResult = new ActionResult();
 
             if (!IsEnabled(profile))
                 return actionResult;
 
-            var httpAccount = accounts.GetHttpAccount(profile);
+            var httpAccount = settings.Accounts.GetHttpAccount(profile);
             if (httpAccount == null)
             {
                 actionResult.Add(ErrorCode.HTTP_NoAccount);
@@ -174,9 +177,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             job.Passwords.HttpPassword = password;
         }
 
-        public override bool IsEnabled(ConversionProfile profile)
+        public override bool IsRestricted(ConversionProfile profile)
         {
-            return profile.HttpSettings.Enabled;
+            return false;
         }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

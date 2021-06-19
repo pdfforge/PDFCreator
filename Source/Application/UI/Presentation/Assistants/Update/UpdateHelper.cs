@@ -11,6 +11,7 @@ using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
 using System;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 {

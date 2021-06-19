@@ -104,4 +104,11 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
                 OverallSeverity = severity;
         }
     }
+
+    public class DisabledLogCollector : ILogCollector
+    {
+        public void WriteAndClearLogs(Thread thread)
+        {
+        }
+    }
 }

@@ -2,7 +2,6 @@
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Windows;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
-using DesignTimeDragAndDropHandler = pdfforge.PDFCreator.UI.DesignTimeViewModels.Helper.DesignTimeDragAndDropHandler;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {

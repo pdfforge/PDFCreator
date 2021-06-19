@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.FolderProvider
             var psFilename = PathSafe.GetFileName(file);
             if (psFilename.Length > 23)
                 psFilename = psFilename.Substring(0, 23);
-            var jobFolder = PathSafe.Combine(_spoolerProvider.SpoolFolder, psFilename);
+            var jobFolder = PathSafe.Combine(_spoolerProvider.SpoolFolder, psFilename).Trim();
             jobFolder = _uniqueDirectory.MakeUniqueDirectory(jobFolder);
             _directory.CreateDirectory(jobFolder);
             Logger.Trace("Created spool directory for job: " + jobFolder);

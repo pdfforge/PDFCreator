@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
-using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -15,12 +14,11 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
 {
-   public class AddActionViewModel :   TranslatableViewModelBase<DebugSettingsTranslation>
+   public class AddActionViewModel : TranslatableViewModelBase<DebugSettingsTranslation>
     {
-        private IInteractionRequest _interactionRequest;
+        private readonly IInteractionRequest _interactionRequest;
 
-        public AddActionViewModel(
-            ICommandLocator commandLocator, IInteractionRequest interactionRequest,
+        public AddActionViewModel(IInteractionRequest interactionRequest,
             ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;

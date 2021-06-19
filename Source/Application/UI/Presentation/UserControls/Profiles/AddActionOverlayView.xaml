@@ -10,9 +10,10 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance designTime:DesignTimeAddActionOverlayViewModel}"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeAddActionOverlayViewModel, IsDesignTimeCreatable=true}"
              KeyboardNavigation.TabNavigation="None"
              x:Name="CustomUserControl"
              help:HelpProvider.HelpTopic="{x:Static help:HelpTopic.WorkflowEditor}">
@@ -79,8 +80,8 @@
                     </Style>
                 </ListBox.Style>
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="workflow:IPresenterActionFacade">
-                        <Button Content="{Binding Translation}"
+                    <DataTemplate DataType="local:IActionViewModel">
+                        <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
                                 IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"
@@ -120,8 +121,8 @@
                     </Style>
                 </ListBox.Style>
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="workflow:IPresenterActionFacade">
-                        <Button Content="{Binding Translation}"
+                    <DataTemplate DataType="local:IActionViewModel">
+                        <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
                                 IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"
@@ -160,8 +161,8 @@
                     </Style>
                 </ListBox.Style>
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="workflow:IPresenterActionFacade">
-                        <Button Content="{Binding Translation}"
+                    <DataTemplate DataType="local:IActionViewModel">
+                        <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
                                 IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"

@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings.Workflow;
+using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using System;
 using System.Globalization;
 using System.Windows;
@@ -7,21 +8,21 @@ using System.Windows.Media;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
-    public class FacadeToVisibilityValueConverter : IMultiValueConverter
+    public class HiddenWhenFacadeIsFixedOrderConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var facade = values[0] as IActionFacade;
+            var facade = value as IPresenterActionFacade;
 
             if (facade != null && typeof(IFixedOrderAction).IsAssignableFrom(facade.SettingsType))
             {
                 return Visibility.Hidden;
             }
 
-            return (Visibility)values[1];
+            return Visibility.Visible;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var facade = value as IActionFacade;
+            var facade = value as IPresenterActionFacade;
 
             if (facade != null && typeof(IFixedOrderAction).IsAssignableFrom(facade.SettingsType))
             {

@@ -12,6 +12,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
     /// </summary>
     public partial class WorkflowEditorOverlayView : UserControl
     {
+        // Dependency Property
+        public static readonly DependencyProperty StatusHintViewModelProperty =
+            DependencyProperty.Register("StatusHintViewModel", typeof(IStatusHintViewModel),
+                typeof(WorkflowEditorOverlayView), new FrameworkPropertyMetadata());
+
+        // .NET Property wrapper
+        public IStatusHintViewModel StatusHintViewModel
+        {
+            get { return (IStatusHintViewModel)GetValue(StatusHintViewModelProperty); }
+            set { SetValue(StatusHintViewModelProperty, value); }
+        }
+
         private readonly IRegionManager _regionManager;
         private static bool _isRegistered;
 
@@ -48,8 +60,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             _isRegistered = false;
         }
 
+        private void SetActionViewModel()
+        {
+            var region = _regionManager.Regions[RegionNames.ProfileWorkflowEditorOverlayRegion];
+            var view = region.ActiveViews.First() as FrameworkElement;
+            StatusHintViewModel = view.DataContext as IStatusHintViewModel;
+        }
+
         private void WorkflowEditorOverlayView_OnLoaded(object sender, RoutedEventArgs e)
         {
+            _regionManager.Regions[RegionNames.ProfileWorkflowEditorOverlayRegion].NavigationService.Navigated +=
+                (o, args) => SetActionViewModel();
+
+            SetActionViewModel();
         }
     }
 }

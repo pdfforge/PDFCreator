@@ -86,9 +86,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             }
         }
 
+        protected override void HandleWarning(ActionResult result)
+        {
+            _errorNotifier.NotifyIgnoredWithWindow(result);
+        }
+
         protected override void HandleError(ErrorCode errorCode)
         {
-            _errorNotifier.Notify(new ActionResult(errorCode));
+            _errorNotifier.NotifyWithWindow(new ActionResult(errorCode));
         }
     }
 }

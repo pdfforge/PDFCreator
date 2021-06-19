@@ -237,8 +237,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Annotations
     /// public object Transform(object data)
     /// </code></item>
     /// <item><code>
-    /// [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
-    /// public bool TryParse(string s, out Person result)
+    /// [ContractAnnotation("=&gt; true, resultState: notnull; =&gt; false, resultState: null")]
+    /// public bool TryParse(string s, out Person resultState)
     /// </code></item>
     /// </list></examples>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

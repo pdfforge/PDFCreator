@@ -41,12 +41,21 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         public bool AllowDefaultPrinterSwitch { get; set; }
 
-        protected override void DirectoriesNotSupportedHint()
+        /// silent can be ignored here
+        protected override void UnprintableFilesHint(IList<PrintCommand> unprintable, bool silent)
         {
-            throw new COMException("Directories cannot be printed!");
+            var unprintableFilesNames = new StringBuilder("The following files cannot be printed: \n");
+
+            foreach (var unprintableFile in unprintable)
+            {
+                unprintableFilesNames.AppendLine(unprintableFile.Filename);
+            }
+
+            throw new COMException(unprintableFilesNames.ToString());
         }
 
-        protected override void UnprintableFilesHint(IList<PrintCommand> unprintable)
+        /// silent can be ignored here
+        protected override bool ProceedWithRemainingPrintableFilesQuery(IList<PrintCommand> unprintable, bool silent)
         {
             var unprintableFilesNames = new StringBuilder("The following file cannot be printed: \n");
 
@@ -58,19 +67,11 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             throw new COMException(unprintableFilesNames.ToString());
         }
 
-        protected override bool UnprintableFilesProceedQuery(IList<PrintCommand> unprintable)
-        {
-            var unprintableFilesNames = new StringBuilder("The following file cannot be printed: \n");
-
-            foreach (var unprintableFile in unprintable)
-            {
-                unprintableFilesNames.AppendLine(unprintableFile.Filename);
-            }
-
-            throw new COMException(unprintableFilesNames.ToString());
-        }
-
-        protected override bool QuerySwitchDefaultPrinter()
+        /// <summary>
+        /// silent can be ignored here
+        /// </summary>
+        /// <param name="silent"></param>
+        protected override bool SwitchDefaultPrinterQuery(bool silent)
         {
             //Depending on what the COM user chose to do, we set the
             //default printer or not

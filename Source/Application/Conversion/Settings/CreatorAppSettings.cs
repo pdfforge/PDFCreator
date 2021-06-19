@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed
 		/// </summary>
-		public int SettingsVersion { get; set; } = 10;
+		public int SettingsVersion { get; set; } = 11;
 		
 		
 		public void ReadValues(Data data, string path = "")
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
 			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
 			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
-			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 10;
+			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 11;
 		}
 		
 		public void StoreValues(Data data, string path)

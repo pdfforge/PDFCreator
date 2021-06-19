@@ -1,67 +1,92 @@
 [
   {
+    "Type": "Breaking",
+    "Priority": 0,
+    "Text": "Please check for the new e-mail format setting, when using the COM-interface for sending HTML formatted mails via SMTP."
+  },
+  {
     "Type": "Feature",
     "Priority": 5,
-    "Text": "PDFCreator 4.2.0 includes our newest PDF viewer and editor: PDF Architect 8."
+    "Text": "**PDFCreator Professional and Terminal Server:** When mailing via SMTP, it is now possible to send the e-mail on behalf of someone else and to define the display name and reply to address."
+  },
+  {
+    "Type": "Feature",
+    "Priority": 4,
+    "Text": "The workflow editor view has been further improved with immediate and better visibility of incorrect settings."
   },
   {
     "Type": "Feature",
     "Priority": 3,
-    "Text": "The workflow editor view has been improved for a better overview and usability. Therefore the classic tab view of the profile settings was removed."
+    "Text": "The print action now has the option to fit the document to the page size of the printer."
+  },
+  {
+    "Type": "Bugfix",
+    "Priority": 3,
+    "Text": "**HotFolder** could sometimes use the wrong PDFCreator profile to convert files."
+  },
+  {
+    "Type": "Other",
+    "Priority": 3,
+    "Text": "The print action now displays the output filename in the printer queue."
   },
   {
     "Type": "Feature",
     "Priority": 2,
-    "Text": "A new small wizard guides users through creating profiles."
+    "Text": "New option to proceed with further send actions if one of them fails."
+  },
+  {
+    "Type": "Bugfix",
+    "Priority": 2,
+    "Text": "**HotFolder** did not consider shared settings."
+  },
+  {
+    "Type": "Feature",
+    "Priority": 1,
+    "Text": "It is now possible to save settings with removed passwords, which makes it easier to share settings for a support case."
+  },
+  {
+    "Type": "Feature",
+    "Priority": 1,
+    "Text": "The e-mail quick action now uses default HTML setting of the client."
+  },
+  {
+    "Type": "Bugfix",
+    "Priority": 1,
+    "Text": "The \"forward to profile\" action may have failed with an UnauthorizedAccessException."
+  },
+  {
+    "Type": "Bugfix",
+    "Priority": 1,
+    "Text": "Opening the signature settings always selected the first time server account instead of the originally selected."
   },
   {
     "Type": "Feature",
     "Priority": 0,
-    "Text": "The COM interface has been extended and allows better control over the execution order of actions."
-  },
-  {
-    "Type": "Feature",
-    "Priority": 0,
-    "Text": "It is now possible to add multiple files as cover pages or as attachment pages."
-  },
-  {
-    "Type": "Feature",
-    "Priority": 0,
-    "Text": "The setup now supports keyboard shortcuts."
+    "Text": "New warning about circular dependencies when selecting another PDFCreator printer in the print action."
   },
   {
     "Type": "Bugfix",
     "Priority": 0,
-    "Text": "HotFolder now uses PDFCreator's direct conversion to convert PDF and PS files."
+    "Text": "The /Profile parameter did not work for files that have to be printed."
   },
   {
     "Type": "Bugfix",
     "Priority": 0,
-    "Text": "When restoring settings or loading from an ini file the updated application settings were not immediately displayed."
+    "Text": "The <OutputFilenames> token was not always replaced."
   },
   {
     "Type": "Bugfix",
     "Priority": 0,
-    "Text": "User tokens were not applied when switching between profiles on the print job screen."
+    "Text": "For the very special condition that the filename contained a whitespace in the 23rd position, the conversion of PDF files via drag & drop failed."
   },
   {
-    "Type": "Bugfix",
+    "Type": "Other",
     "Priority": 0,
-    "Text": "Merging pdf or ps files via commandline parameter opened the merge window instead of merging the files instantly."
+    "Text": "The MSI will not run if it is not started with elevated privileges."
   },
   {
-    "Type": "Bugfix",
+    "Type": "Other",
     "Priority": 0,
-    "Text": "The setup lost the current PDFCreator language preference during updates."
-  },
-  {
-    "Type": "Bugfix",
-    "Priority": 0,
-    "Text": "A script error occurred while adding a Dropbox account."
-  },
-  {
-    "Type": "Bugfix",
-    "Priority": 0,
-    "Text": "The setup window could not be moved while an overlay is active."
+    "Text": "PDFCreator now starts in full screen, if the main window would be larger than the actual screen."
   }
 ]

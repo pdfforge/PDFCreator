@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Core.Printing.Port;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using SystemInterface.Microsoft.Win32;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {

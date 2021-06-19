@@ -1,7 +1,7 @@
 ﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailSmtp;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {

@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Core.Printing.Port;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.Printing
 {

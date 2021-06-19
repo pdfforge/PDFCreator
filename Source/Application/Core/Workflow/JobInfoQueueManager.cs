@@ -177,9 +177,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _logger.Trace("Running workflow");
             var workflowResult = workflow.RunWorkflow(job);
 
-            if (workflowResult != WorkflowResult.Finished)
+            if (workflowResult != WorkflowResultState.Finished)
             {
-                if (workflowResult == WorkflowResult.AbortedByUser)
+                if (workflowResult == WorkflowResultState.AbortedByUser)
                 {
                     _logger.Info("The job '{0}' was aborted by the user.",
                         job.JobInfo.Metadata.Title);
@@ -187,7 +187,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 else
                 {
                     _logger.Error("The job '{0}' terminated at step {1} and did not end successfully.",
-                        job.JobInfo.Metadata.Title, workflowResult);
+                        job.JobInfo.Metadata.Title, workflowResult.State);
                 }
             }
             else

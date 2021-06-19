@@ -65,7 +65,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 SelectedProfileProvider.SelectedProfileChanged += OnSelectedProfileChanged;
                 _profileProvider.Settings.CollectionChanged += OnCollectionChanged;
 
-                _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
+                _regionManager.RequestNavigate(RegionNames.WorkflowEditorView, nameof(WorkflowEditorView));
             }
 
             foreach (var profile in Profiles)
@@ -83,7 +83,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             if (_selectedProfile != null && selectedProfile == _selectedProfile.ConversionProfile.Guid)
                 return;
 
-            _regionManager.RequestNavigate(RegionNames.ProfileLayoutRegion, nameof(WorkflowEditorView));
+            _regionManager.RequestNavigate(RegionNames.WorkflowEditorView, nameof(WorkflowEditorView));
 
             _selectedProfile = _profiles.FirstOrDefault(wrapper => wrapper.ConversionProfile.Guid == selectedProfile);
 

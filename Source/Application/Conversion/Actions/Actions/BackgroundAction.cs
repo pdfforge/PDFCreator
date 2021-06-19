@@ -1,8 +1,8 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
@@ -11,7 +11,7 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
 {
-    public class BackgroundAction : IConversionAction, ICheckable
+    public class BackgroundAction : ActionBase<BackgroundPage>, IConversionAction
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -19,19 +19,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions
         private readonly IPathUtil _pathUtil;
 
         public BackgroundAction(IFile file, IPathUtil pathUtil)
+            : base(p => p.BackgroundPage)
         {
             _file = file;
             _pathUtil = pathUtil;
         }
 
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             throw new System.NotImplementedException();
-        }
-
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.BackgroundPage.Enabled;
         }
 
         public void ProcessJob(IPdfProcessor pdfProcessor, Job job)
@@ -39,12 +35,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             pdfProcessor.AddBackground(job);
         }
 
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             job.Profile.BackgroundPage.File = job.TokenReplacer.ReplaceTokens(job.Profile.BackgroundPage.File);
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             if (!profile.BackgroundPage.Enabled)
                 return new ActionResult();
@@ -55,7 +51,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
                 return new ActionResult(ErrorCode.Background_NoFileSpecified);
             }
 
-            var isJobLevelCheck = checkLevel == CheckLevel.Job;
+            var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(profile.BackgroundPage.File))
                 return new ActionResult();
@@ -93,5 +89,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
             return new ActionResult();
         }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

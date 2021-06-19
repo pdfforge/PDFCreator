@@ -4,6 +4,10 @@ namespace pdfforge.PDFCreator.Core.Workflow.Queries
 {
     public interface IErrorNotifier
     {
-        void Notify(ActionResult actionResult);
+        void NotifyWithWindow(ActionResult actionResult);
+
+        void NotifyWithOverlay(ActionResult actionResult);
+
+        void NotifyIgnoredWithWindow(ActionResult actionResult);
     }
 }

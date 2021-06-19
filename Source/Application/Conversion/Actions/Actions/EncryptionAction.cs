@@ -1,29 +1,24 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
 {
-    public class EncryptionAction : IConversionAction, ICheckable
+    public class EncryptionAction : ActionBase<Security>, IConversionAction
     {
-        private Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ActionResult ProcessJob(Job job)
+        public EncryptionAction() : base(p => p.PdfSettings.Security)
+        { }
+
+        protected override ActionResult DoProcessJob(Job job)
         {
             throw new NotImplementedException();
-        }
-
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            if (!profile.OutputFormat.IsPdf())
-                return false;
-
-            return profile.PdfSettings.Security.Enabled;
         }
 
         public void ProcessJob(IPdfProcessor processor, Job job)
@@ -31,12 +26,25 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             //nothing to do here. The Encryption must be triggered as last processing step in the ActionManager
         }
 
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             //nothing to do here.
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            if (!profile.OutputFormat.IsPdf())
+                return true;
+            return profile.OutputFormat == OutputFormat.PdfX;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        {
+            if (!job.Profile.PdfSettings.Security.AllowPrinting)
+                job.Profile.PdfSettings.Security.RestrictPrintingToLowQuality = false;
+        }
+
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var result = new ActionResult();
 
@@ -63,7 +71,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
                 }
             }
 
-            if (checkLevel == CheckLevel.Profile)
+            if (checkLevel == CheckLevel.EditingProfile)
                 return result;
 
             return result;

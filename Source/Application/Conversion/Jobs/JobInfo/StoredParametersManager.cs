@@ -4,6 +4,7 @@ using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 {

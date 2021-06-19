@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,14 +44,24 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string Content { get; set; } = "";
 		
 		/// <summary>
+		/// Display name for e-mail sender
+		/// </summary>
+		public string DisplayName { get; set; } = "";
+		
+		/// <summary>
 		/// If true, this action will be executed
 		/// </summary>
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// Use html for e-mail body
+		/// Set the e-mail body format
 		/// </summary>
-		public bool Html { get; set; } = false;
+		public EmailFormatSetting Format { get; set; } = EmailFormatSetting.Text;
+		
+		/// <summary>
+		/// If set it will be used as From and the address from the account will be set as Sender
+		/// </summary>
+		public string OnBehalfOf { get; set; } = "";
 		
 		/// <summary>
 		/// The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org
@@ -66,6 +77,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string RecipientsCc { get; set; } = "";
+		
+		/// <summary>
+		/// Specifies an address that should be used to reply to the e-mail
+		/// </summary>
+		public string ReplyTo { get; set; } = "";
 		
 		/// <summary>
 		/// Subject line of the e-mail
@@ -87,11 +103,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				}
 			}catch{}
 			try { Content = Data.UnescapeString(data.GetValue(@"" + path + @"Content")); } catch { Content = "";}
+			try { DisplayName = Data.UnescapeString(data.GetValue(@"" + path + @"DisplayName")); } catch { DisplayName = "";}
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			Html = bool.TryParse(data.GetValue(@"" + path + @"Html"), out var tmpHtml) ? tmpHtml : false;
+			Format = Enum.TryParse<EmailFormatSetting>(data.GetValue(@"" + path + @"Format"), out var tmpFormat) ? tmpFormat : EmailFormatSetting.Text;
+			try { OnBehalfOf = Data.UnescapeString(data.GetValue(@"" + path + @"OnBehalfOf")); } catch { OnBehalfOf = "";}
 			try { Recipients = Data.UnescapeString(data.GetValue(@"" + path + @"Recipients")); } catch { Recipients = "";}
 			try { RecipientsBcc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsBcc")); } catch { RecipientsBcc = "";}
 			try { RecipientsCc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsCc")); } catch { RecipientsCc = "";}
+			try { ReplyTo = Data.UnescapeString(data.GetValue(@"" + path + @"ReplyTo")); } catch { ReplyTo = "";}
 			try { Subject = Data.UnescapeString(data.GetValue(@"" + path + @"Subject")); } catch { Subject = "";}
 		}
 		
@@ -104,11 +123,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			data.SetValue(path + @"AdditionalAttachments\numClasses", AdditionalAttachments.Count.ToString());
 			data.SetValue(@"" + path + @"Content", Data.EscapeString(Content));
+			data.SetValue(@"" + path + @"DisplayName", Data.EscapeString(DisplayName));
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"Html", Html.ToString());
+			data.SetValue(@"" + path + @"Format", Format.ToString());
+			data.SetValue(@"" + path + @"OnBehalfOf", Data.EscapeString(OnBehalfOf));
 			data.SetValue(@"" + path + @"Recipients", Data.EscapeString(Recipients));
 			data.SetValue(@"" + path + @"RecipientsBcc", Data.EscapeString(RecipientsBcc));
 			data.SetValue(@"" + path + @"RecipientsCc", Data.EscapeString(RecipientsCc));
+			data.SetValue(@"" + path + @"ReplyTo", Data.EscapeString(ReplyTo));
 			data.SetValue(@"" + path + @"Subject", Data.EscapeString(Subject));
 		}
 		
@@ -120,11 +142,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AddSignature = AddSignature;
 			copy.AdditionalAttachments = new List<string>(AdditionalAttachments);
 			copy.Content = Content;
+			copy.DisplayName = DisplayName;
 			copy.Enabled = Enabled;
-			copy.Html = Html;
+			copy.Format = Format;
+			copy.OnBehalfOf = OnBehalfOf;
 			copy.Recipients = Recipients;
 			copy.RecipientsBcc = RecipientsBcc;
 			copy.RecipientsCc = RecipientsCc;
+			copy.ReplyTo = ReplyTo;
 			copy.Subject = Subject;
 			return copy;
 		}
@@ -146,11 +171,17 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(Content != source.Content)
 				Content = source.Content;
 				
+			if(DisplayName != source.DisplayName)
+				DisplayName = source.DisplayName;
+				
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(Html != source.Html)
-				Html = source.Html;
+			if(Format != source.Format)
+				Format = source.Format;
+				
+			if(OnBehalfOf != source.OnBehalfOf)
+				OnBehalfOf = source.OnBehalfOf;
 				
 			if(Recipients != source.Recipients)
 				Recipients = source.Recipients;
@@ -160,6 +191,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				
 			if(RecipientsCc != source.RecipientsCc)
 				RecipientsCc = source.RecipientsCc;
+				
+			if(ReplyTo != source.ReplyTo)
+				ReplyTo = source.ReplyTo;
 				
 			if(Subject != source.Subject)
 				Subject = source.Subject;
@@ -175,11 +209,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!AddSignature.Equals(v.AddSignature)) return false;
 			if (!AdditionalAttachments.SequenceEqual(v.AdditionalAttachments)) return false;
 			if (!Content.Equals(v.Content)) return false;
+			if (!DisplayName.Equals(v.DisplayName)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Html.Equals(v.Html)) return false;
+			if (!Format.Equals(v.Format)) return false;
+			if (!OnBehalfOf.Equals(v.OnBehalfOf)) return false;
 			if (!Recipients.Equals(v.Recipients)) return false;
 			if (!RecipientsBcc.Equals(v.RecipientsBcc)) return false;
 			if (!RecipientsCc.Equals(v.RecipientsCc)) return false;
+			if (!ReplyTo.Equals(v.ReplyTo)) return false;
 			if (!Subject.Equals(v.Subject)) return false;
 			return true;
 		}

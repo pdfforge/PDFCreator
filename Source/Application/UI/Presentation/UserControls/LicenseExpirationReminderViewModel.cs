@@ -39,7 +39,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
             _webLinkLauncher.Launch(Urls.LicenseServerUrl);
         }
 
-        public string LicenseReminderInfo => Translation.FormatLicenseExpiryDate(_licenseExpirationReminder.DaysTillLicenseExpires);
+        public string LicenseReminderInfo =>
+            _licenseExpirationReminder.DaysTillLicenseExpires >= 0
+                ? Translation.FormatLicenseExpiryDate(_licenseExpirationReminder.DaysTillLicenseExpires)
+                : Translation.LicenseHasExpired;
 
         private void SetReminderForLicenseExpiration()
         {

@@ -1,4 +1,5 @@
-﻿using pdfforge.Obsidian;
+﻿using NLog;
+using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Printing.Printing;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -30,13 +31,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
         }
 
-        protected override void DirectoriesNotSupportedHint()
-        {
-            const string caption = "PDFCreator";
-            var message = _translation.DirectoriesNotSupported;
-            ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Warning);
-        }
-
         private MessageResponse ShowMessage(string message, string title, MessageOptions buttons, MessageIcon icon)
         {
             var interaction = new MessageInteraction(message, title, buttons, icon);
@@ -48,7 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         {
             var fileList =
                 new List<string>(unprintable.Select(p => Path.GetFileName(p.Filename)).Take(Math.Min(3, unprintable.Count)));
-            
+
             var message = _translation.GetNotPrintableFiles(unprintable.Count) + System.Environment.NewLine;
 
             message += string.Join("\r\n", fileList.ToArray());
@@ -59,32 +53,48 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return message;
         }
 
-        protected override void UnprintableFilesHint(IList<PrintCommand> unprintable)
+        protected override void UnprintableFilesHint(IList<PrintCommand> unprintable, bool silent)
         {
-            const string caption = "PDFCreator";
             var message = BuildUnprintableFilesMessage(unprintable);
-
-            ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Warning);
+            if (silent)
+                Logger.Error(message);
+            else
+                ShowMessage(message, "PDFCreator", MessageOptions.OK, MessageIcon.Warning);
         }
 
-        protected override bool UnprintableFilesProceedQuery(IList<PrintCommand> unprintable)
+        protected override bool ProceedWithRemainingPrintableFilesQuery(IList<PrintCommand> unprintable, bool silent)
         {
-            const string caption = "PDFCreator";
             var message = BuildUnprintableFilesMessage(unprintable);
 
-            message += "\r\n\r\n" + _translation.ProceedAnyway;
+            if (silent)
+            {
+                Logger.Warn(message
+                            + Environment.NewLine
+                            + "With the /Silent Parameter PDFCreator will continue to convert the remaining files.");
+                return true;
+            }
 
+            const string caption = "PDFCreator";
+            message += "\r\n\r\n" + _translation.ProceedAnyway;
             var response = ShowMessage(message, caption, MessageOptions.YesNo, MessageIcon.Warning);
 
             return response == MessageResponse.Yes;
         }
 
-        protected override bool QuerySwitchDefaultPrinter()
+        protected override bool SwitchDefaultPrinterQuery(bool silent)
         {
-            var message =
-                _translation.AskSwitchDefaultPrinter;
-            const string caption = "PDFCreator";
+            if (silent)
+            {
+                Logger.Error("PDFCreator needs the permission to temporarily change the default printer."
+                             + Environment.NewLine
+                             + "With the /Silent parameter this can not be requested."
+                             + Environment.NewLine
+                             + "Please see the PDFCreator general application settings to set this permission.");
+                return false;
+            }
 
+            var message = _translation.AskSwitchDefaultPrinter;
+            const string caption = "PDFCreator";
             var response = ShowMessage(message, caption, MessageOptions.YesNo, MessageIcon.Question);
 
             return response == MessageResponse.Yes;

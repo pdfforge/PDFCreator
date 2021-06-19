@@ -35,7 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 Metadata = new Metadata() { Author = "Max Mustermann", Keywords = "keywords...", PrintJobAuthor = "print job author", PrintJobName = "My Print Job", Subject = "This is the subject line", Title = "My Document Title" }
             };
 
-            var job = new Job(jobInfo, new ConversionProfile(), new Accounts())
+            var job = new Job(jobInfo, new ConversionProfile(), CurrentJobSettings.Empty())
             {
                 OutputFileTemplate = @"C:\My Documents\MyFile.pdf"
             };

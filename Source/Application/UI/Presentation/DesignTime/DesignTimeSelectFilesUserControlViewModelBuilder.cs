@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
@@ -31,6 +32,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         }
 
         public ISelectFilesUserControlViewModelBuilder WithTokens(List<string> tokens)
+        {
+            return this;
+        }
+
+        public ISelectFilesUserControlViewModelBuilder WithPropertyChanged(PropertyChangedEventHandler propertyChanged)
         {
             return this;
         }

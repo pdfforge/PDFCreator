@@ -4,22 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:ExportSettingsViewModel}">
-    <Grid>
         <HeaderedContentControl Margin="0 20 0 0"
                                 Header="{Binding Translation.ExportSettingsControlHeader}">
-            <UniformGrid Columns="2" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
-                <Button Margin="0 0 5 0"  Style="{DynamicResource LightGreyButton}"
-                        Command="{Binding SaveIniSettingsCommand}">
-                    <TextBlock Text="{Binding Translation.SaveSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-                <Button Margin="5 0 0 0" Style="{DynamicResource LightGreyButton}"
-                        Command="{Binding LoadIniSettingsCommand}">
-                    <TextBlock Text="{Binding Translation.LoadSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-            </UniformGrid>
-        </HeaderedContentControl>
-    </Grid>
+            <DockPanel>
+                <UniformGrid DockPanel.Dock="Top" Columns="3" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
+                    <Button Margin="0 0 5 0"  Style="{DynamicResource LightGreyButton}"
+                            Command="{Binding SaveIniSettingsCommand}">
+                        <TextBlock Text="{Binding Translation.SaveSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
+                    <Button Margin="0 0 5 0"  Style="{DynamicResource LightGreyButton}"
+                            Command="{Binding SaveIniSettingsCommand}">
+                        <Button.CommandParameter>
+                            <system:Boolean>True</system:Boolean>
+                        </Button.CommandParameter>
+                    <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
+                    <Button Margin="5 0 0 0" Style="{DynamicResource LightGreyButton}"
+                            Command="{Binding LoadIniSettingsCommand}">
+                        <TextBlock Text="{Binding Translation.LoadSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
+                </UniformGrid>
+
+                <StackPanel Orientation="Horizontal" Margin="0 10">
+                    <ContentPresenter Content="{DynamicResource InfoIcon}"
+                                      Margin="0 0 5 0"
+                                      Height="12"/>
+                <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsHint}" />
+                </StackPanel>
+            </DockPanel>
+    </HeaderedContentControl>
 </UserControl>

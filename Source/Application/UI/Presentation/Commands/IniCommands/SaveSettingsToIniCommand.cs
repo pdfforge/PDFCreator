@@ -26,7 +26,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.IniCommands
 
         public void Execute(object parameter)
         {
-            _iniSettingsAssistant.SaveIniSettings();
+            var removePasswords = false;
+            if (parameter is bool removePasswordsParam)
+                removePasswords = removePasswordsParam;
+
+            _iniSettingsAssistant.SaveIniSettings(removePasswords);
         }
 
 #pragma warning disable 67

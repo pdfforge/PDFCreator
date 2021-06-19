@@ -36,6 +36,10 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         {
             EnsureJobFileIsInSpoolPath();
 
+            // The job info might be enriched with Parameters, so we load and save it before sending the pipe message
+            var jobInfo = _jobInfoManager.ReadFromInfFile(NewJobInfoFile);
+            _jobInfoManager.SaveToInfFile(jobInfo);
+
             return "NewJob|" + NewJobInfoFile;
         }
 
@@ -54,6 +58,8 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
             try
             {
                 var jobInfo = _jobInfoManager.ReadFromInfFile(NewJobInfoFile);
+                // The job info might be enriched with Parameters, so we save them again
+                _jobInfoManager.SaveToInfFile(jobInfo);
                 _jobInfoQueue.Add(jobInfo);
             }
             catch (Exception ex)

@@ -1,30 +1,27 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Workflow;
+﻿using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
-using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
 {
     public class NavigateProfileCheck : ISettingsNavigationCheck
     {
-        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
-        private readonly ICurrentSettings<Accounts> _accountsProvider;
+        private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IProfileChecker _profileChecker;
         private readonly ISettingsChanged _settingsChanged;
 
         public string ProfileSettingsRegionName { get; set; } = RegionNames.ProfilesView;
 
-        public NavigateProfileCheck(ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettings<Accounts> accountsProvider, IProfileChecker profileChecker, ISettingsChanged settingsChanged)
+        public NavigateProfileCheck(ICurrentSettingsProvider currentSettingsProvider, IProfileChecker profileChecker, ISettingsChanged settingsChanged)
         {
-            _profilesProvider = profilesProvider;
-            _accountsProvider = accountsProvider;
+            _currentSettingsProvider = currentSettingsProvider;
             _profileChecker = profileChecker;
             _settingsChanged = settingsChanged;
         }
 
         public SettingsCheckResult CheckSettings()
         {
-            var resultDict = _profileChecker.CheckProfileList(_profilesProvider.Settings, _accountsProvider.Settings);
+            var settings = _currentSettingsProvider.CheckSettings;
+            var resultDict = _profileChecker.CheckProfileList(settings);
             var settingsChanged = _settingsChanged.HaveChanged();
 
             return new SettingsCheckResult(resultDict, settingsChanged);

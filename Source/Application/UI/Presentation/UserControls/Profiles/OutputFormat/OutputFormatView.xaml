@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             help:HelpProvider.HelpTopic="OutputFormat"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeOutputFormatViewModel, IsDesignTimeCreatable=True}">
+
+    <UserControl.Resources>
+        <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
+        <DataTemplate DataType="{x:Type enums:OutputFormat}">
+            <TextBlock Text="{Binding Converter={StaticResource OutputFormatToTextConverter}}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <HeaderedContentControl Header="{Binding Translation.OutputFormat}" Template="{DynamicResource BorderlessHeaderPanelTemplate}">
+            <controls:DropDownButton
+                MinWidth="65"
+                Orientation="Vertical"
+                ItemsSource="{Binding OutputFormats}"
+                BorderThickness="0"
+                IconTemplate="{DynamicResource FileTypeIconDropDownTemplate}"
+                HorizontalAlignment="Left">
+
+                <controls:DropDownButton.ItemContainerStyle>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Header" Value="{Binding Converter={StaticResource OutputFormatToTextConverter}}" />
+                        <Setter Property="Command" Value="{Binding DataContext.SetOutputFormatCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" />
+                        <Setter Property="CommandParameter" Value="{Binding }" />
+                    </Style>
+                </controls:DropDownButton.ItemContainerStyle>
+            </controls:DropDownButton>
+        </HeaderedContentControl>
+    </StackPanel>
+</UserControl>

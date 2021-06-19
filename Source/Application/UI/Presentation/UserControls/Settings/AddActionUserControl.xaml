@@ -4,35 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance designTime:DesignTimeAddActionViewModel, IsDesignTimeCreatable=true}">
     <Button Command="{Binding OpenAddActionOverviewCommand}"
             Style="{DynamicResource LightGreyButton}"
-            Height="40"
-            HorizontalContentAlignment="Left"
-            HorizontalAlignment="Left">
-            <DockPanel FlowDirection="LeftToRight" Margin="0 0">
-                <Canvas Height="20" Width="20">
-                    <Ellipse Stroke="DimGray" StrokeThickness="2"
-                             Fill="Transparent" Height="20" Width="20">
-                    </Ellipse>
-                    <Rectangle Canvas.Top="9"
-                               Canvas.Left="4"
-                               Width="12"
-                               Height="2"
-                               Fill="DimGray" />
-                    <Rectangle Canvas.Left="9"
-                               Canvas.Top="4"
-                               Height="12"
-                               Width="2"
-                               Fill="DimGray" />
-                </Canvas>
+            Height="40">
+            <StackPanel Orientation="Horizontal">
+            <Path Stretch="Uniform" Fill="DimGray" Data="{DynamicResource Plus}" Width="12" Margin="0 2 6 0" />
                 <TextBlock Text="{Binding Translation.AddAction}"
                            Foreground="Black"
-                           FontSize="16"
-                           Margin="5 0 0 1"/>
-            </DockPanel>
+                           FontSize="16" />
+            </StackPanel>
         </Button>
 </UserControl>

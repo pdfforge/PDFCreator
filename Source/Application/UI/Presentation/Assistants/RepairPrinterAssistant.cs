@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants

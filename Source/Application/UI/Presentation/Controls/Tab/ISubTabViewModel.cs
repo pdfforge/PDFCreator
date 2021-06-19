@@ -1,14 +1,13 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.ServiceLocator;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
-using System;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
+using System;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Controls.Tab
 {
-    public interface ISubTabViewModel : IWhitelisted, IHasNotSupportedFeatures, IMountable
+    public interface ISubTabViewModel : IWhitelisted, IMountable
 
     {
         string Title { get; }

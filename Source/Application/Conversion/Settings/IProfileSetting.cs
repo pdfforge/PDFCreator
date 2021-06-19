@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-    public interface IProfileSetting
+    public interface IProfileSetting : INotifyPropertyChanged
     {
         bool Enabled { get; set; }
     }

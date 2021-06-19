@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Sentry</id>
+    <version>3.3.1</version>
+    <authors>Sentry Team and Contributors</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>sentry-nuget.png</icon>
+    <projectUrl>https://sentry.io/</projectUrl>
+    <description>Official SDK for Sentry - Open-source error tracking that helps developers monitor and fix crashes in real time.</description>
+    <releaseNotes>Changes since version 3.3.0
+
+Fixes:
+- Move Description field from Transaction to Trace context (#924) @Tyrrrz
+- Drop unfinished spans from transaction (#923) @Tyrrrz
+- Don't dispose the SDK when UnobservedTaskException is captured (#925) @bruno-garcia
+- Fix spans not inheriting TraceId from transaction (#922) @Tyrrrz
+--&gt;
+      See full changelog at https://github.com/getsentry/sentry-dotnet/blob/main/CHANGELOG.md</releaseNotes>
+    <tags>Sentry GetSentry Error-Reporting Crash-Reporting Exception-Handling</tags>
+    <repository type="git" url="https://github.com/getsentry/sentry-dotnet" commit="da00beec1695f14e33e1c80fada5804d9083cb34" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Microsoft.Bcl.AsyncInterfaces" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Buffers" version="4.5.1" exclude="Build,Analyzers" />
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices.RuntimeInformation" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.0" />
+      <group targetFramework="net5.0" />
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Bcl.AsyncInterfaces" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Buffers" version="4.5.1" exclude="Build,Analyzers" />
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Tasks.Extensions" version="4.5.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework=".NETFramework4.6.1" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

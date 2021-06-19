@@ -42,6 +42,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             return this;
         }
 
+        public TokenViewModelBuilder<T> WithTokenList(Func<ITokenHelper, IList<string>> tokenListSelector)
+        {
+            return WithTokenList(tokenListSelector.Invoke(_tokenHelper));
+        }
+
         public TokenViewModelBuilder<T> WithTokenList(IList<string> tokens)
         {
             _tokenList = tokens;

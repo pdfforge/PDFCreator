@@ -11,11 +11,19 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
 {
     public class DropboxService : IDropboxService
     {
+        private readonly DropboxAppData _dropboxAppData;
+        private readonly IDropboxTokenCache _dropboxTokenCache;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public DropboxService(DropboxAppData dropboxAppData, IDropboxTokenCache dropboxTokenCache)
+        {
+            _dropboxAppData = dropboxAppData;
+            _dropboxTokenCache = dropboxTokenCache;
+        }
 
         public Uri GetAuthorizeUri(string appKey, string redirectUri)
         {
-            return DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Code, appKey, new Uri(redirectUri), string.Empty);
+            return DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Code, appKey, new Uri(redirectUri), string.Empty, tokenAccessType: TokenAccessType.Offline);
         }
 
         public string ParseAccessToken(Uri uri)
@@ -23,6 +31,7 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
             if (IsErrorInUrl(uri))
                 throw new ArgumentException(nameof(uri));
             // make handling if bereaer token is not reachable
+
             var result = DropboxOAuth2Helper.ParseTokenFragment(uri);
 
             return result.AccessToken;
@@ -30,11 +39,11 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
 
         #region Upload without sharing
 
-        public bool UploadFiles(string accessToken, string folder, IEnumerable<string> listOfFilePaths, bool ensureUniqueFilenames, string baseFileName)
+        public bool UploadFiles(string accessToken, string refreshToken, string folder, IEnumerable<string> listOfFilePaths, bool ensureUniqueFilenames, string baseFileName)
         {
             try
             {
-                var dbxClient = MakeInstanceOfClient(accessToken);
+                var dbxClient = MakeInstanceOfClient(accessToken, refreshToken, _dropboxAppData.AppKey);
                 var fullFolder = GetFullFolderToUpload(folder, Path.GetFileNameWithoutExtension(baseFileName), listOfFilePaths.Count());
                 foreach (var pathOfCurrentItem in listOfFilePaths)
                 {
@@ -66,18 +75,18 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
 
         #region Upload with sharing
 
-        public DropboxFileMetaData UploadFileWithSharing(string accessToken, string folder, IEnumerable<string> listOfFilePaths, bool ensureUniqueFilenames, string subFolderForMultipleFiles)
+        public DropboxFileMetaData UploadFileWithSharing(string accessToken, string refreshToken, string folder, IEnumerable<string> listOfFilePaths, bool ensureUniqueFilenames, string subFolderForMultipleFiles)
         {
             try
             {
                 var result = new DropboxFileMetaData();
-                var dbxClient = MakeInstanceOfClient(accessToken);
+                var dbxClient = MakeInstanceOfClient(accessToken, refreshToken, _dropboxAppData.AppKey);
                 var folderToUpload = GetFullFolderToUpload(folder, Path.GetFileNameWithoutExtension(subFolderForMultipleFiles), listOfFilePaths.Count());
                 foreach (var pathOfCurrentItem in listOfFilePaths)
                 {
                     var currentFileName = Path.GetFileName(pathOfCurrentItem);
-                    var fullPuthToUpload = folderToUpload + currentFileName;
-                    var fileMetaData = UploadOneFile(ensureUniqueFilenames, pathOfCurrentItem, dbxClient, fullPuthToUpload);
+                    var fullPathToUpload = folderToUpload + currentFileName;
+                    var fileMetaData = UploadOneFile(ensureUniqueFilenames, pathOfCurrentItem, dbxClient, fullPathToUpload);
                     if (listOfFilePaths.Count() == 1)
                     {
                         result = MakeSharedLinksOfFile(dbxClient, fileMetaData);
@@ -170,22 +179,23 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
             return folder;
         }
 
-        public DropboxUserInfo GetDropUserInfo(string accessToken)
+        public DropboxUserInfo GetDropUserInfo(string accessToken, string refreshToken)
         {
-            var currentUser = MakeInstanceOfClient(accessToken).Users.GetCurrentAccountAsync().Result;
+            var currentUser = MakeInstanceOfClient(accessToken, refreshToken, _dropboxAppData.AppKey).Users.GetCurrentAccountAsync().Result;
             if (currentUser != null)
                 return new DropboxUserInfo
                 {
                     AccessToken = accessToken,
                     AccountId = currentUser.AccountId,
-                    AccountInfo = currentUser.Email + " - " + currentUser.Name.DisplayName
+                    AccountInfo = currentUser.Email + " - " + currentUser.Name.DisplayName,
+                    RefreshToken = refreshToken
                 };
             return new DropboxUserInfo();
         }
 
-        public void RevokeToken(string accountAccessToken)
+        public void RevokeToken(string accountAccessToken, string refreshToken)
         {
-            using (var dbxClient = MakeInstanceOfClient(accountAccessToken))
+            using (var dbxClient = MakeInstanceOfClient(accountAccessToken, refreshToken, _dropboxAppData.AppKey))
             {
                 dbxClient.Auth.TokenRevokeAsync().Wait();
             }
@@ -196,9 +206,21 @@ namespace pdfforge.PDFCreator.Conversion.Dropbox
             return new FileStream(fileUri, FileMode.Open, FileAccess.Read);
         }
 
-        private DropboxClient MakeInstanceOfClient(string accessToken)
+        private DropboxClient MakeInstanceOfClient(string accessToken, string refreshToken, string appKey)
         {
-            return new DropboxClient(accessToken);
+            var clientInstance = new DropboxClient(accessToken, refreshToken, _dropboxTokenCache.GetExpirationDate(accessToken), appKey);
+
+            // if token is expired or unknown
+            if (_dropboxTokenCache.NeedsRefresh(accessToken))
+            {
+                // we send in null to refresh all scopes
+                if (!clientInstance.RefreshAccessToken(null).Result)
+                    throw new DropboxTokenRefreshException();
+
+                // the api does not expose the expiration date after refresh, we have to assume 4 hours
+                _dropboxTokenCache.RefreshAccessToken(accessToken, DateTime.Now.AddHours(4));
+            }
+            return clientInstance;
         }
 
         private bool IsErrorInUrl(Uri eUri)

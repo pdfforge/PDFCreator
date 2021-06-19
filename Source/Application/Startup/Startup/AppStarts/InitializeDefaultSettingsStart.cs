@@ -4,6 +4,8 @@ using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using System;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {

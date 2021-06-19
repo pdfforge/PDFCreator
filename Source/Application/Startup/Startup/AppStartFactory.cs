@@ -80,7 +80,10 @@ namespace pdfforge.PDFCreator.Core.Startup
                 return storeLicenseForAllUsersStart;
             }
 
+            appStartParameters.Silent = commandLineParser.HasArgument("Silent");
+            appStartParameters.Silent |= commandLineParser.HasArgument("s");
             appStartParameters.Merge = commandLineParser.HasArgument("Merge");
+            appStartParameters.Merge |= commandLineParser.HasArgument("m");
             appStartParameters.Printer = FindPrinterName(commandLineParser);
             appStartParameters.Profile = FindProfileParameter(commandLineParser);
             appStartParameters.OutputFile = FindOutputfileParameter(commandLineParser);

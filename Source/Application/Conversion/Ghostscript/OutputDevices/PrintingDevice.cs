@@ -9,32 +9,58 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 {
+    public class PrintingDeviceFactory
+    {
+        private readonly IPrinterWrapper _printer;
+        private readonly IFile _file;
+        private readonly IOsHelper _osHelper;
+        private readonly ICommandLineUtil _commandLineUtil;
+
+        private bool _displayUserNameInSpoolJobTitle = false;
+
+        public void Init(bool displayUserNameInSpoolJobTitle)
+        {
+            _displayUserNameInSpoolJobTitle = displayUserNameInSpoolJobTitle;
+        }
+
+        public PrintingDeviceFactory(IPrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
+        {
+            _printer = printer;
+            _file = file;
+            _osHelper = osHelper;
+            _commandLineUtil = commandLineUtil;
+        }
+
+        public PrintingDevice Create(Job job)
+        {
+            return new PrintingDevice(job, _displayUserNameInSpoolJobTitle, _printer, _file, _osHelper, _commandLineUtil);
+        }
+    }
+
     /// <summary>
     ///     Extends OutputDevice for Printing with installed Windowsprinters
     /// </summary>
     public class PrintingDevice : OutputDevice
     {
         public const string PasswordParameter = "-sPDFPassword=";
-
         private readonly IPrinterWrapper _printer;
+        private readonly bool _displayUserNameInSpoolJobTitle;
 
-        public PrintingDevice(Job job) : base(job, ConversionMode.ImmediateConversion)
-        {
-            _printer = new PrinterWrapper();
-        }
-
-        public PrintingDevice(Job job, IPrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
+        public PrintingDevice(Job job, bool displayUserNameInSpoolJobTitle, IPrinterWrapper printer, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
             : base(job, ConversionMode.ImmediateConversion, file, osHelper, commandLineUtil)
         {
+            _displayUserNameInSpoolJobTitle = displayUserNameInSpoolJobTitle;
             _printer = printer;
         }
 
         protected override void AddDeviceSpecificParameters(IList<string> parameters)
         {
             parameters.Add("-dPrinted");
-            parameters.Add("-sDEVICE=mswinpr2");
+
+            if (Job.Profile.Printing.FitToPage)
+                parameters.Add("-dFitPage");
+
             var printerName = "";
-            //var _printer = new PrinterSettings();
             switch (Job.Profile.Printing.SelectPrinter)
             {
                 case SelectPrinter.DefaultPrinter:
@@ -63,8 +89,17 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     //add nothing to trigger the Windows-Printing-Dialog
                     break;
             }
+
+            parameters.Add("-c");
+
+            var printerParameter = "";
             if (!string.IsNullOrEmpty(printerName))
-                parameters.Add($"-sOutputFile=%printer%{printerName}");
+                printerParameter = $"/OutputFile ({EncodeGhostscriptParametersOctal("%printer%" + printerName)})";
+
+            var spoolJobTitle = _displayUserNameInSpoolJobTitle ? (Job.JobInfo.Metadata.PrintJobAuthor + "|") : "";
+            spoolJobTitle += PathSafe.GetFileName(Job.OutputFiles[0]);
+
+            parameters.Add($"mark {printerParameter} /UserSettings << /DocumentName ({EncodeGhostscriptParametersOctal(spoolJobTitle)}) >> (mswinpr2) finddevice putdeviceprops setdevice");
             parameters.Add("-c");
             parameters.Add("<< /NoCancel true >> setpagedevice ");
 

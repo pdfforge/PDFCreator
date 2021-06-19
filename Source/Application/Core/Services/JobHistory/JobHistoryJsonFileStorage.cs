@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SystemInterface;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.Services.JobHistory
 {

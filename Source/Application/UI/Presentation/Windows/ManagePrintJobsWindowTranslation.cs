@@ -8,7 +8,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string DeleteTooltip { get; private set; } = "Delete print job";
         public string MergeAllButtonContent { get; private set; } = "Merge All";
         public string MergeButtonContent { get; private set; } = "Merge Selected";
-        public string Title { get; private set; } = "Merge Print Jobs";
         public string WindowHeader { get; private set; } = "Reorder and Merge Print Jobs";
         public string DocumentInfoHeader { get; private set; } = "Document Info";
         public string MergedFilesHeader { get; private set; } = "Merged Files";

@@ -1,12 +1,11 @@
 ﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
-using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     internal class DesignTimeSignaturePasswordsViewModel : SignaturePasswordViewModel
     {
-        public DesignTimeSignaturePasswordsViewModel() : base(new DesignTimeTranslationUpdater(), new SignaturePasswordCheck())
+        public DesignTimeSignaturePasswordsViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeSignaturePasswordCheck())
         {
             CertificatePath = "X:\\CertificateFile.psx";
         }

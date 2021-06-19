@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System.Collections.Generic;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using Translatable;
 
 namespace pdfforge.PDFCreator.Core.Startup.StartConditions

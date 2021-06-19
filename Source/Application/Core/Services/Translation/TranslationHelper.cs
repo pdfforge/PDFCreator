@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using SystemInterface.Microsoft.Win32;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 using Translatable.NGettext;
 

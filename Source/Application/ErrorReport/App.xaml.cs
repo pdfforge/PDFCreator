@@ -8,27 +8,42 @@ namespace pdfforge.PDFCreator.ErrorReport
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var errorFile = "";
-            if (e.Args.Length == 1)
-            {
-                errorFile = e.Args[0];
+            if (!TryParseArgs(e.Args, out var errorFile, out var sentryUrl))
+                Environment.Exit(-2); ;
 
-                if (!File.Exists(errorFile))
-                    return;
-            }
-
-            ShowReportWindow(errorFile);
+            ShowReportWindow(errorFile, sentryUrl);
             Environment.Exit(0);
         }
 
-        private void ShowReportWindow(string errorFile)
+        private bool TryParseArgs(string[] args, out string errorFile, out string sentryUrl)
+        {
+            errorFile = null;
+            sentryUrl = null;
+
+            if (args.Length != 2)
+                return false;
+
+            errorFile = args[0];
+
+            if (!File.Exists(errorFile))
+                return false;
+
+            sentryUrl = args[1];
+
+            if (!sentryUrl.StartsWith("https://"))
+                return false;
+
+            return true;
+        }
+
+        private void ShowReportWindow(string errorFile, string sentryUrl)
         {
             try
             {
-                var errorAssistant = new ErrorAssistant("pdfcreator", new Version());
-                var report = errorAssistant.Tartaros.LoadReport(errorFile);
+                var errorHelper = new ErrorHelper("pdfcreator", "PDFCreator", new Version(), sentryUrl);
+                var report = errorHelper.LoadReport(errorFile);
 
-                var err = new ErrorReportWindow(report, errorAssistant.Tartaros);
+                var err = new ErrorReportWindow(report, errorHelper);
                 err.ShowDialog();
 
                 File.Delete(errorFile);

@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         public IconList Icon => IconList.DebugSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => DebugIsDisabled;
-        public bool HasNotSupportedFeatures => false;
 
         public DebugSettingsViewModel(ITranslationUpdater translationUpdater, ICurrentSettings<ApplicationSettings> applicationSettings, IGpoSettings gpoSettings)
             : base(translationUpdater)

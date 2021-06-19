@@ -20,7 +20,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     ///     Executes a script or executable after the conversion process.
     ///     The script receives the full paths to all created files and a string with user-configurable parameters as arguments
     /// </summary>
-    public class ScriptAction : IPostConversionAction, ICheckable, IScriptActionHelper
+    public class ScriptAction : ActionBase<Scripting>, IPostConversionAction, IScriptActionHelper
     {
         private readonly IFile _file;
         private readonly IPathUtil _pathUtil;
@@ -29,6 +29,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private readonly IProcessStarter _processStarter;
 
         public ScriptAction(IPath path, IProcessStarter processStarter, IFile file, IPathUtil pathUtil)
+            : base(p => p.Scripting)
         {
             _path = path;
             _processStarter = processStarter;
@@ -41,12 +42,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         /// </summary>
         /// <param name="job">The current job</param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             _logger.Debug("Launched Script-Action");
 
-            ApplyPreSpecifiedTokens(job);
-            var actionResult = Check(job.Profile, job.Accounts, CheckLevel.Job);
+            var settings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
+            var actionResult = Check(job.Profile, settings, CheckLevel.RunningJob);
             if (!actionResult)
                 return actionResult;
 
@@ -96,15 +97,18 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
         }
 
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.Scripting.Enabled;
-        }
-
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             job.Profile.Scripting.ScriptFile = ComposeScriptPath(job.Profile.Scripting.ScriptFile, job.TokenReplacer);
         }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
 
         public string ComposeScriptPath(string path, TokenReplacer tokenReplacer)
         {
@@ -157,12 +161,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         /// <param name="accounts">accounts are not used here, but are required for common ICheckable</param>
         /// <param name="checkLevel"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             if (!IsEnabled(profile))
                 return new ActionResult();
 
-            var isJobLevelCheck = checkLevel == CheckLevel.Job;
+            var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
             if (string.IsNullOrWhiteSpace(profile.Scripting.ScriptFile))
                 return new ActionResult(ErrorCode.Script_NoScriptFileSpecified);

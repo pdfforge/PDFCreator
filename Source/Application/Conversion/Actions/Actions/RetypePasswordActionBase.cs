@@ -2,19 +2,24 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using System;
 using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public abstract class RetypePasswordActionBase : IAction, ICheckable
+    public abstract class RetypePasswordActionBase<TSetting> : ActionBase<TSetting> where TSetting : class, IProfileSetting
     {
+        protected RetypePasswordActionBase(Func<ConversionProfile, TSetting> settingsGetter)
+            : base(settingsGetter)
+        { }
+
         protected abstract ActionResult DoActionProcessing(Job job);
 
         //todo: Test this
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
-            ApplyPreSpecifiedTokens(job);
-            var actionResult = Check(job.Profile, job.Accounts, CheckLevel.Job);
+            var settings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
+            var actionResult = Check(job.Profile, settings, CheckLevel.RunningJob);
             if (!actionResult)
                 return actionResult;
 
@@ -44,14 +49,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return actionResult;
         }
 
-        public abstract bool IsEnabled(ConversionProfile profile);
-
         protected abstract void SetPassword(Job job, string password);
 
         protected abstract string PasswordText { get; }
-
-        public abstract void ApplyPreSpecifiedTokens(Job job);
-
-        public abstract ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel);
     }
 }

@@ -171,7 +171,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         public IconList Icon { get; set; } = IconList.LicenseSettings;
         public bool HiddenByGPO => _gpoSettings.HideLicenseTab;
         public bool BlockedByGPO => false;
-        public bool HasNotSupportedFeatures => false;
 
         protected override void OnTranslationChanged()
         {

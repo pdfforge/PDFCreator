@@ -22,7 +22,6 @@ using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Conversion.Settings.Workflow;
 using pdfforge.PDFCreator.Core.Communication;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Controller.Routing;
@@ -65,7 +64,6 @@ using pdfforge.PDFCreator.UI.Presentation.Converter;
 using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Components.Actions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.NavigationChecks;
@@ -85,27 +83,24 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHint
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Dropbox;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.FTP;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.HTTP;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailClient;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.MailSmtp;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Dropbox;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.FTP;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.HTTP;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailClient;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailSmtp;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
@@ -121,11 +116,7 @@ using pdfforge.PDFCreator.UI.PrismHelper;
 using pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector;
 using pdfforge.PDFCreator.UI.PrismHelper.Tab;
 using pdfforge.PDFCreator.UI.RssFeed;
-using pdfforge.PDFCreator.UI.ViewModels;
-using pdfforge.PDFCreator.UI.ViewModels.Helper;
-using pdfforge.PDFCreator.UI.Views.Windows;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Ftp;
 using pdfforge.PDFCreator.Utilities.IO;
 using pdfforge.PDFCreator.Utilities.Pdf;
 using pdfforge.PDFCreator.Utilities.Process;
@@ -150,6 +141,12 @@ using SystemInterface.Microsoft.Win32;
 using SystemWrapper;
 using SystemWrapper.IO;
 using SystemWrapper.Microsoft.Win32;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
+using pdfforge.PDFCreator.UI.ViewModels;
+using pdfforge.PDFCreator.UI.ViewModels.Helper;
+using pdfforge.PDFCreator.UI.Views.Windows;
 using Translatable;
 using FtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpAccountView;
 using InputBoxUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl;
@@ -159,6 +156,7 @@ using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
 using SmtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpAccountView;
 using StoreLicenseForAllUsersControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersControl;
 using WorkflowEditorTestPageUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.WorkflowEditorTestPageUserControl;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
 {
@@ -181,7 +179,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IHightlightColorRegistration>(() => new HightlightColorRegistration(EditionHighlightColor));
             container.RegisterSingleton(() => new LicenseOptionProvider(HideLicensing));
             container.RegisterSingleton(() => EditionHelper);
-            container.RegisterSingleton(() => new DropboxAppData(Data.Decrypt(DropboxAppKey.Encrypted_DropboxAppKey)));
+            container.RegisterSingleton<DropboxAppData>(() => new DropboxAppData(Data.Decrypt(DropboxAppKey.Encrypted_DropboxAppKey)));
+            container.RegisterSingleton<IDropboxTokenCache, DropboxTokenCache>();
 
             var regPath = @"Software\pdfforge\PDFCreator";
             container.RegisterSingleton<IInstallationPathProvider>(() => new InstallationPathProvider(regPath, regPath + @"\Settings", "{0001B4FD-9EA3-4D90-A79E-FD14BA3AB01D}", RegistryHive.CurrentUser));
@@ -201,8 +200,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IInteractiveProfileChecker, InteractiveProfileChecker>();
             container.Register<IInteractiveFileExistsChecker, InteractiveFileExistsChecker>();
 
-            container.RegisterSingleton<IRecommendArchitectAssistant, RecommendArchitectAssistantAssistant>();
-            container.RegisterSingleton<IRecommendArchitectUpgrade, RecommendArchitectUpgrade>();
+            container.RegisterSingleton<IRecommendArchitectAssistant, RecommendArchitectAssistant>();
             container.Register<IStartupActionHandler, StartupActionHandler>();
             container.RegisterSingleton<IInteractionInvoker, InteractionInvoker>();
 
@@ -218,6 +216,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IActionManager, ActionManager>();
 
+            container.Register<ICommandLineUtil, CommandLineUtil>();
+            container.Register<IPrinterWrapper, PrinterWrapper>();
             container.Register<IJobPrinter, GhostScriptPrinter>();
 
             container.Register<IJobDataUpdater, JobDataUpdater>();
@@ -291,8 +291,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IFileAssoc, FileAssoc>();
             container.RegisterSingleton<IHashUtil, HashUtil>();
-
-            container.Register<ISignaturePasswordCheck, SignaturePasswordCheck>();
+            container.RegisterSingleton<ISignaturePasswordCheck, SignaturePasswordCheckCached>();
 
             container.Register<IWelcomeSettingsHelper, WelcomeSettingsHelper>();
 
@@ -327,7 +326,11 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IJobHistoryActiveRecord, JobHistoryActiveRecord>();
 
             container.RegisterSingleton<IDefaultSettingsBuilder, PDFCreatorDefaultSettingsBuilder>();
-            container.RegisterInitializer<PDFCreatorDefaultSettingsBuilder>(x => x.WithEmailSignature = EditionHelper.IsFreeEdition);
+            container.RegisterInitializer<PDFCreatorDefaultSettingsBuilder>(x =>
+            {
+                x.WithEmailSignature = EditionHelper.IsFreeEdition;
+                x.EncryptionLevel = EditionHelper.EncryptionLevel;
+            });
 
             container.RegisterSingleton<ISettingsBackup, SettingsBackup>();
             container.RegisterSingleton<IMigrationStorageFactory>(() =>
@@ -357,7 +360,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IWinInetHelper, WinInetHelper>();
             container.RegisterSingleton<ITitleReplacerProvider, SettingsTitleReplacerProvider>();
             container.RegisterSingleton<IUpdateChangeParser, UpdateChangeParser>();
-            container.Register<IActionFacadeDescriptionHelper, ActionFacadeDescriptionHelper>();
 
             container.RegisterSingleton<IMainWindowThreadLauncher, MainShellLauncher>();
             container.Register<ILastSaveDirectoryHelper, LastSaveDirectoryHelper>();
@@ -379,7 +381,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IBrowseFileCommandBuilder, BrowseFileCommandBuilder>();
 
             container.Register<IPdfVersionHelper, PdfVersionHelper>();
-            container.Register<IPdfProcessingHelper, PdfProcessingHelper>();
             container.Register<IFontPathHelper, FontPathHelper>();
 
             container.Register<IJobFolderBuilder, JobFolderBuilder>();
@@ -433,17 +434,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                return new ApplicationSettingsProvider(() => settings.Settings.ApplicationSettings);
            });
 
-            container.RegisterSingleton<IActionOrderHelper>(() =>
-            {
-                var list = container
-                    .GetInstance<IEnumerable<IActionFacade>>()
-                    .OfType<IPresenterActionFacade>()
-                    .Select(x => x.SettingsType.Name)
-                    .ToList();
-
-                return new ActionOrderHelper(list);
-            });
-
             container.RegisterInitializer<ShellManager>(shellManager =>
             {
                 shellManager.SetMainShellRegionToViewRegister(MainShellViewRegister());
@@ -468,17 +458,19 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             });
         }
 
-        protected virtual List<(string, Type)> MainShellViewRegister()
+        protected List<(string, Type)> MainShellViewRegister()
         {
             return new List<(string, Type)>
             {
                 (RegionNames.MainRegion, typeof(HomeView)),
                 (RegionNames.HomeViewBannerRegion, typeof(BannerView)),
-                (RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
-                (RegionNames.ProfileSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
                 (RegionNames.RssFeedRegion, typeof(RssFeedView)),
+                (RegionNames.SaveOutputFormatMetadataView, typeof(SaveOutputFormatMetadataView)),
+                (RegionNames.WorkflowEditorView, typeof(WorkflowEditorView)),
+                (RegionNames.TestButtonWorkflowEditorRegion, typeof(WorkflowEditorTestPageUserControl)),
                 (RegionNames.AddActionWorkflowEditorRegion, typeof(AddActionUserControl)),
-                (RegionNames.TestButtonWorkflowEditorRegion, typeof(WorkflowEditorTestPageUserControl))
+                (RegionNames.ProfileSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
+                (RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl))
             };
         }
 
@@ -657,198 +649,91 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private void RegisterActions(Container container)
         {
-            //Register empty collection
+            container.Register<ForwardToFurtherProfileActionBase, ForwardToFurtherProfileAction>();
+            container.Register<IForwardToFurtherProfileViewModel, ForwardToFurtherProfileViewModel>();
+
+            //Register Actions in default order
             container.Collection.Register<IAction>(new[]
             {
-                typeof(AttachmentAction),
+                // preparation
+                typeof(UserTokensAction),
+                typeof(ForwardToFurtherProfileAction),
+
+                // modification
                 typeof(CoverAction),
+                typeof(AttachmentAction),
                 typeof(BackgroundAction),
                 typeof(WatermarkAction),
                 typeof(StampAction),
                 typeof(EncryptionAction),
                 typeof(SigningAction),
-                typeof(ScriptAction),
+
+                // sending
                 typeof(DefaultViewerAction),
-                typeof(DropboxAction),
-                typeof(EMailClientAction),
-                typeof(FtpAction),
+                typeof(ScriptAction),
                 typeof(PrintingAction),
-                typeof(HttpAction),
+                typeof(EMailClientAction),
                 typeof(SmtpMailAction),
-                typeof(ForwardToFurtherProfileAction)
+                typeof(DropboxAction),
+                typeof(FtpAction),
+                typeof(HttpAction),
             });
 
-            SetupActionFacade(container);
+            container.RegisterSingleton<IActionOrderHelper>(() =>
+            {
+                var list = container
+                    .GetInstance<IEnumerable<IAction>>()
+                    .Select(x => x.SettingsType.Name);
+
+                return new ActionOrderHelper(list);
+            });
+
+            container.Register<IActionLocator, ActionLocator>();
+
+            // The order determines the order in which the actions will be shown in the UI
+            var facades = new[]
+            {
+                // pre action
+                typeof(PresenterActionFacade<UserTokenUserControl>),
+                typeof(PresenterActionFacade<ForwardToFurtherProfileView>),
+
+                // modify action
+                typeof(PresenterActionFacade<CoverUserControl>),
+                typeof(PresenterActionFacade<AttachmentUserControl>),
+                typeof(PresenterActionFacade<StampUserControl>),
+                typeof(PresenterActionFacade<BackgroundUserControl>),
+                typeof(PresenterActionFacade<WatermarkView>),
+                typeof(PresenterActionFacade<EncryptionUserControl>),
+                typeof(PresenterActionFacade<SigningUserControl>),
+
+                // send action
+                typeof(PresenterActionFacade<OpenViewerActionUserControl>),
+                typeof(PresenterActionFacade<MailClientUserControl>),
+                typeof(PresenterActionFacade<PrintUserControl>),
+                typeof(PresenterActionFacade<ScriptUserControl>),
+                typeof(PresenterActionFacade<FTPActionUserControl>),
+                typeof(PresenterActionFacade<SmtpActionView>),
+                typeof(PresenterActionFacade<HttpActionUserControl>),
+                typeof(PresenterActionFacade<DropboxUserControl>),
+            };
+
+            container.Collection.Register<IPresenterActionFacade>(facades);
+
+            foreach (var facadeType in facades)
+            {
+                var viewType = facadeType.GenericTypeArguments[0];
+                container.RegisterTypeForNavigation(viewType);
+            }
 
             container.Register<ISmtpMailAction, SmtpMailAction>();
             container.Register<IEMailClientAction, EMailClientAction>();
             container.Register<IDefaultViewerAction, DefaultViewerAction>();
+
+            RegisterActionInitializer(container);
         }
 
-        private void SetupActionFacade(Container container)
-        {
-            container.Register<IEnumerable<IActionFacade>>(() =>
-            {
-                var list = new List<IActionFacade>
-                {
-                    CreateActionFacade<ProfileModifyTranslation, ActionInfoTextTranslation, BackgroundPage>( container,
-                        nameof(BackgroundUserControl),
-                        typeof(BackgroundAction),
-                        conversionProfile => conversionProfile.BackgroundPage,
-                        translation => translation.Background,
-                        infoText => infoText.Background
-                    ),
-                    CreateActionFacade<ProfileModifyTranslation, ActionInfoTextTranslation, Watermark>(container,
-                        nameof(WatermarkView),
-                        typeof(WatermarkAction),
-                        conversionProfile => conversionProfile.Watermark,
-                        translation => translation.Watermark,
-                        infoText => infoText.Watermark
-                    ),
-                    CreateActionFacade<ProfileModifyTranslation, ActionInfoTextTranslation, AttachmentPage>( container,
-                        nameof(AttachmentUserControl),
-                        typeof(AttachmentAction),
-                        conversionProfile => conversionProfile.AttachmentPage,
-                        translation => translation.Attachment,
-                        infoText => infoText.Attachment
-                    ),
-                    CreateActionFacade<ProfileModifyTranslation, ActionInfoTextTranslation, CoverPage>( container,
-                        nameof(CoverUserControl),
-                        typeof(CoverAction),
-                        conversionProfile => conversionProfile.CoverPage,
-                        translation => translation.Cover,
-                        infoText => infoText.Cover
-                    ),
-                    CreateActionFacade<ProfileModifyTranslation, ActionInfoTextTranslation, Stamping>( container,
-                        nameof(StampUserControl),
-                        typeof(StampAction),
-                        conversionProfile => conversionProfile.Stamping,
-                        translation => translation.Stamp,
-                        infoText => infoText.Stamp
-                    ),
-                    CreateActionFacade<PrintJobViewTranslation, ActionInfoTextTranslation, Ftp>( container,
-                        nameof(FTPActionUserControl),
-                        typeof(FtpAction),
-                        conversionProfile => conversionProfile.Ftp,
-                        translation => translation.Ftp,
-                        infoText => infoText.Ftp
-                    ),
-                    CreateActionFacade<PrintJobViewTranslation, ActionInfoTextTranslation, EmailSmtpSettings>( container,
-                        nameof(SmtpActionUserControl),
-                        typeof(SmtpMailAction),
-                        conversionProfile => conversionProfile.EmailSmtpSettings,
-                        translation => translation.Smtp,
-                        infoText => infoText.Smtp
-                    ),
-                    CreateActionFacade<PrintTabTranslation, ActionInfoTextTranslation, Printing>( container,
-                        nameof(PrintUserControl),
-                        typeof(PrintingAction),
-                        conversionProfile => conversionProfile.Printing,
-                        translation => translation.Print,
-                        infoText => infoText.Print
-                    ),
-                    CreateActionFacade<MailTranslation, ActionInfoTextTranslation, EmailClientSettings>( container,
-                        nameof(MailClientUserControl),
-                        typeof(EMailClientAction),
-                        conversionProfile => conversionProfile.EmailClientSettings,
-                        translation => translation.Email,
-                        infoText => infoText.Email
-                    ),
-                    CreateActionFacade<ProfileAdvancedTranslation, ActionInfoTextTranslation, Scripting>( container,
-                        nameof(ScriptUserControl),
-                        typeof(ScriptAction),
-                        conversionProfile => conversionProfile.Scripting,
-                        translation => translation.Script,
-                        infoText => infoText.Script
-                    ),
-                    CreateActionFacade<PrintJobViewTranslation, ActionInfoTextTranslation, DropboxSettings>( container,
-                        nameof(DropboxUserControl),
-                        typeof(DropboxAction),
-                        conversionProfile => conversionProfile.DropboxSettings,
-                        translation => translation.Dropbox,
-                        infoText => infoText.Dropbox
-                    ),
-                    CreateActionFacade<HttpTranslation, ActionInfoTextTranslation, HttpSettings>( container,
-                        nameof(HttpActionUserControl),
-                        typeof(HttpAction),
-                        conversionProfile => conversionProfile.HttpSettings,
-                        translation => translation.HttpSubTabTitle,
-                        infoText => infoText.Http
-                    ),
-                    CreateActionFacade<ProfileAdvancedTranslation, ActionInfoTextTranslation, UserTokens>( container,
-                        nameof(UserTokenUserControl),
-                        typeof(UserTokensAction),
-                        conversionProfile => conversionProfile.UserTokens,
-                        translation => translation.UserToken,
-                        infoText => infoText.UserTokens
-                    ),
-                    CreateActionFacade<ForwardToFurtherProfileTranslation, ActionInfoTextTranslation, ForwardToFurtherProfile>(container,
-                        nameof(ForwardToFurtherProfileView),
-                        typeof(ForwardToFurtherProfileAction),
-                        conversionProfile => conversionProfile.ForwardToFurtherProfile,
-                        translation => translation.DisplayName,
-                        infoText => infoText.ForwardToFurtherProfile
-                    ),
-                    CreateActionFacade<ProfileSecureTranslation, ActionInfoTextTranslation, Security>( container,
-                        nameof(EncryptUserControl),
-                        typeof(EncryptionAction),
-                        conversionProfile => conversionProfile.PdfSettings.Security,
-                        translation => translation.Encryption,
-                        infoText => infoText.Encryption,
-                        ActionRestrictionEnum.Security
-                    ),
-                    CreateActionFacade<ProfileSecureTranslation, ActionInfoTextTranslation, Signature>( container,
-                        nameof(SignatureUserControl),
-                        typeof(SigningAction),
-                        conversionProfile => conversionProfile.PdfSettings.Signature,
-                        translation => translation.Signature,
-                        infoText => infoText.Signature,
-                        ActionRestrictionEnum.Signature
-                    ),
-                    CreateActionFacade<OpenViewerActionTranslation, OpenViewerActionTranslation, OpenViewer>( container,
-                        nameof(OpenViewerActionUserControl),
-                        typeof(DefaultViewerAction),
-                        conversionProfile => conversionProfile.OpenViewer,
-                        translation => translation.OpenFileActionTitle,
-                        infoText => infoText.OpenInViewer
-                    )
-                };
-
-                return list;
-            });
-        }
-
-        private PresenterActionFacade CreateActionFacade<TTranslation, TInfoText, TSetting>(
-            Container simpleContainer,
-            string viewName,
-            Type actionType,
-            Expression<Func<ConversionProfile, TSetting>> getSettingsFunc,
-            Func<TTranslation, string> translationFunc,
-            Func<TInfoText, string> infoTextFunc,
-            ActionRestrictionEnum restriction = ActionRestrictionEnum.None)
-            where TTranslation : ITranslatable, new()
-            where TInfoText : ITranslatable, new()
-            where TSetting : IProfileSetting
-        {
-            var actionFacadeBuilder = new PresentationActionFacadeBuilder();
-            var actionFacadeDescriptionHelper = simpleContainer.GetInstance<IActionFacadeDescriptionHelper>();
-            var translationUpdater = simpleContainer.GetInstance<ITranslationUpdater>();
-            var currentSettingsProvider = simpleContainer.GetInstance<ICurrentSettingsProvider>();
-
-            var settingsActionComponent = actionFacadeBuilder.AddSettings(currentSettingsProvider, typeof(TSetting), getSettingsFunc);
-            actionFacadeBuilder.AddAction(actionType);
-            actionFacadeBuilder.AddView(viewName);
-            actionFacadeBuilder.AddDescription(actionFacadeDescriptionHelper, settingsActionComponent);
-            actionFacadeBuilder.AddTranslation(translationUpdater, ActionTranslationEnum.Translation, translationFunc);
-            actionFacadeBuilder.AddTranslation(translationUpdater, ActionTranslationEnum.InfoText, infoTextFunc);
-
-            if (restriction != ActionRestrictionEnum.None)
-            {
-                actionFacadeBuilder.AddRestrictable(restriction, settingsActionComponent);
-            }
-
-            return actionFacadeBuilder.Build() as PresenterActionFacade;
-        }
+        protected virtual void RegisterActionInitializer(Container container)
+        { }
 
         private void RegisterFolderProvider(Container container)
         {
@@ -897,7 +782,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private void RegisterSettingsHelper(Container container)
         {
-            container.RegisterSingleton<ISettingsManager, SettingsManager>();
+            container.RegisterSingleton<ISettingsManager, PDFCreatorSettingsManager>();
 
             // Register the same SettingsHelper for SettingsHelper and ISettingsProvider
             var registration = Lifestyle.Singleton.CreateRegistration(CreateSettingsProvider, container);
@@ -931,15 +816,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(WorkflowEditorOverlayInteraction), typeof(WorkflowEditorOverlayView));
             ViewRegistry.RegisterInteraction(typeof(AddActionOverlayInteraction), typeof(AddActionOverlayView));
             ViewRegistry.RegisterInteraction(typeof(SelectFileInteraction), typeof(SelectFileView));
-        }
-
-        public ProfileSettingsTabs DefineProfileSettingsTabs()
-        {
-            var profileTabs = new ProfileSettingsTabs();
-
-            ModifyProfileSettingsTabs(profileTabs);
-
-            return profileTabs;
+            ViewRegistry.RegisterInteraction(typeof(EditEmailDifferingFromInteraction), typeof(EditEmailDifferingFromView));
         }
 
         public virtual ApplicationSettingsTabs DefineApplicationSettingsTabs()
@@ -949,10 +826,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ModifyApplicationSettingsTabs(applicationSettingsTabs);
 
             return applicationSettingsTabs;
-        }
-
-        protected virtual void ModifyProfileSettingsTabs(TabRegion profileSettingsTabs)
-        {
         }
 
         protected virtual Type[] GetStartupActions()
@@ -1008,13 +881,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private void RegisterPrismTabs(Container container)
         {
-            var profileSettingsTabs = DefineProfileSettingsTabs();
             var applicationSettingsTabs = DefineApplicationSettingsTabs();
-
-            container.RegisterSingleton<IProfileSettingsTabs>(() => profileSettingsTabs);
             container.RegisterSingleton<IApplicationSettingsTabs>(() => applicationSettingsTabs);
-
-            profileSettingsTabs.RegisterNavigationViews(container);
             applicationSettingsTabs.RegisterNavigationViews(container);
         }
     }

@@ -24,7 +24,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         public string LicenseStatusError { get; private set; } = "Error while authenticating license.";
         public string LicenseStatusInvalidLicenseKey { get; private set; } = "The license key is not valid. Please enter a new license key.";
         public string LicenseStatusLicenseExpired { get; private set; } = "The license has expired. Please renew your license.";
-        public string LicenseStatusNoLicense { get; private set; } = "No license available. Please enter a new license key.";
         public string LicenseStatusNoLicenseKey { get; private set; } = "No license key available. Please enter a new license key.";
         public string LicenseStatusNoServerConnection { get; private set; } = "There was a problem with the connection to the license server.";
         public string LicenseStatusNumberOfActivationsExceeded { get; private set; } = "The license has exceeded the allowed number of activated machines.";

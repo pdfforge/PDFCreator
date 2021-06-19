@@ -50,7 +50,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
             _printFileHelper.PdfCreatorPrinter = GetValidPrinterName();
 
-            if (!_printFileHelper.AddFile(PrintFile))
+            if (!_printFileHelper.AddFile(PrintFile, AppStartParameters.Silent))
             {
                 _logger.Warn("The file \"{0}\" is not printable!", PrintFile);
                 return Task.FromResult(ExitCode.PrintFileNotPrintable);
@@ -64,7 +64,7 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
                 profile = AppStartParameters.Profile;
             _storedParametersManager.SaveParameterSettings(AppStartParameters.OutputFile, profile, PrintFile);
 
-            if (!_printFileHelper.PrintAll())
+            if (!_printFileHelper.PrintAll(AppStartParameters.Silent))
             {
                 _logger.Error("The file \"{0}\" could not be printed!", PrintFile);
                 return Task.FromResult(ExitCode.PrintFileCouldNotBePrinted);

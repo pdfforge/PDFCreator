@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using pdfforge.PDFCreator.Conversion.Settings.Enums;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
@@ -12,24 +6,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
     {
         public bool IsDefault => Guid == ProfileGuids.DEFAULT_PROFILE_GUID;
 
-        public bool HasEnabledSecurity => PdfSettings.Security.Enabled && !HasNotSupportedEncryption();
-
-        public bool HasNotSupportedEncryption()
+        public bool IsFirstActionBeforeSecond(string nameOfFirstActionSetting, string nameOfSecondActionSettings)
         {
-            return PdfSettings.Security.Enabled && OutputFormat != OutputFormat.Pdf;
+            var firstIndex = ActionOrder.IndexOf(nameOfFirstActionSetting);
+            if (firstIndex < 0)
+                return false;
+            var secondIndex = ActionOrder.IndexOf(nameOfSecondActionSettings);
+            return firstIndex < secondIndex;
         }
 
-        public bool HasEnabledSendActions =>
-
-            Ftp.Enabled
-            || EmailClientSettings.Enabled
-            || HttpSettings.Enabled
-            || EmailSmtpSettings.Enabled
-            || DropboxSettings.Enabled
-            || Printing.Enabled;
-
+        public bool SupportsMetadata => OutputFormat.IsPdf();
     }
-
 }
-
-

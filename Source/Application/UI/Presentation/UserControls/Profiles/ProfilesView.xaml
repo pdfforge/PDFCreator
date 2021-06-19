@@ -1,16 +1,15 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfilesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:regions="http://prismlibrary.com/"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
+             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance profiles:DesignTimeProfilesViewModel, IsDesignTimeCreatable=true}"
@@ -26,55 +25,78 @@
         </CollectionViewSource>
         <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" FalseValue="Collapsed" TrueValue="Visible" />
     </UserControl.Resources>
-    <Grid>
-        <Grid Background="White">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"
+        <Border Grid.Row="0"
                 BorderBrush="{DynamicResource PdfforgeDarkGreyColorBrush}" Background="White" SnapsToDevicePixels="True" BorderThickness="0 0 0 1" Panel.ZIndex="1">
-                <Grid Margin="30">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Translation.ProfileLabelText}" VerticalAlignment="Center" />
+            <Grid Margin="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Translation.ProfileLabelText}" VerticalAlignment="Center" />
 
-                    <profiles:ProfilesComboBox Profiles="{Binding Profiles}"
+                <profiles:ProfilesComboBox Profiles="{Binding Profiles}"
                                                SelectedProfile="{Binding SelectedProfile }"
                                                Grid.Column="1" Margin="10 0" />
 
-                    <Grid Grid.Column="4" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RenameProfileButtonIsGpoEnabled}" Margin="10 0">
-                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RenameButton}"
+                <Grid Grid.Column="4" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RenameProfileButtonIsGpoEnabled}" Margin="10 0">
+                    <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RenameButton}"
                             Command="{Binding ProfileRenameCommand}" Height="33" VerticalAlignment="Bottom" />
-                    </Grid>
-                    <Grid Grid.Column="5" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding AddProfileButtonIsGpoEnabled}" Margin="10 0">
-                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.AddButton}"
-                                Command="{Binding ProfileAddCommand}" Height="33" />
-                    </Grid>
-                    <Grid Grid.Column="6" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RemoveProfileButtonIsGpoEnabled}" Margin="10 0">
-                        <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RemoveButton}"
-                                Command="{Binding ProfileRemoveCommand}" Height="33" />
-                    </Grid>
                 </Grid>
-            </Border>
-
-            <Grid Grid.Row="1">
-                <UserControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileLayoutRegion}"
-                             Background="White" />
-                <gpo:GPOLockLayer IsLockedByGpo="{ Binding EditProfileIsGpoDisabled }" />
+                <Grid Grid.Column="5" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding AddProfileButtonIsGpoEnabled}" Margin="10 0">
+                    <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.AddButton}"
+                                Command="{Binding ProfileAddCommand}" Height="33" />
+                </Grid>
+                <Grid Grid.Column="6" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding RemoveProfileButtonIsGpoEnabled}" Margin="10 0">
+                    <Button Style="{DynamicResource LightGreyButton}" Content="{Binding Translation.RemoveButton}"
+                                Command="{Binding ProfileRemoveCommand}" Height="33" />
+                </Grid>
             </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="0 0 20 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" Name="Column0" />
+                        <ColumnDefinition Width="2*" Name="Column1" />
+                        <ColumnDefinition Width="20*" Name="Column2" />
+                    </Grid.ColumnDefinitions>
+                    <UserControl Grid.Column="0"
+                                     regions:RegionManager.RegionName="{x:Static presentation:RegionNames.SaveOutputFormatMetadataView}" />
+                    <UserControl Grid.Column="2"
+                                     regions:RegionManager.RegionName="{x:Static presentation:RegionNames.WorkflowEditorView}" />
+                </Grid>
+            </ScrollViewer>
         </Grid>
 
-        <UserControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileSaveCancelButtonsRegion}"
-                     VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                     Margin="0 0 30 10" />
+        <Grid Grid.Row="2" Margin="0 10 20 20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=Column0, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=Column1, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=Column2, Path=Width}" />
+            </Grid.ColumnDefinitions>
+
+            <UserControl Grid.Column="0" HorizontalAlignment="Left" Margin="20 0 0 0"
+                             regions:RegionManager.RegionName="{x:Static presentation:RegionNames.TestButtonWorkflowEditorRegion}" />
+            <UserControl Grid.Column="2" HorizontalAlignment="Left"
+                             regions:RegionManager.RegionName="{x:Static presentation:RegionNames.AddActionWorkflowEditorRegion}" />
+            <UserControl Grid.Column="2" HorizontalAlignment="Right"
+                             regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileSaveCancelButtonsRegion}" />
+        </Grid>
+
+        <gpo:GPOLockLayer Grid.Row="1" Grid.RowSpan="2" IsLockedByGpo="{ Binding EditProfileIsGpoDisabled }" />
     </Grid>
 </UserControl>

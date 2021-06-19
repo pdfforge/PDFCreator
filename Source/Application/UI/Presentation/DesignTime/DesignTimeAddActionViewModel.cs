@@ -6,7 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeAddActionViewModel : AddActionViewModel
     {
-        public DesignTimeAddActionViewModel() : base(new DesignTimeCommandLocator(), new InteractionRequest(), new DesignTimeTranslationUpdater())
+        public DesignTimeAddActionViewModel() : base(new InteractionRequest(), new DesignTimeTranslationUpdater())
         {
         }
     }

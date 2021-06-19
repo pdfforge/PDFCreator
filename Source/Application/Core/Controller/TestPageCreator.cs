@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using pdfforge.PDFCreator.Utilities;
+using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Controller
 {
@@ -25,6 +22,7 @@ namespace pdfforge.PDFCreator.Core.Controller
         {
             var sb = new StringBuilder(Testpage.TestPage);
             sb.Replace("[INFOEDITION]", _applicationNameProvider.EditionName.ToUpper());
+            sb.Replace("[CURRENTYEAR]", DateTime.Now.Year.ToString());
             sb.Replace("[INFOTITLE]", "PDFCreator " + _versionHelper.ApplicationVersion);
             sb.Replace("[INFODATE]", DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
             sb.Replace("[INFOAUTHORS]", "pdfforge");

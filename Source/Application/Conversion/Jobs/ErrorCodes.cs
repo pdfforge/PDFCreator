@@ -73,6 +73,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The selected printer is invalid.")]
         Printing_InvalidSelectedPrinter = 13101,
 
+        [Translation("The selected printer leads to an infinite loop.")]
+        Printing_CyclicDependencyError = 13102,
+        
         [Translation("Error while printing the file.")]
         Printing_GenericError = 13999,
 
@@ -451,16 +454,16 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Exception during post-conversion CS-Script.")]
         CustomScriptPostConversion_Exception = 45002,
 
-        [Translation("Error during forward to further profile action.")]
+        [Translation("Error during forwarding action.")]
         ForwardToFurtherProfile_GeneralError = 46000,
 
-        [Translation("The forward to further profile action forwards to itself.")]
+        [Translation("The forwarding action forwards to itself.")]
         ForwardToFurtherProfile_ForwardToItself = 46001,
 
-        [Translation("The forward to further profile action is linked to an unknown profile.")]
+        [Translation("The forwarding action is linked to an unknown target profile.")]
         ForwardToFurtherProfile_UnknownProfile = 46002,
 
-        [Translation("The forward to further profile action causes a circular dependency between the profiles.")]
+        [Translation("The forwarding action causes a circular dependency between the profiles.")]
         ForwardToFurtherProfile_CircularDependency = 46003,
 
         [Translation("No watermark file is specified.")]

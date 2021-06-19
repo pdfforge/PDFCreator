@@ -1,22 +1,18 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-             xmlns:printJob="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob"
-             xmlns:behavior="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Behavior"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
-             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
-             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-             xmlns:regions="http://prismlibrary.com/"
-             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}"
@@ -207,19 +203,12 @@
                 </DockPanel>
             </controls:Badged>
 
-            <DockPanel Height="50" Width="100" Margin="10 15" LastChildFill="True">
-                <buttons:ColoredDropDownButton DockPanel.Dock="Right"
-                                               Width="21"
-                                               ItemsSource="{Binding SendDropDownCommands}"
-                                               PrimaryColor="#333333"
-                                               SecondaryColor="White" />
-                <buttons:CustomColoredButton DockPanel.Dock="Left"
+            <buttons:CustomColoredButton Height="50" Width="100" Margin="10 15"
                                              Command="{Binding EmailCommand}"
                                              PrimaryColor="#333333"
                                              SecondaryColor="White">
-                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Email}" MaxWidth="90" />
-                </buttons:CustomColoredButton>
-            </DockPanel>
+                <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Email}" MaxWidth="90" />
+            </buttons:CustomColoredButton>
 
             <DockPanel Height="50" Width="100" Margin="10 15 0 15" LastChildFill="True">
                 <buttons:ColoredDropDownButton DockPanel.Dock="Right"

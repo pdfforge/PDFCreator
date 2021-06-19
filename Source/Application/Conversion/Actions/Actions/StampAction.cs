@@ -1,4 +1,5 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -8,24 +9,20 @@ using System;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
 {
-    public class StampAction : IConversionAction, ICheckable
+    public class StampAction : ActionBase<Stamping>, IConversionAction
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IFontPathHelper _fontPathHelper;
 
         public StampAction(IFontPathHelper fontPathHelper)
+            : base(p => p.Stamping)
         {
             _fontPathHelper = fontPathHelper;
         }
 
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             throw new NotImplementedException();
-        }
-
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.Stamping.Enabled;
         }
 
         public void ProcessJob(IPdfProcessor processor, Job job)
@@ -33,12 +30,17 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             processor.AddStamp(job);
         }
 
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             job.Profile.Stamping.StampText = job.TokenReplacer.ReplaceTokens(job.Profile.Stamping.StampText);
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var actionResult = new ActionResult();
 
@@ -50,10 +52,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions
                     actionResult.Add(ErrorCode.Stamp_NoText);
                 }
 
-                if (checkLevel == CheckLevel.Job)
+                if (checkLevel == CheckLevel.RunningJob)
                     actionResult.Add(_fontPathHelper.GetFontPath(profile));
             }
             return actionResult;
         }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

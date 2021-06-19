@@ -13,12 +13,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string SkipVersion { get; private set; } = "Skip version";
 
         public string Install { get; private set; } = "Install";
-        public string WhatsNew { get; private set; } = "What's new?";
         public string Features { get; private set; } = "Features";
         public string Fixes { get; private set; } = "Fixes";
         public string MiscChanges { get; private set; } = "Other changes";
 
-        public string NewUpdateIsAvailable { get; private set; } = "A new Update is available";
+        public string NewUpdateIsAvailable { get; private set; } = "An update is available";
 
         public string GetNewUpdateMessage(string availableVersion, string currentVersion, string currentVersionDate)
         {

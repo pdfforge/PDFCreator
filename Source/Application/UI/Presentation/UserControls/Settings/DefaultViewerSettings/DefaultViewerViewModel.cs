@@ -6,7 +6,6 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
@@ -17,7 +16,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
 {
     public class DefaultViewerViewModel : TranslatableViewModelBase<DefaultViewerTranslation>, ITabViewModel
     {
-        private readonly ICurrentSettings<ObservableCollection<DefaultViewer>> _defaultViewerProvider;
         private readonly ISettingsProvider _settingsProvider;
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IOpenFileInteractionHelper _fileInteractionHelper;
@@ -79,7 +77,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
         public IconList Icon { get; set; } = IconList.DefaultViewerSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => GpoSettings.DisableApplicationSettings;
-        public bool HasNotSupportedFeatures => false;
 
         protected override void OnTranslationChanged()
         {
@@ -103,15 +100,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
         public void UnmountView()
         {
             _currentSettingsProvider.SettingsChanged -= OnSettingsChanged;
-        }
-    }
-
-    public class DesignTimeDefaultViewerViewModel : DefaultViewerViewModel
-    {
-        private static readonly ICurrentSettingsProvider CurrentSettingsProvider = new DesignTimeCurrentSettingsProvider();
-
-        public DesignTimeDefaultViewerViewModel() : base(new DesignTimeTranslationUpdater(), null, CurrentSettingsProvider, null, null)
-        {
         }
     }
 }

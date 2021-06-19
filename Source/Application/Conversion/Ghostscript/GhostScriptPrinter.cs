@@ -9,11 +9,13 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
     public class GhostScriptPrinter : IJobPrinter
     {
         private readonly IGhostscriptDiscovery _ghostscriptDiscovery;
+        private readonly PrintingDeviceFactory _printingDeviceFactory;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public GhostScriptPrinter(IGhostscriptDiscovery ghostscriptDiscovery)
+        public GhostScriptPrinter(IGhostscriptDiscovery ghostscriptDiscovery, PrintingDeviceFactory printingDeviceFactory)
         {
             _ghostscriptDiscovery = ghostscriptDiscovery;
+            _printingDeviceFactory = printingDeviceFactory;
         }
 
         public void Print(Job job)
@@ -29,7 +31,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             var ghostscript = new GhostScript(gsVersion);
             ghostscript.Timeout = TimeSpan.FromMinutes(10);
 
-            OutputDevice printingDevice = new PrintingDevice(job);
+            OutputDevice printingDevice = _printingDeviceFactory.Create(job);
             ghostscript.Run(printingDevice, job.JobTempFolder);
         }
     }

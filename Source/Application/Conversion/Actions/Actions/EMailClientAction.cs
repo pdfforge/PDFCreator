@@ -4,18 +4,19 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Collections.Generic;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public interface IEMailClientAction : IPostConversionAction, ICheckable
+    public interface IEMailClientAction : IPostConversionAction
     {
-        ActionResult OpenEmptyClient(IList<string> files, string signature);
+        ActionResult OpenEmptyClient(IList<string> files, EmailClientSettings settings);
     }
 
-    public class EMailClientAction : IEMailClientAction
+    public class EMailClientAction : ActionBase<EmailClientSettings>, IEMailClientAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -26,21 +27,22 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private readonly IMailHelper _mailHelper;
 
         public EMailClientAction(IEmailClientFactory emailClientFactory, IFile file, IMailHelper mailHelper)
+            : base(p => p.EmailClientSettings)
         {
             _emailClientFactory = emailClientFactory;
             _file = file;
             _mailHelper = mailHelper;
         }
 
-        public ActionResult OpenEmptyClient(IList<string> files, string signature)
+        public ActionResult OpenEmptyClient(IList<string> files, EmailClientSettings settings)
         {
-            var mailInfo = new MailInfo { Attachments = files, Body = signature };
-
+            var mailInfo = _mailHelper.CreateMailInfo(files, settings);
             return ProcessMailInfo(mailInfo);
         }
 
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
+            ApplyPreSpecifiedTokens(job);
             var mailInfo = _mailHelper.CreateMailInfo(job, job.Profile.EmailClientSettings);
 
             return ProcessMailInfo(mailInfo);
@@ -48,9 +50,27 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         private Email CreateEmail(MailInfo mailInfo)
         {
+            var mapEmailFormatSetting = new Func<EmailFormatSetting, EmailFormat>((emailFormatSetting) =>
+           {
+               switch (emailFormatSetting)
+               {
+                   case EmailFormatSetting.Auto:
+                       return EmailFormat.Auto;
+
+                   case EmailFormatSetting.Html:
+                       return EmailFormat.Html;
+
+                   case EmailFormatSetting.Text:
+                       return EmailFormat.Text;
+
+                   default:
+                       return EmailFormat.Auto;
+               }
+           });
+
             var mail = new Email
             {
-                Html = mailInfo.IsHtml,
+                Format = mapEmailFormatSetting(mailInfo.Format),
                 Subject = mailInfo.Subject,
                 Body = mailInfo.Body,
             };
@@ -102,24 +122,19 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
         }
 
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.EmailClientSettings.Enabled;
-        }
-
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             _mailHelper.ReplaceTokensInMailSettings(job, job.Profile.EmailClientSettings);
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var result = new ActionResult();
 
             if (_emailClientFactory.CreateEmailClient() == null)
                 result.Add(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
 
-            if (checkLevel == CheckLevel.Job)
+            if (checkLevel == CheckLevel.RunningJob)
             {
                 foreach (var attachmentFile in profile.EmailClientSettings.AdditionalAttachments)
                 {
@@ -134,5 +149,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             return result;
         }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

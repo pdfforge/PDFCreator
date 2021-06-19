@@ -1,5 +1,4 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs;
-using Prism.Regions;
+﻿using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -17,6 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public OutputFormatUserControl(IRegionManager regionManager)
         {
+            DataContext = new OutputFormatUserControlViewModel();
             _regionManager = regionManager;
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
             if (!RegionViewsInit)
             {
-                IList<Type> convertViews = new List<Type> { typeof(OutputFormatTab), typeof(ConvertJpgView), typeof(ConvertPngView), typeof(ConvertTiffView), typeof(ConvertTextView), typeof(ConvertPdfView) };
+                IList<Type> convertViews = new List<Type> { typeof(OutputFormatView), typeof(OutputFormatJpgView), typeof(OutputFormatPngView), typeof(OutputFormatTiffView), typeof(OutputFormatTextView), typeof(OutputFormatPdfView) };
                 foreach (var convertView in convertViews)
                 {
                     try
@@ -46,5 +46,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             // remove region from prism to prevent collision
             _regionManager.Regions.Remove(RegionNames.ConvertTabOverlayContentRegion);
         }
+    }
+
+    public class OutputFormatUserControlViewModel : IStatusHintViewModel
+    {
+        public string StatusText => "";
+        public bool HasWarning => false;
+        public bool HideStatusInOverlay => false;
     }
 }

@@ -48,6 +48,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                     newAccount.AccountId = userInfo.AccountId;
                     newAccount.AccessToken = userInfo.AccessToken;
                     newAccount.AccountInfo = userInfo.AccountInfo;
+                    newAccount.RefreshToken = userInfo.RefreshToken;
                 }
             }
             catch (DropboxAccessDeniedException)

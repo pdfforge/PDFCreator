@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using System;
 
 namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 {
@@ -42,6 +43,24 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
         ActionResult ProcessJob(Job job);
 
+        void ApplyPreSpecifiedTokens(Job job);
+
+        bool IsRestricted(ConversionProfile profile);
+
+        void ApplyRestrictions(Job job);
+
+        ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel);
+
         bool IsEnabled(ConversionProfile profile);
+
+        IProfileSetting GetProfileSetting(ConversionProfile profile);
+
+        Type SettingsType { get; }
+    }
+
+    public enum CheckLevel
+    {
+        EditingProfile,
+        RunningJob
     }
 }

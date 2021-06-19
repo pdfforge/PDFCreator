@@ -84,7 +84,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             {
                 var token = await GetDropboxToken();
                 var tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(token);
-                var dbUserInfo = _dropboxService.GetDropUserInfo(tokenEndpointDecoded["access_token"]);
+                var dbUserInfo = _dropboxService.GetDropUserInfo(tokenEndpointDecoded["access_token"], tokenEndpointDecoded["refresh_token"]);
                 return dbUserInfo;
             }
             catch (DropboxAuthException ex)

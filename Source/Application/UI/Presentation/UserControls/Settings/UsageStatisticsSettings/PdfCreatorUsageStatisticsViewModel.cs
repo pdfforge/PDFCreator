@@ -1,20 +1,11 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Conversion.Settings.Enums;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.UsageStatistics;
-using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
-using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Process;
 using System;
-using System.Windows.Input;
-using pdfforge.PDFCreator.Core.Controller;
-using pdfforge.PDFCreator.UI.Presentation;
-using pdfforge.PDFCreator.UI.Presentation.DesignTime;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings;
 using pdfforge.UsageStatistics;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings
@@ -22,21 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
     public class PdfCreatorUsageStatisticsViewModel : UsageStatisticsViewModelBase
     {
         private readonly IUsageMetricFactory _usageMetricFactory;
-        public string SampleStatisticsJobData => GetJobSampleData();
-        public bool ShowServiceSample => false;
-        public bool EnableUsageStatistics
-        {
-            get
-            {
-                return UsageStatisticsProvider.Settings.Enable && !IsDisabledByGpo;
-            }
-            set
-            {
-                UsageStatisticsProvider.Settings.Enable = value;
-                RaisePropertyChanged(nameof(EnableUsageStatistics));
-            }
-        }
-
+        public override bool ShowServiceSample => false;
 
         public PdfCreatorUsageStatisticsViewModel(IOsHelper osHelper, ICommandLocator commandLocator,
             ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings, IUsageMetricFactory usageMetricFactory,
@@ -46,14 +23,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
             _usageMetricFactory = usageMetricFactory;
         }
 
-        public string UsageStatisticsExplanationText => Translation.FormatUsageStatisticsExplanationText(base.ApplicationNameWithEdition);
 
         public override HelpTopic HelpTopic => HelpTopic.AppGeneral;
         public override bool IsDisabledByGpo => GpoSettings.DisableUsageStatistics;
 
-        private string GetJobSampleData()
+        protected override string GetJobSampleData()
         {
-            var metric = _usageMetricFactory.CreateMetric<PdfCreatorUsageStatisticsMetric>();
+            var metric = _usageMetricFactory.CreateMetric<PdfCreatorJobFinishedMetric>();
             
             metric.OperatingSystem = OsHelper.GetWindowsVersion();
             metric.Duration = TimeSpan.Zero.Milliseconds;
@@ -84,15 +60,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
             return ConvertToJson(metric);
         }
 
-    }
-
-    public class DesignTimePdfCreatorUsageStatisticsViewModel : PdfCreatorUsageStatisticsViewModel
-    {
-        public DesignTimePdfCreatorUsageStatisticsViewModel() : base(new OsHelper(), new DesignTimeCommandLocator(),
-                                                            new DesignTimeCurrentSettingsProvider(), new GpoSettingsDefaults(), new DesignTimeUsageMetricFactory(), 
-                                                            new DesignTimeCurrentSettings<Conversion.Settings.UsageStatistics>(), new DesignTimeTranslationUpdater(), new DesignTimeApplicationNameProvider())
+        protected override string GetServiceSampleData()
         {
-
+            return "";
         }
     }
 }

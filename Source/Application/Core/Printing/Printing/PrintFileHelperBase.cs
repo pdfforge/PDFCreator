@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using SystemInterface.IO;
@@ -15,8 +14,9 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
     /// </summary>
     public abstract class PrintFileHelperBase : IPrintFileHelper
     {
+        protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IFileAssoc _fileAssoc;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private PrintCommandGroup _printCommands = new PrintCommandGroup();
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
@@ -42,9 +42,9 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     shown.
         /// </param>
         /// <returns>true, if all files are printable</returns>
-        public bool AddFile(string file)
+        public bool AddFile(string file, bool silent)
         {
-            return AddFiles(new[] { file });
+            return AddFiles(new[] { file }, silent);
         }
 
         /// <summary>
@@ -55,47 +55,36 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     A list of files. If this contains a directory or files are not printable, an error message will be
         ///     shown.
         /// </param>
+        /// <param name="silent">If true, no message windows are shown</param>
         /// <returns>true, if all files are printable</returns>
-        public bool AddFiles(IEnumerable<string> files)
+        public bool AddFiles(IEnumerable<string> files, bool silent)
         {
             var printerName = GetPrinterName();
-
             foreach (var f in files)
             {
                 _printCommands.Add(new PrintCommand(f, printerName, _fileAssoc, _printerHelper, _file, _settingsProvider.Settings.ApplicationSettings.ConversionTimeout));
             }
 
-            var directories = _printCommands.FindAll(p => _directory.Exists(p.Filename));
-
-            if (directories.Count > 0)
-            {
-                DirectoriesNotSupportedHint();
-                return false;
-            }
-
             if (!_printCommands.IsPrintable)
             {
-                var sb = new StringBuilder("The following file(s) could not be converted:");
+                var sb = new StringBuilder("The following file(s) can not be printed:");
                 var unprintable = _printCommands.UnprintableCommands;
-                
                 foreach (var file in unprintable)
                 {
                     sb.AppendLine(file.Filename);
                 }
-                _logger.Error(sb.ToString);
-                
-                var canProceed = unprintable.Count < files.Count();
+                Logger.Error(sb.ToString);
 
-                if (!canProceed)
+                //all files are unprintable
+                if (unprintable.Count >= files.Count())
                 {
-                    UnprintableFilesHint(unprintable);
-                    _printCommands.RemoveUnprintableCommands();
+                    UnprintableFilesHint(unprintable, silent);
+                    _printCommands.RemoveAllCommands();
                     return false;
                 }
 
-                var proceed = UnprintableFilesProceedQuery(unprintable);
-
-                if (proceed)
+                var printRemainingPrintableFiles = ProceedWithRemainingPrintableFilesQuery(unprintable, silent);
+                if (printRemainingPrintableFiles)
                 {
                     _printCommands.RemoveUnprintableCommands();
                 }
@@ -103,8 +92,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
                 {
                     _printCommands.RemoveAllCommands();
                 }
-
-                return proceed;
+                return printRemainingPrintableFiles;
             }
 
             return true;
@@ -114,11 +102,11 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     Prints all files in the list.
         /// </summary>
         /// <returns>true, if all files could be printed</returns>
-        public bool PrintAll()
+        public bool PrintAll(bool silent)
         {
             if (string.IsNullOrEmpty(PdfCreatorPrinter))
             {
-                _logger.Error("No PDFCreator is installed.");
+                Logger.Error("No PDFCreator is installed.");
                 return false;
             }
 
@@ -128,20 +116,20 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             {
                 if (requiresDefaultPrinter && (defaultPrinter != PdfCreatorPrinter))
                 {
-                    _logger.Debug("Current default printer is " + defaultPrinter);
-                    _logger.Info("PDFCreator must be set temporarily as default printer");
+                    Logger.Debug("Current default printer is " + defaultPrinter);
+                    Logger.Info("PDFCreator must be set temporarily as default printer");
                     if (_settingsProvider.Settings.CreatorAppSettings.AskSwitchDefaultPrinter)
                     {
-                        if (!QuerySwitchDefaultPrinter())
+                        if (!SwitchDefaultPrinterQuery(silent))
                             return false;
                     }
                     if (!_printerHelper.SetDefaultPrinter(PdfCreatorPrinter))
                     {
-                        _logger.Error("PDFCreator could not be set as default printer");
+                        Logger.Error("PDFCreator could not be set as default printer");
                         return false;
                     }
 
-                    _logger.Debug("PDFCreator set as default printer");
+                    Logger.Debug("PDFCreator set as default printer");
                 }
 
                 return _printCommands.PrintAll(_settingsProvider.Settings.ApplicationSettings.ConversionTimeout);
@@ -151,7 +139,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
                 if (requiresDefaultPrinter)
                 {
                     _printerHelper.SetDefaultPrinter(defaultPrinter);
-                    _logger.Debug("Default printer set back to " + defaultPrinter);
+                    Logger.Debug("Default printer set back to " + defaultPrinter);
                 }
                 _printCommands = new PrintCommandGroup();
             }
@@ -165,12 +153,10 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
             return _printerHelper.GetApplicablePDFCreatorPrinter(PdfCreatorPrinter);
         }
 
-        protected abstract void DirectoriesNotSupportedHint();
+        protected abstract void UnprintableFilesHint(IList<PrintCommand> unprintable, bool silent);
 
-        protected abstract void UnprintableFilesHint(IList<PrintCommand> unprintable);
+        protected abstract bool ProceedWithRemainingPrintableFilesQuery(IList<PrintCommand> unprintable, bool silent);
 
-        protected abstract bool UnprintableFilesProceedQuery(IList<PrintCommand> unprintable);
-
-        protected abstract bool QuerySwitchDefaultPrinter();
+        protected abstract bool SwitchDefaultPrinterQuery(bool silent);
     }
 }

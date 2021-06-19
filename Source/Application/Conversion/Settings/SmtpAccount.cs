@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// SMTP server port
 		/// </summary>
-		public int Port { get; set; } = 25;
+		public int Port { get; set; } = 587;
 		
 		/// <summary>
 		/// Hostname or IP address of the SMTP server
@@ -56,7 +56,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
 			try { Address = Data.UnescapeString(data.GetValue(@"" + path + @"Address")); } catch { Address = "";}
 			_password = data.GetValue(@"" + path + @"Password");
-			Port = int.TryParse(data.GetValue(@"" + path + @"Port"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpPort) ? tmpPort : 25;
+			Port = int.TryParse(data.GetValue(@"" + path + @"Port"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpPort) ? tmpPort : 587;
 			try { Server = Data.UnescapeString(data.GetValue(@"" + path + @"Server")); } catch { Server = "";}
 			Ssl = bool.TryParse(data.GetValue(@"" + path + @"Ssl"), out var tmpSsl) ? tmpSsl : false;
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}

@@ -85,12 +85,6 @@ msgstr "یک بروز رسانی جدید موجود است"
 msgid "A printer with the name '{0}' is already installed on your system. Please enter a new printer name:"
 msgstr "یک چاپگر با نام '{0}' از قبل در سیستم شما نصب شده است. لطفا نام چاپگر جدید را وارد کنید:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#, fuzzy
-#| msgid "Target directory is too long."
-msgid "A target directory is required for automatic saving."
-msgstr "دایکرتوری مقصد خیلی بلند است."
-
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 msgid "Access Denied"
 msgstr "غير قابل دسترسی"
@@ -169,7 +163,7 @@ msgstr "فعالسازی معتبر است تا:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Add"
 msgstr "افزودن"
 
@@ -178,6 +172,7 @@ msgstr "افزودن"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Account"
 msgstr "افزودن اکانت"
@@ -191,6 +186,7 @@ msgstr "افزودن اقدام"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Dropbox Account"
 msgstr "افزودن اکانت درآپ باکس"
@@ -200,6 +196,7 @@ msgstr "افزودن اکانت درآپ باکس"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add FTP Account"
 msgstr "افزودن اکانت اِف تی پی"
@@ -214,6 +211,7 @@ msgstr "همه فايل ها"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add HTTP Account"
 msgstr "افزودن اکانت اِچ تی تی پی"
@@ -231,6 +229,7 @@ msgstr "افزودن چاپگر"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add SMTP Account"
 msgstr "افزودن اکانت اِس اِم تی پی"
@@ -240,6 +239,7 @@ msgstr "افزودن اکانت اِس اِم تی پی"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Time Server Account"
 msgstr "افزودن زمان سرور اکانت"
@@ -256,41 +256,26 @@ msgstr ""
 msgid "Add attachment"
 msgstr "افزودن ضمیمه"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-msgid "Add background to attachment"
-msgstr "افزودن پس زمینه به پیوست"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-msgid "Add background to cover"
-msgstr "افزودن پس زمینه به کاور"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Add cover"
 msgstr "افزودن کاور"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Add new queue"
 msgstr "افزودن صف جدید"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Add printer"
-msgstr "افزودن چاپگر"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Added to context menu"
 msgstr "افزودن به کلیک راست"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 msgid "Additional Attachment File"
 msgstr "پارامتر های اضافه:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-#, fuzzy
-msgid "Additional Data:"
-msgstr "پارامتر های اضافه:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 msgid "Additional E-mail Attachments:"
 msgstr "پارامتر های اضافه:"
@@ -303,11 +288,11 @@ msgstr "پارامتر های اضافه:"
 msgid "Additional Program Parameters:"
 msgstr "افزودن پارامتر های اضافه:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 msgid "Adds a background to the document."
 msgstr "افزودن پس زمینه به سند."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 #, fuzzy
 msgid "Adds a watermark to the document."
 msgstr "افزودن پس زمینه به پیوست"
@@ -315,10 +300,6 @@ msgstr "افزودن پس زمینه به پیوست"
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
 msgid "Admin privileges required"
 msgstr "سطح دسترسی آدمین نیاز است"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Advanced"
-msgstr "پیشرفته"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #, fuzzy
@@ -330,13 +311,14 @@ msgstr "همه فايل ها"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
 msgid "All files"
 msgstr "همه فايل ها"
@@ -352,11 +334,11 @@ msgstr "به PDFCreator اجازه میدهد موقتا چاپگر پیش فر�
 msgid "Allow further profiles defined by User"
 msgstr "اجازه پروفایل های بیشتر تعریف شده توسط کاربر"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Allow multiple signing"
 msgstr "اجازه چندین امضاء"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Allow the user"
 msgstr "اجازه کاربر"
 
@@ -380,7 +362,7 @@ msgstr "یک فایل مهم برنامه گم شده است ('{0}'). لطفا �
 msgid "An owner password is required to set the user passwords."
 msgstr "یک رمزعبور مالک برای تنظیم رمزعبور کاربری نیاز است."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Appends one or more pages at the end of the document."
 msgstr "الحاق یک یا تعداد صفحات بیشتر به انتهای صفحه."
 
@@ -406,6 +388,7 @@ msgstr[1] "آیا از حذف فایل های زیر مطمئن هستید؟"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Are you sure you want to delete this account?"
 msgstr "آیا واقعا میخواهید این اکانت را حذف کنید؟"
@@ -444,10 +427,11 @@ msgid "At least one of the selected items is not convertible! For more informati
 msgstr "حداقل یکی از موارد منتخب قابل تبدیل نیست! برای اطلاع بیشتر درباره فایل های غیر قابل چاپ، لیست زیر را ببینید."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Attach pdfforge signature"
 msgstr "ضمیمه امضای pdfforge"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Attachment"
 msgstr "پیوست"
 
@@ -470,6 +454,7 @@ msgstr "احراز هویت با درآپ باکس"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Authentication"
@@ -482,8 +467,8 @@ msgid "Author"
 msgstr "سازنده"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Author:"
 msgstr "سازنده:"
@@ -493,8 +478,8 @@ msgid "Auto-Detect"
 msgstr "تشخیص خودکار"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Automatic"
 msgstr "خودکار"
 
@@ -502,14 +487,7 @@ msgstr "خودکار"
 msgid "Automatic Saving"
 msgstr "ذخیره سازی خودکار"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 #, fuzzy
 #| msgid "Automatic saving without user password."
 msgid "Automatic saving requires the passwords to be set"
@@ -544,6 +522,7 @@ msgid "Automatic saving without user password."
 msgstr "ذخیره سازی خودکار بدون رمزعبور کاربر."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "BCC:"
 msgstr "BCC:"
 
@@ -551,12 +530,13 @@ msgstr "BCC:"
 msgid "BUSINESS FEATURE"
 msgstr "ویژگی BUSINESS"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 msgid "Back"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 msgid "Background"
 msgstr "پس زمینه"
 
@@ -611,6 +591,7 @@ msgid "By loading the file all settings and profiles will be overwritten. Do you
 msgstr "با بارگیری فایل همه تنظیمات و پروفایل ها جایگزین خواهند شد.ادامه می دهید؟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "CC:"
 msgstr "CC:"
 
@@ -622,7 +603,6 @@ msgstr "CCITT فکس"
 msgid "CMYK"
 msgstr "CMYK"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid "CS-Script"
 msgstr "CS-Script"
@@ -639,7 +619,7 @@ msgstr "فایل CS-script در پوشه دایرکتوری برنامه در 'C
 msgid "Call Preview:"
 msgstr "پیشنمایش فراخوان:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 msgid "Calls a program or script that further processes the document after the conversion. PDFCreator calls the specified program automatically and transfers the created files as parameter."
 msgstr "فراخواند برنامه یا اسکریپت که بعدا سند را بعد از تبدیل پردازش می کند. PDFCreator خودکار برنامه تعیین شده را فراخوانده و فایل های ایجاد شده را بعنوان پارامتر ایجاد می کند."
 
@@ -659,6 +639,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
@@ -666,7 +647,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Cancel"
 msgstr "لغو"
 
@@ -679,7 +660,7 @@ msgid "Catalan"
 msgstr "کاتالان"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Certificate File:"
 msgstr "فایل گواهینامه:"
 
@@ -708,6 +689,7 @@ msgid "Changes not effective yet"
 msgstr "تغییرات هنوز اعمال نشده است"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Check E-mail Client"
 msgstr "بررسی کلاینت ایمیل"
 
@@ -733,7 +715,7 @@ msgstr "چینی (سنتی)"
 msgid "Choose 'No' to revert the changes."
 msgstr "گزینه 'خیر' را برای بازگشت تنظیمات انتخاب کنید."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Choose a directory"
 msgstr "انتخاب یک پوشه"
 
@@ -776,10 +758,10 @@ msgstr "بستن دستی"
 msgid "Color Model:"
 msgstr "مدل رنگ:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertJpgTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPngTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertTiffTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Colors:"
 msgstr "رنگ:"
 
@@ -787,7 +769,7 @@ msgstr "رنگ:"
 msgid "Community Support"
 msgstr "انجمن پشتیبانی"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "ZIP Compression"
 msgid "Compression:"
@@ -812,7 +794,7 @@ msgstr "پیکربندی صفحه خانه"
 msgid "Confirm Save As"
 msgstr "تایید ذخیره بعنوان"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Contact:"
 msgstr "تماس:"
 
@@ -836,15 +818,21 @@ msgstr "تبدیل &اینجا"
 msgid "Convert PDF files"
 msgstr "تبدیل فایل های پی دی اِف"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Print a test page with the current profile. You will be asked to save the settings if required."
+msgid "Convert a test page with the current profile. You will be asked to save the settings if required."
+msgstr "چاپ یک صفحه تست با سند فعلی. اگر نیاز بود تنظیمات ذخیره شود از شما خواسته میشود."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
 msgid "Converting..."
 msgstr "در حال تبدیل..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Converts all documents without asking for settings. This requires more settings to be defined in the profile."
 msgid ""
-"Converts all documents without asking for settings.\r\n"
+"Converts all documents without asking for settings.\n"
 "This requires all necessary settings to be set in advance."
 msgstr "تبدیل همه اسناد بدون پرسش برای تنظیمات.این نیاز به تعریف تنظیمات در پروفایل دارد."
 
@@ -886,6 +874,7 @@ msgstr[1] ""
 "لطفا بعدا امتحان کنید."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Could not find MAPI client (e.g. Thunderbird or Outlook)."
 msgstr "کلاینت MAPI را نمیتوان یافت (مانند Thunderbird یا Outlook)."
 
@@ -909,7 +898,7 @@ msgstr "فایل را نمیتوان به اِف تی پی آپلود کرد."
 msgid "Couldn't find PDFCreator in your system. Please check if you have installed it."
 msgstr "PDFCreator را نمیتوان در سیستم یافت. بررسی کنید نصب شده باشد."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Cover"
 msgstr "کاور"
 
@@ -920,6 +909,7 @@ msgid "Cover files (PDF):"
 msgstr "فایل کاور (PDF):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Create PDF files"
 msgstr "ایجاد فایل های پی دی اِف"
 
@@ -930,15 +920,6 @@ msgstr "ایجاد لینک برای به اشتراک گذاری فایل ها.
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 msgid "Create custom forms"
 msgstr "ایجاد برگه های دستی"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Create new accounts"
-msgstr "ایجاد اکانت های جدید"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
 msgid "Custom Page"
@@ -1016,7 +997,7 @@ msgstr "حذف وظیفه چاپ"
 msgid "Delete selected Report"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Digitally signs PDF files, for example to verify the sender’s identity and to ensure the document has not been changed after signing. Signature and Encryption are always processed last."
 msgstr "فایل های PDF امضاء دیجیتالی شده، برای مثال برای احراز هویت ارسال کننده و اطمینان از اینکه بعد از ارسال تغییر نکرده است. امضاء و رمزگذاری همیشه در آخر پردازش میشود."
 
@@ -1025,6 +1006,7 @@ msgstr "فایل های PDF امضاء دیجیتالی شده، برای مثا
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Directory:"
 msgstr "دایرکتوری:"
@@ -1076,7 +1058,14 @@ msgstr "توسط آدمین غیر فعال شده"
 msgid "Dismiss"
 msgstr "لغو"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "User Name:"
+msgid "Display Name:"
+msgstr "نام کاربر:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Display signature in document"
 msgstr "نمایش امضا در سند"
 
@@ -1103,7 +1092,7 @@ msgstr "میخواهید مجوز را برای همه کاربران سیستم
 msgid "Do you want to proceed anyway?"
 msgstr "بهر حال ادامه می دهید؟"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Do you want to remove the queue '{0}'?"
 msgstr "آیا میخواهید صف '{0}' را حذف کنید؟"
 
@@ -1116,6 +1105,7 @@ msgid "Do you want to save?"
 msgstr "میخواهید ذخیره کنید؟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "Document view:"
 msgid "Document File"
@@ -1134,15 +1124,12 @@ msgstr "پدیداری پیرامون سند"
 msgid "Document view:"
 msgstr "مشاهده سند:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Don't overwrite existing files"
-msgstr "فایل های موجود را جایگزین نکن"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't overwrite files (adds an increasing number in case of conflict)"
 msgstr "فایل ها را جایگزین نکن (در صورت تداخل شماره افزایشی اضافه کن)"
@@ -1151,7 +1138,7 @@ msgstr "فایل ها را جایگزین نکن (در صورت تداخل شم�
 msgid "Don't overwrite files (adds an increasing number in case of conflict)."
 msgstr "فایل ها را جایگزین نکن (در صورت تداخل شماره افزایشی اضافه کن)."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Don't save password and request it during conversion"
 msgstr "رمزعبور را ذخیره نکن و آن را حین تبدیل درخواست کن"
 
@@ -1160,6 +1147,7 @@ msgstr "رمزعبور را ذخیره نکن و آن را حین تبدیل د�
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't save password and request it during upload."
 msgstr "رمز عبور را ذخیره نکن و حین آپلود درخواست کن."
@@ -1194,6 +1182,7 @@ msgstr "درآپ باکس"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Dropbox Account"
 msgstr "اکانت درآپ باکس"
@@ -1210,10 +1199,18 @@ msgid "Dutch"
 msgstr "هلندی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "E-mail"
 msgstr "ایمیل"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "E-mail"
+msgid "E-mail (SMTP)"
+msgstr "ایمیل"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "E-mail Address:"
 msgstr "آدرس ایمیل:"
 
@@ -1229,6 +1226,8 @@ msgstr "ایمیل خودکار با نسخه رایگان برنامه ایجا
 msgid "E-mail over SMTP could not be delivered to one or more recipients."
 msgstr "ایمیل تحت SMTP را نمیتوان به یک یا تعدادی از دریافت کنندگان تحویل داد."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "Edit"
 msgstr "ویرایش"
@@ -1238,11 +1237,13 @@ msgstr "ویرایش"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Edit Account"
 msgstr "ویرایش اکانت"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit E-mail Text"
 msgstr "ویرایش متن ایمیل"
 
@@ -1259,6 +1260,7 @@ msgid "Edit PDF files"
 msgstr "ویرایش فایل های پی دی اِف"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit SMTP Account"
 msgstr "ویرایش اکانت اِس اِم تی پی"
 
@@ -1279,11 +1281,11 @@ msgstr "فعالسازی تاریخچه"
 msgid "Enable automatic mode and skip the interaction with PDFCreator. With a few configurations you will be able to create and save your PDFs to your preferred folder by simply printing directly from your document."
 msgstr "فعالسازی حالت خودکار و رد فعل و انفعال با PDFCreator.با کمی پیکربندی شما قادر به ایجاد و ذخیره پی دی اِف های خود در پوشه دلخواه با چاپ مستقیم از سند خود خواهید بود."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Encryption"
 msgstr "کُدگذاری"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Encryption Level"
 msgstr "سطح کُدگذاری"
 
@@ -1300,14 +1302,15 @@ msgid "English"
 msgstr "انگلیسی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Enjoy our free features:"
 msgstr "از ویژگی های رایگان لذت ببرید:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Ensure unique filenames"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Don't overwrite existing files"
 msgid "Ensure unique filenames - don't overwrite existing files"
@@ -1319,14 +1322,6 @@ msgstr "کلید مجوز را وارد کنید"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Enter search text here"
-msgstr ""
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Environment variables:"
-msgstr ""
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Environment:"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
@@ -1342,18 +1337,15 @@ msgstr "خطا"
 msgid "Error During Deletion"
 msgstr "خطا حین حذف"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-#, fuzzy
-msgid "Error Report for PDFCreator"
-msgstr "شی سیاست گروهی برای PDFCreator."
-
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error during PDF/A conversion."
 msgstr "خطا حین تبدیل PDF/A."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error during forward to further profile action."
-msgstr ""
+#, fuzzy
+#| msgid "Error during PDF/A conversion."
+msgid "Error during forwarding action."
+msgstr "خطا حین تبدیل PDF/A."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error while adding attachment to the document."
@@ -1480,12 +1472,12 @@ msgstr "خروجیگیری تنظیمات"
 msgid "Extract User Tokens"
 msgstr "استخراج رمزهای کاربر"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
 msgid "Extracts values from the source document and uses them anywhere they are supported by PDFCreator."
 msgstr "استخراج مقادیر از منبع سند و استفاده آنها در هر جایی که با PDFCreator پشتیبانی می شوند."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.ProfileSendSubTabTranslation
 msgid "FTP"
 msgstr "اِف تی پی"
 
@@ -1498,6 +1490,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "FTP Account"
 msgstr "اکانت اِف تی پی"
@@ -1575,9 +1568,8 @@ msgid "Filename template contains illegal characters."
 msgstr "قالب نام فایل حاوی کاراکترهای غیر مجاز است."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Filename:"
 msgstr "نام فایل:"
 
@@ -1634,13 +1626,14 @@ msgstr "برای کاربران حرفه ای مانند شما،ما PDFCreator
 msgid "Format"
 msgstr "فرمت"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Forward"
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 #, fuzzy
 msgid "Forward to Profile"
+msgstr "پروفايل جديد"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+msgid "Forward to Queue"
 msgstr "پروفايل جديد"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
@@ -1655,11 +1648,11 @@ msgstr "فرانسوی"
 msgid "From"
 msgstr "از"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "From bottom:"
 msgstr "از پایین:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "From left:"
 msgstr "از چپ:"
 
@@ -1747,6 +1740,7 @@ msgstr "اِچ تی تی پی"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "HTTP Account"
 msgstr "اکانت اِچ تی تی پی"
@@ -1771,7 +1765,7 @@ msgstr "آپلود اِچ تی تی پی"
 msgid "Have you tried PDFCreator Online? It lets you convert and merge PDFs quickly and easily in your browser."
 msgstr "آیا تا بحال PDFCreator آنلاین را امتحان کرده اید؟ آن به شما اجازه تبدیل و ادغام سریع پی دی اِف را مستقیما از مرورگر میدهد."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Height:"
 msgstr "ارتفاع:"
 
@@ -1809,7 +1803,7 @@ msgstr "مخفی کردن اطلاعات PDF Architect"
 msgid "Hide license tab"
 msgstr "مخفی کردن تب مجوز"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "High (256 Bit AES)"
 msgstr "متوسط (256 بیت اِی ای اِس)"
 
@@ -1825,11 +1819,12 @@ msgstr "کیفیتزیاد (فایل بزرگ)"
 msgid "Hint"
 msgstr "تذکر"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Hint: Leave the target directory blank, to use the recently used target directory."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Hint: Multiple recipients can be separated by commas"
 msgstr "توجه:چندین گیرنده با ویرگول میتواند از هم جدا شوند"
 
@@ -1861,10 +1856,14 @@ msgstr "شناسه:"
 msgid "INI files (*.ini)|*.ini"
 msgstr "فایل INI (*.ini)|*.ini"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "If a file already exists, an incrementing number is added to the filename, i.e. 'file_5.pdf'"
 msgstr "اگر فایل از قبل وجود دارد،یک شماره افزایشی به نام فایل اضافه میشود مثل 'file_5.pdf'"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "If set it will be used as From and the address from the account will be set as Sender"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "If you want to know more you can take a look at our manual:"
@@ -1874,7 +1873,7 @@ msgstr "اگر بیشتر میخواهید بدانید لطفا نگاهی به
 msgid "Image compression:"
 msgstr "فشرده سازی تصویر:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid "Implement a custom script in C# to process the print job."
 msgstr "پیاده سازی اسکریپت سفارشی در C# برای پردازش وظیفه چاپ."
 
@@ -1886,7 +1885,7 @@ msgstr "پاسخ اشتباه از سرور درآپ باکس. اکانت را �
 msgid "Insert page elements"
 msgstr "قراردادن عناصر صفحه"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Inserts one or more pages at the beginning of the document."
 msgstr "قراردادن یک یا صفحات بیشتر در ابتدای سند."
 
@@ -1903,18 +1902,14 @@ msgstr "حالا نصب PDF Architect"
 msgid "Install new Update"
 msgstr "نصب بروز رسانی های جدید"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Interactive"
 msgstr "تعاملی"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Internal Ghostscript error."
 msgstr "خطای داخلی Ghostscript."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Invalid Queue"
-msgstr "صف نامعتبر"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 msgid "Invalid Regular Expression."
@@ -1927,6 +1922,12 @@ msgstr "اِس اِم تی پی گیرندگان ایمیل نامعتبر اس�
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Invalid SMTP port."
 msgstr "پورت SMTP نامعتبر است."
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
+#, fuzzy
+#| msgid "Invalid settings"
+msgid "Invalid Settings In Queue"
+msgstr "تنظیمات نامعتبر است"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
 msgid "Invalid password for '{0}'"
@@ -1992,6 +1993,7 @@ msgstr "مثال آمارهای وظیفه:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Key file"
@@ -2002,6 +2004,7 @@ msgstr "فایل Text"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Key file requires passphrase"
 msgstr ""
@@ -2011,8 +2014,8 @@ msgstr ""
 msgid "Keywords"
 msgstr "کلمات کليدي"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Keywords:"
 msgstr "کلمات کليدي:"
 
@@ -2036,7 +2039,7 @@ msgstr "آخرین صفحه"
 msgid "Last activation:"
 msgstr "آخرین فعالسازی:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Last used directory"
 msgstr "آخرین دایرکتوری مستعمل"
 
@@ -2127,7 +2130,7 @@ msgstr "بارگیری اسکریپت CS موفقیت آمیز بود."
 msgid "Loading Update..."
 msgstr "بارگیری بروز رسانی..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Location:"
 msgstr "مکان:"
 
@@ -2151,7 +2154,7 @@ msgstr "چرخش لبه بلند"
 msgid "Looking for help with a specific feature or setting? Simply hit the F1 button anywhere in PDFCreator and the related help page will open automatically."
 msgstr "دنبال راهنما برای ویژگی یا تنظیم خاص می گردید؟فقط دکمه F1  را در هر جا از PDFCreator فشار دهید و صفحه راهنمای مرتبط خودکار باز میشود."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Low (128 Bit)"
 msgstr "کم (128 بیت)"
 
@@ -2164,6 +2167,7 @@ msgstr "شناسه دستگاه:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage Accounts"
 msgstr "مدیریت اکانت ها"
@@ -2186,21 +2190,18 @@ msgstr "مدیریت مجوزها"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles."
 msgstr "مدیریت اعتبارنامه خود برای اقدامات متناظر.اکانت های اضافه شده و تغییرات برای همه پروفایل ها موجود است."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Medium (128 Bit AES)"
 msgstr "متوسط (128 بیت اِی ای اِس)"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Merge All"
 msgstr "ادغام همه"
-
-#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Merge Print Jobs"
-msgstr "ادغام وظایف چاپ"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Merge Selected"
@@ -2215,8 +2216,8 @@ msgstr "ادغام همه"
 msgid "Merged Files"
 msgstr "فایل های ادغام شده"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Metadata"
 msgstr "اَبَر داده"
 
@@ -2228,9 +2229,15 @@ msgstr "چاپگرها گم شده"
 msgid "Missing URL for HTTP upload."
 msgstr "آدرس گم شده برای آپلود اِچ تی تی پی."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Missing directory"
 msgstr "دایرکتوری نا پیدا"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#, fuzzy
+#| msgid "Missing Printers"
+msgid "Missing filename"
+msgstr "چاپگرها گم شده"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Missing output file for PDF processing."
@@ -2241,7 +2248,6 @@ msgid "Missing user name for HTTP authentication."
 msgstr "نام کاربر گم شده برای احراز هویت اِچ تی تی پی."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Modify"
 msgstr "ویرایش"
@@ -2319,11 +2325,6 @@ msgstr "هیچ فایل CS-script تعیین نشده است."
 msgid "No Error Reports"
 msgstr ""
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-#, fuzzy
-msgid "No Error Selected"
-msgstr "ادغام منتخب"
-
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "No RSS Feed Available"
 msgstr "خوراک آر اِس اِس در دسترس نیست"
@@ -2345,7 +2346,9 @@ msgid "No SMTP e-mail user name is specified."
 msgstr "نام کاربر ایمیل SMTP تعیین نشده است."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "No application is associated to open PDF files"
+#, fuzzy
+#| msgid "No application is associated to open PDF files"
+msgid "No application is associated to open PDF files."
 msgstr "برنامه ای برای بازکردن فایل پی دی اِف وابسته سازی نشده است"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -2371,10 +2374,6 @@ msgstr "فایل کاور تعیین نشده است."
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.DuplexPrint
 msgid "No duplex printing"
 msgstr "بدون چاپ دورو"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "No license available. Please enter a new license key."
-msgstr "مجوزی موجود نیست.لطفا مجوز جدید وارد کنید."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "No license key available. Please enter a new license key."
@@ -2419,7 +2418,6 @@ msgstr "فایل کاور تعیین نشده است."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "No, thanks"
 msgstr "نه،ممنونم"
 
@@ -2440,13 +2438,14 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobPasswordButtonTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "OK"
 msgstr "&تأييد"
 
@@ -2458,6 +2457,11 @@ msgstr "فعالسازی آفلاین"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 msgid "Ok"
 msgstr "تایید"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "On Behalf Of:"
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -2522,8 +2526,8 @@ msgstr "مسیر کاور خیلی بلند است."
 msgid "Online activation"
 msgstr "فعالسازی آنلاین"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Only save file temporarily"
 msgstr "فقط ذخیره موقت فایل"
 
@@ -2581,11 +2585,7 @@ msgstr "بازکردن با PDF Architect"
 msgid "Open with default viewer"
 msgstr "بازکردن با نمایش دهنده پیش فرض"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
-msgid "Opens the PDF file in a Viewer."
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Opens the default e-mail client with the converted document as attachment."
 msgstr "بازکردن برنامه ایمیل پیش فرض با سند تبدیل شده بعنوان ضمیمه."
 
@@ -2617,8 +2617,8 @@ msgstr "ویرایشگر پی دی اِف با وِزگی های کامل ما"
 msgid "Outline Width:"
 msgstr "عرض نمای کلی:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Output Format"
 msgstr "فرمت خروجی"
 
@@ -2643,6 +2643,12 @@ msgstr "جایگزینی همه تنظیمات"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
 msgid "Owner password (for editing):"
 msgstr "(رمزعبور مالک (برای ویرایش:"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
+#, fuzzy
+#| msgid "PDF Architect could not open output file."
+msgid "PDF Architect could not be found."
+msgstr "برنامه نمیتواند فایل خروجی را باز کند."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "PDF Architect could not open output file."
@@ -2686,10 +2692,11 @@ msgstr "PDFCreator"
 msgid "PDFCreator Online"
 msgstr "PDFCreator آنلاین"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-msgid "PDFCreator Server"
-msgstr "PDFCreator Server"
+#| msgid "Print PDFCreator Test Page"
+msgid "PDFCreator Test Page"
+msgstr "چاپ صفحه تست PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid "PDFCreator can automatically forward the original document to another profile, for example to convert to another format."
@@ -2722,7 +2729,7 @@ msgstr "PDFCreator قادر به تعمیر چاپگر نیست.لطفا با آ
 msgid "PDFCreator was not able to repair your spool folder. Please contact your administrator or the support to assist you in changing the permissions of the path '{0}'."
 msgstr "برنامه قادر به تعمیر پوشه اسپول نیست. لطفا با آدمین یا پشتیبانی برای کمک به شما در تغییر سطح دسترسی مسیر '{0}' تماس برقرار کنید."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "PFX/P12 files"
 msgstr "فایل PFX/P12"
 
@@ -2746,7 +2753,7 @@ msgstr "جهت یابی صفحه:"
 msgid "Page view:"
 msgstr "مشاهده صفحه:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Page:"
 msgstr "صفحه:"
 
@@ -2759,17 +2766,7 @@ msgstr "صفحات"
 msgid "Pages:"
 msgstr "صفحات:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-msgid "Passphrase:"
-msgstr "رمزعبور:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Password"
 msgstr "تنظيم رمزعبور"
 
@@ -2782,6 +2779,7 @@ msgstr "قدرت رمزعبور:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Password:"
 msgstr "رمزعبور:"
@@ -2817,13 +2815,9 @@ msgstr "فارسی"
 msgid "Place a pattern like this on a separate line in your document"
 msgstr "الگویی مانند این را در یک خط جدا در سند خود قرار دهید"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
 msgid "Places a stamp text on the document."
 msgstr "قرار دادن متن مهر در سند."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Platform:"
-msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid ""
@@ -2837,7 +2831,7 @@ msgstr ""
 msgid "Please enter new profile name:"
 msgstr "لطفا نام پروفایل جدید وارد کنید:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Please enter new queue name:"
 msgstr "لطفا نام صف جدید وارد کنید:"
 
@@ -2849,17 +2843,13 @@ msgstr "لطفا نام چاپگر را وارد کنید:"
 msgid "Please enter profile name:"
 msgstr "نام پروفایل را وارد کنید:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
-msgid "Please enter queue name:"
-msgstr "لطفا نام صف را وارد کنید:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Please enter your license key:"
 msgstr "لطفا کلید مجوز خود را وارد کنید:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Please note that without enabling any send action, files will not be forwarded and only stored in a temporary folder"
-msgstr "لطفا توجه کنید که بدون فعال کردن هر اقدام ارسال،فایل های ارسال نشده و فقط در پوشه موقتی ذخیره میشود"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
+msgid "Please install PDF Architect, our PDF viewer and editor."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Please note that you won't receive any notifications about available updates!"
@@ -2886,6 +2876,7 @@ msgid "Please select a FTP account:"
 msgstr "لطفا اکانت اِف تی پی را انتخاب کنید:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Please select a SMTP account:"
 msgstr "لطفا اکانت اِس اِم تی پی را انتخاب کنید:"
 
@@ -2903,6 +2894,7 @@ msgid "Polish"
 msgstr "لهستانی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Port:"
 msgstr "پورت:"
 
@@ -2934,17 +2926,9 @@ msgstr "چاپ"
 msgid "Print PDFCreator Test Page"
 msgstr "چاپ صفحه تست PDFCreator"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Print Test Page"
-msgstr "چاپ صفحه متن"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Print Windows Test Page"
 msgstr "پنجره چاپ صفحه تست"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Print a test page with the current profile. You will be asked to save the settings if required."
-msgstr "چاپ یک صفحه تست با سند فعلی. اگر نیاز بود تنظیمات ذخیره شود از شما خواسته میشود."
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
 msgid "Print after saving"
@@ -2954,7 +2938,7 @@ msgstr "چاپ بعد از ذخیره سازی"
 msgid "Print document"
 msgstr "چاپ سند"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
 msgid "Print failed because of invalid settings in queue."
 msgstr "چاپ به علت تنظیمات نامعتبر در صف موفق نشد."
 
@@ -2969,25 +2953,15 @@ msgstr "چاپ با PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Printer"
 msgstr "چاپگر"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Printer:"
 msgstr "چاپگر:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Printers"
-msgstr "چاپگرها"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Printing a Test Page creates a PDF file using the settings of the currently selected queue. It does not use the service for printing."
-msgstr "چاپ یک صفحه تست، فایل PDF با استفاده از تنظیمات فعلی صف منتخب ایجاد می کند. از سرویس برای چاپ استفاده نمی کند."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
 msgid "Prints the document to a physical printer."
 msgstr "چاپ سند به یک چاپگر فیزیکی."
 
@@ -3005,14 +2979,11 @@ msgstr "سیاست حریم خصوصی"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Private key file:"
 msgstr "ایجاد فایل های پی دی اِف"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
-msgid "Profile"
-msgstr "پروفايل"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 msgid "Profile:"
@@ -3031,6 +3002,7 @@ msgstr "فایل های برنامه:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Protocol:"
 msgstr ""
@@ -3040,19 +3012,14 @@ msgid "Quality (%):"
 msgstr "کیفیت (%):"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Queue"
 msgstr "صف"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Queue Name:"
 msgstr "نام صف:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Queue Settings"
-msgstr "تنظیمات صف"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Queue:"
 msgstr "صف:"
 
@@ -3085,7 +3052,7 @@ msgstr "بیشتر بدانید"
 msgid "Read our privacy policy here:"
 msgstr "سیاست حریم خصوصی ما را در اینجا بخوانید:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Reason:"
 msgstr "علت:"
 
@@ -3119,7 +3086,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Remove"
 msgstr "حذف"
 
@@ -3128,6 +3095,7 @@ msgstr "حذف"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Remove Account"
 msgstr "حذف اکانت"
@@ -3153,6 +3121,7 @@ msgid "Remove Profile"
 msgstr "حذف پروفایل"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Remove SMTP Account"
 msgstr "حذف اکانت اِس اِم تی پی"
 
@@ -3172,7 +3141,7 @@ msgstr "حذف از انتها"
 msgid "Remove from history"
 msgstr "حذف از تاریخچه"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Remove queue"
 msgstr "حذف صف"
 
@@ -3181,7 +3150,7 @@ msgid "Removed from context menu (Maybe you need to restart your computer)"
 msgstr "از منوی کلیکراست حذف شد (شاید نیاز به ریستارت رایانه باشد)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Rename"
 msgstr "تغییرنام"
 
@@ -3193,7 +3162,7 @@ msgstr "تغییر نام چاپگر"
 msgid "Rename Profile"
 msgstr "تغییر نام پروفایل"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Rename queue"
 msgstr "تغییرنام صف"
 
@@ -3235,11 +3204,16 @@ msgstr "جایگزینی با:"
 msgid "Replaced Title:"
 msgstr "عنوان جایگزین شده:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Reply To:"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
 msgid "Request an activation code on our website:"
 msgstr "درخواست کُد فعالسازی در وبسایت ما:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Require a password to open the PDF document"
 msgstr "برای بازکردن سند پی دی اِف به رمزعبور نیاز است"
 
@@ -3253,7 +3227,7 @@ msgstr "نمونه برداری مجدد تصاویر به"
 msgid "Resolution (DPI):"
 msgstr "وضوح (نقطه بر اینچ):"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Resolution (DPI):"
 msgid "Resolution:"
@@ -3287,10 +3261,6 @@ msgstr "رومانی"
 msgid "Run Length Compression"
 msgstr "اِجرای طول فشرده سازی"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Run Program"
-msgstr "اِجرای برنامه"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 msgid "Run program"
 msgstr "اِجرای برنامه"
@@ -3302,7 +3272,6 @@ msgstr "روسی"
 msgid "SFTP - SSH File Transfer Protocol"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "SMTP"
 msgstr "اِس اِم تی پی"
@@ -3312,23 +3281,28 @@ msgstr "اِس اِم تی پی"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "SMTP Account"
 msgstr "اکانت اِس اِم تی پی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Account:"
 msgstr "اکانت اِس اِم تی پی:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Mail"
 msgstr "ایمیل اِس اِم تی پی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Server Password:"
 msgstr "رمزعبور سرور اِس اِم تی پی:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SSL"
 msgstr "SSL"
 
@@ -3349,9 +3323,10 @@ msgstr "متن نمونه:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 msgid "Save"
 msgstr "ذخيره"
@@ -3359,10 +3334,6 @@ msgstr "ذخيره"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "Save as ..."
 msgstr "ذخیره بعنوان ..."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Save files temporarily"
-msgstr "ذخیره موقت فایل"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Save settings to file"
@@ -3375,6 +3346,18 @@ msgstr "ذخیره در دسکتاپ"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPdfTranslation
 msgid "Save validation report"
 msgstr "ذخیره گزارش معتبرسازی"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
+#, fuzzy
+#| msgid "Please note that without enabling any send action, files will not be forwarded and only stored in a temporary folder"
+msgid "Saving files temporarily without any enabled send action, will only store files in a temporary folder"
+msgstr "لطفا توجه کنید که بدون فعال کردن هر اقدام ارسال،فایل های ارسال نشده و فقط در پوشه موقتی ذخیره میشود"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
+#, fuzzy
+#| msgid "CS-Script"
+msgid "Script"
+msgstr "CS-Script"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Script file contains illegal characters."
@@ -3424,17 +3407,17 @@ msgstr "سرور زمان امن شده بدون رمزعبور."
 msgid "Secured Time Server without user name."
 msgstr "سرور زمان امن شده بدون نام کاربر."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Secures PDFs with a password and selects which authorizations the user receives. Signature and Encryption are always processed last."
 msgstr "ایمن کردن PDF ها با رمزعبور و انتخاب اینکه کاربر مجاز به چه کاری است. امضاء و رمزگذاری در آخر پردازش میشود."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PdfPasswordTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
 msgid "Security"
 msgstr "امنیتی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 msgid "Select E-mail Attachment File"
 msgstr "فایل پیوست را انتخاب کنید"
@@ -3452,7 +3435,7 @@ msgstr "انتخاب اکانت اِچ تی تی پی:"
 msgid "Select Separator:"
 msgstr "انتخاب جداساز:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select Time Server:"
 msgstr "زمان سرور را انتخاب کنید:"
 
@@ -3461,8 +3444,9 @@ msgstr "زمان سرور را انتخاب کنید:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select account or create a new one ->"
 msgstr "یک اکانت انتخاب یا یکی ایجاد کنید ->"
 
@@ -3474,7 +3458,7 @@ msgstr "فایل پیوست را انتخاب کنید"
 msgid "Select background file"
 msgstr "فایل پس زمینه را انتخاب کنید"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select certificate file"
 msgstr "فایل گواهینامه را انتخاب کنید"
 
@@ -3491,6 +3475,7 @@ msgstr "انتخاب مقصد"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "Select key file"
@@ -3517,7 +3502,12 @@ msgstr "انتخاب چاپگر:"
 msgid "Select program"
 msgstr "انتخاب برنامه"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+msgid "Select queue:"
+msgstr "انتخاب چاپگر:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Target Directory:"
 msgid "Select target directory"
@@ -3527,15 +3517,11 @@ msgstr "دایرکتوری مقصد:"
 msgid "Select the application language:"
 msgstr "زبان برنامه را انتخاب کنید:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail/SMTP"
 msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail"
 msgstr "فقط برای ذخیره در پوشه موقتی این را انتخاب کنید،اگر با ایمیل/اِس اِم تی پی ارسال میشود"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail using SMTP"
-msgstr "فقط برای ذخیره فایل در پوشه موقتی این را انتخاب کنید،اگر با ایمیل/اِس اِم تی پی ارسال میشود"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 #, fuzzy
@@ -3544,7 +3530,6 @@ msgstr "فایل کاور را انتخاب کنید"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.ProfileSendSubTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Send"
 msgstr "ارسال"
@@ -3554,6 +3539,7 @@ msgid "Send PDFs \"without\" saving"
 msgstr "ارسال پی دی اِف \"بدون\" ذخیره سازی"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Send Test E-mail"
 msgstr "ارسال ایمیل تست"
 
@@ -3570,6 +3556,7 @@ msgid "Send by e-mail"
 msgstr "ارسال با ایمیل"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Send e-mail via SMTP"
 msgstr "ارسال ایمیل توسط اِس اِم تی پی"
 
@@ -3586,7 +3573,7 @@ msgstr "احراز هویت با درآپ باکس"
 msgid "Send selected Report"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Sends the document as an e-mail without user interaction by using SMTP."
 msgstr "ارسال سند بعنوان ایمیل بدون ارتباط با کاربر از طریق SMTP."
 
@@ -3595,6 +3582,7 @@ msgstr "ارسال سند بعنوان ایمیل بدون ارتباط با ک�
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Server:"
 msgstr "سرور:"
@@ -3603,17 +3591,18 @@ msgstr "سرور:"
 msgid "Service statistics example:"
 msgstr "مثال آمار سرویس:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Set Certificate Password"
 msgstr "تنظیم رمزعبور گواهینامه"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 #, fuzzy
 #| msgid "Password"
 msgid "Set Passwords"
 msgstr "تنظيم رمزعبور"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Set SMTP Server Password"
 msgstr "تنظیم رمزعبور سرور اِس اِم تی پی"
 
@@ -3659,13 +3648,13 @@ msgstr "نمایش راهنمای کاربر"
 msgid "Show log file"
 msgstr "نمایش فایل وقایع"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Quick Actions"
 msgid "Show quick actions"
 msgstr "اقدامات سریع"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Show quick actions after the documents were converted"
 msgstr "بعد از اینکه اسناد تبدیل شد اقدامات سریع را نشان بده"
 
@@ -3677,7 +3666,7 @@ msgstr "نمایش نمونه آمار"
 msgid "Show tips"
 msgstr "نمایش نکات"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Show tray notification after converting a document"
 msgid "Show tray notification"
@@ -3687,13 +3676,12 @@ msgstr "بعد از تبدیل سند اطلاع رسانی کمینه را نش
 msgid "Show tray notification after converting a document"
 msgstr "بعد از تبدیل سند اطلاع رسانی کمینه را نشان بده"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Shows a window to select the filename, output format etc."
 msgstr "نمایش یک پنجره برای انتخاب نام فایل،فرمت خروجی و غیره."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Signature"
 msgstr "امضاء دیجیتالی"
 
@@ -3716,11 +3704,11 @@ msgstr "حجم"
 msgid "Skip"
 msgstr "رَد کردن"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Skip print dialog"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Skip print dialog (start with save dialog)"
 msgstr "رَد پنجره چاپ (شروع با پنجره ذخیره)"
 
@@ -3768,11 +3756,21 @@ msgstr "مرتبسازی نزولی با تاریخ"
 msgid "Spanish"
 msgstr "دانمارکی"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Specify Sender"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Specify Sender:"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Split and merge files"
 msgstr "تقسیم و ادغام فایل ها"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
 msgid "Stamp"
 msgstr "مُهر"
@@ -3806,8 +3804,8 @@ msgstr "موضوع"
 msgid "Subject from Settings"
 msgstr "موضوع از تنظیمات"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Subject:"
 msgstr "موضوع:"
 
@@ -3853,9 +3851,9 @@ msgstr "تنظیمات TIFF"
 msgid "TIFF file"
 msgstr "فایل TIFF"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Target Directory:"
 msgstr "دایرکتوری مقصد:"
 
@@ -3870,10 +3868,6 @@ msgstr "مسیر مقصد،مسیر کامل نامعتبر است."
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Target directory is too long."
 msgstr "دایکرتوری مقصد خیلی بلند است."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Test Page"
-msgstr "صفحه تست"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Test Pages"
@@ -3965,18 +3959,11 @@ msgstr "فعالسازی موفقیت آمیز نبود:"
 msgid "The activation was successful."
 msgstr "فعالسازی با موفقیت بود."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
-#, fuzzy
-#| msgid "The certificate file does not exist."
-msgid "The certificate file does not exist"
-msgstr "فایل گواهینامه موجود نیست."
-
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The certificate has no private key."
 msgstr "گواهینامه کلید خصوصی ندارد."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "The certificate password is wrong."
 msgstr "رمزعبور گواهینامه اشتباه است."
 
@@ -3996,7 +3983,7 @@ msgstr ""
 msgid "The entered profile name is invalid or does already exist."
 msgstr "نام پروفایل وارد شده نامعتبر است یا وجود ندارد."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "The entered queue name is invalid or does already exist."
 msgstr "نام صف وارد شده نامعتبر است یا وجود ندارد."
 
@@ -4037,15 +4024,15 @@ msgid "The following link has been created for your document:"
 msgstr "لینک های زیر برای سند شما ساخته شده است:"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action causes a circular dependency between the profiles."
+msgid "The forwarding action causes a circular dependency between the profiles."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action forwards to itself."
+msgid "The forwarding action forwards to itself."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action is linked to an unknown profile."
+msgid "The forwarding action is linked to an unknown target profile."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
@@ -4172,6 +4159,16 @@ msgstr "مسیر منتخب خیلی بلند است.لطفا مسیر معتب�
 msgid "The selected printer is invalid."
 msgstr "چاپگر انتخاب شده نامعتبر است."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
+msgid "The selected printer is mapped to PDFCreator. Please consider using the forwarding action. It doesn't require additional printing, is quicker and less error prone."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "The selected printer is invalid."
+msgid "The selected printer leads to an infinite loop."
+msgstr "چاپگر انتخاب شده نامعتبر است."
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "The service is currently not running"
 msgstr ""
@@ -4205,6 +4202,7 @@ msgid "The specified SMTP account is not configured."
 msgstr "اکانت اِس اِم تی پی تعیین شده پیکربندی نشده است."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "The specified FTP account is not configured."
 msgid "The specified account is not configured."
@@ -4223,6 +4221,7 @@ msgstr ""
 "پوشه اسپول شما است: {0}"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "The test e-mail was successfully sent to the following recipients:"
 msgstr "ایمیل تست با موفقیت به گیرندگان زیر ارسال شد:"
 
@@ -4258,11 +4257,33 @@ msgstr "این کاراکترها در نام پوشه درآپ باکس اجا�
 msgid "These settings have been set by your administrator and can't be changed."
 msgstr "این تنظیمات توسط آدمین تنظیم شده و نمیتوان آن را تغییر داد."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.NotSupportedFeaturesHintTranslation
-msgid "This feature is not supported by the selected output format"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+#| msgid "This feature is not supported by the selected output format"
+msgid "This feature is not supported by the selected output format."
 msgstr "این ویژگی با فرمت خروجی منتخب پشتیبانی نمی شود"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "This is not considered secure anymore. Use this for compatibility only."
 msgstr "این بعنوان اَمن دیگر در نظر گرفته نمیشود.از این فقط برای سازگاری استفاده کنید."
 
@@ -4289,6 +4310,7 @@ msgstr "پدیداری بندانگشتی تصاویر"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Time Server Account"
 msgstr "زمان سرور اکانت"
@@ -4298,6 +4320,7 @@ msgstr "زمان سرور اکانت"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Timeout in seconds:"
 msgstr "تایم اوت در ثانیه:"
@@ -4322,8 +4345,8 @@ msgid "Title from Settings"
 msgstr "عنوان از تنظیمات"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Title:"
 msgstr "عنوان:"
@@ -4338,6 +4361,7 @@ msgid "To proceed you need to save your current settings."
 msgstr "برای ادامه باید تنظیمات فعلی را ذخیره کنید."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "To:"
 msgstr "به:"
 
@@ -4345,12 +4369,12 @@ msgstr "به:"
 msgid "Total file size:"
 msgstr "مجموع حجم فایل:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 msgid "Trigger another conversion by forwarding the original source document to an other profile, e.g. to convert to another output format."
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-msgid "Trigger another conversion by forwarding the original source document to another profile, e.g. to convert to another output format."
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+msgid "Trigger another conversion by forwarding the original source document to an other queue, e.g. to convert to another output format."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
@@ -4406,7 +4430,7 @@ msgstr "نمیتوان خوراک آر اِس اِس را بارگیری کرد.
 msgid "Unicode (UCS2) text with byte order mark (BOM) which approximates the original text layout"
 msgstr "متن یونیکد (UCS2) با بایت چینش مارک (BOM) که تقریبا مثل چینش متن اصلی است"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Unit of measurement:"
 msgstr "واحد اندازه گیری:"
 
@@ -4449,15 +4473,15 @@ msgstr "فاصله بروز رسانی"
 msgid "Upload with FTP"
 msgstr "آپلود با FTP"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Uploads the document to Dropbox to save it or to share it with a link."
 msgstr "آپلود اسناد به دراپ باکس برای ذخیره آن یا اشتراک گذاری آن با یک لینک."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "Uploads the document to an HTTP server."
 msgstr "آپلود سند به سرور HTTP."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 msgid "Uploads the document with FTP."
 msgstr "آپلود سند با FTP."
 
@@ -4470,6 +4494,7 @@ msgid "Usage statistics"
 msgstr "آمار مصرف"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Use Html"
 msgstr "از اِچ تی اِم اِل استفاده کن"
 
@@ -4498,12 +4523,18 @@ msgstr "راهنمای کاربر"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "User Name:"
 msgstr "نام کاربر:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
+#, fuzzy
+#| msgid "User Tokens"
+msgid "User Token"
+msgstr "رمزهای کاربر"
+
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
 msgid "User Tokens"
 msgstr "رمزهای کاربر"
 
@@ -4532,6 +4563,7 @@ msgstr "کاربر تایپ مجدد رمزعبور ایمیل SMTP را لغو 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "User name"
@@ -4555,11 +4587,8 @@ msgstr "معتبر سازی مجوز..."
 msgid "Value for '{0}'"
 msgstr "مقدار برای '{0}'"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
-msgid "Version"
-msgstr "نسخه"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "View and print any PDF"
 msgstr "مشاهده و چاپ هر پی دی اِف"
 
@@ -4599,7 +4628,6 @@ msgstr "هشدار: سند منتخب فایل PDF 2.0 است و نمیتوان�
 msgid "Warning: The selected document is a PDF 2.0 file and can't be added to other documents during the conversion."
 msgstr "هشدار: سند منتخب فایل PDF 2.0 است و نمیتواند به سایر اسناد حین تبدیل اضافه شود."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 msgid "Watermark"
 msgstr ""
@@ -4639,16 +4667,12 @@ msgid "We highly value that you are using PDFCreator!"
 msgstr "استفاده شما از PDFCreator برای ما بسیار ارزشمند است!"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid ""
-"We recommend PDF Architect, our free PDF Viewer and Editor.\n"
-"The free edition contains a viewer and basic editing capabilities. Furthermore, you can buy optional modules, which extend the functionality according to your requirements and even provide OCR."
+msgid "We recommend PDF Architect, our PDF viewer and editor."
 msgstr ""
-"ما PDF Architect نمایش دهنده و ویرایشگر پی دی اِف رایگان خود را توصیه می کنیم.\n"
-"نسخه رایگان حاوی قابلیت های نمایش دهنده و پایه است. بعلاوه، میتوانید مدل های اختیاری را خرید کنید، که قابلیت های اضافه مطابق با نیاز شما همچون اُ سی آر را فراهم می کند."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "We recommend installing the new, improved PDF Architect version – without the latest version you will miss out on features like printing directly from PDF Architect."
-msgstr "ما پیشنهاد می کنیم نسخه جدید و بهبود یافته PDF Architect را نصب کنید - بدون جدیدترین نسخه شما ویژگی هایی مانند چاپ مستقیم از PDF Architect را از دست می دهید."
+msgid "We recommend installing the new, improved PDF Architect."
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UpdateInterval
 msgid "Weekly"
@@ -4659,7 +4683,6 @@ msgid "Welcome"
 msgstr "نکته روز"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Welcome.WelcomeWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
 msgid "What's new?"
 msgstr "تغییرات در این نسخه؟"
 
@@ -4667,7 +4690,7 @@ msgstr "تغییرات در این نسخه؟"
 msgid "When activating the workflow editor you can choose the actions that fit best to your requirements and adjust their order according to your individual workflow."
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Width:"
 msgstr "عرض:"
 
@@ -4698,10 +4721,6 @@ msgstr "شما از قبل PDF Architect را در رایانه خود داری�
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "You already have the most recent version."
 msgstr "شما از جدیدترین نسخه استفاده می کنید."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "You can add, rename or delete printers for this queue. Please note that you need a least one printer per queue. Otherwise, you will not be able to use the queue."
-msgstr "شما میتوانید برای این صف چاپگر ها را اضافه، تغییرنام یا حذف کنید. توجه کنید که حداقل یک چاپگر بر صف نیاز دارید. در غیر اینصورت، قادر به استفاده از صف نیستید."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "You can enable the RSS news feed by activating it in the application settings."
@@ -4737,13 +4756,9 @@ msgstr "شما تنظیمات نامعتبر با تغییرات ذخیره نش
 msgid "You have invalid settings."
 msgstr "تنظمات نامعتبر دارید."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "You have no print queues yet. Add your first queue now!"
 msgstr "شما هنوز صف چاپ ندارید. حالا اولین صف خود را اضافه کنید!"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "You have no settings for sending enabled"
-msgstr "شما تنظیمی برای ارسال فعال نکرده اید"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "You have printed a password-protected PDF file and Ghostscript ist not able to convert such files."
@@ -4818,7 +4833,9 @@ msgstr ""
 "با این آدرس تماس بگیرید: licensing@pdfforge.org"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "Your version of PDF Architect is outdated"
+#, fuzzy
+#| msgid "Your version of PDF Architect is outdated"
+msgid "Your version of PDF Architect does not support this feature."
 msgstr "نسخه PDF Architect شما تاریخ گذشته است"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray
@@ -4891,10 +4908,12 @@ msgid "_Skip"
 msgstr "_رَد"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "_Subject:"
 msgstr "_موضوع:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "_Text:"
 msgstr "_متن:"
 
@@ -4931,6 +4950,7 @@ msgstr "اینچ"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
 msgid "key files"
@@ -4944,6 +4964,11 @@ msgstr "کلمه کلیدی 1 کلمه کلیدی 2"
 msgid "last"
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "on behalf of"
+msgstr ""
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
 msgid "pages"
@@ -4952,7 +4977,7 @@ msgstr "صفحات:"
 msgid "pdfforge"
 msgstr "pdfforge"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "restrict to low quality"
 msgstr "محدودکردن به کیفیت پایین"
 
@@ -4960,31 +4985,31 @@ msgstr "محدودکردن به کیفیت پایین"
 msgid "rows per page:"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to copy content from the document"
 msgstr "برای کپی محتوای سند"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit comments"
 msgstr "برای ویرایش نظرات"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit the assembly"
 msgstr "برای ویرایش اسمبلی"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit the document"
 msgstr "برای ویرایش سند"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to fill forms"
 msgstr "برای پُرکردن فرم ها"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to print the document"
 msgstr "برای چاپ سند"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to use a screen reader"
 msgstr "برای استفاده یک صفحه خوان"
 

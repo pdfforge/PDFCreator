@@ -1,10 +1,11 @@
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
-    public class FtpActionTranslation : AccountsTranslation
+    public class FtpActionTranslation : AccountsTranslation, IActionTranslation
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
@@ -15,6 +16,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string FtpUploadTitle { get; private set; } = "FTP Upload";
         public string FtpAccountColon { get; private set; } = "FTP Account:";
         public string FtpServerPassword { get; private set; } = "FTP Server Password:";
+        public string Title { get; set; } = "FTP";
+        public string InfoText { get; set; } = "Uploads the document with FTP.";
 
         private string[] FtpGetsDisabled { get; set; } = { "The FTP action will be disabled for this profile.", "The FTP action will be disabled for this profiles." };
         public string ErrorCustomViewNotFoundTitle { get; private set; } = "Viewer not found";

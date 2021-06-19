@@ -2,6 +2,8 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -10,6 +12,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         private readonly IActionOrderHelper _actionOrderHelper;
 
         public bool WithEmailSignature { get; set; } = true;
+        public EncryptionLevel EncryptionLevel { get; set; }
 
         public PDFCreatorDefaultSettingsBuilder(IActionOrderHelper actionOrderHelper)
         {
@@ -106,12 +109,6 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             settings.ConversionProfiles.Add(CreatePngProfile());
             settings.ConversionProfiles.Add(CreatePrintProfile());
             settings.ConversionProfiles.Add(CreateTiffProfile());
-
-            foreach (var profile in settings.ConversionProfiles)
-            {
-                profile.EmailClientSettings.AddSignature = WithEmailSignature;
-                profile.EmailSmtpSettings.AddSignature = WithEmailSignature;
-            }
 
             settings.SortConversionProfiles();
         }
@@ -274,6 +271,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             profile.OpenViewer.Enabled = true;
             profile.ActionOrder.Add(profile.OpenViewer.GetType().Name);
             profile.OpenViewer.OpenWithPdfArchitect = true;
+            profile.PdfSettings.Security.EncryptionLevel = EncryptionLevel;
+            profile.EmailClientSettings.AddSignature = WithEmailSignature;
         }
     }
 }

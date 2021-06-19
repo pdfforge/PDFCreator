@@ -1,6 +1,8 @@
-﻿using NLog;
+﻿using Newtonsoft.Json;
+using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Communication;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
@@ -45,11 +47,7 @@ namespace pdfforge.PDFCreator.Core.Controller
             }
             else if (message.StartsWith("DragAndDrop|", StringComparison.OrdinalIgnoreCase))
             {
-                HandleDroppedFileMessage(message, false);
-            }
-            else if (message.StartsWith("DragAndDrop+ManagePrintJobs|", StringComparison.OrdinalIgnoreCase))
-            {
-                HandleDroppedFileMessage(message, true);
+                HandleDroppedFileMessage(message);
             }
             else if (message.StartsWith("ShowMain|", StringComparison.OrdinalIgnoreCase))
             {
@@ -62,18 +60,27 @@ namespace pdfforge.PDFCreator.Core.Controller
             }
         }
 
-        private void HandleDroppedFileMessage(string message, bool merge)
+        private void HandleDroppedFileMessage(string message)
         {
-            var droppedFiles = message.Split('|')
+            var messageParts = message.Split('|')
                 .Skip(1)
-                .Where(s => !string.IsNullOrWhiteSpace(s));
+                .ToList();
 
-            if (merge && _mainWindowThreadLauncher.IsPrintJobShellOpen())
+            var droppedFiles = messageParts
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Where(s => !s.StartsWith("{")); // remove parameters json
+
+            var parametersJson = messageParts.SingleOrDefault(s => s.StartsWith("{"));
+            var parameters = parametersJson != null
+                ? JsonConvert.DeserializeObject<AppStartParameters>(parametersJson)
+                : new AppStartParameters();
+
+            if (parameters.ManagePrintJobs && _mainWindowThreadLauncher.IsPrintJobShellOpen())
                 _mainWindowThreadLauncher.SwitchPrintJobShellToMergeWindow();
-            else if (merge)
+            else if (parameters.ManagePrintJobs)
                 _jobInfoQueueManager.ManagePrintJobs();
 
-            var threadStart = new ThreadStart(() => _fileConversionAssistant.HandleFileList(droppedFiles));
+            var threadStart = new ThreadStart(() => _fileConversionAssistant.HandleFileListWithoutTooManyFilesWarning(droppedFiles, parameters));
 
             _threadManager.StartSynchronizedUiThread(threadStart, "PipeDragAndDrop");
         }

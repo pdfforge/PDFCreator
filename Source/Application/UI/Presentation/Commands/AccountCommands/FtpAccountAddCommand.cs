@@ -6,10 +6,11 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class FtpAccountAddCommand : TranslatableCommandBase<FtpActionTranslation>, IWaitableCommand
+    public class FtpAccountAddCommand : TranslatableCommandBase<AccountsTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<Accounts> _accountsProvider;

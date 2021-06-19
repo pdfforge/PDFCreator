@@ -6,7 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeTokenHelper : ITokenHelper
     {
-        public TokenReplacer TokenReplacerWithPlaceHolders { get; }
+        public TokenReplacer TokenReplacerWithPlaceHolders => new TokenReplacer();
 
         public List<string> GetTokenListWithFormatting()
         {

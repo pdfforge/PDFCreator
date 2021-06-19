@@ -61,6 +61,8 @@
       <DependentUpon>DropboxAppKey.resx</DependentUpon>
     </Compile>
     <Compile Include="DropboxService.cs" />
+    <Compile Include="DropboxTokenCache.cs" />
+    <Compile Include="DropboxTokenRefreshException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -101,30 +103,8 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="Dropbox.Api.Net40">
-          <HintPath>..\..\..\..\packages\Dropbox.Api.Net40\lib\net40-client\Dropbox.Api.Net40.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Net.Http">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net.Http.WebRequest">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net.Http.Extensions">
-          <HintPath>..\..\..\..\packages\Microsoft.Net.Http\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net.Http.Primitives">
-          <HintPath>..\..\..\..\packages\Microsoft.Net.Http\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+        <Reference Include="Dropbox.Api">
+          <HintPath>..\..\..\..\packages\Dropbox.Api\lib\netstandard2.0\Dropbox.Api.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

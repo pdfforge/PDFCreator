@@ -1,6 +1,7 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings.Workflow;
+using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using System.Linq;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
@@ -41,7 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
                     }
                 }
 
-                if (!typeof(T).IsAssignableFrom(actionFacade.Action))
+                if (!typeof(T).IsAssignableFrom(actionFacade.ActionType))
                 {
                     dropInfo.NotHandled = true;
                     return true;

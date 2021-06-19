@@ -2,11 +2,13 @@
 using pdfforge.Communication;
 using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup;
+using pdfforge.PDFCreator.ErrorReport;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.Utilities;
@@ -62,9 +64,11 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             var application = new SimpleInjectorPrismApplication(_container);
             BootstrapContainerAndApplication(getBootstrapperFunc(), application);
 
-            InitalizeApplication(args, application);
+            InitializeApplication(args, application);
 
             VerifyContainer();
+
+            UpdateErrorReportHelper(_container);
 
             return application.Run();
         }
@@ -75,7 +79,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 _container.Verify(VerificationOption.VerifyOnly);
         }
 
-        private static void InitalizeApplication(string[] args, SimpleInjectorPrismApplication application)
+        private static void InitializeApplication(string[] args, SimpleInjectorPrismApplication application)
         {
             var resolver = new SimpleInjectorAppStartResolver(_container);
             var appStartFactory = new AppStartFactory(resolver, _container.GetInstance<IPathUtil>(), _container.GetInstance<IDirectConversionHelper>());
@@ -117,7 +121,28 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             var inMemoryLogger = new InMemoryLogger(100);
             inMemoryLogger.Register();
             var assembly = typeof(ProgramBase).Assembly;
-            _errorReportHelper = new ErrorReportHelper(inMemoryLogger, new VersionHelper(assembly), new AssemblyHelper(assembly));
+            var versionHelper = new VersionHelper(assembly);
+
+            var errorHelper = new ErrorHelper("pdfcreator", "PDFCreator", versionHelper.ApplicationVersion, Urls.SentryDsnUrl);
+
+            _errorReportHelper = new ErrorReportHelper(inMemoryLogger, new AssemblyHelper(assembly), errorHelper);
+        }
+
+        private static void UpdateErrorReportHelper(Container container)
+        {
+            var applicationNameProvider = container.GetInstance<ApplicationNameProvider>();
+            var versionHelper = container.GetInstance<IVersionHelper>();
+            _errorReportHelper.ErrorHelper = new ErrorHelper(applicationNameProvider.ProductIdentifier, applicationNameProvider.ApplicationNameWithEdition, versionHelper.ApplicationVersion, Urls.SentryDsnUrl);
+
+            var languageProvider = container.GetInstance<IApplicationLanguageProvider>();
+
+            void UpdateErrorHelperLanguage()
+            {
+                _errorReportHelper.ErrorHelper.CurrentUiLanguage = languageProvider.GetApplicationLanguage();
+            }
+
+            languageProvider.LanguageChanged += (sender, args) => UpdateErrorHelperLanguage();
+            UpdateErrorHelperLanguage();
         }
 
         private static GlobalMutex AcquireMutex()

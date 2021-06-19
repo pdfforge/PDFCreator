@@ -1,10 +1,12 @@
 ﻿using pdfforge.Banners;
 using pdfforge.Banners.Helper;
 using pdfforge.LicenseValidator.Interface;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.ITextProcessing;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Licensing;
@@ -30,6 +32,8 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using IBannerManager = pdfforge.PDFCreator.UI.Presentation.Banner.IBannerManager;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 
@@ -41,11 +45,12 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override Color EditionHighlightColor => Color.FromRgb(215, 40, 40);
         protected override bool HideLicensing => true;
 
-        protected override EditionHelper EditionHelper => new EditionHelper(true);
+        protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit);
 
         protected override void RegisterSettingsLoader(Container container)
         {
-            container.RegisterSingleton<ISettingsLoader, SettingsLoader>();
+            container.RegisterSingleton<IBaseSettingsBuilder, DefaultBaseSettingsBuilder>();
+            container.RegisterSingleton<ISettingsLoader, PDFCreatorSettingsLoader>();
             container.RegisterSingleton<ISharedSettingsLoader, FreeSharedSettingsLoader>();
         }
 
@@ -88,6 +93,11 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override void RegisterMailSignatureHelper(Container container)
         {
             container.Register<IMailSignatureHelper, MailSignatureHelperFreeVersion>();
+        }
+
+        protected override void RegisterActionInitializer(Container container)
+        {
+            container.RegisterInitializer<SmtpMailAction>(a => a.Init(true));
         }
 
         protected override IList<Type> GetStartupConditions(IList<Type> defaultConditions)

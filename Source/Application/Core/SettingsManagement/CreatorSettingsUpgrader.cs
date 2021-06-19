@@ -1,9 +1,8 @@
 ﻿using pdfforge.DataStorage;
-using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -31,6 +30,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV7ToV8);
             UpgradeMethods.Add(UpgradeV8ToV9);
             UpgradeMethods.Add(UpgradeV9ToV10);
+            UpgradeMethods.Add(UpgradeV10ToV11);
         }
 
         private void UpgradeV0ToV1()
@@ -185,7 +185,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
                     MigrateOpenViewer(profileOffset, orderedList);
 
-                    SetList(profileOffset, orderedList,"ActionOrder");
+                    SetList(profileOffset, orderedList, "ActionOrder");
                 },
                 "ConversionProfiles"
 
@@ -194,69 +194,30 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             Data.SetValue(SettingsVersionPath, "10");
         }
 
-        private void MigrateOpenViewer(string profileOffset, IList<string> orderedList)
+        private void UpgradeV10ToV11()
         {
-            var isOpenWithArchitectEnabled = Data.GetValue(profileOffset + "OpenWithPdfArchitect");
-            Data.SetValue(profileOffset + @"OpenViewer\OpenWithPdfArchitect", isOpenWithArchitectEnabled);
+            ForAllProfiles
+            (
+                (s, i) =>
+                {
+                    //EmailFormat for Smtp
+                    if (GetBool(Data.GetValue(s + @"EmailSmtpSettings\Html")) == true)
+                        Data.SetValue(s + @"EmailSmtpSettings\Format", "Html");
+                    else
+                        Data.SetValue(s + @"EmailSmtpSettings\Format", "Text");
+                    Data.RemoveValue(s + @"EmailSmtpSettings\Html");
 
-            var isOpenViewerEnabled = Data.GetValue(profileOffset + "OpenViewer");
-            Data.SetValue(profileOffset + @"OpenViewer\Enabled", isOpenViewerEnabled);
+                    //EmailFormat for Client
+                    if (GetBool(Data.GetValue(s + @"EmailClientSettings\Html")) == true)
+                        Data.SetValue(s + @"EmailClientSettings\Format", "Html");
+                    else
+                        Data.SetValue(s + @"EmailClientSettings\Format", "Auto");
+                    Data.RemoveValue(s + @"EmailClientSettings\Html");
+                },
+                "ConversionProfiles"
+            );
 
-
-            bool.TryParse(isOpenViewerEnabled, out var openViewerEnabled);
-            if (openViewerEnabled)
-                orderedList.Add(nameof(OpenViewer));
-        }
-
-        private void MigrateValueToList(string profileOffset, string settingName, string valueName, string listName) 
-        {
-            var coverOffset = $@"{profileOffset}{settingName}\";
-            var convertCoverValueToList = ConvertValueToList(coverOffset, valueName);
-            SetList(coverOffset, convertCoverValueToList, listName);
-            Data.RemoveValue($@"{coverOffset}{valueName}");
-        }
-
-        private IList<string> ConvertValueToList(string offset, string valueName)
-        {
-            var value = Data.GetValue($@"{offset}{valueName}");
-
-            return new List<string>{value};
-        }
-
-        private IList<string> GetOrderedList(string registryOffset, IList<string> list)
-        {
-            var actionList = list.ToList();
-            var bgEnabled = bool.Parse(Data.GetValue(registryOffset + @"BackgroundPage\Enabled"));
-
-            bool.TryParse(Data.GetValue(registryOffset + "EnableWorkflowEditor"), out var enableWorkflowEditor);
-
-            if (!bgEnabled || enableWorkflowEditor)
-                return actionList;
-
-            var orderedActionList = new List<string>();
-
-            var bgSettingName = nameof(BackgroundPage);
-            actionList.Remove(bgSettingName);
-
-            bool.TryParse(Data.GetValue(registryOffset + @"BackgroundPage\OnCover"), out var coverWithBackground);
-            if (coverWithBackground)
-            {
-                var coverName = nameof(CoverPage);
-                orderedActionList.Add(coverName);
-                actionList.Remove(coverName);
-            }
-
-            bool.TryParse(Data.GetValue(registryOffset + @"BackgroundPage\OnAttachment"), out var attachmentWithBackground);
-            if (attachmentWithBackground)
-            {
-                var coverName = nameof(AttachmentPage);
-                orderedActionList.Add(coverName);
-                actionList.Remove(coverName);
-            }
-
-            orderedActionList.Add(bgSettingName);
-            orderedActionList.AddRange(actionList);
-            return orderedActionList;
+            Data.SetValue(SettingsVersionPath, "11");
         }
 
         protected IList<string> GetActionOrder(string profileOffset)
@@ -270,6 +231,5 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             }
             return list;
         }
-
     }
 }

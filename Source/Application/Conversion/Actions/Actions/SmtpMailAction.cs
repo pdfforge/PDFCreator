@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -10,10 +11,10 @@ using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public interface ISmtpMailAction : IPostConversionAction, ICheckable
+    public interface ISmtpMailAction : IPostConversionAction
     { }
 
-    public class SmtpMailAction : RetypePasswordActionBase, ISmtpMailAction
+    public class SmtpMailAction : RetypePasswordActionBase<EmailSmtpSettings>, ISmtpMailAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -22,7 +23,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         protected override string PasswordText => "SMTP";
 
+        private bool _disableDifferingFrom;
+
+        public void Init(bool disableDifferingFrom)
+        {
+            _disableDifferingFrom = disableDifferingFrom;
+        }
+
         public SmtpMailAction(IFile file, IMailHelper mailHelper)
+            : base(p => p.EmailSmtpSettings)
         {
             _file = file;
             _mailHelper = mailHelper;
@@ -31,16 +40,24 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         public override void ApplyPreSpecifiedTokens(Job job)
         {
             _mailHelper.ReplaceTokensInMailSettings(job, job.Profile.EmailSmtpSettings);
+
+            job.Profile.EmailSmtpSettings.OnBehalfOf = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.OnBehalfOf)
+                .Replace(';', ',');
+
+            job.Profile.EmailSmtpSettings.DisplayName = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.DisplayName);
+
+            job.Profile.EmailSmtpSettings.ReplyTo = job.TokenReplacer.ReplaceTokens(job.Profile.EmailSmtpSettings.ReplyTo)
+                .Replace(';', ',');
         }
 
-        public override ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var actionResult = new ActionResult();
 
             if (!IsEnabled(profile))
                 return actionResult;
 
-            var smtpAccount = accounts.GetSmtpAccount(profile);
+            var smtpAccount = settings.Accounts.GetSmtpAccount(profile);
 
             if (smtpAccount == null)
             {
@@ -88,7 +105,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 }
             }
 
-            if (checkLevel == CheckLevel.Job)
+            if (checkLevel == CheckLevel.RunningJob)
             {
                 foreach (var attachmentFile in profile.EmailSmtpSettings.AdditionalAttachments)
                 {
@@ -149,8 +166,18 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 {
                     Subject = mailInfo.Subject,
                     Body = mailInfo.Body,
-                    IsBodyHtml = mailInfo.IsHtml
+                    IsBodyHtml = mailInfo.Format.IsHtml()
                 };
+
+                mailMessage.From = new MailAddress(sender.Address, mailSettings.DisplayName);
+                if (!string.IsNullOrWhiteSpace(mailSettings.OnBehalfOf))
+                {
+                    mailMessage.From = new MailAddress(mailSettings.OnBehalfOf, mailSettings.DisplayName);
+                    mailMessage.Sender = new MailAddress(sender.Address);
+                }
+
+                if (!string.IsNullOrWhiteSpace(mailSettings.ReplyTo)) //Prevent MailMessage from throwing and exception if ReplyTo is not set
+                    mailMessage.ReplyToList.Add(mailSettings.ReplyTo);
 
                 if (!string.IsNullOrWhiteSpace(mailInfo.RecipientsBcc)) //Prevent MailMessage from throwing and exception if BCC is not set
                     mailMessage.Bcc.Add(mailInfo.RecipientsBcc);
@@ -217,9 +244,19 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             job.Passwords.SmtpPassword = password;
         }
 
-        public override bool IsEnabled(ConversionProfile profile)
+        public override bool IsRestricted(ConversionProfile profile)
         {
-            return profile.EmailSmtpSettings.Enabled;
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        {
+            if (_disableDifferingFrom)
+            {
+                job.Profile.EmailSmtpSettings.OnBehalfOf = "";
+                job.Profile.EmailSmtpSettings.DisplayName = "";
+                job.Profile.EmailSmtpSettings.ReplyTo = "";
+            }
         }
     }
 }

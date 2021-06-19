@@ -1,56 +1,78 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:regions="http://prismlibrary.com/"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
-             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              Unloaded="WorkflowEditorOverlayView_OnUnloaded"
              Loaded="WorkflowEditorOverlayView_OnLoaded"
              Width="800"
-             MaxHeight="600"
              KeyboardNavigation.TabNavigation="None"
              d:DataContext="{d:DesignInstance designTime:DesignTimeWorkflowEditorOverlayViewModel}"
-             help:HelpProvider.HelpTopic="WorkflowEditor">
+             help:HelpProvider.HelpTopic="WorkflowEditor"
+             x:Name="OverlayView">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Styles/LightGreyButton.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="../../Styles/LightGreyButton.xaml" />
     </UserControl.Resources>
-    <StackPanel>
-
-        <ContentControl  Margin="20 20 20 0"
-            x:Name="ContentControl"
-            IsTabStop="False"
-            regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileWorkflowEditorOverlayRegion}" />
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <StackPanel.Resources>
-                <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrue" TrueValue="Visible" FalseValue="Collapsed" />
-                <converter:BoolToVisibilityConverter x:Key="VisibleWhenFalse" TrueValue="Collapsed" FalseValue="Visible" />
-
+    <DockPanel LastChildFill="True">
+        <DockPanel Margin="20 20 20 20"
+                   DockPanel.Dock="Bottom" VerticalAlignment="Bottom"
+                   MinHeight="40">
+            <DockPanel.Resources>
+                <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalse" TrueValue="Visible" FalseValue="Collapsed" />
+                <converter:BoolToVisibilityConverter x:Key="CollapsedWhenTrue" TrueValue="Collapsed" FalseValue="Visible" />
                 <Style TargetType="Button" BasedOn="{StaticResource LightGreyButton}">
-                    <Setter Property="Margin" Value="0 10 10 20" />
+                    <Setter Property="Margin" Value="10 0 0 0" />
                     <Setter Property="MinWidth" Value="80" />
+                    <Setter Property="VerticalAlignment" Value="Bottom" />
                 </Style>
-            </StackPanel.Resources>
+            </DockPanel.Resources>
 
             <Button Command="{Binding BackCommand}"
                     Content="{Binding Translation.Back}"
-                    Visibility="{Binding Interaction.ShowBackButton, Converter={StaticResource VisibleWhenTrue}}" />
+                    Visibility="{Binding Interaction.ShowBackButton, Converter={StaticResource CollapsedWhenFalse}}"
+                    DockPanel.Dock="Right" />
 
             <Button Command="{Binding CloseCommand}"
                     Content="{Binding Translation.Close}"
-                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource VisibleWhenTrue}}" />
+                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource CollapsedWhenFalse}}"
+                    DockPanel.Dock="Right" />
 
-            <Button Margin="0 10 20 20"
-                    Command="{Binding OkCommand}"
+            <Button Command="{Binding OkCommand}"
                     Content="{Binding Translation.Ok}"
-                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource VisibleWhenFalse}}" />
-        </StackPanel>
-    </StackPanel>
+                    Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource CollapsedWhenTrue}}"
+                    DockPanel.Dock="Right" />
+
+            <DockPanel Visibility="{Binding StatusHintViewModel.HideStatusInOverlay, ElementName=OverlayView, Converter={StaticResource CollapsedWhenTrue}}">
+                <DockPanel FlowDirection="LeftToRight" VerticalAlignment="Center"
+                           Visibility="{Binding StatusHintViewModel.HasWarning, ElementName=OverlayView, Converter={StaticResource CollapsedWhenFalse}}">
+                    <Viewbox Stretch="Uniform" Width="18">
+                        <ContentPresenter Content="{DynamicResource WarningIconRed}" />
+                    </Viewbox>
+                    <TextBlock Text="{Binding StatusHintViewModel.StatusText, ElementName=OverlayView}"
+                               Foreground="{DynamicResource PdfforgeRedBrush}"
+                               TextWrapping="Wrap"
+                               Margin="7 0 0 0"
+                               FontSize="13"
+                               VerticalAlignment="Center"
+                               FontWeight="DemiBold" />
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+
+        <ScrollViewer DockPanel.Dock="Top"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <ContentControl Margin="20 20 20 0"
+                            x:Name="ContentControl"
+                            IsTabStop="False"
+                            regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ProfileWorkflowEditorOverlayRegion}" />
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

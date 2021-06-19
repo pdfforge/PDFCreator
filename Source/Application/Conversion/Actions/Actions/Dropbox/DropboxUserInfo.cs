@@ -5,5 +5,6 @@
         public string AccessToken { get; set; }
         public string AccountInfo { get; set; }
         public string AccountId { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

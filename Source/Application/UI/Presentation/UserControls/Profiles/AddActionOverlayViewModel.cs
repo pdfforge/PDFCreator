@@ -1,8 +1,7 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
-using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Conversion.Settings.Workflow;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -31,15 +30,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public ObservableCollection<IPresenterActionFacade> PreparationActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> ModifyActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> SendActions { get; set; }
-        public IEnumerable<IActionFacade> ActionFacades { get; private set; }
+        private IList<IPresenterActionFacade> ActionFacades { get; set; }
 
         public AddActionOverlayViewModel(IEventAggregator eventAggregator, ISelectedProfileProvider selectedProfileProvider,
-            IEnumerable<IActionFacade> actionFacades, ITranslationUpdater translationUpdater, ICommandLocator commandLocator)
+            IEnumerable<IPresenterActionFacade> actionFacades, ITranslationUpdater translationUpdater, ICommandLocator commandLocator)
             : base(translationUpdater)
         {
             _eventAggregator = eventAggregator;
-            _selectedProfileProvider = selectedProfileProvider; 
-            ActionFacades = actionFacades;
+            _selectedProfileProvider = selectedProfileProvider;
+            ActionFacades = actionFacades.ToList();
+            _settingIndex = SetupSettingsIndex(ActionFacades);
 
             InfoActionCommand = new DelegateCommand(ShowActionInfo);
             HideInfoActionCommand = new DelegateCommand(HideActionInfo);
@@ -55,36 +55,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             });
         }
 
-        private Dictionary<string, int> _settingIndex = SetupSettingsIndex();
+        private readonly Dictionary<string, int> _settingIndex;
 
-        private static Dictionary<string, int> SetupSettingsIndex()
+        private Dictionary<string, int> SetupSettingsIndex(IEnumerable<IPresenterActionFacade> actionFacades)
         {
             var index = 1;
-            return new List<string>
-            {
-                // pre action
-                nameof(UserTokens),
-                nameof(ForwardToFurtherProfile),
 
-                // modify action
-                nameof(CoverPage),
-                nameof(AttachmentPage),
-                nameof(Stamping),
-                nameof(BackgroundPage),
-                nameof(Watermark),
-                nameof(Security),
-                nameof(Signature),
+            var actionList = actionFacades
+                .Select(a => a.SettingsType.Name)
+                .ToArray();
 
-                // send action
-                nameof(OpenViewer),
-                nameof(EmailClientSettings),
-                nameof(Printing),
-                nameof(Scripting),
-                nameof(Ftp),
-                nameof(EmailSmtpSettings),
-                nameof(HttpSettings),
-                nameof(DropboxSettings)
-            }.ToDictionary(x => x, x => index++);
+            return actionList.ToDictionary(x => x, x => index++);
         }
 
         private int GetSettingsIndex(string settingsName)
@@ -126,25 +107,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         private ObservableCollection<IPresenterActionFacade> GetObservableActionsList<TAction>(IEnumerable<IPresenterActionFacade> actions) where TAction : IAction
         {
             var presenterActionFacades = actions.Where(FilterActionFacadeByType<TAction>()).ToList();
-            presenterActionFacades.Sort(((x, y) => GetSettingsIndex(x.SettingsType.Name) - GetSettingsIndex(y.SettingsType.Name)));
+            presenterActionFacades.Sort(((x, y) => GetSettingsIndex(x.SettingsType.Name) - GetSettingsIndex(x.SettingsType.Name)));
             return presenterActionFacades.ToObservableCollection();
         }
 
         private void GenerateCollectionViewsOfActions()
         {
-            var actions = ActionFacades.OfType<IPresenterActionFacade>().ToList();
+            var actions = ActionFacades.ToList();
 
             PreparationActions = GetObservableActionsList<IPreConversionAction>(actions);
             ModifyActions = GetObservableActionsList<IConversionAction>(actions);
             SendActions = GetObservableActionsList<IPostConversionAction>(actions);
 
+            RaisePropertyChanged(nameof(PreparationActions));
             RaisePropertyChanged(nameof(ModifyActions));
             RaisePropertyChanged(nameof(SendActions));
         }
 
         private Func<IPresenterActionFacade, bool> FilterActionFacadeByType<TType>() where TType : IAction
         {
-            return x => x.Action.GetInterfaces().Contains(typeof(TType));
+            return x => x.ActionType.GetInterfaces().Contains(typeof(TType));
         }
 
         public override string Title => $"{Translation.AddAction}";

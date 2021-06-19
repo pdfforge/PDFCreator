@@ -52,12 +52,12 @@
     <Compile Include="IServiceEventsHandler.cs" />
     <Compile Include="IPdfCreatorUsageStatisticsManager.cs" />
     <Compile Include="IUsageStatisticsManager.cs" />
-    <Compile Include="PdfCreatorUsageStatisticsMetric.cs" />
-    <Compile Include="JobUsageStatisticsMetric.cs" />
+    <Compile Include="PdfCreatorJobFinishedMetric.cs" />
+    <Compile Include="ServerJobFinishedMetric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsageStatisticsEventsHandler.cs" />
     <Compile Include="ServiceEventsHandler.cs" />
-    <Compile Include="ServiceUsageStatisticsMetric.cs" />
+    <Compile Include="ServiceStoppedMetric.cs" />
     <Compile Include="PdfCreatorUsageStatisticsManager.cs" />
     <Compile Include="UsageStatisticsManager.cs" />
   </ItemGroup>
@@ -73,10 +73,6 @@
     <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
       <Project>{94936199-C9C7-4A5F-A58E-6123158E84F3}</Project>
       <Name>Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Controller\Controller.csproj">
-      <Project>{BE1A6F7D-6439-4361-8E96-DF90B4BFE000}</Project>
-      <Name>Controller</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
@@ -323,17 +319,6 @@
       <ItemGroup>
         <Reference Include="SystemInterface">
           <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Tartaros">
-          <HintPath>..\..\..\..\packages\Tartaros\lib\Tartaros.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

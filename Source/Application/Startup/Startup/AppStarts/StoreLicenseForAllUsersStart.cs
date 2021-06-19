@@ -4,6 +4,7 @@ using System;
 using System.Security;
 using System.Threading.Tasks;
 using SystemInterface.Microsoft.Win32;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {

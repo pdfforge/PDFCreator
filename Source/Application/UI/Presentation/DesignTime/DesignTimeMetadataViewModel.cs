@@ -1,5 +1,5 @@
 ﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime

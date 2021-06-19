@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionManager.cs" />
+    <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\DefaultViewerCheck.cs" />
     <Compile Include="Actions\DefaultViewerAction.cs" />
     <Compile Include="Actions\Dropbox\DropboxAction.cs" />
@@ -63,22 +64,24 @@
     <Compile Include="Actions\AttachmentAction.cs" />
     <Compile Include="Actions\EncryptionAction.cs" />
     <Compile Include="Actions\ForwardToFurtherProfileAction.cs" />
+    <Compile Include="Actions\Ftp\FtpClientWrap.cs" />
+    <Compile Include="Actions\Ftp\FtpConnectionFactory.cs" />
+    <Compile Include="Actions\Ftp\FtpConnectionWrap.cs" />
+    <Compile Include="Actions\Ftp\SftpClientWrap.cs" />
+    <Compile Include="Actions\Ftp\UniqueFileNameForFtp.cs" />
+    <Compile Include="Actions\Helper\CyclicDependenciesHelper.cs" />
+    <Compile Include="Actions\ForwardToFurtherProfileActionBase.cs" />
     <Compile Include="Actions\Interface\IBusinessFeatureAction.cs" />
     <Compile Include="Actions\Interface\IDefaultViewerAction.cs" />
     <Compile Include="Actions\Mail\MailHelper.cs" />
     <Compile Include="Actions\RetypePasswordActionBase.cs" />
     <Compile Include="Actions\HttpAction.cs" />
-    <Compile Include="Actions\FtpAction.cs" />
+    <Compile Include="Actions\Ftp\FtpAction.cs" />
     <Compile Include="Actions\Dropbox\IDropboxService.cs" />
     <Compile Include="Actions\SigningAction.cs" />
     <Compile Include="Actions\UserTokensAction.cs" />
     <Compile Include="Actions\BackgroundAction.cs" />
     <Compile Include="Actions\WatermarkAction.cs" />
-    <Compile Include="Components\ActionComponent.cs" />
-    <Compile Include="Components\ComponentBase.cs" />
-    <Compile Include="Components\IComponentBase.cs" />
-    <Compile Include="Components\IActionComponent.cs" />
-    <Compile Include="Components\SettingsComponent.cs" />
     <Compile Include="Actions\CoverAction.cs" />
     <Compile Include="Queries\IRecommendArchitectAssistant.cs" />
     <Compile Include="IScriptActionHelper.cs" />
@@ -87,18 +90,13 @@
     <Compile Include="Actions\ScriptAction.cs" />
     <Compile Include="Actions\SmtpMailAction.cs" />
     <Compile Include="Actions\StampAction.cs" />
-    <Compile Include="ActionFacades\ActionFacade.cs" />
-    <Compile Include="ActionFacades\ActionFacadeBuilder.cs" />
+    <Compile Include="Queries\PdfArchitectRecommendPurpose.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
     <None Include="pdfforge.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Services\Services.csproj">
-      <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
-      <Name>Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\JobInfoQueue\JobInfoQueue.csproj">
       <Project>{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}</Project>
       <Name>JobInfoQueue</Name>
@@ -136,6 +134,17 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="FluentFTP">
+          <HintPath>..\..\..\..\packages\FluentFTP\lib\net45\FluentFTP.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
@@ -192,6 +201,17 @@
       <ItemGroup>
         <Reference Include="pdfforge.Mail">
           <HintPath>..\..\..\..\packages\pdfforge.Mail\lib\pdfforge.Mail.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Renci.SshNet">
+          <HintPath>..\..\..\..\packages\SSH.NET\lib\net40\Renci.SshNet.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

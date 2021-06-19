@@ -143,36 +143,44 @@
         </Canvas>
     </Viewbox>
 
-    <Viewbox x:Key="UpDownArrowIcon" Stretch="Uniform" x:Shared="False">
-        <Canvas Width="26.298" Height="49.674">
-            <Canvas>
-                <Path
-                    Fill="#ff7d7d7d" Data="F1 M 0.000,0.000 L 26.298,0.000 L 26.298,49.674 L 0.000,49.674 L 0.000,0.000 Z" />
+    <Grid x:Key="UpDownArrowIcon" x:Shared="False"
+          VerticalAlignment="Stretch"
+          Background="#ff7d7d7d">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Viewbox Grid.Row="0" Stretch="Uniform">
+            <Canvas Width="26.298" Height="24.837" HorizontalAlignment="Stretch">
                 <Canvas>
                     <Canvas>
-                        <Canvas>
-                            <Path
-                                Fill="#fff4f4f4"
-                                Data="F1 M 13.149,37.431 L 8.237,32.516 L 9.698,31.055 L 13.146,34.503 L 16.597,31.055 L 18.058,32.516 L 13.149,37.431 Z" />
-                        </Canvas>
-                        <Canvas.Clip>
-                            <PathGeometry Figures=" M 8.237,31.055 L 18.061,31.055 L 18.061,37.431 L 8.237,37.431 L 8.237,31.055 Z" />
-                        </Canvas.Clip>
+                        <Path Fill="#fff4f4f4"
+                              Data="F1 M 13.149,12.243 L 18.061,17.158 L 16.600,18.619 L 13.152,15.171 L 9.701,18.619 L 8.240,17.158 L 13.149,12.243 Z" />
                     </Canvas>
-                    <Canvas>
-                        <Canvas>
-                            <Path
-                                Fill="#fff4f4f4"
-                                Data="F1 M 13.149,12.243 L 18.061,17.158 L 16.600,18.619 L 13.152,15.171 L 9.701,18.619 L 8.240,17.158 L 13.149,12.243 Z" />
-                        </Canvas>
-                        <Canvas.Clip>
-                            <PathGeometry Figures=" M 8.237,12.243 L 18.061,12.243 L 18.061,18.619 L 8.237,18.619 L 8.237,12.243 Z" />
-                        </Canvas.Clip>
-                    </Canvas>
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 8.237,12.243 L 18.061,12.243 L 18.061,18.619 L 8.237,18.619 L 8.237,12.243 Z" />
+                    </Canvas.Clip>
                 </Canvas>
             </Canvas>
-        </Canvas>
-    </Viewbox>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Stretch="Uniform">
+            <Viewbox.LayoutTransform>
+                <RotateTransform CenterX="0.5" CenterY="0.5" Angle="180" />
+            </Viewbox.LayoutTransform>
+            <Canvas Width="26.298" Height="24.837" HorizontalAlignment="Stretch">
+                <Canvas>
+                    <Canvas>
+                        <Path Fill="#fff4f4f4"
+                              Data="F1 M 13.149,12.243 L 18.061,17.158 L 16.600,18.619 L 13.152,15.171 L 9.701,18.619 L 8.240,17.158 L 13.149,12.243 Z" />
+                    </Canvas>
+                    <Canvas.Clip>
+                        <PathGeometry Figures=" M 8.237,12.243 L 18.061,12.243 L 18.061,18.619 L 8.237,18.619 L 8.237,12.243 Z" />
+                    </Canvas.Clip>
+                </Canvas>
+            </Canvas>
+        </Viewbox>
+    </Grid>
 
     <Viewbox x:Key="RemoveIcon" Stretch="Uniform" x:Shared="False">
         <Canvas Width="146.916" Height="176.689">

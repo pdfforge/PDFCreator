@@ -6,6 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
     {
         public string RemindMeLater { get; private set; } = "Remind me later";
         public string ManageLicense { get; private set; } = "Manage license";
+        public string LicenseHasExpired { get; private set; } = "Your license has expired.";
 
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 

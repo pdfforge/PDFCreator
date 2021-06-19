@@ -1,6 +1,7 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
 using pdfforge.PDFCreator.Conversion.Actions.Queries;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -17,7 +18,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
     /// <summary>
     ///     DefaultViewerAction opens the output files in the default viewer
     /// </summary>
-    public class DefaultViewerAction : IDefaultViewerAction
+    public class DefaultViewerAction : ActionBase<OpenViewer>, IDefaultViewerAction
     {
         private static Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IPdfArchitectCheck _pdfArchitectCheck;
@@ -35,6 +36,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             IPdfArchitectCheck pdfArchitectCheck, ISettingsProvider settingsProvider,
             OutputFormatHelper outputFormatHelper, IProcessStarter processStarter,
             IDefaultViewerCheck defaultViewerCheck)
+            : base(p => p.OpenViewer)
         {
             _fileAssoc = fileAssoc;
             _recommendArchitectAssistant = recommendArchitectAssistant;
@@ -50,7 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         /// </summary>
         /// <param name="job">Job information</param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             Logger.Debug("Launched Viewer-Action");
             var file = job.OutputFiles.First();
@@ -82,15 +84,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
             else
             {
-                _recommendArchitectAssistant.Show();
+                _recommendArchitectAssistant.Show(PdfArchitectRecommendPurpose.NotInstalled);
             }
 
             return new ActionResult();
-        }
-
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.OpenViewer.Enabled;
         }
 
         private bool ShouldOpenWithArchitect(OutputFormat outputFormat, bool openWithPdfArchitectSetting)
@@ -148,7 +145,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 if (ShouldRecommendArchitect(outputFormatByPath))
                 {
-                    _recommendArchitectAssistant.Show();
+                    _recommendArchitectAssistant.Show(PdfArchitectRecommendPurpose.NoPdfViewer);
                 }
                 else
                 {
@@ -163,5 +160,28 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             return new ActionResult();
         }
+
+        public override void ApplyPreSpecifiedTokens(Job job)
+        {
+            //Nothing to do here
+        }
+
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
+        {
+            //todo:
+            //ProfileLevel: Maybe check default viewer installed?
+            //              Maybe check Architect installed?
+
+            //JobLevel: Nothing to do
+            return new ActionResult();
+        }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

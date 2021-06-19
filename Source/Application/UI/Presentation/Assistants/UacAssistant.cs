@@ -9,12 +9,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
     public interface IUacAssistant
     {
+        bool CheckForPrinterHelper();
+
         bool AddExplorerIntegration();
 
         bool RemoveExplorerIntegration();
@@ -44,6 +47,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             _pdfCreatorNameProvider = pdfCreatorNameProvider;
 
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));
+        }
+
+        public bool CheckForPrinterHelper()
+        {
+            return GetApplicationPath("PrinterHelper.exe") != null;
         }
 
         public bool AddExplorerIntegration()

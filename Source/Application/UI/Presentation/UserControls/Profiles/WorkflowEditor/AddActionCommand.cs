@@ -1,30 +1,24 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
-using pdfforge.PDFCreator.Conversion.Settings.Workflow;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using Prism.Events;
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
     public class AddActionCommand : ICommand
     {
-        private readonly ISelectedProfileProvider _selectedProfileProvider;
         private readonly IInteractionRequest _interactionRequest;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IActionOrderHelper _actionOrderHelper;
         private readonly EditionHelper _editionHelper;
 
-        public AddActionCommand(ISelectedProfileProvider selectedProfileProvider, IInteractionRequest interactionRequest, IEventAggregator eventAggregator,
-            IActionOrderHelper actionOrderHelper, EditionHelper editionHelper)
+        public AddActionCommand(IInteractionRequest interactionRequest,
+            IEventAggregator eventAggregator, EditionHelper editionHelper)
         {
-            _selectedProfileProvider = selectedProfileProvider;
             _interactionRequest = interactionRequest;
             _eventAggregator = eventAggregator;
-            _actionOrderHelper = actionOrderHelper;
             _editionHelper = editionHelper;
         }
 
@@ -37,7 +31,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         {
             if (_editionHelper.IsFreeEdition)
             {
-                return !typeof(IBusinessFeatureAction).IsAssignableFrom(actionFacade.Action);
+                return !typeof(IBusinessFeatureAction).IsAssignableFrom(actionFacade.ActionType);
             }
 
             return true;
@@ -46,39 +40,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         public async void Execute(object parameter)
         {
             var actionFacade = (IPresenterActionFacade)parameter;
-            var profile = _selectedProfileProvider.SelectedProfile;
 
-            if (!profile.ActionOrder.Exists(x => x == actionFacade.SettingsType.Name))
+            var isSupported = IsSupported(actionFacade);
+
+            if (isSupported)
+                actionFacade.AddAction();
+
+            var interaction = new WorkflowEditorOverlayInteraction(actionFacade.Title, actionFacade.OverlayViewName, !isSupported, true);
+            interaction = await _interactionRequest.RaiseAsync(interaction);
+            if (interaction.Result != WorkflowEditorOverlayResult.Success)
             {
-                var isDisabled = false;
-                if (IsSupported(actionFacade))
-                {
-                    actionFacade.IsEnabled = true;
-                    profile.ActionOrder.Add(actionFacade.SettingsType.Name);
-                }
-                else
-                {
-                    isDisabled = true;
-                }
+                actionFacade.RemoveAction();
+            }
 
-                _actionOrderHelper.EnsureEncryptionAndSignatureOrder(profile);
+            _eventAggregator.GetEvent<ActionAddedToWorkflowEvent>().Publish();
 
-                var interaction = await _interactionRequest.RaiseAsync(new WorkflowEditorOverlayInteraction(actionFacade.Translation, actionFacade.OverlayView, isDisabled, true));
-                if (interaction.Result != WorkflowEditorOverlayResult.Success)
-                {
-                    actionFacade.IsEnabled = false;
-                    _selectedProfileProvider.SelectedProfile.ActionOrder.RemoveAll(x => x == actionFacade.SettingsType.Name);
-
-                    if ("CoverPage" == actionFacade.SettingsType.Name)
-                        _selectedProfileProvider.SelectedProfile.CoverPage.Files = new List<string>();
-                }
-
-                _eventAggregator.GetEvent<ActionAddedToWorkflowEvent>().Publish();
-
-                if (interaction.Result == WorkflowEditorOverlayResult.Back)
-                {
-                    await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
-                }
+            if (interaction.Result == WorkflowEditorOverlayResult.Back)
+            {
+                await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
             }
         }
 

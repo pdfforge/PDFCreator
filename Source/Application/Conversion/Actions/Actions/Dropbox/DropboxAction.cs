@@ -9,22 +9,23 @@ using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
 {
-    public class DropboxAction : IPostConversionAction, ICheckable
+    public class DropboxAction : ActionBase<DropboxSettings>, IPostConversionAction
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IDropboxService _dropboxService;
 
         public DropboxAction(IDropboxService dropboxService)
+            : base(p => p.DropboxSettings)
         {
             _dropboxService = dropboxService;
         }
 
-        public ActionResult ProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job)
         {
             _logger.Debug("Launched Dropbox Action");
 
-            ApplyPreSpecifiedTokens(job);
-            var actionResult = Check(job.Profile, job.Accounts, CheckLevel.Job);
+            var settings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
+            var actionResult = Check(job.Profile, settings, CheckLevel.RunningJob);
             if (!actionResult)
                 return actionResult;
 
@@ -38,8 +39,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
                 {
                     var shareLink = _dropboxService.UploadFileWithSharing(
                         currentDropBoxAccount.AccessToken,
+                        currentDropBoxAccount.RefreshToken,
                         shareFolder, job.OutputFiles,
-                        job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFileTemplate);
+                        job.Profile.DropboxSettings.EnsureUniqueFilenames,
+                        job.OutputFileTemplate);
+
                     if (shareLink == null)
                     {
                         return new ActionResult(ErrorCode.Dropbox_Upload_And_Share_Error);
@@ -58,7 +62,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
             }
             else
             {
-                var result = _dropboxService.UploadFiles(currentDropBoxAccount.AccessToken, shareFolder, job.OutputFiles, job.Profile.DropboxSettings.EnsureUniqueFilenames, job.OutputFileTemplate);
+                var result = _dropboxService.UploadFiles(
+                    currentDropBoxAccount.AccessToken,
+                    currentDropBoxAccount.RefreshToken,
+                    shareFolder,
+                    job.OutputFiles,
+                    job.Profile.DropboxSettings.EnsureUniqueFilenames,
+                    job.OutputFileTemplate);
                 if (result == false)
                 {
                     return new ActionResult(ErrorCode.Dropbox_Upload_Error);
@@ -68,25 +78,20 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
             return new ActionResult();
         }
 
-        public bool IsEnabled(ConversionProfile profile)
-        {
-            return profile.DropboxSettings.Enabled;
-        }
-
-        public void ApplyPreSpecifiedTokens(Job job)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
             job.Profile.DropboxSettings.SharedFolder = job.TokenReplacer.ReplaceTokens(job.Profile.DropboxSettings.SharedFolder)
                                                                         .Replace("\\", "/");
         }
 
-        public ActionResult Check(ConversionProfile profile, Accounts accounts, CheckLevel checkLevel)
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             if (!IsEnabled(profile))
                 return new ActionResult();
 
-            var isJobLevelCheck = checkLevel == CheckLevel.Job;
+            var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
-            var account = accounts.GetDropboxAccount(profile);
+            var account = settings.Accounts.GetDropboxAccount(profile);
 
             if (account == null)
                 return new ActionResult(ErrorCode.Dropbox_AccountNotSpecified);
@@ -104,5 +109,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
 
             return new ActionResult();
         }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

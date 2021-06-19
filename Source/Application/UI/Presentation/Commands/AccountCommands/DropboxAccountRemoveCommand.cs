@@ -95,7 +95,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
             try
             {
-                _dropboxService.RevokeToken(_currentAccount.AccessToken);
+                _dropboxService.RevokeToken(_currentAccount.AccessToken, _currentAccount.RefreshToken);
             }
             catch (Exception)
             {

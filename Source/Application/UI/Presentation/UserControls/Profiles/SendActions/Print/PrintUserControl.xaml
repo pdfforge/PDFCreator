@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimePrintUserControlViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="PrintDocument">
+
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.DisplayName}">
+        <StackPanel Margin="0 0 10 10">
+            <StackPanel.Resources>
+                <converter:AreEqualConverter x:Key="AreEqualConverter"
+                                         Reference="{x:Static enums:SelectPrinter.SelectedPrinter}" EqualValue="True"
+                                         NotEqualValue="False" />
+                <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="VisibilityConverter" />
+            </StackPanel.Resources>
+            <Label>
+                <TextBlock Text="{Binding Translation.SelectPrinterText}"></TextBlock>
+            </Label>
+            <ComboBox Name="SelectPrinterComboBox" DisplayMemberPath="Translation"
+                  ItemsSource="{Binding SelectPrinterValues}"
+                  SelectedValue="{Binding PrinterSelecting}" SelectedValuePath="Value"
+                  Margin="0 0 0 5" />
+            <ComboBox Margin="50 0 0 10"
+                  IsEnabled="{Binding ElementName=SelectPrinterComboBox,Path=SelectedValue,Converter={StaticResource AreEqualConverter}}"
+                  SelectedValue="{Binding SelectedPrinter}"
+                  ItemsSource="{Binding InstalledPrinters}" />
+            <Grid Margin="50 0 0 10" Visibility="{Binding IsProfilePrinter, Converter={StaticResource VisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <misc:WarningIconControl help:HelpProvider.HelpTopic="ForwardToProfile" VerticalAlignment="Center" ToolTipText="{Binding Translation.WarnAboutPdfCreatorPrinter}" />
+                <TextBlock Grid.Column="1" Margin="10 0 0 0" Text="{Binding Translation.WarnAboutPdfCreatorPrinter}"  TextWrapping="WrapWithOverflow" />
+            </Grid>
+            <Label>
+                <TextBlock Text="{Binding Translation.DuplexPrintingText}" TextWrapping="Wrap"></TextBlock>
+            </Label>
+            <ComboBox DisplayMemberPath="Translation" SelectedValuePath="Value"
+                  SelectedValue="{Binding CurrentProfile.Printing.Duplex}"
+                  ItemsSource="{Binding Translation.DuplexPrintValues}" />
+            <CheckBox Margin="0 20 0 0"
+                      IsChecked="{Binding CurrentProfile.Printing.FitToPage}">
+                <TextBlock Text="{Binding Translation.FitToPage}" />
+            </CheckBox>
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

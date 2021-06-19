@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.StampUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeStampUserControlViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="{x:Static help:HelpTopic.Stamp}">
+
+    <UserControl.Resources>
+        <converter:ColorConverter x:Key="ColorConverter" />
+    </UserControl.Resources>
+
+    <StackPanel>
+        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.StampControlHeader}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="1" Grid.Column="0" Margin="0 0 5 0" Content="{Binding Translation.StampTextLabelContent}" />
+                <Label Grid.Row="1" Grid.Column="1" Margin="0 0 5 0" Content="{Binding Translation.StampFontLabelContent}" />
+                <Label Grid.Row="1" Grid.Column="2" Margin="0 0 5 0"
+                       Content="{Binding Translation.StampFontColorLabelContent}" />
+                <StackPanel Grid.Row="2">
+                    <!--<Label Content="{Binding Translation.DropboxSharedFolderNameContent}" />-->
+                    <controls:TokenControl DataContext="{Binding StampUserControlTokenViewModel}" />
+                </StackPanel>
+                <Button Grid.Row="2" Grid.Column="1" Margin="5 0" Content="{Binding FontButtonText}"
+                        Command="{Binding ChooseStampFont}" Width="150"
+                        Style="{DynamicResource LightGreyButton}"
+                        VerticalAlignment="Top"
+                        MinHeight="38" />
+                <Button Grid.Row="2" Grid.Column="2"
+                        Command="{Binding ChooseStampColor}"
+                        Style="{DynamicResource LightGreyButton}"
+                        VerticalAlignment="Top"
+                        MinHeight="38">
+                    <Rectangle Height="16" Width="32">
+                        <Rectangle.Fill>
+                            <SolidColorBrush
+                                Color="{Binding CurrentProfile.Stamping.Color, Converter={StaticResource ColorConverter}}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Button>
+                <StackPanel Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Margin="0 5 0 0">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <CheckBox Content="{Binding Translation.StampFontAsOutlineCheckBoxContent}"
+                                  IsChecked="{Binding CurrentProfile.Stamping.FontAsOutline}" Margin="0,5,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0 5"
+                                IsEnabled="{Binding CurrentProfile.Stamping.FontAsOutline}"
+                                VerticalAlignment="Center">
+                        <Label Content="{Binding Translation.StampOutlineWidthLabelContent}" Margin="-5 -2" />
+                        <TextBox Text="{Binding CurrentProfile.Stamping.FontOutlineWidth}"
+                                 Margin="5 0 0 0" Width="40" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </HeaderedContentControl>
+    </StackPanel>
+</UserControl>

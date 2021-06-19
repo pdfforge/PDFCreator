@@ -1,5 +1,5 @@
-﻿using pdfforge.PDFCreator.Core.Controller;
-using pdfforge.PDFCreator.Core.DirectConversion;
+﻿using Newtonsoft.Json;
+using pdfforge.PDFCreator.Core.Controller;
 using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
@@ -18,21 +18,14 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         protected override string ComposePipeMessage()
         {
-            var pipeMessage = "DragAndDrop";
-            if (AppStartParameters.ManagePrintJobs)
-                pipeMessage += "+ManagePrintJobs";
+            var parameterJson = JsonConvert.SerializeObject(AppStartParameters);
 
-            return pipeMessage + "|" + string.Join("|", DroppedFiles);
+            return "DragAndDrop|" + parameterJson + "|" + string.Join("|", DroppedFiles);
         }
 
         protected override bool StartApplication()
         {
-            var list = new List<(string path, AppStartParameters paramters)>();
-            foreach (var droppedFile in DroppedFiles)
-            {
-                list.Add((droppedFile, AppStartParameters));
-            }
-            _fileConversionAssistant.HandleFileList(list);
+            _fileConversionAssistant.HandleFileList(DroppedFiles, AppStartParameters);
             return true;
         }
     }

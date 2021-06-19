@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,9 +44,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// Use html for e-mail body
+		/// Set the e-mail body format
 		/// </summary>
-		public bool Html { get; set; } = false;
+		public EmailFormatSetting Format { get; set; } = EmailFormatSetting.Auto;
 		
 		/// <summary>
 		/// The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org
@@ -82,7 +83,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}catch{}
 			try { Content = Data.UnescapeString(data.GetValue(@"" + path + @"Content")); } catch { Content = "";}
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			Html = bool.TryParse(data.GetValue(@"" + path + @"Html"), out var tmpHtml) ? tmpHtml : false;
+			Format = Enum.TryParse<EmailFormatSetting>(data.GetValue(@"" + path + @"Format"), out var tmpFormat) ? tmpFormat : EmailFormatSetting.Auto;
 			try { Recipients = Data.UnescapeString(data.GetValue(@"" + path + @"Recipients")); } catch { Recipients = "";}
 			try { RecipientsBcc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsBcc")); } catch { RecipientsBcc = "";}
 			try { RecipientsCc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsCc")); } catch { RecipientsCc = "";}
@@ -98,7 +99,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(path + @"AdditionalAttachments\numClasses", AdditionalAttachments.Count.ToString());
 			data.SetValue(@"" + path + @"Content", Data.EscapeString(Content));
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"Html", Html.ToString());
+			data.SetValue(@"" + path + @"Format", Format.ToString());
 			data.SetValue(@"" + path + @"Recipients", Data.EscapeString(Recipients));
 			data.SetValue(@"" + path + @"RecipientsBcc", Data.EscapeString(RecipientsBcc));
 			data.SetValue(@"" + path + @"RecipientsCc", Data.EscapeString(RecipientsCc));
@@ -113,7 +114,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AdditionalAttachments = new List<string>(AdditionalAttachments);
 			copy.Content = Content;
 			copy.Enabled = Enabled;
-			copy.Html = Html;
+			copy.Format = Format;
 			copy.Recipients = Recipients;
 			copy.RecipientsBcc = RecipientsBcc;
 			copy.RecipientsCc = RecipientsCc;
@@ -138,8 +139,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(Html != source.Html)
-				Html = source.Html;
+			if(Format != source.Format)
+				Format = source.Format;
 				
 			if(Recipients != source.Recipients)
 				Recipients = source.Recipients;
@@ -164,7 +165,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!AdditionalAttachments.SequenceEqual(v.AdditionalAttachments)) return false;
 			if (!Content.Equals(v.Content)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Html.Equals(v.Html)) return false;
+			if (!Format.Equals(v.Format)) return false;
 			if (!Recipients.Equals(v.Recipients)) return false;
 			if (!RecipientsBcc.Equals(v.RecipientsBcc)) return false;
 			if (!RecipientsCc.Equals(v.RecipientsCc)) return false;

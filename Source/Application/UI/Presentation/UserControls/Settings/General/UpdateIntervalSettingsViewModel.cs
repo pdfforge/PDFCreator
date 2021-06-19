@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;

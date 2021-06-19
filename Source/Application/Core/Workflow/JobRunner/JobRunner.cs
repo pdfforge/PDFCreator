@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Conversion.ConverterInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities.IO;
@@ -27,7 +26,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IConverterFactory _converterFactory;
         private readonly IDirectory _directory;
         private readonly IDirectoryHelper _directoryHelper;
-        private readonly IPdfProcessingHelper _processingHelper;
         private readonly IActionExecutor _actionExecutor;
         private readonly IJobCleanUp _jobClean;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -36,7 +34,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public JobRunner(ITokenReplacerFactory tokenReplacerFactory,
             IConverterFactory converterFactory, IJobCleanUp jobClean, ITempFolderProvider tempFolderProvider, IDirectory directory,
-            IDirectoryHelper directoryHelper, IPdfProcessingHelper processingHelper, IActionExecutor actionExecutor)
+            IDirectoryHelper directoryHelper, IActionExecutor actionExecutor)
         {
             _tokenReplacerFactory = tokenReplacerFactory;
             _converterFactory = converterFactory;
@@ -44,7 +42,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _tempFolderProvider = tempFolderProvider;
             _directory = directory;
             _directoryHelper = directoryHelper;
-            _processingHelper = processingHelper;
             _actionExecutor = actionExecutor;
         }
 
@@ -66,14 +63,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 // TODO: Use async/await
                 _actionExecutor.CallPreConversionActions(job);
 
-                _processingHelper.ApplyFormatRestrictionsToProfile(job);
+                _actionExecutor.ApplyRestrictions(job);
 
                 var converter = _converterFactory.GetConverter(job.JobInfo.JobType);
                 var reportProgress = new EventHandler<ConversionProgressChangedEventArgs>((sender, args) => job.ReportProgress(args.Progress));
                 converter.OnReportProgress += reportProgress;
 
                 var isPdf = job.Profile.OutputFormat.IsPdf();
-                var isProcessingRequired = _processingHelper.IsProcessingRequired(job);
+                var isProcessingRequired = _actionExecutor.IsProcessingRequired(job);
                 converter.Init(isPdf, isProcessingRequired);
 
                 converter.FirstConversionStep(job);
@@ -105,10 +102,20 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             catch (Exception ex)
             {
-                if (ex is ProcessingException processingException)
-                    _logger.Error($"The job failed: {processingException.Message} ({processingException.ErrorCode})");
-                else
-                    _logger.Error(ex, $"The job failed: {ex.Message}");
+                switch (ex)
+                {
+                    case ProcessingException processingException:
+                        _logger.Error($"The job failed: {processingException.Message} ({processingException.ErrorCode})");
+                        break;
+
+                    case AggregateProcessingException aggregateProcessingException:
+                        _logger.Error($"Parts of the job failed. {aggregateProcessingException.Message} ({string.Join(",", aggregateProcessingException.Result)})");
+                        break;
+
+                    default:
+                        _logger.Error(ex, $"The job failed: {ex.Message}");
+                        break;
+                }
 
                 if (job.CleanUpOnError)
                     CleanUp(job);

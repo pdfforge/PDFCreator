@@ -27,34 +27,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
 
         protected override MessageInteraction DetermineInteraction(SettingsCheckResult result)
         {
-            bool withErrors = !result.Result;
+            var withErrors = !result.Result;
+
+            if (!withErrors)
+                return null;
+
             var withChanges = result.SettingsHaveChanged;
 
-            if (!withChanges && !withErrors)
-                return null;
+            var title = Translation.Settings;
+            var buttons = MessageOptions.YesNo;
 
-            if (withChanges && !withErrors)
-                return null;
+            var userQuestion = withChanges ? Translation.WantToSaveAnyway : Translation.WantToProceedAnyway;
+            var text = withChanges ? Translation.InvalidSettingsWithUnsavedChanges : Translation.InvalidSettings;
 
-            if (!withChanges && withErrors)
-            {
-                var title = Translation.Settings;
-                var text = Translation.InvalidSettings;
-                var buttons = MessageOptions.YesNo;
-                var userQuestion = Translation.WantToProceedAnyway;
-                return new MessageInteraction(text, title, buttons, MessageIcon.Warning, result.Result, userQuestion);
-            }
-
-            if (withChanges && withErrors)
-            {
-                var title = Translation.Settings;
-                var text = Translation.InvalidSettingsWithUnsavedChanges;
-                var buttons = MessageOptions.YesNo;
-                var userQuestion = Translation.WantToSaveAnyway;
-                return new MessageInteraction(text, title, buttons, MessageIcon.Warning, result.Result, userQuestion);
-            }
-
-            return null;
+            return new MessageInteraction(text, title, buttons, MessageIcon.Warning, result.Result, userQuestion);
         }
 
         protected override void ResolveInteractionResult(MessageInteraction interactionResult)

@@ -2,27 +2,27 @@ using pdfforge.LicenseValidator.Interface;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.ErrorReport;
 using pdfforge.PDFCreator.Utilities;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Tartaros;
 
 namespace pdfforge.PDFCreator.Core.Services
 {
     public class ErrorReportHelper
     {
         private readonly InMemoryLogger _inMemoryLogger;
-        private readonly IVersionHelper _versionHelper;
         private readonly IAssemblyHelper _assemblyHelper;
+        public ErrorHelper ErrorHelper { get; set; }
 
-        public ErrorReportHelper(InMemoryLogger inMemoryLogger, IVersionHelper versionHelper, IAssemblyHelper assemblyHelper)
+        public ErrorReportHelper(InMemoryLogger inMemoryLogger, IAssemblyHelper assemblyHelper, ErrorHelper errorHelper)
         {
             _inMemoryLogger = inMemoryLogger;
-            _versionHelper = versionHelper;
             _assemblyHelper = assemblyHelper;
+            ErrorHelper = errorHelper;
         }
 
         public static ILicenseChecker LicenseChecker { private get; set; }
@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.Core.Services
             var additionalEntries = new Dictionary<string, string>();
 
             if (!string.IsNullOrWhiteSpace(Thread.CurrentThread.Name))
-                additionalEntries["Thread"] = Thread.CurrentThread.Name;
+                additionalEntries[SentryTagNames.ThreadName] = Thread.CurrentThread.Name;
 
             if (LicenseChecker == null)
                 return additionalEntries;
@@ -41,23 +41,21 @@ namespace pdfforge.PDFCreator.Core.Services
             activation
                 .MatchSome(a =>
             {
-                additionalEntries["LicenseKey"] = a.Key;
-                additionalEntries["MachineID"] = a.MachineId;
+                additionalEntries[SentryTagNames.LicenseKey] = a.Key;
+                additionalEntries[SentryTagNames.MachineId] = a.MachineId;
             });
 
             return additionalEntries;
         }
 
-        private ErrorAssistant CreateErrorAssistant()
+        private SentryEvent CreateReport(ErrorHelper errorHelper, Exception ex)
         {
-            return new ErrorAssistant("pdfcreator", _versionHelper.ApplicationVersion);
-        }
+            var report = errorHelper.BuildReport(ex, BuildAdditionalEntries());
 
-        private Report CreateReport(ErrorAssistant errorAssistant, Exception ex)
-        {
-            var report = errorAssistant.BuildReport(ex, BuildAdditionalEntries());
-
-            report.Log.AddRange(_inMemoryLogger.LogEntries);
+            foreach (var logEntry in _inMemoryLogger.LogEntries)
+            {
+                report.AddBreadcrumb(logEntry);
+            }
 
             return report;
         }
@@ -75,10 +73,10 @@ namespace pdfforge.PDFCreator.Core.Services
             if (IsIgnoredException(ex))
                 return;
 
-            var errorAssistant = CreateErrorAssistant();
-            var report = CreateReport(errorAssistant, ex);
+            var report = CreateReport(ErrorHelper, ex);
 
-            errorAssistant.ShowErrorWindow(report);
+            var assistant = new ErrorAssistant();
+            assistant.ShowErrorWindow(report, ErrorHelper);
         }
 
         public void ShowErrorReportInNewProcess(Exception ex)
@@ -86,8 +84,7 @@ namespace pdfforge.PDFCreator.Core.Services
             if (IsIgnoredException(ex))
                 return;
 
-            var errorAssistant = CreateErrorAssistant();
-            var report = CreateReport(errorAssistant, ex);
+            var report = CreateReport(ErrorHelper, ex);
 
             var errorReporterPath = _assemblyHelper.GetAssemblyDirectory();
             errorReporterPath = Path.Combine(errorReporterPath, "ErrorReport.exe");
@@ -98,8 +95,9 @@ namespace pdfforge.PDFCreator.Core.Services
             try
             {
                 var errorFile = Path.GetTempPath() + Guid.NewGuid() + ".err";
-                errorAssistant.SaveReport(report, errorFile);
-                Process.Start(errorReporterPath, "\"" + errorFile + "\"");
+                ErrorHelper.SaveReport(report, errorFile);
+                var arguments = "\"" + errorFile + "\"" + " " + "\"" + ErrorHelper.SentryDsnUrl + "\"";
+                Process.Start(errorReporterPath, arguments);
             }
             catch
             {

@@ -99,10 +99,6 @@
       <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Printing\Printing.csproj">
-      <Project>{fd68eb7e-2ae8-4c8e-ba9c-71f9ad98e33e}</Project>
-      <Name>Printing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SettingsManagement\SettingsManagement.csproj">
       <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
       <Name>SettingsManagement</Name>
@@ -130,6 +126,17 @@
         </Reference>
         <Reference Include="Microsoft.Win32.Registry">
           <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>..\..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

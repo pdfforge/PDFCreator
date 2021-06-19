@@ -36,7 +36,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             _logger.Debug("Profile: {0} (GUID {1})", preselectedProfile.Name, preselectedProfile.Guid);
             var producer = _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
-            var job = new Job(jobInfo, preselectedProfile, settings.ApplicationSettings.Accounts, producer);
+
+            var currentSettings = new CurrentJobSettings(settings.ConversionProfiles, settings.ApplicationSettings.PrinterMappings, settings.ApplicationSettings.Accounts);
+
+            var job = new Job(jobInfo, preselectedProfile, currentSettings, producer);
 
             SkipPrintDialog(job);
 

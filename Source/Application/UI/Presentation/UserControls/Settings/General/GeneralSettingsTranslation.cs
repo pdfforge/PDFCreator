@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 
         public string AskLater { get; private set; } = "Ask Later";
         public string SkipVersion { get; private set; } = "Skip version";
-        public string Install { get; private set; } = "Install new Update";
+        public string Install { get; private set; } = "Install Update";
 
         public string UsageStatisticsHeader { get; private set; } = "Usage Statistics";
         public string EnableUsageStatistics { get; private set; } = "Send Usage Statistics";

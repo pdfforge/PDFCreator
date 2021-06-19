@@ -5,16 +5,33 @@ using pdfforge.PDFCreator.Conversion.Settings;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public class UserTokensAction : IPreConversionAction, IBusinessFeatureAction
+    public class UserTokensAction : ActionBase<UserTokens>, IPreConversionAction, IBusinessFeatureAction
     {
-        public ActionResult ProcessJob(Job job)
+        public UserTokensAction() : base(p => p.UserTokens)
+        { }
+
+        protected override ActionResult DoProcessJob(Job job)
         {
             return new ActionResult();
         }
 
-        public bool IsEnabled(ConversionProfile profile)
+        public override void ApplyPreSpecifiedTokens(Job job)
         {
-            return profile.UserTokens.Enabled;
+            //Nothing to do here
         }
+
+        public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
+        {
+            //Nothing to do here
+            return new ActionResult();
+        }
+
+        public override bool IsRestricted(ConversionProfile profile)
+        {
+            return false;
+        }
+
+        protected override void ApplyActionSpecificRestrictions(Job job)
+        { }
     }
 }

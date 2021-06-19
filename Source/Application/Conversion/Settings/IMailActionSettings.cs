@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
@@ -7,7 +8,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         bool AddSignature { get; set; }
         List<string> AdditionalAttachments { get; set; }
         string Content { get; set; }
-        bool Html { get; set; }
+        EmailFormatSetting Format { get; set; }
         string Recipients { get; set; }
         string RecipientsBcc { get; set; }
         string RecipientsCc { get; set; }

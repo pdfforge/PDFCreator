@@ -1,8 +1,9 @@
-﻿using Translatable;
+﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
-    public class HttpTranslation : AccountsTranslation
+    public class HttpTranslation : AccountsTranslation, IActionTranslation
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
@@ -26,5 +27,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         {
             return PluralBuilder.GetFormattedPlural(numberOfProfiles, HttpGetsDisabled);
         }
+
+        public string Title { get; set; } = "HTTP";
+        public string InfoText { get; set; } = "Uploads the document to an HTTP server.";
     }
 }

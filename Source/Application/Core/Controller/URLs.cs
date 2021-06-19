@@ -45,6 +45,8 @@
 
         public const string PdfCreatorOnlineUrl = "https://go.pdfforge.org/pdfcreator/online";
 
+        public const string SentryDsnUrl = "https://83989e10cffe463194d1a14a7ed97828@sentry.pdfforge.org/25";
+
         /*Tips*/
         public const string Tip_AutoSaveUrl = "https://go.pdfforge.org/pdfcreator/tips/auto-save";
         public const string Tip_UserTokensUrl = "https://go.pdfforge.org/pdfcreator/tips/user-tokens";

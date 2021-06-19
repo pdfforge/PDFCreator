@@ -3,13 +3,13 @@ using pdfforge.Obsidian.Interaction.DialogInteractions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -153,7 +153,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 
         public string CallToActionText => Translation.FormatCallToAction(_printerHelper.GetApplicablePDFCreatorPrinter(_settingsProvider.Settings?.CreatorAppSettings?.PrimaryPrinter ?? ""));
 
-
         private void ConvertFileExecute()
         {
             var interaction = new OpenFileInteraction();
@@ -164,7 +163,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
                 return;
 
             var file = interaction.FileName;
-            _fileConversionAssistant.HandleFileList(new List<string> { file });
+            _fileConversionAssistant.HandleFileListWithoutTooManyFilesWarning(new List<string> { file }, new AppStartParameters());
         }
 
         protected override void OnTranslationChanged()

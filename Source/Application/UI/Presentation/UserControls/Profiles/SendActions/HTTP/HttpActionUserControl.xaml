@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.HTTP.HttpActionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeHttpActionViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="UploadWithHttp">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/LightGreyButton.xaml" />
+                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.HttpAccount}">
+        <StackPanel Margin="0 0 10 10">
+            <Label>
+                <TextBlock Text="{Binding Translation.HttpAccountLabel}" />
+            </Label>
+            <DockPanel LastChildFill="True">
+                <StackPanel Style="{DynamicResource GpoStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right" Margin="5 0 0 0"
+                        Height="25" Width="25"
+                        IsEnabled="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
+                        Command="{Binding EditAccountCommand}"
+                        CommandParameter="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem}"
+                        Style="{StaticResource LightGreyButton}"
+                        Padding="7"
+                        Content="{StaticResource EditButtonIcon}">
+                    </Button>
+                    <Button DockPanel.Dock="Right" Margin="5 0 0 0" Command="{Binding AddAccountCommand}"
+                        Height="25" Width="25">
+                        <Path Stretch="Fill" Width="10" Height="10" Fill="Black" Data="{DynamicResource Plus}" />
+                    </Button>
+                </StackPanel>
+                <Grid>
+                    <ComboBox Name="HttpAccountsComboBox"
+                              DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
+                              SelectedValue="{Binding CurrentProfile.HttpSettings.AccountId}"
+                              ItemsSource="{Binding HttpAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                    <Label
+                        IsHitTestVisible="False"
+                        Content="{Binding Translation.SelectOrAddAccount}"
+                        Visibility="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                </Grid>
+            </DockPanel>
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

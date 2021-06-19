@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Collections.ObjectModel;
@@ -64,9 +65,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         {
         }
 
+        public CurrentCheckSettings CheckSettings => new CurrentCheckSettings(Profiles, PrinterMappings, Accounts);
+
 #pragma warning disable CS0067
 
         public event EventHandler SettingsChanged;
+
         public int GetRegisteredSelectedProfileChangedListener()
         {
             return 0;

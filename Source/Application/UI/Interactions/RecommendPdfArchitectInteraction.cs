@@ -1,17 +1,15 @@
 ﻿using pdfforge.Obsidian.Interaction;
+using pdfforge.PDFCreator.Conversion.Actions.Queries;
 
 namespace pdfforge.PDFCreator.UI.Interactions
 {
     public class RecommendPdfArchitectInteraction : IInteraction
     {
-        public bool IsUpdate { get; private set; }
+        public PdfArchitectRecommendPurpose RecommendPurpose { get; set; }
 
-        public RecommendPdfArchitectInteraction(bool showViewerWarning, bool isUpdate)
+        public RecommendPdfArchitectInteraction(PdfArchitectRecommendPurpose recommendPurpose)
         {
-            IsUpdate = isUpdate;
-            ShowViewerWarning = showViewerWarning;
+            RecommendPurpose = recommendPurpose;
         }
-
-        public bool ShowViewerWarning { get; set; }
     }
 }

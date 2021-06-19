@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
             _capacity = capacity;
         }
 
-        public string[] LogEntries => _logTarget.Logs;
+        public Breadcrumb[] LogEntries => _logTarget.Logs;
 
         public void ChangeLogLevel(LogLevel logLevel)
         {
@@ -62,7 +63,7 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
             _capacity = capacity;
         }
 
-        public string[] Logs
+        public Breadcrumb[] Logs
         {
             get
             {
@@ -73,7 +74,27 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
             }
         }
 
-        private readonly IList<string> _logs = new List<string>();
+        private readonly IList<Breadcrumb> _logs = new List<Breadcrumb>();
+
+        private BreadcrumbLevel GetLevel(LogLevel level)
+        {
+            if (level == LogLevel.Trace)
+                return BreadcrumbLevel.Debug;
+
+            if (level == LogLevel.Debug)
+                return BreadcrumbLevel.Debug;
+
+            if (level == LogLevel.Warn)
+                return BreadcrumbLevel.Warning;
+
+            if (level == LogLevel.Error)
+                return BreadcrumbLevel.Error;
+
+            if (level == LogLevel.Fatal)
+                return BreadcrumbLevel.Critical;
+
+            return BreadcrumbLevel.Info;
+        }
 
         /// <summary>
         ///     Renders the logging event message and adds it to the internal ArrayList of log messages.
@@ -85,7 +106,8 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
 
             lock (this)
             {
-                _logs.Add(msg);
+                var breadcrumb = new Breadcrumb(message: logEvent.FormattedMessage, level: GetLevel(logEvent.Level), type: "log");
+                _logs.Add(breadcrumb);
 
                 while (_logs.Count > _capacity)
                 {

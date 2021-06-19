@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
     <id>System.Buffers</id>
-    <version>4.5.0</version>
+    <version>4.5.1</version>
     <title>System.Buffers</title>
     <authors>Microsoft</authors>
     <owners>microsoft,dotnetframework</owners>
@@ -15,13 +15,14 @@
 Commonly Used Types:
 System.Buffers.ArrayPool&lt;T&gt;
  
-30ab651fcb4354552bd4891619a0bdd81e0ebdbf 
+7601f4f6225089ffb291dc7d58293c7bbf5c5d4f 
 When using NuGet 3.x this package requires at least version 3.4.</description>
     <releaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</releaseNotes>
-    <copyright>© Microsoft Corporation.  All rights reserved.</copyright>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <serviceable>true</serviceable>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.6.1" />
       <group targetFramework=".NETCoreApp2.0" />
       <group targetFramework=".NETStandard1.1">
         <dependency id="System.Diagnostics.Debug" version="4.3.0" exclude="Compile" />
@@ -37,6 +38,7 @@ When using NuGet 3.x this package requires at least version 3.4.</description>
       <group targetFramework="WindowsPhoneApp8.1" />
     </dependencies>
     <frameworkAssemblies>
+      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETFramework4.6.1" />
       <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETFramework4.5" />
     </frameworkAssemblies>
   </metadata>

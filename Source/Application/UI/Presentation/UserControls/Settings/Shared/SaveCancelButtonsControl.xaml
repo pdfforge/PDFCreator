@@ -4,21 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:shared="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared"
-             xmlns:regionNames="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance shared:SettingControlsViewModel}">
-
-    <StackPanel Height="40"
-                Orientation="Horizontal"
+    <StackPanel Orientation="Horizontal"
                 HorizontalAlignment="Right">
-        
         <Button Style="{DynamicResource LargeGreenButton}"
+                Height="40"
                 Command="{Binding SaveCommand}"
                 CommandParameter="{Binding HomeViewName}"
                 Content="{Binding Translation.SaveButtonContent}"/>
         
         <Button Style="{DynamicResource LargeRedButton}"
+                Height="40"
                 Command="{Binding CancelCommand}"
                 CommandParameter="{Binding HomeViewName}"
                 Margin="10 0 0 0"

@@ -1,4 +1,5 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
@@ -26,6 +27,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
         void StoreCurrentSettings();
 
         void Reset();
+
+        CurrentCheckSettings CheckSettings { get; }
     }
 
     public class CurrentSettingsProvider : ObservableObject, ICurrentSettingsProvider
@@ -59,6 +62,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public ObservableCollection<TitleReplacement> TitleReplacements => Settings.ApplicationSettings.TitleReplacement;
         public ObservableCollection<PrinterMapping> PrinterMappings => Settings.ApplicationSettings.PrinterMappings;
+
+        public CurrentCheckSettings CheckSettings => new CurrentCheckSettings(Profiles, PrinterMappings, Accounts);
 
         public ConversionProfile SelectedProfile
         {

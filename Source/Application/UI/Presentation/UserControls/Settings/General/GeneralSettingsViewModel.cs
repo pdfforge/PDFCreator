@@ -12,7 +12,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public IconList Icon => IconList.GeneralSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => false;
-        public bool HasNotSupportedFeatures => false;
 
         public GeneralSettingsViewModel(ITranslationUpdater translationUpdater)
             : base(translationUpdater)

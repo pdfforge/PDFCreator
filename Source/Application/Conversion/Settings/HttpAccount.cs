@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// HTTP upload Url
 		/// </summary>
-		public string Url { get; set; } = "";
+		public string Url { get; set; } = "https://";
 		
 		/// <summary>
 		/// User-name that is used to authenticate at the server
@@ -52,7 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			IsBasicAuthentication = bool.TryParse(data.GetValue(@"" + path + @"IsBasicAuthentication"), out var tmpIsBasicAuthentication) ? tmpIsBasicAuthentication : false;
 			_password = data.GetValue(@"" + path + @"Password");
 			Timeout = int.TryParse(data.GetValue(@"" + path + @"Timeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpTimeout) ? tmpTimeout : 60;
-			try { Url = Data.UnescapeString(data.GetValue(@"" + path + @"Url")); } catch { Url = "";}
+			try { Url = Data.UnescapeString(data.GetValue(@"" + path + @"Url")); } catch { Url = "https://";}
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
 		}
 		

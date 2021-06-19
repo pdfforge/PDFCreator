@@ -201,6 +201,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool SkipPrintDialog { get; set; } = false;
 		
 		/// <summary>
+		/// Allows to skip send actions that fail, running all others.
+		/// </summary>
+		public bool SkipSendFailures { get; set; } = false;
+		
+		/// <summary>
 		/// Template for the Subject field. This may contain tokens.
 		/// </summary>
 		public string SubjectTemplate { get; set; } = "";
@@ -214,6 +219,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// Template for the Title field. This may contain tokens.
 		/// </summary>
 		public string TitleTemplate { get; set; } = "<PrintJobName>";
+		
+		/// <summary>
+		/// When SkipSendFailures is active, allows to show a warning for failing send actions.
+		/// </summary>
+		public bool WarnSendFailures { get; set; } = false;
 		
 		
 		public void ReadValues(Data data, string path) {
@@ -262,9 +272,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			ShowProgress = bool.TryParse(data.GetValue(@"" + path + @"ShowProgress"), out var tmpShowProgress) ? tmpShowProgress : true;
 			ShowQuickActions = bool.TryParse(data.GetValue(@"" + path + @"ShowQuickActions"), out var tmpShowQuickActions) ? tmpShowQuickActions : true;
 			SkipPrintDialog = bool.TryParse(data.GetValue(@"" + path + @"SkipPrintDialog"), out var tmpSkipPrintDialog) ? tmpSkipPrintDialog : false;
+			SkipSendFailures = bool.TryParse(data.GetValue(@"" + path + @"SkipSendFailures"), out var tmpSkipSendFailures) ? tmpSkipSendFailures : false;
 			try { SubjectTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"SubjectTemplate")); } catch { SubjectTemplate = "";}
 			try { TargetDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"TargetDirectory")); } catch { TargetDirectory = "";}
 			try { TitleTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"TitleTemplate")); } catch { TitleTemplate = "<PrintJobName>";}
+			WarnSendFailures = bool.TryParse(data.GetValue(@"" + path + @"WarnSendFailures"), out var tmpWarnSendFailures) ? tmpWarnSendFailures : false;
 		}
 		
 		public void StoreValues(Data data, string path) {
@@ -308,9 +320,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"ShowProgress", ShowProgress.ToString());
 			data.SetValue(@"" + path + @"ShowQuickActions", ShowQuickActions.ToString());
 			data.SetValue(@"" + path + @"SkipPrintDialog", SkipPrintDialog.ToString());
+			data.SetValue(@"" + path + @"SkipSendFailures", SkipSendFailures.ToString());
 			data.SetValue(@"" + path + @"SubjectTemplate", Data.EscapeString(SubjectTemplate));
 			data.SetValue(@"" + path + @"TargetDirectory", Data.EscapeString(TargetDirectory));
 			data.SetValue(@"" + path + @"TitleTemplate", Data.EscapeString(TitleTemplate));
+			data.SetValue(@"" + path + @"WarnSendFailures", WarnSendFailures.ToString());
 		}
 		public ConversionProfile Copy()
 		{
@@ -353,9 +367,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.ShowProgress = ShowProgress;
 			copy.ShowQuickActions = ShowQuickActions;
 			copy.SkipPrintDialog = SkipPrintDialog;
+			copy.SkipSendFailures = SkipSendFailures;
 			copy.SubjectTemplate = SubjectTemplate;
 			copy.TargetDirectory = TargetDirectory;
 			copy.TitleTemplate = TitleTemplate;
+			copy.WarnSendFailures = WarnSendFailures;
 			return copy;
 		}
 		
@@ -427,6 +443,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(SkipPrintDialog != source.SkipPrintDialog)
 				SkipPrintDialog = source.SkipPrintDialog;
 				
+			if(SkipSendFailures != source.SkipSendFailures)
+				SkipSendFailures = source.SkipSendFailures;
+				
 			if(SubjectTemplate != source.SubjectTemplate)
 				SubjectTemplate = source.SubjectTemplate;
 				
@@ -435,6 +454,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				
 			if(TitleTemplate != source.TitleTemplate)
 				TitleTemplate = source.TitleTemplate;
+				
+			if(WarnSendFailures != source.WarnSendFailures)
+				WarnSendFailures = source.WarnSendFailures;
 				
 		}
 		
@@ -480,9 +502,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!ShowProgress.Equals(v.ShowProgress)) return false;
 			if (!ShowQuickActions.Equals(v.ShowQuickActions)) return false;
 			if (!SkipPrintDialog.Equals(v.SkipPrintDialog)) return false;
+			if (!SkipSendFailures.Equals(v.SkipSendFailures)) return false;
 			if (!SubjectTemplate.Equals(v.SubjectTemplate)) return false;
 			if (!TargetDirectory.Equals(v.TargetDirectory)) return false;
 			if (!TitleTemplate.Equals(v.TitleTemplate)) return false;
+			if (!WarnSendFailures.Equals(v.WarnSendFailures)) return false;
 			return true;
 		}
 		

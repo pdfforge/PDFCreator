@@ -9,6 +9,7 @@ using Prism.Events;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -55,8 +56,12 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         private void MainShell_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var desktopSize = System.Windows.Forms.Screen.FromHandle(new WindowInteropHelper(this).Handle).WorkingArea;
-            if (desktopSize.Width < Width || desktopSize.Height < Height)
+            var desktopScaling = Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth;
+            var desktopSize = Screen.FromHandle(new WindowInteropHelper(this).Handle).WorkingArea;
+            var scaledWidth = desktopSize.Width / desktopScaling;
+            var scaledHeight = desktopSize.Height / desktopScaling;
+
+            if (scaledWidth < Width || scaledHeight < Height)
                 WindowState = WindowState.Maximized;
 
             _eventAggregator.GetEvent<TryCloseApplicationEvent>().Subscribe(OnTryCloseApplicationEvent);

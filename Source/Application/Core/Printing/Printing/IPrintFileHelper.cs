@@ -14,7 +14,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     shown.
         /// </param>
         /// <returns>true, if all files are printable</returns>
-        bool AddFile(string file);
+        bool AddFile(string file, bool silent);
 
         /// <summary>
         ///     Add multiple files. The files are checked - if there are problems, abstract functions (that might present dialogs
@@ -25,12 +25,12 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     shown.
         /// </param>
         /// <returns>true, if all files are printable</returns>
-        bool AddFiles(IEnumerable<string> files);
+        bool AddFiles(IEnumerable<string> files, bool silent);
 
         /// <summary>
         ///     Prints all files in the list.
         /// </summary>
         /// <returns>true, if all files could be printed</returns>
-        bool PrintAll();
+        bool PrintAll(bool silent);
     }
 }

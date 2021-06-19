@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="utf-8"?>
 <datastorage>
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
@@ -31,6 +31,9 @@
             <comment />
             <value name="AccessToken" type="password" defaultvalue="">
               <comment />
+            </value>
+            <value name="RefreshToken" type="password" defaultvalue="">
+              <comment>Token to refresh the login token</comment>
             </value>
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
@@ -80,7 +83,7 @@
             <value name="Timeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
               <comment>Timeout in seconds for upload</comment>
             </value>
-            <value name="Url" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <value name="Url" type="value" datatype="String" enumname="" defaultvalue="https://" islist="False">
               <comment>HTTP upload Url</comment>
             </value>
             <value name="UserName" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -98,7 +101,7 @@
             <value name="Password" type="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
             </value>
-            <value name="Port" type="value" datatype="Int" enumname="" defaultvalue="25" islist="False">
+            <value name="Port" type="value" datatype="Int" enumname="" defaultvalue="587" islist="False">
               <comment>SMTP server port</comment>
             </value>
             <value name="Server" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -306,8 +309,8 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Enables the EmailClient action</comment>
           </value>
-          <value name="Html" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>Use html for e-mail body</comment>
+          <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Auto" islist="False">
+            <comment>Set the e-mail body format</comment>
           </value>
           <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
@@ -336,11 +339,17 @@
           <value name="Content" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Body text of the mail</comment>
           </value>
+          <value name="DisplayName" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>Display name for e-mail sender</comment>
+          </value>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, this action will be executed</comment>
           </value>
-          <value name="Html" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>Use html for e-mail body</comment>
+          <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Text" islist="False">
+            <comment>Set the e-mail body format</comment>
+          </value>
+          <value name="OnBehalfOf" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>If set it will be used as From and the address from the account will be set as Sender</comment>
           </value>
           <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
@@ -350,6 +359,9 @@
           </value>
           <value name="RecipientsCc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+          </value>
+          <value name="ReplyTo" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+            <comment>Specifies an address that should be used to reply to the e-mail</comment>
           </value>
           <value name="Subject" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Subject line of the e-mail</comment>
@@ -379,15 +391,6 @@
             <comment>If true, files with the same name will not be overwritten on the server. A counter will be appended instead (i.e. document_2.pdf)</comment>
           </value>
         </class>
-        <class name="OpenViewer" propertyName="OpenViewer" readonly="False" classtype="Class">
-          <comment>Opens the printed file in a viewer</comment>
-          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>If true, this action will be executed</comment>
-          </value>
-          <value name="OpenWithPdfArchitect" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-            <comment>If the output is a PDF, use PDF Architect instead of the default PDF viewer</comment>
-          </value>
-        </class>
         <class name="Ghostscript" propertyName="Ghostscript" readonly="False" classtype="Class">
           <comment>Ghostscript settings</comment>
           <value name="AdditionalGsParameters" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -413,6 +416,15 @@
           </value>
           <value name="Quality" type="value" datatype="Int" enumname="" defaultvalue="75" islist="False">
             <comment>Quality factor of the resulting JPEG (100 is best, 0 is worst)</comment>
+          </value>
+        </class>
+        <class name="OpenViewer" propertyName="OpenViewer" readonly="False" classtype="Class">
+          <comment>Opens the printed file in a viewer</comment>
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>If true, this action will be executed</comment>
+          </value>
+          <value name="OpenWithPdfArchitect" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+            <comment>If the output is a PDF, use PDF Architect instead of the default PDF viewer</comment>
           </value>
         </class>
         <class name="PdfSettings" propertyName="PdfSettings" readonly="False" classtype="Class">
@@ -579,6 +591,9 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If enabled, the document will be printed to a physical printer</comment>
           </value>
+          <value name="FitToPage" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>If set, the pages of the document will be adjusted to the paper size of the printer.</comment>
+          </value>
           <value name="PrinterName" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
             <comment>Name of the printer that will be used, if SelectedPrinter is set.</comment>
           </value>
@@ -724,6 +739,9 @@
         <value name="SkipPrintDialog" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
           <comment>Allows to skip the print dialog (where metadata are set) and directly proceed to the save dialog</comment>
         </value>
+        <value name="SkipSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+          <comment>Allows to skip send actions that fail, running all others.</comment>
+        </value>
         <value name="SubjectTemplate" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment>Template for the Subject field. This may contain tokens.</comment>
         </value>
@@ -732,6 +750,9 @@
         </value>
         <value name="TitleTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobName&gt;" islist="False">
           <comment>Template for the Title field. This may contain tokens.</comment>
+        </value>
+        <value name="WarnSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+          <comment>When SkipSendFailures is active, allows to show a warning for failing send actions.</comment>
         </value>
       </classarray>
       <class name="CreatorAppSettings" propertyName="CreatorAppSettings" readonly="False" classtype="Class">
@@ -751,7 +772,7 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="10" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="11" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
         </value>
       </class>

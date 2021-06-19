@@ -1,32 +1,71 @@
-﻿using pdfforge.Obsidian;
+﻿using pdfforge.DataStorage;
+using pdfforge.Obsidian;
 using pdfforge.Obsidian.Interaction.DialogInteractions;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
+    public interface IIniSettingsAssistant
+    {
+        bool LoadIniSettings();
+
+        void SaveIniSettings(bool removePasswords);
+    }
+
     public abstract class IniSettingsAssistantBase : IIniSettingsAssistant
     {
         protected readonly IInteractionInvoker InteractionInvoker;
         protected readonly IDataStorageFactory DataStorageFactory;
+        private readonly EditionHelper _editionHelper;
         protected LoadSettingsTranslation Translation;
 
         protected IniSettingsAssistantBase(
             IInteractionInvoker interactionInvoker,
             IDataStorageFactory dataStorageFactory,
-        ITranslationUpdater translationUpdater)
+            ITranslationUpdater translationUpdater,
+            EditionHelper editionHelper)
         {
             InteractionInvoker = interactionInvoker;
-            this.DataStorageFactory = dataStorageFactory;
+            DataStorageFactory = dataStorageFactory;
+            _editionHelper = editionHelper;
 
             translationUpdater.RegisterAndSetTranslation(tf => Translation = tf.UpdateOrCreateTranslation(Translation));
         }
 
         public abstract bool LoadIniSettings();
 
-        public abstract void SaveIniSettings();
+        protected abstract ISettings GetSettingsCopy();
+
+        public void SaveIniSettings(bool removePasswords)
+        {
+            var settings = GetSettingsCopy();
+
+            var productName = _editionHelper.IsServer
+                ? "PDFCreator Server"
+                : "PDFCreator";
+
+            var suggestedFilename = Translation.FormatSettingsFileName(productName);
+
+            if (removePasswords && SettingsHelper.CountPasswords(settings) > 0)
+            {
+                SettingsHelper.ReplacePasswords(settings, "<removed during export>");
+                suggestedFilename += $" ({Translation.ReplacedPasswords})";
+            }
+
+            var fileName = QuerySaveFileName(suggestedFilename);
+            if (string.IsNullOrWhiteSpace(fileName))
+                return;
+
+            var iniStorage = DataStorageFactory.BuildIniStorage(fileName);
+
+            settings.SaveData(iniStorage);
+        }
 
         protected void DisplayInvalidSettingsWarning()
         {
@@ -60,11 +99,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return interaction.Success ? interaction.FileName : "";
         }
 
-        protected string QuerySaveFileName()
+        private string QuerySaveFileName(string suggestedFilename)
         {
+            suggestedFilename = PathSafe.ChangeExtension(suggestedFilename, ".ini");
+
             var interaction = new SaveFileInteraction();
             interaction.Filter = Translation.IniFileFilter;
-            interaction.FileName = "PDFCreator.ini";
+            interaction.FileName = suggestedFilename;
 
             InteractionInvoker.Invoke(interaction);
 

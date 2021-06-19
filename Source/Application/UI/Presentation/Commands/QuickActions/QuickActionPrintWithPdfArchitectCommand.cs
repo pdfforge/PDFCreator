@@ -1,6 +1,5 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Actions.Queries;
-using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
@@ -14,16 +13,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
     {
         private readonly IPdfArchitectCheck _architectCheck;
         private readonly IRecommendArchitectAssistant _recommendArchitectAssistant;
-        private readonly IRecommendArchitectUpgrade _recommendArchitectUpgrade;
         private readonly IProcessStarter _processStarter;
         private static Logger Logger = LogManager.GetCurrentClassLogger();
         private static readonly Version MinimumArchitectPrintDialogVersion = new Version(6, 1, 24, 0);
 
-        public QuickActionPrintWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IPdfArchitectCheck architectCheck, IRecommendArchitectAssistant recommendArchitectAssistant, IRecommendArchitectUpgrade recommendArchitectUpgrade, IProcessStarter processStarter) : base(translationUpdater)
+        public QuickActionPrintWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IPdfArchitectCheck architectCheck, IRecommendArchitectAssistant recommendArchitectAssistant, IProcessStarter processStarter) : base(translationUpdater)
         {
             _architectCheck = architectCheck;
             _recommendArchitectAssistant = recommendArchitectAssistant;
-            _recommendArchitectUpgrade = recommendArchitectUpgrade;
             _processStarter = processStarter;
         }
 
@@ -46,12 +43,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
                 }
                 else
                 {
-                    _recommendArchitectUpgrade.Show();
+                    _recommendArchitectAssistant.Show(PdfArchitectRecommendPurpose.UpdateRequired);
                 }
             }
             else
             {
-                _recommendArchitectAssistant.Show();
+                _recommendArchitectAssistant.Show(PdfArchitectRecommendPurpose.NotInstalled);
             }
         }
 

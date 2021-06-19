@@ -25,17 +25,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public string AccountInfo { get; set; } = "";
 		
+		/// <summary>
+		/// Token to refresh the login token
+		/// </summary>
+		private string _refreshToken = "";
+		public string RefreshToken { get { try { return Data.Decrypt(_refreshToken); } catch { return ""; } } set { _refreshToken = Data.Encrypt(value); } }
+		
 		
 		public void ReadValues(Data data, string path) {
 			_accessToken = data.GetValue(@"" + path + @"AccessToken");
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
 			try { AccountInfo = Data.UnescapeString(data.GetValue(@"" + path + @"AccountInfo")); } catch { AccountInfo = "";}
+			_refreshToken = data.GetValue(@"" + path + @"RefreshToken");
 		}
 		
 		public void StoreValues(Data data, string path) {
 			data.SetValue(@"" + path + @"AccessToken", _accessToken);
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
 			data.SetValue(@"" + path + @"AccountInfo", Data.EscapeString(AccountInfo));
+			data.SetValue(@"" + path + @"RefreshToken", _refreshToken);
 		}
 		public DropboxAccount Copy()
 		{
@@ -44,6 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AccessToken = AccessToken;
 			copy.AccountId = AccountId;
 			copy.AccountInfo = AccountInfo;
+			copy.RefreshToken = RefreshToken;
 			return copy;
 		}
 		
@@ -56,6 +65,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(AccountInfo != source.AccountInfo)
 				AccountInfo = source.AccountInfo;
 				
+			RefreshToken = source.RefreshToken;
 		}
 		
 		public override bool Equals(object o)
@@ -66,6 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!AccessToken.Equals(v.AccessToken)) return false;
 			if (!AccountId.Equals(v.AccountId)) return false;
 			if (!AccountInfo.Equals(v.AccountInfo)) return false;
+			if (!RefreshToken.Equals(v.RefreshToken)) return false;
 			return true;
 		}
 		

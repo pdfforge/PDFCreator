@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace pdfforge.PDFCreator.Core.Workflow
@@ -12,12 +13,44 @@ namespace pdfforge.PDFCreator.Core.Workflow
     /// <summary>
     ///     Defines the different stats the workflow can be in
     /// </summary>
-    public enum WorkflowResult
+    public enum WorkflowResultState
     {
         Init,
         AbortedByUser,
         Error,
         Finished
+    }
+
+    public class WorkflowResult
+    {
+        public static implicit operator WorkflowResultState(WorkflowResult workflowResult)
+        {
+            return workflowResult.State;
+        }
+
+        public WorkflowResultState State { get; }
+        public ActionResult ActionResult { get; }
+
+        private WorkflowResult(WorkflowResultState state, ActionResult actionResult)
+        {
+            State = state;
+            ActionResult = actionResult;
+        }
+
+        public static WorkflowResult FromStateAndActionResult(WorkflowResultState state, ActionResult results)
+        {
+            return new WorkflowResult(state, results);
+        }
+
+        public static WorkflowResult FromState(WorkflowResultState state)
+        {
+            return new WorkflowResult(state, new ActionResult());
+        }
+
+        public static WorkflowResult FromError(ErrorCode errorCode)
+        {
+            return new WorkflowResult(WorkflowResultState.Error, new ActionResult(errorCode));
+        }
     }
 
     /// <summary>
@@ -33,7 +66,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         /// <summary>
         ///     The step the workflow currently is in
         /// </summary>
-        protected WorkflowResult WorkflowResult;
+        protected WorkflowResultState WorkflowResultState;
 
         protected abstract IJobDataUpdater JobDataUpdater { get; }
 
@@ -58,32 +91,34 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             catch (AbortWorkflowException ex)
             {
+                WorkflowResultState = WorkflowResultState.AbortedByUser;
                 // we need to clean up the job when it was cancelled
                 _logger.Warn(ex.Message + " No output will be created.");
-                WorkflowResult = WorkflowResult.AbortedByUser;
 
                 SendJobEvents(job);
+                return WorkflowResult.FromState(WorkflowResultState.AbortedByUser);
             }
             catch (WorkflowException ex)
             {
+                WorkflowResultState = WorkflowResultState.Error;
                 _logger.Error(ex.Message);
-                WorkflowResult = WorkflowResult.Error;
 
                 SendJobEvents(job);
+                return WorkflowResult.FromState(WorkflowResultState.Error);
             }
             catch (ProcessingException ex)
             {
-                var errorMessage = ex.ErrorCode + " / " + ex.Message;
-                if (ex.InnerException != null)
-                    errorMessage += Environment.NewLine + ex.InnerException;
-                _logger.Error(errorMessage);
-
-                LastError = ex.ErrorCode;
-
-                HandleError(ex.ErrorCode);
-                WorkflowResult = WorkflowResult.Error;
+                HandleProcessingException(ex, new ActionResult(ex.ErrorCode), true, false);
 
                 SendJobEvents(job);
+                return WorkflowResult.FromError(ex.ErrorCode);
+            }
+            catch (AggregateProcessingException ex)
+            {
+                HandleProcessingException(ex, ex.Result, false, true);
+
+                SendJobEvents(job);
+                return WorkflowResult.FromStateAndActionResult(WorkflowResultState.Finished, ex.Result);
             }
             catch (ManagePrintJobsException)
             {
@@ -95,14 +130,34 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             catch (Exception ex)
             {
+                WorkflowResultState = WorkflowResultState.Error;
                 _logger.Error(ex);
-                WorkflowResult = WorkflowResult.Error;
                 SendJobEvents(job);
 
                 throw;
             }
 
-            return WorkflowResult;
+            return WorkflowResult.FromState(WorkflowResultState);
+        }
+
+        private void HandleProcessingException(Exception ex, ActionResult result, bool error, bool warn)
+        {
+            WorkflowResultState = error ? WorkflowResultState.Error : WorkflowResultState.Finished;
+            var errorMessage = ex.Message + Environment.NewLine + string.Join(Environment.NewLine, result);
+            if (ex.InnerException != null)
+                errorMessage += Environment.NewLine + ex.InnerException;
+            LastError = result.Last();
+            if (warn)
+            {
+                _logger.Warn(errorMessage);
+                HandleWarning(result);
+            }
+
+            if (error)
+            {
+                _logger.Error(errorMessage);
+                HandleError(result.Last());
+            }
         }
 
         private void SendJobEvents(Job job)
@@ -110,17 +165,17 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _stopwatch.Stop();
             var elapsedTime = TimeSpan.FromTicks(_stopwatch.ElapsedMilliseconds);
 
-            switch (WorkflowResult)
+            switch (WorkflowResultState)
             {
-                case WorkflowResult.AbortedByUser:
+                case WorkflowResultState.AbortedByUser:
                     JobEventsManager.RaiseJobFailed(job, elapsedTime, FailureReason.AbortedByUser);
                     break;
 
-                case WorkflowResult.Error:
+                case WorkflowResultState.Error:
                     JobEventsManager.RaiseJobFailed(job, elapsedTime, FailureReason.Error);
                     break;
 
-                case WorkflowResult.Finished:
+                case WorkflowResultState.Finished:
                     JobEventsManager.RaiseJobCompleted(job, elapsedTime);
                     break;
             }
@@ -130,7 +185,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         private void PrepareAndRun(Job job)
         {
-            WorkflowResult = WorkflowResult.Init;
+            WorkflowResultState = WorkflowResultState.Init;
 
             _logger.Debug("Starting conversion...");
 
@@ -143,7 +198,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             {
                 DoWorkflowWork(job);
 
-                WorkflowResult = WorkflowResult.Finished;
+                WorkflowResultState = WorkflowResultState.Finished;
 
                 SendJobEvents(job);
             }
@@ -162,6 +217,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
         protected void OnJobFinished(EventArgs e)
         {
             JobFinished?.Invoke(this, e);
+        }
+
+        protected virtual void HandleWarning(ActionResult result)
+        {
         }
 
         protected virtual void HandleError(ErrorCode errorCode)

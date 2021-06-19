@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         private readonly IEventAggregator _eventAggregator;
 
         private string _view;
-        private Func<WorkflowEditorTranslation, string> _getTitle;
+        private Func<SaveOutputFormatMetadataTranslation, string> _getTitle;
 
         public WorkflowEditorCommand(ISelectedProfileProvider selectedProfileProvider, IInteractionRequest interactionRequest, ITranslationFactory translationFactory, IEventAggregator eventAggregator)
         {
@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             _eventAggregator = eventAggregator;
         }
 
-        public void Initialize(string view, Func<WorkflowEditorTranslation, string> getTitle)
+        public void Initialize(string view, Func<SaveOutputFormatMetadataTranslation, string> getTitle)
         {
             _view = view;
             _getTitle = getTitle;
@@ -37,7 +37,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         {
             var settingsCopy = _selectedProfileProvider.SelectedProfile.Copy();
 
-            var translation = _translationFactory.CreateTranslation<WorkflowEditorTranslation>();
+            var translation = _translationFactory.CreateTranslation<SaveOutputFormatMetadataTranslation>();
             var title = _getTitle(translation);
 
             var interaction = new WorkflowEditorOverlayInteraction(title, _view, false, false);

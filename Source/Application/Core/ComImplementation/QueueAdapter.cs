@@ -173,7 +173,8 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             {
                 var currentJobInfo = JobInfoQueue.JobInfos[id];
 
-                return new Job(currentJobInfo, _settingsProvider.GetDefaultProfile(), _settingsProvider.Settings.ApplicationSettings.Accounts);
+                var settings = new CurrentJobSettings(_settingsProvider.Settings.ConversionProfiles, _settingsProvider.Settings.ApplicationSettings.PrinterMappings, _settingsProvider.Settings.ApplicationSettings.Accounts);
+                return new Job(currentJobInfo, _settingsProvider.GetDefaultProfile(), settings);
             }
             catch (ArgumentOutOfRangeException)
             {

@@ -13,6 +13,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -23,13 +24,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         protected MailTranslation Translation;
         private readonly ITestFileDummyHelper _testFileDummyHelper;
-        private readonly ICheckable _mailAction;
+        private readonly IAction _mailAction;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         protected IInteractionRequest InteractionRequest { get; }
         private readonly ITokenHelper _tokenHelper;
 
         protected TestMailAssistantBase(ITranslationUpdater translationUpdater, ITokenHelper tokenHelper,
-                                        ITestFileDummyHelper testFileDummyHelper, ICheckable mailAction,
+                                        ITestFileDummyHelper testFileDummyHelper, IAction mailAction,
                                         ErrorCodeInterpreter errorCodeInterpreter, IInteractionRequest interactionRequest)
         {
             translationUpdater.RegisterAndSetTranslation(tf => Translation = tf.UpdateOrCreateTranslation(Translation));
@@ -51,12 +52,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             try
             {
                 var job = CreateTestMailJob(mailActionSettings, accounts);
+                _mailAction.ApplyRestrictions(job);
                 _mailAction.ApplyPreSpecifiedTokens(job);
 
                 if (!await TrySetJobPasswords(job))
                     return;
 
-                var result = _mailAction.Check(job.Profile, job.Accounts, CheckLevel.Job);
+                var currentCheckSettings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
+                var result = _mailAction.Check(job.Profile, currentCheckSettings, CheckLevel.RunningJob);
 
                 if (result)
                     result = await Task.Run(() => _mailAction.ProcessJob(job));
@@ -89,7 +92,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             profile.AutoSave.Enabled = false;
             SetMailActionSettings(profile, mailSettingsCopy);
 
-            var job = new Job(new JobInfo(), profile, accounts);
+            var currentSettings = new CurrentJobSettings(new[] { profile }, new List<PrinterMapping>(), accounts);
+
+            var job = new Job(new JobInfo(), profile, currentSettings);
             job.JobInfo.Metadata = new Metadata();
             job.JobInfo.SourceFiles.Add(new SourceFileInfo { Filename = "MailTest.ps" });
             job.TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;

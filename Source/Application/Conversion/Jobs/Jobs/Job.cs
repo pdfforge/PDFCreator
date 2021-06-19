@@ -10,11 +10,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
     /// </summary>
     public class Job
     {
-        public Job(JobInfo.JobInfo jobInfo, ConversionProfile profile, Accounts accounts, string producer = null)
+        public Job(JobInfo.JobInfo jobInfo, ConversionProfile profile, CurrentJobSettings currentSettings, string producer = null)
         {
             JobInfo = jobInfo;
             Profile = profile;
-            Accounts = accounts;
+            CurrentSettings = currentSettings;
             Producer = producer ?? "PDFCreator";
         }
 
@@ -28,10 +28,15 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         /// </summary>
         public ConversionProfile Profile { get; set; }
 
+        public CurrentJobSettings CurrentSettings { get; }
+
         /// <summary>
         ///     All currently available accounts (Dropbox, FTP, ...)
         /// </summary>
-        public Accounts Accounts { get; set; }
+        public Accounts Accounts => CurrentSettings.Accounts;
+
+        public IList<ConversionProfile> AvailableProfiles { get; }
+        public IList<PrinterMapping> PrinterMappings { get; }
 
         public TokenReplacer TokenReplacer { get; set; } = new TokenReplacer();
 
@@ -163,5 +168,24 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
     {
         AbortWithError,
         AbortedByUser
+    }
+
+    public class CurrentJobSettings
+    {
+        public CurrentJobSettings(IList<ConversionProfile> profiles, IList<PrinterMapping> printerMappings, Accounts accounts)
+        {
+            Profiles = profiles;
+            PrinterMappings = printerMappings;
+            Accounts = accounts;
+        }
+
+        public IList<ConversionProfile> Profiles { get; }
+        public IList<PrinterMapping> PrinterMappings { get; }
+        public Accounts Accounts { get; }
+
+        public static CurrentJobSettings Empty()
+        {
+            return new CurrentJobSettings(new List<ConversionProfile>(), new List<PrinterMapping>(), new Accounts());
+        }
     }
 }

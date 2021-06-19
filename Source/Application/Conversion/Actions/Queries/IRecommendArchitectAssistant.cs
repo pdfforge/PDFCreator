@@ -2,6 +2,6 @@
 {
     public interface IRecommendArchitectAssistant
     {
-        void Show();
+        void Show(PdfArchitectRecommendPurpose recommendPurpose);
     }
 }

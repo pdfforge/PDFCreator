@@ -33,6 +33,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
+		/// If set, the pages of the document will be adjusted to the paper size of the printer.
+		/// </summary>
+		public bool FitToPage { get; set; } = false;
+		
+		/// <summary>
 		/// Name of the printer that will be used, if SelectedPrinter is set.
 		/// </summary>
 		public string PrinterName { get; set; } = "PDFCreator";
@@ -47,6 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		{
 			Duplex = Enum.TryParse<DuplexPrint>(data.GetValue(@"" + path + @"Duplex"), out var tmpDuplex) ? tmpDuplex : DuplexPrint.Disable;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			FitToPage = bool.TryParse(data.GetValue(@"" + path + @"FitToPage"), out var tmpFitToPage) ? tmpFitToPage : false;
 			try { PrinterName = Data.UnescapeString(data.GetValue(@"" + path + @"PrinterName")); } catch { PrinterName = "PDFCreator";}
 			SelectPrinter = Enum.TryParse<SelectPrinter>(data.GetValue(@"" + path + @"SelectPrinter"), out var tmpSelectPrinter) ? tmpSelectPrinter : SelectPrinter.ShowDialog;
 		}
@@ -55,6 +61,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		{
 			data.SetValue(@"" + path + @"Duplex", Duplex.ToString());
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
+			data.SetValue(@"" + path + @"FitToPage", FitToPage.ToString());
 			data.SetValue(@"" + path + @"PrinterName", Data.EscapeString(PrinterName));
 			data.SetValue(@"" + path + @"SelectPrinter", SelectPrinter.ToString());
 		}
@@ -65,6 +72,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.Duplex = Duplex;
 			copy.Enabled = Enabled;
+			copy.FitToPage = FitToPage;
 			copy.PrinterName = PrinterName;
 			copy.SelectPrinter = SelectPrinter;
 			return copy;
@@ -77,6 +85,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
+				
+			if(FitToPage != source.FitToPage)
+				FitToPage = source.FitToPage;
 				
 			if(PrinterName != source.PrinterName)
 				PrinterName = source.PrinterName;
@@ -93,6 +104,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!Duplex.Equals(v.Duplex)) return false;
 			if (!Enabled.Equals(v.Enabled)) return false;
+			if (!FitToPage.Equals(v.FitToPage)) return false;
 			if (!PrinterName.Equals(v.PrinterName)) return false;
 			if (!SelectPrinter.Equals(v.SelectPrinter)) return false;
 			return true;

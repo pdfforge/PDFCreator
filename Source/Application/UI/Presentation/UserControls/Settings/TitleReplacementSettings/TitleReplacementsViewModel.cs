@@ -86,7 +86,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         public IconList Icon { get; set; } = IconList.TitleReplacementSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => GpoSettings.DisableTitleTab;
-        public bool HasNotSupportedFeatures => false;
 
         protected override void OnTranslationChanged()
         {

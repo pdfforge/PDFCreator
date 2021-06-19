@@ -53,9 +53,9 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             return autoSave ? Mode.AutoSave : Mode.Interactive;
         }
 
-        private PdfCreatorUsageStatisticsMetric CreateJobUsageStatisticsMetric(Job job, TimeSpan duration, string status)
+        private PdfCreatorJobFinishedMetric CreateJobUsageStatisticsMetric(Job job, TimeSpan duration, string status)
         {
-            var metric = _usageMetricFactory.CreateMetric<PdfCreatorUsageStatisticsMetric>();
+            var metric = _usageMetricFactory.CreateMetric<PdfCreatorJobFinishedMetric>();
             metric.OperatingSystem = _osHelper.GetWindowsVersion();
             metric.OutputFormat = job.Profile.OutputFormat.ToString();
             metric.Mode = GetMode(job.Profile.AutoSave.Enabled);

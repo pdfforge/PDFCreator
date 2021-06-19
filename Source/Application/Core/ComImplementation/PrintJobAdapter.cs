@@ -1,4 +1,5 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.ComImplementation
 {
@@ -174,19 +176,22 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
                 Logger.Trace("COM: Running workflow");
                 var workflowResult = workflow.RunWorkflow(job);
 
-                if (workflowResult == WorkflowResult.Error)
+                if (workflowResult.State == WorkflowResultState.Error)
                 {
-                    var errorCode = workflow.LastError.Value;
+                    var errorCode = ErrorCode.Conversion_UnknownError;
+                    if (workflow.LastError != null)
+                        errorCode = workflow.LastError.Value;
+
                     throw new COMException(_errorCodeInterpreter.GetErrorText(errorCode, true));
                 }
 
-                if (workflowResult == WorkflowResult.AbortedByUser)
+                if (workflowResult.State == WorkflowResultState.AbortedByUser)
                 {
                     Logger.Info("COM: The job '{0}' was aborted by the user.",
                         job.JobInfo.Metadata.Title);
                 }
 
-                if (workflowResult == WorkflowResult.Finished)
+                if (workflowResult.State == WorkflowResultState.Finished)
                 {
                     IsSuccessful = true;
                 }

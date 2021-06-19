@@ -85,12 +85,6 @@ msgstr "Este disponibilă o nouă actualizare"
 msgid "A printer with the name '{0}' is already installed on your system. Please enter a new printer name:"
 msgstr "O imprimantă cu numele '{0}' este deja instalată în sistem. Introduceți un alt nume de imprimantă:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#, fuzzy
-#| msgid "Target directory is too long."
-msgid "A target directory is required for automatic saving."
-msgstr "Calea directorului de destinație este prea lungă."
-
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 msgid "Access Denied"
 msgstr "Acces refuzat"
@@ -169,7 +163,7 @@ msgstr "Activare valabilă până la:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Add"
 msgstr "Adaugă"
 
@@ -178,6 +172,7 @@ msgstr "Adaugă"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Account"
 msgstr "Adăugare cont"
@@ -191,6 +186,7 @@ msgstr "Adăugare acțiune"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Dropbox Account"
 msgstr "Adăugare cont Dropbox"
@@ -200,6 +196,7 @@ msgstr "Adăugare cont Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add FTP Account"
 msgstr "Adăugare cont FTP"
@@ -215,6 +212,7 @@ msgstr "Toate fișierele"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add HTTP Account"
 msgstr "Adăugare cont HTTP"
@@ -232,6 +230,7 @@ msgstr "Adăugați o imprimantă"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add SMTP Account"
 msgstr "Adăugare cont SMTP"
@@ -241,6 +240,7 @@ msgstr "Adăugare cont SMTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Add Time Server Account"
 msgstr "Adăugare cont pentru server de timp"
@@ -257,41 +257,27 @@ msgstr ""
 msgid "Add attachment"
 msgstr "Atașați un fișier"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-msgid "Add background to attachment"
-msgstr "Adăugați un fundal fișierului de atașat"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-msgid "Add background to cover"
-msgstr "Adăugați un fundal paginii de gardă"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Add cover"
 msgstr "Adăugați o pagină de gardă"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Add new queue"
 msgstr "Adăugați o coadă nouă"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Add printer"
-msgstr "Adăugați o imprimantă"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Added to context menu"
 msgstr "Adăugat la meniul contextual"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "Additional E-mail Attachments:"
 msgid "Additional Attachment File"
 msgstr "Fișiere suplimentare atașate la e-mail:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Additional Data:"
-msgstr "Date suplimentare:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Additional E-mail Attachments:"
 msgstr "Fișiere suplimentare atașate la e-mail:"
 
@@ -303,21 +289,17 @@ msgstr "Parametri suplimentari:"
 msgid "Additional Program Parameters:"
 msgstr "Parametri suplimentari ai programului:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 msgid "Adds a background to the document."
 msgstr "Adăugați un fundal documentului."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 msgid "Adds a watermark to the document."
 msgstr "Adăugați un marcaj transparent documentului."
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
 msgid "Admin privileges required"
 msgstr "Sunt necesare drepturi de administrare"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Advanced"
-msgstr "Avansat"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 msgid "All Files"
@@ -328,13 +310,14 @@ msgstr "Toate fișierele"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
 msgid "All files"
 msgstr "Toate fișierele"
@@ -350,11 +333,11 @@ msgstr "Permiteți PDFCreator să schimbe temporar imprimanta implicită"
 msgid "Allow further profiles defined by User"
 msgstr "Permiteți alte profiluri definite de utilizator"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Allow multiple signing"
 msgstr "Permiteți mai multe semnături"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Allow the user"
 msgstr "Autorizați utilizatorul"
 
@@ -378,7 +361,7 @@ msgstr "Un fișier important pentru PDFCreator lipsește ( '{0}'). Vă rugăm s�
 msgid "An owner password is required to set the user passwords."
 msgstr "Pentru a seta parolele utilizatorilor este necesară o parolă de proprietar."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Appends one or more pages at the end of the document."
 msgstr "Anexează una sau mai multe pagini la sfârșitul documentului."
 
@@ -405,6 +388,7 @@ msgstr[2] "Sunteți sigur că vreți să ștergeți fișierele?"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Are you sure you want to delete this account?"
 msgstr "Sunteți sigur că doriți să ștergeți acest cont?"
@@ -445,10 +429,11 @@ msgid "At least one of the selected items is not convertible! For more informati
 msgstr "Cel puțin unul dintre elementele selectate nu este convertibil! Pentru mai multe informații despre fișierele care nu pot fi imprimate, consultați lista de mai jos."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Attach pdfforge signature"
 msgstr "Atașează semnătura Pdfforge"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
 msgid "Attachment"
 msgstr "Anexă"
 
@@ -471,6 +456,7 @@ msgstr "Autentificare cu Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Authentication"
 msgstr "Autentificare"
@@ -482,8 +468,8 @@ msgid "Author"
 msgstr "Autor"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Author:"
 msgstr "Autor:"
@@ -493,8 +479,8 @@ msgid "Auto-Detect"
 msgstr "Detectare automată"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Automatic"
 msgstr "Automat"
 
@@ -502,14 +488,7 @@ msgstr "Automat"
 msgid "Automatic Saving"
 msgstr "Salvare automată"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 #, fuzzy
 #| msgid "Automatic saving without user password."
 msgid "Automatic saving requires the passwords to be set"
@@ -544,6 +523,7 @@ msgid "Automatic saving without user password."
 msgstr "Salvare automată fără parolă utilizator."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "BCC:"
 msgstr "Cci:"
 
@@ -551,12 +531,13 @@ msgstr "Cci:"
 msgid "BUSINESS FEATURE"
 msgstr "CARACTERISTICI COMERCIALE"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 msgid "Back"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 msgid "Background"
 msgstr "Fondul de pagină"
 
@@ -609,6 +590,7 @@ msgid "By loading the file all settings and profiles will be overwritten. Do you
 msgstr "Prin încărcarea fișierului, toate setările și profilurile vor fi suprascrise. Doriți să continuați?"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "CC:"
 msgstr "Cc:"
 
@@ -620,7 +602,6 @@ msgstr "Fax CCITT"
 msgid "CMYK"
 msgstr "CMYK"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid "CS-Script"
 msgstr "Script CS"
@@ -637,7 +618,7 @@ msgstr "Nu există fișier script CS în directorul „CS-Scripts” al programu
 msgid "Call Preview:"
 msgstr "Previzualizare rulare:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 msgid "Calls a program or script that further processes the document after the conversion. PDFCreator calls the specified program automatically and transfers the created files as parameter."
 msgstr "Apelează un program sau un script pentru procesarea suplimentară a documentului după conversie. PDFCreator apelează automat programul specificat și transferă fișierele create ca parametru."
 
@@ -657,6 +638,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
@@ -664,7 +646,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Cancel"
 msgstr "Anulare"
 
@@ -677,7 +659,7 @@ msgid "Catalan"
 msgstr "Catalană"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Certificate File:"
 msgstr "Fișier certificat:"
 
@@ -706,6 +688,7 @@ msgid "Changes not effective yet"
 msgstr "Modificările nu sunt încă în vigoare"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Check E-mail Client"
 msgstr "Verificați clientul de e-mail"
 
@@ -731,7 +714,7 @@ msgstr "Chineză (tradițională)"
 msgid "Choose 'No' to revert the changes."
 msgstr "Alegeți \"Nu\" pentru a renunța la modificări."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Choose a directory"
 msgstr "Selectați un director"
 
@@ -774,10 +757,10 @@ msgstr "Închide manual"
 msgid "Color Model:"
 msgstr "Model culoare:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertJpgTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPngTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertTiffTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Colors:"
 msgstr "Culori:"
 
@@ -785,7 +768,7 @@ msgstr "Culori:"
 msgid "Community Support"
 msgstr "Suport comunitar"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "ZIP Compression"
 msgid "Compression:"
@@ -810,7 +793,7 @@ msgstr "Configurați Ecranul Inițial (Home Screen)"
 msgid "Confirm Save As"
 msgstr "Confirmați Salvare ca"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Contact:"
 msgstr "Intrați în legătură:"
 
@@ -834,15 +817,21 @@ msgstr "&Convertiți aici"
 msgid "Convert PDF files"
 msgstr "Conversie fișiere PDF"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Print a test page with the current profile. You will be asked to save the settings if required."
+msgid "Convert a test page with the current profile. You will be asked to save the settings if required."
+msgstr "Tipăriți o pagină de test cu profilul curent. Dacă este necesar, vi se va solicita să salvați setările."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
 msgid "Converting..."
 msgstr "Conversie..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Converts all documents without asking for settings. This requires more settings to be defined in the profile."
 msgid ""
-"Converts all documents without asking for settings.\r\n"
+"Converts all documents without asking for settings.\n"
 "This requires all necessary settings to be set in advance."
 msgstr "Convertește toate documentele fără a solicita setările. Acest lucru necesită definirea mai multor parametri de profil."
 
@@ -888,6 +877,7 @@ msgstr[2] ""
 "Vă rugăm să încercați din nou mai târziu."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Could not find MAPI client (e.g. Thunderbird or Outlook)."
 msgstr "Nu am putut găsi clientul MAPI (de ex. Thunderbird sau Outlook)."
 
@@ -911,7 +901,7 @@ msgstr "Nu s-a putut încărca fișierul pe serverul FTP."
 msgid "Couldn't find PDFCreator in your system. Please check if you have installed it."
 msgstr "Nu s-a putut găsi PDFCreator în sistemul dvs. Vă rugăm să verificați dacă l-ați instalat."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Cover"
 msgstr "Pagină de gardă"
 
@@ -922,6 +912,7 @@ msgid "Cover files (PDF):"
 msgstr "Pagină de gardă (PDF):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Create PDF files"
 msgstr "Creare fișiere PDF"
 
@@ -932,15 +923,6 @@ msgstr "Creați un link pentru a partaja fișierele încărcate. Oricine are lin
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 msgid "Create custom forms"
 msgstr "Creare formulare personalizate"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Create new accounts"
-msgstr "Creați conturi noi"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
 msgid "Custom Page"
@@ -1018,7 +1000,7 @@ msgstr "Ștergeți acțiunea de imprimare"
 msgid "Delete selected Report"
 msgstr "Șterge toate rapoartele selectate"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Digitally signs PDF files, for example to verify the sender’s identity and to ensure the document has not been changed after signing. Signature and Encryption are always processed last."
 msgstr "Semnați digital fișierele PDF, de exemplu pentru verificarea identității expeditorului și pentru asigurarea că documentul nu a fost schimbat după semnare. Semnarea și criptarea sunt întotdeauna procesate ultima dată."
 
@@ -1027,6 +1009,7 @@ msgstr "Semnați digital fișierele PDF, de exemplu pentru verificarea identită
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Directory:"
 msgstr "Dosar:"
@@ -1077,7 +1060,14 @@ msgstr "Dezactivat de administrator"
 msgid "Dismiss"
 msgstr "Renunțați"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "User Name:"
+msgid "Display Name:"
+msgstr "Nume utilizator:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Display signature in document"
 msgstr "Afișați semnătura în document"
 
@@ -1105,7 +1095,7 @@ msgstr "Doriți să faceți licența disponibilă pentru toți utilizatorii din 
 msgid "Do you want to proceed anyway?"
 msgstr "Doriți totuși să continuați?"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Do you want to remove the queue '{0}'?"
 msgstr "Doriți să eliminați coada '{0}'?"
 
@@ -1118,6 +1108,7 @@ msgid "Do you want to save?"
 msgstr "Vreți să salvați?"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "Document view:"
 msgid "Document File"
@@ -1136,15 +1127,12 @@ msgstr "Marcaje vizibile"
 msgid "Document view:"
 msgstr "Vizualizare document:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Don't overwrite existing files"
-msgstr "Nu suprascrieți fișierele existente"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't overwrite files (adds an increasing number in case of conflict)"
 msgstr "Nu suprascrieți fișierele (adaugați un număr crescător în caz de conflict)"
@@ -1153,7 +1141,7 @@ msgstr "Nu suprascrieți fișierele (adaugați un număr crescător în caz de c
 msgid "Don't overwrite files (adds an increasing number in case of conflict)."
 msgstr "Nu suprascrieți fișierele (adaugați un număr suplimentar în caz de conflict)."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Don't save password and request it during conversion"
 msgstr "Nu salvați parola și solicitați-o în timpul conversiei"
 
@@ -1162,6 +1150,7 @@ msgstr "Nu salvați parola și solicitați-o în timpul conversiei"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Don't save password and request it during upload."
 msgstr "Nu salvați parola și solicitați-o în timpul conversiei."
@@ -1196,6 +1185,7 @@ msgstr "dropbox.com"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Dropbox Account"
 msgstr "Cont Dropbox"
@@ -1212,10 +1202,18 @@ msgid "Dutch"
 msgstr "Olandeză"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "E-mail"
 msgstr "E-mail"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "E-mail"
+msgid "E-mail (SMTP)"
+msgstr "E-mail"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "E-mail Address:"
 msgstr "Adresă e-mail:"
 
@@ -1231,6 +1229,8 @@ msgstr "E-mail creat automat de PDFCreator-ul gratuit"
 msgid "E-mail over SMTP could not be delivered to one or more recipients."
 msgstr "E-mailul nu a putut fi livrat prin SMTP către unul sau mai mulți destinatari."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "Edit"
 msgstr "Editare"
@@ -1240,11 +1240,13 @@ msgstr "Editare"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Edit Account"
 msgstr "Editare cont"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit E-mail Text"
 msgstr "Editare text e-mail"
 
@@ -1261,6 +1263,7 @@ msgid "Edit PDF files"
 msgstr "Editare fișiere PDF"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit SMTP Account"
 msgstr "Editați contul SMTP"
 
@@ -1281,11 +1284,11 @@ msgstr "Activare istoric"
 msgid "Enable automatic mode and skip the interaction with PDFCreator. With a few configurations you will be able to create and save your PDFs to your preferred folder by simply printing directly from your document."
 msgstr "Activați modul automat și ignorați interacțiunea cu PDFCreator. Cu câteva configurații, veți putea să creați și să salvați fișierele PDF în folderul preferat prin simplă imprimare direct din document."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Encryption"
 msgstr "Criptare"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Encryption Level"
 msgstr "Nivel de criptare"
 
@@ -1302,14 +1305,15 @@ msgid "English"
 msgstr "Engleză"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Enjoy our free features:"
 msgstr "Profitați de funcțiile noastre gratuite:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Ensure unique filenames"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Don't overwrite existing files"
 msgid "Ensure unique filenames - don't overwrite existing files"
@@ -1322,14 +1326,6 @@ msgstr "Introduceți cheia de licență"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Enter search text here"
 msgstr "Introduceți textul de căutare aici"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Environment variables:"
-msgstr "Variabile de mediu:"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Environment:"
-msgstr "Mediu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
@@ -1344,16 +1340,14 @@ msgstr "Eroare"
 msgid "Error During Deletion"
 msgstr "Eroare la ștergere"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Error Report for PDFCreator"
-msgstr "Raport de eroare pentru PDFCreator"
-
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error during PDF/A conversion."
 msgstr "Eroare în timpul conversiei PDF/A."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error during forward to further profile action."
+#, fuzzy
+#| msgid "Error during forward to further profile action."
+msgid "Error during forwarding action."
 msgstr "Eroare de redirecționare către un alt profil."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -1480,12 +1474,12 @@ msgstr "Exportare setări"
 msgid "Extract User Tokens"
 msgstr "Extrageți indicative utilizator"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
 msgid "Extracts values from the source document and uses them anywhere they are supported by PDFCreator."
 msgstr "Extrageți valorile din documentul sursă și folosiți-le oriunde sunt suportate de PDFCreator."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.ProfileSendSubTabTranslation
 msgid "FTP"
 msgstr "FTP"
 
@@ -1498,6 +1492,7 @@ msgstr "FTP - protocol pentru transmisia de fișiere"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "FTP Account"
 msgstr "Cont FTP"
@@ -1575,9 +1570,8 @@ msgid "Filename template contains illegal characters."
 msgstr "Șablonul numelui de fișier conține caractere care nu sunt valide."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Filename:"
 msgstr "Nume fișier:"
 
@@ -1634,12 +1628,14 @@ msgstr "Pentru modul dumneavoastră avansat de utilizare, vă recomandăm PDFCre
 msgid "Format"
 msgstr "Format"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Forward"
-msgstr "Redirecționare"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 msgid "Forward to Profile"
+msgstr "Redirecționare către profil"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+#| msgid "Forward to Profile"
+msgid "Forward to Queue"
 msgstr "Redirecționare către profil"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
@@ -1655,11 +1651,11 @@ msgstr "Franceză"
 msgid "From"
 msgstr "De la"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "From bottom:"
 msgstr "De jos:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "From left:"
 msgstr "De la stânga:"
 
@@ -1742,6 +1738,7 @@ msgstr "HTTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "HTTP Account"
 msgstr "Cont HTTP"
@@ -1766,7 +1763,7 @@ msgstr "Încărcați prin HTTP"
 msgid "Have you tried PDFCreator Online? It lets you convert and merge PDFs quickly and easily in your browser."
 msgstr "Ați încercat PDFCreator online? Vă permite să convertiți și să îmbinați PDF-urile rapid și ușor în navigatorul dumneavoastră."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Height:"
 msgstr "Înălțime:"
 
@@ -1804,7 +1801,7 @@ msgstr "Ascundeți PDF Arhitect Info"
 msgid "Hide license tab"
 msgstr "Ascundeți fila licență"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "High (256 Bit AES)"
 msgstr "Înalt (AES 256 bit)"
 
@@ -1820,11 +1817,12 @@ msgstr "Calitate ridicată (fișier mare)"
 msgid "Hint"
 msgstr "Sugestie"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Hint: Leave the target directory blank, to use the recently used target directory."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Hint: Multiple recipients can be separated by commas"
 msgstr "Info: în cazul mai multor destinatari, separați adresele cu o virgulă"
 
@@ -1856,10 +1854,14 @@ msgstr "ID:"
 msgid "INI files (*.ini)|*.ini"
 msgstr "Fișiere INI (*.ini)|*.ini"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "If a file already exists, an incrementing number is added to the filename, i.e. 'file_5.pdf'"
 msgstr "Dacă un fișier există deja, se adaugă un număr de incrementare la numele fișierului, ca de ex. 'file_5.pdf'"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "If set it will be used as From and the address from the account will be set as Sender"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "If you want to know more you can take a look at our manual:"
@@ -1869,7 +1871,7 @@ msgstr "Dacă doriți să aflați mai multe, puteți să consultați manualul no
 msgid "Image compression:"
 msgstr "Comprimare imagine:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid "Implement a custom script in C# to process the print job."
 msgstr "Implementați un script personalizat în C# pentru a procesa imprimarea."
 
@@ -1881,7 +1883,7 @@ msgstr "Răspuns incorect de la serverul Dropbox. Contul nu a putut fi creat. V�
 msgid "Insert page elements"
 msgstr "Inserați elemente laterale pe pagină"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
 msgid "Inserts one or more pages at the beginning of the document."
 msgstr "Inserează una sau mai multe pagini la începutul documentului."
 
@@ -1898,18 +1900,14 @@ msgstr "Instalați PDF Arhitect acum"
 msgid "Install new Update"
 msgstr "Instalați noua actualizare"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Interactive"
 msgstr "Interactiv"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Internal Ghostscript error."
 msgstr "Eroare internă Ghostscript."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Invalid Queue"
-msgstr "Coada nu este validă"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 msgid "Invalid Regular Expression."
@@ -1922,6 +1920,12 @@ msgstr "Destinația mesajului e-mail SMTP nu este validă."
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Invalid SMTP port."
 msgstr "Portul SMTP nu este valid."
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
+#, fuzzy
+#| msgid "Invalid settings"
+msgid "Invalid Settings In Queue"
+msgstr "Setările nu sunt valide"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
 msgid "Invalid password for '{0}'"
@@ -1987,6 +1991,7 @@ msgstr "Exemplu de statistici de sarcini:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Key file"
 msgstr "Fișier cheie"
@@ -1996,6 +2001,7 @@ msgstr "Fișier cheie"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Key file requires passphrase"
 msgstr "Fișierul cheie necesită parolă"
@@ -2005,8 +2011,8 @@ msgstr "Fișierul cheie necesită parolă"
 msgid "Keywords"
 msgstr "Cuvinte cheie"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Keywords:"
 msgstr "Cuvinte cheie:"
 
@@ -2030,7 +2036,7 @@ msgstr "Ultima pagină"
 msgid "Last activation:"
 msgstr "Ultima activare:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Last used directory"
 msgstr "Ultimul director folosit"
 
@@ -2120,7 +2126,7 @@ msgstr "Scriptul CS a fost încărcat cu succes."
 msgid "Loading Update..."
 msgstr "Încărcare actualizare..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Location:"
 msgstr "Locație:"
 
@@ -2144,7 +2150,7 @@ msgstr "Legare pe latura lungă"
 msgid "Looking for help with a specific feature or setting? Simply hit the F1 button anywhere in PDFCreator and the related help page will open automatically."
 msgstr "Căutați ajutor pentru o anume caracteristică sau setare? Pur și simplu apăsați butonul F1 oriunde în PDFCreator și pagina de ajutor asociată se va deschide automat."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Low (128 Bit)"
 msgstr "Scăzut (128 bit)"
 
@@ -2157,6 +2163,7 @@ msgstr "Cod de identitate calculator:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage Accounts"
 msgstr "Gestionați conturile"
@@ -2178,21 +2185,18 @@ msgstr "Gestionare licențe"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles."
 msgstr "Gestionați-vă acreditările pentru acțiunile corespunzătoare. Conturile adăugate și modificările vor fi disponibile pentru toate profilurile."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Medium (128 Bit AES)"
 msgstr "Mediu (AES 128 bit)"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Merge All"
 msgstr "Îmbină tot"
-
-#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Merge Print Jobs"
-msgstr "Îmbinare sarcini de imprimare"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Merge Selected"
@@ -2207,8 +2211,8 @@ msgstr "Îmbină tot"
 msgid "Merged Files"
 msgstr "Fișiere îmbinate"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Metadata"
 msgstr "Metadate"
 
@@ -2220,9 +2224,15 @@ msgstr "Imprimante lipsă"
 msgid "Missing URL for HTTP upload."
 msgstr "Lipsește adresa URL pentru încărcarea prin HTTP."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Missing directory"
 msgstr "Director lipsă"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#, fuzzy
+#| msgid "Missing Printers"
+msgid "Missing filename"
+msgstr "Imprimante lipsă"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Missing output file for PDF processing."
@@ -2233,7 +2243,6 @@ msgid "Missing user name for HTTP authentication."
 msgstr "Lipsește numele de utilizator pentru încărcarea HTTP."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Modify"
 msgstr "Modificare"
@@ -2311,10 +2320,6 @@ msgstr "Nu este specificat niciun fișier script CS."
 msgid "No Error Reports"
 msgstr "Niciun raport de eroare"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "No Error Selected"
-msgstr "Nicio eroare selectată"
-
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "No RSS Feed Available"
 msgstr "Nu este disponibil niciun flux de știri RSS"
@@ -2336,7 +2341,9 @@ msgid "No SMTP e-mail user name is specified."
 msgstr "Numele de utilizator al serverului SMTP nu este specificat."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "No application is associated to open PDF files"
+#, fuzzy
+#| msgid "No application is associated to open PDF files"
+msgid "No application is associated to open PDF files."
 msgstr "Nu este asociată nicio aplicație pentru deschiderea fișierelor PDF"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -2362,10 +2369,6 @@ msgstr "Nu este specificat niciun fișier pentru copertă."
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.DuplexPrint
 msgid "No duplex printing"
 msgstr "Fără imprimare față-verso"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "No license available. Please enter a new license key."
-msgstr "Nicio licență disponibilă. Vă rugăm să introduceți o nouă cheie de licență."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "No license key available. Please enter a new license key."
@@ -2409,7 +2412,6 @@ msgstr "Niciun fișier specificat pentru marcaj transparent."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "No, thanks"
 msgstr "Nu, mulțumesc"
 
@@ -2430,13 +2432,14 @@ msgstr "Număr de fire de execuție:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Encryption.EncryptionPasswordsUserControlTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobPasswordButtonTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "OK"
 msgstr "ok"
 
@@ -2448,6 +2451,11 @@ msgstr "Activare fără rețea"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 msgid "Ok"
 msgstr "OK"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "On Behalf Of:"
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -2513,8 +2521,8 @@ msgstr "Calea către copertă este prea lungă."
 msgid "Online activation"
 msgstr "Activare prin rețea"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Only save file temporarily"
 msgstr "Salvați fișierul doar temporar"
 
@@ -2572,11 +2580,7 @@ msgstr "Deschide cu PDF Architect"
 msgid "Open with default viewer"
 msgstr "Deschide cu vizualizatorul implicit"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
-msgid "Opens the PDF file in a Viewer."
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "Opens the default e-mail client with the converted document as attachment."
 msgstr "Deschideți clientul de e-mail implicit cu documentul convertit în atașament."
 
@@ -2608,8 +2612,8 @@ msgstr "Editorul nostru PDF cu funcții complete"
 msgid "Outline Width:"
 msgstr "Lățime contur:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Output Format"
 msgstr "Format de ieșire"
 
@@ -2634,6 +2638,12 @@ msgstr "Suprascrieți toate setările"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
 msgid "Owner password (for editing):"
 msgstr "Parolă proprietar (pentru editare):"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
+#, fuzzy
+#| msgid "PDF Architect could not open output file."
+msgid "PDF Architect could not be found."
+msgstr "PDF Architect nu a putut deschide fișierul de ieșire."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "PDF Architect could not open output file."
@@ -2677,9 +2687,11 @@ msgstr "PDF Creator"
 msgid "PDFCreator Online"
 msgstr "PDFCreator pe net"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
-msgid "PDFCreator Server"
-msgstr "„PDFCreator Server”"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Print PDFCreator Test Page"
+msgid "PDFCreator Test Page"
+msgstr "Imprimare pagină de test PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 #, fuzzy
@@ -2714,7 +2726,7 @@ msgstr "PDFCreator nu a putut să repare instalarea imprimantei. Vă rugăm să 
 msgid "PDFCreator was not able to repair your spool folder. Please contact your administrator or the support to assist you in changing the permissions of the path '{0}'."
 msgstr "PDFCreator nu a putut repara dosarul tip derulator (spool). Vă rugăm să contactați administratorul sau suportul dvs. pentru a vă ajuta în schimbarea permisiunilor pentru calea '{0}'."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "PFX/P12 files"
 msgstr "Fișiere PFX/P12"
 
@@ -2738,7 +2750,7 @@ msgstr "Orientare pagină:"
 msgid "Page view:"
 msgstr "Vizualizare pagină:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Page:"
 msgstr "Pagina:"
 
@@ -2751,16 +2763,7 @@ msgstr "Pagini"
 msgid "Pages:"
 msgstr "Pagini:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Passphrase:"
-msgstr "Parolă:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Password"
 msgstr "Parolă"
 
@@ -2773,6 +2776,7 @@ msgstr "Rezistență parolă:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Password:"
 msgstr "Parolă:"
@@ -2808,13 +2812,9 @@ msgstr "Persană"
 msgid "Place a pattern like this on a separate line in your document"
 msgstr "Plasați un șablon ca acesta pe o linie separată din document"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
 msgid "Places a stamp text on the document."
 msgstr "Plasați un text de ștampilă pe document."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
-msgid "Platform:"
-msgstr "Platformă:"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
 msgid ""
@@ -2828,7 +2828,7 @@ msgstr ""
 msgid "Please enter new profile name:"
 msgstr "Vă rugăm să introduceți noul nume de profil:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Please enter new queue name:"
 msgstr "Vă rugăm să introduceți noul nume de coadă:"
 
@@ -2840,17 +2840,13 @@ msgstr "Introduceți numele imprimantei:"
 msgid "Please enter profile name:"
 msgstr "Vă rugăm introduceți numele profilului:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
-msgid "Please enter queue name:"
-msgstr "Vă rugăm introduceți numele cozii:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Please enter your license key:"
 msgstr "Vă rugăm să introduceți cheia de licență:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-msgid "Please note that without enabling any send action, files will not be forwarded and only stored in a temporary folder"
-msgstr "Vă rugăm să rețineți că dacă nu este activată nicio acțiune de trimitere, fișierele nu vor fi transferate ci vor fi doar stocate într-un dosar temporar"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
+msgid "Please install PDF Architect, our PDF viewer and editor."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Please note that you won't receive any notifications about available updates!"
@@ -2877,6 +2873,7 @@ msgid "Please select a FTP account:"
 msgstr "Vă rugăm să selectați un cont FTP:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Please select a SMTP account:"
 msgstr "Vă rugăm să selectați un cont SMTP:"
 
@@ -2894,6 +2891,7 @@ msgid "Polish"
 msgstr "Poloneză"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Port:"
 msgstr "Port:"
 
@@ -2925,17 +2923,9 @@ msgstr "Imprimare"
 msgid "Print PDFCreator Test Page"
 msgstr "Imprimare pagină de test PDFCreator"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Print Test Page"
-msgstr "Imprimare pagină de test"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Print Windows Test Page"
 msgstr "Imprimare pagină de test Windows"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Print a test page with the current profile. You will be asked to save the settings if required."
-msgstr "Tipăriți o pagină de test cu profilul curent. Dacă este necesar, vi se va solicita să salvați setările."
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
 msgid "Print after saving"
@@ -2945,7 +2935,7 @@ msgstr "Imprimare după salvare"
 msgid "Print document"
 msgstr "Imprimare document"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
 msgid "Print failed because of invalid settings in queue."
 msgstr "Imprimare eșuată din cauza setărilor nevalide din coadă."
 
@@ -2960,25 +2950,15 @@ msgstr "Imprimați cu PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Printer"
 msgstr "Imprimantă"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Printer:"
 msgstr "Imprimantă:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Printers"
-msgstr "Imprimante"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Printing a Test Page creates a PDF file using the settings of the currently selected queue. It does not use the service for printing."
-msgstr "Imprimarea unei pagini de test creează un fișier PDF utilizând setările cozii selectate în prezent. Nu se utilizează serviciul pentru imprimare."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
 msgid "Prints the document to a physical printer."
 msgstr "Imprimați documentul la o imprimantă fizică."
 
@@ -2996,13 +2976,10 @@ msgstr "Politica de confidențialitate"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Private key file:"
 msgstr "Fișier cheie privată:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
-msgid "Profile"
-msgstr "Profil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 msgid "Profile:"
@@ -3021,6 +2998,7 @@ msgstr "Fișier program:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Protocol:"
 msgstr "Protocol:"
@@ -3030,19 +3008,14 @@ msgid "Quality (%):"
 msgstr "Calitate (%):"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
 msgid "Queue"
 msgstr "Coadă"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Queue Name:"
 msgstr "Nume coadă:"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Queue Settings"
-msgstr "Setări pentru coadă"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Queue:"
 msgstr "Coadă:"
 
@@ -3075,7 +3048,7 @@ msgstr "Citiți mai mult"
 msgid "Read our privacy policy here:"
 msgstr "Citiți aici politica noastră de confidențialitate:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Reason:"
 msgstr "Motiv:"
 
@@ -3109,7 +3082,7 @@ msgstr "Amintește-mi mai târziu"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Remove"
 msgstr "Eliminați"
 
@@ -3118,6 +3091,7 @@ msgstr "Eliminați"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Remove Account"
 msgstr "Eliminare cont"
@@ -3143,6 +3117,7 @@ msgid "Remove Profile"
 msgstr "Eliminați profilul"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Remove SMTP Account"
 msgstr "Eliminați contul SMTP"
 
@@ -3162,7 +3137,7 @@ msgstr "Eliminați de la sfârșit"
 msgid "Remove from history"
 msgstr "Eliminați din istoric"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Remove queue"
 msgstr "Eliminați coada"
 
@@ -3171,7 +3146,7 @@ msgid "Removed from context menu (Maybe you need to restart your computer)"
 msgstr "Eliminare din meniul contextual (poate fi necesar să reporniți computerul)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Rename"
 msgstr "Redenumiți"
 
@@ -3183,7 +3158,7 @@ msgstr "Redenumiți imprimanta"
 msgid "Rename Profile"
 msgstr "Redenumiți profilul"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Rename queue"
 msgstr "Redenumiți coada"
 
@@ -3225,11 +3200,16 @@ msgstr "Înlocuiți cu:"
 msgid "Replaced Title:"
 msgstr "Titlul înlocuit:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Reply To:"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
 msgid "Request an activation code on our website:"
 msgstr "Solicitați un cod de activare pe site-ul nostru:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Require a password to open the PDF document"
 msgstr "Se solicită parola pentru deschiderea documentului PDF"
 
@@ -3243,7 +3223,7 @@ msgstr "Convertiți imaginea la"
 msgid "Resolution (DPI):"
 msgstr "Rezoluție (DPI):"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Resolution (DPI):"
 msgid "Resolution:"
@@ -3277,10 +3257,6 @@ msgstr "Română"
 msgid "Run Length Compression"
 msgstr "Compresie maximă"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
-msgid "Run Program"
-msgstr "Rulați Program"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
 msgid "Run program"
 msgstr "Rulați programul"
@@ -3292,7 +3268,6 @@ msgstr "Rusă"
 msgid "SFTP - SSH File Transfer Protocol"
 msgstr "SFTP - protocol SSH pentru transfer securizat de fișiere"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "SMTP"
 msgstr "SMTP"
@@ -3302,23 +3277,28 @@ msgstr "SMTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "SMTP Account"
 msgstr "Cont SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Account:"
 msgstr "Contul SMTP:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Mail"
 msgstr "E-mail prin SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SMTP Server Password:"
 msgstr "Parolă server SMTP:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "SSL"
 msgstr "SSL"
 
@@ -3339,9 +3319,10 @@ msgstr "Exemplu de titlu:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 msgid "Save"
 msgstr "Salvare"
@@ -3349,10 +3330,6 @@ msgstr "Salvare"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "Save as ..."
 msgstr "Salvați ca ..."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Save files temporarily"
-msgstr "Salvați temporar fișierele"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Save settings to file"
@@ -3365,6 +3342,18 @@ msgstr "Salvați pe Desktop"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.ConvertTabs.ConvertPdfTranslation
 msgid "Save validation report"
 msgstr "Salvați raportul de validare"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
+#, fuzzy
+#| msgid "Please note that without enabling any send action, files will not be forwarded and only stored in a temporary folder"
+msgid "Saving files temporarily without any enabled send action, will only store files in a temporary folder"
+msgstr "Vă rugăm să rețineți că dacă nu este activată nicio acțiune de trimitere, fișierele nu vor fi transferate ci vor fi doar stocate într-un dosar temporar"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
+#, fuzzy
+#| msgid "CS-Script"
+msgid "Script"
+msgstr "Script CS"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Script file contains illegal characters."
@@ -3414,17 +3403,17 @@ msgstr "Server de timp securizat fără parolă."
 msgid "Secured Time Server without user name."
 msgstr "Server de timp securizat fără nume de utilizator."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Secures PDFs with a password and selects which authorizations the user receives. Signature and Encryption are always processed last."
 msgstr "Securizați PDF-urile cu o parolă și selectați ce autorizații primește utilizatorul. Semnarea și criptarea sunt întotdeauna procesate ultima dată."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PdfPasswordTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
 msgid "Security"
 msgstr "Securitate"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "Select E-Mail Attachment"
 msgid "Select E-mail Attachment File"
@@ -3444,7 +3433,7 @@ msgstr "Selectați contul HTTP:"
 msgid "Select Separator:"
 msgstr "Selectați separatorul:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select Time Server:"
 msgstr "Selectați serverul de timp:"
 
@@ -3453,8 +3442,9 @@ msgstr "Selectați serverul de timp:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select account or create a new one ->"
 msgstr "Selectați un cont sau creați unul nou ->"
 
@@ -3466,7 +3456,7 @@ msgstr "Selectați fișierul de anexat"
 msgid "Select background file"
 msgstr "Selectați fișierul de fundal"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Select certificate file"
 msgstr "Selectați fișierul certificat"
 
@@ -3483,6 +3473,7 @@ msgstr "Selectați destinația"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Select key file"
 msgstr "Selectați fișierul cheie"
@@ -3507,7 +3498,13 @@ msgstr "Selectați profilul:"
 msgid "Select program"
 msgstr "Selectați programul"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+#| msgid "Select profile:"
+msgid "Select queue:"
+msgstr "Selectați profilul:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Target Directory:"
 msgid "Select target directory"
@@ -3517,15 +3514,11 @@ msgstr "Dosar de destinație:"
 msgid "Select the application language:"
 msgstr "Selectați limba aplicației:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 #, fuzzy
 #| msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail/SMTP"
 msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail"
 msgstr "Selectați această opțiune pentru a salva fișierele doar într-un dosar temporar, de ex. dacă sunt transmise prin e-mail/SMTP"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Select this to only save files in a temporary directory, e.g. if sent by e-mail using SMTP"
-msgstr "Selectați această opțiune pentru a salva fișierele doar într-un dosar temporar, de ex. dacă sunt transmise prin e-mail utilizând SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 msgid "Select watermark file"
@@ -3533,7 +3526,6 @@ msgstr "Selectați fișierul pentru marcaj transparent"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.ProfileSendSubTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Send"
 msgstr "Expediere"
@@ -3543,6 +3535,7 @@ msgid "Send PDFs \"without\" saving"
 msgstr "Trimitere PDF \"fără\" salvare"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Send Test E-mail"
 msgstr "Trimiteți un e-mail de test"
 
@@ -3559,6 +3552,7 @@ msgid "Send by e-mail"
 msgstr "Trimis prin e-mail"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Send e-mail via SMTP"
 msgstr "Trimiteți e-mail prin SMTP"
 
@@ -3574,7 +3568,7 @@ msgstr "Trimiteți PDF-uri mari prin Dropbox"
 msgid "Send selected Report"
 msgstr "Trimite rapoartele selectate"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Sends the document as an e-mail without user interaction by using SMTP."
 msgstr "Trimite documentul ca e-mail prin SMTP, fără interacțiune cu utilizatorul."
 
@@ -3583,6 +3577,7 @@ msgstr "Trimite documentul ca e-mail prin SMTP, fără interacțiune cu utilizat
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Server:"
 msgstr "Server:"
@@ -3591,15 +3586,16 @@ msgstr "Server:"
 msgid "Service statistics example:"
 msgstr "Exemplu de statistici de service:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Set Certificate Password"
 msgstr "Setare parolă certificat"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "Set Passwords"
 msgstr "Setați parola"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Set SMTP Server Password"
 msgstr "Setați parola serverului SMTP"
 
@@ -3645,13 +3641,13 @@ msgstr "Afișați ghidul utilizatorului"
 msgid "Show log file"
 msgstr "Afișare fișier jurnal"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Quick Actions"
 msgid "Show quick actions"
 msgstr "Acțiuni rapide"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Show quick actions after the documents were converted"
 msgstr "Afișați acțiunile rapide după conversia documentelor"
 
@@ -3663,7 +3659,7 @@ msgstr "Afișați o mostră de statistici"
 msgid "Show tips"
 msgstr "Afișare indicii"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
 #| msgid "Show tray notification after converting a document"
 msgid "Show tray notification"
@@ -3673,13 +3669,12 @@ msgstr "Afișați o notificare după ce ați realizat conversia unui document"
 msgid "Show tray notification after converting a document"
 msgstr "Afișați o notificare după ce ați realizat conversia unui document"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Shows a window to select the filename, output format etc."
 msgstr "Afișează o fereastră pentru denumirea fișierului, alegerea formatului de ieșire, etc."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.ProfileSecureTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Signature"
 msgstr "Semnătură"
 
@@ -3703,11 +3698,11 @@ msgstr "Dimensiune"
 msgid "Skip"
 msgstr "Ignoră"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Skip print dialog"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
 msgid "Skip print dialog (start with save dialog)"
 msgstr "Săriți peste dialogul de imprimare (începeți cu dialogul de salvare)"
 
@@ -3755,11 +3750,21 @@ msgstr "Sortare după dată descendentă"
 msgid "Spanish"
 msgstr "Daneză"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Specify Sender"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Specify Sender:"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Split and merge files"
 msgstr "Divizare și îmbinare fișiere"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
 msgid "Stamp"
 msgstr "Ștampilă"
@@ -3793,8 +3798,8 @@ msgstr "Subiect"
 msgid "Subject from Settings"
 msgstr "Subiectul din setări"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Subject:"
 msgstr "Subiect:"
 
@@ -3839,9 +3844,9 @@ msgstr "Setări TIFF"
 msgid "TIFF file"
 msgstr "Fișier TIFF"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.SaveViewTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Target Directory:"
 msgstr "Dosar de destinație:"
 
@@ -3856,10 +3861,6 @@ msgstr "Calea către directorul de destinație nu este o cale absolută validă.
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Target directory is too long."
 msgstr "Calea directorului de destinație este prea lungă."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "Test Page"
-msgstr "Pagină de test"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Test Pages"
@@ -3956,18 +3957,11 @@ msgstr "Activarea nu a reușit:"
 msgid "The activation was successful."
 msgstr "Activarea a reușit."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
-#, fuzzy
-#| msgid "The certificate file does not exist."
-msgid "The certificate file does not exist"
-msgstr "Fișierul certificat nu există."
-
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The certificate has no private key."
 msgstr "Certificatul nu are cheie privată."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
 msgid "The certificate password is wrong."
 msgstr "Parola certificatului este greșită."
 
@@ -3987,7 +3981,7 @@ msgstr ""
 msgid "The entered profile name is invalid or does already exist."
 msgstr "Numele profilului introdus nu este valid sau există deja."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "The entered queue name is invalid or does already exist."
 msgstr "Numele introdus pentru coadă nu este valid sau există deja."
 
@@ -4029,15 +4023,21 @@ msgid "The following link has been created for your document:"
 msgstr "A fost creat următorul link pentru documentul dvs.:"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action causes a circular dependency between the profiles."
+#, fuzzy
+#| msgid "The forward to further profile action causes a circular dependency between the profiles."
+msgid "The forwarding action causes a circular dependency between the profiles."
 msgstr "Redirecționarea către un alt profil provoacă o dependență circulară între profiluri."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action forwards to itself."
+#, fuzzy
+#| msgid "The forward to further profile action forwards to itself."
+msgid "The forwarding action forwards to itself."
 msgstr "Redirecționarea către un alt profil se referă la ea însăși."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forward to further profile action is linked to an unknown profile."
+#, fuzzy
+#| msgid "The forward to further profile action is linked to an unknown profile."
+msgid "The forwarding action is linked to an unknown target profile."
 msgstr "Redirecționarea către un alt profil se face către un profil necunoscut."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
@@ -4165,6 +4165,16 @@ msgstr "Calea selectată este prea lungă. Vă rugăm selectați o cale validă.
 msgid "The selected printer is invalid."
 msgstr "Imprimanta selectată nu este validă."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
+msgid "The selected printer is mapped to PDFCreator. Please consider using the forwarding action. It doesn't require additional printing, is quicker and less error prone."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid "The selected printer is invalid."
+msgid "The selected printer leads to an infinite loop."
+msgstr "Imprimanta selectată nu este validă."
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "The service is currently not running"
 msgstr "Serviciul nu este momentan în execuție"
@@ -4198,6 +4208,7 @@ msgid "The specified SMTP account is not configured."
 msgstr "Contul SMTP specificat nu este configurat."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
 #| msgid "The specified FTP account is not configured."
 msgid "The specified account is not configured."
@@ -4216,6 +4227,7 @@ msgstr ""
 "Dosarul pentru Printer Spool este: {0}"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "The test e-mail was successfully sent to the following recipients:"
 msgstr "E-mailul de test a fost trimis cu succes către următorii destinatari:"
 
@@ -4251,11 +4263,33 @@ msgstr "Aceste caractere nu sunt permise la denumirea directorului Dropbox: < > 
 msgid "These settings have been set by your administrator and can't be changed."
 msgstr "Aceste setări au fost stabilite de administratorul dvs. și nu pot fi modificate."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.NotSupportedFeaturesHintTranslation
-msgid "This feature is not supported by the selected output format"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.Script.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Background.BackgroundSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Cover.CoverSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.Stamp.DocumentTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.OpenFile.OpenViewerActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Send.Print.PrintTabTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.Advanced.CsScriptTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+#, fuzzy
+#| msgid "This feature is not supported by the selected output format"
+msgid "This feature is not supported by the selected output format."
 msgstr "Această caracteristică nu este suportată de formatul de ieșire selectat"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "This is not considered secure anymore. Use this for compatibility only."
 msgstr "Aceasta acțiune nu mai este considerată sigură. Utilizați-o doar pentru compatibilitate."
 
@@ -4283,6 +4317,7 @@ msgstr "Miniaturi vizibile"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Time Server Account"
 msgstr "Contul serverului de timp"
@@ -4292,6 +4327,7 @@ msgstr "Contul serverului de timp"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Timeout in seconds:"
 msgstr "Timpul de expirare în secunde:"
@@ -4316,8 +4352,8 @@ msgid "Title from Settings"
 msgstr "Titlul setărilor"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Tabs.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Title:"
 msgstr "Titlu:"
@@ -4332,6 +4368,7 @@ msgid "To proceed you need to save your current settings."
 msgstr "Pentru a continua, trebuie să salvați setările curente."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "To:"
 msgstr "Către:"
 
@@ -4339,14 +4376,14 @@ msgstr "Către:"
 msgid "Total file size:"
 msgstr "Dimensiune totală fișier:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
 msgid "Trigger another conversion by forwarding the original source document to an other profile, e.g. to convert to another output format."
 msgstr "Declanșați o altă conversie prin redirecționarea documentului sursă original către un alt profil, de exemplu pentru a face conversia la un alt format de ieșire."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 #, fuzzy
 #| msgid "Trigger another conversion by forwarding the original source document to an other profile, e.g. to convert to another output format."
-msgid "Trigger another conversion by forwarding the original source document to another profile, e.g. to convert to another output format."
+msgid "Trigger another conversion by forwarding the original source document to an other queue, e.g. to convert to another output format."
 msgstr "Declanșați o altă conversie prin redirecționarea documentului sursă original către un alt profil, de exemplu pentru a face conversia la un alt format de ieșire."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
@@ -4402,7 +4439,7 @@ msgstr "Nu s-a putut încărca fluxul de știri RSS. Vă rugăm să verificați 
 msgid "Unicode (UCS2) text with byte order mark (BOM) which approximates the original text layout"
 msgstr "Text Unicode (UCS2) cu marcă de ordine octet (BOM) care aproximează aspectul original al textului"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Unit of measurement:"
 msgstr "Unitate de măsură:"
 
@@ -4445,15 +4482,15 @@ msgstr "Interval orar de actualizare"
 msgid "Upload with FTP"
 msgstr "Încărcați prin FTP"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Uploads the document to Dropbox to save it or to share it with a link."
 msgstr "Încarcă documentul în Dropbox pentru a-l salva sau a-l partaja cu un link."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "Uploads the document to an HTTP server."
 msgstr "Încărcați documentul pe un server HTTP."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ActionInfoTextTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 msgid "Uploads the document with FTP."
 msgstr "Încărcați documentul prin FTP."
 
@@ -4466,6 +4503,7 @@ msgid "Usage statistics"
 msgstr "Statistici de utilizare"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Use Html"
 msgstr "Folosiți html"
 
@@ -4494,12 +4532,18 @@ msgstr "Ghid de utilizare"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "User Name:"
 msgstr "Nume utilizator:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.UserToken.UserTokenTranslation
+#, fuzzy
+#| msgid "User Tokens"
+msgid "User Token"
+msgstr "Indicative utilizator"
+
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.Advanced.ProfileAdvancedTranslation
 msgid "User Tokens"
 msgstr "Indicative utilizator"
 
@@ -4528,6 +4572,7 @@ msgstr "Utilizatorul a renunțat la reintroducerea parolei e-mail SMTP."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "User name"
 msgstr "Nume utilizator"
@@ -4550,11 +4595,8 @@ msgstr "Validare licență..."
 msgid "Value for '{0}'"
 msgstr "Valoarea pentru '{0}'"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
-msgid "Version"
-msgstr "Versiune"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "View and print any PDF"
 msgstr "Vizualizare și imprimare PDF-uri"
 
@@ -4594,7 +4636,6 @@ msgstr "Avertisment: documentul selectat este un fișier PDF 2.0 și nu poate fi
 msgid "Warning: The selected document is a PDF 2.0 file and can't be added to other documents during the conversion."
 msgstr "Avertisment: documentul selectat este un fișier PDF 2.0 și nu poate fi adăugat la alte documente în timpul conversiei."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.ProfileModifyTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyTab.WatermarkTranslation
 msgid "Watermark"
 msgstr "Marcaj transparent"
@@ -4628,16 +4669,12 @@ msgid "We highly value that you are using PDFCreator!"
 msgstr "Apreciem că utilizați PDFCreator!"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid ""
-"We recommend PDF Architect, our free PDF Viewer and Editor.\n"
-"The free edition contains a viewer and basic editing capabilities. Furthermore, you can buy optional modules, which extend the functionality according to your requirements and even provide OCR."
+msgid "We recommend PDF Architect, our PDF viewer and editor."
 msgstr ""
-"Vă recomandăm PDF Architect, programul nostru gratuit de vizualizare și editare PDF-uri.\n"
-"Ediția gratuită conține un vizualizator și are capabilități de editare de bază. În plus, puteți cumpăra module opționale, care extind funcționalitatea în funcție de cerințele dvs. și vă oferă chiar și OCR."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "We recommend installing the new, improved PDF Architect version – without the latest version you will miss out on features like printing directly from PDF Architect."
-msgstr "Vă recomandăm să instalați noua versiune, îmbunătățită a PDF Architect – fără cea mai recentă versiune veți pierde unele caracteristici precum imprimarea direct din PDF Architect."
+msgid "We recommend installing the new, improved PDF Architect."
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UpdateInterval
 msgid "Weekly"
@@ -4648,7 +4685,6 @@ msgid "Welcome"
 msgstr "Bine ați venit"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Welcome.WelcomeWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
 msgid "What's new?"
 msgstr "Ce este nou?"
 
@@ -4656,7 +4692,7 @@ msgstr "Ce este nou?"
 msgid "When activating the workflow editor you can choose the actions that fit best to your requirements and adjust their order according to your individual workflow."
 msgstr "La activarea editorului fluxului de lucru puteți alege acțiunile care se potrivesc cel mai bine cerințelor dvs. și să ajustați ordinea acestora în funcție de fluxul de lucru individual."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SignUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Sign.SigningUserControlTranslation
 msgid "Width:"
 msgstr "Lățime:"
 
@@ -4687,10 +4723,6 @@ msgstr "Aveți deja PDF Arhitect pe calculatorul dumneavoastră"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "You already have the most recent version."
 msgstr "Aveți deja cea mai recentă versiune."
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "You can add, rename or delete printers for this queue. Please note that you need a least one printer per queue. Otherwise, you will not be able to use the queue."
-msgstr "Puteți adăuga, redenumi sau șterge imprimante pentru această coadă. Rețineți că aveți nevoie de cel puțin o imprimantă pentru fiecare coadă. În caz contrar, nu veți putea utiliza coada."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "You can enable the RSS news feed by activating it in the application settings."
@@ -4727,13 +4759,9 @@ msgstr "Aveți setări care nu sunt valide și cu modificări nesalvate."
 msgid "You have invalid settings."
 msgstr "Aveți setări care nu sunt valide."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueCommands.QueueMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "You have no print queues yet. Add your first queue now!"
 msgstr "Nu aveți încă cozi de imprimare. Adăugați prima coadă acum!"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueMainSettingsTranslation
-msgid "You have no settings for sending enabled"
-msgstr "Nu aveți nicio setare pentru a activa trimiterea"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "You have printed a password-protected PDF file and Ghostscript ist not able to convert such files."
@@ -4809,7 +4837,9 @@ msgstr ""
 "Vă rugăm să contactați: licensing@pdfforge.org"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "Your version of PDF Architect is outdated"
+#, fuzzy
+#| msgid "Your version of PDF Architect is outdated"
+msgid "Your version of PDF Architect does not support this feature."
 msgstr "Versiunea dumneavoastră PDF Arhitect este veche"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray
@@ -4882,10 +4912,12 @@ msgid "_Skip"
 msgstr "_Ignoră"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "_Subject:"
 msgstr "_Subiect:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "_Text:"
 msgstr "_Text:"
 
@@ -4924,6 +4956,7 @@ msgstr "țol"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "key files"
 msgstr "fișierele cheie"
@@ -4936,6 +4969,11 @@ msgstr "cuvânt cheie 1 cuvânt cheie 2"
 msgid "last"
 msgstr "ultima"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "on behalf of"
+msgstr ""
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "pages"
 msgstr "pagini"
@@ -4943,7 +4981,7 @@ msgstr "pagini"
 msgid "pdfforge"
 msgstr "Pdfforge"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "restrict to low quality"
 msgstr "Restricționare la o calitate scăzută"
 
@@ -4951,31 +4989,31 @@ msgstr "Restricționare la o calitate scăzută"
 msgid "rows per page:"
 msgstr "rânduri pe pagină:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to copy content from the document"
 msgstr "pentru a copia conținutul documentului"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit comments"
 msgstr "pentru editarea comentariilor"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit the assembly"
 msgstr "pentru editarea ansamblului"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to edit the document"
 msgstr "pentru editarea documentului"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to fill forms"
 msgstr "pentru completarea formularelor"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to print the document"
 msgstr "pentru a imprima documentul"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptUserControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SecureTab.Encrypt.EncryptionUserControlTranslation
 msgid "to use a screen reader"
 msgstr "pentru utilizarea unui cititor de ecran"
 

@@ -11,8 +11,9 @@
     xmlns:DefaultViewerSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings"
     xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
     d:DesignHeight="600" d:DesignWidth="500"
-    d:DataContext="{d:DesignInstance DefaultViewerSettings:DesignTimeDefaultViewerViewModel, d:IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance designTime:DesignTimeDefaultViewerViewModel, d:IsDesignTimeCreatable=True}"
     Name="mainUserControl">
     <!-- Added margin to prevent save button overlap when the user control goes below a certain height -->
     <Grid Margin="0 0 0 35">

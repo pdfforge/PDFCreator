@@ -1,4 +1,5 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Actions.Queries;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
@@ -69,10 +70,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         protected override void HandleInteractionObjectChanged()
         {
-            if (Interaction.ShowViewerWarning)
-            {
-                _soundPlayer.Play(SystemSounds.Hand);
-            }
+            _soundPlayer.Play(SystemSounds.Hand);
             RaisePropertyChanged(nameof(RecommendedText));
             RaisePropertyChanged(nameof(ErrorText));
         }
@@ -83,7 +81,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             {
                 if (Interaction == null)
                     return "";
-                return Interaction.IsUpdate ? Translation.RecommendTextUpdate : Translation.RecommendTextInstall;
+
+                switch (Interaction.RecommendPurpose)
+                {
+                    case PdfArchitectRecommendPurpose.UpdateRequired:
+                        return Translation.RecommendTextUpdateRequired;
+
+                    case PdfArchitectRecommendPurpose.NotInstalled:
+                        return Translation.RecommendTextNotInstall;
+
+                    case PdfArchitectRecommendPurpose.NoPdfViewer:
+                    default:
+                        return Translation.RecommendTextNoPdfViewer;
+                }
             }
         }
 
@@ -93,7 +103,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             {
                 if (Interaction == null)
                     return "";
-                return Interaction.IsUpdate ? Translation.ErrorTextUpdate : Translation.ErrorTextInstall;
+
+                switch (Interaction.RecommendPurpose)
+                {
+                    case PdfArchitectRecommendPurpose.UpdateRequired:
+                        return Translation.ErrorTextUpdateRequired;
+
+                    case PdfArchitectRecommendPurpose.NotInstalled:
+                        return Translation.ErrorTextNotInstalled;
+
+                    case PdfArchitectRecommendPurpose.NoPdfViewer:
+                    default:
+                        return Translation.ErrorTextNoPdfViewer;
+                }
             }
         }
 

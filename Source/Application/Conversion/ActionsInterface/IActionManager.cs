@@ -6,8 +6,10 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 {
     public interface IActionManager
     {
-        IEnumerable<T> GetActions<T>(ConversionProfile profile) where T : IAction;
+        IEnumerable<T> GetEnabledActionsInCurrentOrder<T>(ConversionProfile profile) where T : IAction;
 
-        IEnumerable<T> GetActions<T>(Job job) where T : IAction;
+        IEnumerable<T> GetEnabledActionsInCurrentOrder<T>(Job job) where T : IAction;
+
+        bool HasSendActions(ConversionProfile profile);
     }
 }

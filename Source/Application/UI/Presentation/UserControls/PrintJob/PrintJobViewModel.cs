@@ -91,7 +91,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             SetupSaveCommands(translationUpdater);
 
             EmailCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableEmailSettings);
-            SetupSendDropDownCommands(translationUpdater);
 
             MergeCommand = new DelegateCommand(MergeExecute);
             var mergeAllAsyncCommand = new AsyncCommand(MergeAllExecuteAsync, o => jobInfoQueue.Count > 1);
@@ -118,36 +117,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             Job.Profile.SaveFileTemporary = true;
             Job.Profile.EmailClientSettings.Enabled = true;
             Job.Profile.OpenViewer.Enabled = false;
-            Job.Profile.ActionOrder.Insert(0, nameof(EmailClientSettings));
-        }
-
-        private void SetupSendDropDownCommands(ITranslationUpdater translationUpdater)
-        {
-            SendDropDownCommands = new CommandCollection<PrintJobViewTranslation>(translationUpdater);
-            SendDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableSmtp), t => t.Smtp);
-            SendDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableDropBox), t => t.Dropbox);
-            SendDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableFtp), t => t.Ftp);
-        }
-
-        private void EnableDropBox(object o)
-        {
-            Job.Profile.SaveFileTemporary = true;
-            Job.Profile.DropboxSettings.Enabled = true;
-            Job.Profile.ActionOrder.Insert(0, nameof(DropboxSettings));
-        }
-
-        private void EnableSmtp(object o)
-        {
-            Job.Profile.SaveFileTemporary = true;
-            Job.Profile.EmailSmtpSettings.Enabled = true;
-            Job.Profile.ActionOrder.Insert(0, nameof(EmailSmtpSettings));
-        }
-
-        private void EnableFtp(object o)
-        {
-            Job.Profile.SaveFileTemporary = true;
-            Job.Profile.Ftp.Enabled = true;
-            Job.Profile.ActionOrder.Insert(0, nameof(Ftp));
+            if (!Job.Profile.ActionOrder.Contains(nameof(EmailClientSettings)))
+                Job.Profile.ActionOrder.Insert(0, nameof(EmailClientSettings));
         }
 
         private void DisableSaveFileTemporary(object obj)
@@ -340,7 +311,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 if (Job == null)
                     return;
                 Job.Profile = value.Copy();
-                UpdateProfileData();
+                var _ = UpdateProfileData();
             }
         }
 
@@ -376,7 +347,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public CommandCollection<PrintJobViewTranslation> SaveDropDownCommands { get; private set; }
 
         public ICommand EmailCommand { get; }
-        public CommandCollection<PrintJobViewTranslation> SendDropDownCommands { get; set; }
 
         public IMacroCommand BrowseFileCommand { get; }
         public ICommand MergeCommand { get; }
@@ -399,7 +369,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             {
                 if (value != null)
                 {
-                    SetSelectedProfileAsync(value.ConversionProfile);
+                    var _ = SetSelectedProfileAsync(value.ConversionProfile);
                     _selectedProfileWrapper = value;
                 }
             }

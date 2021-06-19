@@ -57,9 +57,9 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
             var printFileHelper = _printFileHelperComFactory.CreatePrintFileHelperCom();
 
-            printFileHelper.AddFile(path);
+            printFileHelper.AddFile(path, true);
             printFileHelper.AllowDefaultPrinterSwitch = allowDefaultPrinterSwitch;
-            printFileHelper.PrintAll();
+            printFileHelper.PrintAll(true);
         }
 
         public void AddFileToQueue(string path)

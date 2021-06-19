@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.DirectConversion;
 using System.Windows;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
@@ -31,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         public void HandleDropEvent(DragEventArgs e)
         {
             var droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            _fileConversionAssistant.HandleFileList(droppedFiles);
+            _fileConversionAssistant.HandleFileListWithoutTooManyFilesWarning(droppedFiles, new AppStartParameters());
         }
     }
 }
