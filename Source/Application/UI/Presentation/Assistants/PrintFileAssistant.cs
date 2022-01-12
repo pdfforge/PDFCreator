@@ -24,8 +24,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IInteractionInvoker _interactionInvoker;
         private PrintFilesTranslation _translation;
 
-        public PrintFileAssistant(IInteractionInvoker interactionInvoker, IPrinterHelper printerHelper, ISettingsProvider settingsProvider, ITranslationUpdater translationUpdater, IFileAssoc fileAssoc, IDirectory directory, IFile file)
-            : base(printerHelper, settingsProvider, fileAssoc, directory, file)
+        public PrintFileAssistant(IInteractionInvoker interactionInvoker, IPrinterHelper printerHelper, ISettingsProvider settingsProvider, ITranslationUpdater translationUpdater, IFileAssoc fileAssoc, IFile file)
+            : base(printerHelper, settingsProvider, fileAssoc, file)
         {
             _interactionInvoker = interactionInvoker;
             translationUpdater.RegisterAndSetTranslation(tf => _translation = tf.UpdateOrCreateTranslation(_translation));

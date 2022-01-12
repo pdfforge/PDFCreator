@@ -3,9 +3,9 @@ using pdfforge.PDFCreator.UI.Presentation.Converter;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
 {
-    public class DesignTimeSigningPositionUnitConverterFactory : ISigningPositionToUnitConverterFactory
+    public class DesignTimePositionUnitConverterFactory : IPositionToUnitConverterFactory
     {
-        public ISigningPositionToUnitConverter CreateSigningPositionToUnitConverter(UnitOfMeasurement unit)
+        public IPositionToUnitConverter CreatePositionToUnitConverter(UnitOfMeasurement unit)
         {
             return new CentimeterUnitConverter();
         }

@@ -14,8 +14,6 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 
         public abstract Task<ExitCode> Run();
 
-        public bool SkipStartupConditionCheck { get; set; }
-
         public void CheckApplicationConditions()
         {
             _checkAllStartupConditions.CheckAll();

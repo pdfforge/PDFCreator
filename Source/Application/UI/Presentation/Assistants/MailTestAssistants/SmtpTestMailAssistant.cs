@@ -1,5 +1,6 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Translation;
@@ -11,6 +12,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.Utilities;
 using System.Text;
 using System.Threading.Tasks;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
@@ -23,8 +25,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
     {
         public SmtpTestMailAssistant(ITranslationUpdater translationUpdater, IInteractionRequest interactionRequest,
             ISmtpMailAction smtpMailAction, ErrorCodeInterpreter errorCodeInterpreter, ITokenHelper tokenHelper,
-            ITestFileDummyHelper testFileDummyHelper)
-            : base(translationUpdater, tokenHelper, testFileDummyHelper, smtpMailAction, errorCodeInterpreter, interactionRequest)
+            ITestFileDummyHelper testFileDummyHelper, IFile file, IPdfProcessor processor)
+            : base(translationUpdater, tokenHelper, testFileDummyHelper, smtpMailAction, errorCodeInterpreter, interactionRequest, file, processor)
         { }
 
         public async Task SendTestMail(EmailSmtpSettings emailSmtpSettings, Accounts accounts)

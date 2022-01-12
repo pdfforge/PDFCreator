@@ -37,39 +37,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/index")] WorkflowEditor,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/stamp")] Stamp,
-
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/metadata")] ProfileMetadata,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/save")] ProfileSave,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/cover")] Cover,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/background")] Background,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/watermark")] Watermark,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/open-file")] OpenViewer,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/attachment")] Attachment,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/print")] PrintDocument,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/dropbox")] Dropbox,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/e-mail")] OpenEmailClient,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/smtp")] SendEmailOverSmtp,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/run-program")] RunScript,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/forwardtoprofile")] ForwardToProfile,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/ftp")] UploadWithFtp,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/http")] UploadWithHttp,
-
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/user-tokens")] UserTokens,
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] OutputFormat,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] JpegOutput,
 
@@ -81,7 +53,42 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] PdfOutput,
 
-        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/output-format")] OutputFormat,
+        //Preparation Actions
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/user-tokens")] UserTokens,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/forwardtoprofile")] ForwardToProfile,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/preparation/cs-script")] CsScript,
+
+        //ModifyActions
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/cover")] Cover,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/attachment")] Attachment,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/background")] Background,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/watermark")] Watermark,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/stamp")] Stamp,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/pagenumbers")] PageNumbers,
+
+        //Send Actions
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/open-file")] OpenViewer,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/print")] PrintDocument,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/dropbox")] Dropbox,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/e-mail")] OpenEmailClient,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/smtp")] SendEmailOverSmtp,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/run-program")] RunScript,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/ftp")] UploadWithFtp,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/http")] UploadWithHttp,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/modify/encryption")] PdfSecurity,
 
@@ -102,11 +109,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/queues")] ServerQueueSettings,
 
-        [HelpTopic("pdfcreator-server/pdfcreator-server-settings/cs-script")] ServerCsScript,
-
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/errors")] ServerErrorReportList,
 
         [HelpTopic("pdfcreator-server/pdfcreator-server-settings/application-settings/general")] ServerGeneralSettingsTab,
+
         [HelpTopic("pdfcreator-server/performance-test")] ServerPerformanceTest,
 
         [HelpTopic("pdfcreator/license/index")] License,

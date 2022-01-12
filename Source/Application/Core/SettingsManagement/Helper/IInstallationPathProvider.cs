@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.Helper
 {
@@ -7,13 +7,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.Helper
     {
         /// <summary>
         ///     The registry path where the settings are stored, without the registry hive.
-        ///     i.e. "Software\pdfforge\PDFCreator\Settings"
+        ///     e.g. "Software\pdfforge\PDFCreator\Settings"
         /// </summary>
         string SettingsRegistryPath { get; }
 
         /// <summary>
         ///     The registry path where the application data are stored, without the registry hive.
-        ///     i.e. "Software\pdfforge\PDFCreator"
+        ///     e.g. "Software\pdfforge\PDFCreator"
         /// </summary>
         string ApplicationRegistryPath { get; }
 
@@ -51,5 +51,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.Helper
         public string ApplicationRegistryPath { get; }
         public string ApplicationGuid { get; }
         public string RegistryHive { get; }
+    }
+
+    public static class InstallationPathProviders
+    {
+        private static string _pdfcreatorRegPath = @"Software\pdfforge\PDFCreator";
+        private static string _pdfcreatorServerRegPath = @"Software\pdfforge\PDFCreator Server";
+        private static string _pdfcreatorProductId = "{0001B4FD-9EA3-4D90-A79E-FD14BA3AB01D}";
+
+        public static InstallationPathProvider PDFCreatorProvider => new InstallationPathProvider(_pdfcreatorRegPath, _pdfcreatorRegPath + @"\Settings", _pdfcreatorProductId, RegistryHive.CurrentUser);
+        public static InstallationPathProvider PDFCreatorServerProvider => new InstallationPathProvider(_pdfcreatorServerRegPath, _pdfcreatorServerRegPath + @"\Settings", _pdfcreatorProductId, RegistryHive.LocalMachine);
     }
 }

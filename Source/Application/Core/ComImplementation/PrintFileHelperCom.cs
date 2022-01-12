@@ -14,28 +14,26 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         private readonly IFileAssoc _fileAssoc;
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
-        private readonly IDirectory _directory;
         private readonly IFile _file;
 
         public PrintFileHelperComFactory(IPrinterHelper printerHelper, ISettingsProvider settingsProvider,
-            IFileAssoc fileAssoc, IDirectory directory, IFile file)
+            IFileAssoc fileAssoc, IFile file)
         {
             _printerHelper = printerHelper;
             _settingsProvider = settingsProvider;
             _fileAssoc = fileAssoc;
-            _directory = directory;
             _file = file;
         }
 
         public PrintFileHelperCom CreatePrintFileHelperCom()
         {
-            return new PrintFileHelperCom(_printerHelper, _settingsProvider, _fileAssoc, _directory, _file);
+            return new PrintFileHelperCom(_printerHelper, _settingsProvider, _fileAssoc, _file);
         }
     }
 
     public class PrintFileHelperCom : PrintFileHelperBase
     {
-        internal PrintFileHelperCom(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc, IDirectory directory, IFile file) : base(printerHelper, settingsProvider, fileAssoc, directory, file)
+        internal PrintFileHelperCom(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc, IFile file) : base(printerHelper, settingsProvider, fileAssoc, file)
         {
         }
 

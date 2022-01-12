@@ -1,10 +1,9 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
-using pdfforge.PDFCreator.Conversion.Actions;
+using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Interactions;

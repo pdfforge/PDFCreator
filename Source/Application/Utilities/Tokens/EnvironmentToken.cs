@@ -43,12 +43,18 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
         /// <returns>Formated Value as string</returns>
         public string GetValueWithFormat(string formatString)
         {
+            var environmentOrder = new[] { EnvironmentVariableTarget.User, EnvironmentVariableTarget.Machine, EnvironmentVariableTarget.Process };
+
             try
             {
-                var s = _environment.GetEnvironmentVariable(formatString);
-                if (s == null)
-                    return "";
-                return s;
+                foreach (var environment in environmentOrder)
+                {
+                    var value = _environment.GetEnvironmentVariable(formatString, environment);
+                    if (!string.IsNullOrWhiteSpace(value))
+                        return value;
+                }
+
+                return "";
             }
             catch (ArgumentNullException)
             {

@@ -251,6 +251,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(Directory));
             RaisePropertyChanged(nameof(DirectoryHasWarning));
             RaisePropertyChanged(nameof(SkipPrintDialog));
+            RaisePropertyChanged(nameof(SkipSendFailures));
             RaisePropertyChanged(nameof(EnsureUniqueFilenames));
             RaisePropertyChanged(nameof(ShowTrayNotification));
 

@@ -13,6 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string SkipVersion { get; private set; } = "Skip version";
 
         public string Install { get; private set; } = "Install";
+        public string IncompatibleChanges { get; private set; } = "Incompatible changes";
         public string Features { get; private set; } = "Features";
         public string Fixes { get; private set; } = "Fixes";
         public string MiscChanges { get; private set; } = "Other changes";

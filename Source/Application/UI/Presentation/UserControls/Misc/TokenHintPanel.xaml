@@ -1,11 +1,11 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance misc:DesignTimeTokenHintPanelViewModel, IsDesignTimeCreatable=True}"
              x:Name="This">
@@ -30,14 +30,14 @@
                 </Style.Triggers>
             </Style>
         </DockPanel.Style>
-        <misc:WarningIconControl help:HelpProvider.HelpTopic="Tokens" ToolTipText="{Binding HintText}">
-            <misc:WarningIconControl.Visibility>
+        <misc:InfoIconControl help:HelpProvider.HelpTopic="Tokens" ToolTipText="{Binding HintText}">
+            <misc:InfoIconControl.Visibility>
                 <MultiBinding Converter="{StaticResource TokenTextToVisibilityConverter}">
                     <Binding  Path="TextWrapper" />
                     <Binding  Path="TokenHelper" />
                     <Binding  Path ="UserTokenProfile.UserTokens.Enabled" />
                 </MultiBinding>
-            </misc:WarningIconControl.Visibility>
-        </misc:WarningIconControl>
+            </misc:InfoIconControl.Visibility>
+        </misc:InfoIconControl>
     </DockPanel>
 </UserControl>

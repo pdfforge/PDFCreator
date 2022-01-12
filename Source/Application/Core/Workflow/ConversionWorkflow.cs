@@ -108,14 +108,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
             catch (ProcessingException ex)
             {
-                HandleProcessingException(ex, new ActionResult(ex.ErrorCode), true, false);
+                HandleProcessingException(ex, new ActionResult(ex.ErrorCode), false);
 
                 SendJobEvents(job);
                 return WorkflowResult.FromError(ex.ErrorCode);
             }
             catch (AggregateProcessingException ex)
             {
-                HandleProcessingException(ex, ex.Result, false, true);
+                HandleProcessingException(ex, ex.Result, true);
 
                 SendJobEvents(job);
                 return WorkflowResult.FromStateAndActionResult(WorkflowResultState.Finished, ex.Result);
@@ -140,23 +140,23 @@ namespace pdfforge.PDFCreator.Core.Workflow
             return WorkflowResult.FromState(WorkflowResultState);
         }
 
-        private void HandleProcessingException(Exception ex, ActionResult result, bool error, bool warn)
+        private void HandleProcessingException(Exception ex, ActionResult result, bool justWarn)
         {
-            WorkflowResultState = error ? WorkflowResultState.Error : WorkflowResultState.Finished;
+            WorkflowResultState = justWarn ? WorkflowResultState.Finished : WorkflowResultState.Error;
             var errorMessage = ex.Message + Environment.NewLine + string.Join(Environment.NewLine, result);
             if (ex.InnerException != null)
-                errorMessage += Environment.NewLine + ex.InnerException;
-            LastError = result.Last();
-            if (warn)
             {
-                _logger.Warn(errorMessage);
-                HandleWarning(result);
+                errorMessage += Environment.NewLine + ex.InnerException;
             }
 
-            if (error)
+            LastError = result.Last();
+            if (justWarn)
+            {
+                _logger.Warn(errorMessage);
+            }
+            else
             {
                 _logger.Error(errorMessage);
-                HandleError(result.Last());
             }
         }
 
@@ -217,14 +217,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
         protected void OnJobFinished(EventArgs e)
         {
             JobFinished?.Invoke(this, e);
-        }
-
-        protected virtual void HandleWarning(ActionResult result)
-        {
-        }
-
-        protected virtual void HandleError(ErrorCode errorCode)
-        {
         }
     }
 }

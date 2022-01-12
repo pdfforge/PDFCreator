@@ -47,6 +47,9 @@
 
         public const string SentryDsnUrl = "https://83989e10cffe463194d1a14a7ed97828@sentry.pdfforge.org/25";
 
+        public const string UserGuideCommandLineUrl = "https://docs.pdfforge.org/pdfcreator/en/pdfcreator/using-pdfcreator/command-line-parameters/";
+
+
         /*Tips*/
         public const string Tip_AutoSaveUrl = "https://go.pdfforge.org/pdfcreator/tips/auto-save";
         public const string Tip_UserTokensUrl = "https://go.pdfforge.org/pdfcreator/tips/user-tokens";

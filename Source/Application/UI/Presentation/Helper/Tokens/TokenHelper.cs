@@ -21,6 +21,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         List<string> GetTokenListForStamp();
 
+        List<string> GetTokenListForPageNumbers();
+
         List<string> GetTokenListForEmail();
 
         List<string> GetTokenListForEmailRecipients();
@@ -78,6 +80,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new StringToken("InputFilename", _translation.MyFileDocx));
             tr.AddToken(new StringToken("InputDirectory", @"C:\Temp"));
             tr.AddToken(new NumberToken("JobID", 1));
+            tr.AddToken(new NumberToken("PageNumber", 1));
             tr.AddToken(new NumberToken("NumberOfCopies", 1));
             tr.AddToken(new NumberToken("NumberOfPages", 1));
             tr.AddToken(new ListToken("OutputFilenames",
@@ -118,6 +121,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Insert(tokenList.IndexOf("<User>") + 1, $"<User:{UserTokenKey}>");
             tokenList.Insert(tokenList.IndexOf("<User>"), "<User: >");
             tokenList.Remove("<User>");
+            tokenList.Remove("<PageNumber>");
 
             return tokenList;
         }
@@ -136,6 +140,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<Keywords>");
             tokenList.Remove("<DropboxHtmlLinks>");
             tokenList.Remove("<DropboxFullLinks>");
+            tokenList.Remove("<PageNumber>");
 
             return tokenList;
         }
@@ -149,6 +154,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<OutputFilePath>");
             tokenList.Remove("<DropboxHtmlLinks>");
             tokenList.Remove("<DropboxFullLinks>");
+            tokenList.Remove("<PageNumber>");
 
             return tokenList;
         }
@@ -160,6 +166,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<OutputFilePath>");
             tokenList.Remove("<DropboxHtmlLinks>");
             tokenList.Remove("<DropboxFullLinks>");
+            tokenList.Remove("<PageNumber>");
 
             return tokenList;
         }
@@ -185,6 +192,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<Title>");
             tokenList.Remove("<PrintJobName>");
             tokenList.Remove("<Subject>");
+            tokenList.Remove("<PageNumber>");
 
             return tokenList;
         }
@@ -195,6 +203,28 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             var tokenList = GetTokenListWithFormatting();
             tokenList.Remove("<DropboxHtmlLinks>");
             tokenList.Remove("<DropboxFullLinks>");
+            tokenList.Remove("<PageNumber>");
+            return tokenList;
+        }
+
+        public List<string> GetTokenListForPageNumbers()
+        {
+            var tokenList = new List<string>
+            {
+                "<Author>",
+                "<DateTime: >",
+                "<DateTime:yyyyMMddHHmmss>",
+                "<NumberOfPages>",
+                "<PrinterName>",
+                "<PrintJobAuthor>",
+                "<PrintJobName>",
+                "<PageNumber>",
+                "<PageNumber>/<NumberOfPages>",
+                "<Title>",
+                "<User: >",
+                $"<User:{UserTokenKey}>"
+            };
+            tokenList.Sort();
             return tokenList;
         }
 
@@ -206,6 +236,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Insert(tokenList.IndexOf("<OutputFilePath>") + 2, "<OutputFilenames:\\r\\n>");
 
             tokenList.Remove("<OutputFilePath>");
+            tokenList.Remove("<PageNumber>");
             return tokenList;
         }
 

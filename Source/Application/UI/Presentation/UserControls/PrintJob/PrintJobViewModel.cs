@@ -137,7 +137,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void SetupSaveCommands(ITranslationUpdater translationUpdater)
         {
-            SaveCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(j => { });
+            SaveCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(j =>
+            {
+                _jobDataUpdater.UpdateTokensAndMetadata(j);
+            });
 
             SaveDropDownCommands = new CommandCollection<PrintJobViewTranslation>(translationUpdater);
             SaveDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(DisableSaveFileTemporary, BrowseFileCommand), t => t.SaveAs);
@@ -148,11 +151,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         {
             eventAggregator.GetEvent<EditSettingsFinishedEvent>().Subscribe(p =>
             {
-                if (SelectedProfile != p)
-                {
-                    SelectedProfile = p;
-                    SetSelectedProfile(this, null);
-                }
+                if (Job == null)
+                    return;
+
+                Job.Profile = p;
+                InitCombobox();
             });
 
             if (commandsLocator != null)
@@ -311,7 +314,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 if (Job == null)
                     return;
                 Job.Profile = value.Copy();
-                var _ = UpdateProfileData();
+                _dispatcher.InvokeAsync(async () => await UpdateProfileData());
+                RaisePropertyChanged();
             }
         }
 
@@ -330,6 +334,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private async Task UpdateProfileData()
         {
             await _jobDataUpdater.UpdateTokensAndMetadataAsync(Job);
+
             RaisePropertyChanged(nameof(SelectedProfile));
             Job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(Job);
             OutputFilename = EnsureValidExtensionInFilename(OutputFilename, OutputFormat);
@@ -367,11 +372,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             get { return _selectedProfileWrapper; }
             set
             {
-                if (value != null)
-                {
-                    var _ = SetSelectedProfileAsync(value.ConversionProfile);
-                    _selectedProfileWrapper = value;
-                }
+                if (value == null)
+                    return;
+
+                _dispatcher.InvokeAsync(async () => await SetSelectedProfileAsync(value.ConversionProfile));
+
+                _selectedProfileWrapper = value;
+                RaisePropertyChanged(nameof(SelectedProfileWrapper));
             }
         }
 
@@ -412,11 +419,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public bool EditButtonEnabledByGpo => GpoSettings == null || !GpoSettings.DisableProfileManagement;
 
-        private void SetSelectedProfile(object sender, EventArgs e)
-        {
-            InitCombobox();
-        }
-
         private void InitCombobox()
         {
             if (SelectedProfile == null)
@@ -427,20 +429,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             SelectedProfileWrapper = ProfilesWrapper.FirstOrDefault(x => x.ConversionProfile.Guid == SelectedProfile.Guid)
                                   ?? ProfilesWrapper.FirstOrDefault();
 
-            // Important: SelectedProfile must be raised before Profiles.
+            // Important: RaisePropertyChanged for ProfilesWrapper must be called at the end.
             // Otherwise, the UI will update the binding source and overwrite the selected profile.
-            RaisePropertyChanged(nameof(SelectedProfileWrapper));
             RaisePropertyChanged(nameof(ProfilesWrapper));
         }
 
         public void MountView()
         {
-            if (_selectedProfileProvider != null)
-            {
-                _selectedProfileProvider.SettingsChanged += SetSelectedProfile;
-                _selectedProfileProvider.SelectedProfileChanged += SetSelectedProfile;
-            }
-
             InitCombobox();
 
             _eventAggregator.GetEvent<ManagePrintJobEvent>().Subscribe(ManagePrintJobEvent);
@@ -448,12 +443,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public void UnmountView()
         {
-            if (_selectedProfileProvider != null)
-            {
-                _selectedProfileProvider.SettingsChanged -= SetSelectedProfile;
-                _selectedProfileProvider.SelectedProfileChanged -= SetSelectedProfile;
-            }
-
             _eventAggregator.GetEvent<ManagePrintJobEvent>().Unsubscribe(ManagePrintJobEvent);
         }
     }

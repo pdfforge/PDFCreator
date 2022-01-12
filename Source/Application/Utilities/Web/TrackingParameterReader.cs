@@ -5,15 +5,13 @@ namespace pdfforge.PDFCreator.Utilities.Web
 {
     public static class TrackingParameterReader
     {
-        public static TrackingParameters ReadFromRegistry()
+        public static TrackingParameters ReadFromRegistry(string parametersRegistryKey)
         {
-            var regKey = @"SOFTWARE\pdfforge\PDFCreator\Parameters";
-
             var parameters = new TrackingParameters("", "", "", "");
 
             try
             {
-                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(regKey, RegistryKeyPermissionCheck.ReadSubTree))
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(parametersRegistryKey, RegistryKeyPermissionCheck.ReadSubTree))
                 {
                     if (key != null)
                     {

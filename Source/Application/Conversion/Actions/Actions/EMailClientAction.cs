@@ -40,7 +40,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return ProcessMailInfo(mailInfo);
         }
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             ApplyPreSpecifiedTokens(job);
             var mailInfo = _mailHelper.CreateMailInfo(job, job.Profile.EmailClientSettings);

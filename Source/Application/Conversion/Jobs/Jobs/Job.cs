@@ -35,8 +35,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         /// </summary>
         public Accounts Accounts => CurrentSettings.Accounts;
 
-        public IList<ConversionProfile> AvailableProfiles { get; }
-        public IList<PrinterMapping> PrinterMappings { get; }
+        public IList<ConversionProfile> AvailableProfiles => CurrentSettings.Profiles;
+        public IList<PrinterMapping> PrinterMappings => CurrentSettings.PrinterMappings;
 
         public TokenReplacer TokenReplacer { get; set; } = new TokenReplacer();
 

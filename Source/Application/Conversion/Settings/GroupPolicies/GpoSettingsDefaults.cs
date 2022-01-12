@@ -17,6 +17,7 @@
         
         public string Language => null;
         public string UpdateInterval => null;
+        public int? HotStandbyMinutes => null;
 
         public bool LoadSharedAppSettings => false;
         public bool LoadSharedProfiles => false;

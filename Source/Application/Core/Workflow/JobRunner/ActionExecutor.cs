@@ -4,6 +4,8 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System.Collections.Generic;
+using System.Linq;
+using pdfforge.CustomScriptAction;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -58,7 +60,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
         public void CallPreConversionActions(Job job)
         {
             _logger.Trace("Setting up pre conversion actions");
-            var preConversionActions = _actionManager.GetEnabledActionsInCurrentOrder<IPreConversionAction>(job);
+
+            //Call PreConversionScriptAction separately ahead for the possibility to change the ActionOrder
+            var preConversionScriptAction = _actionManager.GetEnabledActionsInCurrentOrder<PreConversionScriptAction>(job);
+            CallActions(job, preConversionScriptAction);
+
+            var preConversionActions = _actionManager.GetEnabledActionsInCurrentOrder<IPreConversionAction>(job)
+                .Where(x => !(x is PreConversionScriptAction));
+            //Remove CsScriptAction because it was already executed
 
             CallActions(job, preConversionActions);
         }
@@ -72,7 +81,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 foreach (var action in conversionActions)
                     if (!action.IsRestricted(job.Profile))
-                        action.ProcessJob(_pdfProcessor, job);
+                    {
+                        action.ProcessJob(job, _pdfProcessor);
+                    }
+                //Todo: User CallActions when InjectProcessor is removed
 
                 _pdfProcessor.SignEncryptConvertPdfAAndWriteFile(job);
             }
@@ -81,7 +93,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
         public void CallPostConversionActions(Job job)
         {
             _logger.Trace("Setting up post conversion actions");
-            var postConversionActions = _actionManager.GetEnabledActionsInCurrentOrder<IPostConversionAction>(job);
+
+            //Call PostConversionScriptAction separately ahead for the possibility to change the ActionOrder
+            var postConversionScriptAction = _actionManager.GetEnabledActionsInCurrentOrder<PostConversionScriptAction>(job);
+            CallActions(job, postConversionScriptAction);
+
+            var postConversionActions = _actionManager.GetEnabledActionsInCurrentOrder<IPostConversionAction>(job)
+                .Where(x => !(x is PostConversionScriptAction));
+            //Remove CsScriptAction because it was already executed
 
             var profile = job.Profile;
             CallActions(job, postConversionActions, profile.SkipSendFailures);
@@ -96,7 +115,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 if (action.IsRestricted(job.Profile))
                     continue;
 
-                var result = action.ProcessJob(job);
+                var result = action.ProcessJob(job, _pdfProcessor);
                 if (result)
                     _logger.Trace("Action {0} completed", action.GetType().Name);
                 else if (skipFailures)

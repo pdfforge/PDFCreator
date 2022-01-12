@@ -81,6 +81,7 @@
     <Compile Include="Actions\SigningAction.cs" />
     <Compile Include="Actions\UserTokensAction.cs" />
     <Compile Include="Actions\BackgroundAction.cs" />
+    <Compile Include="Actions\PageNumbersAction.cs" />
     <Compile Include="Actions\WatermarkAction.cs" />
     <Compile Include="Actions\CoverAction.cs" />
     <Compile Include="Queries\IRecommendArchitectAssistant.cs" />
@@ -221,6 +222,20 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Drawing">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Drawing.Common">
+          <HintPath>..\..\..\..\packages\System.Drawing.Common\lib\net461\System.Drawing.Common.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="System.Security.AccessControl">
           <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
           <Private>True</Private>
@@ -233,9 +248,6 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
         <Reference Include="System.Data.OracleClient">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Drawing">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Net">

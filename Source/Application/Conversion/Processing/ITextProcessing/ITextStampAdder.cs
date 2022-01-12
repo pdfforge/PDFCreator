@@ -36,11 +36,10 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             try
             {
                 _logger.Debug("Start adding stamp.");
-                var result = _fontPathHelper.GetFontPath(profile);
+                var result = _fontPathHelper.GetFontPath(profile.Stamping.FontFile, out var fontPath );
                 if (!result)
-                    throw new ProcessingException("Error during font path detection.", result[0]);
-
-                var fontPath = result.Value;
+                    throw new ProcessingException("Error during font path detection.", ErrorCode.Stamp_FontNotFound);
+                
                 DoAddStamp(document, profile, fontPath);
             }
             catch (Exception ex)

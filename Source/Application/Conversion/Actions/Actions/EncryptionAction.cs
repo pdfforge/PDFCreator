@@ -1,13 +1,11 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
-using System;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class EncryptionAction : ActionBase<Security>, IConversionAction
     {
@@ -16,14 +14,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
         public EncryptionAction() : base(p => p.PdfSettings.Security)
         { }
 
-        protected override ActionResult DoProcessJob(Job job)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ProcessJob(IPdfProcessor processor, Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             //nothing to do here. The Encryption must be triggered as last processing step in the ActionManager
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)

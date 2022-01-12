@@ -16,13 +16,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
             var stringvalue = values[0] as string;
             if (stringvalue == null)
                 return DependencyProperty.UnsetValue;
-            //throw new NotImplementedException($"This converter needs a string. current is:{values[0].GetType()}");
 
             var tokenHelper = values[1] as ITokenHelper;
             if (tokenHelper == null)
                 throw new NotImplementedException("This converter needs a TokenHelper");
 
-            bool userTokenHintRequired = tokenHelper.ContainsUserToken(stringvalue) && values[2].Equals(false);
+            bool userTokenHintRequired = (stringvalue.Contains("<") || stringvalue.Contains(">")) && values[2].Equals(false);
 
             if (tokenHelper.ContainsInsecureTokens(stringvalue) || userTokenHintRequired)
                 return Visibility.Visible;

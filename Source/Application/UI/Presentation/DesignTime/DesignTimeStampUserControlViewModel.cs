@@ -8,9 +8,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeStampUserControlViewModel : StampUserControlViewModel
     {
         public DesignTimeStampUserControlViewModel() : base(new DesignTimeTranslationUpdater(),
-            null, new DesignTimeActionLocator(), new ErrorCodeInterpreter(new TranslationFactory(null)), null,
-            new DesignTimeTokenViewModelFactory(), new DesignTimeCurrentSettingsProvider(),
-            null, new DesignTimeTokenHelper(), null, null)
+            null, new DesignTimeActionLocator(), new ErrorCodeInterpreter(new TranslationFactory(null)), new DesignTimeTokenViewModelFactory(),
+            new DesignTimeCurrentSettingsProvider(), new DesignTimeTokenHelper(),  new DesignTimeDefaultSettingsBuilder(),
+            new DesignTimeActionOrderHelper(true, false), new DesignTimeFontSelectorControlViewModelFactory())
         {
         }
     }

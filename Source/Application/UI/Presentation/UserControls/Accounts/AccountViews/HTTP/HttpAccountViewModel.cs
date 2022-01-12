@@ -1,27 +1,33 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Actions.Actions;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
     public class HttpAccountViewModel : AccountViewModelBase<HttpAccountInteraction, HttpTranslation>
     {
         private HttpAccount _httpAccount;
+        private readonly IHttpAction _httpAction;
 
-        public HttpAccountViewModel(ITranslationUpdater translationUpdater) : base(translationUpdater)
-        { }
-
-        public string Url
+        public HttpAccountViewModel(ITranslationUpdater translationUpdater,
+            ITokenViewModelFactory tokenViewModelFactory, IHttpAction httpAction) : base(translationUpdater)
         {
-            get { return _httpAccount?.Url; }
-            set
-            {
-                _httpAccount.Url = value;
-                SaveCommand.RaiseCanExecuteChanged();
-            }
+            UrlTokenViewModel = tokenViewModelFactory
+                .Builder<HttpAccount>()
+                .WithSelector(account => account.Url)
+                .WithTokenList(th => th.GetTokenListWithFormatting())
+                .WithDefaultTokenReplacerPreview()
+                .Build();
+            UrlTokenViewModel.TextChanged += (s, a) => { SaveCommand.RaiseCanExecuteChanged(); };
+
+            _httpAction = httpAction;
         }
+
+        public TokenViewModel<HttpAccount> UrlTokenViewModel { get; set; }
 
         public string Username
         {
@@ -45,7 +51,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             set
             {
                 _httpAccount.Timeout = value;
-                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -56,17 +61,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             {
                 _httpAccount.Password = value;
                 SaveCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(Password));
             }
         }
 
-        public bool HasBasicAuthentication
+        public bool IsBasicAuthentication
         {
             get { return _httpAccount != null && _httpAccount.IsBasicAuthentication; }
             set
             {
                 _httpAccount.IsBasicAuthentication = value;
                 SaveCommand.RaiseCanExecuteChanged();
-                RaisePropertyChanged(nameof(HasBasicAuthentication));
+                RaisePropertyChanged(nameof(IsBasicAuthentication));
             }
         }
 
@@ -79,44 +85,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 
         protected override bool SaveCanExecute()
         {
-            // Url must be set
-            if (string.IsNullOrWhiteSpace(Url))
-                return false;
-
-            Uri isValidUrl;
-            if (!Uri.TryCreate(Url, UriKind.Absolute, out isValidUrl))
-                return false;
-            if (isValidUrl.Scheme != Uri.UriSchemeHttp && isValidUrl.Scheme != Uri.UriSchemeHttps)
-                return false;
-
-            if (_httpAccount.IsBasicAuthentication)
-            {
-                // when authentication is set then we need a user name
-                if (string.IsNullOrWhiteSpace(Username))
-                    return false;
-
-                if (!AskForPasswordLater)
-                {
-                    if (string.IsNullOrWhiteSpace(Password))
-                        return false;
-                }
-            }
-
-            return true;
+            var result = _httpAction.CheckAccount(_httpAccount, !AskForPasswordLater, CheckLevel.EditingProfile);
+            return result.IsSuccess;
         }
 
         protected override void HandleInteractionObjectChanged()
         {
             _httpAccount = Interaction.HttpAccount;
 
-            RaisePropertyChanged(nameof(Url));
+            UrlTokenViewModel.CurrentValue = _httpAccount;
+            RaisePropertyChanged(nameof(Timeout));
+            RaisePropertyChanged(nameof(IsBasicAuthentication));
             RaisePropertyChanged(nameof(Username));
             RaisePropertyChanged(nameof(Password));
             AskForPasswordLater = string.IsNullOrWhiteSpace(Password);
             RaisePropertyChanged(nameof(AskForPasswordLater));
-            HasBasicAuthentication = _httpAccount.IsBasicAuthentication;
-            RaisePropertyChanged(nameof(HasBasicAuthentication));
-            RaisePropertyChanged(nameof(Timeout));
             SaveCommand.RaiseCanExecuteChanged();
         }
 

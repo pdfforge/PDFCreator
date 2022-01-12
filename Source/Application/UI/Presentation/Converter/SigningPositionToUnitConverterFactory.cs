@@ -2,9 +2,9 @@
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter
 {
-    public class SigningPositionToUnitConverterFactory : ISigningPositionToUnitConverterFactory
+    public class PositionToUnitConverterFactory : IPositionToUnitConverterFactory
     {
-        public ISigningPositionToUnitConverter CreateSigningPositionToUnitConverter(UnitOfMeasurement unit)
+        public IPositionToUnitConverter CreatePositionToUnitConverter(UnitOfMeasurement unit)
         {
             switch (unit)
             {
@@ -20,7 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
         }
     }
 
-    public class InchToUnitConverter : ISigningPositionToUnitConverter
+    public class InchToUnitConverter : IPositionToUnitConverter
     {
         public float ConvertToUnit(float value)
         {
@@ -33,29 +33,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
         }
     }
 
-    public class CentimeterUnitConverter : ISigningPositionToUnitConverter
+    public class CentimeterUnitConverter : IPositionToUnitConverter
     {
         public float ConvertToUnit(float value)
         {
-            return value * 28;
+            return value * 28.3465f;
         }
 
         public float ConvertBack(float value)
         {
-            return value / 28;
+            return value / 28.3465f;
         }
     }
 
-    public interface ISigningPositionToUnitConverter
+    public interface IPositionToUnitConverter
     {
         float ConvertToUnit(float value);
 
         float ConvertBack(float value);
     }
 
-    public interface ISigningPositionToUnitConverterFactory
+    public interface IPositionToUnitConverterFactory
     {
-        ISigningPositionToUnitConverter CreateSigningPositionToUnitConverter(UnitOfMeasurement unit);
+        IPositionToUnitConverter CreatePositionToUnitConverter(UnitOfMeasurement unit);
     }
 
     //public class SignaturePositionCoordinates

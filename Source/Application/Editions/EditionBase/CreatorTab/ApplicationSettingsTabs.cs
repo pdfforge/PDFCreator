@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase.CreatorTab
 
         protected readonly List<Type> GeneralSettingsTabsList = new List<Type>
         {typeof(LanguageSelectionSettingsView), typeof(UpdateIntervalSettingsView), typeof(DefaultPrinterSettingsView),
-            typeof(HomeViewSettingsView), typeof(ExplorerIntegrationSettingsView), typeof(UsageStatisticsView)
+            typeof(HomeViewSettingsView), typeof(HotStandbySettingsView), typeof(ExplorerIntegrationSettingsView), typeof(UsageStatisticsView)
         };
 
         protected virtual void SetupTabs()

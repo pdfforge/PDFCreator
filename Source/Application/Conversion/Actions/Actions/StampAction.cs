@@ -1,13 +1,11 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
-using System;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class StampAction : ActionBase<Stamping>, IConversionAction
     {
@@ -20,14 +18,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             _fontPathHelper = fontPathHelper;
         }
 
-        protected override ActionResult DoProcessJob(Job job)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ProcessJob(IPdfProcessor processor, Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             processor.AddStamp(job);
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)
@@ -53,7 +47,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
                 }
 
                 if (checkLevel == CheckLevel.RunningJob)
-                    actionResult.Add(_fontPathHelper.GetFontPath(profile));
+                {
+                    if(!_fontPathHelper.GetFontPath(profile.Stamping.FontFile, out _))
+                        actionResult.Add(ErrorCode.Stamp_FontNotFound);
+                }
             }
             return actionResult;
         }

@@ -18,20 +18,21 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 {
     public class ITextPdfProcessor : PdfProcessorBase
     {
-        private readonly ITextStampAdder _stampAdder;
-        private string _originalSourceFile;
-        private PdfDocument _pdfDocument;
-
-        // StampAdder needs to be created via container
-        public ITextPdfProcessor(IFile file, ITextStampAdder stampAdder) : base(file)
+        public struct DocumentContext
         {
-            _stampAdder = stampAdder;
+            public PdfDocument Document;
+            public string OriginalFileName;
+            public string TempFileName;
         }
 
-        private void EnsurePdfDocumentInit(Job job)
+        private readonly ITextStampAdder _stampAdder;
+        private readonly ITextPageNumbersAdder _pageNumbersAdder;
+
+        // StampAdder needs to be created via container
+        public ITextPdfProcessor(IFile file, ITextStampAdder stampAdder, ITextPageNumbersAdder pageNumbersAdder) : base(file)
         {
-            if (_pdfDocument == null)
-                InitPdfDocument(job);
+            _stampAdder = stampAdder;
+            _pageNumbersAdder = pageNumbersAdder;
         }
 
         /// <summary>
@@ -64,10 +65,11 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (!job.Profile.AttachmentPage.Enabled)
                 return;
 
-            EnsurePdfDocumentInit(job);
+            var docContext = OpenPdfDocument(job);
 
             var pdfMerger = new ITextPdfMerger();
-            pdfMerger.AddAttachment(_pdfDocument, job.Profile.AttachmentPage.Files.ToArray());
+            pdfMerger.AddAttachment(docContext.Document, job.Profile.AttachmentPage.Files.ToArray());
+            WritePdfDocument(docContext);
         }
 
         public override void AddCover(Job job)
@@ -75,10 +77,11 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (!job.Profile.CoverPage.Enabled)
                 return;
 
-            EnsurePdfDocumentInit(job);
+            var docContext = OpenPdfDocument(job);
 
             var pdfMerger = new ITextPdfMerger();
-            pdfMerger.AddCover(_pdfDocument, job.Profile.CoverPage.Files.ToArray());
+            pdfMerger.AddCover(docContext.Document, job.Profile.CoverPage.Files.ToArray());
+            WritePdfDocument(docContext);
         }
 
         public override void AddStamp(Job job)
@@ -86,9 +89,11 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (!job.Profile.Stamping.Enabled)
                 return;
 
-            EnsurePdfDocumentInit(job);
+            var docContext = OpenPdfDocument(job);
 
-            _stampAdder.AddStamp(_pdfDocument, job.Profile);
+            _stampAdder.AddStamp(docContext.Document, job.Profile);
+
+            WritePdfDocument(docContext);
         }
 
         public override void AddBackground(Job job)
@@ -96,10 +101,22 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (!job.Profile.BackgroundPage.Enabled)
                 return;
 
-            EnsurePdfDocumentInit(job);
+            var docContext = OpenPdfDocument(job);
 
             var watermarkAdder = new ITextWatermarkAdder();
-            watermarkAdder.AddBackground(_pdfDocument, job.Profile);
+            watermarkAdder.AddBackground(docContext.Document, job.Profile);
+            WritePdfDocument(docContext);
+        }
+
+        public override void AddPageNumbers(Job job)
+        {
+            if (!job.Profile.PageNumbers.Enabled)
+                return;
+
+            var docContext = OpenPdfDocument(job);
+            
+            _pageNumbersAdder.AddPageNumbers(docContext.Document, job.Profile);
+            WritePdfDocument(docContext);
         }
 
         public override void AddWatermark(Job job)
@@ -107,10 +124,11 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (!job.Profile.Watermark.Enabled)
                 return;
 
-            EnsurePdfDocumentInit(job);
+            var docContext = OpenPdfDocument(job);
 
             var watermarkAdder = new ITextWatermarkAdder();
-            watermarkAdder.AddForeground(_pdfDocument, job.Profile);
+            watermarkAdder.AddForeground(docContext.Document, job.Profile);
+            WritePdfDocument(docContext);
         }
 
         private PdfVersion DeterminePdfVersionAsEnum(ConversionProfile profile)
@@ -128,50 +146,52 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             return PdfVersion.PDF_1_3;
         }
 
-        private PdfDocument InitPdfDocument(Job job)
+        private DocumentContext OpenPdfDocument(Job job, bool withEncryption = false)
         {
             var version = DeterminePdfVersionAsEnum(job.Profile);
 
-            _originalSourceFile = job.IntermediatePdfFile;
-            var processedFile = AddTailToFile(_originalSourceFile, "_processed");
+            DocumentContext documentContext;
+
+            var originalSourceFile = job.IntermediatePdfFile;
+            documentContext.OriginalFileName = originalSourceFile;
+            documentContext.TempFileName = AddTailToFile(originalSourceFile, "_processed");
 
             var writerProperties = new WriterProperties();
             writerProperties.SetPdfVersion(version);
 
-            ApplyEncryptionToWriterProperties(job, writerProperties);
+            if (withEncryption)
+                ApplyEncryptionToWriterProperties(job, writerProperties);
 
             try
             {
-                PdfReader pdfReader = new PdfReader(_originalSourceFile);
-                PdfWriter pdfWriter = new PdfWriter(processedFile, writerProperties);
+                PdfReader pdfReader = new PdfReader(documentContext.OriginalFileName);
+                PdfWriter pdfWriter = new PdfWriter(documentContext.TempFileName, writerProperties);
+                documentContext.Document = new PdfDocument(pdfReader, pdfWriter);
 
-                _pdfDocument = new PdfDocument(pdfReader, pdfWriter);
+                return documentContext;
             }
             catch (Exception e)
             {
                 Logger.Trace(e.Message);
+                throw;
             }
-
-            job.IntermediatePdfFile = processedFile;
-
-            return _pdfDocument;
         }
 
         protected override void DoSignEncryptAndConvertPdfAAndWritePdf(Job job)
         {
-            EnsurePdfDocumentInit(job);
-            UpdateMetadata(_pdfDocument, job);
-            SetStartPage(_pdfDocument, job);
-            WritePdfDocument(job);
+            var docContext = OpenPdfDocument(job, true);
+            UpdateMetadata(docContext.Document, job);
+            SetStartPage(docContext.Document, job);
+            WritePdfDocument(docContext);
             ConvertToPdfa(job);
             SignPdf(job);
         }
 
-        private void WritePdfDocument(Job job)
+        private void WritePdfDocument(DocumentContext context)
         {
             try
             {
-                _pdfDocument.Close();
+                context.Document.Close();
             }
             catch (Exception ex)
             {
@@ -180,7 +200,8 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             }
             finally
             {
-                File.Delete(_originalSourceFile);
+                File.Delete(context.OriginalFileName);
+                File.Move(context.TempFileName, context.OriginalFileName);
             }
         }
 
@@ -269,6 +290,17 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             }
         }
 
+        private PdfReader GetReader(Job job, string sourceFile)
+        {
+            ReaderProperties readerProperties = new ReaderProperties();
+
+            if (job.Profile.PdfSettings.Security.Enabled)
+            {
+                readerProperties.SetPassword(Encoding.Default.GetBytes(job.Passwords.PdfOwnerPassword));
+            }
+            return new PdfReader(sourceFile, readerProperties);
+        }
+
         private void SignPdf(Job job)
         {
             if (!job.Profile.PdfSettings.Signature.Enabled)
@@ -282,7 +314,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var sourceFile = job.IntermediatePdfFile;
             var targetFile = AddTailToFile(sourceFile, "_processed");
 
-            using (PdfReader pdfReader = new PdfReader(sourceFile, readerProperties))
+            using (PdfReader pdfReader = GetReader(job, sourceFile))
             using (PdfWriter pdfWriter = new PdfWriter(targetFile))
             {
                 var signer = new PdfSigner(pdfReader, pdfWriter, new StampingProperties().PreserveEncryption().UseAppendMode());

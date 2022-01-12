@@ -45,22 +45,22 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Signature location: Top left corner (X part)
 		/// </summary>
-		public float LeftX { get; set; } = 100;
+		public float LeftX { get; set; } = 100f;
 		
 		/// <summary>
 		/// Signature location: Top left corner (Y part)
 		/// </summary>
-		public float LeftY { get; set; } = 100;
+		public float LeftY { get; set; } = 100f;
 		
 		/// <summary>
 		/// Signature location: Bottom right corner (X part)
 		/// </summary>
-		public float RightX { get; set; } = 200;
+		public float RightX { get; set; } = 200f;
 		
 		/// <summary>
 		/// Signature location: Bottom right corner (Y part)
 		/// </summary>
-		public float RightY { get; set; } = 200;
+		public float RightY { get; set; } = 200f;
 		
 		/// <summary>
 		/// Contact name of the signature
@@ -105,10 +105,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { CertificateFile = Data.UnescapeString(data.GetValue(@"" + path + @"CertificateFile")); } catch { CertificateFile = "";}
 			DisplaySignatureInDocument = bool.TryParse(data.GetValue(@"" + path + @"DisplaySignatureInDocument"), out var tmpDisplaySignatureInDocument) ? tmpDisplaySignatureInDocument : false;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			LeftX = float.TryParse(data.GetValue(@"" + path + @"LeftX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftX) ? tmpLeftX : 100;
-			LeftY = float.TryParse(data.GetValue(@"" + path + @"LeftY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftY) ? tmpLeftY : 100;
-			RightX = float.TryParse(data.GetValue(@"" + path + @"RightX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightX) ? tmpRightX : 200;
-			RightY = float.TryParse(data.GetValue(@"" + path + @"RightY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightY) ? tmpRightY : 200;
+			LeftX = float.TryParse(data.GetValue(@"" + path + @"LeftX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftX) ? tmpLeftX : 100f;
+			LeftY = float.TryParse(data.GetValue(@"" + path + @"LeftY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftY) ? tmpLeftY : 100f;
+			RightX = float.TryParse(data.GetValue(@"" + path + @"RightX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightX) ? tmpRightX : 200f;
+			RightY = float.TryParse(data.GetValue(@"" + path + @"RightY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightY) ? tmpRightY : 200f;
 			try { SignContact = Data.UnescapeString(data.GetValue(@"" + path + @"SignContact")); } catch { SignContact = "";}
 			try { SignLocation = Data.UnescapeString(data.GetValue(@"" + path + @"SignLocation")); } catch { SignLocation = "";}
 			try { SignReason = Data.UnescapeString(data.GetValue(@"" + path + @"SignReason")); } catch { SignReason = "";}

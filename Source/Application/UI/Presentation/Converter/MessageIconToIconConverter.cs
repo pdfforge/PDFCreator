@@ -30,12 +30,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
                 switch (icon)
                 {
                     case MessageIcon.Error:
-                        img.Source = ConvertBitmap(SystemIcons.Error.ToBitmap());
-                        return img;
+                        return GetResourceAsSomething("Error");
 
                     case MessageIcon.Warning:
-                        img.Source = ConvertBitmap(SystemIcons.Warning.ToBitmap());
-                        return img;
+                        return GetResourceAsSomething("Warning");
 
                     case MessageIcon.Exclamation:
                         img.Source = ConvertBitmap(SystemIcons.Exclamation.ToBitmap());

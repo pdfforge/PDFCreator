@@ -1,5 +1,4 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using System;
+﻿using System;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
@@ -20,7 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public void Execute(object parameter)
         {
-            _currentSettingsProvider.Reset();
+            _currentSettingsProvider.Reset(false);
         }
 
 #pragma warning disable CS0067

@@ -41,14 +41,14 @@ namespace pdfforge.PDFCreator.Core.Services.Update
             return returnVal;
         }
 
-        public List<ChangeLogItem> Bugfixes
+        public List<ChangeLogItem> Incompatible
         {
             get
             {
                 if (Changes == null)
                     return new List<ChangeLogItem>();
 
-                return Changes.FindAll(change => change.Type == UpdateChangeType.Bugfix.ToString());
+                return Changes.FindAll(change => change.Type == UpdateChangeType.Incompatible.ToString());
             }
         }
 
@@ -63,7 +63,18 @@ namespace pdfforge.PDFCreator.Core.Services.Update
             }
         }
 
-        public List<ChangeLogItem> Tasks
+        public List<ChangeLogItem> Bugfixes
+        {
+            get
+            {
+                if (Changes == null)
+                    return new List<ChangeLogItem>();
+
+                return Changes.FindAll(change => change.Type == UpdateChangeType.Bugfix.ToString());
+            }
+        }
+
+        public List<ChangeLogItem> Other
         {
             get
             {
@@ -77,6 +88,7 @@ namespace pdfforge.PDFCreator.Core.Services.Update
 
     public enum UpdateChangeType
     {
+        Incompatible,
         Feature,
         Bugfix,
         Other

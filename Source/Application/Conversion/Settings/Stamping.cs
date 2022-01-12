@@ -55,7 +55,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Size of the font
 		/// </summary>
-		public float FontSize { get; set; } = 48;
+		public float FontSize { get; set; } = 48f;
 		
 		/// <summary>
 		/// Text that will be stamped
@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { FontFile = Data.UnescapeString(data.GetValue(@"" + path + @"FontFile")); } catch { FontFile = "arial.ttf";}
 			try { FontName = Data.UnescapeString(data.GetValue(@"" + path + @"FontName")); } catch { FontName = "Arial";}
 			FontOutlineWidth = int.TryParse(data.GetValue(@"" + path + @"FontOutlineWidth"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontOutlineWidth) ? tmpFontOutlineWidth : 2;
-			FontSize = float.TryParse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontSize) ? tmpFontSize : 48;
+			FontSize = float.TryParse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontSize) ? tmpFontSize : 48f;
 			try { StampText = Data.UnescapeString(data.GetValue(@"" + path + @"StampText")); } catch { StampText = "Confidential";}
 		}
 		

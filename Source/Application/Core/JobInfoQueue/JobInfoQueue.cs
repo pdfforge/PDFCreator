@@ -66,6 +66,15 @@ namespace pdfforge.PDFCreator.Core.JobInfoQueue
             if (jobInfo.SourceFiles.Count == 0)
             {
                 _logger.Warn("The file '{0}' has no source files", jobInfo.InfFile);
+                File.Delete(jobInfo.InfFile);
+                return;
+            }
+
+            if (jobInfo.SourceFiles.Any(f => !File.Exists(f.Filename)))
+            {
+                var deletedFiles = jobInfo.SourceFiles.Where(f => !File.Exists(f.Filename));
+                _logger.Warn("The inf file '{0}' contains source files that do not exist:\r\n{1}", jobInfo.InfFile, string.Join("\r\n", deletedFiles));
+                File.Delete(jobInfo.InfFile);
                 return;
             }
 

@@ -20,6 +20,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public bool AskSwitchDefaultPrinter { get; set; } = true;
 		
+		/// <summary>
+		/// Set the number of minutes PDFCreator will remain in standby after running. Set to 0 to disable.
+		/// </summary>
+		public int HotStandbyMinutes { get; set; } = 120;
+		
 		public string LastLoginVersion { get; set; } = "";
 		
 		/// <summary>
@@ -40,6 +45,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public void ReadValues(Data data, string path = "")
 		{
 			AskSwitchDefaultPrinter = bool.TryParse(data.GetValue(@"" + path + @"AskSwitchDefaultPrinter"), out var tmpAskSwitchDefaultPrinter) ? tmpAskSwitchDefaultPrinter : true;
+			HotStandbyMinutes = int.TryParse(data.GetValue(@"" + path + @"HotStandbyMinutes"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpHotStandbyMinutes) ? tmpHotStandbyMinutes : 120;
 			try { LastLoginVersion = Data.UnescapeString(data.GetValue(@"" + path + @"LastLoginVersion")); } catch { LastLoginVersion = "";}
 			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
 			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
@@ -50,6 +56,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"AskSwitchDefaultPrinter", AskSwitchDefaultPrinter.ToString());
+			data.SetValue(@"" + path + @"HotStandbyMinutes", HotStandbyMinutes.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"LastLoginVersion", Data.EscapeString(LastLoginVersion));
 			data.SetValue(@"" + path + @"LastSaveDirectory", Data.EscapeString(LastSaveDirectory));
 			data.SetValue(@"" + path + @"LastUsedProfileGuid", Data.EscapeString(LastUsedProfileGuid));
@@ -62,6 +69,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CreatorAppSettings copy = new CreatorAppSettings();
 			
 			copy.AskSwitchDefaultPrinter = AskSwitchDefaultPrinter;
+			copy.HotStandbyMinutes = HotStandbyMinutes;
 			copy.LastLoginVersion = LastLoginVersion;
 			copy.LastSaveDirectory = LastSaveDirectory;
 			copy.LastUsedProfileGuid = LastUsedProfileGuid;
@@ -74,6 +82,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		{
 			if(AskSwitchDefaultPrinter != source.AskSwitchDefaultPrinter)
 				AskSwitchDefaultPrinter = source.AskSwitchDefaultPrinter;
+				
+			if(HotStandbyMinutes != source.HotStandbyMinutes)
+				HotStandbyMinutes = source.HotStandbyMinutes;
 				
 			if(LastLoginVersion != source.LastLoginVersion)
 				LastLoginVersion = source.LastLoginVersion;
@@ -98,6 +109,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CreatorAppSettings v = o as CreatorAppSettings;
 			
 			if (!AskSwitchDefaultPrinter.Equals(v.AskSwitchDefaultPrinter)) return false;
+			if (!HotStandbyMinutes.Equals(v.HotStandbyMinutes)) return false;
 			if (!LastLoginVersion.Equals(v.LastLoginVersion)) return false;
 			if (!LastSaveDirectory.Equals(v.LastSaveDirectory)) return false;
 			if (!LastUsedProfileGuid.Equals(v.LastUsedProfileGuid)) return false;

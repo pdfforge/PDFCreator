@@ -1,5 +1,5 @@
 ﻿using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -211,15 +210,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         public bool StoreLicenseForAllUsers(string licenseServerCode, string licenseKey)
         {
             var lsaBase64 = Convert.ToBase64String(Encoding.Default.GetBytes(licenseServerCode));
-            return CallPDFCreator($"/StoreLicenseForAllUsers /LicenseServerCode=\"{lsaBase64}\" /LicenseKey=\"{licenseKey}\"");
+            return CallPDFCreatorCli($"StoreLicenseForAllUsers /LicenseServerCode=\"{lsaBase64}\" /LicenseKey=\"{licenseKey}\"");
         }
 
-        private bool CallPDFCreator(string arguments)
+        private bool CallPDFCreatorCli(string arguments)
         {
-            var pdfCreatorName = _pdfCreatorNameProvider.GetExeName();
-            var applicationPath = GetApplicationPath(pdfCreatorName);
-            if (applicationPath == null)
-                return false;
+            var applicationPath = _pdfCreatorNameProvider.GetPortApplicationPath();
 
             return CallProgramAsAdmin(applicationPath, arguments);
         }

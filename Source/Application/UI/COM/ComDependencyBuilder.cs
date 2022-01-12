@@ -79,6 +79,8 @@ namespace pdfforge.PDFCreator.UI.COM
             var translator = container.GetInstance<ITranslationHelper>();
             translator.InitTranslator("english");
 
+            bootstrapper.InitializeServices(container);
+
             return dependencies;
         }
 

@@ -75,7 +75,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("The selected printer leads to an infinite loop.")]
         Printing_CyclicDependencyError = 13102,
-        
+
         [Translation("Error while printing the file.")]
         Printing_GenericError = 13999,
 
@@ -313,8 +313,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while uploading and sharing the document to Dropbox.")]
         Dropbox_Upload_And_Share_Error = 31202,
 
-        [Translation("Missing URL for HTTP upload.")]
-        HTTP_NoUrl = 32101,
+        [Translation("Missing or invalid URL for HTTP upload.")]
+        HTTP_MissingOrInvalidUrl = 32101,
 
         [Translation("Missing user name for HTTP authentication.")]
         HTTP_NoUserNameForAuth = 32102,
@@ -436,7 +436,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No CS-script file is specified.")]
         CustomScript_NoScriptFileSpecified = 43001,
 
-        [Translation("CS-script file does not exist in the program directory 'CS-Scripts' folder.")]
+        [Translation("CS-script file does not exist in the program data directory 'CS-Scripts' folder.")]
         CustomScript_FileDoesNotExistInScriptFolder = 43002,
 
         [Translation("Could not compile the CS-Script.")]
@@ -492,5 +492,17 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Error while adding watermark to the document.")]
         Watermark_GenericError = 47999,
+
+        [Translation("No page number format is specified.")]
+        PageNumbers_NoFormat = 48000,
+
+        [Translation("The page number format does not include the <PageNumber> token.")]
+        PageNumbers_NoPageNumberInFormat = 48001,
+
+        [Translation("Page number font can't be found.")]
+        PageNumbers_FontNotFound = 48002,
+
+        [Translation("Error while adding page numbers to the document.")]
+        PageNumbers_GenericError = 48999,
     }
 }

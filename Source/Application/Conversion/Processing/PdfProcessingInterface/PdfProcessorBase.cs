@@ -119,6 +119,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
         public abstract void AddStamp(Job job);
 
         public abstract void AddBackground(Job job);
+        public abstract void AddPageNumbers(Job job);
 
         public abstract void AddWatermark(Job job);
 

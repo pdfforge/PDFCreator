@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeAction : IAction
     {
-        public ActionResult ProcessJob(Job job)
+        public ActionResult ProcessJob(Job job, IPdfProcessor processor)
         {
             return new ActionResult();
         }

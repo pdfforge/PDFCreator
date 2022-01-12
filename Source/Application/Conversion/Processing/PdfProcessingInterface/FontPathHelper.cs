@@ -1,6 +1,5 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
 using System;
 using SystemInterface.IO;
 
@@ -8,7 +7,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
 {
     public interface IFontPathHelper
     {
-        ActionResult<string> GetFontPath(ConversionProfile profile);
+        bool GetFontPath(string fontFile, out string fontPath);
     }
 
     public class FontPathHelper : IFontPathHelper
@@ -21,28 +20,28 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             _file = file;
         }
 
-        public ActionResult<string> GetFontPath(ConversionProfile profile)
+        public bool GetFontPath(string fontFile, out string fontPath)
         {
             var globalFontFolder = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
             _logger.Trace("Global font folder: " + globalFontFolder);
 
-            var fontPath = PathSafe.Combine(globalFontFolder, profile.Stamping.FontFile);
+            fontPath = PathSafe.Combine(globalFontFolder, fontFile);
             if (!_file.Exists(fontPath))
             {
                 var userFontFolder = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\Microsoft\Windows\Fonts");
                 _logger.Trace("User font folder: " + userFontFolder);
 
-                fontPath = PathSafe.Combine(userFontFolder, profile.Stamping.FontFile);
+                fontPath = PathSafe.Combine(userFontFolder, fontFile);
                 if (!_file.Exists(fontPath))
                 {
-                    _logger.Error($"Font file not found: {profile.Stamping.FontFile}");
-                    return new ActionResult<string>(ErrorCode.Stamp_FontNotFound);
+                    _logger.Error($"Font file not found: {fontFile}");
+                    return false;
                 }
             }
 
             _logger.Debug("Font path: " + fontPath);
 
-            return new ActionResult<string>(fontPath);
+            return true;
         }
     }
 }

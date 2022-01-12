@@ -36,9 +36,16 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         {
             EnsureJobFileIsInSpoolPath();
 
-            // The job info might be enriched with Parameters, so we load and save it before sending the pipe message
-            var jobInfo = _jobInfoManager.ReadFromInfFile(NewJobInfoFile);
-            _jobInfoManager.SaveToInfFile(jobInfo);
+            try
+            {
+                // The job info might be enriched with Parameters, so we load and save it before sending the pipe message
+                var jobInfo = _jobInfoManager.ReadFromInfFile(NewJobInfoFile);
+                _jobInfoManager.SaveToInfFile(jobInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Error while loading the inf file");
+            }
 
             return "NewJob|" + NewJobInfoFile;
         }
@@ -47,8 +54,8 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
         {
             if (string.IsNullOrEmpty(NewJobInfoFile) || !File.Exists(NewJobInfoFile))
             {
-                _logger.Error("No file in InfoDataFile argument or file does not exist.");
-                return false;
+                _logger.Warn("No file in InfoDataFile argument or file does not exist.");
+                return true;
             }
 
             EnsureJobFileIsInSpoolPath();

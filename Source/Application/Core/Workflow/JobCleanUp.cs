@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             {
                 try
                 {
-                    _directory.Delete(jobTempFolder, true);
+                    DeleteDirectory(jobTempFolder, true);
                 }
                 catch (Exception ex)
                 {
@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 try
                 {
-                    _file.Delete(file.Filename);
+                    DeleteFile(file.Filename);
 
                     var folder = Path.GetDirectoryName(file.Filename);
                     DeleteFolderIfEmptyAndNotSpool(folder);
@@ -67,6 +67,18 @@ namespace pdfforge.PDFCreator.Core.Workflow
                     _logger.Warn("Error while deleting source file: " + ex.Message);
                 }
             }
+        }
+
+        private void DeleteFile(string filePath)
+        {
+            _logger.Trace("Deleting file " + filePath);
+            _file.Delete(filePath);
+        }
+
+        private void DeleteDirectory(string path, bool recursive)
+        {
+            _logger.Trace("Deleting directory " + path);
+            _directory.Delete(path, recursive);
         }
 
         private void DeleteFolderIfEmptyAndNotSpool(string directoryPath)
@@ -85,7 +97,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         {
             if (DirectoryIsEmpty(folder))
             {
-                _directory.Delete(folder);
+                DeleteDirectory(folder, false);
             }
         }
 
@@ -99,9 +111,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
             try
             {
                 if (!_file.Exists(infFile))
+                {
+                    _logger.Info("Inf file {0} was already removed!", infFile);
                     return;
+                }
 
-                _file.Delete(infFile);
+                DeleteFile(infFile);
 
                 var folder = Path.GetDirectoryName(infFile);
                 DeleteFolderIfEmptyAndNotSpool(folder);

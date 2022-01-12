@@ -68,7 +68,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
                     .WithTokens(tokens)
                     .WithPropertyChanged((s, a) =>
                     {
-                        if (a.PropertyName == nameof(AttachmentFileSelectFilesUserControlViewModel.FileListDictionary))
+                        if (a.PropertyName == nameof(AttachmentFileSelectFilesUserControlViewModel.FileList))
                         {
                             CheckIfVersionIsPdf20();
                             StatusChanged(s, a);

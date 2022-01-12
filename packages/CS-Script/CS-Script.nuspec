@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CS-Script</id>
+    <version>3.30.0</version>
+    <title>CS-Script</title>
+    <authors>Oleg Shilo</authors>
+    <owners>Oleg Shilo</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/oleg-shilo/cs-script/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/oleg-shilo/cs-script/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/oleg-shilo/cs-script/master/Source/Logo/css_logo.ico</iconUrl>
+    <description>Class Library assembly for the CS-Script engine. CS-Script is a CLR (Common Language Runtime) based scripting system which uses ECMA-compliant C# as a programming language.</description>
+    <summary>This is the complete package for hosting the script engine in .NET (full) applications. It also contains the samples demonstrating how to use all three available compilation engines (Roslyn, Mono and CodeDom) as well as the CS-Script legacy native interface.</summary>
+    <releaseNotes>- Issue #25: Feature request to support conditional directives
+- Issue #160: Compatibility with old script syntax
+- Issue #161: Assembly is (tried to be) loaded from GAC instead of local dir
+- Triggered by issue #172: CsvHelper loads the wrong ValueTuple version in CSScript?
+- Issue #173: C# script installation on Window10 / WSL linux does not work
+- Added support for _gitignore_ syntax in `//css_` directives (e.g. `//css_ref .\**\Release\*.dll`)
+- Added processing precompilers output for `-proj` option
+- Added debugVS2019.cs
+- Improved version info output
+- Fixed all urls pointing to the old web hosting
+- Added support for PreferredRuntime of the dependency packages when resolving them.
+- Added VB samples for NuGet package (partial solution for #155)
+- Added syntax help output info</releaseNotes>
+    <copyright>Copyright (C) 2004-2019 Oleg Shilo</copyright>
+    <language>en-AU</language>
+    <tags>C# Scripting Dynamic CS-Script csscript</tags>
+    <dependencies>
+      <dependency id="CS-Script.bin" version="3.30.0" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

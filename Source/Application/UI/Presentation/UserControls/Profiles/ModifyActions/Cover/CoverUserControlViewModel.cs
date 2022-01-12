@@ -1,7 +1,6 @@
-﻿using pdfforge.PDFCreator.Conversion.Actions;
+﻿using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
@@ -59,7 +58,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
                     .WithTokens(tokens)
                     .WithPropertyChanged((s, a) =>
                     {
-                        if (a.PropertyName == nameof(CoverPageSelectFilesUserControlViewModel.FileListDictionary))
+                        if (a.PropertyName == nameof(CoverPageSelectFilesUserControlViewModel.FileList))
                         {
                             CheckIfVersionIsPdf20();
                             StatusChanged(s, a);

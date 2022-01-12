@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <datastorage>
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
@@ -32,14 +32,14 @@
             <value name="AccessToken" type="password" defaultvalue="">
               <comment />
             </value>
-            <value name="RefreshToken" type="password" defaultvalue="">
-              <comment>Token to refresh the login token</comment>
-            </value>
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
             </value>
             <value name="AccountInfo" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
+            </value>
+            <value name="RefreshToken" type="password" defaultvalue="">
+              <comment>Token to refresh the login token</comment>
             </value>
           </classarray>
           <classarray name="FtpAccount" propertyName="FtpAccounts" readonly="False" classtype="Class">
@@ -427,6 +427,51 @@
             <comment>If the output is a PDF, use PDF Architect instead of the default PDF viewer</comment>
           </value>
         </class>
+        <class name="PageNumbers" propertyName="PageNumbers" readonly="False" classtype="Class">
+          <comment>Settings for page numbers.</comment>
+          <value name="AlternateCorner" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+            <comment>Whether to switch left/right corner every page.</comment>
+          </value>
+					<value name="BeginOn" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
+						<comment>The page to begin numbering on.</comment>
+					</value>
+					<value name="BeginWith" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
+						<comment>The number to start counting at.</comment>
+					</value>
+          <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>If true, this action will be executed</comment>
+          </value>
+          <value name="FontColor" type="value" datatype="Color" enumname="" defaultvalue="" islist="False">
+            <comment>The color of the page numbers.</comment>
+          </value>
+          <value name="FontFile" type="value" datatype="String" enumname="" defaultvalue="C:/Windows/Fonts/Arial.ttf" islist="False">
+            <comment>The font of the page numbers.</comment>
+          </value>
+          <value name="FontName" type="value" datatype="String" enumname="" defaultvalue="Arial" islist="False">
+            <comment>The name of the font of the page numbers.</comment>
+          </value>
+          <value name="FontSize" type="value" datatype="Float" enumname="" defaultvalue="10" islist="False">
+            <comment>The size of the page numbers.</comment>
+          </value>
+          <value name="Format" type="value" datatype="String" enumname="" defaultvalue="&lt;PageNumber&gt;/&lt;NumberOfPages&gt;" islist="False">
+            <comment>Format of the page numbers.</comment>
+          </value>
+          <value name="HorizontalOffset" type="value" datatype="Float" enumname="" defaultvalue="72" islist="False">
+            <comment>The horizontalOffset offset from the page border of the page numbers in points.</comment>
+          </value>
+          <value name="Position" type="value" datatype="Enum" enumname="PageNumberPosition" defaultvalue="PageNumberPosition.BottomRight" islist="False">
+            <comment>Where to put the page numbers.</comment>
+          </value>
+	        <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
+		        <comment>Defines the unit of measurement for the page number position.</comment>
+	        </value>
+          <value name="UseRomanNumerals" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>Print the numbers as roman numerals.</comment>
+          </value>
+          <value name="VerticalOffset" type="value" datatype="Float" enumname="" defaultvalue="72" islist="False">
+            <comment>The vertical offset from the page border of the page numbers in points.</comment>
+          </value>
+        </class>
         <class name="PdfSettings" propertyName="PdfSettings" readonly="False" classtype="Class">
           <comment>Settings for the PDF output format</comment>
           <class name="CompressColorAndGray" propertyName="CompressColorAndGray" readonly="False" classtype="Class">
@@ -740,7 +785,7 @@
           <comment>Allows to skip the print dialog (where metadata are set) and directly proceed to the save dialog</comment>
         </value>
         <value name="SkipSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-          <comment>Allows to skip send actions that fail, running all others.</comment>
+          <comment>Allow to proceed with further send actions if a single send action fails</comment>
         </value>
         <value name="SubjectTemplate" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment>Template for the Subject field. This may contain tokens.</comment>
@@ -752,13 +797,16 @@
           <comment>Template for the Title field. This may contain tokens.</comment>
         </value>
         <value name="WarnSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-          <comment>When SkipSendFailures is active, allows to show a warning for failing send actions.</comment>
+          <comment>Show a warning for failing send actions (only if SkipSendFailures is active)</comment>
         </value>
       </classarray>
       <class name="CreatorAppSettings" propertyName="CreatorAppSettings" readonly="False" classtype="Class">
         <comment />
         <value name="AskSwitchDefaultPrinter" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
           <comment />
+        </value>
+        <value name="HotStandbyMinutes" type="value" datatype="Int" enumname="" defaultvalue="120" islist="False">
+          <comment>Set the number of minutes PDFCreator will remain in standby after running. Set to 0 to disable.</comment>
         </value>
         <value name="LastLoginVersion" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment />

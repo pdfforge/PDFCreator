@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
@@ -23,6 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profileProvider;
         private readonly IRegionManager _regionManager;
         private readonly IWorkflowEditorSubViewProvider _viewProvider;
+        private readonly IDispatcher _dispatcher;
         private IGpoSettings GpoSettings { get; }
 
         public ProfilesViewModel(
@@ -33,12 +35,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             IGpoSettings gpoSettings,
             IRegionManager regionManager,
             IWorkflowEditorSubViewProvider viewProvider,
-            ICommandBuilderProvider commandBuilderProvider)
+            ICommandBuilderProvider commandBuilderProvider,
+            IDispatcher dispatcher)
             : base(translationUpdater)
         {
             _profileProvider = profileProvider;
             _regionManager = regionManager;
             _viewProvider = viewProvider;
+            _dispatcher = dispatcher;
 
             GpoSettings = gpoSettings;
             SelectedProfileProvider = selectedProfileProvider;
@@ -63,10 +67,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 SelectedProfileProvider.SettingsChanged += OnSettingsChanged;
                 SelectedProfileProvider.SelectedProfileChanged += OnSelectedProfileChanged;
-                _profileProvider.Settings.CollectionChanged += OnCollectionChanged;
 
                 _regionManager.RequestNavigate(RegionNames.WorkflowEditorView, nameof(WorkflowEditorView));
             }
+
+            if (_profiles == null)
+                UpdateProfileWrapperList();
 
             foreach (var profile in Profiles)
             {
@@ -138,11 +144,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
         }
 
-        private void OnSettingsChanged(object sender, EventArgs e)
+        private void UpdateProfileWrapperList()
         {
             var profileGuid = "";
 
-            _profiles = _profileProvider?.Settings.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
+            foreach (var wrapper in _profiles)
+            {
+                wrapper.UnmountView();
+            }
+
+            _profiles.Clear();
+            var wrappers = _profileProvider?.Settings.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
+            _profiles.AddRange(wrappers);
+
+            foreach (var wrapper in _profiles)
+            {
+                wrapper.MountView();
+            }
 
             if (SelectedProfileProvider.SelectedProfile != null)
             {
@@ -154,8 +172,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
             _selectedProfile = selectedProfile;
             SelectedProfileProvider.SelectedProfile = selectedProfile.ConversionProfile;
+        }
 
-            RaiseChanges();
+        private void OnSettingsChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                _profileProvider.Settings.CollectionChanged += OnCollectionChanged;
+
+                UpdateProfileWrapperList();
+
+                RaiseChanges();
+            });
         }
 
         private void RaiseChanges()
@@ -185,20 +213,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
         }
 
-        private ObservableCollection<ConversionProfileWrapper> _profiles;
+        private readonly ObservableCollection<ConversionProfileWrapper> _profiles = new ObservableCollection<ConversionProfileWrapper>();
 
-        public ObservableCollection<ConversionProfileWrapper> Profiles
-        {
-            get
-            {
-                if (_profiles == null)
-                {
-                    _profiles = _profileProvider?.Settings.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
-                }
-                return _profiles;
-            }
-            set { /* the property has to have a setter because of wpf binding */}
-        }
+        public ObservableCollection<ConversionProfileWrapper> Profiles => _profiles;
 
         public bool EditProfileIsGpoDisabled => ProfileManagementIsDisabledOrProfileIsShared();
 

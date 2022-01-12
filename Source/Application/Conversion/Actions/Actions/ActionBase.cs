@@ -35,9 +35,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return _settingsGetter(profile);
         }
 
-        protected abstract ActionResult DoProcessJob(Job job);
+        protected abstract ActionResult DoProcessJob(Job job, IPdfProcessor processor);
 
-        public ActionResult ProcessJob(Job job)
+        public ActionResult ProcessJob(Job job, IPdfProcessor processor)
         {
             _logger.Info("Launched action " + GetType().Name);
 
@@ -45,7 +45,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             try
             {
-                return DoProcessJob(job);
+                return DoProcessJob(job, processor);
             }
             finally
             {

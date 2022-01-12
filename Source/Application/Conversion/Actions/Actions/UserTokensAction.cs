@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         public UserTokensAction() : base(p => p.UserTokens)
         { }
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             return new ActionResult();
         }

@@ -1,0 +1,22 @@
+type project
+id PDFCreator.Settings
+authors pdfforge GmbH
+
+description
+    PDFCreator Settings classes
+
+dependencies
+	DataStorage = LOCKEDVERSION
+	Translatable = LOCKEDVERSION
+
+excludeddependencies
+    PropertyChanged.Fody
+
+include-referenced-projects true
+
+files
+    ../../../../Source/Application/Conversion/Settings/settings.xml ==> content
+    ../../../../Source/Application/Core/SettingsManagement/GPO/Settings/gposettings.xml ==> content
+    ../../../../Source/Application/Conversion/Settings/Enums/**/* => content/Enums
+references
+	PDFCreator.Settings.dll

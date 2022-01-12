@@ -20,6 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         private readonly IUpdateHelper _updateHelper;
 
         protected List<IWorkflowStep> WorkflowSteps;
+        protected IErrorStep ErrorStep;
 
         public InteractiveWorkflowManagerFactory(IWorkflowNavigationHelper workflowNavigationHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateHelper updateHelper)
         {
@@ -43,7 +44,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             WorkflowSteps.Add(new UpdateHintStep(_updateHelper));
             WorkflowSteps.Add(new QuickActionStep());
 
-            return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps);
+            ErrorStep = new ErrorStep();
+
+            return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps, ErrorStep);
         }
     }
 
@@ -64,7 +67,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             base.CreateInteractiveWorkflowManager(regionManager, currentSettingsProvider);
             WorkflowSteps.Add(new ProfessionalHintStep(_professionalHintHelper));
 
-            return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps);
+            return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps, ErrorStep);
         }
     }
 }

@@ -89,6 +89,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public OpenViewer OpenViewer { get; set; } = new OpenViewer();
 		
 		/// <summary>
+		/// Settings for page numbers.
+		/// </summary>
+		public PageNumbers PageNumbers { get; set; } = new PageNumbers();
+		
+		/// <summary>
 		/// Settings for the PDF output format
 		/// </summary>
 		public PdfSettings PdfSettings { get; set; } = new PdfSettings();
@@ -201,7 +206,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool SkipPrintDialog { get; set; } = false;
 		
 		/// <summary>
-		/// Allows to skip send actions that fail, running all others.
+		/// Allow to proceed with further send actions if a single send action fails
 		/// </summary>
 		public bool SkipSendFailures { get; set; } = false;
 		
@@ -221,7 +226,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string TitleTemplate { get; set; } = "<PrintJobName>";
 		
 		/// <summary>
-		/// When SkipSendFailures is active, allows to show a warning for failing send actions.
+		/// Show a warning for failing send actions (only if SkipSendFailures is active)
 		/// </summary>
 		public bool WarnSendFailures { get; set; } = false;
 		
@@ -241,6 +246,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			HttpSettings.ReadValues(data, path + @"HttpSettings\");
 			JpegSettings.ReadValues(data, path + @"JpegSettings\");
 			OpenViewer.ReadValues(data, path + @"OpenViewer\");
+			PageNumbers.ReadValues(data, path + @"PageNumbers\");
 			PdfSettings.ReadValues(data, path + @"PdfSettings\");
 			PngSettings.ReadValues(data, path + @"PngSettings\");
 			Printing.ReadValues(data, path + @"Printing\");
@@ -294,6 +300,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			HttpSettings.StoreValues(data, path + @"HttpSettings\");
 			JpegSettings.StoreValues(data, path + @"JpegSettings\");
 			OpenViewer.StoreValues(data, path + @"OpenViewer\");
+			PageNumbers.StoreValues(data, path + @"PageNumbers\");
 			PdfSettings.StoreValues(data, path + @"PdfSettings\");
 			PngSettings.StoreValues(data, path + @"PngSettings\");
 			Printing.StoreValues(data, path + @"Printing\");
@@ -344,6 +351,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.HttpSettings = HttpSettings.Copy();
 			copy.JpegSettings = JpegSettings.Copy();
 			copy.OpenViewer = OpenViewer.Copy();
+			copy.PageNumbers = PageNumbers.Copy();
 			copy.PdfSettings = PdfSettings.Copy();
 			copy.PngSettings = PngSettings.Copy();
 			copy.Printing = Printing.Copy();
@@ -391,6 +399,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			HttpSettings.ReplaceWith(source.HttpSettings);
 			JpegSettings.ReplaceWith(source.JpegSettings);
 			OpenViewer.ReplaceWith(source.OpenViewer);
+			PageNumbers.ReplaceWith(source.PageNumbers);
 			PdfSettings.ReplaceWith(source.PdfSettings);
 			PngSettings.ReplaceWith(source.PngSettings);
 			Printing.ReplaceWith(source.Printing);
@@ -479,6 +488,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!HttpSettings.Equals(v.HttpSettings)) return false;
 			if (!JpegSettings.Equals(v.JpegSettings)) return false;
 			if (!OpenViewer.Equals(v.OpenViewer)) return false;
+			if (!PageNumbers.Equals(v.PageNumbers)) return false;
 			if (!PdfSettings.Equals(v.PdfSettings)) return false;
 			if (!PngSettings.Equals(v.PngSettings)) return false;
 			if (!Printing.Equals(v.Printing)) return false;

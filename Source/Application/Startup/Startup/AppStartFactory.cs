@@ -3,8 +3,10 @@ using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Startup.AppStarts;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Startup
 {
@@ -14,6 +16,8 @@ namespace pdfforge.PDFCreator.Core.Startup
         private readonly IAppStartResolver _appStartResolver;
         private readonly IPathUtil _pathUtil;
         private readonly IDirectConversionHelper _directConversionHelper;
+
+        private static readonly string[] DeprecatedParameters = { "InitializeSettings", "RestorePrinters" };
 
         public AppStartFactory(IAppStartResolver appStartResolver,
             IPathUtil pathUtil,
@@ -37,10 +41,11 @@ namespace pdfforge.PDFCreator.Core.Startup
             }
 
             var commandLineParser = new CommandLineParser(commandLineArgs);
-            if (commandLineParser.HasArgument("RestorePrinters"))
+
+            foreach (var parameter in DeprecatedParameters)
             {
-                _logger.Debug("Launched RestorePrinters");
-                return _appStartResolver.ResolveAppStart<RestorePrinterAppStart>();
+                if (commandLineParser.HasArgument(parameter))
+                    throw new DeprecatedParameterException(parameter);
             }
 
             var appStartParameters = new AppStartParameters();
@@ -53,31 +58,6 @@ namespace pdfforge.PDFCreator.Core.Startup
                 newPrintJobStart.NewJobInfoFile = infFile;
                 newPrintJobStart.AppStartParameters = appStartParameters;
                 return newPrintJobStart;
-            }
-
-            if (commandLineParser.HasArgument("InitializeDefaultSettings"))
-            {
-                var defaultSettingsStart = _appStartResolver.ResolveAppStart<InitializeDefaultSettingsStart>();
-                defaultSettingsStart.SettingsFile = commandLineParser.GetArgument("InitializeDefaultSettings");
-                return defaultSettingsStart;
-            }
-
-            if (commandLineParser.HasArgument("InitializeSettings"))
-            {
-                return _appStartResolver.ResolveAppStart<InitializeSettingsStart>();
-            }
-
-            if (commandLineParser.HasArgument("StoreLicenseForAllUsers"))
-            {
-                var storeLicenseForAllUsersStart = _appStartResolver.ResolveAppStart<StoreLicenseForAllUsersStart>();
-
-                if (commandLineParser.HasArgumentWithValue("LicenseServerCode"))
-                    storeLicenseForAllUsersStart.LicenseServerCode = commandLineParser.GetArgument("LicenseServerCode");
-
-                if (commandLineParser.HasArgumentWithValue("LicenseKey"))
-                    storeLicenseForAllUsersStart.LicenseKey = commandLineParser.GetArgument("LicenseKey");
-
-                return storeLicenseForAllUsersStart;
             }
 
             appStartParameters.Silent = commandLineParser.HasArgument("Silent");
@@ -189,7 +169,12 @@ namespace pdfforge.PDFCreator.Core.Startup
         private string FindOutputfileParameter(CommandLineParser commandLineParser)
         {
             if (commandLineParser.HasArgument("Outputfile"))
-                return commandLineParser.GetArgument("Outputfile");
+            {
+                var outputFile = commandLineParser.GetArgument("Outputfile");
+                var directoryName = PathSafe.GetDirectoryName(outputFile);
+                var fileNameWithoutExtension = PathSafe.GetFileNameWithoutExtension(outputFile);
+                return PathSafe.Combine(directoryName, fileNameWithoutExtension);
+            }
 
             return "";
         }
@@ -200,6 +185,17 @@ namespace pdfforge.PDFCreator.Core.Startup
                 return commandLineParser.GetArgument("Profile");
 
             return "";
+        }
+    }
+
+    public class DeprecatedParameterException : Exception
+    {
+        public string ParameterName { get; }
+
+        public DeprecatedParameterException(string parameterName)
+        : base($"The parameter {parameterName} is not supported anymore!")
+        {
+            ParameterName = parameterName;
         }
     }
 }

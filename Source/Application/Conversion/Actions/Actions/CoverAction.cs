@@ -1,5 +1,4 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -10,7 +9,7 @@ using System;
 using System.Linq;
 using SystemInterface.IO;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class CoverAction : ActionBase<CoverPage>, IConversionAction
     {
@@ -25,14 +24,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             _pathUtil = pathUtil;
         }
 
-        protected override ActionResult DoProcessJob(Job job)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void ProcessJob(IPdfProcessor processor, Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             processor.AddCover(job);
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)

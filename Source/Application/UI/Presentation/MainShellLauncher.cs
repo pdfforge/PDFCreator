@@ -9,14 +9,16 @@ namespace pdfforge.PDFCreator.UI.Presentation
     {
         private readonly IShellManager _shellManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly IThreadManager _threadManager;
         private ISynchronizedThread _mainWindowThread;
 
-        public MainShellLauncher(IThreadManager threadManager, IShellManager shellManager, IEventAggregator eventAggregator)
+        public MainShellLauncher(IThreadManager threadManager, IShellManager shellManager, IEventAggregator eventAggregator, ICurrentSettingsProvider currentSettingsProvider)
         {
             _threadManager = threadManager;
             _shellManager = shellManager;
             _eventAggregator = eventAggregator;
+            _currentSettingsProvider = currentSettingsProvider;
         }
 
         public void LaunchMainWindow()
@@ -33,6 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         {
             try
             {
+                _currentSettingsProvider.Reset(true);
                 _shellManager.ShowMainShell();
             }
             finally

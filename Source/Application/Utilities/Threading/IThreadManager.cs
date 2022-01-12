@@ -7,8 +7,14 @@ namespace pdfforge.PDFCreator.Utilities.Threading
     public interface IThreadManager
     {
         Action UpdateAfterShutdownAction { get; set; }
+        TimeSpan HotStandbyDuration { get; set; }
+        bool IsStandbyDisabled { get; set; }
 
         event EventHandler<ThreadFinishedEventArgs> CleanUpAfterThreadClosed;
+
+        event EventHandler StandbyStarted;
+
+        event EventHandler StandbyEnded;
 
         void StartSynchronizedThread(ISynchronizedThread thread);
 
@@ -19,5 +25,7 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         void Shutdown();
 
         Task WaitForThreads();
+
+        void StopHotStandby();
     }
 }

@@ -19,6 +19,8 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
 
         void AddBackground(Job job);
 
+        void AddPageNumbers(Job job);
+
         void AddWatermark(Job job);
     }
 }
