@@ -7,7 +7,6 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
-using System;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions
@@ -28,14 +27,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             _signaturePasswordCheck = signaturePasswordCheck;
         }
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
-            throw new NotImplementedException();
-        }
-
-        public void ProcessJob(IPdfProcessor processor, Job job)
-        {
-            //nothing to do here. The Signing must be triggered as last processing step in the ActionManager
+            //nothing to do here. The Signing must be triggered as last processing step in the ActionExecutor
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)

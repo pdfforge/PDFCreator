@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CS-Script.Core</id>
+    <version>1.2.2</version>
+    <authors>Oleg Shilo</authors>
+    <owners>Oleg Shilo</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/oleg-shilo/cs-script</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/oleg-shilo/cs-script/master/Source/Logo/css_logo.ico</iconUrl>
+    <description>CS-Script engine Class Library for .NET Core</description>
+    <releaseNotes>- .NET Core 3 Migration (#176)
+- Fixed broken `Evaluator.LoadCode&lt;T&gt;()`</releaseNotes>
+    <copyright>(C) 2018-2019 Oleg Shilo</copyright>
+    <tags>C#, scripting, script, dynamic, .NET. .NET Core</tags>
+    <repository type="Git" url="https://github.com/oleg-shilo/cs-script.git" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyModel" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

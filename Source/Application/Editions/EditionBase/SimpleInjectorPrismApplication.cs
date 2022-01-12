@@ -44,13 +44,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         {
             try
             {
-                if (!_appStart.SkipStartupConditionCheck)
-                {
-                    // Load settings to have the proper translation available
-                    _settingsManager.LoadAllSettings();
+                // Load settings to have the proper translation available
+                _settingsManager.LoadAllSettings();
 
-                    _appStart.CheckApplicationConditions();
-                }
+                _appStart.CheckApplicationConditions();
             }
             catch (StartupConditionFailedException ex)
             {

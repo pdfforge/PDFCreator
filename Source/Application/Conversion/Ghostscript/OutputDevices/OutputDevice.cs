@@ -289,12 +289,13 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     break;
             }
 
+            var startPage = 1;
             if (Job.Profile.PdfSettings.ViewerStartsOnPage > Job.NumberOfPages)
-                metadataContent.Append(" /Page " + Job.NumberOfPages);
-            else if (Job.Profile.PdfSettings.ViewerStartsOnPage <= 0)
-                metadataContent.Append(" /Page 1");
-            else
-                metadataContent.Append(" /Page " + Job.Profile.PdfSettings.ViewerStartsOnPage);
+                startPage = Job.NumberOfPages;
+            else if (Job.Profile.PdfSettings.ViewerStartsOnPage > 0)
+                startPage = Job.Profile.PdfSettings.ViewerStartsOnPage;
+
+            metadataContent.Append(" /Page " + startPage);
 
             metadataContent.Append("\n/DOCVIEW pdfmark");
         }

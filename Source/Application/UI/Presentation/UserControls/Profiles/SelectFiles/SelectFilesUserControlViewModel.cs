@@ -5,20 +5,21 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
 {
     public class SelectFilesUserControlViewModel : ProfileUserControlViewModel<SelectFileTranslation>
     {
-        public ICommand AddAdditionalAttachmentCommand { get; private set; }
-        public ICommand EditAdditionalAttachmentCommand { get; private set; }
+        public ICommand AddFileCommand { get; private set; }
+        public ICommand EditFileCommand { get; private set; }
+        public ICommand RemoveFileCommand { get; private set; }
 
         private readonly IInteractionRequest _interactionRequest;
         private readonly Func<string> _getSelectFileInteractionTitle;
-        private readonly Func<ConversionProfile, List<string>> _getFileList;
+        private readonly Func<ConversionProfile, List<string>> _profileToFileListFunction;
         private readonly List<string> _tokens;
         private readonly string _filter;
 
@@ -28,22 +29,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
             IDispatcher dispatcher,
             IInteractionRequest interactionRequest,
             Func<string> getSelectFileInteractionTitle,
-            Func<ConversionProfile, List<string>> getFileList,
+            Func<ConversionProfile, List<string>> profileToFileListFunction,
             List<string> tokens,
             string filter)
             : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
             _interactionRequest = interactionRequest;
             _getSelectFileInteractionTitle = getSelectFileInteractionTitle;
-            _getFileList = getFileList;
+            _profileToFileListFunction = profileToFileListFunction;
             _tokens = tokens;
             _filter = filter;
 
-            AddAdditionalAttachmentCommand = new AsyncCommand(AddAdditionalAttachmentExecute);
-            EditAdditionalAttachmentCommand = new AsyncCommand(EditAdditionalAttachmentExecute);
+            AddFileCommand = new AsyncCommand(AddFileExecute);
+            EditFileCommand = new AsyncCommand(EditFileExecute);
+            RemoveFileCommand = new AsyncCommand(RemoveFileExecute);
         }
 
-        private async Task AddAdditionalAttachmentExecute(object obj)
+        private async Task AddFileExecute(object obj)
         {
             var interaction = new SelectFileInteraction(_getSelectFileInteractionTitle(), "", false, _tokens, _filter);
             var interactionResult = await _interactionRequest.RaiseAsync(interaction);
@@ -53,22 +55,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
 
             AddFilePath(interactionResult.File);
 
-            RaisePropertyChanged(nameof(FileListDictionary));
             RaisePropertyChanged(nameof(FileList));
         }
 
-        private void AddFilePath(string filePath)
+        private void AddFilePath(string filePath, int index = -1)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 return;
-            if (FileListDictionary.ContainsKey(filePath))
+            if (_fileList.Collection.Contains(filePath))
                 return;
-            FileList.Add(filePath);
+            if (index < 0 || index >= FileList.Count)
+            {
+                FileList.Add(filePath);
+            }
+            else
+            {
+                FileList.Insert(index, filePath);
+            }
         }
 
-        private async Task EditAdditionalAttachmentExecute(object obj)
+        private async Task EditFileExecute(object obj)
         {
             var originalFile = obj as string;
+            var originalIndex = FileList.IndexOf(originalFile);
             var interaction = new SelectFileInteraction(_getSelectFileInteractionTitle(), originalFile, true, _tokens, _filter);
             var interactionResult = await _interactionRequest.RaiseAsync(interaction);
 
@@ -79,30 +88,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
             FileList.Remove(originalFile);
 
             if (interactionResult.Result == SelectFileInteractionResult.Apply)
-                AddFilePath(interactionResult.File);
+                AddFilePath(interactionResult.File, originalIndex);
 
-            RaisePropertyChanged(nameof(FileListDictionary));
             RaisePropertyChanged(nameof(FileList));
         }
 
-        protected List<string> FileList => _getFileList(CurrentProfile) ?? new List<string>();
+        private async Task RemoveFileExecute(object obj)
+        {
+            var file = obj as string;
+            _ = FileList.Remove(file);
+            RaisePropertyChanged(nameof(FileList));
+            await Task.CompletedTask;
+        }
 
-        public Dictionary<string, string> FileListDictionary
+        private Helper.SynchronizedCollection<string> _fileList;
+
+        public ObservableCollection<string> FileList
         {
             get
             {
-                var fileDict = new Dictionary<string, string>();
-                FileList.ForEach(e =>
-                {
-                    if (!fileDict.ContainsKey(e))
-                    {
-                        fileDict.Add(
-                            e,
-                            PathSafe.GetFileName(e));
-                    }
-                });
-
-                return fileDict;
+                _fileList = new Helper.SynchronizedCollection<string>(_profileToFileListFunction(CurrentProfile));
+                return _fileList.ObservableCollection;
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using pdfforge.PDFCreator.Utilities.Threading;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 using SystemInterface.Microsoft.Win32;
 
@@ -55,11 +57,25 @@ namespace pdfforge.PDFCreator.Utilities
             @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
         };
 
-        public PdfArchitectCheck(IRegistry registry, IFile file, IAssemblyHelper assemblyHelper)
+        public PdfArchitectCheck(IRegistry registry, IFile file, IAssemblyHelper assemblyHelper, IThreadManager threadManager)
         {
             _registry = registry;
             _file = file;
             _assemblyHelper = assemblyHelper;
+            threadManager.StandbyEnded += OnStandbyEnded;
+        }
+
+        private void OnStandbyEnded(object sender, EventArgs args)
+        {
+            if (IsInstalled())
+                return;
+
+            // PDF Architect might be installed now
+            Task.Run(() =>
+            {
+                _cachedInstallationPath = DoGetInstallationPath();
+                _wasSearched = true;
+            });
         }
 
         /// <summary>

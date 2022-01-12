@@ -20,7 +20,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
             _dropboxService = dropboxService;
         }
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             _logger.Debug("Launched Dropbox Action");
 

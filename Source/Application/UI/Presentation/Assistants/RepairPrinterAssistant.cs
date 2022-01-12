@@ -1,14 +1,13 @@
 ﻿using NLog;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Core.Printing.Printer;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -71,11 +70,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 }
 
                 Logger.Debug("Reinstalling Printers...");
-                var pdfcreatorPath = _nameProvider.GetPortApplicationPath();
+                var portApplicationPath = _nameProvider.GetPortApplicationPath();
 
                 var printerNameString = GetPrinterNameString(printerNames);
 
-                var installParams = $"RepairPrinter -name={printerNameString} -PortApplication=\"{pdfcreatorPath}\"";
+                var installParams = $"RepairPrinter -name={printerNameString} -PortApplication=\"{portApplicationPath}\"";
                 var installResult = _shellExecuteHelper.RunAsAdmin(printerHelperPath, installParams);
                 Logger.Debug("Done: {0}", installResult);
             }

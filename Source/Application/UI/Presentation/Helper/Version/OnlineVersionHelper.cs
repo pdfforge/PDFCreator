@@ -168,7 +168,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
             catch (Exception e)
             {
                 var errorMessage = $"Error while downloading file:{filename}";
-                _logger.Error(errorMessage + "\n" + e.Message);
+                _logger.Info(e, errorMessage);
 
                 // Error while getting proper file, try for outdated file in cache
                 returnVal = GetOutDatedCachedFile(filename);

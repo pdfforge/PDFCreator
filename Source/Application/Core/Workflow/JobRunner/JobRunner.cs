@@ -62,7 +62,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             {
                 // TODO: Use async/await
                 _actionExecutor.CallPreConversionActions(job);
-
                 _actionExecutor.ApplyRestrictions(job);
 
                 var converter = _converterFactory.GetConverter(job.JobInfo.JobType);

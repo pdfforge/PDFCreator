@@ -41,8 +41,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         ///     Calls the script
         /// </summary>
         /// <param name="job">The current job</param>
+        /// <param name="processor"></param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             _logger.Debug("Launched Script-Action");
 

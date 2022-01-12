@@ -1,30 +1,24 @@
-﻿using pdfforge.Obsidian.Trigger;
+﻿using pdfforge.Obsidian;
+using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using Prism.Events;
-using System;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
-    public class AddActionCommand : ICommand
+    public class AddActionCommand : AsyncCommandBase
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly IEventAggregator _eventAggregator;
         private readonly EditionHelper _editionHelper;
 
-        public AddActionCommand(IInteractionRequest interactionRequest,
-            IEventAggregator eventAggregator, EditionHelper editionHelper)
+        public AddActionCommand(IInteractionRequest interactionRequest, IEventAggregator eventAggregator, EditionHelper editionHelper)
         {
             _interactionRequest = interactionRequest;
             _eventAggregator = eventAggregator;
             _editionHelper = editionHelper;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
         }
 
         private bool IsSupported(IPresenterActionFacade actionFacade)
@@ -37,7 +31,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             return true;
         }
 
-        public async void Execute(object parameter)
+        public override bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public override async Task ExecuteAsync(object parameter)
         {
             var actionFacade = (IPresenterActionFacade)parameter;
 
@@ -60,11 +59,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
                 await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
             }
         }
-
-#pragma warning disable CS0067
-
-        public event EventHandler CanExecuteChanged;
-
-#pragma warning restore CS0067
     }
 }

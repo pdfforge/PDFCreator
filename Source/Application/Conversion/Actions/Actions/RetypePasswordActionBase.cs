@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         protected abstract ActionResult DoActionProcessing(Job job);
 
         //todo: Test this
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             var settings = new CurrentCheckSettings(job.AvailableProfiles, job.PrinterMappings, job.Accounts);
             var actionResult = Check(job.Profile, settings, CheckLevel.RunningJob);

@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using System;
 using System.Collections.Generic;
 using System.Media;
 using System.Text;
@@ -14,7 +15,7 @@ using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 {
-    public class MessageViewModel : OverlayViewModelBase<MessageInteraction, MessageWindowTranslation>
+    public class MessageViewModel : OverlayViewModelBase<MessageInteraction, MessageViewTranslation>
     {
         private readonly ISoundPlayer _soundPlayer;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
@@ -30,6 +31,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             LeftButtonCommand = new DelegateCommand(ButtonLeftExecute);
             MiddleButtonCommand = new DelegateCommand(MiddleButtonExecute, MiddleButtonCanExecute);
             RightButtonCommand = new DelegateCommand(RightButtonExecute, RightButtonCanExecute);
+        }
+
+        private Func<MessageViewTranslation, string> GetIdentifier { get; set; } = translation => translation.Profile;
+
+        public void Init(Func<MessageViewTranslation, string> getIdentifier)
+        {
+            GetIdentifier = getIdentifier;
         }
 
         public IList<ErrorWithRegion> ErrorList { get; private set; }
@@ -225,10 +233,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 
             foreach (var profileNameActionResult in Interaction.ActionResultDict)
             {
-                foreach (var error in profileNameActionResult.Value)
+                foreach (var actionResult in profileNameActionResult.Value)
                 {
-                    var errorText = _errorCodeInterpreter.GetErrorText(error, false);
-                    ErrorList.Add(new ErrorWithRegion(profileNameActionResult.Key, errorText));
+                    var region = GetIdentifier(Translation) + ": " + profileNameActionResult.Key;
+                    var error = _errorCodeInterpreter.GetErrorText(actionResult, false);
+                    ErrorList.Add(new ErrorWithRegion(region, error));
                 }
             }
 

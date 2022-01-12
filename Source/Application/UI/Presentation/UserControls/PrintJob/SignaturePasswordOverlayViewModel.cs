@@ -31,7 +31,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _signaturePasswordCheck = signaturePasswordCheck;
         }
 
-        public override string Title => Translation.SiganturePasswordTitle;
+        public override string Title => Translation.SignaturePasswordTitle;
 
         public override bool CanExecuteHook()
         {

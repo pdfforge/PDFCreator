@@ -58,6 +58,11 @@ namespace pdfforge.PDFCreator.Core.Controller
                 _logger.Info("Pipe Command: Reloading settings");
                 _settingsManager.LoadAllSettings();
             }
+            else if (message.StartsWith("StopHotStandby|", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.Info("Pipe Command: Stopping hot standby");
+                _threadManager.StopHotStandby();
+            }
         }
 
         private void HandleDroppedFileMessage(string message)

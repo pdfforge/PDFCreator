@@ -2,18 +2,18 @@
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities.UserGuide;
 using System.Windows.Input;
-using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken
 {
-    public class UserTokenUserControlViewModel : ActionViewModelBase<UserTokensAction, UserTokenTranslation>
+    public class
+        UserTokenUserControlViewModel : ActionViewModelBase<UserTokensAction, UserTokenTranslation>
     {
         public UserTokenUserControlViewModel(
             ITranslationUpdater translationUpdater,

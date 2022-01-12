@@ -22,7 +22,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
         protected abstract void Enqueue(JobInfo jobInfo);
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             if (!job.Profile.ForwardToFurtherProfile.Enabled)
                 return new ActionResult();

@@ -1,6 +1,6 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Windows;
+using MahApps.Metro.Controls;
 using Sentry;
-using System.Windows;
 
 namespace pdfforge.PDFCreator.ErrorReport
 {

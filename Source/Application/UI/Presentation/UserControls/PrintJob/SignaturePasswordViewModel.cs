@@ -43,7 +43,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
         }
 
-        public override string Title => Translation.SiganturePasswordTitle;
+        public override string Title => Translation.SignaturePasswordTitle;
 
         protected SignaturePasswordViewModel(ITranslationUpdater translationUpdater, ISignaturePasswordCheck signaturePasswordCheck) : base(translationUpdater)
         {

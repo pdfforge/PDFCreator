@@ -12,6 +12,8 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Licensing;
 using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Editions.EditionBase;
@@ -32,8 +34,6 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using IBannerManager = pdfforge.PDFCreator.UI.Presentation.Banner.IBannerManager;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 
@@ -46,6 +46,10 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override bool HideLicensing => true;
 
         protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit);
+
+        public override void InitializeServices(Container container)
+        {
+        }
 
         protected override void RegisterSettingsLoader(Container container)
         {

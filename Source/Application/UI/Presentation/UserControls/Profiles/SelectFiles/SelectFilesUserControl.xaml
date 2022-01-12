@@ -1,49 +1,120 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFilesUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:workflowEditor="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSelectFilesUserControlViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary  Source="../../../Styles/LightGreyButton.xaml" />
+                <ResourceDictionary  Source="../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary  Source="../../../Styles/TextStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <workflowEditor:HiddenWhenFacadeIsFixedOrderConverter x:Key="HiddenWhenFacadeIsFixedOrderConverter" />
+            <workflowEditor:FacadeColorValueConverter x:Key="DragDropColorConverter" />
+            <Style x:Key="CustomListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <DockPanel>
+                                <ContentPresenter Cursor="{x:Static Cursors.Arrow}" />
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="0 0 0 5" />
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"  Color="Transparent" />
+                </Style.Resources>
+            </Style>
+            <Style x:Key="CustomListBoxStyle" TargetType="{x:Type ListBox}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="ItemTemplate" Value="{DynamicResource CustomListBoxDataTemplate}" />
+                <Setter Property="dd:DragDrop.IsDragSource" Value="True" />
+                <Setter Property="dd:DragDrop.IsDropTarget" Value="True" />
+                <Setter Property="dd:DragDrop.UseDefaultDragAdorner" Value="False" />
+                <Setter Property="ItemContainerStyle" Value="{StaticResource CustomListBoxItemStyle}" />
+            </Style>
+            <DataTemplate x:Key="CustomListBoxDataTemplate"  DataType="system:String">
+                <DockPanel dd:DragDrop.IsDragSource="{Binding }"
+                            Background ="{Binding  Converter={StaticResource DragDropColorConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            FlowDirection="LeftToRight"
+                            LastChildFill="True">
+                    <!-- Title -->
+                    <TextBlock DockPanel.Dock="Left"
+                               Margin="5 0 0 0"
+                               VerticalAlignment="Center"
+                               FontWeight="DemiBold"
+                               Foreground="DimGray"
+                               Text="{Binding }" />
+                    <!-- Move -->
+                    <Grid Margin="10 0 0 0"
+                          DockPanel.Dock="Right">
+                        <ContentPresenter Width="20" VerticalAlignment="Stretch"
+                                          Content="{DynamicResource UpDownArrowIcon}"
+                                          Cursor="{x:Static Cursors.ScrollNS}">
+                        </ContentPresenter>
+                    </Grid>
+                    <!-- Remove -->
+                    <Button Width="13" Height="13"
+                            DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Cursor="{x:Static Cursors.Hand}"
+                            Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding}"
+                            Template="{DynamicResource IconButton}"
+                            Foreground ="{DynamicResource TitleBarGrayBrush}"
+                            Content="{DynamicResource RemoveButtonIcon}"
+                            SnapsToDevicePixels="True" />
+                    <!-- Edit -->
+                    <Button Width="13" Height="13"
+                            DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Cursor="{x:Static Cursors.Hand}"
+                            Command="{Binding DataContext.EditFileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding }"
+                            Template="{DynamicResource IconButton}"
+                            Foreground ="{DynamicResource TitleBarGrayBrush}"
+                            Content="{StaticResource EditPen}"
+                            SnapsToDevicePixels="True" />
+                    <Separator Width="20" Background="Transparent" />
+                </DockPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid MinHeight="40">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="1"
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontWeight" Value="Regular" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </Grid.Resources>
+        <StackPanel Grid.Row="0">
+            <ListBox Margin="5 0 0 0"
+                     ItemsSource="{Binding FileList}"
+                     Style="{StaticResource ResourceKey=CustomListBoxStyle}" />
+        </StackPanel>
+        <Button Margin="5 5 0 0"
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 Content="{Binding Translation.AddFile}"
-                Command="{Binding AddAdditionalAttachmentCommand}"
-                VerticalAlignment="Top" />
-        <ListView Grid.Column="0"
-                  ItemsSource="{Binding FileListDictionary}"
-                  x:Name="AdditionalAttachmentListView"
-                  Margin="-1 -1 0 0"
-                  HorizontalAlignment="Left">
-            <ListView.Template>
-                <ControlTemplate>
-                    <WrapPanel IsItemsHost="True" />
-                </ControlTemplate>
-            </ListView.Template>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Margin" Value="0 0 5 5" />
-                    <Setter Property="Padding" Value="-1" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Button BorderThickness="1"
-                            BorderBrush="LightGray"
-                            Background="Transparent"
-                            Command="{Binding ElementName=AdditionalAttachmentListView, Path=DataContext.EditAdditionalAttachmentCommand}"
-                            CommandParameter="{Binding Key}"
-                            ToolTip="{Binding Key}"
-                            Content="{Binding Value}"
-                            VerticalContentAlignment="Center"
-                            Cursor="Hand" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                Command="{Binding AddFileCommand}" />
     </Grid>
 </UserControl>

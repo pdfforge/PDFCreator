@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +43,14 @@ namespace pdfforge.PDFCreator.Core.Workflow
             job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(job);
             job.ReplaceTokensInMetadata();
 
-            _jobInfoManager.SaveToInfFile(job.JobInfo);
+            try
+            {
+                _jobInfoManager.SaveToInfFile(job.JobInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Could not save inf file " + job.JobInfo.InfFile);
+            }
         }
 
         public async Task UpdateTokensAndMetadataAsync(Job job)

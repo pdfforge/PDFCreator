@@ -126,6 +126,11 @@
                                 <TextBlock Text="{Binding Translation.EnsureUniqueFilenames}" />
                             </CheckBox>
                             <CheckBox DockPanel.Dock="Top"
+                                      IsChecked="{Binding SkipSendFailures, Mode=OneWay}"
+                                      Style="{DynamicResource PreviewCheckBox}">
+                                <TextBlock Text="{Binding Translation.SkipSendFailures}" />
+                            </CheckBox>
+                            <CheckBox DockPanel.Dock="Top"
                                       IsChecked="{Binding ShowTrayNotification, Mode=OneWay}"
                                       Style="{DynamicResource PreviewCheckBox}"
                                       Visibility="{Binding IsServer, Converter={StaticResource CollapsedWhenTrueConverter}}">

@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using Microsoft.Win32;
+using NLog;
+using pdfforge.Communication;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -12,11 +14,18 @@ namespace pdfforge.PDFCreator.Utilities.Threading
     /// </summary>
     public class ThreadManager : IThreadManager
     {
+        public const string StandbyMutexName = "PDFCreator-Standby-137a7751-1070-4db4-a407-83c1625762c7";
+
+        public TimeSpan HotStandbyDuration { get; set; } = TimeSpan.Zero;
+        public bool IsStandbyDisabled { get; set; }
+
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly ConcurrentQueue<ISynchronizedThread> _threads = new ConcurrentQueue<ISynchronizedThread>();
 
         private bool _isShuttingDown;
+
+        private TaskCompletionSource<bool> _stopHotStandbyCompletionSource = null;
 
         public Action UpdateAfterShutdownAction { get; set; }
 
@@ -25,6 +34,10 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         public event EventHandler<ThreadFinishedEventArgs> CleanUpAfterThreadClosed;
 
 #pragma warning restore CS0067
+
+        public event EventHandler StandbyStarted;
+
+        public event EventHandler StandbyEnded;
 
         /// <summary>
         ///     Adds and starts a synchronized thread to the thread list. The application will wait for all of these to end before
@@ -42,6 +55,8 @@ namespace pdfforge.PDFCreator.Utilities.Threading
             _logger.Debug("Adding thread " + thread.Name);
 
             _threads.Enqueue(thread);
+
+            _stopHotStandbyCompletionSource?.TrySetResult(false);
 
             if (thread.ThreadState == ThreadState.Unstarted)
                 thread.Start();
@@ -72,9 +87,52 @@ namespace pdfforge.PDFCreator.Utilities.Threading
                 {
                     await thread.JoinAsync();
                 }
+
+                if (_threads.IsEmpty)
+                {
+                    await WaitForStandbyDuration();
+                }
             }
 
             _logger.Debug("All synchronized threads have ended");
+        }
+
+        private async Task WaitForStandbyDuration()
+        {
+            var standbyMutex = new GlobalMutex(StandbyMutexName);
+
+            var systemShutdownHandler = new SessionEndingEventHandler((sender, args) => _stopHotStandbyCompletionSource?.TrySetResult(true));
+            SystemEvents.SessionEnding += systemShutdownHandler;
+
+            _stopHotStandbyCompletionSource = new TaskCompletionSource<bool>();
+            standbyMutex.Acquire();
+
+            StandbyStarted?.Invoke(this, EventArgs.Empty);
+
+            try
+            {
+                // Task.Delay does not support a Timespan with more than int.MaxValue milliseconds
+                var standbyDuration = HotStandbyDuration > TimeSpan.FromMilliseconds(int.MaxValue)
+                    ? TimeSpan.FromMilliseconds(-1)
+                    : HotStandbyDuration;
+
+                if (IsStandbyDisabled)
+                    standbyDuration = TimeSpan.Zero;
+
+                await Task.WhenAny(_stopHotStandbyCompletionSource.Task, Task.Delay(standbyDuration));
+            }
+            finally
+            {
+                standbyMutex.Release();
+                _stopHotStandbyCompletionSource = null;
+                SystemEvents.SessionEnding -= systemShutdownHandler;
+                StandbyEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public void StopHotStandby()
+        {
+            _stopHotStandbyCompletionSource?.TrySetResult(true);
         }
 
         public void Shutdown()

@@ -14,10 +14,5 @@ namespace pdfforge.PDFCreator.Core.StartupInterface
         /// </summary>
         /// <returns></returns>
         Task<ExitCode> Run();
-
-        /// <summary>
-        /// If true, the startup conditions will not be checked. This is required to perform actions even though a check is failing, i.e. to repair this.
-        /// </summary>
-        bool SkipStartupConditionCheck { get; }
     }
 }

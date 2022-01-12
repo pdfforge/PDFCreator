@@ -33,11 +33,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
         private readonly ITokenViewModelFactory _tokenViewModelFactory;
         private readonly IGpoSettings _gpoSettings;
-        private readonly ISigningPositionToUnitConverterFactory _signingPositionToUnitConverter;
+        private readonly IPositionToUnitConverterFactory _positionToUnitConverter;
         private readonly IInteractionRequest _interactionRequest;
         public ICurrentSettings<ApplicationSettings> ApplicationSettings { get; }
 
-        private ISigningPositionToUnitConverter UnitConverter { get; set; }
+        private IPositionToUnitConverter UnitConverter { get; set; }
 
         public float LeftX
         {
@@ -170,7 +170,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             ITokenViewModelFactory tokenViewModelFactory,
             IDispatcher dispatcher,
             IGpoSettings gpoSettings,
-            ISigningPositionToUnitConverterFactory signingPositionToUnitConverter,
+            IPositionToUnitConverterFactory positionToUnitConverter,
             ICurrentSettings<ApplicationSettings> applicationSettings,
             IInteractionRequest interactionRequest,
             IActionLocator actionLocator,
@@ -186,10 +186,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             _tokenViewModelFactory = tokenViewModelFactory;
             _gpoSettings = gpoSettings;
 
-            _signingPositionToUnitConverter = signingPositionToUnitConverter;
+            _positionToUnitConverter = positionToUnitConverter;
             _interactionRequest = interactionRequest;
             ApplicationSettings = applicationSettings;
-            UnitConverter = _signingPositionToUnitConverter?.CreateSigningPositionToUnitConverter(UnitOfMeasurement.Centimeter);
+            UnitConverter = _positionToUnitConverter?.CreatePositionToUnitConverter(UnitOfMeasurement.Centimeter);
 
             ChooseCertificateFileCommand = new DelegateCommand(ChooseCertificateFileExecute);
             ChangeUnitConverterCommand = new DelegateCommand(ChangeUnitConverterExecute);
@@ -295,7 +295,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             // values must be saved in local variables before the converter is changed
             // so that we can maintain the real coordinates of the signature position
             var unit = (UnitOfMeasurement)obj;
-            UnitConverter = _signingPositionToUnitConverter.CreateSigningPositionToUnitConverter(unit);
+            UnitConverter = _positionToUnitConverter.CreatePositionToUnitConverter(unit);
 
             RaisePropertyChanged(nameof(LeftX));
             RaisePropertyChanged(nameof(LeftY));

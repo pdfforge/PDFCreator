@@ -3,11 +3,10 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using System;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
@@ -114,12 +113,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             replaceWithMethod?.Invoke(CurrentSetting, new[] { value });
         }
 
-        public void RemoveAction()
+        private void ResetToDefaultSettings()
         {
             var defaultProfile = _defaultSettingsBuilder.CreateDefaultProfile();
             var defaultSetting = Action.GetProfileSetting(defaultProfile);
-            defaultSetting.Enabled = false;
             ReplaceCurrentSetting(defaultSetting);
+        }
+
+        public void RemoveAction()
+        {
+            ResetToDefaultSettings();
+            Action.GetProfileSetting(CurrentProfile).Enabled = false;
             CurrentProfile.ActionOrder.RemoveAll(x => x == Action.SettingsType.Name);
         }
 
@@ -131,6 +135,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public void AddAction()
         {
+            ResetToDefaultSettings();
             Action.GetProfileSetting(CurrentProfile).Enabled = true;
             CurrentProfile.ActionOrder.Add(Action.SettingsType.Name);
             _actionOrderHelper.EnsureEncryptionAndSignatureOrder(CurrentProfile);

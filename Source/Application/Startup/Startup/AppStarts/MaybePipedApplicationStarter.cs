@@ -76,6 +76,8 @@ namespace pdfforge.PDFCreator.Core.Startup.AppStarts
                 {
                     success = TrySendPipeMessage(pipeMessage);
                     _logger.Debug("TrySendPipeMessage: " + success);
+                    if (success)
+                        _threadManager.IsStandbyDisabled = true;
                 }
                 else
                 {

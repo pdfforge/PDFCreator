@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SystemInterface.IO;
-using NLog;
+﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Utilities;
+using System.Collections.Generic;
+using System.Linq;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 {
@@ -67,6 +67,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
             _logger.Info("Apply shared app settings.");
             currentSettings.ApplicationSettings = sharedSettings.ApplicationSettings;
+            currentSettings.CreatorAppSettings = sharedSettings.CreatorAppSettings;
         }
 
         private void ApplyProfiles(PdfCreatorSettings currentSettings, PdfCreatorSettings sharedSettings)

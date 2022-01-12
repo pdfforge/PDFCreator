@@ -1,9 +1,9 @@
 ﻿using pdfforge.DataStorage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
-using System;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -39,12 +39,20 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
             if (pdfCreatorSettings.ApplicationSettings.PrinterMappings?.Count > 0)
             {
-                foreach (PrinterMapping printerMapping in pdfCreatorSettings.ApplicationSettings.PrinterMappings)
+                foreach (var printerMapping in pdfCreatorSettings.ApplicationSettings.PrinterMappings)
                 {
                     defaultSettings.ApplicationSettings.PrinterMappings.Add(new PrinterMapping(printerMapping.PrinterName, ProfileGuids.DEFAULT_PROFILE_GUID));
                 }
             }
             else defaultSettings.ApplicationSettings.PrinterMappings.Add(new PrinterMapping("PDFCreator", ProfileGuids.DEFAULT_PROFILE_GUID));
+
+            if (pdfCreatorSettings.DefaultViewers.Count > 0)
+            {
+                foreach (var defaultViewer in pdfCreatorSettings.DefaultViewers)
+                {
+                    defaultSettings.DefaultViewers.Add(new DefaultViewer() { OutputFormat = defaultViewer.OutputFormat });
+                }
+            }
 
             return defaultSettings;
         }

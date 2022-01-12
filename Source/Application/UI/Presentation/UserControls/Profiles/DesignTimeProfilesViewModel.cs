@@ -18,7 +18,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 new GpoSettingsDefaults(),
                 new Prism.Regions.RegionManager(),
                 new WorkflowEditorSubViewProvider("save", "metadata", "outputformat"),
-                new DesignTimeCommandBuilderProvider())
+                new DesignTimeCommandBuilderProvider(),
+                new DesignTimeDispatcher())
         {
         }
     }

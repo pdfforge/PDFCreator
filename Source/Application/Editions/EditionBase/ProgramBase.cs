@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Startup;
+using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.ErrorReport;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Help;
@@ -59,12 +60,28 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             InitializeLogging();
             Logger.Debug("Starting PDFCreator");
 
+#if DEBUG
+            if (DebugStandbyHelper.IsStandbyRunning())
+                DebugStandbyHelper.TerminateStandby();
+#endif
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            if (PdfCreatorQuickStartHelper.TryActivateRunningPDFCreatorInstance(args))
+                return 0;
 
             var application = new SimpleInjectorPrismApplication(_container);
             BootstrapContainerAndApplication(getBootstrapperFunc(), application);
 
-            InitializeApplication(args, application);
+            try
+            {
+                InitializeApplication(args, application);
+            }
+            catch (DeprecatedParameterException ex)
+            {
+                Logger.Error($"The parameter {ex.ParameterName} was moved to PDFCreator-cli.exe. Please refer to the user guide on how to use the CLI: {Urls.UserGuideCommandLineUrl}");
+                return (int)ExitCode.DeprecatedParameter;
+            }
 
             VerifyContainer();
 

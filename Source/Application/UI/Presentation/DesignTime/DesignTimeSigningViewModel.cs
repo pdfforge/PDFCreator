@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 new DesignTimeTokenViewModelFactory(),
                 null,
                 new GpoSettingsDefaults(),
-                new DesignTimeSigningPositionUnitConverterFactory(),
+                new DesignTimePositionUnitConverterFactory(),
                 new DesignTimeCurrentSettings<ApplicationSettings>(),
                 null,
                 new DesignTimeActionLocator(),

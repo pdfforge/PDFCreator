@@ -22,12 +22,6 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
     /// </summary>
     public interface IConversionAction : IAction
     {
-        /// <summary>
-        ///     Process all output files
-        /// </summary>
-        /// <param name="job">The job to process</param>
-        /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        void ProcessJob(IPdfProcessor pdfProcessor, Job job);
     }
 
     /// <summary>
@@ -40,8 +34,9 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
         ///     Process all output files
         /// </summary>
         /// <param name="job">The job to process</param>
+        /// <param name="processor"></param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        ActionResult ProcessJob(Job job);
+        ActionResult ProcessJob(Job job, IPdfProcessor processor);
 
         void ApplyPreSpecifiedTokens(Job job);
 

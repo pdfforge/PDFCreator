@@ -14,6 +14,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		
 		public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings();
 		
+		public CreatorAppSettings CreatorAppSettings { get; set; } = new CreatorAppSettings();
+		
 		/// <summary>
 		/// Enable to allows own user profiles next to the shared profiles
 		/// </summary>
@@ -98,6 +100,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		public void ReadValues(Data data, string path = "")
 		{
 			ApplicationSettings.ReadValues(data, path + @"ApplicationSettings\");
+			CreatorAppSettings.ReadValues(data, path + @"CreatorAppSettings\");
 			AllowUserDefinedProfiles = bool.TryParse(data.GetValue(@"" + path + @"AllowUserDefinedProfiles"), out var tmpAllowUserDefinedProfiles) ? tmpAllowUserDefinedProfiles : true;
 			DisableAccountsTab = bool.TryParse(data.GetValue(@"" + path + @"DisableAccountsTab"), out var tmpDisableAccountsTab) ? tmpDisableAccountsTab : false;
 			DisableApplicationSettings = bool.TryParse(data.GetValue(@"" + path + @"DisableApplicationSettings"), out var tmpDisableApplicationSettings) ? tmpDisableApplicationSettings : false;
@@ -119,6 +122,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		public void StoreValues(Data data, string path)
 		{
 			ApplicationSettings.StoreValues(data, path + @"ApplicationSettings\");
+			CreatorAppSettings.StoreValues(data, path + @"CreatorAppSettings\");
 			data.SetValue(@"" + path + @"AllowUserDefinedProfiles", AllowUserDefinedProfiles.ToString());
 			data.SetValue(@"" + path + @"DisableAccountsTab", DisableAccountsTab.ToString());
 			data.SetValue(@"" + path + @"DisableApplicationSettings", DisableApplicationSettings.ToString());
@@ -142,6 +146,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			GpoSettings copy = new GpoSettings();
 			
 			copy.ApplicationSettings = ApplicationSettings.Copy();
+			copy.CreatorAppSettings = CreatorAppSettings.Copy();
 			copy.AllowUserDefinedProfiles = AllowUserDefinedProfiles;
 			copy.DisableAccountsTab = DisableAccountsTab;
 			copy.DisableApplicationSettings = DisableApplicationSettings;
@@ -164,6 +169,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		public void ReplaceWith(GpoSettings source)
 		{
 			ApplicationSettings.ReplaceWith(source.ApplicationSettings);
+			CreatorAppSettings.ReplaceWith(source.CreatorAppSettings);
 			if(AllowUserDefinedProfiles != source.AllowUserDefinedProfiles)
 				AllowUserDefinedProfiles = source.AllowUserDefinedProfiles;
 				
@@ -220,6 +226,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			GpoSettings v = o as GpoSettings;
 			
 			if (!ApplicationSettings.Equals(v.ApplicationSettings)) return false;
+			if (!CreatorAppSettings.Equals(v.CreatorAppSettings)) return false;
 			if (!AllowUserDefinedProfiles.Equals(v.AllowUserDefinedProfiles)) return false;
 			if (!DisableAccountsTab.Equals(v.DisableAccountsTab)) return false;
 			if (!DisableApplicationSettings.Equals(v.DisableApplicationSettings)) return false;

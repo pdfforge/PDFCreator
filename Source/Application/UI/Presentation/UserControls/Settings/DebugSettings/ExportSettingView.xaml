@@ -12,18 +12,18 @@
                                 Header="{Binding Translation.ExportSettingsControlHeader}">
             <DockPanel>
                 <UniformGrid DockPanel.Dock="Top" Columns="3" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
-                    <Button Margin="0 0 5 0"  Style="{DynamicResource LightGreyButton}"
+                    <Button Style="{DynamicResource LightGreyButton}"
                             Command="{Binding SaveIniSettingsCommand}">
                         <TextBlock Text="{Binding Translation.SaveSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>
-                    <Button Margin="0 0 5 0"  Style="{DynamicResource LightGreyButton}"
+                    <Button Margin="10 0 0 0"  Style="{DynamicResource LightGreyButton}"
                             Command="{Binding SaveIniSettingsCommand}">
                         <Button.CommandParameter>
                             <system:Boolean>True</system:Boolean>
                         </Button.CommandParameter>
                     <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>
-                    <Button Margin="5 0 0 0" Style="{DynamicResource LightGreyButton}"
+                    <Button Margin="10 0 0 0" Style="{DynamicResource LightGreyButton}"
                             Command="{Binding LoadIniSettingsCommand}">
                         <TextBlock Text="{Binding Translation.LoadSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>

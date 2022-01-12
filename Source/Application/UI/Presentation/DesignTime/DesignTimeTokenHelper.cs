@@ -38,6 +38,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             return new List<string>();
         }
 
+        public List<string> GetTokenListForPageNumbers()
+        {
+            return new List<string>();
+        }
+
         public List<string> GetTokenListForEmail()
         {
             return new List<string>();

@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Utilities.Registry;
+﻿using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Utilities.Registry;
 using System.Security;
 using SystemInterface.Microsoft.Win32;
 
@@ -21,14 +22,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
     public class SettingsMover : ISettingsMover
     {
         private const string OldRegistryPath = @"Software\PDFCreator.Net";
-        private const string NewRegistryPath = @"Software\pdfforge\PDFCreator";
+        private readonly string _newRegistryPath;
         private readonly IRegistryUtility _registryUtility;
         private readonly IRegistry _registryWrap;
 
-        public SettingsMover(IRegistry registryWrap, IRegistryUtility registryUtility)
+        public SettingsMover(IRegistry registryWrap, IRegistryUtility registryUtility, IInstallationPathProvider installationPathProvider)
         {
             _registryWrap = registryWrap;
             _registryUtility = registryUtility;
+            _newRegistryPath = installationPathProvider.ApplicationRegistryPath;
         }
 
         public bool MoveRequired()
@@ -41,7 +43,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
                 regKey.Close();
 
-                regKey = _registryWrap.CurrentUser.OpenSubKey(NewRegistryPath);
+                regKey = _registryWrap.CurrentUser.OpenSubKey(_newRegistryPath);
                 if (regKey == null)
                     return true;
 
@@ -59,7 +61,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             if (!MoveRequired())
                 return false;
 
-            return _registryUtility.RenameSubKey(_registryWrap.CurrentUser, OldRegistryPath, NewRegistryPath);
+            return _registryUtility.RenameSubKey(_registryWrap.CurrentUser, OldRegistryPath, _newRegistryPath);
         }
     }
 }

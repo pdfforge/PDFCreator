@@ -48,6 +48,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
                 {
                     _logger.Debug("Found inf file: " + file);
                     var jobInfo = _jobInfoManager.ReadFromInfFile(file);
+
                     jobs.Add(jobInfo);
                 }
                 catch (Exception ex)

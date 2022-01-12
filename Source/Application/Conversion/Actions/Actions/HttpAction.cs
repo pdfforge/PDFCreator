@@ -14,7 +14,12 @@ using System.Web;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
-    public class HttpAction : RetypePasswordActionBase<HttpSettings>, IPostConversionAction
+    public interface IHttpAction
+    {
+        ActionResult CheckAccount(HttpAccount httpAccount, bool autoSave, CheckLevel checkLevel);
+    }
+
+    public class HttpAction : RetypePasswordActionBase<HttpSettings>, IPostConversionAction, IHttpAction
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -25,7 +30,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         public override void ApplyPreSpecifiedTokens(Job job)
         {
-            //nothing to do here
+            //the token in the url is replaced directly in the action
+            //therefore we don't have to deal with account copies
         }
 
         /// <summary>
@@ -43,20 +49,48 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 return actionResult;
 
             var httpAccount = settings.Accounts.GetHttpAccount(profile);
+
+            return CheckAccount(httpAccount, profile.AutoSave.Enabled, checkLevel);
+        }
+
+        public ActionResult CheckAccount(HttpAccount httpAccount, bool isAutoSave, CheckLevel checkLevel)
+        {
+            var actionResult = new ActionResult();
+
             if (httpAccount == null)
             {
                 actionResult.Add(ErrorCode.HTTP_NoAccount);
                 return actionResult;
             }
 
-            Uri isValidUrl;
-            if (!Uri.TryCreate(httpAccount.Url, UriKind.Absolute, out isValidUrl))
+            var startsWithToken = httpAccount.Url.StartsWith("<") && httpAccount.Url.Contains(">");
+            var containsToken = httpAccount.Url.Contains("<") && httpAccount.Url.Contains(">");
+
+            if (string.IsNullOrWhiteSpace(httpAccount.Url))
             {
-                actionResult.Add(ErrorCode.HTTP_NoUrl);
+                actionResult.Add(ErrorCode.HTTP_MissingOrInvalidUrl);
             }
-            else if (isValidUrl.Scheme != Uri.UriSchemeHttp && isValidUrl.Scheme != Uri.UriSchemeHttps)
+            else if (startsWithToken)
             {
-                actionResult.Add(ErrorCode.HTTP_MustStartWithHttp);
+            }
+            else if (containsToken)
+            {
+                if (!httpAccount.Url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
+                    && !httpAccount.Url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    actionResult.Add(ErrorCode.HTTP_MustStartWithHttp);
+                }
+            }
+            else
+            {
+                if (!Uri.TryCreate(httpAccount.Url, UriKind.Absolute, out var isValidUrl))
+                {
+                    actionResult.Add(ErrorCode.HTTP_MissingOrInvalidUrl);
+                }
+                else if (isValidUrl.Scheme != Uri.UriSchemeHttp && isValidUrl.Scheme != Uri.UriSchemeHttps)
+                {
+                    actionResult.Add(ErrorCode.HTTP_MustStartWithHttp);
+                }
             }
 
             if (httpAccount.IsBasicAuthentication)
@@ -64,7 +98,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 if (string.IsNullOrWhiteSpace(httpAccount.UserName))
                     actionResult.Add(ErrorCode.HTTP_NoUserNameForAuth);
 
-                if (profile.AutoSave.Enabled && string.IsNullOrWhiteSpace(httpAccount.Password))
+                if (isAutoSave && string.IsNullOrWhiteSpace(httpAccount.Password))
                     actionResult.Add(ErrorCode.HTTP_NoPasswordForAuthWithAutoSave);
             }
 
@@ -162,7 +196,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 timeout = 60;
 
             httpClient.Timeout = TimeSpan.FromSeconds(timeout);
-            var uri = new Uri(account.Url);
+
+            var url = job.TokenReplacer.ReplaceTokens(account.Url);
+            Logger.Debug("Http upload url: " + url);
+            var uri = new Uri(url);
             if (account.IsBasicAuthentication)
             {
                 var asciiAuth = Encoding.ASCII.GetBytes($"{account.UserName}:{job.Passwords.HttpPassword}");

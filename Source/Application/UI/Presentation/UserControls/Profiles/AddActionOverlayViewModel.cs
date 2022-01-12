@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
@@ -26,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public ICommand InfoActionCommand { get; set; }
         public ICommand HideInfoActionCommand { get; set; }
         public ICommand TriggerAddActionCommand { get; set; }
-        private ICommand AddActionCommand { get; set; }
+        private IAsyncCommand AddActionCommand { get; set; }
         public ObservableCollection<IPresenterActionFacade> PreparationActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> ModifyActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> SendActions { get; set; }
@@ -43,8 +44,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
             InfoActionCommand = new DelegateCommand(ShowActionInfo);
             HideInfoActionCommand = new DelegateCommand(HideActionInfo);
-            AddActionCommand = commandLocator.GetCommand<AddActionCommand>();
-            TriggerAddActionCommand = new DelegateCommand(TriggerAddAction);
+            AddActionCommand = commandLocator.GetCommand<AddActionCommand>() as IAsyncCommand;
+            TriggerAddActionCommand = new AsyncCommand(TriggerAddAction);
 
             GenerateCollectionViewsOfActions();
 
@@ -92,11 +93,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(ShowInfoText));
         }
 
-        private void TriggerAddAction(object obj)
+        private async Task TriggerAddAction(object obj)
         {
             FinishInteraction();
-
-            AddActionCommand.Execute(obj);
+            await AddActionCommand?.ExecuteAsync(obj);
         }
 
         private void ProfileProviderOnSelectedProfileChanged(object sender, PropertyChangedEventArgs e)

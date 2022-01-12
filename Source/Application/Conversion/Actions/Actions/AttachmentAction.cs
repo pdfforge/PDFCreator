@@ -25,14 +25,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             _pathUtil = pathUtil;
         }
 
-        public void ProcessJob(IPdfProcessor processor, Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             processor.AddAttachment(job);
-        }
-
-        protected override ActionResult DoProcessJob(Job job)
-        {
-            throw new NotImplementedException();
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)

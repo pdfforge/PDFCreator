@@ -26,7 +26,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
     {
         void StoreCurrentSettings();
 
-        void Reset();
+        void Reset(bool fullClone);
 
         CurrentCheckSettings CheckSettings { get; }
     }
@@ -88,14 +88,30 @@ namespace pdfforge.PDFCreator.UI.Presentation
             return Profiles.FirstOrDefault(p => p.Name == name);
         }
 
+        private void OverrideDefaultViewerList(ObservableCollection<DefaultViewer> target, ObservableCollection<DefaultViewer> source)
+        {
+            foreach (var targetView in target)
+            {
+                var sourceView = source.FirstOrDefault(viewer => viewer.OutputFormat == targetView.OutputFormat);
+                if (sourceView == null)
+                    continue;
+
+                targetView.IsActive = sourceView.IsActive;
+                targetView.Parameters = sourceView.Parameters;
+                targetView.Path = sourceView.Path;
+            }
+        }
+
         public void StoreCurrentSettings()
         {
+            OverrideDefaultViewerList(Settings.DefaultViewers, _settingsProvider.Settings.DefaultViewers);
+
             _settingsProvider.UpdateSettings(Settings);
         }
 
-        public void Reset()
+        public void Reset(bool fullClone)
         {
-            CloneSettings();
+            CloneSettings(fullClone);
             SelectedProfile = _settings.GetProfileByName(_selectedProfile.Name);
             SettingsChanged?.Invoke(this, EventArgs.Empty);
             RaisePropertyChanged(nameof(Settings));
@@ -120,16 +136,18 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             if (_settings == null || forceUpdate)
             {
-                CloneSettings();
+                CloneSettings(false);
                 var firstProfile = Profiles.FirstOrDefault();
                 _selectedProfile = _selectedProfile == null ? firstProfile : Profiles.FirstOrDefault(x => x.Guid == _selectedProfile.Guid) ?? firstProfile;
                 SettingsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private void CloneSettings()
+        private void CloneSettings(bool fullClone)
         {
-            _settings = _settingsProvider.Settings.CopyAndPreserveApplicationSettings();
+            _settings = fullClone
+                ? _settingsProvider.Settings.Copy()
+                : _settingsProvider.Settings.CopyAndPreserveApplicationSettings();
         }
     }
 }

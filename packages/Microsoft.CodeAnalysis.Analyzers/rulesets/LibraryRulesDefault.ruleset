@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<RuleSet Name="Library Rules with default severity" Description="All Library Rules with default severity. Rules with IsEnabledByDefault = false or from a different category are disabled." ToolsVersion="15.0">
+   <!-- Library Rules -->
+   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
+      <Rule Id="RS1023" Action="Warning" />          <!-- Upgrade MSBuildWorkspace -->
+   </Rules>
+
+
+
+   <!-- Other Rules -->
+   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
+      <Rule Id="RS1001" Action="None" />             <!-- Missing diagnostic analyzer attribute. -->
+      <Rule Id="RS1002" Action="None" />             <!-- Missing kind argument when registering an analyzer action. -->
+      <Rule Id="RS1003" Action="None" />             <!-- Unsupported SymbolKind argument when registering a symbol analyzer action. -->
+      <Rule Id="RS1004" Action="None" />             <!-- Recommend adding language support to diagnostic analyzer. -->
+      <Rule Id="RS1005" Action="None" />             <!-- ReportDiagnostic invoked with an unsupported DiagnosticDescriptor. -->
+      <Rule Id="RS1006" Action="None" />             <!-- Invalid type argument for DiagnosticAnalyzer's Register method. -->
+      <Rule Id="RS1007" Action="None" />             <!-- Provide localizable arguments to diagnostic descriptor constructor. -->
+      <Rule Id="RS1008" Action="None" />             <!-- Avoid storing per-compilation data into the fields of a diagnostic analyzer. -->
+      <Rule Id="RS1009" Action="None" />             <!-- Only internal implementations of this interface are allowed. -->
+      <Rule Id="RS1010" Action="None" />             <!-- Create code actions should have a unique EquivalenceKey for FixAll occurrences support. -->
+      <Rule Id="RS1011" Action="None" />             <!-- Use code actions that have a unique EquivalenceKey for FixAll occurrences support. -->
+      <Rule Id="RS1012" Action="None" />             <!-- Start action has no registered actions. -->
+      <Rule Id="RS1013" Action="None" />             <!-- Start action has no registered non-end actions. -->
+      <Rule Id="RS1014" Action="None" />             <!-- Do not ignore values returned by methods on immutable objects. -->
+      <Rule Id="RS1015" Action="None" />             <!-- Provide non-null 'helpLinkUri' value to diagnostic descriptor constructor. -->
+      <Rule Id="RS1016" Action="None" />             <!-- Code fix providers should provide FixAll support. -->
+      <Rule Id="RS1017" Action="None" />             <!-- DiagnosticId for analyzers must be a non-null constant. -->
+      <Rule Id="RS1018" Action="None" />             <!-- DiagnosticId for analyzers must be in specified format. -->
+      <Rule Id="RS1019" Action="None" />             <!-- DiagnosticId must be unique across analyzers. -->
+      <Rule Id="RS1020" Action="None" />             <!-- Category for analyzers must be from the specified values. -->
+      <Rule Id="RS1021" Action="None" />             <!-- Invalid entry in analyzer category and diagnostic ID range specification file. -->
+      <Rule Id="RS1022" Action="None" />             <!-- Do not use types from Workspaces assembly in an analyzer -->
+      <Rule Id="RS1024" Action="None" />             <!-- Compare symbols correctly -->
+      <Rule Id="RS1025" Action="None" />             <!-- Configure generated code analysis -->
+      <Rule Id="RS1026" Action="None" />             <!-- Enable concurrent execution -->
+   </Rules>
+</RuleSet>

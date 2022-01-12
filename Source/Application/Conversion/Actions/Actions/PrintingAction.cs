@@ -29,8 +29,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         ///     Prints the input files to the configured printer
         /// </summary>
         /// <param name="job">The job to process</param>
+        /// <param name="processor"></param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             Logger.Debug("Launched Printing-Action");
 

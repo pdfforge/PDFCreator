@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
 using Prism.Regions;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background
 {
@@ -17,10 +17,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             TransposerHelper.Register(this, viewModel);
             InitializeComponent();
         }
-    }
-
-    public interface IActionUserControl
-    {
-        IActionViewModel ViewModel { get; }
     }
 }

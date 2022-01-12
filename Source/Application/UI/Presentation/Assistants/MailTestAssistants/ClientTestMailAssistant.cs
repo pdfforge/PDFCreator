@@ -1,5 +1,6 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Translation;
@@ -7,6 +8,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
 using System.Threading.Tasks;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
@@ -19,8 +21,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
     {
         public ClientTestMailAssistant(ITranslationUpdater translationUpdater, ITokenHelper tokenHelper,
             ITestFileDummyHelper testFileDummyHelper, IEMailClientAction mailAction,
-            ErrorCodeInterpreter errorCodeInterpreter, IInteractionRequest interactionRequest)
-            : base(translationUpdater, tokenHelper, testFileDummyHelper, mailAction, errorCodeInterpreter, interactionRequest)
+            ErrorCodeInterpreter errorCodeInterpreter, IInteractionRequest interactionRequest, IFile file, IPdfProcessor processor)
+            : base(translationUpdater, tokenHelper, testFileDummyHelper, mailAction, errorCodeInterpreter, interactionRequest, file, processor)
         { }
 
         protected override void SetMailActionSettings(ConversionProfile profile, EmailClientSettings emailClientSettings)

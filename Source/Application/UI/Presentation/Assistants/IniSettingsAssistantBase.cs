@@ -92,7 +92,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             var interaction = new OpenFileInteraction();
 
             interaction.Filter = Translation.IniFileFilter;
-            interaction.FileName = "PDFCreator.ini";
 
             InteractionInvoker.Invoke(interaction);
 

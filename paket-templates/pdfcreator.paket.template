@@ -1,0 +1,29 @@
+type file
+id PDFCreator
+authors pdfforge GmbH
+
+description
+  PDFCreator
+
+files
+  ..\build\tmp\PDFCreator => tools
+  ..\build\license_summary.md => tools
+  !..\build\tmp\PDFCreator\**\*.chm
+  ..\Source\Application\Editions\PDFCreatorCustom\Properties\Customization.resx => tools
+  ..\Source\Application\Editions\PDFCreatorCustom\pdfforge.snk => tools
+  ..\GroupPolicies\**\* => tools\GroupPolicies
+  ..\COM Scripts\**\* => tools\COM Scripts
+  ..\CS-Scripts\ => tools\CS-Scripts
+  ..\Source\Languages\**\*.mo => tools\Languages
+  ..\Source\Languages\*.pot => tools\Languages
+
+dependencies
+  iText7 = LOCKEDVERSION
+  PdfTools.Pdf2Pdf = LOCKEDVERSION
+  PdfTools.PdfValidator = LOCKEDVERSION
+  PdfTools.PdfSecurity = LOCKEDVERSION
+  PdfTools.PdfToolbox = LOCKEDVERSION
+  PDFCreator.UserGuide ~> LOCKED:Patch
+  PDFCreatorShell ~> LOCKED:Minor
+  PrinterHelper >= LOCKEDVERSION
+  Ghostscript = LOCKEDVERSION

@@ -1,12 +1,10 @@
 using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
-using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.Utilities.IO;
 
@@ -17,7 +15,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IShellManager _shellManager;
-        private readonly IErrorNotifier _errorNotifier;
         private readonly ISettingsProvider _settingsProvider;
         private readonly ICommandLocator _commandLocator;
         private readonly ILastSaveDirectoryHelper _lastSaveDirectoryHelper;
@@ -26,14 +23,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         private readonly ITargetFilePathComposer _targetFilePathComposer;
 
         public InteractiveWorkflow(IShellManager shellManager, ITargetFilePathComposer targetFilePathComposer, IJobDataUpdater jobDataUpdater,
-                                   IErrorNotifier errorNotifier, ISettingsProvider settingsProvider,
-                                   ICommandLocator commandLocator, ILastSaveDirectoryHelper lastSaveDirectoryHelper,
+                                   ISettingsProvider settingsProvider, ICommandLocator commandLocator, ILastSaveDirectoryHelper lastSaveDirectoryHelper,
                                    IDirectoryHelper directoryHelper, IInteractiveProfileChecker interactiveProfileChecker,
                                    IJobEventsManager jobEventsManager
             )
         {
             _shellManager = shellManager;
-            _errorNotifier = errorNotifier;
             _settingsProvider = settingsProvider;
             _commandLocator = commandLocator;
             _lastSaveDirectoryHelper = lastSaveDirectoryHelper;
@@ -84,16 +79,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             {
                 _directoryHelper.DeleteCreatedDirectories();
             }
-        }
-
-        protected override void HandleWarning(ActionResult result)
-        {
-            _errorNotifier.NotifyIgnoredWithWindow(result);
-        }
-
-        protected override void HandleError(ErrorCode errorCode)
-        {
-            _errorNotifier.NotifyWithWindow(new ActionResult(errorCode));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Core.Services.Macros;
@@ -22,11 +23,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
             ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
-            OpenAddActionOverviewCommand = new DelegateCommand(OpenAddActionOverview);
+            OpenAddActionOverviewCommand = new AsyncCommand(OpenAddActionOverview);
         }
-        public DelegateCommand OpenAddActionOverviewCommand { get; set; }
+        public ICommand OpenAddActionOverviewCommand { get; set; }
 
-        private async void OpenAddActionOverview(object obj)
+        private async Task OpenAddActionOverview(object obj)
         {
             await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
         }

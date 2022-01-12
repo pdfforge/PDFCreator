@@ -20,15 +20,13 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         private PrintCommandGroup _printCommands = new PrintCommandGroup();
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
-        private readonly IDirectory _directory;
         private readonly IFile _file;
 
-        protected PrintFileHelperBase(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc, IDirectory directory, IFile file)
+        protected PrintFileHelperBase(IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IFileAssoc fileAssoc, IFile file)
         {
             _printerHelper = printerHelper;
             _settingsProvider = settingsProvider;
             _fileAssoc = fileAssoc;
-            _directory = directory;
             _file = file;
         }
 
@@ -41,6 +39,7 @@ namespace pdfforge.PDFCreator.Core.Printing.Printing
         ///     A single file. If this is the path of a directory or an unprintable file, an error message will be
         ///     shown.
         /// </param>
+        /// <param name="silent">If true, no message windows are shown</param>
         /// <returns>true, if all files are printable</returns>
         public bool AddFile(string file, bool silent)
         {

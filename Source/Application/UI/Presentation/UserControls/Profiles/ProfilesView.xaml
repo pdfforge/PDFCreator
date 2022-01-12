@@ -46,7 +46,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="{Binding Translation.ProfileLabelText}" VerticalAlignment="Center" />
 
-                <profiles:ProfilesComboBox Profiles="{Binding Profiles}"
+                <profiles:ProfilesComboBox Profiles="{Binding Profiles, Mode=OneWay}"
                                                SelectedProfile="{Binding SelectedProfile }"
                                                Grid.Column="1" Margin="10 0" />
 

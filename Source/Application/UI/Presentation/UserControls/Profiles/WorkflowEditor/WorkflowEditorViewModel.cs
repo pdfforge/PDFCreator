@@ -16,6 +16,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {
@@ -29,13 +31,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
         private IEnumerable<IPresenterActionFacade> ActionFacades { get; }
         public DelegateCommand RemoveActionCommand { get; set; }
-        public DelegateCommand EditActionCommand { get; set; }
+        public IAsyncCommand EditActionCommand { get; set; }
 
         public ObservableCollection<IPresenterActionFacade> PreparationActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> ModifyActions { get; set; }
         public ObservableCollection<IPresenterActionFacade> SendActions { get; set; }
 
-        public DelegateCommand OpenAddActionOverviewCommand { get; set; }
+        public ICommand OpenAddActionOverviewCommand { get; set; }
 
         public IDropTarget PreparationDropTarget { get; private set; }
         public IDropTarget ModifyDropTarget { get; private set; }
@@ -67,8 +69,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             ActionFacades = actionFacades;
 
             RemoveActionCommand = new DelegateCommand(ExecuteRemoveAction);
-            EditActionCommand = new DelegateCommand(ExecuteEditAction);
-            OpenAddActionOverviewCommand = new DelegateCommand(OpenAddActionOverview);
+            EditActionCommand = new AsyncCommand(ExecuteEditAction);
+            OpenAddActionOverviewCommand = new AsyncCommand(OpenAddActionOverview);
 
             PreparationDropTarget = new WorkflowEditorActionDropTargetHandler<IPreConversionAction>();
             ModifyDropTarget = new WorkflowEditorActionDropTargetHandler<IConversionAction>();
@@ -175,7 +177,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             _wasInit = true;
         }
 
-        private async void OpenAddActionOverview(object obj)
+        private async Task OpenAddActionOverview(object obj)
         {
             await _interactionRequest.RaiseAsync(new AddActionOverlayInteraction());
         }
@@ -185,7 +187,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
             GenerateCollectionViewsOfActions();
         }
 
-        private async void ExecuteEditAction(object obj)
+        private async Task ExecuteEditAction(object obj)
         {
             var actionFacade = (IPresenterActionFacade)obj;
             var settingsCopy = actionFacade.GetCurrentSettingCopy();

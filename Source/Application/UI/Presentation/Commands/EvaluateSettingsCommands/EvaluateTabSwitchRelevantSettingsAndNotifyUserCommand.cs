@@ -77,7 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
                     return;
 
                 case MessageResponse.No:
-                    _currentSettingsProvider.Reset();
+                    _currentSettingsProvider.Reset(false);
                     RaiseIsDone(ResponseStatus.Skip);
                     return;
 

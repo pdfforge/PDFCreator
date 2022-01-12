@@ -14,7 +14,9 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
@@ -26,17 +28,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly ITestFileDummyHelper _testFileDummyHelper;
         private readonly IAction _mailAction;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
+        private readonly IFile _file;
+        private readonly IPdfProcessor _processor;
         protected IInteractionRequest InteractionRequest { get; }
         private readonly ITokenHelper _tokenHelper;
 
         protected TestMailAssistantBase(ITranslationUpdater translationUpdater, ITokenHelper tokenHelper,
                                         ITestFileDummyHelper testFileDummyHelper, IAction mailAction,
-                                        ErrorCodeInterpreter errorCodeInterpreter, IInteractionRequest interactionRequest)
+                                        ErrorCodeInterpreter errorCodeInterpreter, IInteractionRequest interactionRequest, IFile file, IPdfProcessor processor)
         {
             translationUpdater.RegisterAndSetTranslation(tf => Translation = tf.UpdateOrCreateTranslation(Translation));
             _testFileDummyHelper = testFileDummyHelper;
             _mailAction = mailAction;
             _errorCodeInterpreter = errorCodeInterpreter;
+            _processor = processor;
+            _file = file;
             InteractionRequest = interactionRequest;
             _tokenHelper = tokenHelper;
         }
@@ -62,7 +68,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 var result = _mailAction.Check(job.Profile, currentCheckSettings, CheckLevel.RunningJob);
 
                 if (result)
-                    result = await Task.Run(() => _mailAction.ProcessJob(job));
+                    result = await Task.Run(() => _mailAction.ProcessJob(job, _processor));
 
                 if (result)
                     ShowSuccess(job);
@@ -81,12 +87,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         private Job CreateTestMailJob(TMailActionSettings mailActionSettings, Accounts accounts)
         {
+            //Copy to not overwrite current settings
             var mailSettingsCopy = (TMailActionSettings)mailActionSettings.Copy();
 
             mailSettingsCopy.Enabled = true;
-            var numberOfFiles = mailSettingsCopy.AdditionalAttachments.Count;
-            var additionalAttachmentDummies = _testFileDummyHelper.CreateFileList(Translation.AdditionalAttachmentFile, "pdf", numberOfFiles);
-            mailSettingsCopy.AdditionalAttachments = additionalAttachmentDummies;
+            var additionalAttachment = mailActionSettings.AdditionalAttachments.Select(s =>
+            {
+                if (_file.Exists(s)) //Also returns false for file path with token
+                    return s;
+                return _testFileDummyHelper.CreateFile(PathSafe.GetFileName(s), "pdf");
+            }).ToList();
+
+            mailSettingsCopy.AdditionalAttachments = additionalAttachment;
 
             var profile = new ConversionProfile();
             profile.AutoSave.Enabled = false;

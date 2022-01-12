@@ -55,6 +55,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string UsageStatisticsManualLinkText { get; private set; } = "If you want to know more you can take a look at our manual:";
         public string UsageStatisticsLink { get; private set; } = "Usage statistics";
 
+        public string HotStandbyHeader { get; private set; } = "PDFCreator Standby";
+        public string HotStandbyDuration { get; private set; } = "Standby duration";
+        public string HotStandbyExplanation { get; private set; } = "PDFCreator uses the standby to accelerate printing and using PDFCreator. After closing PDFCreator, the application will keep running for the configured time with a low footprint. This significantly accelerates further conversions.";
+        public string HotStandbyMinutes { get; private set; } = "minutes";
+        public EnumTranslation<StandbySetting>[] HotStandbySettings { get; private set; } = EnumTranslation<StandbySetting>.CreateDefaultEnumTranslation();
+        
         public EnumTranslation<UpdateInterval>[] UpdateIntervals { get; private set; } = EnumTranslation<UpdateInterval>.CreateDefaultEnumTranslation();
 
         private string NewUpdateMessage { get; set; } = "The new version {0} is available.\nWould you like to download the new version?";

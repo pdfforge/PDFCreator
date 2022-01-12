@@ -51,8 +51,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         ///     Open all files in the default viewer
         /// </summary>
         /// <param name="job">Job information</param>
+        /// <param name="processor"></param>
         /// <returns>An ActionResult to determine the success and a list of errors</returns>
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
             Logger.Debug("Launched Viewer-Action");
             var file = job.OutputFiles.First();

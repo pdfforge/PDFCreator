@@ -1,5 +1,4 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -9,7 +8,7 @@ using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using SystemInterface.IO;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class BackgroundAction : ActionBase<BackgroundPage>, IConversionAction
     {
@@ -25,14 +24,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             _pathUtil = pathUtil;
         }
 
-        protected override ActionResult DoProcessJob(Job job)
+        protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void ProcessJob(IPdfProcessor pdfProcessor, Job job)
-        {
-            pdfProcessor.AddBackground(job);
+            processor.AddBackground(job);
+            return new ActionResult();
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)

@@ -61,7 +61,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         {
         }
 
-        public void Reset()
+        public void Reset(bool fullClone)
         {
         }
 

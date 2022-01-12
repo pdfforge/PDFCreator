@@ -16,9 +16,13 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
             _errorCodeTranslations = translationFactory.CreateEnumTranslation<ErrorCode>();
         }
 
-        public string GetErrorText(ActionResult actionResult, bool withNumber, string bulletPoint = "")
+        public string GetErrorText(ActionResult actionResult, bool withNumber, string bulletPoint = "", string preface = "")
         {
             var sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(preface))
+            {
+                sb.AppendLine(preface);
+            }
 
             foreach (var result in actionResult)
                 sb.AppendLine(GetErrorText(result, withNumber, bulletPoint));

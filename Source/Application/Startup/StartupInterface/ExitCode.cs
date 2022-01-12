@@ -4,6 +4,7 @@
     {
         Ok = 0,
         Unknown = 1,
+        DeprecatedParameter = 2,
         NoTranslations = 11,
         GhostScriptNotFound = 12,
         PrintersBroken = 13,
