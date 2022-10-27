@@ -73,10 +73,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is DropboxAccount)) return false;
 			DropboxAccount v = o as DropboxAccount;
 			
-			if (!AccessToken.Equals(v.AccessToken)) return false;
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!AccountInfo.Equals(v.AccountInfo)) return false;
-			if (!RefreshToken.Equals(v.RefreshToken)) return false;
+			if (!Object.Equals(AccessToken, v.AccessToken)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(AccountInfo, v.AccountInfo)) return false;
+			if (!Object.Equals(RefreshToken, v.RefreshToken)) return false;
 			return true;
 		}
 		

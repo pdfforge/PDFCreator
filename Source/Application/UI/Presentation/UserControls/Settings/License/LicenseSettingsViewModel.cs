@@ -13,6 +13,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -22,55 +23,11 @@ using Prism.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 {
-    public class LicenseSettingsOnlineViewModel : LicenseSettingsViewModel
-    {
-        public LicenseSettingsOnlineViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings, IEventAggregator eventAggregator)
-            : base(processStarter, licenseChecker, null, interactionRequest, translationUpdater, gpoSettings, eventAggregator)
-        //offlineActivator not required. Set to null. 
-        {
-        }
-
-        public override bool ShowOfflineActivation => false;
-
-        protected override Task OfflineActivationCommandExecute(object obj)
-        {
-            throw new InvalidOperationException("Method should not be called when CanExecute returns False");
-        }
-
-        protected override bool OfflineActivationCommandCanExecute(object o)
-        {
-            return false;
-        }
-    }
-
-    public class LicenseSettingsOfflineViewModel : LicenseSettingsViewModel
-    {
-        public LicenseSettingsOfflineViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker, IOfflineActivator offlineActivator,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings, IEventAggregator eventAggregator)
-            : base(processStarter, licenseChecker, offlineActivator, interactionRequest, translationUpdater, gpoSettings,eventAggregator)
-        {
-        }
-
-        public override bool ShowOnlineActivation => false;
-
-        protected override Task OnlineActivationCommandExecute(object obj)
-        {
-            throw new InvalidOperationException();
-        }
-
-        protected override bool OnlineActivationCommandCanExecute(object o)
-        {
-            return false;
-        }
-    }
-
     public class LicenseSettingsViewModel : TranslatableViewModelBase<LicenseSettingsTranslation>, ITabViewModel
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         
         private readonly IGpoSettings _gpoSettings;
-        private readonly IEventAggregator _eventAggregator;
         private readonly IInteractionRequest _interactionRequest;
         private readonly ILicenseChecker _licenseChecker;
         private readonly LicenseKeySyntaxChecker _licenseKeySyntaxChecker = new LicenseKeySyntaxChecker();
@@ -78,10 +35,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         private readonly IProcessStarter _processStarter;
 
         private Option<Activation, LicenseError> _activation;
-        
+
         public LicenseSettingsViewModel(IProcessStarter processStarter, ILicenseChecker licenseChecker, IOfflineActivator offlineActivator,
-            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings,
-            IEventAggregator eventAggregator):base(translationUpdater)
+            IInteractionRequest interactionRequest, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings):base(translationUpdater)
         {
             ShareLicenseForAllUsersEnabled = true;
             _processStarter = processStarter;
@@ -90,19 +46,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 
             _interactionRequest = interactionRequest;
             _gpoSettings = gpoSettings;
-            _eventAggregator = eventAggregator;
 
-            OnlineActivationAsyncCommand = new AsyncCommand(OnlineActivationCommandExecute, OnlineActivationCommandCanExecute);
-            OfflineActivationAsyncCommand = new AsyncCommand(OfflineActivationCommandExecute, OfflineActivationCommandCanExecute);
+            OnlineActivationAsyncCommand = new AsyncCommand(OnlineActivationCommandExecute);
+            OfflineActivationAsyncCommand = new AsyncCommand(OfflineActivationCommandExecute);
             ManageLicensesCommand = new DelegateCommand(ManageLicensesCommandExecute);
 
             _activation = licenseChecker.GetSavedActivation();
         }
 
         public bool ShareLicenseForAllUsersEnabled { private get; set; }
-
-        public virtual bool ShowOnlineActivation => true;
-        public virtual bool ShowOfflineActivation => true;
 
         public string Licensee => _activation.Match(a => a.Licensee, e => "");
         public string MachineId => _activation.Match(a => a.MachineId, e => "");
@@ -182,7 +134,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             RaisePropertyChanged(nameof(LicenseStatusText));
         }
 
-        protected virtual async Task OfflineActivationCommandExecute(object obj)
+        private async Task OfflineActivationCommandExecute(object obj)
         {
             if (_offlineActivator == null)
                 return;
@@ -216,17 +168,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             }
         }
 
-        protected virtual bool OnlineActivationCommandCanExecute(object o)
-        {
-            return true;
-        }
-
-        protected virtual bool OfflineActivationCommandCanExecute(object o)
-        {
-            return true;
-        }
-
-        protected virtual async Task OnlineActivationCommandExecute(object o)
+        private async Task OnlineActivationCommandExecute(object o)
         {
             var lastActivationKey = LicenseKey;
 
@@ -435,12 +377,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             return activation.Match(DetermineLicenseStatus, e => LicenseStatusForView.Invalid);
         }
 
-
         private void ManageLicensesCommandExecute(object o)
         {
             try
             {
-                _processStarter.Start(Urls.LicenseServerUrl);
+                var licenseKeyUrl = $"{Urls.LicenseServerManageSingleLicense}?license_key={LicenseKey}";
+                _processStarter.Start(licenseKeyUrl);
             }
             catch
             {

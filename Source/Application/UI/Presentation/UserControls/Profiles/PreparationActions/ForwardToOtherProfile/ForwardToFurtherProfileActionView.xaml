@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileActionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeForwardToFurtherProfileActionViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="ForwardToProfile">
+
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
+
+        <HeaderedContentControl.Header>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{DynamicResource LargeLabel}"
+                       Margin="0 0 0 0"
+                       Content="{Binding Translation.DisplayName}" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" Height=" 0" DockPanel.Dock="Left" />
+            </StackPanel>
+        </HeaderedContentControl.Header>
+        <StackPanel>
+            <TextBlock Margin="0 10 0 0"
+                       Text="{Binding Translation.InfoText}"
+                       TextWrapping="Wrap" />
+            <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.SelectProfile}" />
+            <redesign5:ProfilesComboBox Margin="0 10 0 0"
+                                        MinWidth="400"
+                                        Profiles="{Binding ProfilesWrapper, Mode=OneWay}"
+                                        SelectedProfile="{Binding ForwardProfileWrapper}"
+                                        Background="{StaticResource PrintJobProfileComboboxBackground}"
+                                        HorizontalAlignment="Left" />
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

@@ -1,11 +1,12 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
@@ -19,7 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             IIniSettingsLoader iniSettingsLoader,
             IPrinterProvider printerProvider,
             IUacAssistant uacAssistant,
-            IActionOrderChecker actionOrderChecker,
+            IActionOrderHelper actionOrderHelper,
             EditionHelper editionHelper)
             : base(
                 interactionInvoker,
@@ -29,7 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
                 iniSettingsLoader,
                 printerProvider,
                 uacAssistant,
-                actionOrderChecker,
+                actionOrderHelper,
                 editionHelper)
         {
         }

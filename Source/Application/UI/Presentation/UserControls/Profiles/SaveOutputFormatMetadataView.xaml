@@ -1,12 +1,13 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="350"
              KeyboardNavigation.TabNavigation="None"
@@ -16,174 +17,174 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="../../Styles/LightGreyButton.xaml" />
-                <ResourceDictionary  Source="../../Styles/PDFCreatorIcons.xaml" />
-                <ResourceDictionary  Source="../../Styles/TextStyle.xaml" />
+                <ResourceDictionary  Source="../../Styles/Redesign5/Buttons/ProfileSettingsPreviewButton.xaml" />
+                <ResourceDictionary  Source="../../Styles/Redesign5/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
-            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.Resources>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="Foreground" Value="DimGray" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="FontWeight" Value="Regular" />
-                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-        </Grid.Resources>
+    <StackPanel>
+        <!-- Save Section -->
+        <Button Command="{Binding SetSaveCommand}"
+                Style="{StaticResource ProfileSettingsPreviewButton}"
+                help:HelpProvider.HelpTopic="ProfileSave">
+            <StackPanel>
+                <Label Content="{Binding Translation.Save}"
+                       Style="{StaticResource LargeLabel}" />
 
-        <!-- Save / Format / Metadata -->
-        <ScrollViewer Grid.Column="0" Grid.Row="0"
-                      HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto">
-            <DockPanel>
-                <!-- Save Section -->
-                <Button Command="{Binding SetSaveCommand}"
-                        Style="{DynamicResource SettingsPreviewButton}">
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Translation.Save}" FontWeight="Bold" />
+                <!-- Interactive (o  ) Automatic -->
+                <redesign5:OnOffLabelToggleSwitchCheckBox
+                    Margin="0 10 0 0"
+                    Visibility="{Binding IsServer, Converter={StaticResource CollapsedIfTrueConverter}}"
+                    IsChecked="{Binding AutoSaveEnabled}"
+                    OnContent="{Binding Translation.Autosave}"
+                    OffContent="{Binding Translation.Interactive}" />
 
-                        <!-- Interactive (o  ) Automatic -->
-                        <DockPanel DockPanel.Dock="Top" FlowDirection="LeftToRight"
-                                   Visibility="{Binding IsServer, Converter={StaticResource CollapsedWhenTrueConverter}}">
-                            <TextBlock Text="{Binding Translation.Interactive}" FontSize="14">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoSaveEnabled}" Value="False">
-                                                <Setter Property="FontWeight" Value="DemiBold" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoSaveEnabled}" Value="True">
-                                                <Setter Property="FontWeight" Value="Regular" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                <!-- Filename -->
+                <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                    <Label Margin="0 0 5 0"
+                           Content="{Binding Translation.FilenameLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <iconPacks:PackIconMaterialDesign Margin="0 0 2 0"
+                                                      Visibility="{Binding FilenameHasWarning, Converter={StaticResource CollapsedIfFalseConverter}}"
+                                                      Kind="Notifications" Height="12" Foreground="{StaticResource WarningBrush}"  VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Filename}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
 
-                            <controls:ToggleSwitchButton OnSwitchBrush="DimGray"
-                                                         OffSwitchBrush="White"
-                                                         BorderThickness="2"
-                                                         Style="{DynamicResource MahApps.Metro.Styles.ToggleSwitchButton.Win10}"
-                                                         IsChecked="{Binding AutoSaveEnabled, Mode=OneWay}"
-                                                         Margin="5 5 5 3"
-                                                         IsEnabled="False" />
+                <!-- Target Directory -->
+                <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                    <Label Margin="0 0 5 0"
+                           Content="{Binding Translation.TargetDirectoryLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <iconPacks:PackIconMaterialDesign Margin="0 0 2 0"
+                                                      Visibility="{Binding DirectoryHasWarning, Converter={StaticResource CollapsedIfFalseConverter}}"
+                                                      Kind="Notifications" Height="12" Foreground="{StaticResource WarningBrush}" />
+                    <TextBlock Text="{Binding Directory}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
 
-                            <TextBlock Text="{Binding Translation.Autosave}" FontSize="14">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AutoSaveEnabled}" Value="True">
-                                                <Setter Property="FontWeight" Value="DemiBold" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding AutoSaveEnabled}" Value="False">
-                                                <Setter Property="FontWeight" Value="Regular" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DockPanel>
-
-                        <!-- Filename and Dir -->
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Translation.FilenameLabel}" FontWeight="DemiBold" Margin="0 5 0 0" />
-                        <DockPanel DockPanel.Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <ContentPresenter Content="{DynamicResource WarningIconRed}"
-                                              Visibility="{Binding FilenameHasWarning, Converter={StaticResource CollapsedWhenFalseConverter}}"
-                                              Margin="0 1 5 0" />
-                            <TextBlock Text="{Binding Filename}" />
-                        </DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Translation.TargetDirectoryLabel}" FontWeight="DemiBold" Margin="0 5 0 0" />
-                        <DockPanel DockPanel.Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <ContentPresenter Content="{DynamicResource WarningIconRed}"
-                                              Visibility="{Binding DirectoryHasWarning, Converter={StaticResource CollapsedWhenFalseConverter}}"
-                                              Margin="0 1 5 0" />
-                            <TextBlock Text="{Binding Directory}" />
-                        </DockPanel>
-
-                        <!-- Options for Interactive-->
-                        <DockPanel Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedWhenTrueConverter}}">
-                            <CheckBox DockPanel.Dock="Top" IsChecked="{Binding SkipPrintDialog, Mode=OneWay}"
-                                      Style="{DynamicResource PreviewCheckBox}">
-                                <TextBlock Text="{Binding Translation.SkipPrintDialog}" />
-                            </CheckBox>
-                            <CheckBox DockPanel.Dock="Top"
-                                      IsChecked="{Binding SkipSendFailures, Mode=OneWay}"
-                                      Style="{DynamicResource PreviewCheckBox}">
-                                <TextBlock Text="{Binding Translation.SkipSendFailures}" />
-                            </CheckBox>
-                        </DockPanel>
-
-                        <!-- Options for Automatic-->
-                        <DockPanel Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedWhenFalseConverter}}">
-                            <CheckBox DockPanel.Dock="Top"
-                                      IsChecked="{Binding EnsureUniqueFilenames, Mode=OneWay}"
-                                      Style="{DynamicResource PreviewCheckBox}">
-                                <TextBlock Text="{Binding Translation.EnsureUniqueFilenames}" />
-                            </CheckBox>
-                            <CheckBox DockPanel.Dock="Top"
-                                      IsChecked="{Binding SkipSendFailures, Mode=OneWay}"
-                                      Style="{DynamicResource PreviewCheckBox}">
-                                <TextBlock Text="{Binding Translation.SkipSendFailures}" />
-                            </CheckBox>
-                            <CheckBox DockPanel.Dock="Top"
-                                      IsChecked="{Binding ShowTrayNotification, Mode=OneWay}"
-                                      Style="{DynamicResource PreviewCheckBox}"
-                                      Visibility="{Binding IsServer, Converter={StaticResource CollapsedWhenTrueConverter}}">
-                                <TextBlock Text="{Binding Translation.ShowTrayNotification}" />
-                            </CheckBox>
-                        </DockPanel>
-                    </DockPanel>
-                </Button>
-
-                <!-- OutputFormat -->
-                <Button Command="{Binding SetOutputFormatCommand}"
-                        Style="{DynamicResource SettingsPreviewButton}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Translation.OutputFormat}"
-                                   FontWeight="Bold" />
-                        <TextBlock Text="{Binding OutputFormatString, Mode=OneWay}" Margin="0 5 0 0" />
-                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding Translation.ColorsLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding Colors}" Margin="5 0 0 0" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding ResolutionCompressionLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding ResolutionCompression}" Margin="5 0 0 0" />
-                        </StackPanel>
+                <!-- Options for Interactive-->
+                <StackPanel Margin="0 10 0 0"
+                            Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfTrueConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding SkipPrintDialog, Mode=OneWay}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                                   Text="{Binding Translation.SkipPrintDialog}" />
                     </StackPanel>
-                </Button>
 
-                <!-- Metadata -->
-                <Button Command="{Binding SetMetaDataCommand}"
-                        Style="{DynamicResource SettingsPreviewButton}">
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top"
-                                   Text="{Binding Translation.MetaData}"
-                                   FontWeight="Bold" />
-                        <DockPanel Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding Translation.TitleLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding TitleTemplate}" Margin="5 0 0 0" />
-                        </DockPanel>
-                        <DockPanel Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding Translation.AuthorLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding AuthorTemplate}" Margin="5 0 0 0" />
-                        </DockPanel>
-                        <DockPanel Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding Translation.SubjectLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding SubjectTemplate}" Margin="5 0 0 0" />
-                        </DockPanel>
-                        <DockPanel Dock="Top" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="0 5 0 0">
-                            <TextBlock Text="{Binding Translation.KeywordsLabel}" FontWeight="DemiBold" />
-                            <TextBlock Text="{Binding KeywordTemplate}" Margin="5 0 0 0" />
-                        </DockPanel>
-                    </DockPanel>
-                </Button>
+                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding SkipSendFailures, Mode=OneWay}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                                   Text="{Binding Translation.SkipSendFailures}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Options for Automatic-->
+                <StackPanel  Margin="0 10 0 0"
+                             Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfFalseConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Translation.ExistingFileLabel}"
+                               Style="{StaticResource LightLabel}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                                   Text="{Binding ExistingFileBehavior}" />
+                    </StackPanel>
+                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding SkipSendFailures, Mode=OneWay}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                                   Text="{Binding Translation.SkipSendFailures}" />
+                    </StackPanel>
+                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal"
+                                Visibility="{Binding AllowTrayNotifications, Converter={StaticResource CollapsedIfFalseConverter}}">
+                        <CheckBox IsChecked="{Binding ShowTrayNotification, Mode=OneWay}"
+                                  Visibility="{Binding IsServer, Converter={StaticResource CollapsedIfTrueConverter}}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                                   Text="{Binding Translation.ShowTrayNotification}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Button>
+
+        <!-- OutputFormat -->
+        <Button Margin="0 20 0 0"
+                Command="{Binding SetOutputFormatCommand}"
+                Style="{StaticResource ProfileSettingsPreviewButton}"
+                help:HelpProvider.HelpTopic="OutputFormat">
+            <StackPanel>
+                <Label Content="{Binding Translation.OutputFormat}"
+                       Style="{StaticResource LargeLabel}" />
+
+                <TextBlock Margin="0 10 0 0"
+                           Text="{Binding OutputFormatString, Mode=OneWay}" />
+
+                <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                    <Label Content="{Binding Translation.ColorsLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding Colors}" />
+                </DockPanel>
+
+                <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                    <Label Content="{Binding ResolutionCompressionLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding ResolutionCompression}" />
+                </DockPanel>
+            </StackPanel>
+        </Button>
+
+        <!-- Metadata -->
+        <Button Margin="0 20 0 0"
+                Command="{Binding SetMetaDataCommand}"
+                Style="{StaticResource ProfileSettingsPreviewButton}"
+                help:HelpProvider.HelpTopic="ProfileMetadata">
+            <DockPanel>
+                <Label DockPanel.Dock="Top"
+                       Content="{Binding Translation.MetaData}"
+                       Style="{StaticResource LargeLabel}" />
+
+                <DockPanel DockPanel.Dock="Top"
+                           Margin="0 10 0 0"
+                           FlowDirection="LeftToRight">
+                    <Label Content="{Binding Translation.TitleLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding TitleTemplate}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+
+                <DockPanel DockPanel.Dock="Top"
+                           Margin="0 10 0 0"
+                           FlowDirection="LeftToRight">
+                    <Label Content="{Binding Translation.AuthorLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding AuthorTemplate}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+
+                <DockPanel DockPanel.Dock="Top"
+                           Margin="0 10 0 0"
+                           FlowDirection="LeftToRight">
+                    <Label Content="{Binding Translation.SubjectLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding SubjectTemplate}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+
+                <DockPanel DockPanel.Dock="Top"
+                           Margin="0 10 0 0"
+                           FlowDirection="LeftToRight">
+                    <Label Content="{Binding Translation.KeywordsLabel}"
+                           Style="{StaticResource LightLabel}" />
+                    <TextBlock Margin="5 0 0 0"
+                               Text="{Binding KeywordTemplate}"
+                               TextTrimming="CharacterEllipsis" />
+                </DockPanel>
             </DockPanel>
-        </ScrollViewer>
-    </Grid>
+        </Button>
+    </StackPanel>
 </UserControl>

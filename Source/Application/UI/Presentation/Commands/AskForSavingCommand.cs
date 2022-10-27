@@ -29,7 +29,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
         public override async void Execute(object parameter)
         {
             var settingsCheckResult = _tabSwitchSettingsCheck.CheckAllSettings();
-            if (settingsCheckResult.SettingsHaveChanged)
+
+            //only show for valid settings check,
+            //because saving invalid settings was already requested in EvaluateSavingRelevantSettingsAndNotifyUserCommand
+            if (settingsCheckResult.SettingsHaveChanged && settingsCheckResult.Result)
             {
                 var title = Translation.Settings;
                 var text = Translation.UnsavedChanges

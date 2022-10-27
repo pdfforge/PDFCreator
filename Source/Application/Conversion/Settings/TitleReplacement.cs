@@ -72,9 +72,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is TitleReplacement)) return false;
 			TitleReplacement v = o as TitleReplacement;
 			
-			if (!Replace.Equals(v.Replace)) return false;
-			if (!ReplacementType.Equals(v.ReplacementType)) return false;
-			if (!Search.Equals(v.Search)) return false;
+			if (!Object.Equals(Replace, v.Replace)) return false;
+			if (!Object.Equals(ReplacementType, v.ReplacementType)) return false;
+			if (!Object.Equals(Search, v.Search)) return false;
 			return true;
 		}
 		

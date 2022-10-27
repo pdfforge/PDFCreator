@@ -12,6 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
     {
         private readonly ICurrentSettings<ApplicationSettings> _settingsProvider;
         private readonly IGpoSettings _gpoSettings;
+        private readonly Option<Activation, LicenseError> _activation;
 
         public LicenseExpirationReminder(ILicenseChecker licenseChecker, ICurrentSettings<ApplicationSettings> settingsProvider, IGpoSettings gpoSettings)
         {
@@ -45,6 +46,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         public int DaysTillLicenseExpires => CalculateDaysTillLicenseExpiration();
 
+        public string LicenseKey => _activation.Map(a => a.GetNormalizedKey()).ValueOr("");
+
         private int CalculateDaysTillLicenseExpiration()
         {
             return _activation.Map(a =>
@@ -53,8 +56,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 return (int)remainingTime.TotalDays;
             }).ValueOr(0);
         }
-
-        private Option<Activation, LicenseError> _activation;
 
         private struct ReminderPeriod
         {
@@ -65,6 +66,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
     public interface ILicenseExpirationReminder
     {
+        string LicenseKey { get; }
         int DaysTillLicenseExpires { get; }
 
         bool IsExpirationReminderDue();

@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <RegisterForComInterop>false</RegisterForComInterop>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -54,6 +56,7 @@
     <Compile Include="IJobPrinter.cs" />
     <Compile Include="IMailSignatureHelper.cs" />
     <Compile Include="ITitleReplacerProvider.cs" />
+    <Compile Include="JobInfo\FileHandlingState.cs" />
     <Compile Include="JobInfo\JobInfoDuplicator.cs" />
     <Compile Include="JobInfo\SourceFileInfoDuplicator.cs" />
     <Compile Include="JobInfo\StoredParametersManager.cs" />
@@ -69,7 +72,7 @@
     <Compile Include="ProcessingException.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SpooledJobFinder.cs" />
-    <Compile Include="FolderProvider\ITempPathProvider.cs" />
+    <Compile Include="FolderProvider\ITempFolderProvider.cs" />
     <Compile Include="Jobs\JobType.cs" />
     <Compile Include="TokenReplacerFactory.cs" />
     <Compile Include="Jobs\UserTokenExtractorDummy.cs" />
@@ -83,9 +86,9 @@
     <Compile Include="Query\QueryResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
-      <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
-      <Name>SettingsManagement</Name>
+    <ProjectReference Include="..\..\Core\SettingsManagementInterface\SettingsManagementInterface.csproj">
+      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
+      <Name>SettingsManagementInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
@@ -103,7 +106,7 @@
     <None Include="paket.references" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
@@ -138,35 +141,20 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="Microsoft.CSharp">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.Configuration">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Core">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceModel">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Xml">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -187,6 +175,9 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Data">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="System.Data.OracleClient">
           <Paket>True</Paket>
         </Reference>
@@ -200,6 +191,9 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.ServiceProcess">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="WindowsBase">

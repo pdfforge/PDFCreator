@@ -28,14 +28,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         public Metadata Metadata { get; set; }
         public JobType JobType { get; set; }
         public DateTime PrintDateTime { get; set; }
-
         public string PrinterName { get; set; }
-
         public string PrinterParameter { get; set; }
         public string ProfileParameter { get; set; }
         public string OutputFileParameter { get; set; }
-
         public string OriginalFilePath { get; set; }
+        public string SplitDocument { get; set; }
 
         private int CalculateTotalPages()
         {

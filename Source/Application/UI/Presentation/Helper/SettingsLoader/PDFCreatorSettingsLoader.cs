@@ -1,13 +1,14 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using System.Globalization;
 using System.Linq;
-using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
@@ -17,29 +18,32 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         private readonly EditionHelper _editionHelper;
         private readonly ITranslationHelper _translationHelper;
 
-        public PDFCreatorSettingsLoader(ISettingsMover settingsMover, 
-            IInstallationPathProvider installationPathProvider, 
-            IDefaultSettingsBuilder defaultSettingsBuilder, 
-            IMigrationStorageFactory migrationStorageFactory, 
-            IActionOrderChecker actionOrderChecker, 
-            ISettingsBackup settingsBackup, 
-            ITranslationHelper translationHelper, 
-            IPrinterHelper printerHelper, 
+        public PDFCreatorSettingsLoader(ISettingsMover settingsMover,
+            IInstallationPathProvider installationPathProvider,
+            IDefaultSettingsBuilder defaultSettingsBuilder,
+            IMigrationStorageFactory migrationStorageFactory,
+            IActionOrderHelper actionOrderHelper,
+            ISettingsBackup settingsBackup,
+            ITranslationHelper translationHelper,
+            IPrinterHelper printerHelper,
             EditionHelper editionHelper,
             ISharedSettingsLoader sharedSettingsLoader,
             IBaseSettingsBuilder baseSettingsBuilder)
-            : base(settingsMover, installationPathProvider, defaultSettingsBuilder, migrationStorageFactory, actionOrderChecker, settingsBackup, sharedSettingsLoader, baseSettingsBuilder)
+            : base(settingsMover, installationPathProvider, defaultSettingsBuilder, migrationStorageFactory, actionOrderHelper, settingsBackup, sharedSettingsLoader, baseSettingsBuilder)
         {
             _printerHelper = printerHelper;
             _editionHelper = editionHelper;
             _translationHelper = translationHelper;
         }
 
-        protected override void ProcessBeforeSaving(PdfCreatorSettings settings) { }
+        protected override void ProcessBeforeSaving(PdfCreatorSettings settings)
+        { }
 
-        protected override void ProcessAfterSaving(PdfCreatorSettings settings) { }
+        protected override void ProcessAfterSaving(PdfCreatorSettings settings)
+        { }
 
-        protected override void PrepareForLoading() { }
+        protected override void PrepareForLoading()
+        { }
 
         protected override void ProcessAfterLoading(PdfCreatorSettings settings)
         {

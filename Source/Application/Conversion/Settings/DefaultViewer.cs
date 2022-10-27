@@ -73,10 +73,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is DefaultViewer)) return false;
 			DefaultViewer v = o as DefaultViewer;
 			
-			if (!IsActive.Equals(v.IsActive)) return false;
-			if (!OutputFormat.Equals(v.OutputFormat)) return false;
-			if (!Parameters.Equals(v.Parameters)) return false;
-			if (!Path.Equals(v.Path)) return false;
+			if (!Object.Equals(IsActive, v.IsActive)) return false;
+			if (!Object.Equals(OutputFormat, v.OutputFormat)) return false;
+			if (!Object.Equals(Parameters, v.Parameters)) return false;
+			if (!Object.Equals(Path, v.Path)) return false;
 			return true;
 		}
 		

@@ -151,17 +151,16 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         private void SetTempFolders(Job job)
         {
-            job.JobTempFolder = PathSafe.Combine(_tempFolderProvider.TempFolder,
-                "Job_" + PathSafe.GetFileNameWithoutExtension(Path.GetRandomFileName()));
-            _directory.CreateDirectory(job.JobTempFolder);
+            if (job.JobTempFolder == null || !_directory.Exists(job.JobTempFolder))
+            {
+                job.JobTempFolder = _tempFolderProvider.CreatePrefixTempFolder("Job");
+                _directory.CreateDirectory(job.JobTempFolder);
+            }
+
             job.JobTempOutputFolder = PathSafe.Combine(job.JobTempFolder, "tempoutput");
             _directory.CreateDirectory(job.JobTempOutputFolder);
             job.IntermediateFolder = PathSafe.Combine(job.JobTempFolder, "intermediate");
             _directory.CreateDirectory(job.IntermediateFolder);
-
-            // Shorten the temp folder for GS compatibility
-            job.JobTempFolder = PathHelper.GetShortPathName(job.JobTempFolder);
-            //TODO remove this after upgrade to GS 9.19
 
             if (job.Profile.SaveFileTemporary)
             {

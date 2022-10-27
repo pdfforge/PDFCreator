@@ -2,13 +2,12 @@
 {
     public class SignaturePasswordInteraction : BasicPasswordOverlayInteraction
     {
-        public SignaturePasswordInteraction(PasswordMiddleButton middleButtonAction, string certificateFile)
-            : base(middleButtonAction)
+        public SignaturePasswordInteraction(string certificatePath)
+            : base(PasswordMiddleButton.Remove)
         {
-            MiddleButtonAction = middleButtonAction;
-            CertificateFile = certificateFile;
+            CertificatePath = certificatePath;
         }
 
-        public string CertificateFile { get; set; }
+        public string CertificatePath { get; set; }
     }
 }

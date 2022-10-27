@@ -205,19 +205,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is EmailSmtpSettings)) return false;
 			EmailSmtpSettings v = o as EmailSmtpSettings;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!AddSignature.Equals(v.AddSignature)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(AddSignature, v.AddSignature)) return false;
 			if (!AdditionalAttachments.SequenceEqual(v.AdditionalAttachments)) return false;
-			if (!Content.Equals(v.Content)) return false;
-			if (!DisplayName.Equals(v.DisplayName)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Format.Equals(v.Format)) return false;
-			if (!OnBehalfOf.Equals(v.OnBehalfOf)) return false;
-			if (!Recipients.Equals(v.Recipients)) return false;
-			if (!RecipientsBcc.Equals(v.RecipientsBcc)) return false;
-			if (!RecipientsCc.Equals(v.RecipientsCc)) return false;
-			if (!ReplyTo.Equals(v.ReplyTo)) return false;
-			if (!Subject.Equals(v.Subject)) return false;
+			if (!Object.Equals(Content, v.Content)) return false;
+			if (!Object.Equals(DisplayName, v.DisplayName)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(Format, v.Format)) return false;
+			if (!Object.Equals(OnBehalfOf, v.OnBehalfOf)) return false;
+			if (!Object.Equals(Recipients, v.Recipients)) return false;
+			if (!Object.Equals(RecipientsBcc, v.RecipientsBcc)) return false;
+			if (!Object.Equals(RecipientsCc, v.RecipientsCc)) return false;
+			if (!Object.Equals(ReplyTo, v.ReplyTo)) return false;
+			if (!Object.Equals(Subject, v.Subject)) return false;
 			return true;
 		}
 		

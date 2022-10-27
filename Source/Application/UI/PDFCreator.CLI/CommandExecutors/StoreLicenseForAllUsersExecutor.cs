@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.UI.CLI.Commands;
 using System;
 using System.Security;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.Microsoft.Win32;
 using SystemWrapper.Microsoft.Win32;
 

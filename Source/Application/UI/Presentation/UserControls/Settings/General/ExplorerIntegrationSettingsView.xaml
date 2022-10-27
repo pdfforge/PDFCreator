@@ -7,91 +7,53 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance general:ExplorerIntegrationSettingsViewModel}">
-    <StackPanel Margin="0 5 0 10">
-        <HeaderedContentControl Header="{Binding Translation.MenuIntegrationControlHeader, Mode=OneWay}" />
-        <Grid Margin="0 5 0 0" HorizontalAlignment="Left">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Button MinWidth="150"  Grid.Column="0" Grid.Row="0" Margin="0 0 5 1" Style="{DynamicResource LightGreyButton}"
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+
+        <Label Content="{Binding Translation.MenuIntegrationControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
+        <Grid HorizontalAlignment="Left">
+            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
+                <Grid Margin="0 5 0 0" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button MinWidth="150" MaxWidth="200"  Grid.Column="0" Grid.Row="0" Margin="0 0 5 1"
                     Command="{Binding AddExplorerIntegrationCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
                                     Margin="5 0">
-                        <DynamicResource ResourceKey="UacShield" />
-                    </ContentControl>
-                    <TextBlock VerticalAlignment="Center"
+                                <DynamicResource ResourceKey="UacShield" />
+                            </ContentControl>
+                            <TextBlock VerticalAlignment="Center"
                                Text="{Binding Translation.AddMenuIntegrationText, Mode=OneWay}" />
 
-                </StackPanel>
-            </Button>
-            <Button MinWidth="150" Grid.Column="1" Grid.Row="0" Margin="5 0 5 1" Style="{DynamicResource LightGreyButton}" Command="{Binding RemoveExplorerIntegrationCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
+                        </StackPanel>
+                    </Button>
+                    <Button MinWidth="150" MaxWidth="200" Grid.Column="1" Grid.Row="0" Margin="5 0 5 1" Command="{Binding RemoveExplorerIntegrationCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
                                     Margin="5 0">
-                        <DynamicResource ResourceKey="UacShield" />
-                    </ContentControl>
-                    <TextBlock VerticalAlignment="Center"
+                                <DynamicResource ResourceKey="UacShield" />
+                            </ContentControl>
+                            <TextBlock VerticalAlignment="Center"
                                Text="{Binding Translation.RemoveMenuIntegrationText, Mode=OneWay}" />
-                </StackPanel>
-            </Button>
-
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Opacity="0">
-                <Label.Style>
-                    <Style TargetType="Label">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsAddedToExplorer}" Value="True">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
-                                                                           Duration="0:0:5">
-                                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0" />
-                                                <LinearDoubleKeyFrame Value="1" KeyTime="0:0:0.5" />
-                                                <LinearDoubleKeyFrame Value="1" KeyTime="0:0:4.5" />
-                                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:5" />
-                                            </DoubleAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Label.Style>
-                <TextBlock TextWrapping="Wrap"
-                           Text="{Binding Translation.AddToContextMenuText}" />
-            </Label>
-
-            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Opacity="0">
-                <Label.Style>
-                    <Style TargetType="Label">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsRemovedFromExplorer}" Value="True">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames
-                                                Storyboard.TargetProperty="Opacity" Duration="0:0:5">
-                                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0" />
-                                                <LinearDoubleKeyFrame Value="1" KeyTime="0:0:0.5" />
-                                                <LinearDoubleKeyFrame Value="1" KeyTime="0:0:4.5" />
-                                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:5" />
-                                            </DoubleAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Label.Style>
-                <TextBlock TextWrapping="Wrap" Text="{Binding Translation.RemoveFromContextMenuText}" />
-
-            </Label>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Grid>
     </StackPanel>
 </UserControl>

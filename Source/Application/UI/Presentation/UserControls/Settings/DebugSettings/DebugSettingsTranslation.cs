@@ -4,12 +4,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
 {
     public class DebugSettingsTranslation : ITranslatable
     {
-        public string DebugTabTitle { get; private set; } = "Debug";
         public string ClearLogFileButtonContent { get; private set; } = "Clear log file";
         public string DefaultSettingsButtonContent { get; private set; } = "Restore";
         public string DefaultSettingsControlHeader { get; private set; } = "Default Settings";
         public string ExportSettingsControlHeader { get; private set; } = "Export Settings";
         public string LoadSettingsButtonContent { get; private set; } = "Load settings from file";
+        public string LoadSingleProfileFromFile { get; private set; } = "Load specific profiles from file";
         public string LogFileClearedText { get; private set; } = "Log file cleared";
         public string LoggingControlHeader { get; private set; } = "Logging";
         public string LoggingLevelLabelText { get; private set; } = "Logging Level:";
@@ -20,7 +20,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         public string ShowLogFileButtonContent { get; private set; } = "Show log file";
         public string ShowEventLogButtonContent { get; private set; } = "Open event log";
         public string TestPagesControlHeader { get; private set; } = "Test Pages";
-        public string AddAction { get; protected set; } = "Add action";
         public string WindowsTestpageButtonContent { get; private set; } = "Print Windows test page";
         public string RestoreDefaultSettingsMessage { get; private set; } = "Do you really want to restore the default settings? The current settings will be lost.";
         public string NoLogFile { get; private set; } = "No log file";

@@ -7,13 +7,13 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Label.xaml" />
         <ResourceDictionary Source="Colors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.PasswordBox.xaml" />
-        <ResourceDictionary Source="LightGreyButton.xaml" />
+        <ResourceDictionary Source="DefaultButton.xaml" />
+        <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="TextBoxFocusBorderBrush" Color="{StaticResource LightGreyButtonBorder}" />
-
     <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
-        <Setter Property="SelectionBrush" Value="#AAA" />
+        <Setter Property="SelectionBrush" Value="{StaticResource BorderedElementSelectionColorBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderedElementColorBrush}" />
         <Setter Property="styles:TextBoxBehavior.TripleClickSelectAll" Value="True" />
     </Style>
 

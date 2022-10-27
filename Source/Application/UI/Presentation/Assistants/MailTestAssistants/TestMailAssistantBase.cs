@@ -108,7 +108,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             var job = new Job(new JobInfo(), profile, currentSettings);
             job.JobInfo.Metadata = new Metadata();
-            job.JobInfo.SourceFiles.Add(new SourceFileInfo { Filename = "MailTest.ps" });
+            job.JobInfo.SourceFiles.Add(new SourceFileInfo { Filename = "MailTest.ps", PrintedAt = DateTime.Now });
             job.TokenReplacer = _tokenHelper.TokenReplacerWithPlaceHolders;
 
             var documentFileDummy = _testFileDummyHelper.CreateFile(Translation.DocumentFile, "pdf");

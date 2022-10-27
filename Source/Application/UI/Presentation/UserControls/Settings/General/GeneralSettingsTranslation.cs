@@ -28,7 +28,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string NoUpdateMessage { get; private set; } = "You already have the most recent version.";
         public string UpdateIntervalLabelText { get; private set; } = "Check for updates:";
         public string Yes { get; private set; } = "Yes";
-        public string GeneralTabTitle { get; private set; } = "General";
 
         public string AskLater { get; private set; } = "Ask Later";
         public string SkipVersion { get; private set; } = "Skip version";

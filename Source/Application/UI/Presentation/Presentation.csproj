@@ -26,7 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9</LangVersion>
     <XamlDebuggingInformation>True</XamlDebuggingInformation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -51,6 +51,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\..\packages\test\NUnit\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="pdfforge.Mail, Version=1.0.6.0, Culture=neutral, PublicKeyToken=fc6825f92a0342e2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\pdfforge.Mail\lib\pdfforge.Mail.dll</HintPath>
@@ -84,8 +87,8 @@
     <Compile Include="Assistants\LicenseExpirationReminder.cs" />
     <Compile Include="Assistants\LoadSettingsTranslation.cs" />
     <Compile Include="Assistants\MailTestAssistants\TestMailAssistantBase.cs" />
-    <Compile Include="Assistants\PrinterActionsAssistant.cs" />
-    <Compile Include="Assistants\PrinterActionsAssistantTranslation.cs" />
+    <Compile Include="Assistants\PrinterAssistant.cs" />
+    <Compile Include="Assistants\PrinterAssistantTranslation.cs" />
     <Compile Include="Assistants\PrintFileAssistant.cs" />
     <Compile Include="Assistants\PrintFilesTranslation.cs" />
     <Compile Include="Assistants\RepairPrinterAssistant.cs" />
@@ -137,9 +140,11 @@
     <Compile Include="Commands\EvaluateSettingsCommands\EvaluateSettingsAndNotifyUserCommandBase.cs" />
     <Compile Include="Commands\EvaluateSettingsCommands\SkipIfSameNavigationTargetCommand.cs" />
     <Compile Include="Commands\EvaluateSettingsCommands\EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand.cs" />
+    <Compile Include="Commands\IniCommands\LoadSpecificProfilesCommand.cs" />
     <Compile Include="Commands\IniCommands\LoadIniSettingsCommand.cs" />
     <Compile Include="Commands\IniCommands\SaveSettingsToIniCommand.cs" />
     <Compile Include="Commands\IPrintTestPageAsyncCommand.cs" />
+    <Compile Include="Commands\NavigateApplicationSettingsTabCommand.cs" />
     <Compile Include="Commands\NavigatePrismRegionCommand.cs" />
     <Compile Include="Commands\PrioritySupportCommand\DisabledPrioritySupportUrlOpenCommand.cs" />
     <Compile Include="Commands\PrioritySupportCommand\IPrioritySupportUrlOpenCommand.cs" />
@@ -172,43 +177,95 @@
     <Compile Include="Controls\FontSelectorControl.xaml.cs">
       <DependentUpon>FontSelectorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DesignTime\DesignTimeCsScriptViewModel.cs" />
+    <Compile Include="Converter\BoolToShownColorConverter.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\ValueEqualsParameterConverter.cs" />
+    <Compile Include="DesignTime\DesignTimeDrawSignatureViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeCsScriptActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeErrorViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeFtpConnectionFactory.cs" />
+    <Compile Include="DesignTime\DesignTimeFtpConnectionTester.cs" />
+    <Compile Include="DesignTime\DesignTimeInteractionInvoker.cs" />
+    <Compile Include="DesignTime\DesignTimeInteractionRequest.cs" />
+    <Compile Include="DesignTime\DesignTimeOpenFileInteractionHelper.cs" />
+    <Compile Include="DesignTime\DesignTimePasswordOverlayViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimePathUtil.cs" />
+    <Compile Include="DesignTime\DesignTimePdfEditorHelper.cs" />
+    <Compile Include="DesignTime\DesignTimeSignaturePasswordOverlayViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeSignaturePasswordStepViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeSignaturePositionAndSizeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSignaturePasswordCheck.cs" />
     <Compile Include="DesignTime\DesignTimeActionLocator.cs" />
     <Compile Include="DesignTime\DesignTimeActionManager.cs" />
-    <Compile Include="DesignTime\DesignTimeAddActionViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeCoverUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeCoverActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeEditEmailDifferingFromViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeErrorCodeInterpreter.cs" />
     <Compile Include="DesignTime\DesignTimeJobDataUpdater.cs" />
     <Compile Include="DesignTime\DesignTimeProfileChecker.cs" />
     <Compile Include="DesignTime\DesignTimeSaveOutputFormatMetadataViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimePageNumbersViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeStampUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimePageNumbersActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeStampActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeTestFileDummyHelper.cs" />
     <Compile Include="DesignTime\DesignTimeTokenViewModelFactory.cs" />
-    <Compile Include="DesignTime\DesignTimeUserTokenUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeUserTokenActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeWebLinkLauncher.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeActionOrderHelper.cs" />
+    <Compile Include="DesignTime\Helper\DesignTimeCanvasToFileHelper.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeDefaultSettingsBuilder.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeDispatcher.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeEditionHelper.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeFontSelectorControlViewModelFactory.cs" />
+    <Compile Include="DesignTime\DesignTimeJobStepPasswordViewModelBase.cs" />
     <Compile Include="Events\ManagePrintJobEvent.cs" />
+    <Compile Include="Helper\PdfEditorHelper.cs" />
+    <Compile Include="Styles\Redesign5\ContextMenuButton\ContextMenuButton.xaml.cs">
+      <DependentUpon>ContextMenuButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Styles\Redesign5\ContextMenuButton\DataContextProxy.cs" />
+    <Compile Include="Events\NavigateApplicationSettingsEvent.cs" />
     <Compile Include="Helper\SettingsLoader\PDFCreatorSettingsLoader.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModel.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModelBuilder.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModelFactory.cs" />
+    <Compile Include="RegionViewName.cs" />
+    <Compile Include="Styles\Redesign5\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml.cs">
+      <DependentUpon>OnOffLabelToggleSwitchCheckBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Styles\Redesign5\Icons\IconResource.cs" />
+    <Compile Include="Styles\Redesign5\OutputFormatToVisiblityConverter.cs" />
+    <Compile Include="Styles\Redesign5\OutputFormat\GetOutputFormatDescription.cs" />
+    <Compile Include="UserControls\Accounts\AccountCell.xaml.cs">
+      <DependentUpon>AccountCell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Accounts\AccountViews\Dropbox\DropboxResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DropboxResources.resx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ActionLocator.cs" />
-    <Compile Include="UserControls\IActionViewModel.cs" />
-    <Compile Include="UserControls\Misc\InfoIconControl.xaml.cs">
-      <DependentUpon>InfoIconControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Overlay\OverwriteOrAppendInteraction.cs" />
+    <Compile Include="UserControls\Overlay\OverwriteOrAppendOverlay.xaml.cs">
+      <DependentUpon>OverwriteOrAppendOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Overlay\OverwriteOrAppendTranslation.cs" />
+    <Compile Include="UserControls\Overlay\OverwriteOrAppendViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordStepTranslation.cs" />
+    <Compile Include="UserControls\PrintJob\HttpPasswordStep\HttpPasswordStepTranslation.cs" />
+    <Compile Include="UserControls\PrintJob\PasswordButtonControlTranslation.cs" />
+    <Compile Include="UserControls\PrintJob\SecurePasswordsStep\SecurityPasswordsStepTranslation.cs" />
+    <Compile Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepTranslation.cs" />
+    <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpPasswordStepTranslation.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionPasswordsOverlay.xaml.cs">
+      <DependentUpon>EncryptionPasswordsOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionPasswordsOverlayTranslation.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionPasswordsOverlayViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\CanvasToFileHelper.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\DrawSignatureView.xaml.cs">
+      <DependentUpon>DrawSignatureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\DrawSignatureViewModel.cs" />
+    <Compile Include="UserControls\IActionViewModel.cs" />
     <Compile Include="UserControls\PrintJob\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
@@ -216,20 +273,31 @@
     <Compile Include="UserControls\PrintJob\ErrorViewTranslation.cs" />
     <Compile Include="UserControls\Profiles\ActionTranslationBase.cs" />
     <Compile Include="UserControls\Profiles\ActionViewModelBase.cs" />
-    <Compile Include="DesignTime\DesignTimeAttachmentUserControlViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeScriptUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\IActionUserControl.cs" />
+    <Compile Include="DesignTime\DesignTimeAttachmentActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeScriptActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\DrawSignatureViewModelBase.cs" />
+    <Compile Include="UserControls\Profiles\IActionView.cs" />
     <Compile Include="UserControls\Profiles\IStatusHintViewModel.cs" />
     <Compile Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersTranslation.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersView.xaml.cs">
-      <DependentUpon>PageNumbersView.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersActionView.xaml.cs">
+      <DependentUpon>PageNumbersActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePasswordOverlayView.xaml.cs">
+      <DependentUpon>SignaturePasswordOverlayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePasswordOverlayViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePositionAndSizeHelper.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePositionAndSizeInteraction.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePositionAndSizeView.xaml.cs">
+      <DependentUpon>SignaturePositionAndSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignaturePositionAndSizeViewModel.cs" />
     <Compile Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptTranslation.cs" />
-    <Compile Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptUserControl.xaml.cs">
-      <DependentUpon>CsScriptUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptActionView.xaml.cs">
+      <DependentUpon>CsScriptActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptViewModel.cs" />
+    <Compile Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\PreparationActions\CsScript\OpenCsScriptsFolderCommand.cs" />
     <Compile Include="UserControls\Profiles\SaveOutputFormatMetadataTranslation.cs" />
     <Compile Include="UserControls\Profiles\SaveOutputFormatMetadataView.xaml.cs">
@@ -255,9 +323,6 @@
     <Compile Include="Controls\PreviewPasswordField.xaml.cs">
       <DependentUpon>PreviewPasswordField.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TokenControlWithAddButton.xaml.cs">
-      <DependentUpon>TokenControlWithAddButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converter\PathToNameConverter.cs" />
     <Compile Include="Converter\EmptyListToVisibilityConverter.cs" />
     <Compile Include="Converter\CompareWithTresholdToValueConverter.cs" />
@@ -267,7 +332,7 @@
     <Compile Include="Converter\IntValueConverter.cs" />
     <Compile Include="Converter\SigningPositionToUnitConverterFactory.cs" />
     <Compile Include="DeleteTempFolderCommand.cs" />
-    <Compile Include="DesignTime\DesignTimeBackgroundUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeBackgroundActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeBrowseFileCommandBuilder.cs" />
     <Compile Include="DesignTime\DesignTimeChangeJobCheckAndProceedCommandBuilder.cs" />
     <Compile Include="DesignTime\DesignTimeCommandBuilder.cs" />
@@ -279,8 +344,8 @@
     <Compile Include="DesignTime\DesignTimeSelectFileViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSelectFilesUserControlViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUsageMetricFactory.cs" />
-    <Compile Include="DesignTime\DesignTimeForwardToFurtherProfileViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeWatermarkViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeForwardToFurtherProfileActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeWatermarkActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWorkflowEditorViewModel.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeUpdateLauncher.cs" />
     <Compile Include="Events\SetProfileTabHelpTopicEvent.cs" />
@@ -305,7 +370,6 @@
     <Compile Include="Controls\TokenControlMultiline.xaml.cs">
       <DependentUpon>TokenControlMultiline.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PasswordButtonController.cs" />
     <Compile Include="Controls\Tab\ISubTabViewModel.cs" />
     <Compile Include="Controls\Tab\SubItem.cs" />
     <Compile Include="Controls\Tab\SubTabItem.cs" />
@@ -316,7 +380,6 @@
     <Compile Include="Helper\Tokens\TokenViewModel.cs" />
     <Compile Include="Converter\AreEqualConverter.cs" />
     <Compile Include="Converter\BoolNegationConverter.cs" />
-    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\CaseConverter.cs" />
     <Compile Include="Converter\ColorConverter.cs" />
     <Compile Include="Converter\MessageIconToIconConverter.cs" />
@@ -328,7 +391,6 @@
     <Compile Include="Converter\OutputFormatToTextConverter.cs" />
     <Compile Include="Converter\StringIsNullOrWhiteSpaceConverter.cs" />
     <Compile Include="Converter\TokenReplacerConverter.cs" />
-    <Compile Include="Converter\TokenTextToVisibilityConverter.cs" />
     <Compile Include="Converter\TranslateableConverter.cs" />
     <Compile Include="Converter\TranslatorConverter.cs" />
     <Compile Include="DesignTime\DesignTimeAboutViewModel.cs" />
@@ -338,30 +400,29 @@
     <Compile Include="DesignTime\DesignTimeDebugSettingsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeDropboxShareLinkStepViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeEditEmailTextViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeEncryptionUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeEncryptionActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeQuickActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeJobHistoryActiveRecord.cs" />
-    <Compile Include="DesignTime\DesignTimeMailClientControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeEMailClientActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateHelper.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateHintViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeLicenseSettingsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeMessageViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeRecommendPdfArchitectWindowViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeSigningViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeSignatureActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeTimeServerAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeHttpActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeHttpAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeInputBoxWindowViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeDropboxUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeDropboxActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSmtpAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpAccountViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpActionViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeHttpJobStepPasswordViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeHttpPasswordStepViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeManagePrintJobsVM.cs" />
     <Compile Include="DesignTime\DesignTimePrinterViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeSignaturePasswordsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSmtpJobStepPasswordViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeFtpJobStepPasswordViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeFtpPasswordStepViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeHomeViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeMetadataViewModel.cs" />
     <Compile Include="DesignTime\DesignTimePdfJobStepPasswordsViewModel.cs" />
@@ -375,7 +436,6 @@
     <Compile Include="DesignTime\DesignTimeStoreLicenseForAllUsersWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateDownloadWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateIntervalSettingsViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeWelcomeViewModel.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeApplicationNameProvider.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeCurrentSettingsProvider.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeDragAndDropHandler.cs" />
@@ -483,11 +543,6 @@
       <DependentUpon>LicenseExpirationReminderControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LicenseExpirationReminderViewModel.cs" />
-    <Compile Include="UserControls\Misc\SaveTempHintTranslation.cs" />
-    <Compile Include="UserControls\Misc\SaveTempOnlyHintViewModel.cs" />
-    <Compile Include="UserControls\Misc\SaveTempOnlyHintControl.xaml.cs">
-      <DependentUpon>SaveTempOnlyHintControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Misc\WarningIconControl.xaml.cs">
       <DependentUpon>WarningIconControl.xaml</DependentUpon>
     </Compile>
@@ -519,10 +574,8 @@
     <Compile Include="UserControls\PrintJob\QuickActionStep\QuickActionView.xaml.cs">
       <DependentUpon>QuickActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\PrintJobPasswordButtonViewModel.cs" />
     <Compile Include="UserControls\PrintJob\ProgressViewTranslation.cs" />
-    <Compile Include="UserControls\PrintJob\SignaturePasswordOverlayViewModel.cs" />
-    <Compile Include="UserControls\PrintJob\SignaturePasswordStepViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepViewModel.cs" />
     <Compile Include="Commands\SkipPrintDialogCommand.cs" />
     <Compile Include="UserControls\PrintJob\UpdateHint\UpdateHintView.xaml.cs">
       <DependentUpon>UpdateHintView.xaml</DependentUpon>
@@ -536,36 +589,36 @@
     <Compile Include="UserControls\Profiles\AddActionOverlayViewModel.cs" />
     <Compile Include="UserControls\Profiles\AddActionOverlayViewTranslation.cs" />
     <Compile Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileTranslation.cs" />
-    <Compile Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileView.xaml.cs">
-      <DependentUpon>ForwardToFurtherProfileView.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileActionView.xaml.cs">
+      <DependentUpon>ForwardToFurtherProfileActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileViewModel.cs" />
+    <Compile Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\PreparationActions\UserToken\SeparatorToExampleStringConverter.cs" />
     <Compile Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenTranslation.cs" />
-    <Compile Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenUserControl.xaml.cs">
-      <DependentUpon>UserTokenUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenActionView.xaml.cs">
+      <DependentUpon>UserTokenActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\ConversionProfileWrapper.cs" />
     <Compile Include="DesignTime\DesignTimeAddActionOverlayViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWorkflowEditorOverlayViewModel.cs" />
     <Compile Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkTranslation.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkView.xaml.cs">
-      <DependentUpon>WatermarkView.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkActionView.xaml.cs">
+      <DependentUpon>WatermarkActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\ObservableCollectionExtentions.cs" />
-    <Compile Include="UserControls\Profiles\OutputFormatUserControl.xaml.cs">
-      <DependentUpon>OutputFormatUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\OutputFormat\OutputFormatView.xaml.cs">
+      <DependentUpon>OutputFormatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\TransposerHelper.cs" />
-    <Compile Include="UserControls\Profiles\ProfilesComboBox.xaml.cs">
+    <Compile Include="Styles\Redesign5\ProfilesComboBox.xaml.cs">
       <DependentUpon>ProfilesComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SelectFiles\SelectFileInteraction.cs" />
     <Compile Include="UserControls\Profiles\SelectFiles\SelectFilesUserControlViewModelFactory.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\HTTP\HttpActionUserControl.xaml.cs">
-      <DependentUpon>HttpActionUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\HTTP\HttpActionView.xaml.cs">
+      <DependentUpon>HttpActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\HTTP\HttpActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SelectFiles\SelectFileView.xaml.cs">
@@ -578,17 +631,17 @@
       <DependentUpon>EditEmailDifferingFromView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailDifferingFromViewModel.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextUserControl.xaml.cs">
-      <DependentUpon>EditEmailTextUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextView.xaml.cs">
+      <DependentUpon>EditEmailTextView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeOpenViewerActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionTranslation.cs" />
     <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionViewModel.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionUserControl.xaml.cs">
-      <DependentUpon>OpenViewerActionUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionView.xaml.cs">
+      <DependentUpon>OpenViewerActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DesignTime\DesignTimePrintUserControlViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimePrintActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\OutputFormat\OutputFormatJpgView.xaml.cs">
       <DependentUpon>OutputFormatJpgView.xaml</DependentUpon>
     </Compile>
@@ -609,15 +662,10 @@
     </Compile>
     <Compile Include="DesignTime\DesignTimeOutputFormatPdfViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptTranslation.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptUserControl.xaml.cs">
-      <DependentUpon>ScriptUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptActionView.xaml.cs">
+      <DependentUpon>ScriptActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Save\NotificatonsLevelSettingsView.xaml.cs">
-      <DependentUpon>NotificatonsLevelSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Profiles\Save\NotificationsLevelSettingsViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Save\NotificationsLevelSettingsTranslation.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditorOverlayViewTranslation.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ActionAddedToWorkflowEvent.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ActionRemovedFromWorkflowEvent.cs" />
@@ -641,15 +689,17 @@
     </Compile>
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorViewModel.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowSettingsChanged.cs" />
-    <Compile Include="UserControls\Settings\AddActionUserControl.xaml.cs">
-      <DependentUpon>AddActionUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Settings\AddActionViewModel.cs" />
+    <Compile Include="UserControls\Settings\ApplicationSettingsViewTranslation.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml.cs">
       <DependentUpon>EventLogSettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\DebugSettings\EventLogSettingsViewModel.cs" />
     <Compile Include="Commands\PrintTestpageAsyncCommand.cs" />
+    <Compile Include="UserControls\Settings\DebugSettings\LoadSpecificProfileTranslation.cs" />
+    <Compile Include="UserControls\Settings\DebugSettings\LoadSpecificProfileView.xaml.cs">
+      <DependentUpon>LoadSpecificProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\DebugSettings\LoadSpecificProfileViewModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\WorkflowEditorTestPageUserControl.xaml.cs">
       <DependentUpon>WorkflowEditorTestPageUserControl.xaml</DependentUpon>
     </Compile>
@@ -659,6 +709,10 @@
     <Compile Include="UserControls\Settings\DefaultViewerSettings\DefaultViewerViewModel.cs" />
     <Compile Include="UserControls\Settings\DefaultViewerSettings\DefaultViewerTranslation.cs" />
     <Compile Include="DesignTime\DesignTimeDefaultViewerViewModel.cs" />
+    <Compile Include="UserControls\Settings\GeneralSettingsRegionUserControl.xaml.cs">
+      <DependentUpon>GeneralSettingsRegionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\GeneralSettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\General\HomeViewSettingsView.xaml.cs">
       <DependentUpon>HomeViewSettingsView.xaml</DependentUpon>
     </Compile>
@@ -673,83 +727,68 @@
     <Compile Include="UserControls\Settings\UsageStatisticsSettings\PdfCreatorUsageStatisticsViewModel.cs" />
     <Compile Include="UserControls\Settings\UsageStatisticsSettings\UsageStatisticsViewModelBase.cs" />
     <Compile Include="UserControls\Settings\UsageStatisticsSettings\ServerUsageStatisticsViewModel.cs" />
-    <Compile Include="UserControls\Welcome\WelcomeView.xaml.cs">
-      <DependentUpon>WelcomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Welcome\WelcomeWindowTranslation.cs" />
-    <Compile Include="UserControls\Welcome\WelcomeViewModel.cs" />
     <Compile Include="ViewModelBases\AccountViewModelBase.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\FTP\FtpAccountView.xaml.cs">
       <DependentUpon>FtpAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\SendActions\Dropbox\DropboxUserControl.xaml.cs">
-      <DependentUpon>DropboxUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\Dropbox\DropboxActionView.xaml.cs">
+      <DependentUpon>DropboxActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\SendActions\Dropbox\DropboxUserControlViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\Dropbox\DropboxActionViewModel.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\FTP\FtpActionTranslation.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\FTP\FTPActionUserControl.xaml.cs">
-      <DependentUpon>FTPActionUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\FTP\FTPActionView.xaml.cs">
+      <DependentUpon>FTPActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\FTP\FtpActionViewModel.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\MailClient\MailClientUserControl.xaml.cs">
-      <DependentUpon>MailClientUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\MailClient\EmailClientActionView.xaml.cs">
+      <DependentUpon>EmailClientActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\SendActions\MailClient\MailClientControlViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\MailClient\EMailClientActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\MailSmtp\SmtpActionView.xaml.cs">
       <DependentUpon>SmtpActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\MailSmtp\SmtpActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\Print\PrintTabTranslation.cs" />
-    <Compile Include="UserControls\Profiles\SendActions\Print\PrintUserControl.xaml.cs">
-      <DependentUpon>PrintUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\SendActions\Print\PrintActionView.xaml.cs">
+      <DependentUpon>PrintActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\SendActions\Print\PrintUserControlViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\Print\PrintActionViewModel.cs" />
     <Compile Include="UserControls\Settings\License\LicenseUpdateControl.xaml.cs">
       <DependentUpon>LicenseUpdateControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintJobShellViewModel.cs" />
-    <Compile Include="UserControls\PrintJob\SignaturePasswordTranslation.cs" />
-    <Compile Include="UserControls\Overlay\Encryption\EncryptionPasswordsUserControl.xaml.cs">
-      <DependentUpon>EncryptionPasswordsUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Overlay\Encryption\EncryptionPasswordsUserControlTranslation.cs" />
-    <Compile Include="UserControls\Overlay\Encryption\EncryptionPasswordUserControlViewModel.cs" />
     <Compile Include="UserControls\Overlay\Password\PasswordOverlayInteraction.cs" />
     <Compile Include="UserControls\Overlay\Password\PasswordOverlayViewModel.cs" />
     <Compile Include="UserControls\Overlay\Password\PasswordOverlay.xaml.cs">
       <DependentUpon>PasswordOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Overlay\Password\PasswordOverlayTranslation.cs" />
-    <Compile Include="UserControls\PrintJob\HttpPasswordTranslation.cs" />
-    <Compile Include="UserControls\PrintJob\HttpPasswordView.xaml.cs">
-      <DependentUpon>HttpPasswordView.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintJob\HttpPasswordStep\HttpPasswordStepView.xaml.cs">
+      <DependentUpon>HttpPasswordStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\HttpJobStepPasswordViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\HttpPasswordStep\HttpPasswordStepViewModel.cs" />
     <Compile Include="UserControls\Accounts\AccountsTranslation.cs" />
-    <Compile Include="UserControls\PrintJob\SignaturePasswordView.xaml.cs">
-      <DependentUpon>SignaturePasswordView.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepView.xaml.cs">
+      <DependentUpon>SignaturePasswordStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\SignaturePasswordViewModel.cs" />
     <Compile Include="UserControls\BusinessFeatureBadge.xaml.cs">
       <DependentUpon>BusinessFeatureBadge.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\BusinessFeatureTranslation.cs" />
     <Compile Include="UserControls\BusinessFeatureBadgeViewModel.cs" />
-    <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordView.xaml.cs">
-      <DependentUpon>FtpPasswordView.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordStepView.xaml.cs">
+      <DependentUpon>FtpPasswordStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpJobStepPasswordViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordStepViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeAccountsViewModel.cs" />
     <Compile Include="UserControls\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Accounts\AccountsViewModel.cs" />
-    <Compile Include="UserControls\PrintJob\IPasswordButtonViewModel.cs" />
-    <Compile Include="UserControls\PrintJob\PdfPasswordTranslation.cs" />
-    <Compile Include="UserControls\PrintJob\PdfPasswordView.xaml.cs">
-      <DependentUpon>PdfPasswordView.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintJob\SecurePasswordsStep\SecurityPasswordsStepView.xaml.cs">
+      <DependentUpon>SecurityPasswordsStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\PdfJobStepPasswordViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\SecurePasswordsStep\SecurityPasswordsStepViewModel.cs" />
     <Compile Include="UserControls\PrintJob\ProfessionalHintStep\ProfessionalHintStepView.xaml.cs">
       <DependentUpon>ProfessionalHintStepView.xaml</DependentUpon>
     </Compile>
@@ -768,37 +807,37 @@
     <Compile Include="UserControls\Profiles\ModifyActions\Cover\CoverSettingsAndActionTranslation.cs" />
     <Compile Include="UserControls\Profiles\ModifyActions\Stamp\DocumentTabTranslation.cs" />
     <Compile Include="UserControls\Profiles\ProfileUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentUserControl.xaml.cs">
-      <DependentUpon>AttachmentUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentActionView.xaml.cs">
+      <DependentUpon>AttachmentActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Background\BackgroundUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Background\BackgroundUserControl.xaml.cs">
-      <DependentUpon>BackgroundUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Background\BackgroundActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Background\BackgroundActionView.xaml.cs">
+      <DependentUpon>BackgroundActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Cover\CoverUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Cover\CoverUserControl.xaml.cs">
-      <DependentUpon>CoverUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Cover\CoverActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Cover\CoverActionView.xaml.cs">
+      <DependentUpon>CoverActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Stamp\StampUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Stamp\StampUserControl.xaml.cs">
-      <DependentUpon>StampUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Stamp\StampActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Stamp\StampActionView.xaml.cs">
+      <DependentUpon>StampActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionUserControl.xaml.cs">
-      <DependentUpon>EncryptionUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionActionView.xaml.cs">
+      <DependentUpon>EncryptionActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionUserControlViewModel.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionUserControlTranslation.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SigningUserControl.xaml.cs">
-      <DependentUpon>SigningUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionActionViewTranslation.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignatureActionView.xaml.cs">
+      <DependentUpon>SignatureActionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SigningUserControlTranslation.cs" />
-    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SigningViewModel.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignatureTranslation.cs" />
+    <Compile Include="UserControls\Profiles\ModifyActions\Signature\SignatureActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataView.xaml.cs">
       <DependentUpon>MetadataView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrintJob\SmtpPasswordView.xaml.cs">
-      <DependentUpon>SmtpPasswordView.xaml</DependentUpon>
+    <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpPasswordStepView.xaml.cs">
+      <DependentUpon>SmtpPasswordStepView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\License\OfflineActivationViewModelTranslation.cs" />
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersControl.xaml.cs">
@@ -807,11 +846,11 @@
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowTranslation.cs" />
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowViewModel.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\MasterIconTabHeader.cs" />
-    <Compile Include="UserControls\PrintJob\SmtpJobStepPasswordViewModel.cs" />
+    <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpJobStepPasswordViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSaveViewModel.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataTabTranslation.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataViewModel.cs" />
-    <Compile Include="UserControls\Profiles\Save\SaveTab.xaml.cs" />
+    <Compile Include="UserControls\Profiles\Save\SaveView.xaml.cs" />
     <Compile Include="UserControls\Profiles\Save\SaveViewTranslation.cs" />
     <Compile Include="UserControls\Settings\License\OfflineActivationUserControl.xaml.cs">
       <DependentUpon>OfflineActivationUserControl.xaml</DependentUpon>
@@ -831,7 +870,6 @@
     <Compile Include="UserControls\Settings\TitleReplacementSettings\TitleReplacementsTranslation.cs" />
     <Compile Include="ViewModelBases\ITranslatableViewModel.cs" />
     <Compile Include="Customization\ViewCustomization.cs" />
-    <Compile Include="ViewModelBases\PasswordOverlayViewModelBase.cs" />
     <Compile Include="ViewModelBases\OverlayViewModelBase.cs" />
     <Compile Include="ViewModelBases\JobStepPasswordViewModelBase.cs" />
     <Compile Include="ViewModelBases\TranslatableAsyncCommandBase.cs" />
@@ -897,9 +935,6 @@
       <DependentUpon>ProfilesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\ProfilesViewModel.cs" />
-    <Compile Include="UserControls\Profiles\OutputFormat\OutputFormatView.xaml.cs">
-      <DependentUpon>OutputFormatView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Profiles\OutputFormat\OutputFormatViewModel.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\IconTabHeader.cs" />
     <Compile Include="UserControls\Profiles\TabHelper\IconList.cs" />
@@ -999,23 +1034,155 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Buttons\IconButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Buttons\ProfileSettingsPreviewButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Buttons\SquaredIconButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Redesign5\Buttons\DefaultButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\CheckBoxes\DefaultCheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\CheckBoxes\ToggleSwitchCheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\ColorDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\BorderlessTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\ContextMenuButton\ContextMenuButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Datagrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\DefaultsDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\DragDropBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Redesign5\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\HoverBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Icons\AccountIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Icons\ComponentIcons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Redesign5\OutputFormat\OutputFormatIconAndDescriptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\OutputFormat\OutputFormatIcons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Redesign5\Icons\MessageIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Icons\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Icons\TopDownArrow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Labels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\Combobox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\OutputFormat\SelectOutputFormatButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Redesign5\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Redesign5\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\SettingsPreviewButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Misc\InfoIconControl.xaml">
+    <Page Include="UserControls\Accounts\AccountCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Overlay\OverwriteOrAppendOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionPasswordsOverlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Profiles\ModifyActions\Signature\DrawSignatureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PrintJob\ErrorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersView.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\PageNumbers\PageNumbersActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Signature\SignaturePasswordOverlayView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Profiles\ModifyActions\Signature\SignaturePositionAndSizeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Profiles\PreparationActions\CsScript\CsScriptActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1059,10 +1226,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TokenControlWithAddButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Helper\Gpo\GPOLockLayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1072,10 +1235,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\CloseButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\BrandLogos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1108,10 +1267,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\GPOLayerStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\IconOnlyEditButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1155,10 +1310,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Misc\SaveTempOnlyHintControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\Misc\WarningIconControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1191,11 +1342,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileView.xaml">
+    <Page Include="UserControls\Profiles\PreparationActions\ForwardToOtherProfile\ForwardToFurtherProfileActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenUserControl.xaml">
+    <Page Include="UserControls\Profiles\PreparationActions\UserToken\UserTokenActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1203,27 +1354,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkView.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Watermark\WatermarkActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\OutputFormatUserControl.xaml">
+    <Page Include="UserControls\Profiles\OutputFormat\OutputFormatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\ProfilesComboBox.xaml">
+    <Page Include="Styles\Redesign5\ProfilesComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\Dropbox\DropboxUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\Dropbox\DropboxActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\FTP\FTPActionUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\FTP\FTPActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\HTTP\HttpActionUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\HTTP\HttpActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1231,7 +1382,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\MailClient\MailClientUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\MailClient\EmailClientActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1239,7 +1390,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1247,11 +1398,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\Print\PrintUserControl.xaml">
+    <Page Include="UserControls\Profiles\SendActions\Print\PrintActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1275,11 +1426,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\SendActions\RunProgram\ScriptUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\Profiles\Save\NotificatonsLevelSettingsView.xaml">
+    <Page Include="UserControls\Profiles\SendActions\RunProgram\ScriptActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1291,13 +1438,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Settings\AddActionUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Settings\DebugSettings\LoadSpecificProfileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Settings\DebugSettings\WorkflowEditorTestPageUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1306,6 +1453,10 @@
     <Page Include="UserControls\Settings\DefaultViewerSettings\DefaultViewerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Settings\GeneralSettingsRegionUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Settings\General\HomeViewSettingsView.xaml">
       <SubType>Designer</SubType>
@@ -1359,7 +1510,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\LightGreyButton.xaml">
+    <Page Include="Styles\DefaultButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1376,10 +1527,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\DragDropBorder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\FlatPDFCreatorButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1411,10 +1558,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Textblock\RoundDarkBackgroundTextbox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\About\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1431,10 +1574,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Overlay\Encryption\EncryptionPasswordsUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\Overlay\Password\PasswordOverlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1447,15 +1586,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordView.xaml">
+    <Page Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintJob\HttpPasswordView.xaml">
+    <Page Include="UserControls\PrintJob\HttpPasswordStep\HttpPasswordStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="UserControls\PrintJob\PdfPasswordView.xaml">
+    <Page Include="UserControls\PrintJob\SecurePasswordsStep\SecurityPasswordsStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1475,31 +1614,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintJob\SignaturePasswordView.xaml">
+    <Page Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Attachment\AttachmentActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Background\BackgroundUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Background\BackgroundActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Cover\CoverUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Cover\CoverActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Stamp\StampUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Stamp\StampActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Profiles\ModifyActions\Signature\SigningUserControl.xaml">
+    <Page Include="UserControls\Profiles\ModifyActions\Signature\SignatureActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1507,15 +1646,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PrintJob\SmtpPasswordView.xaml">
+    <Page Include="UserControls\PrintJob\SmtpPasswordStep\SmtpPasswordStepView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Profiles\ProfilesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Profiles\OutputFormat\OutputFormatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1595,10 +1730,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Welcome\WelcomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\ManagePrintJobsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1639,6 +1770,14 @@
       <Link>PDFCreator_german.chm</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Fonts\Inter-Bold.ttf" />
+    <Resource Include="Fonts\Inter-BoldItalic.ttf" />
+    <Resource Include="Fonts\Inter-Italic.ttf" />
+    <Resource Include="Fonts\Inter-Medium.ttf" />
+    <Resource Include="Fonts\Inter-MediumItalic.ttf" />
+    <Resource Include="Fonts\Inter-Regular.ttf" />
+    <Resource Include="Fonts\Inter-SemiBold.ttf" />
+    <Resource Include="Fonts\Inter-SemiBoldItalic.ttf" />
     <None Include="paket.references" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1700,6 +1839,10 @@
       <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
       <Name>Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\SettingsManagementInterface\SettingsManagementInterface.csproj">
+      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
+      <Name>SettingsManagementInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
       <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
       <Name>SettingsManagement</Name>
@@ -1723,10 +1866,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helper\Update\" />
-    <Folder Include="UserControls\Overlay\Sign\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\passwordsmatcher.lst" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pdfcreator_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BackgroundWaves.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>
@@ -1783,6 +1931,22 @@
         </Reference>
         <Reference Include="System.Windows.Interactivity">
           <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="MahApps.Metro.IconPacks.Core">
+          <HintPath>..\..\..\..\packages\MahApps.Metro.IconPacks.MaterialDesign\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="MahApps.Metro.IconPacks.MaterialDesign">
+          <HintPath>..\..\..\..\packages\MahApps.Metro.IconPacks.MaterialDesign\lib\net47\MahApps.Metro.IconPacks.MaterialDesign.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -1853,14 +2017,8 @@
         <Reference Include="System.IO.Compression">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -1964,6 +2122,9 @@
         <Reference Include="System.ServiceProcess">
           <Paket>True</Paket>
         </Reference>
+        <Reference Include="System.Transactions">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="System.Security.Permissions">
           <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
           <Private>True</Private>
@@ -1999,6 +2160,17 @@
       <ItemGroup>
         <Reference Include="SystemInterface">
           <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="SystemWrapper">
+          <HintPath>..\..\..\..\packages\SystemWrapper\lib\netstandard2.0\SystemWrapper.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

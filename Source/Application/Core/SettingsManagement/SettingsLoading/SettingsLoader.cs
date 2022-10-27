@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using NLog;
+using pdfforge.DataStorage.Storage;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
+using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Win32;
-using NLog;
-using pdfforge.DataStorage.Storage;
-using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 {
@@ -19,26 +20,29 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
         private readonly IInstallationPathProvider _installationPathProvider;
         private readonly IDefaultSettingsBuilder _defaultSettingsBuilder;
         private readonly IMigrationStorageFactory _migrationStorageFactory;
-        private readonly IActionOrderChecker _actionOrderChecker;
+        private readonly IActionOrderHelper _actionOrderHelper;
         private readonly ISettingsBackup _settingsBackup;
         private readonly ISharedSettingsLoader _sharedSettingsLoader;
         private readonly IBaseSettingsBuilder _baseSettingsBuilder;
 
-        public SettingsLoader(ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderChecker actionOrderChecker, ISettingsBackup settingsBackup, ISharedSettingsLoader sharedSettingsLoader, IBaseSettingsBuilder baseSettingsBuilder)
+        public SettingsLoader(ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderHelper actionOrderHelper, ISettingsBackup settingsBackup, ISharedSettingsLoader sharedSettingsLoader, IBaseSettingsBuilder baseSettingsBuilder)
         {
             _settingsMover = settingsMover;
             _installationPathProvider = installationPathProvider;
             _defaultSettingsBuilder = defaultSettingsBuilder;
             _migrationStorageFactory = migrationStorageFactory;
-            _actionOrderChecker = actionOrderChecker;
+            _actionOrderHelper = actionOrderHelper;
             _settingsBackup = settingsBackup;
             _sharedSettingsLoader = sharedSettingsLoader;
             _baseSettingsBuilder = baseSettingsBuilder;
         }
 
         protected abstract void PrepareForLoading();
+
         protected abstract void ProcessAfterLoading(PdfCreatorSettings settings);
+
         protected abstract void ProcessBeforeSaving(PdfCreatorSettings settings);
+
         protected abstract void ProcessAfterSaving(PdfCreatorSettings settings);
 
         public void SaveSettingsInRegistry(PdfCreatorSettings settings)
@@ -56,7 +60,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
         {
             MoveSettingsIfRequired();
             PrepareForLoading();
-            var settings = (PdfCreatorSettings) _defaultSettingsBuilder.CreateEmptySettings();
+            var settings = (PdfCreatorSettings)_defaultSettingsBuilder.CreateEmptySettings();
             var migrationStorage = BuildMigrationStorage();
             settings.LoadData(migrationStorage);
 
@@ -70,7 +74,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             CheckAndAddMissingDefaultProfile(settings);
             CheckTitleReplacement(settings);
             CheckDefaultViewers(settings);
-            _actionOrderChecker.Check(settings.ConversionProfiles);
+            _actionOrderHelper.CleanUpAndEnsureValidOrder(settings.ConversionProfiles);
             ProcessAfterLoading(settings);
             LogProfiles(settings);
 

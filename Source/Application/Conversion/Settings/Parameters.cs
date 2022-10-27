@@ -76,9 +76,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Parameters)) return false;
 			Parameters v = o as Parameters;
 			
-			if (!OriginalFilePath.Equals(v.OriginalFilePath)) return false;
-			if (!Outputfile.Equals(v.Outputfile)) return false;
-			if (!Profile.Equals(v.Profile)) return false;
+			if (!Object.Equals(OriginalFilePath, v.OriginalFilePath)) return false;
+			if (!Object.Equals(Outputfile, v.Outputfile)) return false;
+			if (!Object.Equals(Profile, v.Profile)) return false;
 			return true;
 		}
 		

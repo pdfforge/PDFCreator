@@ -18,6 +18,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             return new ActionResult();
         }
 
+        public ActionResult CheckFileName(ConversionProfile profile)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult CheckTargetDirectory(ConversionProfile profile)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings)
         {
             return new ActionResult();

@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
         private readonly IDispatcher _dispatcher;
         private readonly IOnlineVersionHelper _onlineVersionHelper;
         private readonly IAssemblyHelper _assemblyHelper;
-        public string CurrentVersionDate { get; set; }
+        public string LatestVersionReleaseDate { get; set; }
         public string AvailableVersionText { get; }
 
         public UpdateHintViewModel(
@@ -58,19 +58,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
 
             AvailableVersionText = Translation.GetNewUpdateMessage(_onlineVersionHelper.GetOnlineVersion().Version.ToString(3),
                                                                     versionHelper.ApplicationVersion.ToString(3),
-                                                                    CurrentVersionDate);
+                                                                    LatestVersionReleaseDate);
         }
 
         public ICommand InstallUpdateCommand => new AsyncCommand(InstallUpdate);
 
         private void SetCurrentDateFormat()
         {
-            var currentRelease = _onlineVersionHelper.CurrentReleaseVersion;
+            var latestAvailableRelease = _onlineVersionHelper.LatestRelease;
 
-            if (currentRelease == null || !DateTime.TryParse(currentRelease.ReleaseDate, out var currentReleaseDate))
-                currentReleaseDate = _assemblyHelper.GetLinkerTime();
+            if (latestAvailableRelease == null || !DateTime.TryParse(latestAvailableRelease.ReleaseDate, out var latestVersionReleaseDate))
+                latestVersionReleaseDate = _assemblyHelper.GetLinkerTime();
 
-            CurrentVersionDate = currentReleaseDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
+            LatestVersionReleaseDate = latestVersionReleaseDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
         }
 
         private async Task InstallUpdate(object obj)
@@ -111,13 +111,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
             return _taskCompletionSource.Task;
         }
 
-        public List<Release> UpdateVersions
+        public List<ReleaseInfo> UpdateVersions
         {
             get
             {
-                var list = new List<Release>();
+                var list = new List<ReleaseInfo>();
 
-                foreach (var onlineVersionVersionInfo in _onlineVersionHelper.GetOnlineVersion().VersionInfos)
+                foreach (var onlineVersionVersionInfo in _onlineVersionHelper.GetOnlineVersion().ReleaseInfos)
                 {
                     list.Add(onlineVersionVersionInfo.Copy());
                 }

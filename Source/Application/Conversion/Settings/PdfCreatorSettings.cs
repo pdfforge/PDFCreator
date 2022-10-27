@@ -160,17 +160,21 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PdfCreatorSettings)) return false;
 			PdfCreatorSettings v = o as PdfCreatorSettings;
 			
-			if (!ApplicationSettings.Equals(v.ApplicationSettings)) return false;
+			if (!Object.Equals(ApplicationSettings, v.ApplicationSettings)) return false;
 			
-			if (ConversionProfiles.Count != v.ConversionProfiles.Count) return false;
+			if (ConversionProfiles?.Count != v.ConversionProfiles?.Count) return false;
+			if (Object.ReferenceEquals(ConversionProfiles, v.ConversionProfiles)) return true;
+			
 			for (int i = 0; i < ConversionProfiles.Count; i++)
 			{
 				if (!ConversionProfiles[i].Equals(v.ConversionProfiles[i])) return false;
 			}
 			
-			if (!CreatorAppSettings.Equals(v.CreatorAppSettings)) return false;
+			if (!Object.Equals(CreatorAppSettings, v.CreatorAppSettings)) return false;
 			
-			if (DefaultViewers.Count != v.DefaultViewers.Count) return false;
+			if (DefaultViewers?.Count != v.DefaultViewers?.Count) return false;
+			if (Object.ReferenceEquals(DefaultViewers, v.DefaultViewers)) return true;
+			
 			for (int i = 0; i < DefaultViewers.Count; i++)
 			{
 				if (!DefaultViewers[i].Equals(v.DefaultViewers[i])) return false;

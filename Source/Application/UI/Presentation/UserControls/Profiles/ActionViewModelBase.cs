@@ -1,10 +1,10 @@
-﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
+﻿using pdfforge.PDFCreator.Conversion.Actions;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
 
@@ -138,7 +138,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             ResetToDefaultSettings();
             Action.GetProfileSetting(CurrentProfile).Enabled = true;
             CurrentProfile.ActionOrder.Add(Action.SettingsType.Name);
-            _actionOrderHelper.EnsureEncryptionAndSignatureOrder(CurrentProfile);
+            _actionOrderHelper.EnsureValidOrder(CurrentProfile.ActionOrder);
         }
 
         public override void MountView()

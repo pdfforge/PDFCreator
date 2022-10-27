@@ -91,11 +91,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is TimeServerAccount)) return false;
 			TimeServerAccount v = o as TimeServerAccount;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!IsSecured.Equals(v.IsSecured)) return false;
-			if (!Password.Equals(v.Password)) return false;
-			if (!Url.Equals(v.Url)) return false;
-			if (!UserName.Equals(v.UserName)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(IsSecured, v.IsSecured)) return false;
+			if (!Object.Equals(Password, v.Password)) return false;
+			if (!Object.Equals(Url, v.Url)) return false;
+			if (!Object.Equals(UserName, v.UserName)) return false;
 			return true;
 		}
 		

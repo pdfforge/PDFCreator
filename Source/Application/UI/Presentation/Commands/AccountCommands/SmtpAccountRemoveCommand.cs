@@ -51,11 +51,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
             var messageSb = new StringBuilder();
             messageSb.AppendLine(_currentAccount.AccountInfo);
+            messageSb.AppendLine();
             messageSb.AppendLine(Translation.SureYouWantToDeleteAccount);
 
             if (_usedInProfilesList.Count > 0)
             {
-                messageSb.AppendLine();
                 messageSb.AppendLine(Translation.GetAccountIsUsedInFollowingMessage(_usedInProfilesList.Count));
                 messageSb.AppendLine();
                 foreach (var profile in _usedInProfilesList)

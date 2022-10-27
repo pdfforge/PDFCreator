@@ -1,10 +1,10 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Core.Printing.Port;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using System;
 using SystemInterface.IO;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.Printing
 {
@@ -13,12 +13,14 @@ namespace pdfforge.PDFCreator.Core.Printing
         private const string PrinterPortName = "pdfcmon";
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IPath _path;
+        private readonly IDirectory _directory;
         private readonly IPrinterPortReader _printerPortReader;
 
-        public FolderProvider(IPrinterPortReader printerPortReader, IPath path)
+        public FolderProvider(IPrinterPortReader printerPortReader, IPath path, IDirectory directory)
         {
             _printerPortReader = printerPortReader;
             _path = path;
+            _directory = directory;
 
             var tempFolderBase = GetTempFolderBase();
             var localAppDataFolderBase = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -40,6 +42,18 @@ namespace pdfforge.PDFCreator.Core.Printing
         public string SpoolFolder { get; }
 
         public string TempFolder { get; }
+
+        public string CreatePrefixTempFolder(string prefix)
+        {
+            var prefixTempFolder = PathSafe.Combine(TempFolder,
+                prefix + "_" + PathSafe.GetFileNameWithoutExtension(_path.GetRandomFileName()));
+            _directory.CreateDirectory(prefixTempFolder);
+
+            // Shorten the temp folder for GS compatibility
+            prefixTempFolder = PathHelper.GetShortPathName(prefixTempFolder);
+
+            return prefixTempFolder;
+        }
 
         public string LocalAppDataFolder { get; }
 

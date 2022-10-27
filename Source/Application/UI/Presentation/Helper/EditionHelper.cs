@@ -15,13 +15,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     {
         public bool IsFreeEdition { get; }
         public bool IsServer { get; }
+        public bool IsCustom { get; }
         public EncryptionLevel EncryptionLevel { get; }
+        public bool AlwaysUsePdfArchitect { get; }
 
-        public EditionHelper(Edition edition, EncryptionLevel encryptionLevel = EncryptionLevel.Aes256Bit)
+        public EditionHelper(Edition edition, EncryptionLevel encryptionLevel = EncryptionLevel.Aes256Bit, bool alwaysUsePdfArchitect = true)
         {
             IsFreeEdition = edition == Edition.Free;
             IsServer = edition == Edition.Server;
+            IsCustom = edition == Edition.Custom;
             EncryptionLevel = encryptionLevel;
+            AlwaysUsePdfArchitect = alwaysUsePdfArchitect;
         }
     }
 }

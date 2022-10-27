@@ -31,10 +31,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private ApplicationNameProvider ApplicationName { get; }
         public IInteractionRequest InteractionRequest { get; }
 
-        public string ApplicationNameAndVersion => ApplicationName.ApplicationName + " " + _versionHelper.FormatWithThreeDigits();
+        public string ApplicationNameAndVersion => ApplicationName.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
 
         private readonly IEventAggregator _aggregator;
-        private string _activePath = RegionNames.HomeView;
         private readonly IDispatcher _dispatcher;
         private readonly IRegionManager _regionManager;
         private readonly IUpdateHelper _updateHelper;
@@ -53,6 +52,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private bool _showUpdate;
         private bool _updateInfoWasShown;
         private readonly IStartupRoutine _startupRoutine;
+        private readonly IPdfEditorHelper _pdfEditorHelper;
+
+        public bool HidePdfArchitectInfo => GpoSettings.HidePdfArchitectInfo || _pdfEditorHelper.UseSodaPdf;
 
         public bool ShowUpdate
         {
@@ -61,7 +63,13 @@ namespace pdfforge.PDFCreator.UI.Presentation
             {
                 _showUpdate = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(UpdateBadge));
             }
+        }
+
+        public string UpdateBadge
+        {
+            get => ShowUpdate ? "!" : "";
         }
 
         public MainShellViewModel(DragAndDropEventHandler dragAndDrop, ITranslationUpdater translation,
@@ -70,7 +78,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             IRegionManager regionManager, IGpoSettings gpoSettings, IUpdateHelper updateHelper, IEventAggregator eventAggregator,
             IStartupActionHandler startupActionHandler, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider,
             IVersionHelper versionHelper, IOnlineVersionHelper onlineVersionHelper,
-            IStartupRoutine startupActions)
+            IStartupRoutine startupActions, IPdfEditorHelper pdfEditorHelper)
             : base(translation)
         {
             _aggregator = aggregator;
@@ -78,6 +86,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             InteractionRequest = interactionRequest;
 
             _startupRoutine = startupActions;
+            _pdfEditorHelper = pdfEditorHelper;
             _dispatcher = dispatcher;
             _regionManager = regionManager;
             _updateHelper = updateHelper;
@@ -196,7 +205,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         private void OnSettingsChanged()
         {
-            NavigateCommand.Execute(RegionNames.HomeView);
+            NavigateCommand.Execute(RegionViewName.HomeView);
         }
 
         public ICommand DragEnterCommand { get; }
@@ -206,6 +215,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public ICommand NavigateCommand { get; set; }
 
         public IMacroCommand CloseCommand { get; set; }
+
+        private string _activePath = RegionViewName.HomeView;
 
         public string ActivePath
         {
@@ -242,7 +253,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             var onlineVersionAsync = _onlineVersionHelper.GetOnlineVersion();
 
-            if (onlineVersionAsync.VersionInfos.Count > 0)
+            if (onlineVersionAsync.ReleaseInfos.Count > 0 && _updateHelper.UpdateShouldBeShown())
             {
                 await _dispatcher.InvokeAsync(ShowUpdateVersionOverviewView);
             }

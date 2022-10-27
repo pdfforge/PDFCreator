@@ -6,9 +6,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
 {
     public class QuickActionOpenWithPdfArchitectCommand : QuickActionCommandBase<FtpActionTranslation>
     {
-        private readonly IDefaultViewerAction _action;
+        private readonly IOpenFileAction _action;
 
-        public QuickActionOpenWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IDefaultViewerAction action) : base(translationUpdater)
+        public QuickActionOpenWithPdfArchitectCommand(ITranslationUpdater translationUpdater, IOpenFileAction action) : base(translationUpdater)
         {
             _action = action;
         }

@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -47,7 +38,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -629,6 +619,20 @@ Ghostscript is normally built to interpret both PostScript and PDF files, examin
 <p>Here are some command line options specific to PDF</p>
 
  <dl>
+<dt><code>-dNEWPDF</code></dt>
+<dd>From release 9.55.0 Ghostscript incorporates two complete PDF interpreters; the original
+long-standing interpreter is written in PostScript but there is now a new interpreter written
+in C.
+<p>At present the old PostScript-based interpreter remains the default, in future releases the
+new C-based interpreter will become the default, though we would encourage people to experiment
+with the new interpreter and send us feedback. While there are two interpreters the command-line
+switch NEWPDF will allow selection of the existing interpreter when false and the new interpreter
+when true.</p>
+
+</dd>
+</dl>
+
+ <dl>
 <dt><code>-dPDFFitPage</code></dt>
 <dd>Rather than selecting a PageSize given by the PDF MediaBox, BleedBox (see -dUseBleedBox),
 TrimBox (see -dUseTrimBox), ArtBox (see -dUseArtBox), or CropBox (see -dUseCropBox),
@@ -722,12 +726,11 @@ be drawn, whilst those not listed will not be drawn.</p>
 </dl>
 
 <dl>
-    <dt><code>-dShowAcroForm</code></dt>
+    <dt><code>-dShowAcroForm=false</code></dt>
     <dd>
-    Show annotations referred from the Interactive Form Dictionary (AcroForm dictionary).
-    By default, AcroForm is not enumerated because Adobe Acrobat doesn't do this.
-    This option may be useful for debugging or recovery of incorrect PDF files
-    that don't associate all annotations with the page objects.</dd>
+    Don't show annotations from the Interactive Form Dictionary (AcroForm dictionary).
+    By default, AcroForm processing is now enabled because Adobe Acrobat does this. This option
+    is provided to restore the previous behavior which corresponded to older Acrobat.</dd>
 </dl>
 
 <dl>
@@ -803,6 +806,18 @@ is applied to each PDF file separately. So if you were to set <code>-sPageList=1
  exercise caution when using this switch, and probably should not use it at all when processing a mixture of PostScript
  and PDF files on the same command line.
 </p>
+<p>
+The XPS language like the PDF language allows random access to pages.  The XPS interpreter handles all the PageList cases
+discussed above.  It also handles cases such as:
+<blockquote><pre>
+-sPageList=1,2,1,2 indicates repeated pages.  Pages processed in order 1, 2, 1, 2.
+-sPageList=10-5 indicates pages will be processed in the order 10, 9, 8, 7, 6, 5.
+-sPageList=1-,-1 indicates first processing from page 1 to end and then from end to page 1.
+</pre></blockquote>
+In addition, the XPS interpreter allows the use of a -dLastPage < -dFirstPage.  In this
+case the pages will be processed backwards from LastPage to FirstPage.
+</p>
+
 </dd>
 </dl>
 
@@ -2305,6 +2320,44 @@ whereas <code>-sXYZ=35</code> is equivalent to</p>
 </dl>
 
 <dl>
+<dt><code>-p</code><em>name</em><code>=</code><em>string</em></dt>
+<dd>Define a name in systemdict with the parsed version of the given string as value. The string takes a parameter definition in (something very close to) postscript format.
+This allows more complex structures to be passed in than is possible with <code>-d</code> or <code>-s</code>. For example:
+
+<blockquote><code>
+-pFoo=&quot;&lt;&lt; /Bar[1 2 3]/Baz 0.1 /Whizz (string) /Bang &lt;0123&gt; &gt;&gt;&quot;
+</code></blockquote>
+
+<p>This means that <code>-p</code> can do the job of both <code>-d</code> and <code>-s</code>. For example:</p>
+
+<blockquote><code>
+-dDownScaleFactor=3
+</code></blockquote>
+
+<p>can be equivalently performed by</p>
+
+<blockquote><code>
+-pDownScaleFactor=3
+</code></blockquote>
+
+and
+
+<blockquote><code>
+-sPAPERSIZE=letter
+</code></blockquote>
+
+<p>can be equivalently performed by</p>
+
+<blockquote><code>
+-pPAPERSIZE=&quot;(letter)&quot;
+</code></blockquote>
+
+<p>Note, that there are some 'special' values that should be set using <code>-s</code>, not <code>-p</code>, such as <code>DEVICE</code> and <code>DefaultGrayProfile</code>. Broadly, only use <code>-p</code> if you cannot set what you want using <code>-s</code> or <code>-d</code>.</p>
+
+<p>Also, internally, after setting an parameter with <code>-p</code> we perform an <code>initgraphics</code> operation. This is required to allow changes in parameters such as <code>HWResolution</code> to take effect. This means that attempting to use <code>-p</code> other than at the start of a page is liable to give unexpected results.</p>
+</dl>
+
+<dl>
     <dt><code>-u</code><em>name</em></dt>
     <dd>Un-define a name, cancelling <code>-d</code> or <code>-s</code>.
 
@@ -2590,6 +2643,15 @@ processing of PostScript source files. Note: in releases 7.30 and
     earlier, processing of DoPS was always enabled.</dd>
 </dl>
 
+<a name="BlackText"></a>
+<dl>
+    <dt><code>-dBlackText</code></dt>
+<dd>Forces text to be drawn with black.  This occurs for text fill and
+text stroke operations.  PDF output created with this setting will be
+updated to be drawn with gray values of 0.  Type 3 fonts, which are
+sometimes used for graphics, are not affected by this parameter. </dd>
+</dl>
+
 <h4><a name="Page_parameters"></a>Page parameters</h4>
 
 <dl>
@@ -2712,6 +2774,47 @@ This option sets the <code>-dEPSFitPage</code>, <code>-dPDFFitPage</code>, and
 the <code>-dFitPage</code> options.</p>
 </dd>
 </dl>
+
+<dl>
+<a name="NupControl"></a>
+    <dt><code>-sNupControl=</code><em>Nup_option_string</em></dt>
+<dd>This option specifies the N-up nesting to be performed. The pages are scaled
+and arranged on the current PageSize "master" page according the the option.
+<p>
+The only option strings are as follows:
+    <ul>
+    <li>
+        <dt><code>-sNupControl=</code><em>number1</em><code>x</code><em>number2</em></dt>
+    will fit <em>number1</em> nested pages across the master page, and <em>number2</em>
+    down the master page, from the upper left, then to the right to fill the row, moving down
+    to the leftmost place on the next row until the nest is complete.
+    <p>
+    A partially filled nest will be output when the <code>-sNupControl=</code> string is changed,
+    when Ghostscript exits, or when the page size changes.
+    <p>
+    Pages are scaled to fit the requested number horizontally and vertically, maintaining the
+    aspect ratio. If the scaling selected for fitting the nested pages leaves space horizontally
+    on the master page, the blank area will be added to the left and right of the <b>entire</b>
+    row of nested pages. If the fit results in vertical space, the blank area will be added
+    above and below <b>all</b> of the rows.
+    </li>
+    <li>
+        <dt><code>-sNupControl=</code></dt>
+    An empty string will turn off nesting. If there are any nested pages on the master page,
+    the partially filled master page will be output.
+    </li>
+    </ul>
+<p>Printer devices typically reallocate their memory whenever the transparency use
+of a page changes (from one page having transparency, to the next page not having
+transparency, or vice versa). This would cause problems with Nup, possibly leading
+to lost or corrupt pages in the output. To avoid this, the Nup device changes
+the parameters of the page to always set the PageUsesTransparency flag. While this
+should be entirely transparent for the user and not cause extra transparency blending
+operations during the standard rendering processes for most devices, it may cause
+devices to use the clist rather than PageMode.
+</dd>
+</dl>
+
 <h4><a name="Font_related_parameters"></a>Font-related parameters</h4>
 
 <dl>
@@ -2719,14 +2822,6 @@ the <code>-dFitPage</code> options.</p>
 <dd>Causes Type 1 fonts to be loaded into the current VM -- normally local
 VM -- instead of always being loaded into global VM.  Useful only for
     compatibility with Adobe printers for loading some obsolete fonts.</dd>
-</dl>
-
-<dl>
-    <dt><code>-dNOCCFONTS</code></dt>
-<dd>Suppresses the use of fonts precompiled into the Ghostscript executable.
-See <a href="Fonts.htm#Precompiling">"Precompiling fonts"</a> in the
-documentation on fonts for details.  This is probably useful only for
-    debugging.</dd>
 </dl>
 
 <dl>
@@ -3043,18 +3138,38 @@ device supports those colorants.  It is also possible for these devices to
     <dt><code>-sICCOutputColors=</code><em>"Cyan, Magenta, Yellow, Black, Orange, Violet"</em></dt>
 <dd>For the psdcmyk and tiffsep separation devices, the device ICC profile can
 be an NCLR profile, which means something that includes non-traditional inks
-like Orange, Violet, etc.   In this case, the list of the colorant names in the
+like Orange, Violet, etc.   In this case, the list of the color names in the
 order that they exist in the profile must be provided with this command line
-option.   Note that if a colorant name that is specified for the profile occurs also within
-the document (e.g. "Orange" above), then these colorants will be associated with
-the same separation.  It is possible through a compile time option LIMIT_TO_ICC
-defined in gdevdevn.h to restrict the output colorants of the psdcmyk and tiffsep
-device to the colorants of the ICC profile or to allow additional spot colorants
-in the document to be created as different separations.  If restricted, the other
-spot colorants will go through the alternate tint transform and then be mapped to
-the color space defined by the NCLR profile.   If an NCLR ICC profile is specified
+option.   Note that if a color name that is specified for the profile occurs also within
+the document (e.g. "Orange" above), then these color names will be associated with
+the same separation.  Additional names beyond those of the ICC profile component count
+can be included.  In this case, those components will be installed into the tiffsep
+or psdcmyk device list of colors, following the ICC profile colors.
+The number of spot colors (those that go beyond the standard CMYK colors)
+allowed by tiffsep or psdcmyk can be set using -dMaxSpots=#.  The default
+value for this is currently set to 10 (GS_SOFT_MAX_SPOTS).
+As an example consider the case where we wish to use a 6CLR ICC profile that
+includes Orange and Violet, but
+need the device to include a specialty color component such as
+Varnish, which does not appear in the document and is not handled by the 6CLR ICC
+profile.  In addition, we desire
+to allow one more spot color of the document to come through to our device.  For
+this case using
+ <code>-sICCOutputColors=</code><em>"Cyan, Magenta, Yellow, Black, Orange, Violet, Varnish"</em>
+  <code>-dMaxSpots=</code><em>4</em>
+   <code>-sOutputICCProfile=</code><em>My_6CLR_Profile.icc</em>
+would provide the desired outcome.  Note that it is up to the device or
+through the use of -sNamedProfile (see below) to involve the setting
+of any values in the Varnish channel.  However, if an All color value is encountered
+in the document, the Varnish component will have its value
+set as will the Orange and Violet values (Likewise if a spot color named Varnish is
+encountered in the document the Varnish component will be used for the values).
+The All value is typically used
+for placing registration targets on separations.
+Finally, note that if an NCLR ICC profile is specified
 and ICCOutputColors is not used, then a set of default names will be used for
-    the extra colorants (non-CMYK) in the profile.</dd>
+the extra colorants (non-CMYK) in the profile.  These names are given as ICC_COLOR_N for
+the Nth non-CMYK channel.</dd>
 </dl>
 
 <dl>
@@ -3102,7 +3217,7 @@ Separation and DeviceN colors.  For the general user this command option
 be specified within which the color blending operations are to
 take place. Some files lack this specification, in which case
 the blending occurs in the output device's native color space.  This
-dependency of blending color space on the device color model 
+dependency of blending color space on the device color model
 can be avoided by using the above command to force a specific
 color space in which to perform the blending. </dd>
 </dl>
@@ -3140,7 +3255,7 @@ PRESERVE_K_PLANE approach.   This is only valid when using littleCMS for
 </dl>
 
 <dl>
-    <dt><code>-sGraphicICCProfile=</code><em>filename</em></dt>
+    <dt><code>-sVectorICCProfile=</code><em>filename</em></dt>
 <dd>Set the ICC profile that will be associated with
 the output device for vector-based graphics (e.g. Fill,
 Stroke operations).
@@ -3151,20 +3266,20 @@ as the profile.  This can be used to obtain more saturated
 </dl>
 
 <dl>
-    <dt><code>-dGraphicIntent=</code><em>0/1/2/3</em></dt>
-<dd>Set the rendering intent that should be used with graphic objects.  The
+    <dt><code>-dVectorIntent=</code><em>0/1/2/3</em></dt>
+<dd>Set the rendering intent that should be used with vector-based graphic objects.  The
     options are the same as specified for -dRenderIntent.</dd>
 </dl>
 
 <dl>
-    <dt><code>-dGraphicBlackPt=</code><em>0/1</em></dt>
-    <dd>Specify if black point compensation should be used for graphic objects.</dd>
+    <dt><code>-dVectorBlackPt=</code><em>0/1</em></dt>
+    <dd>Specify if black point compensation should be used for vector-based graphic objects.</dd>
 </dl>
 
 <dl>
-    <dt><code>-dGraphicKPreserve=</code><em>0/1/2</em></dt>
+    <dt><code>-dVectorKPreserve=</code><em>0/1/2</em></dt>
 <dd>Specify if black preservation should be used when mapping
-from CMYK to CMYK for graphic objects.   The
+from CMYK to CMYK for vector-based graphic objects.   The
     options are the same as specified for -dKPreserve.</dd>
 </dl>
 
@@ -3239,7 +3354,7 @@ control in the specification of source colors see
 <dd>
 This option provides an extreme level of override control to
 specify the source color spaces and rendering intents to use
-with graphics, images and text for both RGB and CMYK source
+with vector-based graphics, images and text for both RGB and CMYK source
 objects.  The specification is made through a file that contains
 on a line a key name to specify the object type (e.g. Image_CMYK)
 followed by an ICC profile file name, a rendering intent
@@ -3281,15 +3396,32 @@ are used to convert between RGB and CMYK with black generation and undercolor
 <dl>
     <dt><code>-dSimulateOverprint=</code><em>true/false</em></dt>
 <dd>
-This option enables continous tone CMYK devices (e.g. tiff32nc) the capability to
-provide a  simulation of spot color overprinting.  The default setting is true.
+This option has been replaced by <code><b>-dOverprint=</b></code>
+</dd>
+</dl>
+
+
+<dl>
+<a name="Overprint"></a>
+    <dt><code>-dOverprint=</code><em>/enable | /disable | /simulate</em></dt>
+<dd>
+This option provides control of overprinting.  The default setting is <em><b>/enable</b></em>
+which allows devices such as CMYK that can support overprint to leave planes unchanged
+under control of PostScript and PDF overprint settings.
+<p>
+The <em><b>/disable</b></em> setting ignores all overprint (and overprint mode) from the input.
+<p>
+If <em><b>/simulate</b></em> is set, then pages with overprint (or overprint mode) set for
+CMYK or Separation colors will be internally maintained and output to RGB or Gray
+devices.
+<p>
 Note that not all spot color overprint cases can be accurately simulated with a CMYK
 only device.   For example, a case where you have a spot color overprinted with CMYK
 colors will be indistiguishable from a case where you have spot color equivalent
 CMYK colorants overprinted with CMYK colors, even though they may need to show
 significantly different overprint simulations.  To obtain a full overprint simulation,
-use the psdcmyk or tiffsep device, where the spot colors are kept in their own
-    individual planes.</dd>
+use the <em><b>/simulate</b></em> setting or the psdcmyk or tiffsep device, where the spot
+colors are kept in their own individual planes.</dd>
 </dl>
 
 <dl>
@@ -3524,9 +3656,16 @@ operation of <code>setpagedevice</code>, and because this capability is <i>extre
 rarely used, we feel the improvement in security warrants the small reduction in
 flexibility.
 <p>
-Path matching is simple: it is case sensitive, and we do not implement full featured
+Path matching is very simple: it is case sensitive, and we do not implement full featured
 &quot;globbing&quot; or regular expression matching (such complexity would significantly
-and negatively impact performance). The following cases are handled:
+and negatively impact performance). Further, the string parameter(s) passed to the
+<code>--permit-file-*</code> option must exactly match the string(s) used to reference
+the file(s): for example, you cannot use a absolute path to grant permission, and
+then a relative path to reference the file (or vice versa) - the path match will fail.
+Similarly, you cannot grant permission through one symlink, and then reference a file
+directly, or through an alternative symlink - again, the matching will fail.
+<p>
+The following cases are handled:
 <ul>
 <li>
 <dt><code>&quot;&sol;path&sol;to&sol;file&quot;</code></dt>
@@ -3694,9 +3833,7 @@ memory. For example, to allow use of 30Mb of extra RAM use:
     <code>-c&nbsp;30000000&nbsp;setvmthreshold&nbsp;-f</code>.
 <p>This can also be useful in processing large documents when using a
 high-level (vector) output device (like pdfwrite) that maintains significant internal
-state.  In fact, the <a href="Language.htm#.setpdfwrite"><code>.setpdfwrite</code></a>
-operator used by the ps2pdf script and others sets a vmthreshold value of
-3&nbsp;MB to account for this.</p></li>
+state.</p></li>
 
 <li>
 <p>
@@ -5259,7 +5396,7 @@ PCLEOs. (see the FAPI-related source code for details).</p>
 <hr>
 
 <p>
-<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+<small>Copyright &copy; 2000-2021 Artifex Software, Inc.  All rights reserved.</small>
 
 <p>
 This software is provided AS-IS with no warranty, either express or
@@ -5272,7 +5409,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -5299,7 +5436,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

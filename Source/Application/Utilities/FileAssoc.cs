@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -57,6 +58,8 @@ namespace pdfforge.PDFCreator.Utilities
 
     public class FileAssoc : IFileAssoc
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private List<SpecialShellCommand> _specialFileTypes;
 
         /// <inheritdoc />
@@ -87,9 +90,9 @@ namespace pdfforge.PDFCreator.Utilities
         {
             assoc = MakeValidExtension(assoc);
 
-            var fileType = GetFiletypeKey(assoc);
-            var filetypeRegKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($"{fileType}\\shell\\{verb}\\command");
-            var command = filetypeRegKey?.GetValue("") as string;
+            var fileType = GetFileTypeKey(assoc, verb);
+            var fileTypeRegKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($"{fileType}\\shell\\{verb}\\command");
+            var command = fileTypeRegKey?.GetValue("") as string;
 
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -97,10 +100,7 @@ namespace pdfforge.PDFCreator.Utilities
                     return null;
 
                 var specialCommand = _specialFileTypes.FirstOrDefault(x => x.FileType == fileType && x.ShellVerb == verb);
-                if (specialCommand == null)
-                    return null;
-
-                return new ShellCommand(specialCommand.CommandLine, specialCommand.Arguments, verb);
+                return specialCommand == null ? null : new ShellCommand(specialCommand.CommandLine, specialCommand.Arguments, verb);
             }
 
             var commandArgs = CommandLineToArgs(command);
@@ -112,26 +112,6 @@ namespace pdfforge.PDFCreator.Utilities
         public void RegisterSpecialFileTypes(List<SpecialShellCommand> specialFileTypes)
         {
             _specialFileTypes = specialFileTypes;
-        }
-
-        private string[] GetVerbsByExtension(string assoc)
-        {
-            assoc = MakeValidExtension(assoc);
-
-            var fileType = GetFiletypeKey(assoc);
-
-            if (fileType == null)
-                return new string[0];
-
-            using (var extensionRegKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($"{fileType}\\shell"))
-            {
-                if (extensionRegKey == null)
-                    return new string[0];
-
-                return extensionRegKey.GetSubKeyNames()
-                    .Select(s => s.ToLower())
-                    .ToArray();
-            }
         }
 
         private string MakeValidExtension(string assoc)
@@ -160,12 +140,26 @@ namespace pdfforge.PDFCreator.Utilities
             return assoc;
         }
 
-        private string GetFiletypeKey(string extension)
+        private static string GetFileTypeKey(string extension, string verb)
         {
+            if (verb == "open")
+            {
+                using (var extensionRegKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey($"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\{extension}\\UserChoice"))
+                {
+                    var fileTypeKey = extensionRegKey?.GetValue("ProgId") as string;
+                    if (!string.IsNullOrEmpty(fileTypeKey))
+                    {
+                        Logger.Debug($"Found {fileTypeKey} in UserChoice");
+                        return fileTypeKey;
+                    }
+                }
+            }
+
             using (var extensionRegKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(extension))
             {
-                var filetype = extensionRegKey?.GetValue("") as string;
-                return filetype;
+                var fileTypeKey = extensionRegKey?.GetValue("") as string;
+                Logger.Debug($"Found {fileTypeKey} in ClassesRoot");
+                return fileTypeKey;
             }
         }
 

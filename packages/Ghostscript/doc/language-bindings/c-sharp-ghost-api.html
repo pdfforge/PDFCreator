@@ -1,0 +1,475 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link selected"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+        <div class="main">
+
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link selected"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+
+            </div>
+
+            <div class="middle">
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="ghostapi">GhostAPI</h1>
+<div class="banner">
+    <div class="c-sharp-text"></div>
+    <div class="vendor-logo c-sharp-logo"></div>
+</div>
+
+
+<h2 id="about">About</h2>
+<p><code>GhostAPI</code> is the <code>C#</code> bridge into the Ghostscript <code>C</code> library.</p>
+<p><code>GhostAPI</code> contains some essential <a href="#structs-and-enums">structs &amp; enums</a> as well as a static class for some <a href="#constants">constants</a>, finally it contains the main <a href="#gsapi">GSAPI</a> class which holds the key methods which interface with the <code>C</code> library.</p>
+<h2 id="structs-and-enums">Structs and Enums</h2>
+<h3 id="gsapi_revision_t">gsapi_revision_t</h3>
+<p>This <code>struct</code> is used to contain information pertinent to the version of Ghostscript.</p>
+<div class="tag structDefinition csharp"></div>
+
+<pre><code class="language-c">public struct gsapi_revision_t
+{
+    public IntPtr product;
+    public IntPtr copyright;
+    public int revision;
+    public int revisiondate;
+}</code></pre>
+<h3 id="gs_set_param_type">gs_set_param_type</h3>
+<div class="tag enumDefinition csharp"></div>
+
+<pre><code class="language-c">public enum gs_set_param_type
+{
+    gs_spt_invalid = -1,
+    gs_spt_null =    0, /* void * is NULL */
+    gs_spt_bool =    1, /* void * is NULL (false) or non-NULL (true) */
+    gs_spt_int = 2, /* void * is a pointer to an int */
+    gs_spt_float = 3, /* void * is a float * */
+    gs_spt_name = 4, /* void * is a char * */
+    gs_spt_string =    5, /* void * is a char * */
+    gs_spt_long =    6, /* void * is a long * */
+    gs_spt_i64 = 7, /* void * is an int64_t * */
+    gs_spt_size_t =    8, /* void * is a size_t * */
+    gs_spt_parsed =    9, /* void * is a pointer to a char * to be parsed */
+    gs_spt_more_to_come = 1 &lt;&lt; 31
+};</code></pre>
+<h3 id="gsencoding">gsEncoding</h3>
+<div class="tag enumDefinition csharp"></div>
+
+
+<pre><code class="language-c">public enum gsEncoding
+{
+    GS_ARG_ENCODING_LOCAL = 0,
+    GS_ARG_ENCODING_UTF8 = 1,
+    GS_ARG_ENCODING_UTF16LE = 2
+};</code></pre>
+<h2 id="constants">Constants</h2>
+<p>Constants are stored in the static class <code>gsConstants</code> for direct referencing.</p>
+<h3 id="gsconstants">gsConstants</h3>
+<div class="tag classDefinition csharp"></div>
+
+<pre><code class="language-c">static class gsConstants
+{
+    public const int E_QUIT = -101;
+    public const int GS_READ_BUFFER = 32768;
+    public const int DISPLAY_UNUSED_LAST = (1 &lt;&lt; 7);
+    public const int DISPLAY_COLORS_RGB = (1 &lt;&lt; 2);
+    public const int DISPLAY_DEPTH_8 = (1 &lt;&lt; 11);
+    public const int DISPLAY_LITTLEENDIAN = (1 &lt;&lt; 16);
+    public const int DISPLAY_BIGENDIAN = (0 &lt;&lt; 16);
+}</code></pre>
+<h2 id="gsapi">GSAPI</h2>
+<p>Methods contained within are explained below.</p>
+<p><code>gsapi_run_*</code> and <code>gsapi_exit</code> methods return an <code>int</code> code which can be interpreted as follows:</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0</code></td>
+<td>no error</td>
+</tr>
+<tr>
+<td><code>gsConstants.E_QUIT</code></td>
+<td>"quit" has been executed. This is not an error. <a href="#gsapi_exit">gsapi_exit</a> must be called next</td>
+</tr>
+<tr>
+<td><code>&lt;0</code></td>
+<td>error</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>NOTE</strong><br>
+For full detail on these return code please see:
+<a href="https://www.ghostscript.com/doc/current/API.htm#return_codes">https://www.ghostscript.com/doc/current/API.htm#return_codes</a></p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong><br>All <a href="#gsapi">GSAPI</a> methods aside from <a href="#gsapi_revision">gsapi_revision</a> and <a href="#gsapi_new_instance">gsapi_new_instance</a> should pass an instance of Ghostscript as their first parameter with <code>IntPtr instance</code></p>
+</blockquote>
+<h3 id="gsapi_revision">gsapi_revision</h3>
+<p>This method returns the revision numbers and strings of the Ghostscript interpreter library; you should call it before any other interpreter library functions to make sure that the correct version of the Ghostscript interpreter has been loaded.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_revision(ref gsapi_revision_t vers,
+                                                         int size);</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>The method should write to a reference variable which conforms to the struct <a href="#gsapi_revision_t">gsapi_revision_t</a>.</p>
+</blockquote>
+<h3 id="gsapi_new_instance">gsapi_new_instance</h3>
+<p>Creates a new instance of Ghostscript. This instance is passed to most other <a href="#gsapi">GSAPI</a> methods. Unless Ghostscript has been compiled with the <code>GS_THREADSAFE</code> define, only one instance at a time is supported.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_new_instance(out IntPtr pinstance,
+                                                IntPtr caller_handle);</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>The method returns a pointer which represents your instance of Ghostscript.</p>
+</blockquote>
+<h3 id="gsapi_delete_instance">gsapi_delete_instance</h3>
+<p>Destroy an instance of Ghostscript. Before you call this, Ghostscript must have finished. If Ghostscript has been initialised, you must call <a href="#gsapi_exit">gsapi_exit</a> beforehand.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern void gsapi_delete_instance(IntPtr instance);</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">GSAPI.gsapi_delete_instance(gsInstance);
+gsInstance = IntPtr.Zero;</code></pre>
+<h3 id="gsapi_set_stdio_with_handle">gsapi_set_stdio_with_handle</h3>
+<p>Set the callback functions for <code>stdio</code>, together with the handle to use in the callback functions. The <code>stdin</code> callback function should return the number of characters read, 0 for EOF, or -1 for error. The <code>stdout</code> and <code>stderr</code> callback functions should return the number of characters written.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>These callbacks do not affect output device I/O when using "%stdout" as the output file. In that case, device output will still be directed to the process "stdout" file descriptor, not to the <code>stdio</code> callback.</p>
+</blockquote>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_stdio_with_handle(IntPtr instance,
+                                           gs_stdio_handler stdin,
+                                           gs_stdio_handler stdout,
+                                           gs_stdio_handler stderr,
+                                                     IntPtr caller_handle);</code></pre>
+<h3 id="gsapi_set_stdio">gsapi_set_stdio</h3>
+<p>Set the callback functions for <code>stdio</code>. The handle used in the callbacks will be taken from the value passed to <a href="#gsapi_new_instance">gsapi_new_instance</a>. Otherwise the behaviour of this function matches <a href="#gsapi_set_stdio_with_handle">gsapi_set_stdio_with_handle</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_stdio_with_handle(IntPtr instance,
+                                           gs_stdio_handler stdin,
+                                           gs_stdio_handler stdout,
+                                           gs_stdio_handler stderr);</code></pre>
+<h3 id="gsapi_set_poll_with_handle">gsapi_set_poll_with_handle</h3>
+<p>Set the callback function for polling, together with the handle to pass to the callback function. This function will only be called if the Ghostscript interpreter was compiled with <code>CHECK_INTERRUPTS</code> as described in <code>gpcheck.h</code>.</p>
+<p>The polling function should return zero if all is well, and return negative if it wants ghostscript to abort. This is often used for checking for a user cancel. This can also be used for handling window events or cooperative multitasking.</p>
+<p>The polling function is called very frequently during interpretation and rendering so it must be fast. If the function is slow, then using a counter to <code>return 0</code> immediately some number of times can be used to reduce the performance impact.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_poll_with_handle(IntPtr instance,
+                                             gsPollHandler pollfn,
+                                                    IntPtr caller_handle);</code></pre>
+<h3 id="gsapi_set_poll">gsapi_set_poll</h3>
+<p>Set the callback function for polling. The handle passed to the callback function will be taken from the handle passed to <a href="#gsapi_new_instance">gsapi_new_instance</a>. Otherwise the behaviour of this function matches <a href="#gsapi_set_poll_with_handle">gsapi_set_poll_with_handle</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_poll(IntPtr instance,
+                                  gsPollHandler pollfn);</code></pre>
+<h3 id="gsapi_set_display_callback">gsapi_set_display_callback</h3>
+<p>This call is deprecated; please use <a href="#gsapi_register_callout">gsapi_register_callout</a> to register a <a href="#gscallout">callout handler</a> for the display device in preference.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_display_callback(IntPtr pinstance,
+                                                    IntPtr caller_handle);</code></pre>
+<h3 id="gsapi_register_callout">gsapi_register_callout</h3>
+<p>This call registers a <a href="#gscallout">callout handler</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_register_callout(IntPtr instance,
+                                             gsCallOut callout,
+                                                IntPtr callout_handle);</code></pre>
+<h3 id="gsapi_deregister_callout">gsapi_deregister_callout</h3>
+<p>This call deregisters a <a href="#gscallout">callout handler</a> previously registered with <a href="#gsapi_register_callout">gsapi_register_callout</a>. All three arguments must match exactly for the <a href="#gscallout">callout handler</a> to be deregistered.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_deregister_callout(IntPtr instance,
+                                               gsCallOut callout,
+                                                  IntPtr callout_handle);</code></pre>
+<h3 id="gsapi_set_arg_encoding">gsapi_set_arg_encoding</h3>
+<p>Set the encoding used for the interpretation of all subsequent arguments supplied via the <code>GhostAPI</code> interface on this instance. By default we expect args to be in encoding <code>0</code> (the 'local' encoding for this OS). On Windows this means "the currently selected codepage". On Linux this typically means <code>utf8</code>. This means that omitting to call this function will leave Ghostscript running exactly as it always has. Please note that use of the 'local' encoding is now deprecated and should be avoided in new code. This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_arg_encoding(IntPtr instance,
+                                                   int encoding);</code></pre>
+<h3 id="gsapi_set_default_device_list">gsapi_set_default_device_list</h3>
+<p>Set the string containing the list of default device names, for example "display x11alpha x11 bbox". Allows the calling application to influence which device(s) Ghostscript will try, in order, in its selection of the default device. This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_default_device_list(IntPtr instance,
+                                                       IntPtr list,
+                                                      ref int listlen);</code></pre>
+<h3 id="gsapi_get_default_device_list">gsapi_get_default_device_list</h3>
+<p>Returns a pointer to the current default device string. This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_get_default_device_list(IntPtr instance,
+                                                   ref IntPtr list,
+                                                      ref int listlen);</code></pre>
+<h3 id="gsapi_init_with_args">gsapi_init_with_args</h3>
+<p>To initialise the interpreter, pass your <code>instance</code> of Ghostscript, your argument count, <code>argc</code>, and your argument variables, <code>argv</code>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_init_with_args(IntPtr instance,
+                                                 int argc,
+                                              IntPtr argv);</code></pre>
+<h3 id="gsapi_run_-">gsapi_run_*</h3>
+<p>If these functions return <code>&lt;= -100</code>, either quit or a fatal error has occured. You must call <a href="#gsapi_exit">gsapi_exit</a> next. The only exception is <a href="#gsapi_run_string_continue">gsapi_run_string_continue</a> which will return <code>gs_error_NeedInput</code> if all is well.</p>
+<p>There is a 64 KB length limit on any buffer submitted to a <code>gsapi_run_*</code> function for processing. If you have more than 65535 bytes of input then you must split it into smaller pieces and submit each in a separate <a href="#gsapi_run_string_continue">gsapi_run_string_continue</a> call.</p>
+<h3 id="gsapi_run_string_begin">gsapi_run_string_begin</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_string_begin(IntPtr instance,
+                                                   int usererr,
+                                               ref int exitcode);</code></pre>
+<h3 id="gsapi_run_string_continue">gsapi_run_string_continue</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_string_continue(IntPtr instance,
+                                                   IntPtr command,
+                                                      int count,
+                                                      int usererr,
+                                                  ref int exitcode);</code></pre>
+<h3 id="gsapi_run_string_with_length">gsapi_run_string_with_length</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_string_with_length(IntPtr instance,
+                                                         IntPtr command,
+                                                           uint length,
+                                                            int usererr,
+                                                        ref int exitcode);</code></pre>
+<h3 id="gsapi_run_string">gsapi_run_string</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_string(IntPtr instance,
+                                          IntPtr command,
+                                             int usererr,
+                                         ref int exitcode);</code></pre>
+<h3 id="gsapi_run_string_end">gsapi_run_string_end</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_string_end(IntPtr instance,
+                                                 int usererr,
+                                             ref int exitcode);</code></pre>
+<h3 id="gsapi_run_file">gsapi_run_file</h3>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_run_file(IntPtr instance,
+                                        IntPtr filename,
+                                           int usererr,
+                                       ref int exitcode);</code></pre>
+<h3 id="gsapi_exit">gsapi_exit</h3>
+<p>Exit the interpreter. This must be called on shutdown if <a href="#gsapi_init_with_args">gsapi_init_with_args</a> has been called, and just before <a href="#gsapi_delete_instance">gsapi_delete_instance</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_exit(IntPtr instance);</code></pre>
+<h3 id="gsapi_set_param">gsapi_set_param</h3>
+<p>Sets a parameter.</p>
+<p>Broadly, this is equivalent to setting a parameter using -d, -s or -p on the command line. This call cannot be made during a <a href="#gsapi_run_string">gsapi_run_string</a> operation.</p>
+<p>Parameters in this context are not the same as 'arguments' as processed by <a href="#gsapi_init_with_args">gsapi_init_with_args</a>, but often the same thing can be achieved. For example, with <a href="#gsapi_init_with_args">gsapi_init_with_args</a>, we can pass "-r200" to change the resolution. Broadly the same thing can be achieved by using <a href="#gsapi_set_param">gsapi_set_param</a> to set a parsed value of "&lt;&lt;/HWResolution [ 200.0 200.0 ]&gt;&gt;".</p>
+<p>Internally, when we set a parameter, we perform an <code>initgraphics</code> operation. This means that using <a href="#gsapi_set_param">gsapi_set_param</a> other than at the start of a page is likely to give unexpected results.</p>
+<p>Attempting to set a parameter that the device does not recognise will be silently ignored, and that parameter will not be found in subsequent <a href="#gsapi_get_param">gsapi_get_param</a> calls.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_set_param(IntPtr instance,
+                                         IntPtr param,
+                                         IntPtr value,
+                              gs_set_param_type type);</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>The <code>type</code> argument, as a <a href="#gs_set_param_type">gs_set_param_type</a>, dictates the kind of object that the <code>value</code> argument points to.</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong><br>For more on the C implementation of parameters see: <a href="https://www.ghostscript.com/doc/current/Use.htm#Parameters">Ghostscript parameters in C</a>.</p>
+</blockquote>
+<h3 id="gsapi_get_param">gsapi_get_param</h3>
+<p>Retrieve the current value of a parameter.</p>
+<p>If an error occurs, the return value is negative. Otherwise the return value is the number of bytes required for storage of the value. Call once with value <code>NULL</code> to get the number of bytes required, then call again with value pointing to at least the required number of bytes where the value will be copied out. Note that the caller is required to know the type of value in order to get it. For all types other than <a href="#gs_set_param_type">gs_spt_string</a>, <a href="#gs_set_param_type">gs_spt_name</a>, and <a href="#gs_set_param_type">gs_spt_parsed</a> knowing the type means you already know the size required.</p>
+<p>This call retrieves parameters/values that have made it to the device. Thus, any values set using <a href="#gs_set_param_type">gs_spt_more_to_come</a> without a following call omitting that flag will not be retrieved. Similarly, attempting to get a parameter before <a href="#gsapi_init_with_args">gsapi_init_with_args</a> has been called will not list any, even if <a href="#gsapi_set_param">gsapi_set_param</a> has been used.</p>
+<p>Attempting to read a parameter that is not set will return <code>gs_error_undefined</code> (-21). Note that calling <a href="#gsapi_set_param">gsapi_set_param</a> followed by <a href="#gsapi_get_param">gsapi_get_param</a> may not find the value, if the device did not recognise the key as being one of its configuration keys.</p>
+<p>For the C documentation please refer to <a href="https://www.ghostscript.com/doc/current/API.htm#get_param">Ghostscript get_param</a>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_get_param(IntPtr instance,
+                                         IntPtr param,
+                                         IntPtr value,
+                              gs_set_param_type type);</code></pre>
+<h3 id="gsapi_enumerate_params">gsapi_enumerate_params</h3>
+<p>Enumerate the current parameters. Call repeatedly to list out the current parameters.</p>
+<p>The first call should have <code>iter</code> = NULL. Subsequent calls should pass the same pointer in so the iterator can be updated. Negative return codes indicate error, 0 success, and 1 indicates that there are no more keys to read. On success, key will be updated to point to a null terminated string with the key name that is guaranteed to be valid until the next call to <a href="#gsapi_enumerate_params">gsapi_enumerate_params</a>. If <code>type</code> is non NULL then the pointer <code>type</code> will be updated to have the <code>type</code> of the parameter.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>Only one enumeration can happen at a time. Starting a second enumeration will reset the first.</p>
+</blockquote>
+<p>The enumeration only returns parameters/values that have made it to the device. Thus, any values set using the <a href="#gs_set_param_type">gs_spt_more_to_come</a> without a following call omitting that flag will not be retrieved. Similarly, attempting to enumerate parameters before <a href="#gsapi_init_with_args">gsapi_init_with_args</a> has been called will not list any, even if <a href="#gsapi_set_param">gsapi_set_param</a> has been used.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_enumerate_params(IntPtr instance,
+                                            out IntPtr iter,
+                                            out IntPtr key,
+                                                IntPtr type);</code></pre>
+<h3 id="gsapi_add_control_path">gsapi_add_control_path</h3>
+<p>Add a (case sensitive) path to one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_add_control_path(IntPtr instance,
+                                                   int type,
+                                                IntPtr path);</code></pre>
+<h3 id="gsapi_remove_control_path">gsapi_remove_control_path</h3>
+<p>Remove a (case sensitive) path from one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern int gsapi_remove_control_path(IntPtr instance,
+                                                      int type,
+                                                   IntPtr path);</code></pre>
+<h3 id="gsapi_purge_control_paths">gsapi_purge_control_paths</h3>
+<p>Clear all the paths from one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern void gsapi_purge_control_paths(IntPtr instance,
+                                                       int type);</code></pre>
+<h3 id="gsapi_activate_path_control">gsapi_activate_path_control</h3>
+<p>Enable/Disable path control (i.e. whether paths are checked against <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> before access is granted).</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public static extern void gsapi_activate_path_control(IntPtr instance,
+                                                         int enable);</code></pre>
+<h3 id="gsapi_is_path_control_active">gsapi_is_path_control_active</h3>
+<p>Query whether path control is activated or not.</p>
+<div class="tag methodDefinition csharp"></div>
+
+
+<pre><code class="language-c">public static extern int gsapi_is_path_control_active(IntPtr instance);</code></pre>
+<h2 id="callback-and-callout-prototypes">Callback and Callout prototypes</h2>
+<p><a href="#gsapi">GSAPI</a> also defines some prototype pointers which are defined as follows.</p>
+<h3 id="gs_stdio_handler">gs_stdio_handler</h3>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">/* Callback proto for stdio */
+public delegate int gs_stdio_handler(IntPtr caller_handle,
+                                     IntPtr buffer,
+                                        int len);</code></pre>
+<h3 id="gspollhandler">gsPollHandler</h3>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">/* Callback proto for poll function */
+public delegate int gsPollHandler(IntPtr caller_handle);</code></pre>
+<h3 id="gscallout">gsCallOut</h3>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">/* Callout proto */
+public delegate int gsCallOut(IntPtr callout_handle,
+                              IntPtr device_name,
+                                 int id,
+                                 int size,
+                              IntPtr data);
+</code></pre>
+</article>
+
+            </div><!--/middle -->
+
+
+
+            <div class="right">
+
+                <div class="link"><a href="#about">About</a></div>
+                <div class="link"><a href="#structs-and-enums">Structs and Enums</a></div>
+                    <div class="sub-link"><a href="#gsapi_revision_t">gsapi_revision_t</a></div>
+                    <div class="sub-link"><a href="#gs_set_param_type">gs_set_param_type</a></div>
+                    <div class="sub-link"><a href="#gsencoding">gsEncoding</a></div>
+                <div class="link"><a href="#constants">Constants</a></div>
+                    <div class="sub-link"><a href="#gsconstants">gsConstants</a></div>
+                <div class="link"><a href="#gsapi">GSAPI</a></div>
+                    <div class="sub-link"><a href="#gsapi_revision">gsapi_revision</a></div>
+                    <div class="sub-link"><a href="#gsapi_new_instance">gsapi_new_instance</a></div>
+                    <div class="sub-link"><a href="#gsapi_delete_instance">gsapi_delete_instance</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_stdio_with_handle">gsapi_set_stdio_with_handle</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_stdio">gsapi_set_stdio</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_poll_with_handle">gsapi_set_poll_with_handle</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_poll">gsapi_set_poll</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_display_callback">gsapi_set_display_callback</a></div>
+                    <div class="sub-link"><a href="#gsapi_register_callout"> gsapi_register_callout</a></div>
+                    <div class="sub-link"><a href="#gsapi_deregister_callout">gsapi_deregister_callout</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_arg_encoding">gsapi_set_arg_encoding</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_default_device_list">gsapi_set_default_device_list</a></div>
+                    <div class="sub-link"><a href="#gsapi_get_default_device_list">gsapi_get_default_device_list</a></div>
+                    <div class="sub-link"><a href="#gsapi_init_with_args">gsapi_init_with_args</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_-">gsapi_run_*</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_string_begin">gsapi_run_string_begin</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_string_continue">gsapi_run_string_continue</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_string_with_length">gsapi_run_string_with_length</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_string">gsapi_run_string</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_string_end">gsapi_run_string_end</a></div>
+                    <div class="sub-link"><a href="#gsapi_run_file">gsapi_run_file</a></div>
+                    <div class="sub-link"><a href="#gsapi_exit">gsapi_exit</a></div>
+                    <div class="sub-link"><a href="#gsapi_set_param">gsapi_set_param</a></div>
+                    <div class="sub-link"><a href="#gsapi_get_param">gsapi_get_param</a></div>
+                    <div class="sub-link"><a href="#gsapi_enumerate_params">gsapi_enumerate_params</a></div>
+                    <div class="sub-link"><a href="#gsapi_add_control_path">gsapi_add_control_path</a></div>
+                    <div class="sub-link"><a href="#gsapi_remove_control_path">gsapi_remove_control_path</a></div>
+                    <div class="sub-link"><a href="#gsapi_purge_control_paths">gsapi_purge_control_paths</a></div>
+                    <div class="sub-link"><a href="#gsapi_activate_path_control">gsapi_activate_path_control</a></div>
+                    <div class="sub-link"><a href="#gsapi_is_path_control_active">gsapi_is_path_control_active</a></div>
+                <div class="link"><a href="#callback-and-callout-prototypes">Callback and Callout prototypes</a></div>
+                    <div class="sub-link"><a href="#gs_stdio_handler">gs_stdio_handler</a></div>
+                    <div class="sub-link"><a href="#gspollhandler">gsPollHandler</a></div>
+                    <div class="sub-link"><a href="#gscallout">gsCallOut</a></div>
+            </div>
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+</html>

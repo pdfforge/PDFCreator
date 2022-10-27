@@ -12,30 +12,27 @@
              d:DataContext="{d:DesignInstance designTime:DesignTimeOutputFormatPngViewModel, IsDesignTimeCreatable=true}"
              help:HelpProvider.HelpTopic="PngOutput">
     <UserControl.Resources>
-        <converter:AreEqualConverter x:Key="HideIfOtherFormatConverter" EqualValue="{x:Static Visibility.Visible}" NotEqualValue="{x:Static Visibility.Collapsed}" Reference="{x:Static enums:OutputFormat.Png}" />
+        <converter:AreEqualConverter x:Key="CollapsedIfOtherFormatConverter" EqualValue="{x:Static Visibility.Visible}" NotEqualValue="{x:Static Visibility.Collapsed}" Reference="{x:Static enums:OutputFormat.Png}" />
     </UserControl.Resources>
     <UserControl.Visibility>
-        <Binding Path="CurrentProfile.OutputFormat" Converter="{StaticResource HideIfOtherFormatConverter}" />
+        <Binding Path="CurrentProfile.OutputFormat" Converter="{StaticResource CollapsedIfOtherFormatConverter}" />
     </UserControl.Visibility>
-    <HeaderedContentControl Header="{Binding Translation.PngControlHeader}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MaxWidth="200" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+    <StackPanel>
+        <Label Margin="0 0 0 0"
+               Content="{Binding Translation.Colors}" />
+        <ComboBox Margin="0 10 0 0"
+                  HorizontalAlignment="Left"
+                  MaxWidth="300"
+                  SelectedValue="{Binding CurrentProfile.PngSettings.Color}"
+                  SelectedValuePath="Value"
+                  DisplayMemberPath="Translation"
+                  ItemsSource="{Binding Translation.PngColorValues}" />
 
-            <Label Content="{Binding Translation.PngColorsLabelContent}" Grid.Row="0" Grid.Column="0" Margin="0 5 5 0"></Label>
-            <ComboBox Name="PngColorsComboBox" Grid.Row="0" Grid.Column="1" Margin="0 5 0 0"
-                      VerticalAlignment="Center" SelectedValue="{Binding CurrentProfile.PngSettings.Color}"
-                      SelectedValuePath="Value" DisplayMemberPath="Translation" ItemsSource="{Binding Translation.PngColorValues}" />
-
-            <Label Content="{Binding Translation.PngResolutionLabelContent}" Grid.Row="1" Grid.Column="0" Margin="0 5 5 0"></Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 0 0" HorizontalAlignment="Left" Width="50"
-                     TextAlignment="Right" Text="{Binding CurrentProfile.PngSettings.Dpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </Grid>
-    </HeaderedContentControl>
+        <Label Margin="0 20 0 0"
+               Content="{Binding Translation.ResolutionDpi}" />
+        <TextBox Margin="0 10 0 0"
+                 HorizontalAlignment="Left"
+                 Width="50"
+                 Text="{Binding CurrentProfile.PngSettings.Dpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </StackPanel>
 </UserControl>

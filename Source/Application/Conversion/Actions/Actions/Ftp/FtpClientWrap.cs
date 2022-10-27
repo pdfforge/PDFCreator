@@ -6,9 +6,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
     {
         private readonly FtpClient _ftpClient;
 
-        public FtpClientWrap(string host, string userName, string password)
+        private const int DefaultPort = 21;
+
+        public FtpClientWrap(string host, int? port, string userName, string password)
         {
-            _ftpClient = new FtpClient(host, userName, password);
+            _ftpClient = new FtpClient(host, port ?? DefaultPort, userName, password);
         }
 
         public void Connect()

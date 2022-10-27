@@ -102,11 +102,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Printing)) return false;
 			Printing v = o as Printing;
 			
-			if (!Duplex.Equals(v.Duplex)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!FitToPage.Equals(v.FitToPage)) return false;
-			if (!PrinterName.Equals(v.PrinterName)) return false;
-			if (!SelectPrinter.Equals(v.SelectPrinter)) return false;
+			if (!Object.Equals(Duplex, v.Duplex)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(FitToPage, v.FitToPage)) return false;
+			if (!Object.Equals(PrinterName, v.PrinterName)) return false;
+			if (!Object.Equals(SelectPrinter, v.SelectPrinter)) return false;
 			return true;
 		}
 		

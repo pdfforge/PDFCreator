@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq.Expressions;
-using pdfforge.Obsidian;
+﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Interaction.DialogInteractions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -12,6 +8,10 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp;
 using pdfforge.PDFCreator.Utilities;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq.Expressions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
 {
@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
             Expression<Func<ConversionProfile, string>> fontNameSelector,
             Expression<Func<ConversionProfile, string>> fontFileSelector,
             Expression<Func<ConversionProfile, float>> fontSizeSelector,
-            Expression<Func<ConversionProfile, Color>> fontColorSelector )
+            Expression<Func<ConversionProfile, Color>> fontColorSelector)
             : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
             _interactionInvoker = interactionInvoker;

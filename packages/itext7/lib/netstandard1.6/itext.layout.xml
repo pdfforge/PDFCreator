@@ -8,8 +8,7 @@
             <summary>Represents a border.</summary>
         </member>
         <member name="F:iText.Layout.Borders.Border.NO_BORDER">
-            <summary>The null Border, i.e.</summary>
-            <remarks>The null Border, i.e. the presence of such border is equivalent to the absence of the border</remarks>
+            <summary>The null Border, i.e. the presence of such border is equivalent to the absence of the border</summary>
         </member>
         <member name="F:iText.Layout.Borders.Border.CURV">
             <summary>Value used by discontinuous borders during the drawing process</summary>
@@ -68,10 +67,15 @@
             Creates a
             <see cref="T:iText.Layout.Borders.Border">border</see>
             with the given width.
+            </summary>
+            <remarks>
+            Creates a
+            <see cref="T:iText.Layout.Borders.Border">border</see>
+            with the given width.
             The
             <see cref="T:iText.Kernel.Colors.Color">color</see>
             to be set by default is black
-            </summary>
+            </remarks>
             <param name="width">the width which the border should have</param>
         </member>
         <member name="M:iText.Layout.Borders.Border.#ctor(iText.Kernel.Colors.Color,System.Single)">
@@ -79,8 +83,7 @@
             Creates a
             <see cref="T:iText.Layout.Borders.Border">border</see>
             with given width and
-            <see cref="T:iText.Kernel.Colors.Color">color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.Color">color</see>.
             </summary>
             <param name="color">the color which the border should have</param>
             <param name="width">the width which the border should have</param>
@@ -110,10 +113,10 @@
             Given points specify the line which lies on the border of the content area,
             therefore the border itself should be drawn to the left from the drawing direction.
             <para />
-            <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+            <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
             define the widths of the borders that are before and after the current border, e.g. for
-            the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-            <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+            the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+            <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
             of border joins.
             </remarks>
             <param name="canvas">PdfCanvas to be written to</param>
@@ -141,13 +144,13 @@
             Given points specify the line which lies on the border of the content area,
             therefore the border itself should be drawn to the left from the drawing direction.
             <para />
-            <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+            <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
             define the widths of the borders that are before and after the current border, e.g. for
-            the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-            <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+            the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+            <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
             of border joins.
             <para />
-            <code>borderRadius</code> is used to draw rounded borders.
+            <c>borderRadius</c> is used to draw rounded borders.
             </remarks>
             <param name="canvas">PdfCanvas to be written to</param>
             <param name="x1">x coordinate of the beginning point of the element side, that should be bordered</param>
@@ -175,14 +178,14 @@
             Given points specify the line which lies on the border of the content area,
             therefore the border itself should be drawn to the left from the drawing direction.
             <para />
-            <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+            <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
             define the widths of the borders that are before and after the current border, e.g. for
-            the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-            <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+            the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+            <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
             of border joins.
             <para />
-            <code>horizontalRadius1</code>, <code>verticalRadius1</code>, <code>horizontalRadius2</code>
-            and <code>verticalRadius2</code> are used to draw rounded borders.
+            <c>horizontalRadius1</c>, <c>verticalRadius1</c>, <c>horizontalRadius2</c>
+            and <c>verticalRadius2</c> are used to draw rounded borders.
             </remarks>
             <param name="canvas">PdfCanvas to be written to</param>
             <param name="x1">x coordinate of the beginning point of the element side, that should be bordered</param>
@@ -279,9 +282,14 @@
             Returns the
             <see cref="T:iText.Layout.Borders.Border.Side">side</see>
             corresponded to the line between two points.
+            </summary>
+            <remarks>
+            Returns the
+            <see cref="T:iText.Layout.Borders.Border.Side">side</see>
+            corresponded to the line between two points.
             Notice that we consider the rectangle traversal to be clockwise.
             In case side couldn't be detected we will fallback to default side
-            </summary>
+            </remarks>
             <param name="x1">the abscissa of the left-bottom point</param>
             <param name="y1">the ordinate of the left-bottom point</param>
             <param name="x2">the abscissa of the right-top point</param>
@@ -318,8 +326,7 @@
             ,
             <see cref="T:iText.Layout.Borders.DottedBorder"/>
             and
-            <see cref="T:iText.Layout.Borders.RoundDotsBorder"/>
-            .
+            <see cref="T:iText.Layout.Borders.RoundDotsBorder"/>.
             </remarks>
             <param name="canvas">canvas to draw on</param>
             <param name="boundingRectangle">rectangle representing the bounding box of the drawing operations</param>
@@ -476,8 +483,7 @@
             <remarks>
             Draws a dotted border around the element it has been set to. Do note that this border draw square dots,
             if you want to draw round dots, see
-            <see cref="T:iText.Layout.Borders.RoundDotsBorder"/>
-            .
+            <see cref="T:iText.Layout.Borders.RoundDotsBorder"/>.
             </remarks>
         </member>
         <member name="F:iText.Layout.Borders.DottedBorder.GAP_MODIFIER">
@@ -577,18 +583,14 @@
         </member>
         <member name="M:iText.Layout.Borders.GrooveBorder.#ctor(System.Single)">
             <summary>Creates a GrooveBorder instance with the specified width.</summary>
-            <remarks>
-            Creates a GrooveBorder instance with the specified width. The color is set to the default:
-            <see cref="!:Border3D#GRAY">gray</see>
-            .
-            </remarks>
+            <remarks>Creates a GrooveBorder instance with the specified width. The color is set to the predefined gray.
+                </remarks>
             <param name="width">width of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.GrooveBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single)">
             <summary>
             Creates a GrooveBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -600,8 +602,7 @@
         <member name="M:iText.Layout.Borders.GrooveBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single)">
             <summary>
             Creates a GrooveBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -613,8 +614,7 @@
         <member name="M:iText.Layout.Borders.GrooveBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single)">
             <summary>
             Creates a GrooveBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -651,19 +651,15 @@
             <summary><inheritDoc/></summary>
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(System.Single)">
-            <summary>Creates a InsetBorder instance with the specified width.</summary>
-            <remarks>
-            Creates a InsetBorder instance with the specified width. The color is set to the default:
-            <see cref="!:Border3D#GRAY">gray</see>
-            .
-            </remarks>
+            <summary>Creates an InsetBorder instance with the specified width.</summary>
+            <remarks>Creates an InsetBorder instance with the specified width. The color is set to the predefined gray.
+                </remarks>
             <param name="width">width of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single)">
             <summary>
-            Creates a InsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>
-            .
+            Creates an InsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -674,9 +670,8 @@
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single)">
             <summary>
-            Creates a InsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>
-            .
+            Creates an InsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -687,9 +682,8 @@
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single)">
             <summary>
-            Creates a InsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>
-            .
+            Creates an InsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -699,19 +693,19 @@
             </param>
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single,System.Single)">
-            <summary>Creates a InsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an InsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single,System.Single)">
-            <summary>Creates a InsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an InsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.InsetBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single,System.Single)">
-            <summary>Creates a InsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an InsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
@@ -726,19 +720,15 @@
             <summary><inheritDoc/></summary>
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(System.Single)">
-            <summary>Creates a OutsetBorder instance with the specified width.</summary>
-            <remarks>
-            Creates a OutsetBorder instance with the specified width. The color is set to the default:
-            <see cref="!:Border3D#GRAY">gray</see>
-            .
-            </remarks>
+            <summary>Creates an OutsetBorder instance with the specified width.</summary>
+            <remarks>Creates an OutsetBorder instance with the specified width. The color is set to the predefined gray.
+                </remarks>
             <param name="width">width of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single)">
             <summary>
-            Creates a OutsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>
-            .
+            Creates an OutsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -749,9 +739,8 @@
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single)">
             <summary>
-            Creates a OutsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>
-            .
+            Creates an OutsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -762,9 +751,8 @@
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single)">
             <summary>
-            Creates a OutsetBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>
-            .
+            Creates an OutsetBorder instance with the specified width and the
+            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -774,19 +762,19 @@
             </param>
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single,System.Single)">
-            <summary>Creates a OutsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an OutsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single,System.Single)">
-            <summary>Creates a OutsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an OutsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.OutsetBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single,System.Single)">
-            <summary>Creates a OutsetBorder instance with the specified width, color and opacity.</summary>
+            <summary>Creates an OutsetBorder instance with the specified width, color and opacity.</summary>
             <param name="color">color of the border</param>
             <param name="width">width of the border</param>
             <param name="opacity">opacity of the border</param>
@@ -802,18 +790,14 @@
         </member>
         <member name="M:iText.Layout.Borders.RidgeBorder.#ctor(System.Single)">
             <summary>Creates a RidgeBorder instance with the specified width.</summary>
-            <remarks>
-            Creates a RidgeBorder instance with the specified width. The color is set to the default:
-            <see cref="!:Border3D#GRAY">gray</see>
-            .
-            </remarks>
+            <remarks>Creates a RidgeBorder instance with the specified width. The color is set to the predefined gray.
+                </remarks>
             <param name="width">width of the border</param>
         </member>
         <member name="M:iText.Layout.Borders.RidgeBorder.#ctor(iText.Kernel.Colors.DeviceRgb,System.Single)">
             <summary>
             Creates a RidgeBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceRgb">rgb color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -825,8 +809,7 @@
         <member name="M:iText.Layout.Borders.RidgeBorder.#ctor(iText.Kernel.Colors.DeviceCmyk,System.Single)">
             <summary>
             Creates a RidgeBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceCmyk">cmyk color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -838,8 +821,7 @@
         <member name="M:iText.Layout.Borders.RidgeBorder.#ctor(iText.Kernel.Colors.DeviceGray,System.Single)">
             <summary>
             Creates a RidgeBorder instance with the specified width and the
-            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>
-            .
+            <see cref="T:iText.Kernel.Colors.DeviceGray">gray color</see>.
             </summary>
             <param name="width">width of the border</param>
             <param name="color">
@@ -879,8 +861,7 @@
             <summary>Draws a border with rounded dots around the element it's been set to.</summary>
             <remarks>
             Draws a border with rounded dots around the element it's been set to. For square dots see
-            <see cref="T:iText.Layout.Borders.DottedBorder"/>
-            .
+            <see cref="T:iText.Layout.Borders.DottedBorder"/>.
             </remarks>
         </member>
         <member name="F:iText.Layout.Borders.RoundDotsBorder.GAP_MODIFIER">
@@ -956,23 +937,28 @@
         <member name="T:iText.Layout.Canvas">
             <summary>
             This class is used for adding content directly onto a specified
-            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvas"/>
-            .
+            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvas"/>.
+            </summary>
+            <remarks>
+            This class is used for adding content directly onto a specified
+            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvas"/>.
             <see cref="T:iText.Layout.Canvas"/>
             does not know the concept of a page, so it can't reflow to a 'next'
-            <see cref="T:iText.Layout.Canvas"/>
-            .
+            <see cref="T:iText.Layout.Canvas"/>.
             This class effectively acts as a bridge between the high-level <em>layout</em>
             API and the low-level <em>kernel</em> API.
-            </summary>
+            </remarks>
         </member>
         <member name="F:iText.Layout.Canvas.page">
             <summary>
             Is initialized and used only when Canvas element autotagging is enabled, see
-            <see cref="M:iText.Layout.Canvas.EnableAutoTagging(iText.Kernel.Pdf.PdfPage)"/>
-            .
-            It is also used to determine if autotagging is enabled.
+            <see cref="M:iText.Layout.Canvas.EnableAutoTagging(iText.Kernel.Pdf.PdfPage)"/>.
             </summary>
+            <remarks>
+            Is initialized and used only when Canvas element autotagging is enabled, see
+            <see cref="M:iText.Layout.Canvas.EnableAutoTagging(iText.Kernel.Pdf.PdfPage)"/>.
+            It is also used to determine if autotagging is enabled.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Canvas.#ctor(iText.Kernel.Pdf.PdfPage,iText.Kernel.Geom.Rectangle)">
             <summary>Creates a new Canvas to manipulate a specific page content stream.</summary>
@@ -988,8 +974,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.IsTagged"/>
             is true, using this constructor would automatically enable
             the tagging for the content. Regarding tagging the effect is the same as using
-            <see cref="M:iText.Layout.Canvas.EnableAutoTagging(iText.Kernel.Pdf.PdfPage)"/>
-            .
+            <see cref="M:iText.Layout.Canvas.EnableAutoTagging(iText.Kernel.Pdf.PdfPage)"/>.
             </remarks>
             <param name="page">
             the page on which this canvas will be rendered, shall not be flushed (see
@@ -1019,8 +1004,7 @@
         <member name="M:iText.Layout.Canvas.#ctor(iText.Kernel.Pdf.Xobject.PdfFormXObject,iText.Kernel.Pdf.PdfDocument)">
             <summary>
             Creates a new Canvas to manipulate a specific
-            <see cref="T:iText.Kernel.Pdf.Xobject.PdfFormXObject"/>
-            .
+            <see cref="T:iText.Kernel.Pdf.Xobject.PdfFormXObject"/>.
             </summary>
             <param name="formXObject">the form</param>
             <param name="pdfDocument">the document that the resulting content stream will be written to</param>
@@ -1040,8 +1024,7 @@
         <member name="M:iText.Layout.Canvas.GetPdfCanvas">
             <summary>
             Gets the
-            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvas"/>
-            .
+            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvas"/>.
             </summary>
             <returns>the low-level content stream writer</returns>
         </member>
@@ -1096,7 +1079,7 @@
             resource-intensive for large documents.
             Do not use when you have set
             <see cref="F:iText.Layout.RootElement`1.immediateFlush"/>
-            to <code>true</code>.
+            to <c>true</c>.
             </remarks>
         </member>
         <member name="M:iText.Layout.Canvas.Flush">
@@ -1108,6 +1091,10 @@
         <member name="M:iText.Layout.Canvas.Close">
             <summary>
             Closes the
+            <see cref="T:iText.Layout.Canvas"/>.
+            </summary>
+            <remarks>
+            Closes the
             <see cref="T:iText.Layout.Canvas"/>
             . Although not completely necessary in all cases, it is still recommended to call this
             method when you are done working with
@@ -1118,7 +1105,7 @@
             tells the
             <see cref="T:iText.Layout.Canvas"/>
             that no more elements will be added and it is time to finish processing all the elements.
-            </summary>
+            </remarks>
         </member>
         <member name="T:iText.Layout.ColumnDocumentRenderer">
             <summary>This class is used for convenient multi-column Document Layouting</summary>
@@ -1182,21 +1169,23 @@
             's rendering behavior can be modified by extending
             <see cref="T:iText.Layout.Renderer.DocumentRenderer"/>
             and setting an instance of this newly created with
-            <see cref="M:iText.Layout.Document.SetRenderer(iText.Layout.Renderer.DocumentRenderer)"></see>
-            .
+            <see cref="M:iText.Layout.Document.SetRenderer(iText.Layout.Renderer.DocumentRenderer)"></see>.
             </remarks>
         </member>
         <member name="M:iText.Layout.Document.#ctor(iText.Kernel.Pdf.PdfDocument)">
             <summary>
+            Creates a document from a
+            <see cref="T:iText.Kernel.Pdf.PdfDocument"/>.
+            </summary>
+            <remarks>
             Creates a document from a
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             . Initializes the first page
             with the
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             's current default
-            <see cref="T:iText.Kernel.Geom.PageSize"/>
-            .
-            </summary>
+            <see cref="T:iText.Kernel.Geom.PageSize"/>.
+            </remarks>
             <param name="pdfDoc">the in-memory representation of the PDF document</param>
         </member>
         <member name="M:iText.Layout.Document.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Geom.PageSize)">
@@ -1204,8 +1193,7 @@
             Creates a document from a
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             with a manually set
-            <see cref="T:iText.Kernel.Geom.PageSize"/>
-            .
+            <see cref="T:iText.Kernel.Geom.PageSize"/>.
             </summary>
             <param name="pdfDoc">the in-memory representation of the PDF document</param>
             <param name="pageSize">the page size</param>
@@ -1215,8 +1203,7 @@
             Creates a document from a
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             with a manually set
-            <see cref="T:iText.Kernel.Geom.PageSize"/>
-            .
+            <see cref="T:iText.Kernel.Geom.PageSize"/>.
             </summary>
             <param name="pdfDoc">the in-memory representation of the PDF document</param>
             <param name="pageSize">the page size</param>
@@ -1251,11 +1238,16 @@
             <summary>
             Changes the
             <see cref="T:iText.Layout.Renderer.DocumentRenderer"/>
+            at runtime.
+            </summary>
+            <remarks>
+            Changes the
+            <see cref="T:iText.Layout.Renderer.DocumentRenderer"/>
             at runtime. Use this to customize
             the Document's
             <see cref="T:iText.Layout.Renderer.IRenderer"/>
             behavior.
-            </summary>
+            </remarks>
             <param name="documentRenderer">the DocumentRenderer to set</param>
         </member>
         <member name="M:iText.Layout.Document.Flush">
@@ -1276,40 +1268,40 @@
             <para />
             Do not use when you have set
             <see cref="F:iText.Layout.RootElement`1.immediateFlush"/>
-            to <code>true</code>.
+            to <c>true</c>.
             </remarks>
         </member>
         <member name="M:iText.Layout.Document.GetLeftMargin">
             <summary>Gets the left margin, measured in points</summary>
-            <returns>a <code>float</code> containing the left margin value</returns>
+            <returns>a <c>float</c> containing the left margin value</returns>
         </member>
         <member name="M:iText.Layout.Document.SetLeftMargin(System.Single)">
             <summary>Sets the left margin, measured in points</summary>
-            <param name="leftMargin">a <code>float</code> containing the new left margin value</param>
+            <param name="leftMargin">a <c>float</c> containing the new left margin value</param>
         </member>
         <member name="M:iText.Layout.Document.GetRightMargin">
             <summary>Gets the right margin, measured in points</summary>
-            <returns>a <code>float</code> containing the right margin value</returns>
+            <returns>a <c>float</c> containing the right margin value</returns>
         </member>
         <member name="M:iText.Layout.Document.SetRightMargin(System.Single)">
             <summary>Sets the right margin, measured in points</summary>
-            <param name="rightMargin">a <code>float</code> containing the new right margin value</param>
+            <param name="rightMargin">a <c>float</c> containing the new right margin value</param>
         </member>
         <member name="M:iText.Layout.Document.GetTopMargin">
             <summary>Gets the top margin, measured in points</summary>
-            <returns>a <code>float</code> containing the top margin value</returns>
+            <returns>a <c>float</c> containing the top margin value</returns>
         </member>
         <member name="M:iText.Layout.Document.SetTopMargin(System.Single)">
             <summary>Sets the top margin, measured in points</summary>
-            <param name="topMargin">a <code>float</code> containing the new top margin value</param>
+            <param name="topMargin">a <c>float</c> containing the new top margin value</param>
         </member>
         <member name="M:iText.Layout.Document.GetBottomMargin">
             <summary>Gets the bottom margin, measured in points</summary>
-            <returns>a <code>float</code> containing the bottom margin value</returns>
+            <returns>a <c>float</c> containing the bottom margin value</returns>
         </member>
         <member name="M:iText.Layout.Document.SetBottomMargin(System.Single)">
             <summary>Sets the bottom margin, measured in points</summary>
-            <param name="bottomMargin">a <code>float</code> containing the new bottom margin value</param>
+            <param name="bottomMargin">a <c>float</c> containing the new bottom margin value</param>
         </member>
         <member name="M:iText.Layout.Document.SetMargins(System.Single,System.Single,System.Single,System.Single)">
             <summary>Convenience method to set all margins with one method.</summary>
@@ -1345,7 +1337,7 @@
             <see cref="T:iText.Layout.Element.IElement">layout object</see>
             implementations.
             </remarks>
-            
+            <typeparam name="T">this type</typeparam>
         </member>
         <member name="M:iText.Layout.ElementPropertyContainer`1.SetRelativePosition(System.Single,System.Single,System.Single,System.Single)">
             <summary>Sets values for a relative repositioning of the Element.</summary>
@@ -1354,13 +1346,12 @@
             side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.RELATIVE">relative</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.RELATIVE">relative</see>.
             The default implementation in
             <see cref="T:iText.Layout.Renderer.AbstractRenderer"/>
             treats
-            <code>left</code> and <code>top</code> as the most important values. Only
-            if <code>left == 0</code> will <code>right</code> be used for the
+            <c>left</c> and <c>top</c> as the most important values. Only
+            if <c>left == 0</c> will <c>right</c> be used for the
             calculation; ditto for top vs. bottom.
             </remarks>
             <param name="left">movement to the left</param>
@@ -1379,8 +1370,7 @@
             Also has as a side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="left">horizontal position of the bottom-left corner on the page</param>
             <param name="bottom">vertical position of the bottom-left corner on the page</param>
@@ -1396,8 +1386,7 @@
             Also has as a side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="left">horizontal position of the bottom-left corner on the page</param>
             <param name="bottom">vertical position of the bottom-left corner on the page</param>
@@ -1416,8 +1405,7 @@
             Also has as a side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="pageNumber">the page where the element must be positioned</param>
             <param name="left">horizontal position of the bottom-left corner on the page</param>
@@ -1434,8 +1422,7 @@
             Also has as a side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="pageNumber">the page where the element must be positioned</param>
             <param name="left">horizontal position of the bottom-left corner on the page</param>
@@ -1762,7 +1749,7 @@
             text causes glyph outlines to be stroked, filled, used as a clipping
             boundary, or some combination of the three.
             </summary>
-            <param name="textRenderingMode">an <code>int</code> value</param>
+            <param name="textRenderingMode">an <c>int</c> value</param>
             <returns>this Element.</returns>
             <seealso cref="T:iText.Kernel.Pdf.Canvas.PdfCanvasConstants.TextRenderingMode"/>
         </member>
@@ -1853,14 +1840,12 @@
             Multiple call to this method will produce multiple lines.
             <para />
             The thickness of the line will be
-            <c>thickness + thicknessMul * fontSize</c>
-            .
+            <c>thickness + thicknessMul * fontSize</c>.
             The position of the line will be
-            <c>baseLine + yPosition + yPositionMul * fontSize</c>
-            .
+            <c>baseLine + yPosition + yPositionMul * fontSize</c>.
             </remarks>
             <param name="color">
-            the color of the line or <CODE>null</CODE> to follow the
+            the color of the line or <c>null</c> to follow the
             text color
             </param>
             <param name="thickness">the absolute thickness of the line</param>
@@ -1881,14 +1866,12 @@
             Multiple call to this method will produce multiple lines.
             <para />
             The thickness of the line will be
-            <c>thickness + thicknessMul * fontSize</c>
-            .
+            <c>thickness + thicknessMul * fontSize</c>.
             The position of the line will be
-            <c>baseLine + yPosition + yPositionMul * fontSize</c>
-            .
+            <c>baseLine + yPosition + yPositionMul * fontSize</c>.
             </remarks>
             <param name="color">
-            the color of the line or <CODE>null</CODE> to follow the
+            the color of the line or <c>null</c> to follow the
             text color
             </param>
             <param name="opacity">the opacity of the line; a float between 0 and 1, where 1 stands for fully opaque color and 0 - for fully transparent
@@ -1947,7 +1930,7 @@
             implementations
             share.
             </summary>
-            
+            <typeparam name="T">the type of the implementation</typeparam>
         </member>
         <member name="M:iText.Layout.Element.AbstractElement`1.AddStyle(iText.Layout.Style)">
             <summary>Add a new style to this element.</summary>
@@ -1963,8 +1946,8 @@
             <returns>a list of children</returns>
         </member>
         <member name="M:iText.Layout.Element.AbstractElement`1.IsEmpty">
-            <summary>Returns <code>true</code> if this list contains no elements.</summary>
-            <returns><code>true</code> if this list contains no elements</returns>
+            <summary>Returns <c>true</c> if this list contains no elements.</summary>
+            <returns><c>true</c> if this list contains no elements</returns>
         </member>
         <member name="M:iText.Layout.Element.AbstractElement`1.SetAction(iText.Kernel.Pdf.Action.PdfAction)">
             <summary>Sets an action on this Element.</summary>
@@ -2055,11 +2038,17 @@
             A
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             will try to take up as much horizontal space as
+            available to it on the canvas or page.
+            </summary>
+            <remarks>
+            A
+            <see cref="T:iText.Layout.Element.BlockElement`1"/>
+            will try to take up as much horizontal space as
             available to it on the canvas or page. The concept is comparable to the block
             element in HTML. Also like in HTML, the visual representation of the object
             can be delimited by padding, a border, and/or a margin.
-            </summary>
-            
+            </remarks>
+            <typeparam name="T">the type of the implementation</typeparam>
         </member>
         <member name="M:iText.Layout.Element.BlockElement`1.#ctor">
             <summary>Creates a BlockElement.</summary>
@@ -2259,10 +2248,15 @@
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             and the start of the next sibling of this element
             should be placed in the same area.
-            Note that this will only work for high-level elements, i.e. elements added to the
-            <see cref="T:iText.Layout.RootElement`1"/>
-            .
             </summary>
+            <remarks>
+            Sets whether the end of this
+            <see cref="T:iText.Layout.Element.BlockElement`1"/>
+            and the start of the next sibling of this element
+            should be placed in the same area.
+            Note that this will only work for high-level elements, i.e. elements added to the
+            <see cref="T:iText.Layout.RootElement`1"/>.
+            </remarks>
             <param name="keepWithNext">
             the new value of the
             <see cref="F:iText.Layout.Properties.Property.KEEP_WITH_NEXT"/>
@@ -2272,12 +2266,12 @@
         </member>
         <member name="M:iText.Layout.Element.BlockElement`1.SetRotationAngle(System.Single)">
             <summary>Sets the rotation radAngle.</summary>
-            <param name="angleInRadians">the new rotation radAngle, as a <code>float</code>, in radians</param>
+            <param name="angleInRadians">the new rotation radAngle, as a <c>float</c>, in radians</param>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Element.BlockElement`1.SetRotationAngle(System.Double)">
             <summary>Sets the rotation angle.</summary>
-            <param name="angleInRadians">the new rotation angle, as a <code>double</code>, in radians</param>
+            <param name="angleInRadians">the new rotation angle, as a <c>double</c>, in radians</param>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Element.BlockElement`1.SetWidth(System.Single)">
@@ -2288,8 +2282,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the width property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="width">
             a
@@ -2306,8 +2299,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the height property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="height">
             a
@@ -2333,8 +2325,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetMaxHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-height property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxHeight">
             a
@@ -2346,8 +2337,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetMinHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-height property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minHeight">
             a
@@ -2364,8 +2354,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetMaxWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-width property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxWidth">
             a
@@ -2382,8 +2371,7 @@
         <member name="M:iText.Layout.Element.BlockElement`1.SetMinWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-width property of a block element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minWidth">
             a
@@ -2402,8 +2390,13 @@
             A
             <see cref="T:iText.Layout.Element.Cell"/>
             is one piece of data in an enclosing grid, the
-            <see cref="T:iText.Layout.Element.Table"/>
-            .
+            <see cref="T:iText.Layout.Element.Table"/>.
+            </summary>
+            <remarks>
+            A
+            <see cref="T:iText.Layout.Element.Cell"/>
+            is one piece of data in an enclosing grid, the
+            <see cref="T:iText.Layout.Element.Table"/>.
             This object is a
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             , giving it a number of visual layout
@@ -2413,9 +2406,8 @@
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             objects or images. Other types of layout
             elements must be wrapped in a
-            <see cref="T:iText.Layout.Element.BlockElement`1"/>
-            .
-            </summary>
+            <see cref="T:iText.Layout.Element.BlockElement`1"/>.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.Cell.#ctor(System.Int32,System.Int32)">
             <summary>Creates a cell which takes a custom amount of cell spaces in the table.</summary>
@@ -2495,12 +2487,18 @@
             A
             <see cref="T:iText.Layout.Element.Div"/>
             is a container object that defines a section in a document,
+            which will have some shared layout properties.
+            </summary>
+            <remarks>
+            A
+            <see cref="T:iText.Layout.Element.Div"/>
+            is a container object that defines a section in a document,
             which will have some shared layout properties. Like all
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             types, it will try to take up as much horizontal space as possible.
             <para />
             The concept is very similar to that of the div tag in HTML.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.Div.Add(iText.Layout.Element.IBlockElement)">
             <summary>Adds any block element to the div's contents.</summary>
@@ -2527,7 +2525,10 @@
             <returns>this Element</returns>
         </member>
         <member name="T:iText.Layout.Element.IElement">
-            <summary>This class represents a layout element, i.e.</summary>
+            <summary>
+            This class represents a layout element, i.e. a piece of content that will
+            take up 'physical' space on a canvas or document.
+            </summary>
             <remarks>
             This class represents a layout element, i.e. a piece of content that will
             take up 'physical' space on a canvas or document. Its presence and positioning
@@ -2541,8 +2542,7 @@
             Overrides the
             <see cref="T:iText.Layout.Renderer.IRenderer"/>
             instance which will be returned by the next call to the
-            <see cref="M:iText.Layout.Element.IElement.GetRenderer"/>
-            .
+            <see cref="M:iText.Layout.Element.IElement.GetRenderer"/>.
             </summary>
             <param name="renderer">the renderer instance</param>
         </member>
@@ -2573,12 +2573,18 @@
             <see cref="T:iText.Layout.Element.ILargeElement"/>
             is a layout element which may get added to
             indefinitely, making the object prohibitively large.
+            </summary>
+            <remarks>
+            A
+            <see cref="T:iText.Layout.Element.ILargeElement"/>
+            is a layout element which may get added to
+            indefinitely, making the object prohibitively large.
             In order to avoid consuming and holding on to undesirable amounts of
             resources, the contents of a
             <see cref="T:iText.Layout.Element.ILargeElement"/>
             can be flushed regularly
             by client code, e.g. at page boundaries or after a certain amount of additions.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.ILargeElement.IsComplete">
             <summary>Checks whether an element has already been marked as complete.</summary>
@@ -2611,11 +2617,17 @@
             A marker subinterface of
             <see cref="T:iText.Layout.Element.IElement"/>
             that specifies that the layout object
+            is, by definition, on the lowest tier in the object hierarchy.
+            </summary>
+            <remarks>
+            A marker subinterface of
+            <see cref="T:iText.Layout.Element.IElement"/>
+            that specifies that the layout object
             is, by definition, on the lowest tier in the object hierarchy. A
             <see cref="T:iText.Layout.Element.ILeafElement">leaf element</see>
             must not act as a container for other
             elements.
-            </summary>
+            </remarks>
         </member>
         <member name="T:iText.Layout.Element.Image">
             <summary>A layout element that represents an image for inclusion in the document model.</summary>
@@ -2930,8 +2942,7 @@
             side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="left">horizontal position on the page</param>
             <param name="bottom">vertical position on the page</param>
@@ -2947,8 +2958,7 @@
             page. Also has as a side effect that the Element's
             <see cref="F:iText.Layout.Properties.Property.POSITION"/>
             is changed to
-            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>
-            .
+            <see cref="F:iText.Layout.Layout.LayoutPosition.FIXED">fixed</see>.
             </remarks>
             <param name="pageNumber">the page where the element must be positioned</param>
             <param name="left">horizontal position on the page</param>
@@ -2979,8 +2989,7 @@
         <member name="M:iText.Layout.Element.Image.SetHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the height property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="height">a value measured in points.</param>
             <returns>this image.</returns>
@@ -2993,8 +3002,7 @@
         <member name="M:iText.Layout.Element.Image.SetMaxHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-height property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxHeight">a value measured in points.</param>
             <returns>this image.</returns>
@@ -3007,8 +3015,7 @@
         <member name="M:iText.Layout.Element.Image.SetMinHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-height property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minHeight">a value measured in points.</param>
             <returns>this image.</returns>
@@ -3021,8 +3028,7 @@
         <member name="M:iText.Layout.Element.Image.SetMaxWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-width property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxWidth">a value measured in points.</param>
             <returns>this image.</returns>
@@ -3035,8 +3041,7 @@
         <member name="M:iText.Layout.Element.Image.SetMinWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-width property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minWidth">a value measured in points.</param>
             <returns>this image.</returns>
@@ -3049,8 +3054,7 @@
         <member name="M:iText.Layout.Element.Image.SetWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the width property of the image with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="width">
             a
@@ -3078,8 +3082,14 @@
             a style specified by
             <see cref="T:iText.Kernel.Pdf.Canvas.Draw.ILineDrawer"/>
             custom drawing interface instance.
-            This might be thought of as an HTML's &lt;hr&gt; element alternative.
             </summary>
+            <remarks>
+            This is a line separator element which is basically just a horizontal line with
+            a style specified by
+            <see cref="T:iText.Kernel.Pdf.Canvas.Draw.ILineDrawer"/>
+            custom drawing interface instance.
+            This might be thought of as an HTML's &lt;hr&gt; element alternative.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.LineSeparator.#ctor(iText.Kernel.Pdf.Canvas.Draw.ILineDrawer)">
             <summary>
@@ -3094,10 +3104,16 @@
             A clickable piece of
             <see cref="T:iText.Layout.Element.Text"/>
             which contains a
+            <see cref="T:iText.Kernel.Pdf.Annot.PdfLinkAnnotation">link annotation dictionary</see>.
+            </summary>
+            <remarks>
+            A clickable piece of
+            <see cref="T:iText.Layout.Element.Text"/>
+            which contains a
             <see cref="T:iText.Kernel.Pdf.Annot.PdfLinkAnnotation">link annotation dictionary</see>
             . The concept is largely similar to that of the
             HTML anchor tag.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.Link.#ctor(System.String,iText.Kernel.Pdf.Annot.PdfLinkAnnotation)">
             <summary>Creates a Link with a fully constructed link annotation dictionary.</summary>
@@ -3176,7 +3192,7 @@
         </member>
         <member name="M:iText.Layout.Element.List.SetItemStartIndex(System.Int32)">
             <summary>Customizes the index of the first item in the list.</summary>
-            <param name="start">the custom index, as an <code>int</code></param>
+            <param name="start">the custom index, as an <c>int</c></param>
             <returns>this list.</returns>
         </member>
         <member name="M:iText.Layout.Element.List.SetListSymbol(System.String)">
@@ -3261,7 +3277,7 @@
             <see cref="T:iText.Layout.Element.ListItem"/>
             symbols.
             </summary>
-            <returns>the indent offset as a <code>float</code>.</returns>
+            <returns>the indent offset as a <c>float</c>.</returns>
         </member>
         <member name="M:iText.Layout.Element.List.SetSymbolIndent(System.Single)">
             <summary>
@@ -3307,10 +3323,14 @@
         <member name="T:iText.Layout.Element.ListItem">
             <summary>
             A list item is a layout element that is one entry in a
+            <see cref="T:iText.Layout.Element.List"/>.
+            </summary>
+            <remarks>
+            A list item is a layout element that is one entry in a
             <see cref="T:iText.Layout.Element.List"/>
             . The list
             object controls the prefix, postfix, and numbering of the list items.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.ListItem.#ctor">
             <summary>Creates a ListItem.</summary>
@@ -3357,8 +3377,7 @@
             the
             <see cref="T:iText.Layout.Properties.ListNumberingType"/>
             that will generate appropriate prefixes for the
-            <see cref="T:iText.Layout.Element.ListItem"/>
-            .
+            <see cref="T:iText.Layout.Element.ListItem"/>.
             </param>
             <returns>this list item.</returns>
         </member>
@@ -3373,8 +3392,7 @@
             It is a
             <see cref="T:iText.Layout.Element.BlockElement`1"/>
             which essentially acts as a container for
-            <see cref="T:iText.Layout.Element.ILeafElement">leaf elements</see>
-            .
+            <see cref="T:iText.Layout.Element.ILeafElement">leaf elements</see>.
             </remarks>
         </member>
         <member name="M:iText.Layout.Element.Paragraph.#ctor">
@@ -3416,8 +3434,11 @@
             <see cref="!:System.Collections.IList&lt;E&gt;"/>
             of layout elements to the Paragraph.
             </summary>
-            
-            
+            <param name="elements">the content to be added</param>
+            <typeparam name="T2">
+            any
+            <see cref="T:iText.Layout.Element.ILeafElement"/>
+            </typeparam>
             <returns>this Paragraph</returns>
         </member>
         <member name="M:iText.Layout.Element.Paragraph.AddTabStops(iText.Layout.Element.TabStop[])">
@@ -3461,12 +3482,11 @@
         <member name="M:iText.Layout.Element.Paragraph.SetFirstLineIndent(System.Single)">
             <summary>
             Sets the indent value for the first line of the
-            <see cref="T:iText.Layout.Element.Paragraph"/>
-            .
+            <see cref="T:iText.Layout.Element.Paragraph"/>.
             </summary>
             <param name="indent">
             the indent value that must be applied to the first line of
-            the Paragraph, as a <code>float</code>
+            the Paragraph, as a <c>float</c>
             </param>
             <returns>this Paragraph</returns>
         </member>
@@ -3496,14 +3516,27 @@
             <see cref="T:iText.Layout.Element.Text"/>
             to the following
             <see cref="T:iText.Layout.Element.TabStop"/>
+            , if any.
+            </summary>
+            <remarks>
+            This class represents the empty space from a
+            <see cref="T:iText.Layout.Element.Text"/>
+            to the following
+            <see cref="T:iText.Layout.Element.TabStop"/>
             , if any. Using this class will not have any effect unless
             there are
             <see cref="T:iText.Layout.Element.TabStop"/>
             objects defined for the enveloping element.
-            </summary>
+            </remarks>
         </member>
         <member name="T:iText.Layout.Element.Table">
             <summary>
+            A
+            <see cref="T:iText.Layout.Element.Table"/>
+            is a layout element that represents data in a two-dimensional
+            grid.
+            </summary>
+            <remarks>
             A
             <see cref="T:iText.Layout.Element.Table"/>
             is a layout element that represents data in a two-dimensional
@@ -3515,10 +3548,15 @@
             <see cref="T:iText.Layout.Element.ILargeElement"/>
             , which means it can be flushed
             to the canvas, in order to reclaim memory that is locked up.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.Table.#ctor(System.Single[],System.Boolean)">
             <summary>
+            Constructs a
+            <c>Table</c>
+            with the preferable column widths.
+            </summary>
+            <remarks>
             Constructs a
             <c>Table</c>
             with the preferable column widths.
@@ -3535,9 +3573,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="columnWidths">
             preferable column widths in points.  Values must be greater than or equal to zero,
             otherwise it will be interpreted as undefined.
@@ -3554,6 +3591,11 @@
             Constructs a
             <c>Table</c>
             with the preferable column widths.
+            </summary>
+            <remarks>
+            Constructs a
+            <c>Table</c>
+            with the preferable column widths.
             <br />
             Since 7.0.2 table layout algorithms were introduced. Auto layout is default, except large tables.
             For large table 100% width and fixed layout set implicitly.
@@ -3567,9 +3609,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="columnWidths">
             preferable column widths, points and/or percents.  Values must be greater than or equal to zero,
             otherwise it will be interpreted as undefined.
@@ -3586,6 +3627,11 @@
             Constructs a
             <c>Table</c>
             with the preferable column widths.
+            </summary>
+            <remarks>
+            Constructs a
+            <c>Table</c>
+            with the preferable column widths.
             <br />
             Since 7.0.2 table layout algorithms were introduced. Auto layout is default.
             <br />
@@ -3598,9 +3644,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="columnWidths">
             preferable column widths, points and/or percents. Values must be greater than or equal to zero,
             otherwise it will be interpreted as undefined.
@@ -3610,6 +3655,11 @@
         </member>
         <member name="M:iText.Layout.Element.Table.#ctor(System.Single[])">
             <summary>
+            Constructs a
+            <c>Table</c>
+            with the preferable column widths.
+            </summary>
+            <remarks>
             Constructs a
             <c>Table</c>
             with the preferable column widths.
@@ -3625,9 +3675,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="pointColumnWidths">
             preferable column widths in points. Values must be greater than or equal to zero,
             otherwise it will be interpreted as undefined.
@@ -3637,6 +3686,11 @@
         </member>
         <member name="M:iText.Layout.Element.Table.#ctor(System.Int32,System.Boolean)">
             <summary>
+            Constructs a
+            <c>Table</c>
+            with specified number of columns.
+            </summary>
+            <remarks>
             Constructs a
             <c>Table</c>
             with specified number of columns.
@@ -3658,9 +3712,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="numColumns">the number of columns, each column will have equal percent width.</param>
             <param name="largeTable">
             whether parts of the table will be written before all data is added.
@@ -3671,6 +3724,11 @@
         </member>
         <member name="M:iText.Layout.Element.Table.#ctor(System.Int32)">
             <summary>
+            Constructs a
+            <c>Table</c>
+            with specified number of columns.
+            </summary>
+            <remarks>
             Constructs a
             <c>Table</c>
             with specified number of columns.
@@ -3692,9 +3750,8 @@
             For more information see
             <see cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             and
-            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Table.SetFixedLayout"/>.
+            </remarks>
             <param name="numColumns">the number of columns, each column will have equal percent width.</param>
             <seealso cref="M:iText.Layout.Element.Table.SetAutoLayout"/>
             <seealso cref="M:iText.Layout.Element.Table.SetFixedLayout"/>
@@ -3718,8 +3775,7 @@
             Cell width has lower priority in comparing with column. Cell width doesn't include borders and paddings.
             <br />
             2.1 If cell has colspan and all columns are undefined, each column will get equal width:
-            <c>width/colspan</c>
-            .
+            <c>width/colspan</c>.
             <br />
             2.2 If some columns already have width, equal remain (original width minus existed) width will be added
             <c>remainWidth/colspan</c>
@@ -3784,8 +3840,7 @@
             Adds a new cell to the header of the table.
             The header will be displayed in the top of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>.
             </remarks>
             <param name="headerCell">a header cell to be added</param>
             <returns>this element</returns>
@@ -3796,11 +3851,10 @@
             Adds a new cell with received blockElement as a content to the header of the table.
             The header will be displayed in the top of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>.
             </remarks>
             <param name="blockElement">an element to be added to a header cell</param>
-            
+            <typeparam name="T">any IElement</typeparam>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Element.Table.AddHeaderCell(iText.Layout.Element.Image)">
@@ -3809,8 +3863,7 @@
             Adds a new cell with received image to the header of the table.
             The header will be displayed in the top of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>.
             </remarks>
             <param name="image">an element to be added to a header cell</param>
             <returns>this element</returns>
@@ -3821,8 +3874,7 @@
             Adds a new cell with received string as a content to the header of the table.
             The header will be displayed in the top of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipFirstHeader(System.Boolean)"/>.
             </remarks>
             <param name="content">a string to be added to a header cell</param>
             <returns>this element</returns>
@@ -3845,8 +3897,7 @@
             Adds a new cell to the footer of the table.
             The footer will be displayed in the bottom of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>.
             </remarks>
             <param name="footerCell">a footer cell</param>
             <returns>this element</returns>
@@ -3857,11 +3908,10 @@
             Adds a new cell with received blockElement as a content to the footer of the table.
             The footer will be displayed in the bottom of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>.
             </remarks>
             <param name="blockElement">an element to be added to a footer cell</param>
-            
+            <typeparam name="T">IElement instance</typeparam>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Element.Table.AddFooterCell(iText.Layout.Element.Image)">
@@ -3870,8 +3920,7 @@
             Adds a new cell with received image as a content to the footer of the table.
             The footer will be displayed in the bottom of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>.
             </remarks>
             <param name="image">an image to be added to a footer cell</param>
             <returns>this element</returns>
@@ -3882,8 +3931,7 @@
             Adds a new cell with received string as a content to the footer of the table.
             The footer will be displayed in the bottom of every area of this table.
             See also
-            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>
-            .
+            <see cref="M:iText.Layout.Element.Table.SetSkipLastFooter(System.Boolean)"/>.
             </remarks>
             <param name="content">a content string to be added to a footer cell</param>
             <returns>this element</returns>
@@ -3985,7 +4033,7 @@
         <member name="M:iText.Layout.Element.Table.AddCell``1(iText.Layout.Element.BlockElement{``0})">
             <summary>Adds a new cell with received blockElement as a content.</summary>
             <param name="blockElement">a blockElement to add to the cell and then to the table</param>
-            
+            <typeparam name="T">IElement instance</typeparam>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Element.Table.AddCell(iText.Layout.Element.Image)">
@@ -4002,7 +4050,7 @@
             <summary>Returns a cell as specified by its location.</summary>
             <remarks>
             Returns a cell as specified by its location. If the cell is in a col-span
-            or row-span and is not the top left cell, then <code>null</code> is returned.
+            or row-span and is not the top left cell, then <c>null</c> is returned.
             </remarks>
             <param name="row">the row of the cell. indexes are zero-based</param>
             <param name="column">the column of the cell. indexes are zero-based</param>
@@ -4093,20 +4141,24 @@
             A TabStop is the closest location on a line of text that the text will jump
             to if a
             <see cref="T:iText.Layout.Element.Tab"/>
+            is inserted.
+            </summary>
+            <remarks>
+            A TabStop is the closest location on a line of text that the text will jump
+            to if a
+            <see cref="T:iText.Layout.Element.Tab"/>
             is inserted. At least one TabStop must be defined on an
             element if you want to use
-            <see cref="T:iText.Layout.Element.Tab">Tabs</see>
-            .
+            <see cref="T:iText.Layout.Element.Tab">Tabs</see>.
             This object can be added to a
             <see cref="T:iText.Layout.Element.Paragraph"/>
             with the method
-            <see cref="M:iText.Layout.Element.Paragraph.AddTabStops(iText.Layout.Element.TabStop[])"/>
-            .
-            </summary>
+            <see cref="M:iText.Layout.Element.Paragraph.AddTabStops(iText.Layout.Element.TabStop[])"/>.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.TabStop.#ctor(System.Single)">
             <summary>Creates a TabStop at the appropriate position.</summary>
-            <param name="tabPosition">a <code>float</code>, measured in points</param>
+            <param name="tabPosition">a <c>float</c>, measured in points</param>
         </member>
         <member name="M:iText.Layout.Element.TabStop.#ctor(System.Single,iText.Layout.Properties.TabAlignment)">
             <summary>
@@ -4118,7 +4170,7 @@
             alignment. A tab alignment defines the way the textual content should be
             positioned with regards to this tab stop.
             </remarks>
-            <param name="tabPosition">a <code>float</code>, measured in points</param>
+            <param name="tabPosition">a <c>float</c>, measured in points</param>
             <param name="tabAlignment">
             a
             <see cref="T:iText.Layout.Properties.TabAlignment"/>
@@ -4138,7 +4190,7 @@
             the TabStop is reached. If null, the space leading up to the TabStop will
             be empty.
             </remarks>
-            <param name="tabPosition">a <code>float</code>, measured in points</param>
+            <param name="tabPosition">a <c>float</c>, measured in points</param>
             <param name="tabAlignment">
             a
             <see cref="T:iText.Layout.Properties.TabAlignment"/>
@@ -4154,11 +4206,16 @@
             <summary>
             A
             <see cref="T:iText.Layout.Element.Text"/>
+            is a piece of text of any length.
+            </summary>
+            <remarks>
+            A
+            <see cref="T:iText.Layout.Element.Text"/>
             is a piece of text of any length. As a
             <see cref="T:iText.Layout.Element.ILeafElement">leaf element</see>
             ,
             it is the smallest piece of content that may bear specific layout attributes.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Element.Text.#ctor(System.String)">
             <summary>Constructs a Text with its role initialized.</summary>
@@ -4189,17 +4246,17 @@
             Gets the horizontal scaling property, which determines how wide the text
             should be stretched.
             </summary>
-            <returns>the horizontal spacing, as a <code>float</code></returns>
+            <returns>the horizontal spacing, as a <c>float</c></returns>
         </member>
         <member name="M:iText.Layout.Element.Text.SetSkew(System.Single,System.Single)">
             <summary>Skews the text to simulate italic and other effects.</summary>
             <remarks>
-            Skews the text to simulate italic and other effects. Try <CODE>alpha=0
-            </CODE> and <CODE>beta=12</CODE>.
+            Skews the text to simulate italic and other effects. Try <c>alpha=0
+            </c> and <c>beta=12</c>.
             </remarks>
             <param name="alpha">the first angle in degrees</param>
             <param name="beta">the second angle in degrees</param>
-            <returns>this <CODE>Text</CODE></returns>
+            <returns>this <c>Text</c></returns>
         </member>
         <member name="M:iText.Layout.Element.Text.SetHorizontalScaling(System.Single)">
             <summary>
@@ -4216,13 +4273,16 @@
         <member name="T:iText.Layout.Font.ComplexFontSelectorStrategy">
             <summary>
             Complex FontSelectorStrategy split text based on
-            <see cref="!:iText.IO.Util.UnicodeScript?"/>
-            .
+            <see cref="!:iText.IO.Util.UnicodeScript?"/>.
+            </summary>
+            <remarks>
+            Complex FontSelectorStrategy split text based on
+            <see cref="!:iText.IO.Util.UnicodeScript?"/>.
             If unicode script changes, a new font will be found.
             If there is no suitable font, only one notdef glyph from
             <see cref="M:iText.Layout.Font.FontSelector.BestMatch"/>
             will be added.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Font.FontCharacteristics.SetFontWeight(System.Int16)">
             <summary>Sets preferred font weight</summary>
@@ -4248,13 +4308,17 @@
             Contains all font related data to create
             <see cref="T:iText.IO.Font.FontProgram"/>
             and
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
+            </summary>
+            <remarks>
+            Contains all font related data to create
+            <see cref="T:iText.IO.Font.FontProgram"/>
+            and
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
             fetches with
-            <see cref="T:iText.IO.Font.FontProgramDescriptorFactory"/>
-            .
-            </summary>
+            <see cref="T:iText.IO.Font.FontProgramDescriptorFactory"/>.
+            </remarks>
             <seealso cref="M:iText.Layout.Font.FontProvider.GetPdfFont(iText.Layout.Font.FontInfo)"/>
             <seealso cref="M:iText.Layout.Font.FontProvider.GetPdfFont(iText.Layout.Font.FontInfo,iText.Layout.Font.FontSet)">
             Note,
@@ -4275,10 +4339,14 @@
             Gets path to font, if
             <see cref="T:iText.Layout.Font.FontInfo"/>
             was created by String.
-            Note, to get PostScript or full name, use
-            <see cref="M:iText.Layout.Font.FontInfo.GetDescriptor"/>
-            .
             </summary>
+            <remarks>
+            Gets path to font, if
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            was created by String.
+            Note, to get PostScript or full name, use
+            <see cref="M:iText.Layout.Font.FontInfo.GetDescriptor"/>.
+            </remarks>
             <returns>the font name</returns>
         </member>
         <member name="M:iText.Layout.Font.FontInfo.GetFontData">
@@ -4286,8 +4354,7 @@
             Gets font data, if
             <see cref="T:iText.Layout.Font.FontInfo"/>
             was created with
-            <c>byte[]</c>
-            .
+            <c>byte[]</c>.
             </summary>
         </member>
         <member name="M:iText.Layout.Font.FontInfo.GetAlias">
@@ -4321,8 +4388,7 @@
         <member name="M:iText.Layout.Font.FontProvider.GetFontSet">
             <summary>
             Gets
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             </summary>
             <returns>the fontset</returns>
         </member>
@@ -4339,13 +4405,11 @@
             <param name="fontFamilies">target font families</param>
             <param name="fc">
             instance of
-            <see cref="T:iText.Layout.Font.FontCharacteristics"/>
-            .
+            <see cref="T:iText.Layout.Font.FontCharacteristics"/>.
             </param>
             <returns>
             an instance of
-            <see cref="T:iText.Layout.Font.FontSelector"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSelector"/>.
             </returns>
             <seealso cref="!:CreateFontSelector(System.Collections.Generic.ICollection&lt;E&gt;, System.Collections.Generic.IList&lt;E&gt;, FontCharacteristics)"/>
             <seealso cref="!:GetFontSelector(System.Collections.Generic.IList&lt;E&gt;, FontCharacteristics, FontSet)"/>
@@ -4359,89 +4423,85 @@
             <param name="fontFamilies">target font families</param>
             <param name="fc">
             instance of
-            <see cref="T:iText.Layout.Font.FontCharacteristics"/>
-            .
+            <see cref="T:iText.Layout.Font.FontCharacteristics"/>.
             </param>
             <param name="tempFonts">set of temporary fonts.</param>
             <returns>
             an instance of
-            <see cref="T:iText.Layout.Font.FontSelector"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSelector"/>.
             </returns>
             <seealso cref="!:CreateFontSelector(System.Collections.Generic.ICollection&lt;E&gt;, System.Collections.Generic.IList&lt;E&gt;, FontCharacteristics)">}</seealso>
         </member>
         <member name="M:iText.Layout.Font.FontProvider.CreateFontSelector(System.Collections.Generic.ICollection{iText.Layout.Font.FontInfo},System.Collections.Generic.IList{System.String},iText.Layout.Font.FontCharacteristics)">
             <summary>
             Create a new instance of
+            <see cref="T:iText.Layout.Font.FontSelector"/>.
+            </summary>
+            <remarks>
+            Create a new instance of
             <see cref="T:iText.Layout.Font.FontSelector"/>
             . While caching is main responsibility of
-            <see cref="!:GetFontSelector(System.Collections.Generic.IList&lt;E&gt;, FontCharacteristics, FontSet)"/>
-            .
+            <see cref="!:GetFontSelector(System.Collections.Generic.IList&lt;E&gt;, FontCharacteristics, FontSet)"/>.
             This method just create a new instance of
-            <see cref="T:iText.Layout.Font.FontSelector"/>
-            .
-            </summary>
+            <see cref="T:iText.Layout.Font.FontSelector"/>.
+            </remarks>
             <param name="fonts">Set of all available fonts in current context.</param>
             <param name="fontFamilies">target font families</param>
             <param name="fc">
             instance of
-            <see cref="T:iText.Layout.Font.FontCharacteristics"/>
-            .
+            <see cref="T:iText.Layout.Font.FontCharacteristics"/>.
             </param>
             <returns>
             an instance of
-            <see cref="T:iText.Layout.Font.FontSelector"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSelector"/>.
             </returns>
         </member>
         <member name="M:iText.Layout.Font.FontProvider.GetPdfFont(iText.Layout.Font.FontInfo)">
             <summary>
             Get from cache or create a new instance of
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </summary>
             <param name="fontInfo">
             font info, to create
             <see cref="T:iText.IO.Font.FontProgram"/>
             and
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </param>
             <returns>
             cached or new instance of
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </returns>
         </member>
         <member name="M:iText.Layout.Font.FontProvider.GetPdfFont(iText.Layout.Font.FontInfo,iText.Layout.Font.FontSet)">
             <summary>
             Get from cache or create a new instance of
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </summary>
             <param name="fontInfo">
             font info, to create
             <see cref="T:iText.IO.Font.FontProgram"/>
             and
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </param>
             <param name="tempFonts">Set of temporary fonts.</param>
             <returns>
             cached or new instance of
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </returns>
         </member>
         <member name="M:iText.Layout.Font.FontProvider.Reset">
             <summary>
+            Resets
+            <see cref="F:iText.Layout.Font.FontProvider.pdfFonts">PdfFont cache</see>.
+            </summary>
+            <remarks>
             Resets
             <see cref="F:iText.Layout.Font.FontProvider.pdfFonts">PdfFont cache</see>
             . After calling that method
             <see cref="T:iText.Layout.Font.FontProvider"/>
             can be reused with another
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
-            </summary>
+            </remarks>
         </member>
         <member name="T:iText.Layout.Font.FontSelector">
             <summary>Sort given set of fonts according to font name and style.</summary>
@@ -4498,9 +4558,13 @@
             <summary>
             <see cref="T:iText.Layout.Font.FontSelectorStrategy"/>
             is responsible for splitting text into sub texts with one particular font.
+            </summary>
+            <remarks>
+            <see cref="T:iText.Layout.Font.FontSelectorStrategy"/>
+            is responsible for splitting text into sub texts with one particular font.
             <see cref="M:iText.Layout.Font.FontSelectorStrategy.NextGlyphs"/>
             will create next sub text and set current font.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Font.FontSelectorStrategy.GetPdfFont(iText.Layout.Font.FontInfo)">
             <summary>Utility method to create PdfFont.</summary>
@@ -4522,8 +4586,7 @@
         <member name="M:iText.Layout.Font.FontSet.#ctor">
             <summary>
             Creates a new instance of
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             </summary>
         </member>
         <member name="M:iText.Layout.Font.FontSet.AddDirectory(System.String,System.Boolean)">
@@ -4531,8 +4594,7 @@
             <param name="dir">path to directory.</param>
             <param name="scanSubdirectories">
             recursively scan subdirectories if
-            <see langword="true"/>
-            .
+            <see langword="true"/>.
             </param>
             <returns>number of added fonts.</returns>
         </member>
@@ -4549,8 +4611,7 @@
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
             </remarks>
@@ -4574,8 +4635,7 @@
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
             </remarks>
@@ -4598,8 +4658,7 @@
             </param>
             <param name="encoding">
             FontEncoding for creating
-            <see cref="T:iText.Kernel.Font.PdfFont"/>
-            .
+            <see cref="T:iText.Kernel.Font.PdfFont"/>.
             </param>
             <returns>true, if font was successfully added, otherwise false.</returns>
         </member>
@@ -4612,17 +4671,25 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontPath">path to font data.</param>
             <param name="encoding">preferred font encoding.</param>
             <param name="alias">font alias, will replace original font family.</param>
@@ -4639,17 +4706,25 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontPath">path to font data.</param>
             <param name="encoding">preferred font encoding.</param>
             <param name="alias">font alias.</param>
@@ -4665,8 +4740,7 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             </summary>
             <param name="fontPath">path to font data.</param>
             <param name="encoding">preferred font encoding.</param>
@@ -4682,17 +4756,25 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontData">font data.</param>
             <param name="encoding">preferred font encoding.</param>
             <param name="alias">font alias.</param>
@@ -4709,17 +4791,25 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontData">font data.</param>
             <param name="encoding">preferred font encoding.</param>
             <param name="alias">font alias.</param>
@@ -4735,8 +4825,7 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             </summary>
             <param name="fontData">font data.</param>
             <param name="encoding">preferred font encoding.</param>
@@ -4752,11 +4841,20 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <see cref="M:iText.Layout.Font.FontProvider.GetDefaultEncoding(iText.IO.Font.FontProgram)"/>
             will be used to determine encoding.
-            </summary>
+            </remarks>
             <param name="fontPath">path to font data.</param>
             <returns>true, if font was successfully added, otherwise false.</returns>
         </member>
@@ -4769,11 +4867,20 @@
             and adds just created
             <see cref="T:iText.Layout.Font.FontInfo"/>
             to
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
+            </summary>
+            <remarks>
+            Creates
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            , fetches
+            <see cref="T:iText.IO.Font.FontProgramDescriptor"/>
+            and adds just created
+            <see cref="T:iText.Layout.Font.FontInfo"/>
+            to
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             <see cref="M:iText.Layout.Font.FontProvider.GetDefaultEncoding(iText.IO.Font.FontProgram)"/>
             will be used to determine encoding.
-            </summary>
+            </remarks>
             <param name="fontData">font data.</param>
             <returns>true, if font was successfully added, otherwise false.</returns>
         </member>
@@ -4781,16 +4888,20 @@
             <summary>
             Adds
             <see cref="T:iText.Layout.Font.FontInfo"/>
+            with alias.
+            </summary>
+            <remarks>
+            Adds
+            <see cref="T:iText.Layout.Font.FontInfo"/>
             with alias. Could be used to fill temporary font set.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontInfo">font info.</param>
             <param name="alias">font alias.</param>
             <param name="unicodeRange">sets the specific range of characters to be used from the font</param>
@@ -4800,16 +4911,20 @@
             <summary>
             Adds
             <see cref="T:iText.Layout.Font.FontInfo"/>
+            with alias.
+            </summary>
+            <remarks>
+            Adds
+            <see cref="T:iText.Layout.Font.FontInfo"/>
             with alias. Could be used to fill temporary font set.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
             Alias will replace original font family in font selector algorithm.
-            </summary>
+            </remarks>
             <param name="fontInfo">font info.</param>
             <param name="alias">font alias.</param>
             <returns>true, if font was successfully added, otherwise false.</returns>
@@ -4817,16 +4932,19 @@
         <member name="M:iText.Layout.Font.FontSet.AddFont(iText.Layout.Font.FontInfo)">
             <summary>
             Adds
+            <see cref="T:iText.Layout.Font.FontInfo"/>.
+            </summary>
+            <remarks>
+            Adds
             <see cref="T:iText.Layout.Font.FontInfo"/>
             . Could be used to fill temporary font set.
             <para />
             Note,
             <see cref="M:iText.Layout.Font.FontInfo.GetAlias"/>
             do not taken into account in
-            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.Equals(System.Object)"/>.
             The same font with different alias will not be replaced.
-            </summary>
+            </remarks>
             <param name="fontInfo">font info.</param>
             <returns>true, if font was successfully added, otherwise false.</returns>
         </member>
@@ -4894,12 +5012,15 @@
         <member name="T:iText.Layout.Font.Range">
             <summary>
             Ordered range for
-            <see cref="M:iText.Layout.Font.FontInfo.GetFontUnicodeRange"/>
-            .
+            <see cref="M:iText.Layout.Font.FontInfo.GetFontUnicodeRange"/>.
+            </summary>
+            <remarks>
+            Ordered range for
+            <see cref="M:iText.Layout.Font.FontInfo.GetFontUnicodeRange"/>.
             To create a custom Range instance
             <see cref="T:iText.Layout.Font.RangeBuilder"/>
             shall be used.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Font.Range.Contains(System.Int32)">
             <summary>Binary search over ordered segments.</summary>
@@ -4914,8 +5035,7 @@
         <member name="T:iText.Layout.Font.RangeBuilder">
             <summary>
             Builder of
-            <see cref="T:iText.Layout.Font.Range"/>
-            .
+            <see cref="T:iText.Layout.Font.Range"/>.
             </summary>
         </member>
         <member name="M:iText.Layout.Font.RangeBuilder.GetFullRange">
@@ -5190,10 +5310,14 @@
         <member name="M:iText.Layout.Hyphenation.HyphenationConfig.#ctor(System.Int32,System.Int32)">
             <summary>
             Constructs a new
+            <see cref="T:iText.Layout.Hyphenation.HyphenationConfig"/>.
+            </summary>
+            <remarks>
+            Constructs a new
             <see cref="T:iText.Layout.Hyphenation.HyphenationConfig"/>
             . No language hyphenation files will be used.
             Only soft hyphen symbols ('\u00ad') will be taken into account.
-            </summary>
+            </remarks>
             <param name="leftMin">the minimum number of characters before the hyphenation point</param>
             <param name="rightMin">the minimum number of characters after the hyphenation point</param>
         </member>
@@ -5310,16 +5434,11 @@
         <member name="M:iText.Layout.Hyphenation.HyphenationTree.LoadPatterns(System.String)">
             <summary>Read hyphenation patterns from an XML file.</summary>
             <param name="filename">the filename</param>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">In case the parsing fails</exception>
-            <exception cref="T:System.IO.FileNotFoundException"/>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
         </member>
         <member name="M:iText.Layout.Hyphenation.HyphenationTree.LoadPatterns(System.IO.Stream,System.String)">
             <summary>Read hyphenation patterns from an XML file.</summary>
             <param name="stream">the InputSource for the file</param>
             <param name="name">unique key representing country-language combination</param>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">In case the parsing fails</exception>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
         </member>
         <member name="M:iText.Layout.Hyphenation.HyphenationTree.FindPattern(System.String)">
             <summary>Find pattern.</summary>
@@ -5352,12 +5471,12 @@
             at index an update interletter values. In other words, it
             does something like:
             <para />
-            <code>
+            <c>
             for(i=0; i&lt;patterns.length; i++) {
             if ( word.substring(index).startsWidth(patterns[i]) )
             update_interletter_values(patterns[i]);
             }
-            </code>
+            </c>
             <para />
             But it is done in an efficient way since the patterns are
             stored in a ternary tree. In fact, this is the whole purpose
@@ -5664,31 +5783,19 @@
         <!-- Badly formed XML comment ignored for member "T:iText.Layout.Hyphenation.PatternParser" -->
         <member name="M:iText.Layout.Hyphenation.PatternParser.#ctor">
             <summary>Construct a pattern parser.</summary>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">if a hyphenation exception is raised</exception>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
         </member>
         <member name="M:iText.Layout.Hyphenation.PatternParser.#ctor(iText.Layout.Hyphenation.IPatternConsumer)">
             <summary>Construct a pattern parser.</summary>
             <param name="consumer">a pattern consumer</param>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">if a hyphenation exception is raised</exception>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
         </member>
         <member name="M:iText.Layout.Hyphenation.PatternParser.Parse(System.String)">
             <summary>Parses a hyphenation pattern file.</summary>
             <param name="filename">the filename</param>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">In case of an exception while parsing</exception>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
-            <exception cref="T:System.IO.FileNotFoundException"/>
         </member>
         <member name="M:iText.Layout.Hyphenation.PatternParser.Parse(System.IO.Stream,System.String)">
             <summary>Parses a hyphenation pattern file.</summary>
             <param name="stream">the InputStream for the file</param>
             <param name="name">unique key representing country-language combination</param>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException">In case of an exception while parsing</exception>
-            <exception cref="T:iText.Layout.Hyphenation.HyphenationException"/>
-        </member>
-        <member name="M:iText.Layout.Hyphenation.PatternParser.GetExternalClasses">
-            <exception cref="!:Org.Xml.Sax.SAXException">if not caught</exception>
         </member>
         <member name="T:iText.Layout.Hyphenation.TernaryTree">
             <summary><h2>Ternary Search Tree.</h2></summary>
@@ -5746,7 +5853,22 @@
         <member name="F:iText.Layout.Hyphenation.TernaryTree.eq">
             <summary>Pointer to equal branch and to data when this node is a string terminator.</summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:iText.Layout.Hyphenation.TernaryTree.sc" -->
+        <member name="F:iText.Layout.Hyphenation.TernaryTree.sc">
+            <summary>The character stored in this node: splitchar.</summary>
+            <remarks>
+            The character stored in this node: splitchar.
+            Two special values are reserved:
+            <list type="bullet">
+            <item><description>0x0000 as string terminator
+            </description></item>
+            <item><description>0xFFFF to indicate that the branch starting at
+            this node is compressed
+            </description></item>
+            </list>
+            This shouldn't be a problem if we give the usual semantics to
+            strings since 0xFFFF is garanteed not to be an Unicode character.
+            </remarks>
+        </member>
         <member name="F:iText.Layout.Hyphenation.TernaryTree.kv">
             <summary>This vector holds the trailing of the keys when the branch is compressed.</summary>
         </member>
@@ -5890,8 +6012,7 @@
         <member name="T:iText.Layout.Hyphenation.TernaryTreeIterator">
             <summary>
             An object that iterates over the
-            <see cref="T:iText.Layout.Hyphenation.TernaryTree"/>
-            .
+            <see cref="T:iText.Layout.Hyphenation.TernaryTree"/>.
             </summary>
         </member>
         <member name="F:iText.Layout.Hyphenation.TernaryTreeIterator.cur">
@@ -5967,9 +6088,8 @@
             </returns>
         </member>
         <member name="M:iText.Layout.IPropertyContainer.HasOwnProperty(System.Int32)">
-            <summary>Checks if this entity has the specified property, i.e.</summary>
-            <remarks>Checks if this entity has the specified property, i.e. if it was set to this very element earlier
-                </remarks>
+            <summary>Checks if this entity has the specified property, i.e. if it was set to this very element earlier
+                </summary>
             <param name="property">the property to be checked</param>
             <returns>
             
@@ -5987,7 +6107,7 @@
             ,
             this method can check parent's properties, styles, etc, depending on the origin of the instance
             </remarks>
-            
+            <typeparam name="T1">the return type associated with the property</typeparam>
             <param name="property">the property to be retrieved</param>
             <returns>
             the value of the given property.
@@ -6003,7 +6123,7 @@
             <see langword="null"/>
             will be returned.
             </remarks>
-            
+            <typeparam name="T1">the return type associated with the property</typeparam>
             <param name="property">the property to be retrieved</param>
             <returns>
             the value of the given own property.
@@ -6013,7 +6133,7 @@
         </member>
         <member name="M:iText.Layout.IPropertyContainer.GetDefaultProperty``1(System.Int32)">
             <summary>Gets the default property from this entity.</summary>
-            
+            <typeparam name="T1">the return type associated with the property</typeparam>
             <param name="property">the property to be retrieved</param>
             <returns>
             the default property value. If the default property is not defined,
@@ -6033,8 +6153,7 @@
         <member name="T:iText.Layout.Layout.LayoutArea">
             <summary>
             Represents the area for content
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.LayoutArea.pageNumber">
@@ -6046,8 +6165,7 @@
         <member name="M:iText.Layout.Layout.LayoutArea.#ctor(System.Int32,iText.Kernel.Geom.Rectangle)">
             <summary>
             Creates the area for content
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
             <param name="pageNumber">the number of page on which the area is located.</param>
             <param name="bBox">the area's bounding box</param>
@@ -6072,9 +6190,6 @@
             </summary>
             <param name="bbox"/>
         </member>
-        <member name="M:iText.Layout.Layout.LayoutArea.Clone">
-            <summary><inheritDoc/></summary>
-        </member>
         <member name="M:iText.Layout.Layout.LayoutArea.Equals(System.Object)">
             <summary><inheritDoc/></summary>
         </member>
@@ -6084,11 +6199,17 @@
         <member name="M:iText.Layout.Layout.LayoutArea.ToString">
             <summary><inheritDoc/></summary>
         </member>
+        <member name="M:iText.Layout.Layout.LayoutArea.Clone">
+            <summary>
+            Creates a "deep copy" of this LayoutArea, meaning the object returned by this method will be independent
+            of the object being cloned.
+            </summary>
+            <returns>the copied LayoutArea.</returns>
+        </member>
         <member name="T:iText.Layout.Layout.LayoutContext">
             <summary>
             Represents the context for content
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.LayoutContext.area">
@@ -6154,8 +6275,7 @@
         <member name="T:iText.Layout.Layout.LayoutResult">
             <summary>
             Represents the result of content
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.LayoutResult.FULL">
@@ -6190,34 +6310,42 @@
         <member name="F:iText.Layout.Layout.LayoutResult.occupiedArea">
             <summary>
             The area occupied by the content during its
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
-            which indicates whether the content was added or not and, if yes, was it added fully or partially.
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
+            <remarks>
+            The area occupied by the content during its
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
+            which indicates whether the content was added or not and, if yes, was it added fully or partially.
+            </remarks>
         </member>
         <member name="F:iText.Layout.Layout.LayoutResult.splitRenderer">
             <summary>
             The split renderer created during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
-            This renderer will be used to draw the splitted part of content.
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
+            <remarks>
+            The split renderer created during
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
+            This renderer will be used to draw the splitted part of content.
+            </remarks>
         </member>
         <member name="F:iText.Layout.Layout.LayoutResult.overflowRenderer">
             <summary>
             The overflow renderer created during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
-            This renderer will be used to draw the overflowed part of content.
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
+            <remarks>
+            The overflow renderer created during
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
+            This renderer will be used to draw the overflowed part of content.
+            </remarks>
         </member>
         <member name="F:iText.Layout.Layout.LayoutResult.causeOfNothing">
             <summary>
             The first renderer to produce
             <see cref="F:iText.Layout.Layout.LayoutResult.NOTHING"/>
             during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>.
             </summary>
         </member>
         <member name="M:iText.Layout.Layout.LayoutResult.#ctor(System.Int32,iText.Layout.Layout.LayoutArea,iText.Layout.Renderer.IRenderer,iText.Layout.Renderer.IRenderer)">
@@ -6227,10 +6355,17 @@
             result of
             <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
             }.
+            </summary>
+            <remarks>
+            Creates the
+            <see cref="T:iText.Layout.Layout.LayoutResult"/>
+            result of
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
+            }.
             The
             <see cref="F:iText.Layout.Layout.LayoutResult.causeOfNothing"/>
             will be set as null.
-            </summary>
+            </remarks>
             <param name="status">
             the status of
             <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
@@ -6262,16 +6397,14 @@
         <member name="M:iText.Layout.Layout.LayoutResult.GetStatus">
             <summary>
             Gets the status of
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>.
             </summary>
             <returns>the status</returns>
         </member>
         <member name="M:iText.Layout.Layout.LayoutResult.SetStatus(System.Int32)">
             <summary>
             Sets the status of
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>.
             </summary>
             <param name="status"/>
         </member>
@@ -6280,8 +6413,7 @@
             Gets the
             <see cref="T:iText.Layout.Layout.LayoutArea">layout area</see>
             occupied by the content during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
             <returns>
             the
@@ -6294,8 +6426,7 @@
             Gets the split
             <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
             created during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
             <returns>
             the
@@ -6305,16 +6436,14 @@
         <member name="M:iText.Layout.Layout.LayoutResult.SetSplitRenderer(iText.Layout.Renderer.IRenderer)">
             <summary>
             Sets the split
-            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
-            .
+            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>.
             </summary>
             <param name="splitRenderer"/>
         </member>
         <member name="M:iText.Layout.Layout.LayoutResult.GetOverflowRenderer">
             <summary>
             Gets the overflow renderer created during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
             <returns>
             the
@@ -6324,8 +6453,7 @@
         <member name="M:iText.Layout.Layout.LayoutResult.SetOverflowRenderer(iText.Layout.Renderer.IRenderer)">
             <summary>
             Sets the overflow
-            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
-            .
+            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>.
             </summary>
             <param name="overflowRenderer"/>
         </member>
@@ -6347,8 +6475,7 @@
         <member name="T:iText.Layout.Layout.LineLayoutContext">
             <summary>
             Represents the context for content of a line
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="M:iText.Layout.Layout.LineLayoutContext.IsFloatOverflowedToNextPageWithNothing">
@@ -6361,8 +6488,7 @@
         <member name="M:iText.Layout.Layout.LineLayoutContext.SetFloatOverflowedToNextPageWithNothing(System.Boolean)">
             <summary>
             Changes the value of property specified by
-            <see cref="M:iText.Layout.Layout.LineLayoutContext.IsFloatOverflowedToNextPageWithNothing"/>
-            .
+            <see cref="M:iText.Layout.Layout.LineLayoutContext.IsFloatOverflowedToNextPageWithNothing"/>.
             </summary>
             <param name="floatOverflowedToNextPageWithNothing">true if some floating element already completely overflowed.
                 </param>
@@ -6388,8 +6514,7 @@
         <member name="T:iText.Layout.Layout.LineLayoutResult">
             <summary>
             Represents the result of a line
-            <see cref="M:iText.Layout.Renderer.LineRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.LineRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.LineLayoutResult.splitForcedByNewline">
@@ -6402,10 +6527,17 @@
             result of
             <see cref="M:iText.Layout.Renderer.LineRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
             }.
+            </summary>
+            <remarks>
+            Creates the
+            <see cref="T:iText.Layout.Layout.LayoutResult"/>
+            result of
+            <see cref="M:iText.Layout.Renderer.LineRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
+            }.
             The
             <see cref="F:iText.Layout.Layout.LayoutResult.causeOfNothing"/>
             will be set as null.
-            </summary>
+            </remarks>
             <param name="status">
             the status of
             <see cref="M:iText.Layout.Renderer.LineRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
@@ -6459,8 +6591,7 @@
         <member name="T:iText.Layout.Layout.MinMaxWidthLayoutResult">
             <summary>
             Represents the result of content
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.RootLayoutArea.emptyArea">
@@ -6478,20 +6609,31 @@
             <param name="emptyArea"/>
         </member>
         <member name="M:iText.Layout.Layout.RootLayoutArea.Clone">
-            <summary><inheritDoc/></summary>
+            <summary>
+            Creates a "deep copy" of this RootLayoutArea, meaning the object returned by this method will be independent
+            of the object being cloned.
+            </summary>
+            <remarks>
+            Creates a "deep copy" of this RootLayoutArea, meaning the object returned by this method will be independent
+            of the object being cloned.
+            Note that although the return type of this method is
+            <see cref="T:iText.Layout.Layout.LayoutArea"/>
+            ,
+            the actual type of the returned object is
+            <see cref="T:iText.Layout.Layout.RootLayoutArea"/>.
+            </remarks>
+            <returns>the copied RootLayoutArea.</returns>
         </member>
         <member name="T:iText.Layout.Layout.TextLayoutResult">
             <summary>
             Represents the result of a text
-            <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>
-            .
+            <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.TextLayoutResult.wordHasBeenSplit">
             <summary>
             Indicates whether some word was splitted during
-            <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>
-            .
+            <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>.
             </summary>
         </member>
         <member name="F:iText.Layout.Layout.TextLayoutResult.splitForcedByNewline">
@@ -6504,10 +6646,17 @@
             result of
             <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
             }.
+            </summary>
+            <remarks>
+            Creates the
+            <see cref="T:iText.Layout.Layout.LayoutResult"/>
+            result of
+            <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)">layouting</see>
+            }.
             The
             <see cref="F:iText.Layout.Layout.LayoutResult.causeOfNothing"/>
             will be set as null.
-            </summary>
+            </remarks>
             <param name="status">
             the status of
             <see cref="M:iText.Layout.Renderer.TextRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
@@ -6539,10 +6688,13 @@
         <member name="M:iText.Layout.Layout.TextLayoutResult.IsWordHasBeenSplit">
             <summary>
             Indicates whether some word in a rendered text was splitted during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>
-            .
-            The value will be set as true if, for example, the rendered words width is bigger than the width of layout area.
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>.
             </summary>
+            <remarks>
+            Indicates whether some word in a rendered text was splitted during
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>.
+            The value will be set as true if, for example, the rendered words width is bigger than the width of layout area.
+            </remarks>
             <returns>whether some word was splitted or not.</returns>
         </member>
         <member name="M:iText.Layout.Layout.TextLayoutResult.SetWordHasBeenSplit(System.Boolean)">
@@ -6552,8 +6704,7 @@
             </summary>
             <param name="wordHasBeenSplit">
             indicates that some word was splitted during
-            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>
-            .
+            <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)">layout</see>.
             </param>
             <returns>
             
@@ -6583,6 +6734,13 @@
             the setting was applied on.
             </returns>
             <seealso cref="M:iText.Layout.Layout.TextLayoutResult.SetSplitForcedByNewline(System.Boolean)"/>
+        </member>
+        <member name="M:iText.Layout.Margincollapse.MarginsCollapse.Clone">
+            <summary>
+            Creates a "deep copy" of this MarginsCollapse, meaning the object returned by this method will be independent
+            of the object being cloned.
+            </summary>
+            <returns>the copied MarginsCollapse.</returns>
         </member>
         <member name="T:iText.Layout.Margincollapse.MarginsCollapseHandler">
             <summary>
@@ -6647,8 +6805,7 @@
             <remarks>
             This method use derivative of function defined on interval: [xMin, xMax] to find its local minimum and maximum.
             It also calculate other handy values needed for the creation of
-            <see cref="T:iText.Layout.Minmaxwidth.RotationMinMaxWidth"/>
-            .
+            <see cref="T:iText.Layout.Minmaxwidth.RotationMinMaxWidth"/>.
             </remarks>
             <param name="func">
             the
@@ -6706,6 +6863,11 @@
             Gets the argument of
             <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.WidthFunction.GetRotatedWidth(System.Double)"/>
             that results in zero derivative.
+            </summary>
+            <remarks>
+            Gets the argument of
+            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.WidthFunction.GetRotatedWidth(System.Double)"/>
+            that results in zero derivative.
             In case we have
             <see cref="F:iText.Layout.Minmaxwidth.RotationMinMaxWidth.WidthFunction.sin"/>
             <c>== 0</c>
@@ -6714,15 +6876,27 @@
             <c>== 0</c>
             the function doesn't have
             zero derivative on defined interval, but value returned by this method fits well in the calculations above.
-            </summary>
+            </remarks>
             <returns>
             the argument of
             <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.WidthFunction.GetRotatedWidth(System.Double)"/>
             that results in zero derivative
             </returns>
         </member>
+        <member name="T:iText.Layout.Properties.AreaBreakType">
+            <summary>
+            The possible values for the type of break
+            that is executed by an
+            <see cref="T:iText.Layout.Element.AreaBreak"/>.
+            </summary>
+        </member>
         <member name="T:iText.Layout.Properties.Background">
             <summary>
+            A specialized class holding configurable properties related to an
+            <see cref="T:iText.Layout.Element.IElement"/>
+            's background.
+            </summary>
+            <remarks>
             A specialized class holding configurable properties related to an
             <see cref="T:iText.Layout.Element.IElement"/>
             's background. This class is meant to be used as the value for the
@@ -6732,7 +6906,7 @@
             . Allows
             to define a background color, and positive or negative changes to the
             location of the edges of the background coloring.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Properties.Background.#ctor(iText.Kernel.Colors.Color)">
             <summary>Creates a background with a specified color.</summary>
@@ -6806,6 +6980,31 @@
             <summary>Gets the extra space that must be filled at the bottom of the Element.</summary>
             <returns>a float value</returns>
         </member>
+        <member name="T:iText.Layout.Properties.BaseDirection">
+            <summary>
+            A specialized enum holding the possible values
+            for a text
+            <see cref="T:iText.Layout.Element.IElement"/>
+            's base direction.
+            </summary>
+            <remarks>
+            A specialized enum holding the possible values
+            for a text
+            <see cref="T:iText.Layout.Element.IElement"/>
+            's base direction.
+            This class is meant to be used as the value
+            for the
+            <see cref="F:iText.Layout.Properties.Property.BASE_DIRECTION"/>
+            key in an
+            <see cref="T:iText.Layout.IPropertyContainer"/>.
+            </remarks>
+        </member>
+        <member name="T:iText.Layout.Properties.BorderCollapsePropertyValue">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.BORDER_COLLAPSE"/>.
+            </summary>
+        </member>
         <member name="T:iText.Layout.Properties.BorderRadius">
             <summary>Represents a border radius.</summary>
         </member>
@@ -6865,6 +7064,57 @@
             </summary>
             <returns>the vertical radius</returns>
         </member>
+        <member name="T:iText.Layout.Properties.BoxSizingPropertyValue">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.BOX_SIZING"/>.
+            </summary>
+        </member>
+        <member name="T:iText.Layout.Properties.CaptionSide">
+            <summary>
+            A specialized enum containing the potential caption side values
+            for a
+            <see cref="T:iText.Layout.Element.Table"/>
+            's caption.
+            </summary>
+        </member>
+        <member name="T:iText.Layout.Properties.ClearPropertyValue">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.CLEAR"/>.
+            </summary>
+        </member>
+        <member name="T:iText.Layout.Properties.FloatPropertyValue">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.FLOAT"/>.
+            </summary>
+        </member>
+        <member name="T:iText.Layout.Properties.FontKerning">
+            <summary>
+            A specialized enum holding the possible values
+            for a text
+            <see cref="T:iText.Layout.Element.IElement"/>
+            's kerning property.
+            </summary>
+            <remarks>
+            A specialized enum holding the possible values
+            for a text
+            <see cref="T:iText.Layout.Element.IElement"/>
+            's kerning property.
+            This class is meant to be used as the value for the
+            <see cref="F:iText.Layout.Properties.Property.FONT_KERNING"/>
+            key
+            in an
+            <see cref="T:iText.Layout.IPropertyContainer"/>.
+            </remarks>
+        </member>
+        <member name="T:iText.Layout.Properties.HorizontalAlignment">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.HORIZONTAL_ALIGNMENT"/>.
+            </summary>
+        </member>
         <member name="T:iText.Layout.Properties.IListSymbolFactory">
             <summary>Interface for implementing custom symbols for lists</summary>
         </member>
@@ -6900,8 +7150,7 @@
             This class is meant to be used as the value for the
             <see cref="F:iText.Layout.Properties.Property.LEADING"/>
             key in an
-            <see cref="T:iText.Layout.IPropertyContainer"/>
-            .
+            <see cref="T:iText.Layout.IPropertyContainer"/>.
             </remarks>
         </member>
         <member name="F:iText.Layout.Properties.Leading.FIXED">
@@ -6934,6 +7183,25 @@
             <summary>Gets the value to be used as the basis for the leading calculation.</summary>
             <returns>a calculation value</returns>
         </member>
+        <member name="T:iText.Layout.Properties.ListNumberingType">
+            <summary>
+            A specialized enum holding the possible values
+            for a list
+            <see cref="T:iText.Layout.Element.List"/>
+            's entry prefix.
+            </summary>
+            <remarks>
+            A specialized enum holding the possible values
+            for a list
+            <see cref="T:iText.Layout.Element.List"/>
+            's entry prefix.
+            This class is meant to be used as the value for the
+            <see cref="F:iText.Layout.Properties.Property.LIST_SYMBOL"/>
+            key
+            in an
+            <see cref="T:iText.Layout.IPropertyContainer"/>.
+            </remarks>
+        </member>
         <member name="F:iText.Layout.Properties.ListNumberingType.ZAPF_DINGBATS_1">
             <summary>Zapfdingbats font characters in range [172; 181]</summary>
         </member>
@@ -6948,6 +7216,28 @@
         </member>
         <member name="T:iText.Layout.Properties.ListSymbolAlignment">
             <summary>A specialized enum containing alignment properties for list symbols.</summary>
+            <remarks>
+            A specialized enum containing alignment properties for list symbols.
+            <para />
+            <see cref="F:iText.Layout.Properties.ListSymbolAlignment.LEFT"/>
+            means that the items will be aligned as follows:
+            <para />
+            9.  Item 9<br />
+            10. Item 10
+            <para />
+            Whereas
+            <see cref="F:iText.Layout.Properties.ListSymbolAlignment.RIGHT"/>
+            means the items will be aligned as follows:
+            <para />
+            9. Item 9<br />
+            10. Item 10
+            </remarks>
+        </member>
+        <member name="T:iText.Layout.Properties.OverflowPropertyValue">
+            <summary>
+            The possible values for the type of overflow of
+            <see cref="T:iText.Layout.Element.BlockElement`1"/>.
+            </summary>
         </member>
         <member name="T:iText.Layout.Properties.Property">
             <summary>
@@ -6996,8 +7286,7 @@
         <member name="F:iText.Layout.Properties.Property.FONT_SET">
             <summary>
             Shall be instance of
-            <see cref="T:iText.Layout.Font.FontSet"/>
-            .
+            <see cref="T:iText.Layout.Font.FontSet"/>.
             </summary>
         </member>
         <member name="F:iText.Layout.Properties.Property.HORIZONTAL_SCALING">
@@ -7006,8 +7295,7 @@
         <member name="F:iText.Layout.Properties.Property.TEXT_RENDERING_MODE">
             <summary>
             Use values from
-            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvasConstants.TextRenderingMode"/>
-            .
+            <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvasConstants.TextRenderingMode"/>.
             </summary>
         </member>
         <member name="F:iText.Layout.Properties.Property.VERTICAL_SCALING">
@@ -7018,19 +7306,38 @@
             Some properties must be passed to
             <see cref="T:iText.Layout.IPropertyContainer"/>
             objects that
+            are lower in the document's hierarchy.
+            </summary>
+            <remarks>
+            Some properties must be passed to
+            <see cref="T:iText.Layout.IPropertyContainer"/>
+            objects that
             are lower in the document's hierarchy. Most inherited properties are
             related to textual operations. Indicates whether or not this type of property is inheritable.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Properties.Property.IsPropertyInherited(System.Int32)">
             <summary>
             This method checks whether a Property, in order to be picked up by the
             rendering engine, must be defined on the current element or renderer
-            (<code>return false</code>), or may be defined in one of its parent
-            elements or renderers (<code>return true</code>).
+            (<c>return false</c>), or may be defined in one of its parent
+            elements or renderers (<c>return true</c>).
             </summary>
             <param name="property">the ID, defined in this class, of the property to check</param>
             <returns>whether the property type is inheritable</returns>
+        </member>
+        <member name="T:iText.Layout.Properties.TabAlignment">
+            <summary>
+            A specialized enum holding the possible values for a
+            <see cref="T:iText.Layout.Element.Tab">Tab</see>
+            's alignment.
+            </summary>
+        </member>
+        <member name="T:iText.Layout.Properties.TextAlignment">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.TEXT_ALIGNMENT"/>.
+            </summary>
         </member>
         <member name="T:iText.Layout.Properties.Transform">
             <summary>
@@ -7115,8 +7422,7 @@
             <param name="ty">vertical translation</param>
         </member>
         <member name="M:iText.Layout.Properties.Transform.SingleTransform.GetFloats">
-            <summary>Gets an array of values corresponding to transformation, i.e.</summary>
-            <remarks>Gets an array of values corresponding to transformation, i.e. scaling and skewing.</remarks>
+            <summary>Gets an array of values corresponding to transformation, i.e. scaling and skewing.</summary>
             <returns>an array of floats</returns>
         </member>
         <member name="M:iText.Layout.Properties.Transform.SingleTransform.GetUnitValues">
@@ -7142,9 +7448,9 @@
             Creates an Underline. Both the thickness and vertical positioning under
             the text element's base line can be set to a fixed value, or a variable
             one depending on the element's font size.
-            If you want a fixed-width thickness, set <code>thicknessMul</code> to 0;
+            If you want a fixed-width thickness, set <c>thicknessMul</c> to 0;
             if you want a thickness solely dependent on the font size, set
-            <code>thickness</code> to 0.
+            <c>thickness</c> to 0.
             Mutatis mutandis for the y-position.
             </remarks>
             <param name="color">
@@ -7170,9 +7476,9 @@
             Creates an Underline. Both the thickness and vertical positioning under
             the text element's base line can be set to a fixed value, or a variable
             one depending on the element's font size.
-            If you want a fixed-width thickness, set <code>thicknessMul</code> to 0;
+            If you want a fixed-width thickness, set <c>thicknessMul</c> to 0;
             if you want a thickness solely dependent on the font size, set
-            <code>thickness</code> to 0.
+            <c>thickness</c> to 0.
             Mutatis mutandis for the y-position.
             </remarks>
             <param name="color">
@@ -7208,16 +7514,16 @@
         <member name="M:iText.Layout.Properties.Underline.GetThickness(System.Single)">
             <summary>Gets the total thickness of the underline (fixed + variable part).</summary>
             <param name="fontSize">the font size for which to calculate the variable thickness</param>
-            <returns>the total thickness, as a <code>float</code>, in points</returns>
+            <returns>the total thickness, as a <c>float</c>, in points</returns>
         </member>
         <member name="M:iText.Layout.Properties.Underline.GetYPosition(System.Single)">
             <summary>Gets the vertical position of the underline (fixed + variable part).</summary>
             <param name="fontSize">the font size for which to calculate the variable position</param>
-            <returns>the y-position, as a <code>float</code>, in points</returns>
+            <returns>the y-position, as a <c>float</c>, in points</returns>
         </member>
         <member name="M:iText.Layout.Properties.Underline.GetYPositionMul">
             <summary>Gets the multiplier for the vertical positioning of the text underline.</summary>
-            <returns>the Y-position multiplier, as a <code>float</code></returns>
+            <returns>the Y-position multiplier, as a <c>float</c></returns>
         </member>
         <member name="M:iText.Layout.Properties.Underline.GetLineCapStyle">
             <summary>
@@ -7226,7 +7532,7 @@
             of the text underline.
             </summary>
             <returns>
-            the line cap style, as an <code>int</code> referring to
+            the line cap style, as an <c>int</c> referring to
             the values of
             <see cref="T:iText.Kernel.Pdf.Canvas.PdfCanvasConstants.LineCapStyle"/>
             </returns>
@@ -7275,8 +7581,7 @@
             a new normalized (Σ=100%) array of
             <see cref="F:iText.Layout.Properties.UnitValue.PERCENT"/>
             
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </returns>
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.CreatePercentArray(System.Int32)">
@@ -7286,8 +7591,7 @@
             a array of equal
             <see cref="F:iText.Layout.Properties.UnitValue.PERCENT"/>
             
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </returns>
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.CreatePointArray(System.Single[])">
@@ -7320,27 +7624,38 @@
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.GetValue">
             <summary>Gets the measured value stored in this object</summary>
-            <returns>the value, as a <code>float</code></returns>
+            <returns>the value, as a <c>float</c></returns>
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.SetValue(System.Single)">
             <summary>Sets the measured value stored in this object</summary>
-            <param name="value">a <code>float</code></param>
+            <param name="value">a <c>float</c></param>
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.IsPointValue">
             <summary>Returns whether or not the value is stored in points (pt)</summary>
-            <returns><code>true</code> if stored in points</returns>
+            <returns><c>true</c> if stored in points</returns>
         </member>
         <member name="M:iText.Layout.Properties.UnitValue.IsPercentValue">
             <summary>Returns whether or not the value is stored in percent (%)</summary>
-            <returns><code>true</code> if stored in percent</returns>
+            <returns><c>true</c> if stored in percent</returns>
+        </member>
+        <member name="T:iText.Layout.Properties.VerticalAlignment">
+            <summary>
+            A specialized enum containing potential property values for
+            <see cref="F:iText.Layout.Properties.Property.VERTICAL_ALIGNMENT"/>.
+            </summary>
         </member>
         <member name="T:iText.Layout.Renderer.AbstractRenderer">
             <summary>
             Defines the most common properties and behavior that are shared by most
             <see cref="T:iText.Layout.Renderer.IRenderer"/>
+            implementations.
+            </summary>
+            <remarks>
+            Defines the most common properties and behavior that are shared by most
+            <see cref="T:iText.Layout.Renderer.IRenderer"/>
             implementations. All default Renderers are subclasses of
             this default implementation.
-            </summary>
+            </remarks>
         </member>
         <member name="F:iText.Layout.Renderer.AbstractRenderer.EPS">
             <summary>
@@ -7377,12 +7692,8 @@
         <member name="M:iText.Layout.Renderer.AbstractRenderer.HasOwnOrModelProperty(System.Int32)">
             <summary>
             Checks if this renderer or its model element have the specified property,
-            i.e.
-            </summary>
-            <remarks>
-            Checks if this renderer or its model element have the specified property,
             i.e. if it was set to this very element or its very model element earlier.
-            </remarks>
+            </summary>
             <param name="property">the property to be checked</param>
             <returns>
             
@@ -7442,8 +7753,7 @@
         <member name="M:iText.Layout.Renderer.AbstractRenderer.GetPropertyAsTransparentColor(System.Int32)">
             <summary>
             Returns a property with a certain key, as a
-            <see cref="T:iText.Layout.Properties.TransparentColor"/>
-            .
+            <see cref="T:iText.Layout.Properties.TransparentColor"/>.
             </summary>
             <param name="property">
             an
@@ -7555,13 +7865,12 @@
             <param name="drawContext">the context (canvas, document, etc) of this drawing operation.</param>
         </member>
         <member name="M:iText.Layout.Renderer.AbstractRenderer.IsFlushed">
-            <summary>Indicates whether this renderer is flushed or not, i.e.</summary>
-            <remarks>
+            <summary>
             Indicates whether this renderer is flushed or not, i.e. if
             <see cref="M:iText.Layout.Renderer.AbstractRenderer.Draw(iText.Layout.Renderer.DrawContext)"/>
             has already
             been called.
-            </remarks>
+            </summary>
             <returns>whether the renderer has been flushed</returns>
             <seealso cref="M:iText.Layout.Renderer.AbstractRenderer.Draw(iText.Layout.Renderer.DrawContext)"/>
         </member>
@@ -7594,8 +7903,7 @@
             Gets the bounding box that contains all content written to the
             <see cref="T:iText.Layout.Renderer.DrawContext"/>
             by this
-            <see cref="T:iText.Layout.Renderer.IRenderer"/>
-            .
+            <see cref="T:iText.Layout.Renderer.IRenderer"/>.
             </summary>
             <returns>
             the smallest
@@ -7897,8 +8205,8 @@
             <summary>Gets borders of the element in the specified order: top, right, bottom, left.</summary>
             <returns>
             an array of BorderDrawer objects.
-            In case when certain border isn't set <code>Property.BORDER</code> is used,
-            and if <code>Property.BORDER</code> is also not set then <code>null</code> is returned
+            In case when certain border isn't set <c>Property.BORDER</c> is used,
+            and if <c>Property.BORDER</c> is also not set then <c>null</c> is returned
             on position of this border
             </returns>
         </member>
@@ -7907,15 +8215,15 @@
                 </summary>
             <returns>
             an array of BorderRadius objects.
-            In case when certain border radius isn't set <code>Property.BORDER_RADIUS</code> is used,
-            and if <code>Property.BORDER_RADIUS</code> is also not set then <code>null</code> is returned
+            In case when certain border radius isn't set <c>Property.BORDER_RADIUS</c> is used,
+            and if <c>Property.BORDER_RADIUS</c> is also not set then <c>null</c> is returned
             on position of this border radius
             </returns>
         </member>
         <member name="M:iText.Layout.Renderer.AbstractRenderer.CalculateAbsolutePdfBBox">
             <summary>
             Calculates the bounding box of the content in the coordinate system of the pdf entity on which content is placed,
-            e.g.
+            e.g. document page or form xObject.
             </summary>
             <remarks>
             Calculates the bounding box of the content in the coordinate system of the pdf entity on which content is placed,
@@ -8007,12 +8315,13 @@
             the most part to return the value the most suitable and handy for the purposes of accessibility properties applying.
             <para />
             Here are the main reasons to leave these types as is for now, even after introducing of PDF 2.0:
-            <ul>
-            <li>Standard structure types for pdf 1.7 and 2.0 are very alike. There are some differences, like new/removed roles
+            <list type="bullet">
+            <item><description>Standard structure types for pdf 1.7 and 2.0 are very alike. There are some differences, like new/removed roles
             and attributes, however they are not used in current layout auto tagging mechanism.
-            </li>
-            <li>Differentiating  possible types for the same role based on the context is not supported at the moment.</li>
-            </ul>
+            </description></item>
+            <item><description>Differentiating  possible types for the same role based on the context is not supported at the moment.
+            </description></item>
+            </list>
             In general, the correct way to handle role types would be to have separate classes for every namespace that define type
             and apply attributes. However I believe, that for now it is not feasible at the moment to implement this approach.
             The right time to improve and replace this class might be when new roles and attributes (specific to the different standard structure namespaces)
@@ -8024,23 +8333,23 @@
             <summary>Identifies standard structure role type based only on it's name.</summary>
             <remarks>
             Identifies standard structure role type based only on it's name. The return types might be one of the constants:
-            <ul>
-            <li>
+            <list type="bullet">
+            <item><description>
             <see cref="F:iText.Layout.Renderer.AccessibleTypes.Unknown"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Layout.Renderer.AccessibleTypes.Grouping"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Layout.Renderer.AccessibleTypes.BlockLevel"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Layout.Renderer.AccessibleTypes.InlineLevel"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Layout.Renderer.AccessibleTypes.Illustration"/>
-            </li>
-            </ul>
+            </description></item>
+            </list>
             See also remarks in the
             <see cref="T:iText.Layout.Renderer.AccessibleTypes"/>
             class documentation.
@@ -8050,9 +8359,14 @@
             <summary>
             Renderer object for the
             <see cref="T:iText.Layout.Element.AreaBreak"/>
+            layout element.
+            </summary>
+            <remarks>
+            Renderer object for the
+            <see cref="T:iText.Layout.Element.AreaBreak"/>
             layout element. Will terminate the
             current content area and initialize a new one.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Renderer.AreaBreakRenderer.#ctor(iText.Layout.Element.AreaBreak)">
             <summary>Creates an AreaBreakRenderer.</summary>
@@ -8072,12 +8386,11 @@
             a new "Block formatting context" in terms of CSS. Such renderers adhere to
             specific rules of floating elements and margins collapse handling.
             <para />
-            See
-            <a href="https://www.w3.org/TR/CSS21/visuren.html#block-formatting">https://www.w3.org/TR/CSS21/visuren.html#block-formatting</a>
-            and
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context">https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context</a>
-            for more info.
             </remarks>
+            <seealso><a href="https://www.w3.org/tr/css21/visuren.html#block-formatting">https://www.w3.org/TR/CSS21/visuren.html#block-formatting</a>
+                </seealso>
+            <seealso><a href="https://developer.mozilla.org/en-us/docs/web/guide/css/block_formatting_context">https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context</a>
+                </seealso>
         </member>
         <member name="M:iText.Layout.Renderer.BlockFormattingContextUtil.IsRendererCreateBfc(iText.Layout.Renderer.IRenderer)">
             <summary>Defines whether a renderer creates a new "Block formatting context" in terms of CSS.</summary>
@@ -8101,9 +8414,15 @@
             This method creates
             <see cref="T:iText.Kernel.Geom.AffineTransform"/>
             instance that could be used
+            to rotate content inside the occupied area.
+            </summary>
+            <remarks>
+            This method creates
+            <see cref="T:iText.Kernel.Geom.AffineTransform"/>
+            instance that could be used
             to rotate content inside the occupied area. Be aware that it should be used only after
             layout rendering is finished and correct occupied area for the rotated element is calculated.
-            </summary>
+            </remarks>
             <returns>
             
             <see cref="T:iText.Kernel.Geom.AffineTransform"/>
@@ -8253,8 +8572,7 @@
             the corresponding type, e.g. you can ask an
             <see cref="T:iText.Layout.Element.Image"/>
             for its
-            <see cref="T:iText.Layout.Renderer.ImageRenderer"/>
-            .
+            <see cref="T:iText.Layout.Renderer.ImageRenderer"/>.
             Renderers are designed to be extensible, and custom implementations can be
             seeded to layout objects (or their custom subclasses) at runtime.
             </remarks>
@@ -8270,6 +8588,13 @@
             <see cref="T:iText.Layout.Layout.LayoutResult"/>
             , representing the layout result, including occupied area, status, i.e.
             if there was enough place to fit the renderer subtree, etc.
+            </summary>
+            <remarks>
+            This method simulates positioning of the renderer, including all of its children, and returns
+            the
+            <see cref="T:iText.Layout.Layout.LayoutResult"/>
+            , representing the layout result, including occupied area, status, i.e.
+            if there was enough place to fit the renderer subtree, etc.
             <see cref="T:iText.Layout.Layout.LayoutResult"/>
             can be extended to return custom layout results for custom elements, e.g.
             <see cref="T:iText.Layout.Renderer.TextRenderer"/>
@@ -8280,18 +8605,17 @@
             before
             <see cref="M:iText.Layout.Renderer.IRenderer.Draw(iText.Layout.Renderer.DrawContext)"/>
             , to prepare the renderer to be flushed to the output stream.
-            </summary>
+            </remarks>
             <param name="layoutContext">the description of layout area and any other additional information</param>
             <returns>result of the layout process</returns>
         </member>
         <member name="M:iText.Layout.Renderer.IRenderer.Draw(iText.Layout.Renderer.DrawContext)">
-            <summary>Flushes the renderer subtree contents, i.e.</summary>
-            <remarks>
+            <summary>
             Flushes the renderer subtree contents, i.e. draws itself on canvas,
             adds necessary objects to the
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             etc.
-            </remarks>
+            </summary>
             <param name="drawContext">
             contains the
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
@@ -8322,7 +8646,7 @@
             <paramref name="defaultValue"/>
             will be returned.
             </remarks>
-            
+            <typeparam name="T1">the return type associated with the property</typeparam>
             <param name="property">the property to be retrieved</param>
             <param name="defaultValue">a fallback value</param>
             <returns>the value of the given property</returns>
@@ -8332,17 +8656,22 @@
             Explicitly sets this object as the child of another
             <see cref="T:iText.Layout.Renderer.IRenderer"/>
             in
+            the renderer hierarchy.
+            </summary>
+            <remarks>
+            Explicitly sets this object as the child of another
+            <see cref="T:iText.Layout.Renderer.IRenderer"/>
+            in
             the renderer hierarchy. Some implementations also use this method
             internally to create a consistent hierarchy tree.
-            </summary>
+            </remarks>
             <param name="parent">the object to place higher in the renderer hierarchy</param>
             <returns>by default, this object</returns>
         </member>
         <member name="M:iText.Layout.Renderer.IRenderer.GetParent">
             <summary>
             Gets the parent
-            <see cref="T:iText.Layout.Renderer.IRenderer"/>
-            .
+            <see cref="T:iText.Layout.Renderer.IRenderer"/>.
             </summary>
             <returns>
             direct parent
@@ -8370,13 +8699,12 @@
             </returns>
         </member>
         <member name="M:iText.Layout.Renderer.IRenderer.IsFlushed">
-            <summary>Indicates whether this renderer is flushed or not, i.e.</summary>
-            <remarks>
+            <summary>
             Indicates whether this renderer is flushed or not, i.e. if
             <see cref="M:iText.Layout.Renderer.IRenderer.Draw(iText.Layout.Renderer.DrawContext)"/>
             has already
             been called.
-            </remarks>
+            </summary>
             <returns>whether the renderer has been flushed</returns>
         </member>
         <member name="M:iText.Layout.Renderer.IRenderer.Move(System.Single,System.Single)">
@@ -8402,8 +8730,7 @@
             </remarks>
         </member>
         <member name="M:iText.Layout.Renderer.LineRenderer.BaseCharactersCount">
-            <summary>Returns the number of base characters, i.e.</summary>
-            <remarks>Returns the number of base characters, i.e. non-mark characters</remarks>
+            <summary>Returns the number of base characters, i.e. non-mark characters</summary>
         </member>
         <member name="M:iText.Layout.Renderer.LineRenderer.CalculateTab(iText.Layout.Renderer.IRenderer,System.Single,System.Single)">
             <summary>Calculates and sets encountered tab size.</summary>
@@ -8461,8 +8788,7 @@
             <summary>
             Creates a LinkRenderer from its corresponding layout object, with a custom
             text to replace the contents of the
-            <see cref="T:iText.Layout.Element.Link"/>
-            .
+            <see cref="T:iText.Layout.Element.Link"/>.
             </summary>
             <param name="linkElement">
             the
@@ -8492,13 +8818,19 @@
             Corrects split and overflow renderers when
             <see cref="F:iText.Layout.Properties.Property.FORCED_PLACEMENT"/>
             is applied.
+            </summary>
+            <remarks>
+            Corrects split and overflow renderers when
+            <see cref="F:iText.Layout.Properties.Property.FORCED_PLACEMENT"/>
+            is applied.
+            <para />
             We assume that
             <see cref="F:iText.Layout.Properties.Property.FORCED_PLACEMENT"/>
             is applied when the first
             <see cref="T:iText.Layout.Renderer.ListItemRenderer"/>
             cannot be fully layouted.
-            This means that the problem has occurred in one of first list item renderer's child.
-            We consider the right solution to force placement of all first item renderer's childs before the one,
+            This means that the problem has occurred in one of the first list item renderer's children.
+            In that case we force the placement of all first item renderer's children before the one,
             which was the cause of
             <see cref="F:iText.Layout.Layout.LayoutResult.NOTHING"/>
             , including this child.
@@ -8509,7 +8841,7 @@
             if we can render the first item renderer and strongly recommend not to set
             <see cref="F:iText.Layout.Properties.Property.FORCED_PLACEMENT"/>
             manually.
-            </summary>
+            </remarks>
             <param name="splitRenderer">
             the
             <see cref="T:iText.Layout.Renderer.IRenderer">split renderer</see>
@@ -8521,10 +8853,10 @@
             before correction
             </param>
             <param name="causeOfNothing">
-            the
-            <see cref="!:com.itextpdf.layout.layout.LayoutResult#causeOfNothing">cause of nothing renderer</see>
+            the renderer which has produced
+            <see cref="F:iText.Layout.Layout.LayoutResult.NOTHING"/>
             </param>
-            <param name="occupiedArea">the area occupied by layouting before correction</param>
+            <param name="occupiedArea">the area occupied by layout before correction</param>
             <returns>
             corrected
             <see cref="T:iText.Layout.Layout.LayoutResult">layout result</see>
@@ -8536,10 +8868,16 @@
             <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
             object for a
             <see cref="T:iText.Layout.Element.Paragraph"/>
-            object. It will draw the glyphs of the textual content on the
-            <see cref="T:iText.Layout.Renderer.DrawContext"/>
-            .
+            object.
             </summary>
+            <remarks>
+            This class represents the
+            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
+            object for a
+            <see cref="T:iText.Layout.Element.Paragraph"/>
+            object. It will draw the glyphs of the textual content on the
+            <see cref="T:iText.Layout.Renderer.DrawContext"/>.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Renderer.ParagraphRenderer.#ctor(iText.Layout.Element.Paragraph)">
             <summary>Creates a ParagraphRenderer from its corresponding layout object.</summary>
@@ -8570,10 +8908,9 @@
         <member name="M:iText.Layout.Renderer.ParagraphRenderer.GetLines">
             <summary>
             Gets the lines which are the result of the
-            <see cref="M:iText.Layout.Renderer.ParagraphRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
-            .
+            <see cref="M:iText.Layout.Renderer.ParagraphRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>.
             </summary>
-            <returns>paragraph lines, or <code>null</code> if layout hasn't been called yet</returns>
+            <returns>paragraph lines, or <c>null</c> if layout hasn't been called yet</returns>
         </member>
         <member name="M:iText.Layout.Renderer.RootRenderer.Flush">
             <summary>Draws (flushes) the content.</summary>
@@ -8584,11 +8921,16 @@
             This method correctly closes the
             <see cref="T:iText.Layout.Renderer.RootRenderer"/>
             instance.
+            </summary>
+            <remarks>
+            This method correctly closes the
+            <see cref="T:iText.Layout.Renderer.RootRenderer"/>
+            instance.
             There might be hanging elements, like in case of
             <see cref="F:iText.Layout.Properties.Property.KEEP_WITH_NEXT"/>
             is set to true
             and when no consequent element has been added. This method addresses such situations.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Renderer.RootRenderer.Layout(iText.Layout.Layout.LayoutContext)">
             <summary><inheritDoc/></summary>
@@ -8597,13 +8939,17 @@
             <summary>
             This method tries to calculate min-max-width of rotated element using heuristics
             of
-            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(System.Double,System.Double,iText.Layout.Minmaxwidth.MinMaxWidth)"/>
-            .
+            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(System.Double,System.Double,iText.Layout.Minmaxwidth.MinMaxWidth)"/>.
+            </summary>
+            <remarks>
+            This method tries to calculate min-max-width of rotated element using heuristics
+            of
+            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(System.Double,System.Double,iText.Layout.Minmaxwidth.MinMaxWidth)"/>.
             This method may call
             <see cref="M:iText.Layout.Renderer.IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
             once in best case
             (if the width is set on element, or if we are really lucky) and three times in worst case.
-            </summary>
+            </remarks>
             <param name="minMaxWidth">the minMaxWidth of NOT rotated renderer</param>
             <param name="renderer">the actual renderer</param>
             <returns>minMaxWidth of rotated renderer or original value in case rotated value can not be calculated, or renderer isn't rotated.
@@ -8615,8 +8961,7 @@
             <remarks>
             This method tries to calculate width of not rotated renderer, so after rotation it fits availableWidth.
             This method uses heuristics of
-            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(System.Double,System.Double,iText.Layout.Minmaxwidth.MinMaxWidth,System.Double)"/>
-            .
+            <see cref="M:iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(System.Double,System.Double,iText.Layout.Minmaxwidth.MinMaxWidth,System.Double)"/>.
             It doesn't take into account any of height properties of renderer or height of layoutArea.
             The minMaxWidth calculations and initial layout may take long time, but they won't be called if the renderer have width property.
             </remarks>
@@ -8634,12 +8979,18 @@
             <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
             object for a
             <see cref="T:iText.Layout.Element.Table"/>
+            object.
+            </summary>
+            <remarks>
+            This class represents the
+            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
+            object for a
+            <see cref="T:iText.Layout.Element.Table"/>
             object. It will delegate its drawing operations on to the
             <see cref="T:iText.Layout.Renderer.CellRenderer"/>
             instances associated with the
-            <see cref="T:iText.Layout.Element.Cell">table cells</see>
-            .
-            </summary>
+            <see cref="T:iText.Layout.Element.Cell">table cells</see>.
+            </remarks>
         </member>
         <member name="F:iText.Layout.Renderer.TableRenderer.isOriginalNonSplitRenderer">
             <summary>True for newly created renderer.</summary>
@@ -8659,8 +9010,7 @@
         <member name="M:iText.Layout.Renderer.TableRenderer.#ctor(iText.Layout.Element.Table)">
             <summary>
             Creates a TableRenderer from a
-            <see cref="T:iText.Layout.Element.Table"/>
-            .
+            <see cref="T:iText.Layout.Element.Table"/>.
             </summary>
             <param name="modelElement">the table to be rendered by this renderer</param>
         </member>
@@ -8763,10 +9113,16 @@
             <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
             object for a
             <see cref="T:iText.Layout.Element.Text"/>
-            object. It will draw the glyphs of the textual content on the
-            <see cref="T:iText.Layout.Renderer.DrawContext"/>
-            .
+            object.
             </summary>
+            <remarks>
+            This class represents the
+            <see cref="T:iText.Layout.Renderer.IRenderer">renderer</see>
+            object for a
+            <see cref="T:iText.Layout.Element.Text"/>
+            object. It will draw the glyphs of the textual content on the
+            <see cref="T:iText.Layout.Renderer.DrawContext"/>.
+            </remarks>
         </member>
         <member name="M:iText.Layout.Renderer.TextRenderer.#ctor(iText.Layout.Element.Text)">
             <summary>Creates a TextRenderer from its corresponding layout object.</summary>
@@ -8780,8 +9136,7 @@
             <summary>
             Creates a TextRenderer from its corresponding layout object, with a custom
             text to replace the contents of the
-            <see cref="T:iText.Layout.Element.Text"/>
-            .
+            <see cref="T:iText.Layout.Element.Text"/>.
             </summary>
             <param name="textElement">
             the
@@ -8878,22 +9233,11 @@
         </member>
         <member name="M:iText.Layout.Renderer.TypographyUtils.IsPdfCalligraphAvailable">
             <summary>Checks if layout module can access pdfCalligraph</summary>
-            <returns><code>true</code> if layout can access pdfCalligraph and <code>false</code> otherwise</returns>
-        </member>
-        <member name="M:iText.Layout.Renderer.TypographyUtils.FindMethod(System.String,System.String,System.Type[])">
-            <exception cref="T:System.MissingMethodException"/>
-            <exception cref="T:System.TypeLoadException"/>
-        </member>
-        <member name="M:iText.Layout.Renderer.TypographyUtils.FindConstructor(System.String,System.Type[])">
-            <exception cref="T:System.MissingMethodException"/>
-            <exception cref="T:System.TypeLoadException"/>
-        </member>
-        <member name="M:iText.Layout.Renderer.TypographyUtils.FindClass(System.String)">
-            <exception cref="T:System.TypeLoadException"/>
+            <returns><c>true</c> if layout can access pdfCalligraph and <c>false</c> otherwise</returns>
         </member>
         <member name="T:iText.Layout.RootElement`1">
             <summary>A generic abstract root element for a PDF layout object hierarchy.</summary>
-            
+            <typeparam name="T">this type</typeparam>
         </member>
         <member name="M:iText.Layout.RootElement`1.Add(iText.Layout.Element.IBlockElement)">
             <summary>Adds an element to the root.</summary>
@@ -8924,14 +9268,16 @@
         <member name="M:iText.Layout.RootElement`1.SetFontProvider(iText.Layout.Font.FontProvider)">
             <summary>
             Sets
-            <see cref="T:iText.Layout.Font.FontProvider"/>
-            .
-            Note, font provider is inherited property.
+            <see cref="T:iText.Layout.Font.FontProvider"/>.
             </summary>
+            <remarks>
+            Sets
+            <see cref="T:iText.Layout.Font.FontProvider"/>.
+            Note, font provider is inherited property.
+            </remarks>
             <param name="fontProvider">
             instance of
-            <see cref="T:iText.Layout.Font.FontProvider"/>
-            .
+            <see cref="T:iText.Layout.Font.FontProvider"/>.
             </param>
         </member>
         <member name="M:iText.Layout.RootElement`1.GetRenderer">
@@ -9035,9 +9381,9 @@
             <summary>Interface for customizing the split character.</summary>
         </member>
         <member name="M:iText.Layout.Splitting.ISplitCharacters.IsSplitCharacter(iText.IO.Font.Otf.GlyphLine,System.Int32)">
-            <summary>Returns <CODE>true</CODE> if the character can split a line.</summary>
+            <summary>Returns <c>true</c> if the character can split a line.</summary>
             <remarks>
-            Returns <CODE>true</CODE> if the character can split a line. The splitting implementation
+            Returns <c>true</c> if the character can split a line. The splitting implementation
             is free to look ahead or look behind characters to make a decision.
             </remarks>
             <param name="glyphPos">
@@ -9235,12 +9581,12 @@
         </member>
         <member name="M:iText.Layout.Style.SetRotationAngle(System.Single)">
             <summary>Sets the rotation radAngle.</summary>
-            <param name="radAngle">the new rotation radAngle, as a <code>float</code></param>
+            <param name="radAngle">the new rotation radAngle, as a <c>float</c></param>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Style.SetRotationAngle(System.Double)">
             <summary>Sets the rotation angle.</summary>
-            <param name="angle">the new rotation angle, as a <code>double</code></param>
+            <param name="angle">the new rotation angle, as a <c>double</c></param>
             <returns>this element</returns>
         </member>
         <member name="M:iText.Layout.Style.SetWidth(System.Single)">
@@ -9251,8 +9597,7 @@
         <member name="M:iText.Layout.Style.SetWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the width property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="width">
             a
@@ -9269,8 +9614,7 @@
         <member name="M:iText.Layout.Style.SetHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the height property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="height">
             a
@@ -9296,8 +9640,7 @@
         <member name="M:iText.Layout.Style.SetMaxHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-height property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxHeight">
             a
@@ -9309,8 +9652,7 @@
         <member name="M:iText.Layout.Style.SetMinHeight(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-height property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minHeight">
             a
@@ -9327,8 +9669,7 @@
         <member name="M:iText.Layout.Style.SetMaxWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the max-width property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="maxWidth">
             a
@@ -9345,8 +9686,7 @@
         <member name="M:iText.Layout.Style.SetMinWidth(iText.Layout.Properties.UnitValue)">
             <summary>
             Sets the min-width property of the element with a
-            <see cref="T:iText.Layout.Properties.UnitValue"/>
-            .
+            <see cref="T:iText.Layout.Properties.UnitValue"/>.
             </summary>
             <param name="minWidth">
             a
@@ -9363,23 +9703,29 @@
         <member name="T:iText.Layout.Tagging.IAccessibleElement">
             <summary>
             A layout element which has
-            <see cref="T:iText.Kernel.Pdf.Tagutils.AccessibilityProperties">accessibility properties</see>
-            .
+            <see cref="T:iText.Kernel.Pdf.Tagutils.AccessibilityProperties">accessibility properties</see>.
+            </summary>
+            <remarks>
+            A layout element which has
+            <see cref="T:iText.Kernel.Pdf.Tagutils.AccessibilityProperties">accessibility properties</see>.
             They define element's <em>role</em> (
             <see cref="M:iText.Kernel.Pdf.Tagutils.AccessibilityProperties.GetRole"/>
             ) - the name
             that will be used to tag the element if it is added to a Tagged PDF document.
             They can also define other metadata for the tag.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Layout.Tagging.IAccessibleElement.GetAccessibilityProperties">
             <summary>
             Gets the
+            <see cref="T:iText.Kernel.Pdf.Tagutils.AccessibilityProperties">accessibility properties</see>.
+            </summary>
+            <remarks>
+            Gets the
             <see cref="T:iText.Kernel.Pdf.Tagutils.AccessibilityProperties">accessibility properties</see>
             . See also
-            <see cref="T:iText.Layout.Tagging.IAccessibleElement"/>
-            .
-            </summary>
+            <see cref="T:iText.Layout.Tagging.IAccessibleElement"/>.
+            </remarks>
             <returns>an interface that allows to specify properties of a tagged element in Tagged PDF.</returns>
         </member>
         <member name="M:com.itextpdf.layout.layout.LayoutRect.GetCommonRectangle(com.itextpdf.layout.layout.LayoutRect[])">

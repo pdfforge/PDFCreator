@@ -7,19 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance shared:SettingControlsViewModel}">
-    <StackPanel Orientation="Horizontal"
-                HorizontalAlignment="Right">
-        <Button Style="{DynamicResource LargeGreenButton}"
-                Height="40"
+    <UserControl.Resources>
+        <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+    </UserControl.Resources>
+    <UniformGrid Rows="1" HorizontalAlignment="Right">
+        <Button Style="{StaticResource AffirmativeButton}"
+                Height="33"
                 Command="{Binding SaveCommand}"
                 CommandParameter="{Binding HomeViewName}"
                 Content="{Binding Translation.SaveButtonContent}"/>
-        
-        <Button Style="{DynamicResource LargeRedButton}"
-                Height="40"
+
+        <Button Style="{StaticResource CancelButton}"
+                Height="33"
                 Command="{Binding CancelCommand}"
                 CommandParameter="{Binding HomeViewName}"
                 Margin="10 0 0 0"
                 Content="{Binding Translation.CancelButtonContent}"/>
-    </StackPanel>
+    </UniformGrid>
 </UserControl>

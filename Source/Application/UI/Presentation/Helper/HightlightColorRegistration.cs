@@ -1,20 +1,16 @@
-﻿using System.Windows;
+﻿using pdfforge.PDFCreator.Core.ServiceLocator;
+using System.Windows;
 using System.Windows.Media;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
-    public interface IHightlightColorRegistration
-    {
-        void RegisterHighlightColorResource(FrameworkElement frameworkElement);
-    }
-
-    public class HightlightColorRegistration : IHightlightColorRegistration
+    public class HighlightColorRegistration : IWhitelisted
     {
         private readonly Color _highlightColor;
 
         public const string HighlightColorName = "ApplicationHightlightColor";
 
-        public HightlightColorRegistration(Color highlightColor)
+        public HighlightColorRegistration(Color highlightColor)
         {
             _highlightColor = highlightColor;
         }

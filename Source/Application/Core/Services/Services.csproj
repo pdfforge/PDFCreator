@@ -68,7 +68,6 @@
     <Compile Include="JobHistory\JobHistoryActiveRecord.cs" />
     <Compile Include="JobHistory\JobHistoryJsonFileStorage.cs" />
     <Compile Include="Language.cs" />
-    <Compile Include="Licensing\ITerminalServerDetection.cs" />
     <Compile Include="Licensing\TerminalServerDetection.cs" />
     <Compile Include="Licensing\TerminalServerLicenseChecker.cs" />
     <Compile Include="Licensing\UnlicensedLicenseChecker.cs" />
@@ -100,7 +99,7 @@
     <Compile Include="Translation\ProfileNameByGuidTranslation.cs" />
     <Compile Include="Translation\TranslationHelper.cs" />
     <Compile Include="Update\ApplicationVersion.cs" />
-    <Compile Include="Update\Release.cs" />
+    <Compile Include="Update\ReleaseInfo.cs" />
     <Compile Include="Update\UpdateDownloader.cs" />
     <Compile Include="Update\UpdateInformationProvider.cs" />
   </ItemGroup>
@@ -112,6 +111,10 @@
     <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
       <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
       <Name>Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SettingsManagementInterface\SettingsManagementInterface.csproj">
+      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
+      <Name>SettingsManagementInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\SettingsManagement\SettingsManagement.csproj">
       <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
@@ -210,32 +213,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="Microsoft.CSharp">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.Configuration">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceModel">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Xml">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -358,6 +346,9 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Data">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="System.Data.OracleClient">
           <Paket>True</Paket>
         </Reference>
@@ -371,6 +362,9 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.ServiceProcess">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="WindowsBase">

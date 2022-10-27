@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private bool _showLockLayer;
 
         public ApplicationNameProvider ApplicationName { get; }
-        public string ApplicationNameAndVersion => ApplicationName.ApplicationName + " " + _versionHelper.FormatWithThreeDigits();
+        public string ApplicationNameAndVersion => ApplicationName.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
         public IInteractionRequest InteractionRequest { get; }
         public ICommand DragEnterCommand { get; }
 

@@ -61,27 +61,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 .Build();
         }
 
-        public void MountView()
-        {
-            if (SelectedProfileProvider != null)
-            {
-                SelectedProfileProvider.SettingsChanged += OnSettingsChanged;
-                SelectedProfileProvider.SelectedProfileChanged += OnSelectedProfileChanged;
-
-                _regionManager.RequestNavigate(RegionNames.WorkflowEditorView, nameof(WorkflowEditorView));
-            }
-
-            if (_profiles == null)
-                UpdateProfileWrapperList();
-
-            foreach (var profile in Profiles)
-            {
-                profile.MountView();
-            }
-
-            OnSettingsChanged(this, null);
-        }
-
         private void OnSelectedProfileChanged(object sender, PropertyChangedEventArgs e)
         {
             var selectedProfile = SelectedProfileProvider.SelectedProfile.Guid;
@@ -96,7 +75,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaiseChanges();
         }
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs collectionChangedEventArgs)
+        private void OnProfileCollectionChanged(object sender, NotifyCollectionChangedEventArgs collectionChangedEventArgs)
         {
             if (collectionChangedEventArgs == null)
                 return;
@@ -121,6 +100,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 foreach (ConversionProfile conversionProfile in collectionChangedEventArgs.NewItems)
                 {
+                    if (_profiles.Any(p => p.ConversionProfile.Guid == conversionProfile.Guid))
+                        continue;
+
                     var profile = new ConversionProfileWrapper(conversionProfile);
                     profile.MountView();
                     _profiles.Add(profile);
@@ -128,6 +110,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
 
             RaiseChanges();
+        }
+
+        public void MountView()
+        {
+            if (SelectedProfileProvider != null)
+            {
+                SelectedProfileProvider.SettingsChanged += OnSettingsChanged;
+                SelectedProfileProvider.SelectedProfileChanged += OnSelectedProfileChanged;
+
+                _regionManager.RequestNavigate(RegionNames.WorkflowEditorView, nameof(WorkflowEditorView));
+            }
+
+            if (_profiles == null)
+                UpdateProfileWrapperList();
+
+            foreach (var profile in Profiles)
+            {
+                profile.MountView();
+            }
+
+            OnSettingsChanged(this, null);
+
+            _profileProvider.Settings.CollectionChanged += OnProfileCollectionChanged;
         }
 
         public void UnmountView()
@@ -142,6 +147,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 profile.UnmountView();
             }
+
+            _profileProvider.Settings.CollectionChanged -= OnProfileCollectionChanged;
         }
 
         private void UpdateProfileWrapperList()
@@ -178,8 +185,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         {
             _dispatcher.BeginInvoke(() =>
             {
-                _profileProvider.Settings.CollectionChanged += OnCollectionChanged;
-
                 UpdateProfileWrapperList();
 
                 RaiseChanges();
@@ -193,8 +198,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(SelectedProfile));
             RaisePropertyChanged(nameof(Profiles));
 
-            RaisePropertyChanged(nameof(EditProfileIsGpoDisabled));
-            RaisePropertyChanged(nameof(RenameProfileButtonIsGpoEnabled));
+            RaisePropertyChanged(nameof(AddProfileButtonIsGpoEnabled));
+            RaisePropertyChanged(nameof(EditProfileIsGpoEnabled));
             RaisePropertyChanged(nameof(RemoveProfileButtonIsGpoEnabled));
         }
 
@@ -217,11 +222,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public ObservableCollection<ConversionProfileWrapper> Profiles => _profiles;
 
-        public bool EditProfileIsGpoDisabled => ProfileManagementIsDisabledOrProfileIsShared();
-
-        public bool RenameProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
-        public bool AddProfileButtonIsGpoEnabled => GpoSettings == null || !LoadSharedProfilesAndDenyUserDefinedProfiles() && !GpoSettings.DisableProfileManagement;
+        public bool EditProfileIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
         public bool RemoveProfileButtonIsGpoEnabled => !ProfileManagementIsDisabledOrProfileIsShared();
+        public bool AddProfileButtonIsGpoEnabled => GpoSettings == null || !LoadSharedProfilesAndDenyUserDefinedProfiles() && !GpoSettings.DisableProfileManagement;
 
         private bool ProfileManagementIsDisabledOrProfileIsShared()
         {

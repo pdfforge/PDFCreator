@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public MainShellViewModel ViewModel => (MainShellViewModel)DataContext;
 
-        public MainShell(MainShellViewModel vm, IHightlightColorRegistration hightlightColorRegistration, IUpdateHelper updateHelper, IEventAggregator eventAggregator, IDispatcher dispatcher)
+        public MainShell(MainShellViewModel vm, IUpdateHelper updateHelper, IEventAggregator eventAggregator, IDispatcher dispatcher)
         {
             _eventAggregator = eventAggregator;
             _dispatcher = dispatcher;
@@ -32,7 +32,6 @@ namespace pdfforge.PDFCreator.UI.Presentation
             UpdateHelper = updateHelper;
             InitializeComponent();
             vm.Init(Close);
-            hightlightColorRegistration.RegisterHighlightColorResource(this);
             TransposerHelper.Register(this, vm);
         }
 

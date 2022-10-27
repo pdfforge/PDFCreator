@@ -17,10 +17,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {
     public partial class HotStandbySettingsView : UserControl
     {
-        public HotStandbySettingsView(HotStandbySettingsViewModel viewModel)
+        public HotStandbySettingsView()
+        {
+            InitializeComponent();
+        }
+
+        public void SetDataContext(HotStandbySettingsViewModel viewModel)
         {
             DataContext = viewModel;
-            InitializeComponent();
         }
     }
 }

@@ -126,14 +126,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is FtpAccount)) return false;
 			FtpAccount v = o as FtpAccount;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!AuthenticationType.Equals(v.AuthenticationType)) return false;
-			if (!FtpConnectionType.Equals(v.FtpConnectionType)) return false;
-			if (!KeyFileRequiresPass.Equals(v.KeyFileRequiresPass)) return false;
-			if (!Password.Equals(v.Password)) return false;
-			if (!PrivateKeyFile.Equals(v.PrivateKeyFile)) return false;
-			if (!Server.Equals(v.Server)) return false;
-			if (!UserName.Equals(v.UserName)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(AuthenticationType, v.AuthenticationType)) return false;
+			if (!Object.Equals(FtpConnectionType, v.FtpConnectionType)) return false;
+			if (!Object.Equals(KeyFileRequiresPass, v.KeyFileRequiresPass)) return false;
+			if (!Object.Equals(Password, v.Password)) return false;
+			if (!Object.Equals(PrivateKeyFile, v.PrivateKeyFile)) return false;
+			if (!Object.Equals(Server, v.Server)) return false;
+			if (!Object.Equals(UserName, v.UserName)) return false;
 			return true;
 		}
 		

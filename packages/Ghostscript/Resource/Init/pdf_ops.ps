@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -304,7 +304,6 @@ currentdict /gput_always_allow .undef
     4 2 roll
     //CSdict exch get exec exch .setfillcolorspace exec {.setfillcolor} stopped
     {
-    (error) == flush
       cleartomark
       [//null /DeviceGray //null /DeviceRGB /DeviceCMYK] exch
       {get} stopped
@@ -483,19 +482,19 @@ currentdict /gput_always_allow .undef
 % ---------------- Color installation ---------------- %
 
 % Establish a given color (and color space) as current.
-/.settransparencyparams {	% <alpha> <smask> .settransparencyparams -
+/.settransparencyparams {	% <smask> .settransparencyparams -
   PDFusingtransparency {
     .currentalphaisshape
     {
-      1 .setopacityalpha  exch .setshapealpha 1
+      1
     } {
-      1 .setshapealpha  exch .setopacityalpha 0
+      0
     } ifelse
       % Set the soft mask by rendering the XObject.  Doing this every time
       % is obviously very inefficient; we'll improve it later.
     .settransparencymask
   } {
-    pop pop
+     pop
   } ifelse
 } bind executeonly def
 /.settransparencymask {		% <paramdict> <masknum> .settransparencymask -
@@ -517,16 +516,7 @@ currentdict /gput_always_allow .undef
     } ifelse
   } ifelse
 } bind executeonly def
-% (Non-mask) images must execute setfillblend.
-/setfillblend {
-  .currentfillconstantalpha
-  .currentSMask .settransparencyparams
-} bind executeonly def
-/setfillstate {
-  setfillblend
-} bind executeonly def
-/setstrokestate {
-  .currentstrokeconstantalpha
+/setsmaskstate {
   .currentSMask .settransparencyparams
 } bind executeonly def
 /Cdict 15 dict dup begin	% <color...> <colorspace> -proc- -
@@ -673,12 +663,12 @@ end def
   } ifelse
 } bind executeonly def
 
-/OPsaveDstack 6 dict def		% for GroupPushed, saveOP, saveSA, saveBM
+/OPsaveDstack 6 dict def		% for GroupPushed, saveOP, saveFillAlpha, saveBM
 //OPsaveDstack begin
   /GroupPushed //false def
   /ChangeBM //false def
-  /saveOA 1 def
-  /saveSA 1 def
+  /saveStrokeAlpha 1 def
+  /saveFillAlpha 1 def
   /saveBM /Normal def
   /previous 1 dict def		% for nested setup_trans levels
 end
@@ -690,11 +680,11 @@ end
 } def
 /Dpop { //OPsaveDstack begin previous { def } forall end } def
 
-% colorspaces that don't require special overprint transparency handling
-/okOPcs mark /DeviceGray 0 /DeviceCMYK 1 /DeviceN 2 /Separation 3 .dicttomark def
+% colorspaces that require special overprint transparency handling
+/specialOPcs mark /DeviceGray 0 /DeviceCMYK 1 /DeviceN 2 /Separation 3 .dicttomark def
 
 % Take care of pushing a transparency group if we need it for SMask or for Overprint..
-% After pushing the group, we save the opacityalpha and shapealpha and change them
+% After pushing the group, we save the ca and CA and change them
 % both to 1. For overprint if the colorspace is acceptable, also change to
 % CompatibleOverprint if the device needs it.
 
@@ -705,11 +695,19 @@ end
 {  % Check OP and BM in case we need to push a group
   //OPsaveDstack begin
   //Dpush exec			% push the current OPsaveDstack values into 'previous'
-  okOPcs currentcolorspace 0 get dup /Indexed eq {
+  /SupportsDevn .special_op
+  specialOPcs currentcolorspace 0 get dup /Indexed eq {
     pop currentcolorspace 1 get	% use the base space
   } if
-  known {
-    1 index /stroke ne { .currentfilloverprint } { .currentstrokeoverprint } ifelse
+  known or {
+    dup /stroke ne {
+      .currentfilloverprint
+      1 index dup /.fillstroke eq exch /.eofillstroke eq or {
+        .currentstrokeoverprint or
+      } if
+     } {
+      .currentstrokeoverprint
+    } ifelse
     % Change BM to CompatibleOverprint if this has overprint true
     dup /ChangeBM exch def
     .currentblendmode dup /Normal eq exch /Compatible eq or
@@ -721,10 +719,10 @@ end
     mark /Subtype /Group /Isolated .currentSMask //null ne .dicttomark
     2 index aload pop		% pathbbox
     .begintransparencygroup
-    % After group pushed, set opacityalpha, shapealpha and blendmode
-    /saveOA .currentopacityalpha def
-    /saveSA .currentshapealpha def
-    1 .setopacityalpha 1 .setshapealpha
+    % After group pushed, set alphas and blendmode
+    /saveStrokeAlpha .currentstrokeconstantalpha def
+    /saveFillAlpha .currentfillconstantalpha def
+    1 .setfillconstantalpha 1 .setstrokeconstantalpha
     /GroupPushed //true def
   } {
     /GroupPushed //false def
@@ -748,10 +746,10 @@ end
     mark /Subtype /Group /Isolated //true .dicttomark
     2 index aload pop		% pathbbox
     .begintransparencygroup
-    % After group pushed, set opacityalpha, shapealpha and blendmode
-    /saveOA .currentopacityalpha def
-    /saveSA .currentshapealpha def
-    1 .setopacityalpha 1 .setshapealpha
+    % After group pushed, set alphas and blendmode
+    /saveStrokeAlpha .currentstrokeconstantalpha def
+    /saveFillAlpha .currentfillconstantalpha def
+    1 .setfillconstantalpha 1 .setstrokeconstantalpha
     /GroupPushed //true def
   } {
     /GroupPushed //false def
@@ -766,9 +764,9 @@ end
 /teardown_trans {
   //OPsaveDstack begin
   GroupPushed {
-    % pop the group, then restore the opacityalpha and shapealpha
+    % pop the group, then restore the alphas
     .endtransparencygroup	% end the group
-    saveOA .setopacityalpha saveSA .setshapealpha
+    saveStrokeAlpha .setstrokeconstantalpha saveFillAlpha .setfillconstantalpha
   } if
   % Also, if we changed the BM, restore it (AFTER the group was popped)
   .currentblendmode /CompatibleOverprint eq {
@@ -904,7 +902,7 @@ currentdict dup /Dpush .undef /Dpop .undef
 
 /S {
   OFFlevels length 0 eq {
-    setstrokestate .swapcolors /stroke fsexec .swapcolors
+    setsmaskstate .swapcolors /stroke fsexec .swapcolors
   } {
     newpath
   } ifelse
@@ -912,7 +910,7 @@ currentdict dup /Dpush .undef /Dpop .undef
 
 /f {
   OFFlevels length 0 eq {
-    setfillstate /fill fsexec
+    setsmaskstate /fill fsexec
   } {
     newpath
   } ifelse
@@ -920,7 +918,7 @@ currentdict dup /Dpush .undef /Dpop .undef
 
 /f* {
   OFFlevels length 0 eq {
-    setfillstate /eofill fsexec
+    setsmaskstate /eofill fsexec
   } {
     newpath
   } ifelse
@@ -932,7 +930,7 @@ currentdict dup /Dpush .undef /Dpop .undef
 
 /B {
   OFFlevels length 0 eq {
-    setstrokestate setfillstate /.fillstroke fsexec
+    setsmaskstate /.fillstroke fsexec
   } {
     newpath
   } ifelse
@@ -942,7 +940,7 @@ currentdict dup /Dpush .undef /Dpop .undef
 
 /B* {
   OFFlevels length 0 eq {
-    setstrokestate setfillstate /.eofillstroke fsexec
+    setsmaskstate /.eofillstroke fsexec
   } {
     newpath
   } ifelse
@@ -953,9 +951,9 @@ currentdict dup /Dpush .undef /Dpop .undef
 % Clipping:
 
 /Wdict 8 dict dup begin
-/S { OFFlevels length 0 eq { gsave setstrokestate .swapcolors stroke .swapcolors grestore } if n } bind executeonly def
-/f { OFFlevels length 0 eq { gsave setfillstate fill grestore } if n } bind executeonly def
-/f* { OFFlevels length 0 eq { gsave setfillstate eofill grestore } if n } bind executeonly def
+/S { OFFlevels length 0 eq { gsave setsmaskstate .swapcolors stroke .swapcolors grestore } if n } bind executeonly def
+/f { OFFlevels length 0 eq { gsave setsmaskstate fill grestore } if n } bind executeonly def
+/f* { OFFlevels length 0 eq { gsave setsmaskstate eofill grestore } if n } bind executeonly def
 /B {
   OFFlevels length 0 eq {
     .fillstroke
@@ -970,12 +968,12 @@ currentdict dup /Dpush .undef /Dpop .undef
   n
 } bind executeonly def
 /b { closepath B* } bind executeonly def
-/n { end { currentpoint } stopped not { pop pop clip } if newpath } bind executeonly def
+/n { end .currentpoint_valid { clip } if newpath } bind executeonly def
 end readonly def
 /W { //Wdict begin } bind executeonly def
 /W*dict 8 dict dup begin
 Wdict { def } forall
-/n { end { currentpoint } stopped not { pop pop eoclip } if newpath } bind executeonly def
+/n { end .currentpoint_valid { eoclip } if newpath } bind executeonly def
 end readonly def
 /W* { //W*dict begin } bind executeonly def
 % ---------------- Text control ---------------- %
@@ -1066,7 +1064,8 @@ end readonly def
 /settextposition {
                 % Update the TextMatrix translation.
   gsave TextSaveMatrix setmatrix
-  {currentpoint} stopped not {
+  .currentpoint_valid {
+    currentpoint
     .currenttextrise
     sub
     matrix .currenttextmatrix
@@ -1114,6 +1113,9 @@ end readonly def
 } bind executeonly odef
 
 /BT {
+  % Bug 703996 has a path defined before BT, then stroked afterwards
+  .currentpoint_valid { //false upath } { //null } ifelse
+  /BT_upath gput
   //false /illegal_BT gput
   currentdict /TextSaveMatrix known {
     (   **** Error: illegal nested BT operator detected.\n)
@@ -1154,7 +1156,7 @@ end readonly def
   %% can come into pdf_text_begin with an opacity not equal to 1.
   PDFusingtransparency .currenttextknockout and
   currentdict /illegal_BT get not and
-{
+  {
     .begintransparencytextgroup
   } if
 
@@ -1162,10 +1164,8 @@ end readonly def
 
 /clip_if_required {
     .currenttextrenderingmode 4 ge
-    {currentpoint} //.internalstopped exec
-    {//false}
-    {pop pop //true}
-    ifelse and
+    .currentpoint_valid
+    and
     { .currentfilladjust2 0 dup .setfilladjust2 clip .setfilladjust2} if
     newpath
 } bind def
@@ -1192,6 +1192,7 @@ end readonly def
   %% in a nested text block (inside a gsave).
   currentdict /qTextSaveMatrix known not {
     switch_to_normal_marking_ops
+    currentdict /BT_upath get dup //null eq { pop } { newpath uappend } ifelse
   } if
 } bind executeonly def
 
@@ -1205,7 +1206,17 @@ currentdict /clip_if_required .undef
   } if
 } bind executeonly def
 
-/Tc { .settextspacing { showfirst } /Show gput } bind executeonly def
+/Tc {
+  {.settextspacing} stopped
+  {
+    (\n   **** Error: A ) pdfformaterror
+    $error /errorname get 256 string cvs pdfformaterror
+    ( error occured while setting the Text Character spacing to ) pdfformaterror
+    256 string cvs pdfformaterror
+    (\n                 Output may be incorrect.\n) pdfformaterror
+  } if
+  { showfirst } /Show gput
+} bind executeonly def
 /TL { .settextleading } bind executeonly def
 /Tr { .settextrenderingmode { showfirst } /Show gput } bind executeonly def
 /Ts { .settextrise settextstate } bind executeonly def
@@ -1328,10 +1339,10 @@ currentdict /clip_if_required .undef
     {		% We add 1 to the length just in case the original
                 % didn't have a FID.
       exch dup length 1 add dict exch
-       {		% Stack: changed newfont key value
-         1 index /FID eq
-         not { 3 copy put } if pop pop
-       }
+      {		% Stack: changed newfont key value
+        1 index /FID eq
+        not { 3 copy put } if pop pop
+      }
       forall exch
     }
    if pop
@@ -1471,49 +1482,27 @@ currentdict /clip_if_required .undef
 
 /pdfwrite_textrenderingprocs [
         % Tr 0 - Fill
-        { setfillstate show } bind executeonly
+        { setsmaskstate show } bind executeonly
         % Tr 1 - Stroke
-        { currentlinewidth exch setstrokestate
+        { currentlinewidth exch setsmaskstate
         % Need to set the stroke width to a value which gives the correct
         % width under pdfwrite. Pdfwrite uses (in text mode) an identity
         % CTM, so we need to calculate the stroke width which would result
         % if the CTM had been unity.
-          currentlinewidth dup
-          currentdict /qTextSaveMatrix known {
-            matrix defaultmatrix idtransform qTextSaveMatrix dtransform
-          }{
-            matrix defaultmatrix idtransform TextSaveMatrix dtransform
-          } ifelse
-          abs 2 copy exch abs eq {
-            pop
-          }{
-            % non-square scaling reduces to Text matrix in pdfwrite , so
-            % we can ignore it. (wrong answer, but consistent)
-            pop pop currentlinewidth
-          }ifelse setlinewidth
+          calc_text_linewidth
+          setlinewidth
           show setlinewidth} bind executeonly
         % Tr 2 - Fill then Stroke
-        { currentlinewidth exch setstrokestate
+        { currentlinewidth exch setsmaskstate
         % Need to set the stroke width to a value which gives the correct
         % width under pdfwrite. Pdfwrite uses (in text mode) an identity
         % CTM, so we need to calculate the stroke width which would result
         % if the CTM had been unity.
-          currentlinewidth dup
-          currentdict /qTextSaveMatrix known {
-            matrix defaultmatrix idtransform qTextSaveMatrix dtransform
-          }{
-            matrix defaultmatrix idtransform TextSaveMatrix dtransform
-          } ifelse
-          abs 2 copy exch abs eq {
-            pop
-          }{
-            % non-square scaling reduces to Text matrix in pdfwrite , so
-            % we can ignore it. (wrong answer, but consistent)
-            pop pop currentlinewidth
-          }ifelse setlinewidth
-          setfillstate show setlinewidth} bind executeonly
+          calc_text_linewidth
+          setlinewidth
+          setsmaskstate show setlinewidth} bind executeonly
         % Tr 3 - Neither fill nor stroke
-        { setfillstate show } bind executeonly
+        { setsmaskstate show } bind executeonly
         %
         % pdfwrite emits all text inside a gsave/grestore pair. As
         % a result we can't preserve any of the 'clip' modes, as the
@@ -1522,40 +1511,52 @@ currentdict /clip_if_required .undef
         %
         % Tr 4 - Fill, add to clip
         { gsave 0 .settextrenderingmode
-          setfillstate dup show grestore //true charpath } bind executeonly
+          setsmaskstate dup show grestore //true charpath } bind executeonly
         % Tr 5 - Stroke, add to clip
         { gsave 1 .settextrenderingmode
-          currentlinewidth dup
-          matrix defaultmatrix idtransform TextSaveMatrix dtransform
-          abs 2 copy exch abs eq {
-            pop
-          }{
-            % non-square scaling reduces to Text matrix in pdfwrite , so
-            % we can ignore it. (wrong answer, but consistent)
-            pop pop currentlinewidth
-          }ifelse setlinewidth
-          setstrokestate dup show grestore
+          calc_text_linewidth
+          setlinewidth
+          setsmaskstate dup show grestore
           //true charpath} bind executeonly
         % Tr 6 - Fill, stroke, add to clip
         { gsave 2 .settextrenderingmode
-          currentlinewidth dup
-          currentdict /qTextSaveMatrix known {
-            matrix defaultmatrix idtransform qTextSaveMatrix dtransform
-          }{
-            matrix defaultmatrix idtransform TextSaveMatrix dtransform
-          } ifelse
-          abs 2 copy exch abs eq {
-            pop
-          }{
-            % non-square scaling reduces to Text matrix in pdfwrite , so
-            % we can ignore it. (wrong answer, but consistent)
-            pop pop currentlinewidth
-          }ifelse setlinewidth
-          setstrokestate setfillstate dup show grestore
+          calc_text_linewidth
+          setlinewidth
+          setsmaskstate dup show grestore
           //true charpath} bind executeonly
         % Tr 7 - Add to clip
         { //true charpath} bind executeonly
 ] readonly def
+
+% - calc_text_linewidth calculated_width
+% This calculates the required linewidth for stroke for *pdfwrite*, it must not be
+% used for rendering. Because pdfwrite writes text scaled into a 72 dpi resolution
+% we cannot use the current linewidth for it, it will be too large. Instead we must
+% re-calculate the original linewidth (removing the default CTM) and then apply the
+% TextSaveMatrix to find the appropriate new linewidth.
+% We check to see if the x and y scaling are approximately the same, if they are not
+% then we calculate a linewidth based on a right triangle with the x and y values
+% of the current linewidth in each direction and then calculate the hypotenuse, which
+% we then use as an approximation to the required width.
+% The 'approximation' of 0.01 is just a guess.
+/calc_text_linewidth
+{
+  currentlinewidth dup
+  currentdict /qTextSaveMatrix known {
+    matrix defaultmatrix idtransform qTextSaveMatrix dtransform
+  }{
+    matrix defaultmatrix idtransform TextSaveMatrix dtransform
+  } ifelse
+  abs 2 copy exch abs sub abs 0.01 le {
+    pop
+  }{
+    % We used to leave the linewidth alone for non-square resolutions,
+    % claiming it reduced to the text matrix in pdfwrite. This is not
+    % true. So handle it the same way we usually do, the hypotenuse of
+    % the unit square transformed through the TextSaveMatrix.
+    dup mul exch dup mul add sqrt 2 div
+  }ifelse
+} bind executeonly def
 
 /setstrokeforTrpreservation {
       % Check to see if the current device supports Tr
@@ -1567,21 +1568,13 @@ currentdict /clip_if_required .undef
       {
         .currenttextrenderingmode 1 eq .currenttextrenderingmode 2 eq or
         .currenttextrenderingmode 5 eq .currenttextrenderingmode 6 eq or or {
-          setstrokestate
+          setsmaskstate
           % Need to set the stroke width to a value which gives the correct
           % width under pdfwrite. Pdfwrite uses (in text mode) an identity
           % CTM, so we need to calculate the stroke width which would result
           % if the CTM had been unity. NOTE! Only interested in magnitudes,
           % not signs.
-          currentlinewidth dup
-          matrix defaultmatrix idtransform TextSaveMatrix dtransform
-          abs 2 copy exch abs eq {
-            pop
-          }{
-            % non-square scaling reduces to Text matrix in pdfwrite , so
-            % we can ignore it. (wrong answer, but consistent)
-            pop pop currentlinewidth
-          }ifelse
+          calc_text_linewidth
           setlinewidth
       } if
     } if
@@ -1589,7 +1582,7 @@ currentdict /clip_if_required .undef
 
 % conditionally set fillstate to avoid multiple operations during text operators
 /settextfillstate {
-  TextFillStateNeeded { setfillstate //false /TextFillStateNeeded gput } if
+  TextFillStateNeeded { setsmaskstate //false /TextFillStateNeeded gput } if
 } bind executeonly def
 
 % If current path is not known to be valid, use the clip path
@@ -1786,7 +1779,7 @@ currentdict /clip_if_required .undef
                % correctly.
                gsave .currenttextrenderingmode 4 sub .settextrenderingmode
                setstrokeforTrpreservation
-               setstrokestate settextfillstate //false TextTransSetup dup show grestore TextTransTeardown } if
+               setsmaskstate settextfillstate //false TextTransSetup dup show grestore TextTransTeardown } if
              //false charpath
              3 copy 32 eq { add } { exch pop } ifelse
                         % Stack: str wthis xorig yorig wword wchar ccode wextra
@@ -1873,7 +1866,7 @@ currentdict /clip_if_required .undef
    }
    {
     .currentPDFfontsize 0 eq not {
-       setstrokestate //true TextTransSetup
+       setsmaskstate //true TextTransSetup
        currentpoint //Tmatrix currentmatrix TextSaveMatrix setmatrix
        currentdict /qTextSaveMatrix known {qTextSaveMatrix setmatrix} if
        .swapcolors stroke TextTransTeardown .swapcolors
@@ -1885,24 +1878,29 @@ currentdict /clip_if_required .undef
 
 % Handle transparency the same as /B operator
 /tB {
-       PDFusingtransparency {
-          % knockout trans group around the filled and stroked object
-          mark
-          /Isolated //true /Knockout //true
-          .dicttomark
-          1 .setopacityalpha
-          % While text will always have a currentpoint, strokepath seems to mess with it.
-          % we get the currentpoint, then use moveto to restore it for pathbbox
-          { gsave currentpoint strokepath moveto pathbbox } stopped grestore {
-            /tB cvx /undefinedresult signalerror
-          } if
-          .begintransparencygroup
-          gsave tf grestore tS
-          .endtransparencygroup
-        } {
-          gsave tf grestore tS
-        } ifelse
-   //true /TextFillStateNeeded gput
+  % Type 3 fonts don't honour text rendering modes, see note on p401 of the 1.7 PDF Reference
+  currentfont /FontType get 3 eq
+  {
+    settextfillstate //true TextTransSetup currentpoint fill TextTransTeardown moveto
+  }
+  {
+    % Don't try to draw text when the point size is 0
+    .currentPDFfontsize 0 eq not {
+      setsmaskstate settextfillstate
+      % While text will always have a currentpoint, strokepath seems to mess with it.
+      % we get the currentpoint, then use moveto to restore it.
+      currentpoint
+
+      % For stroking characters, temporarily restore the graphics CTM so that
+      % the line width will be transformed properly.
+      //Tmatrix currentmatrix TextSaveMatrix setmatrix
+      currentdict /qTextSaveMatrix known {qTextSaveMatrix setmatrix} if
+      B
+      setmatrix
+      moveto
+    } if
+  } ifelse
+  //true /TextFillStateNeeded gput
 } bind executeonly def
 
 % This does the wrong thing if there have been multiple text operations

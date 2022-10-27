@@ -2,9 +2,9 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,22 +23,30 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IPageNumberCalculator _pageNumberCalculator;
         private readonly IUserTokenExtractor _userTokenExtractor;
         private readonly IJobInfoManager _jobInfoManager;
+        private readonly IPsToPdfConverter _psToPdfConverter;
         private readonly ITokenReplacerFactory _tokenReplacerFactory;
 
-        public JobDataUpdater(ITokenReplacerFactory tokenReplacerFactory, IPageNumberCalculator pageNumberCalculator, IUserTokenExtractor userTokenExtractor, IJobInfoManager jobInfoManager)
+        public JobDataUpdater(ITokenReplacerFactory tokenReplacerFactory, IPageNumberCalculator pageNumberCalculator,
+            IUserTokenExtractor userTokenExtractor, IJobInfoManager jobInfoManager, IPsToPdfConverter psToPdfConverter)
         {
             _tokenReplacerFactory = tokenReplacerFactory;
             _pageNumberCalculator = pageNumberCalculator;
             _userTokenExtractor = userTokenExtractor;
             _jobInfoManager = jobInfoManager;
+            _psToPdfConverter = psToPdfConverter;
         }
 
         public void UpdateTokensAndMetadata(Job job)
         {
             job.NumberOfCopies = GetNumberOfCopies(job);
             job.NumberOfPages = _pageNumberCalculator.GetNumberOfPages(job);
-            if (job.Profile.UserTokens.Enabled) //must be done before TokenReplacer is built
-                SetUserTokensInSourceFileInfos(job.JobInfo.SourceFiles, job.Profile.UserTokens);
+
+            // Must be done before TokenReplacer is built
+            if (job.Profile.UserTokens.Enabled)
+            {
+                _psToPdfConverter.ConvertJobInfoSourceFilesToPdf(job);
+                SetSplitDocumentAndSourceFileInfos(job);
+            }
 
             job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(job);
             job.ReplaceTokensInMetadata();
@@ -78,15 +86,34 @@ namespace pdfforge.PDFCreator.Core.Workflow
             return copies;
         }
 
-        private void SetUserTokensInSourceFileInfos(IList<SourceFileInfo> sourceFileInfos, UserTokens userTokensSettings)
+        private void SetSplitDocumentAndSourceFileInfos(Job job)
         {
-            foreach (var sfi in sourceFileInfos)
+            var oldFiles = new List<string>();
+
+            foreach (var sfi in job.JobInfo.SourceFiles)
             {
-                if (!sfi.UserTokenEvaluated)
-                {
-                    sfi.UserToken = _userTokenExtractor.ExtractUserTokenFromPsFile(sfi.Filename, userTokensSettings.Seperator);
-                    sfi.UserTokenEvaluated = true;
-                }
+                if (sfi.UserTokenEvaluated)
+                    continue;
+
+                var parsedFile = _userTokenExtractor.ParsePdfFileForUserTokens(sfi.Filename, job.Profile.UserTokens.Separator);
+
+                if (parsedFile.Filename != sfi.Filename)
+                    oldFiles.Add(sfi.Filename);
+
+                sfi.Filename = parsedFile.Filename;
+                sfi.UserToken = parsedFile.UserToken;
+                sfi.UserTokenEvaluated = true;
+                job.JobInfo.SplitDocument = parsedFile.SplitDocument;
+            }
+
+            CleanUp(oldFiles);
+        }
+
+        private static void CleanUp(List<string> oldFiles)
+        {
+            foreach (var file in oldFiles)
+            {
+                File.Delete(file);
             }
         }
     }

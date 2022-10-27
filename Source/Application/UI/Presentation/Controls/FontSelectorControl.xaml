@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.Controls.FontSelectorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance controls1:DesignTimeFontSelectorControlViewModel, IsDesignTimeCreatable=true}">
@@ -14,32 +14,34 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Margin="0 0 5 0" VerticalAlignment="Stretch"
+        <Label Grid.Row="0" Grid.Column="0"
+               Margin="0 0 0 10"
                Content="{Binding Translation.StampFontLabelContent}" />
-        <Label Grid.Row="0" Grid.Column="1" Margin="0 0 5 0" VerticalAlignment="Stretch"
+        <Label Grid.Row="0" Grid.Column="2"
+               Margin="0 0 0 10"
                Content="{Binding Translation.StampFontColorLabelContent}" />
-        <Button Grid.Row="1" Grid.Column="0" Margin="6,0,5,0" Content="{Binding FontButtonText}"
-                Command="{Binding ChooseStampFont}"
-                Style="{DynamicResource LightGreyButton}"
-                VerticalAlignment="Top"
-                MinHeight="38" Height="38" />
-        <Button Grid.Row="1" Grid.Column="1"
-                        Command="{Binding ChooseStampColor}"
-                        Style="{DynamicResource LightGreyButton}"
-                        VerticalAlignment="Top"
-                        MinHeight="38" Height="38">
-            <Rectangle Height="16" Width="32">
-                <Rectangle.Fill>
-                    <SolidColorBrush
-                                Color="{Binding FontColor, Converter={StaticResource ColorConverter}}" />
-                </Rectangle.Fill>
-            </Rectangle>
+        <Button Grid.Row="1" Grid.Column="0"
+                Content="{Binding FontButtonText}"
+                Command="{Binding ChooseStampFont}" />
+        <Button Grid.Row="1" Grid.Column="2"
+                Command="{Binding ChooseStampColor}"
+                VerticalContentAlignment="Stretch"
+                HorizontalContentAlignment="Stretch" Padding="0">
+            <Border CornerRadius="2" MinWidth="30" MinHeight="15">
+                <Border CornerRadius="2" Margin="8">
+                    <Border.Background>
+                        <SolidColorBrush Color="{Binding FontColor,
+                                                 Converter={StaticResource ColorConverter}}" />
+                    </Border.Background>
+                </Border>
+            </Border>
         </Button>
     </Grid>
 </UserControl>

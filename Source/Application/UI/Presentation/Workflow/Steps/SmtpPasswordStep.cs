@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
 {
     public class SmtpPasswordStep : WorkflowStepBase
     {
-        public override string NavigationUri => nameof(SmtpPasswordView);
+        public override string NavigationUri => nameof(SmtpPasswordStepView);
 
         public override bool IsStepRequired(Job job)
         {

@@ -1,11 +1,11 @@
 ﻿using NLog;
+using pdfforge.CustomScriptAction;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using pdfforge.CustomScriptAction;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -45,6 +45,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
         public bool IsProcessingRequired(Job job)
         {
             if (job.Profile.OutputFormat.IsPdfA())
+                return true;
+
+            if (job.Profile.UserTokens.Enabled)
                 return true;
 
             var actions = _actionManager.GetEnabledActionsInCurrentOrder<IConversionAction>(job);

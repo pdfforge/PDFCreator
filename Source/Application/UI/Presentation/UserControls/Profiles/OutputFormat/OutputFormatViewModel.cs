@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
-using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
@@ -18,10 +17,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string StatusText => "";
         public bool HasWarning => false;
 
-        // Required for Icons Styles
+        // Required for SelectOutputFormatContextMenuButton
         public OutputFormat OutputFormat => CurrentProfile?.OutputFormat ?? OutputFormat.Pdf;
-
-        public IEnumerable<OutputFormat> OutputFormats => System.Enum.GetValues(typeof(OutputFormat)) as OutputFormat[];
 
         public DelegateCommand<OutputFormat> SetOutputFormatCommand { get; }
 

@@ -64,23 +64,23 @@
 
         <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource ListBoxItemMouseHoverForeground}" />
+                <Setter Property="Foreground" Value="{DynamicResource ListBoxItemMouseHoverForegroundBrush}" />
                 <Setter TargetName="Border" Property="Background"
-                        Value="{DynamicResource ListBoxItemSelectedBackground}" />
+                        Value="{DynamicResource ListBoxItemSelectedBackgroundBrush}" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Border" Property="Background"
-                        Value="{StaticResource Lists.MouseOverRowBackgroundBrush}" />
+                        Value="{StaticResource ListBoxMouseOverItemColorBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}" />
+                <Setter Property="Opacity" Value="0.6" />
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="True" />
                     <Condition Property="IsMouseOver" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Border" Property="Background" Value="{StaticResource Lists.SelectedRowBackgroundBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{StaticResource ListBoxMouseOverItemColorBrush}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -95,7 +95,7 @@
 
     <Style TargetType="ListBoxItem" x:Key="PdfCreatorListBoxItemStyle" BasedOn="{StaticResource MetroListBoxItem}">
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorderColor}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ListBoxBorderColorBrush}" />
         <Setter Property="Template" Value="{StaticResource PdfCreatorListBoxItem}" />
     </Style>
 
@@ -118,7 +118,8 @@
 
     <Style x:Key="ListBoxButton" TargetType="{x:Type Button}">
         <Setter Property="Template" Value="{DynamicResource IconButton}" />
-        <Setter Property="Foreground" Value="{DynamicResource TitleBarGrayBrush}" />
+        <Setter Property="Width" Value="13" />
+        <Setter Property="Height" Value="13" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}"
                          Value="True">
@@ -128,8 +129,8 @@
                          Value="False">
                 <Setter Property="Visibility" Value="Hidden" />
             </DataTrigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
             </Trigger>
         </Style.Triggers>
     </Style>

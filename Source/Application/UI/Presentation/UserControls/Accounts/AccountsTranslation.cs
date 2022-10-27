@@ -7,10 +7,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
+        public string Accounts { get; protected set; } = "Accounts";
         public string ManageAccountsDescription { get; protected set; } = "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles.";
         public string ManageAccounts { get; protected set; } = "Manage Accounts";
         public string AddFtpAccount { get; protected set; } = "Add FTP account";
-        public string FtpAccount { get; protected set; } = "FTP account";
+        public string FtpAccount { get; protected set; } = "FTP Account";
+        public string TestFtpAccount { get; protected set; } = "Test FTP Account";
+        public string SuccessfulConnectionTest { get; protected set; } = "A connection has been established";
+        public string UnsuccessfulConnectionTest { get; protected set; } = "Couldn't establish a connection with the provided credentials";
         public string AddSmtpAccount { get; protected set; } = "Add SMTP account";
         public string SmtpAccount { get; protected set; } = "SMTP Account";
         public string HttpAccount { get; protected set; } = "HTTP Account";
@@ -24,9 +28,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public string EnsureUniqueFilenames { get; protected set; } = "Don't overwrite files (adds an increasing number in case of conflict)";
         public string Cancel { get; protected set; } = "Cancel";
         public string PasswordLabel { get; protected set; } = "Password:";
+        public string PasswordRequiredForConnectionTest { get; protected set; } = "In order to test the connection the password needs to be set temporarily";
         public string PassphraseRequired { get; protected set; } = "Key file requires passphrase";
         public string Save { get; protected set; } = "Save";
-        public string OK { get; protected set; } = "OK";
+        public string OK { get; protected set; } = "Ok";
         public string ServerLabel { get; protected set; } = "Server:";
         public string UserNameLabel { get; protected set; } = "User Name:";
         public string AddAccount { get; protected set; } = "Add account";
@@ -37,8 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         protected string[] AccountIsUsed { get; set; } = { "The account is used in the following profile:", "The account is used in the following profiles:" };
 
         public string TimeoutLabel { get; protected set; } = "Timeout in seconds:";
-        public string RemoveAccount { get; protected set; } = "Remove account";
-        public string EditAccount { get; protected set; } = "Edit account";
+        public string SendModeLabel { get; protected set; } = "Sending Mode:";
         public string FtpProtocol { get; protected set; } = "Protocol:";
         public string PrivateKeyFile { get; protected set; } = "Private key file:";
         public string Authentication { get; protected set; } = "Authentication";

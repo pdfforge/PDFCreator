@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -78,6 +79,19 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
             try
             {
+                var unixTimestamp = int.Parse(data.GetValue(section + "Timestamp"));
+                sfi.PrintedAt = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp).LocalDateTime;
+
+                if (sfi.PrintedAt.Year < 2000) // there was a bug in pdfcmon that truncated the last digit
+                    sfi.PrintedAt = File.GetCreationTime(infFilename);
+            }
+            catch
+            {
+                sfi.PrintedAt = File.GetCreationTime(infFilename);
+            }
+
+            try
+            {
                 sfi.TotalPages = int.Parse(data.GetValue(section + "TotalPages"));
             }
             catch
@@ -125,32 +139,38 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             if (!section.EndsWith("\\"))
                 section = section + "\\";
 
-            data.SetValue(section + "DocumentTitle", sourceFileInfo.DocumentTitle);
-            data.SetValue(section + "OriginalFilePath", sourceFileInfo.OriginalFilePath);
-            data.SetValue(section + "WinStation", sourceFileInfo.WinStation);
-            data.SetValue(section + "UserName", sourceFileInfo.Author);
-            data.SetValue(section + "ClientComputer", sourceFileInfo.ClientComputer);
-            data.SetValue(section + "SpoolFileName", sourceFileInfo.Filename);
-            data.SetValue(section + "PrinterName", sourceFileInfo.PrinterName);
-            data.SetValue(section + "PrinterParameter", sourceFileInfo.PrinterParameter);
-            data.SetValue(section + "ProfileParameter", sourceFileInfo.ProfileParameter);
-            data.SetValue(section + "OutputFileParameter", sourceFileInfo.OutputFileParameter);
-            data.SetValue(section + "SessionId", sourceFileInfo.SessionId.ToString(CultureInfo.InvariantCulture));
-            data.SetValue(section + "JobCounter", sourceFileInfo.JobCounter.ToString(CultureInfo.InvariantCulture));
-            data.SetValue(section + "JobId", sourceFileInfo.JobId.ToString(CultureInfo.InvariantCulture));
+            var values = new SortedDictionary<string, string>();
 
             var type = sourceFileInfo.Type == JobType.XpsJob ? "xps" : "ps";
-            data.SetValue(section + "SourceFileType", type);
+            values["SourceFileType"] = type;
+            values["DocumentTitle"] = sourceFileInfo.DocumentTitle;
+            values["OriginalFilePath"] = sourceFileInfo.OriginalFilePath;
+            values["WinStation"] = sourceFileInfo.WinStation;
+            values["UserName"] = sourceFileInfo.Author;
+            values["ClientComputer"] = sourceFileInfo.ClientComputer;
+            values["SpoolFileName"] = sourceFileInfo.Filename;
+            values["PrinterName"] = sourceFileInfo.PrinterName;
+            values["PrinterParameter"] = sourceFileInfo.PrinterParameter;
+            values["ProfileParameter"] = sourceFileInfo.ProfileParameter;
+            values["OutputFileParameter"] = sourceFileInfo.OutputFileParameter;
+            values["SessionId"] = sourceFileInfo.SessionId.ToString(CultureInfo.InvariantCulture);
+            values["JobCounter"] = sourceFileInfo.JobCounter.ToString(CultureInfo.InvariantCulture);
+            values["JobId"] = sourceFileInfo.JobId.ToString(CultureInfo.InvariantCulture);
+            values["Timestamp"] = new DateTimeOffset(sourceFileInfo.PrintedAt).ToUnixTimeSeconds().ToString();
+            values["Copies"] = sourceFileInfo.Copies.ToString(CultureInfo.InvariantCulture);
+            values["TotalPages"] = sourceFileInfo.TotalPages.ToString(CultureInfo.InvariantCulture);
+            values["UserTokenEvaluated"] = sourceFileInfo.UserTokenEvaluated.ToString(CultureInfo.InvariantCulture);
 
-            data.SetValue(section + "Copies", sourceFileInfo.Copies.ToString(CultureInfo.InvariantCulture));
-            data.SetValue(section + "TotalPages", sourceFileInfo.TotalPages.ToString(CultureInfo.InvariantCulture));
+            foreach (var kvp in values)
+            {
+                data.SetValue(section + kvp.Key, kvp.Value);
+            }
 
-            data.SetValue(section + "UserTokenEvaluated", sourceFileInfo.UserTokenEvaluated.ToString(CultureInfo.InvariantCulture));
             if (sourceFileInfo.UserToken != null)
             {
-                foreach (var keyValuPair in sourceFileInfo.UserToken.KeyValueDict)
+                foreach (var pair in sourceFileInfo.UserToken.KeyValueDict)
                 {
-                    data.SetValue("UserToken_" + section + keyValuPair.Key, keyValuPair.Value);
+                    data.SetValue("UserToken_" + section + pair.Key, pair.Value);
                 }
             }
         }

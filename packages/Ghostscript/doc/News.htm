@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -54,7 +45,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -75,14 +65,6 @@ earlier versions, see the history documents:
 
 <blockquote>
 <a href="History9.htm">History of Ghostscript versions 9.n</a><br>
-<a href="History8.htm">History of Ghostscript versions 8.n</a><br>
-<a href="History7.htm">History of Ghostscript versions 7.n</a><br>
-<a href="History6.htm">History of Ghostscript versions 6.n</a><br>
-<a href="History5.htm">History of Ghostscript versions 5.n</a><br>
-<a href="History4.htm">History of Ghostscript versions 4.n</a><br>
-<a href="History3.htm">History of Ghostscript versions 3.n</a><br>
-<a href="History2.htm">History of Ghostscript versions 2.n</a><br>
-<a href="History1.htm">History of Ghostscript versions 1.n</a>
 </blockquote>
 
 <p>For other information, see the <a href="Readme.htm">Ghostscript
@@ -95,70 +77,111 @@ overview</a>.
 <!-- [1.0 end visible header] ============================================== -->
 
 <!-- [2.0 begin contents] ================================================== -->
-<h2><a name="Version9.52"></a>Version 9.52 (2020-03-19)</h2>
+<h2><a name="Version9.55.0"></a>Version 9.55.0 (2021-09-27)</h2>
 <p> Highlights in this release include:
 <ul>
-<li>
-<p>The 9.52 release replaces the 9.51 release after a problem was reported with 9.51
-which warranted the quick turnaround. Thus, like 9.51, 9.52 is primarily a maintenance
-release, consolidating the changes we introduced in 9.50.
+<p>This release includes the fix for the <code>%pipe%</code> security issue (CVE-2021-3781).
 </li>
 <li>
-<p>We have continued our work on code hygiene for this release, with a focus on the
-static analysis tool Coverity (from <a href="https://www.synopsys.com">Synopsys, Inc</a>)
-and we have now adopted a policy of maintaining zero Coverity issues in the
-Ghostscript/GhostPDL source base.
+<p><b>New PDF Interpreter:</b> This is an entirely new implementation written in C (rather than
+PostScript, as before). For a full discussion of this change and reasons for it see:
+<a href="https://ghostscript.com/pdfi.html">Changes Coming to the PDF Interpreter</a>.
+<p>In this (9.55.0) release, the new PDF interpreter is disabled by default in Ghostscript,
+but can be used by specifying <code>-dNEWPDF</code>. We hope to make it the default in 9.56.0, and
+fully deprecate the PostScript implementation shortly after that (depending on the feedback
+we get).
+<p>This also allows us to offer a new executable (<code>gpdf</code>, or <code>gpdfwin??.exe</code>
+on Windows) which is <i>purely</i> for PDF input. For this release, those new binaries are not included
+in the "install" make targets, nor in the Windows installers (they will be from 9.56.0 onwards).
+<p>We would ask that as many users as possible take the opportunity to test with the new PDF implementation
+(i.e. using <code>-dNEWPDF</code> on your gs command line), and discuss any problems with us, before
+the new implementation becomes the default.
 </li>
 <li>
-<p><b>IMPORTANT:</b> In consultation with a representative of
-(<a href="http://www.openprinting.org">OpenPrinting</a>) it is
-our intention to deprecate and, in the not distant future, remove the
-OpenPrinting Vector/Raster Printer Drivers (that is, the <code>opvp</code>
-and <code>oprp</code> devices).
-<p> If you rely on either of these devices, <b><i>please</i></b> get in touch with
-us, so we can discuss your use case, and revise our plans accordingly.
+<p>The pdfwrite device now supports &quot;passthrough&quot; for JPX/JPG2000 data images (as well as the
+already supported JPEG/DCT Encoded). That means that if no rescaling or color conversion of the image data
+is required, the encoded/compressed image data from the input file will be written unchanged to the output,
+preventing potential image degradation caused by decompressing and recompressing.
 </li>
 <li>
-<p>IMPORTANT: We have forked LittleCMS2 into LittleCMS2mt (the "mt" indicating "multi-thread").
-LCMS2 is not thread-safe, and cannot be made thread-safe without breaking the ABI. Our fork
-will be thread-safe and include performance enhancements (these changes have all be been
-offered and rejected upstream). We will maintain compatibility between Ghostscript and LCMS2
-for a time, but not in perpetuity. If there is sufficient interest, our fork will be
-available as its own package separately from Ghostscript (and MuPDF).
+<p>The Ghostscript/GhostPDL demo apps for C, C#, Java and Python have all had improvements and the
+C#/Java/Python language bindings have now been documented, see <a href="language-bindings/index.html">Ghostscript Language Bindings</a>
+</li>
+<li>
+<p>The Zugferd compliant PDF generating definitions (<code>lib/zugferd.ps</code>) have been updated and expanded to support the
+current version (2.1.1) of the Zugferd spec, and optionally different versions of the specification.
+</li>
+<li>
+<p>The PCL/m output devices now support Duplex/Tumble.
+</li>
+<li>
+<p>The internal support for &quot;n-up&quot; style simple imposition (introduced in 9.54.0) has been extended and improved
+for better support across all input formats.
+</li>
+<li>
+<p>Ghostscript now supports object specific halftone - for example, different halftones can be specified for text and
+images, reflecting the differing needs of rendering those two types of object.
+</li>
+<li>
+<p>Our efforts in code hygiene and maintainability continue.
 </li>
 <li>
 <p>The usual round of bug fixes, compatibility changes, and incremental improvements.
 </li>
+<li>
+<p>(9.53.0) We have added the capability to build with the Tesseract OCR engine. In such
+a build, new devices are available (pdfocr8/pdfocr24/pdfocr32) which render the
+output file to an image, OCR that image, and output the image "wrapped" up as a
+PDF file, with the OCR generated text information included as "invisible" text
+(in PDF terms, text rendering mode 3).
+<p>Mainly due to time constraints, we only support including Tesseract from
+source included in our release packages, and not linking to Tesseract/Leptonica
+shared libraries. Whether we add this capability will be largely dependent on
+community demand for the feature.
+<p>See <a href="https://www.ghostscript.com/ocr.html">Enabling OCR</a> for more details.
+</li>
 </ul>
 <p>For a list of open issues, or to report problems,
 please visit <a href="http://bugs.ghostscript.com/">bugs.ghostscript.com</a>.
-<h3><a name="9.52_Incompatible_changes"></a>Incompatible changes</h3>
+<h3><a name="9.55.0_Incompatible_changes"></a>Incompatible changes</h3>
 <h4>Included below are incompatible changes from recent releases (the
 specific release in question listed in parentheses). We include these,
 for now, as we are aware that not everyone upgrades with every release.</h4>
 <ul>
 <li>
-<p>(9.52) As of 9.52, the Windows binaries released by the Ghostscript development
-team are built with Microsoft Visual Studio 2019. As a result Microsoft Windows XP and
-earlier are no longer supported by these binaries. This does not imply we are or will
-start relying upon features only available in VS2019, so the <code>nmake</code> Makefiles
-will continue to allow older Visual Studio versions (back to VS2005) to build Ghostscript.
+<p>(9.55.0) Changes to the <code>device API</code>. This will affect developers and maintainers of
+Ghostscript devices. Firstly, and most importantly, the way device-specific "procs" are specified has
+been rewritten to make it (we think!) clearer and less confusing. See
+<a href="Drivers.htm">The Interface between Ghostscript and Device Drivers</a> and
+<a href="https://www.notion.so/artifexsoftware/The-Great-Device-Rework-Of-2021-94092fe1395d4a088b91462f0ca5038a">The Great Device Rework Of 2021</a>
+for more details.
+</li>
+<li>
+<p>(9.55.0) The command line options <code>-sGraphicsICCProfile=___</code>, <code>-dGraphicsIntent=#</code>, <code>-dGraphicsBlackPt=#</code>,
+<code>-dGraphicsKPreserve=#</code> have been changed to <code>-sVectorICCProfile=___</code>, <code>-dVectorIntent=#</code>, <code>-dVectorBlackPt=#</code>,
+<code>-dVectorKPreserve=#</code>.
+</li>
+<li>
+<p>(9.53.0) As of 9.53.0, we have (re-)introduced the patch level to the version number,
+this helps facilitate a revised policy on handling security related issues.
+<p><strong>Note for GSView Users:</strong>The patch level addition breaks GSView 5 (it is
+hardcoded to check for versions <code>704-999</code>. It is possible, but not guaranteed that
+a GSView update might be forthcoming to resolve this.
 </li>
 <li>
 <p>(9.52) <code>-dALLOWPSTRANSPARENCY</code>: The transparency compositor (and related
 features), whilst we are improving it, remains sensitive to being driven correctly, and
-incorrect use can have unexpected/undefined results. Hence, as part of improving security,
+incorrect use can have unexpected/undefined results. Hence, as part of improving security
 we limited access to these operators, originally using the <code>-dSAFER</code> feature.
 As we made "SAFER" the default mode, that became unacceptable, hence the new option
-<a href="Use.htm#ALLOWPSTRANSPARENCY">-dALLOWPSTRANSPARENCY</a> which enables
-access to the operators.
+<code>-dALLOWPSTRANSPARENCY</code> which enables access to the operators.
 </li>
 <li>
 <p>(9.50) There are a couple of subtle incompatibilities between the old and new SAFER
 implementations. Firstly, as mentioned in the 9.50 release notes, SAFER now leaves
-standard Postscript functionality unchanged (except for the file access limitations).
-Secondly, the interaction with <code>save</code>&sol;<code>restore</code> operations,
-see <a href="Use.htm#Safer">SAFER</a>.
+standard PostScript functionality unchanged (except for the file access limitations).
+Secondly, the interaction with <code>save</code>&sol;<code>restore</code> operations
+has changed. See <a href="Use.htm#Safer">SAFER</a>.
 <p><strong>Important Note for Windows Users</strong>:
 <br>
 The file/path pattern matching is case sensitive, even on Windows. This is a
@@ -167,24 +190,24 @@ change in behaviour compared to the old code which, on Windows, was case
 in that it now supports (although does not enforce) case sensitivity.
 </li>
 <li>
-<p>(9.27) The process of &quot;tidying&quot; the Postscript name space should have removed
+<p>(9.27) The process of &quot;tidying&quot; the PostScript name space should have removed
 only non-standard and undocumented operators. Nevertheless, it is possible that
 any integrations or utilities that rely on those non-standard and undocumented
-operators may stop working, or may change behaviour.
-<p>If you encounter such a case, please contact us (either the #ghostscript IRC channel,
+operators may stop working or may change behaviour.
+<p>If you encounter such a case, please contact us (<a href="https://discord.gg/H9GXKwyPvY">Discord<a>,
+<a href="https://web.libera.chat/#ghostscript">#ghostscript IRC channel</a>,
 or the gs-devel mailing list would be best), and we'll work with you to either find an
-alternative solution or return the previous functionality if there is genuinely no other
+alternative solution or return the previous functionality, if there is genuinely no other
 option.
-<p>One case we know this has occurred is GSView 5 (and earlier). GSView 5 support for PDF
-files relied upon internal use only features that are no longer available. GSView 5 will
-still work as previously for Postscript files. For PDF files, users are encouraged to look
-at <a href="https://www.mupdf.com">MuPDF</a>.
 </li>
 </ul>
-<h3><a name="9.52_changelog"></a>Changelog</h3>
-
-<p>See the <a href="History9.htm">history file</a> for complete log
-of changes.
+<h3><a name="9.55.0_changelog"></a>Changelog</h3>
+<p>From 9.55.0 onwards, in recognition of how unwieldy very large HTML files can become
+(History9.html had reached 8.1Mb!), we intend to only include the summary highlights (above).
+<p>For anyone wanting the full details of the changes in
+a release, we ask them to look at the history in our public git repository:
+<a href="https://git.ghostscript.com/?p=ghostpdl.git;a=shortlog;h=refs/tags/ghostpdl-9.55.0">ghostpdl-9.55.0</a> log.
+<p>If this change does not draw negative feedback, History?.htm file(s) will be removed from the release archives.
 
 <!-- [2.0 end contents] ==================================================== -->
 
@@ -192,7 +215,7 @@ of changes.
 <hr>
 
 <p>
-<small>Copyright &copy; 2005-2020 Artifex Software, Inc.
+<small>Copyright &copy; 2005-2021 Artifex Software, Inc.
 All rights reserved.</small>
 
 <p>
@@ -206,7 +229,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -233,7 +256,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         public ConversionProfile Profile { get; set; }
 
         public CurrentJobSettings CurrentSettings { get; }
+
+        /// <summary>
+        ///     The file handling behaviour that should be used when saving the file (merge, overwrite)
+        /// </summary>
+        public ExistingFileBehaviour ExistingFile { get; set; }
 
         /// <summary>
         ///     All currently available accounts (Dropbox, FTP, ...)

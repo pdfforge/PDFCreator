@@ -113,13 +113,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is SmtpAccount)) return false;
 			SmtpAccount v = o as SmtpAccount;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!Address.Equals(v.Address)) return false;
-			if (!Password.Equals(v.Password)) return false;
-			if (!Port.Equals(v.Port)) return false;
-			if (!Server.Equals(v.Server)) return false;
-			if (!Ssl.Equals(v.Ssl)) return false;
-			if (!UserName.Equals(v.UserName)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(Address, v.Address)) return false;
+			if (!Object.Equals(Password, v.Password)) return false;
+			if (!Object.Equals(Port, v.Port)) return false;
+			if (!Object.Equals(Server, v.Server)) return false;
+			if (!Object.Equals(Ssl, v.Ssl)) return false;
+			if (!Object.Equals(UserName, v.UserName)) return false;
 			return true;
 		}
 		

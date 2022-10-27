@@ -7,14 +7,28 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance general:DefaultPrinterSettingsViewModel}">
-    <HeaderedContentControl Margin="0 5 0 10" Header="{Binding Translation.DefaultPrinterControlHeader, Mode=OneWay}">
-        <StackPanel>
-            <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Translation.ChangeDefaultPrinterLabelText, Mode=OneWay}" />
-            
-            <ComboBox Width="300" HorizontalAlignment="Left"
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+
+        <Label Content="{Binding Translation.DefaultPrinterControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
+        <Grid HorizontalAlignment="Left">
+            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
+                <Label Margin="0 5 0 10" Content="{Binding Translation.ChangeDefaultPrinterLabelText, Mode=OneWay}" />
+
+                <ComboBox Width="260" Height="33" HorizontalAlignment="Left" Background="White"
                       SelectedValue="{Binding CreatorSettingsProvider.Settings.AskSwitchDefaultPrinter}"
                       SelectedValuePath="Value" DisplayMemberPath="Name"
                       ItemsSource="{Binding AskSwitchPrinterValues}" />
-        </StackPanel>
-    </HeaderedContentControl>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

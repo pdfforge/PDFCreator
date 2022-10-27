@@ -4,31 +4,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:HotStandbySettingsViewModel, IsDesignTimeCreatable=false}">
+
+
     <UserControl.Resources>
-        <ResourceDictionary Source="../../../Styles/Icons.xaml"></ResourceDictionary>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Icons.xaml"/>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </UserControl.Resources>
-    <HeaderedContentControl Header="{Binding Translation.HotStandbyHeader, Mode=OneWay}">
-        <StackPanel MinWidth="250">
-            <DockPanel>
-                <ContentControl Height="16" DockPanel.Dock="Left" Margin="0 0 10 0" Content="{StaticResource InfoIcon}" />
-                <TextBlock
-                    Text="{Binding Translation.HotStandbyExplanation}"
-                    TextWrapping="Wrap"
-                />
-            </DockPanel>
+    <StackPanel>
 
-            <Label
-                Content="{Binding Translation.HotStandbyDuration}"
-                />
+        <Label Content="{Binding Translation.HotStandbyHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
+        <Grid HorizontalAlignment="Left"  Style="{DynamicResource GpoStyle}" IsEnabled="{Binding StandbyIsEditable}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <ComboBox IsEnabled="{Binding StandbyIsEditable}"
-                      Width="300" HorizontalAlignment="Left"
-                      SelectedValue="{Binding StandbySetting}" SelectedValuePath="Value"
-                      DisplayMemberPath="Translation" ItemsSource="{Binding Translation.HotStandbySettings}" />
+            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
+                <Label Content="{Binding Translation.HotStandbyDuration}"  Margin="0 0 0 10"/>
 
-        </StackPanel>
-    </HeaderedContentControl>
+                <ComboBox IsEnabled="{Binding StandbyIsEditable}"
+                          Background="White"
+                          Width="260" Height="33" HorizontalAlignment="Left"
+                          SelectedValue="{Binding StandbySetting}" SelectedValuePath="Value"
+                          DisplayMemberPath="Translation" ItemsSource="{Binding Translation.HotStandbySettings}" />
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom" Grid.Column="1" Margin="10 0 0 10">
+                <Border Padding="10" Background="White" BorderThickness="0">
+                    <StackPanel Orientation="Horizontal" >
+                        <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoIconBrush}" VerticalAlignment="Top" Margin="0" Kind="Info" />
+                        <TextBlock Width="550" Text="{Binding Translation.HotStandbyExplanation}" Margin="10 3 0 0" LineHeight="20" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

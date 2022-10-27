@@ -140,14 +140,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Stamping)) return false;
 			Stamping v = o as Stamping;
 			
-			if (!Color.Equals(v.Color)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!FontAsOutline.Equals(v.FontAsOutline)) return false;
-			if (!FontFile.Equals(v.FontFile)) return false;
-			if (!FontName.Equals(v.FontName)) return false;
-			if (!FontOutlineWidth.Equals(v.FontOutlineWidth)) return false;
-			if (!FontSize.Equals(v.FontSize)) return false;
-			if (!StampText.Equals(v.StampText)) return false;
+			if (!Object.Equals(Color, v.Color)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(FontAsOutline, v.FontAsOutline)) return false;
+			if (!Object.Equals(FontFile, v.FontFile)) return false;
+			if (!Object.Equals(FontName, v.FontName)) return false;
+			if (!Object.Equals(FontOutlineWidth, v.FontOutlineWidth)) return false;
+			if (!Object.Equals(FontSize, v.FontSize)) return false;
+			if (!Object.Equals(StampText, v.StampText)) return false;
 			return true;
 		}
 		

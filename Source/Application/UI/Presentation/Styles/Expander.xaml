@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../UserControls/../Styles/Redesign5/DefaultsDictionary.xaml" />
+        <ResourceDictionary Source="../UserControls/../Styles/Redesign5/ColorDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
     <ControlTemplate x:Key="CustomExpanderTemplate" TargetType="{x:Type Expander}">
         <ControlTemplate.Resources>
             <Style x:Key="CustomExpanderDownHeaderStyle"
@@ -31,7 +34,7 @@
                                                       VerticalAlignment="Stretch"
                                                       Data="M 1.5,1.0 L 9,7 L 17,0.5"
                                                       SnapsToDevicePixels="False"
-                                                      Stroke="{DynamicResource PdfforgeRedBrush}"
+                                                      Stroke="{StaticResource ExpanderDropDownIconBrush}"
                                                       StrokeThickness="2"
                                                       RenderTransformOrigin="0.5,0.5">
                                             <Path.RenderTransform>

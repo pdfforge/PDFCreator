@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
         private readonly IDefaultViewerCheck _defaultViewerCheck;
         private EvaluateSettingsAndNotifyUserTranslation _translation;
 
-        public string ApplicationSettingsRegionName { get; set; } = RegionNames.ApplicationSettingsView;
+        public string ApplicationSettingsRegionName { get; set; } = RegionViewName.ApplicationSettingsView;
 
         public NavigateDefaultViewerCheck(ICurrentSettings<ObservableCollection<DefaultViewer>> defaultViewerSettings, IDefaultViewerCheck defaultViewerCheck, ITranslationUpdater translationUpdater)
         {

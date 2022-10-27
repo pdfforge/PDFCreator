@@ -29,6 +29,8 @@ namespace pdfforge.PDFCreator.Utilities
 
     public class PdfArchitectCheck : IPdfArchitectCheck
     {
+        public static bool UseSodaPdf { get; set; }
+
         private string _cachedInstallationPath;
         private bool _wasSearched;
 
@@ -38,6 +40,7 @@ namespace pdfforge.PDFCreator.Utilities
         // Tuple format: Item1: DisplayName in Registry, Item2: name of the exe file that has to exist in the InstallLocation
         private readonly Tuple<string, string>[] _pdfArchitectCandidates =
         {
+            new Tuple<string, string>("PDF Architect 9", "architect.exe"),
             new Tuple<string, string>("PDF Architect 8", "architect.exe"),
             new Tuple<string, string>("PDF Architect 7", "architect.exe"),
             new Tuple<string, string>("PDF Architect 6", "architect.exe"),
@@ -47,6 +50,11 @@ namespace pdfforge.PDFCreator.Utilities
             new Tuple<string, string>("PDF Architect 3", "architect.exe"),
             new Tuple<string, string>("PDF Architect 2", "PDF Architect 2.exe"),
             new Tuple<string, string>("PDF Architect", "PDF Architect.exe")
+        };
+
+        private readonly Tuple<string, string>[] _sodaPdfCandidates =
+        {
+            new Tuple<string, string>("Soda PDF Desktop 14", "soda.exe")
         };
 
         private readonly IRegistry _registry;
@@ -96,11 +104,14 @@ namespace pdfforge.PDFCreator.Utilities
 
         private string DoGetInstallationPath()
         {
-            foreach (var pdfArchitectCandidate in _pdfArchitectCandidates)
+            var pathCandidates = UseSodaPdf ? _sodaPdfCandidates : _pdfArchitectCandidates;
+            var publisher = UseSodaPdf ? "Avanquest" : "pdfforge";
+
+            foreach (var pdfArchitectCandidate in pathCandidates)
             {
                 try
                 {
-                    var installationPath = TryFindInstallationPath(pdfArchitectCandidate.Item1, pdfArchitectCandidate.Item2);
+                    var installationPath = TryFindInstallationPath(pdfArchitectCandidate.Item1, pdfArchitectCandidate.Item2, publisher);
 
                     if (installationPath != null)
                         return installationPath;
@@ -133,7 +144,7 @@ namespace pdfforge.PDFCreator.Utilities
             return Path.Combine(_assemblyHelper.GetAssemblyDirectory(), "PDF Architect", "architect-setup.exe");
         }
 
-        private string TryFindInstallationPath(string msiDisplayName, string applicationExeName)
+        private string TryFindInstallationPath(string msiDisplayName, string applicationExeName, string publisherName)
         {
             foreach (var key in _softwareKeys)
             {
@@ -157,7 +168,7 @@ namespace pdfforge.PDFCreator.Utilities
                                 var displayName = displayNameKey.ToString();
                                 if (displayName.StartsWith(msiDisplayName, StringComparison.OrdinalIgnoreCase) &&
                                     !displayName.Contains("Enterprise") &&
-                                    sk.GetValue("Publisher").ToString().Contains("pdfforge") &&
+                                    sk.GetValue("Publisher").ToString().Contains(publisherName) &&
                                     (sk.GetValue("InstallLocation") != null))
                                 {
                                     var installLocation = sk.GetValue("InstallLocation").ToString();

@@ -1,5 +1,6 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Actions.Queries;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
@@ -21,10 +22,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private readonly IPdfArchitectCheck _pdfArchitectCheck;
         private readonly IProcessStarter _processStarter;
         private readonly IFile _file;
+        private readonly ICurrentSettings<ApplicationSettings> _currentApplicationSettings;
         private readonly ISoundPlayer _soundPlayer;
 
         // ReSharper disable once MemberCanBeProtected.Global
-        public RecommendPdfArchitectWindowViewModel(ISoundPlayer soundPlayer, IWebLinkLauncher webLinkLauncher, ITranslationUpdater translationUpdater, IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter, IFile file)
+        public RecommendPdfArchitectWindowViewModel(ISoundPlayer soundPlayer, IWebLinkLauncher webLinkLauncher,
+            ITranslationUpdater translationUpdater, IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter,
+            IFile file, ICurrentSettings<ApplicationSettings> currentApplicationSettings)
             : base(translationUpdater)
         {
             _soundPlayer = soundPlayer;
@@ -32,6 +36,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _pdfArchitectCheck = pdfArchitectCheck;
             _processStarter = processStarter;
             _file = file;
+            _currentApplicationSettings = currentApplicationSettings;
             InfoCommand = new DelegateCommand(ExecuteInfo);
             DownloadCommand = new DelegateCommand(ExecuteDownload);
         }
@@ -39,6 +44,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public ICommand InfoCommand { get; }
 
         public ICommand DownloadCommand { get; }
+
+        public bool DontRecommendArchitect
+        {
+            get { return _currentApplicationSettings.Settings.DontRecommendArchitect; }
+            set
+            {
+                _currentApplicationSettings.Settings.DontRecommendArchitect = value;
+                RaisePropertyChanged(nameof(DontRecommendArchitect));
+            }
+        }
 
         private void ExecuteInfo(object o)
         {

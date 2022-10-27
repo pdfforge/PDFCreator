@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is TextSettings)) return false;
 			TextSettings v = o as TextSettings;
 			
-			if (!Format.Equals(v.Format)) return false;
+			if (!Object.Equals(Format, v.Format)) return false;
 			return true;
 		}
 		

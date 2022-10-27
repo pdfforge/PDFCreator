@@ -45,7 +45,9 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 
         protected abstract HandleCopyErrorResult QueryHandleCopyError(int fileNumber);
 
-        protected abstract bool ApplyUniqueFilename(Job job);
+        protected abstract bool ShouldApplyUniqueFilename(Job job);
+
+        protected abstract bool ShouldApplyMerger(Job job);
 
         /// <summary>
         ///     Renames and moves all files from TempOutputFiles to their destination according to
@@ -86,15 +88,26 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
                 var currentOutputFile = _outfilebody + numberSuffix + extension;
 
                 await SemaphoreSlim.WaitAsync();
+                var uniqueFilename = UniqueFilenameFactory.Build(currentOutputFile);
+
                 try
                 {
-                    var uniqueFilename = UniqueFilenameFactory.Build(currentOutputFile);
-                    if (ApplyUniqueFilename(job))
+                    bool success;
+                    if (ShouldApplyMerger(job))
                     {
-                        currentOutputFile = EnsureUniqueFilename(uniqueFilename);
+                        success = AppendFile(tempOutputFile, currentOutputFile);
+                    }
+                    else
+                    {
+                        if (ShouldApplyUniqueFilename(job))
+                        {
+                            currentOutputFile = EnsureUniqueFilename(uniqueFilename);
+                        }
+
+                        success = CopyFile(tempOutputFile, currentOutputFile);
                     }
 
-                    if (!CopyFile(tempOutputFile, currentOutputFile))
+                    if (!success)
                     {
                         var action = QueryHandleCopyError(fileNumber);
 
@@ -196,6 +209,12 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             }
             return false;
         }
+
+        /// <summary>
+        ///     Append file with logging and catching of ioException
+        /// </summary>
+        /// <returns>true if successful</returns>
+        protected abstract bool AppendFile(string tempFile, string outputFile);
 
         private string DetermineOutfileBody(string outputFilenameTemplate)
         {

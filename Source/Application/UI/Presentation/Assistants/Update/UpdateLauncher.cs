@@ -156,11 +156,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
             switch (interaction.InteractionResult)
             {
                 case RestartApplicationInteractionResult.Now:
+                    _threadManager.IsStandbyDisabled = true;
                     _threadManager.UpdateAfterShutdownAction = () => LaunchDownloadedFile(downloadedFile);
                     _eventAggregator.GetEvent<TryCloseApplicationEvent>().Publish();
                     break;
 
                 case RestartApplicationInteractionResult.Later:
+                    _threadManager.IsStandbyDisabled = true;
                     _threadManager.UpdateAfterShutdownAction = () => LaunchDownloadedFile(downloadedFile);
                     break;
 

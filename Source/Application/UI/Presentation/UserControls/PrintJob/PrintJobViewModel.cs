@@ -1,4 +1,5 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -8,7 +9,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
@@ -16,6 +17,7 @@ using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
@@ -24,6 +26,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -45,6 +48,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private readonly IEventAggregator _eventAggregator;
         private readonly IDispatcher _dispatcher;
         private readonly IJobDataUpdater _jobDataUpdater;
+        private readonly IInteractionRequest _interactionRequest;
         private string _lastConfirmedFilePath = "";
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
         private readonly IJobInfoQueue _jobInfoQueue;
@@ -65,7 +69,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             IChangeJobCheckAndProceedCommandBuilder changeJobCheckAndProceedCommandBuilder,
             IBrowseFileCommandBuilder browseFileCommandBuilder,
             IDispatcher dispatcher,
-            IJobDataUpdater jobDataUpdater)
+            IJobDataUpdater jobDataUpdater,
+            IInteractionRequest interactionRequest)
             : base(translationUpdater)
         {
             GpoSettings = gpoSettings;
@@ -80,12 +85,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _changeJobCheckAndProceedCommandBuilder = changeJobCheckAndProceedCommandBuilder;
             _dispatcher = dispatcher;
             _jobDataUpdater = jobDataUpdater;
+            _interactionRequest = interactionRequest;
             _changeJobCheckAndProceedCommandBuilder.Init(() => Job, CallFinishInteraction, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
 
-            SetOutputFormatCommand = new DelegateCommand<OutputFormat>(SetOutputFormatExecute);
+            SetOutputFormatCommand = new DelegateCommand(SetOutputFormatExecute);
 
             browseFileCommandBuilder.Init(() => Job, UpdateUiForJobOutputFileTemplate, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
-            BrowseFileCommand = browseFileCommandBuilder.BuildCommand();
+            var existingFileBehaviourQueryCommand = new AsyncCommand(ExistingFileBehaviourQuery);
+            var browseFileCommand = browseFileCommandBuilder.BuildCommand(new List<ICommand> { existingFileBehaviourQueryCommand });
+
+            BrowseFileCommand = browseFileCommand;
             SetupEditProfileCommand(_commandLocator, eventAggregator);
 
             SetupSaveCommands(translationUpdater);
@@ -93,18 +102,43 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             EmailCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableEmailSettings);
 
             MergeCommand = new DelegateCommand(MergeExecute);
-            var mergeAllAsyncCommand = new AsyncCommand(MergeAllExecuteAsync, o => jobInfoQueue.Count > 1);
-            MergeDropDownCommands = new CommandCollection<PrintJobViewTranslation>(translationUpdater);
-            MergeDropDownCommands.AddCommand(mergeAllAsyncCommand, t => t.MergeAll);
+            MergeAllCommand = new AsyncCommand(MergeAllExecuteAsync, o => jobInfoQueue.Count > 1);
             CancelCommand = new DelegateCommand(CancelExecute);
-            CancelDropDownCommands = new CommandCollection<PrintJobViewTranslation>(translationUpdater);
-            CancelDropDownCommands.AddCommand(new DelegateCommand(CancelAllExecute, o => jobInfoQueue.Count > 1), t => t.CancelAll);
+            CancelAllCommand = new DelegateCommand(CancelAllExecute, o => jobInfoQueue.Count > 1);
 
-            DisableSaveTempOnlyCommand = new DelegateCommand(DisableSaveFileTemporary);
+            DisableSaveTempOnlyCommand = new DelegateCommand(DisableSaveFileTemporaryExecute);
+            OpenUrlCommand = _commandLocator.GetCommand<UrlOpenCommand>();
 
             jobInfoQueue.OnNewJobInfo += (sender, args) => UpdateNumberOfPrintJobsHint(jobInfoQueue.Count);
             _jobInfoQueue = jobInfoQueue;
             UpdateNumberOfPrintJobsHint(jobInfoQueue.Count);
+        }
+
+        private async Task ExistingFileBehaviourQuery(object obj)
+        {
+            // file does not exist
+            if (!File.Exists(_lastConfirmedFilePath))
+                return;
+
+            var interaction = new OverwriteOrAppendInteraction { MergeIsSupported = Job.Profile.OutputFormat.IsPdf() };
+
+            var result = await _interactionRequest.RaiseAsync(interaction);
+            switch (result.Chosen)
+            {
+                case ExistingFileBehaviour.Overwrite:
+                    Job.ExistingFile = ExistingFileBehaviour.Overwrite;
+                    break;
+
+                case ExistingFileBehaviour.Merge:
+                    Job.ExistingFile = ExistingFileBehaviour.Merge;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (result.Cancel)
+                await BrowseFileCommand.ExecuteAsync(null);
         }
 
         private void ManagePrintJobEvent()
@@ -121,7 +155,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 Job.Profile.ActionOrder.Insert(0, nameof(EmailClientSettings));
         }
 
-        private void DisableSaveFileTemporary(object obj)
+        private void DisableSaveFileTemporaryExecute(object obj)
         {
             SelectedProfile.SaveFileTemporary = false;
             RaisePropertyChanged(nameof(SaveFileTemporaryIsEnabled));
@@ -142,9 +176,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 _jobDataUpdater.UpdateTokensAndMetadata(j);
             });
 
-            SaveDropDownCommands = new CommandCollection<PrintJobViewTranslation>(translationUpdater);
-            SaveDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(DisableSaveFileTemporary, BrowseFileCommand), t => t.SaveAs);
-            SaveDropDownCommands.AddCommand(_changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableSaveToDesktop), t => t.SaveToDesktop);
+            SaveAsCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(DisableSaveFileTemporaryExecute, BrowseFileCommand);
+            SaveToDesktopCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableSaveToDesktop);
         }
 
         private void SetupEditProfileCommand(ICommandLocator commandsLocator, IEventAggregator eventAggregator)
@@ -176,9 +209,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _selectedProfileProvider.SelectedProfile = _profilesProvider.Settings.First(profile => profile.Guid == Job.Profile.Guid);
         }
 
-        private void SetOutputFormatExecute(OutputFormat parameter)
+        private void SetOutputFormatExecute(object parameter)
         {
-            OutputFormat = parameter;
+            OutputFormat = (OutputFormat)parameter;
         }
 
         private string EnsureValidExtensionInFilename(string fileName, OutputFormat format)
@@ -212,8 +245,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
 
             RaisePropertyChanged(nameof(NumberOfPrintJobsHint));
-            CancelDropDownCommands.RaiseEnabledChanged();
-            MergeDropDownCommands.RaiseEnabledChanged();
         }
 
         public Task ExecuteWorkflowStep(Job job)
@@ -346,19 +377,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public string NumberOfPrintJobsHint { get; private set; }
 
-        public DelegateCommand<OutputFormat> SetOutputFormatCommand { get; }
+        public DelegateCommand SetOutputFormatCommand { get; }
+
+        public ICommand OpenUrlCommand { get; }
 
         public IAsyncCommand SaveCommand { get; private set; }
-        public CommandCollection<PrintJobViewTranslation> SaveDropDownCommands { get; private set; }
+        public IAsyncCommand SaveAsCommand { get; private set; }
+        public IAsyncCommand SaveToDesktopCommand { get; private set; }
 
         public ICommand EmailCommand { get; }
 
         public IMacroCommand BrowseFileCommand { get; }
         public ICommand MergeCommand { get; }
-        public CommandCollection<PrintJobViewTranslation> MergeDropDownCommands { get; }
+        public AsyncCommand MergeAllCommand { get; }
 
         public ICommand CancelCommand { get; }
-        public CommandCollection<PrintJobViewTranslation> CancelDropDownCommands { get; }
+        public DelegateCommand CancelAllCommand { get; }
 
         public ICommand EditProfileCommand { get; private set; }
         public ICommand DisableSaveTempOnlyCommand { get; set; }
@@ -418,6 +452,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         }
 
         public bool EditButtonEnabledByGpo => GpoSettings == null || !GpoSettings.DisableProfileManagement;
+
+        private bool _hasBanner;
+
+        public bool HasBanner
+        {
+            get => _hasBanner;
+            set
+            {
+                _hasBanner = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private void InitCombobox()
         {

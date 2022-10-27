@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -142,13 +142,28 @@
     PDFfile token pop		% get starting entry - or 'trailer'
     (trailer) ne {		% if we do not already have 'trailer'
       PDFfile token pop		% get number of entries
-      PDFfile token pop pop	% this moves us into the middle of the first entry
-      25 string exch		% define working string for readline
-      { PDFfile 1 index readline pop pop
-      } repeat			% skip entries
-      pop			% pop working string
-      PDFfile token pop pop	% get 'trailer'
-      PDFfile fileposition	% get file position
+      % The following check could be more efficient
+      % but broken file.....
+      dup
+      PDFfile fileposition
+      PDFfile 0 setfileposition
+      PDFfile bytesavailable
+      exch PDFfile exch setfileposition
+      % On the basis it requires at least 15 bytes to define an object
+      % in PDF, if the claimed number of objects is more than the number
+      % of bytes in the file, then it is clearly bogus, and we just give up
+      15 idiv
+      lt {
+        PDFfile token pop pop     % this moves us into the middle of the first entry
+        25 string exch            % define working string for readline
+        { PDFfile 1 index readline pop pop
+        } repeat                  % skip entries
+        pop                       % pop working string
+        PDFfile token pop pop     % get 'trailer'
+        PDFfile fileposition      % get file position
+      }
+      { pop 0}
+      ifelse
     } if
   } {
     pop 0                 	% no xref, should not happen, report it upstrem
@@ -444,7 +459,7 @@
   pdfformaterror
   (   **** The file has been damaged.  This may have been caused\n)
   pdfformaterror
-  (   **** by a problem while converting or transfering the file.\n)
+  (   **** by a problem while converting or transferring the file.\n)
   pdfformaterror
   (   **** Ghostscript will attempt to recover the data.\n)
   pdfformaterror

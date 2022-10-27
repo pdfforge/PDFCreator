@@ -59,8 +59,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!(o is ApplicationSettings)) return false;
 			ApplicationSettings v = o as ApplicationSettings;
 			
-			if (!Language.Equals(v.Language)) return false;
-			if (!UpdateInterval.Equals(v.UpdateInterval)) return false;
+			if (!Object.Equals(Language, v.Language)) return false;
+			if (!Object.Equals(UpdateInterval, v.UpdateInterval)) return false;
 			return true;
 		}
 		

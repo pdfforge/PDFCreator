@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -102,6 +102,7 @@ languagelevel 2 .setlanguagelevel
   /UseFlateCompression //true
   /UsePrologue //false
   /PassThroughJPEGImages //true
+  /PassThroughJPXImages //true
 .dicttomark readonly def
 
 /.distillersettings mark
@@ -277,19 +278,6 @@ languagelevel 2 .setlanguagelevel
 .dicttomark readonly def
 
 % ---------------- End of predefined configurations ---------------- %
-
-% Set optimizations for converting PostScript to PDF.
-% The ps2pdf* scripts invoke this.
-/.setpdfwrite {		% - .setpdfwrite -
-                % Set a large VM threshold to reduce garbage collection.
-  (\n**** WARNING: The .setpdfwrite operator has been deprecated and will be removed entirely\n) print
-  (              in the next release of Ghostscript. The functionality of this operator has\n) print
-  (              been reduced to increasing the size of the VM threshold. If you believe you\n) print
-  (              have a real need for this then you should replace your call to .setpdfwrite\n) print
-  (              with:\n\n) print
-  (                  3000000 setvmthreshold\n\n) print
-  currentuserparams /VMThreshold get 3000000 .max setvmthreshold
-} bind def
 
 % ---------------- pdfmark and DSC processing ---------------- %
 
@@ -586,10 +574,10 @@ userdict /.pdfcvstring () put
 
 /pdfmark {		% -mark- <key> <value> ... <markname> pdfmark -
   counttomark 0 eq {
-    /pdfmark /stackunderflow signalerror
+    /pdfmark cvx /stackunderflow signalerror
   } if
   dup type /nametype eq not {
-    /pdfmark /typecheck signalerror
+    /pdfmark cvx /typecheck signalerror
   } if
   dup /SP eq {
     % A hack for synchronizing the clipping path.
@@ -836,6 +824,7 @@ currentdict /.pdf_hook_DSC_Creator undef
   /SubsetFonts { }
   /DSCEncodingToUnicode { }
   /PassThroughJPEGImages { }
+  /PassThroughJPXImages { }
   /PSDocOptions { }
   /PSPageOptions { }
 .dicttomark readonly def
@@ -886,7 +875,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     //true
   }ifelse
   {
-    /setdistillerparams /undefined signalerror
+    /setdistillerparams cvx /undefined signalerror
   } if
   .setdistillerparams
 } bind odef
@@ -898,7 +887,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     //true
   }ifelse
   {
-    /currentdistillerparams /undefined signalerror
+    /currentdistillerparams cvx /undefined signalerror
   } if
   .currentdistillerparams
 } bind odef

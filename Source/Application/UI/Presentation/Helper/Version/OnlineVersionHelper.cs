@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
         private IApplicationVersion _onlineVersion;
         private readonly FileCache _fileCache;
 
-        public Release CurrentReleaseVersion { get; private set; }
+        public ReleaseInfo LatestRelease { get; private set; }
 
         public OnlineVersionHelper(UpdateInformationProvider updateInformationProvider, ITempFolderProvider tempFolderProvider, IVersionHelper versionHelper, IUpdateChangeParser changeParser, IFileCacheFactory fileCacheFactory, IDownloader downloader, ICurrentSettings<ApplicationSettings> applicationSettingsProvider)
         {
@@ -49,7 +49,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
                 _fileCache = GetFileCache();
                 _applicationSettingsProvider.SettingsChanged += ApplicationSettingsProviderOnSettingsChanged;
             }
-            _onlineVersion = new ApplicationVersion(new System.Version(0, 0, 0, 0), "", "", new List<Release>());
+            _onlineVersion = new ApplicationVersion(new System.Version(0, 0, 0, 0), "", "", new List<ReleaseInfo>());
         }
 
         private void ApplicationSettingsProviderOnSettingsChanged(object sender, EventArgs e)
@@ -108,7 +108,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
                     var fileHash = data.GetValue(sectionName + "\\FileHash");
                     _logger.Info("Online Version: " + onlineVersion);
 
-                    var versionsInfo = new List<Release>();
+                    var versionsInfo = new List<ReleaseInfo>();
                     var applicationVersion = _versionHelper.ApplicationVersion;
 
                     if (applicationVersion.CompareTo(onlineVersion) < 0)
@@ -117,7 +117,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
                         var availableInfos = _changeParser.Parse(downloadString);
                         versionsInfo = availableInfos.FindAll(release => release.Version > applicationVersion);
 
-                        CurrentReleaseVersion = availableInfos.FirstOrDefault(x => x.Version.IsEqualToCurrentVersion(applicationVersion));
+                        LatestRelease = availableInfos.FirstOrDefault(x => x.Version.IsEqualToCurrentVersion(applicationVersion));
                     }
 
                     _onlineVersion = new ApplicationVersion(onlineVersion, downloadUrl, fileHash, versionsInfo);
@@ -127,7 +127,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
             {
                 _logger.Warn(e.Message);
 
-                _onlineVersion = new ApplicationVersion(new System.Version(0, 0, 0), "", "", new List<Release>());
+                _onlineVersion = new ApplicationVersion(new System.Version(0, 0, 0), "", "", new List<ReleaseInfo>());
             }
 
             return _onlineVersion;
@@ -209,22 +209,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
             _versionHelper = versionHelper;
         }
 
-        public Release CurrentReleaseVersion { get; } = new Release();
+        public ReleaseInfo LatestRelease { get; } = new ReleaseInfo();
 
         public IApplicationVersion GetOnlineVersion()
         {
-            return new ApplicationVersion(_versionHelper.ApplicationVersion, "", "", new List<Release>()) as IApplicationVersion;
+            return new ApplicationVersion(_versionHelper.ApplicationVersion, "", "", new List<ReleaseInfo>()) as IApplicationVersion;
         }
 
         public Task<IApplicationVersion> LoadOnlineVersionAsync(bool force = false, bool onlyCache = false)
         {
-            return Task.FromResult(new ApplicationVersion(_versionHelper.ApplicationVersion, "", "", new List<Release>()) as IApplicationVersion);
+            return Task.FromResult(new ApplicationVersion(_versionHelper.ApplicationVersion, "", "", new List<ReleaseInfo>()) as IApplicationVersion);
         }
     }
 
     public interface IOnlineVersionHelper
     {
-        Release CurrentReleaseVersion { get; }
+        ReleaseInfo LatestRelease { get; }
 
         Task<IApplicationVersion> LoadOnlineVersionAsync(bool force = false, bool onlyCache = false);
 

@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string PrintFileWithArchitect { get; private set; } = "Print with PDF Architect";
         public string SelectFilename { get; private set; } = "Filename:";
         public string SelectFolder { get; private set; } = "Folder:";
-        public string OkButton { get; private set; } = "OK";
+        public string OkButton { get; private set; } = "Ok";
         public string Open { get; private set; } = "Open";
         public string Send { get; private set; } = "Send";
         public string TotalFileSize { get; private set; } = "Total file size:";

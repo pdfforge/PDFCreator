@@ -6,6 +6,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
     public interface ISourceFileInfoDuplicator
     {
         SourceFileInfo Duplicate(SourceFileInfo sfi, string duplicateFolder, string profileGuid);
+
+        SourceFileInfo Move(SourceFileInfo sfi, string moveFolder, string profileGuid);
     }
 
     public class SourceFileInfoDuplicator : ISourceFileInfoDuplicator
@@ -21,34 +23,61 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
         public SourceFileInfo Duplicate(SourceFileInfo sfi, string duplicateFolder, string profileGuid)
         {
-            var duplicate = new SourceFileInfo();
+            var newSfi = DuplicateProperties(sfi, profileGuid);
+            var duplicateFilePath = GetDestinationPath(sfi.Filename, duplicateFolder);
 
-            duplicate.SessionId = sfi.SessionId;
-            duplicate.WinStation = sfi.WinStation;
-            duplicate.Author = sfi.Author;
-            duplicate.ClientComputer = sfi.ClientComputer;
-            duplicate.PrinterName = sfi.PrinterName;
-            duplicate.JobCounter = sfi.JobCounter;
-            duplicate.JobId = sfi.JobId;
-            duplicate.DocumentTitle = sfi.DocumentTitle;
-            duplicate.OriginalFilePath = sfi.OriginalFilePath;
-            duplicate.Type = sfi.Type;
-            duplicate.TotalPages = sfi.TotalPages;
-            duplicate.Copies = sfi.Copies;
-            duplicate.UserTokenEvaluated = sfi.UserTokenEvaluated;
-            duplicate.UserToken = sfi.UserToken;
-            duplicate.OutputFileParameter = sfi.OutputFileParameter;
-
-            duplicate.PrinterParameter = profileGuid == null ? sfi.PrinterParameter : "";
-            duplicate.ProfileParameter = profileGuid ?? sfi.ProfileParameter;
-
-            var duplicateFilename = PathSafe.GetFileNameWithoutExtension(sfi.Filename);
-            var duplicateFilePath = PathSafe.Combine(duplicateFolder, duplicateFilename);
-            duplicateFilePath = _uniqueFilenameFactory.Build(duplicateFilePath).CreateUniqueFileName();
             _file.Copy(sfi.Filename, duplicateFilePath);
-            duplicate.Filename = duplicateFilePath;
 
-            return duplicate;
+            newSfi.Filename = duplicateFilePath;
+            return newSfi;
+        }
+
+        public SourceFileInfo Move(SourceFileInfo sfi, string moveFolder, string profileGuid)
+        {
+            var newSfi = DuplicateProperties(sfi, profileGuid);
+            var movedFilePath = GetDestinationPath(sfi.Filename, moveFolder);
+
+            _file.Move(sfi.Filename, movedFilePath);
+
+            newSfi.Filename = movedFilePath;
+            return newSfi;
+        }
+
+        private static SourceFileInfo DuplicateProperties(SourceFileInfo oldSfi, string profileGuid)
+        {
+            var newSfi = new SourceFileInfo
+            {
+                Filename = oldSfi.Filename,
+                SessionId = oldSfi.SessionId,
+                WinStation = oldSfi.WinStation,
+                Author = oldSfi.Author,
+                ClientComputer = oldSfi.ClientComputer,
+                PrinterName = oldSfi.PrinterName,
+                JobCounter = oldSfi.JobCounter,
+                JobId = oldSfi.JobId,
+                DocumentTitle = oldSfi.DocumentTitle,
+                OriginalFilePath = oldSfi.OriginalFilePath,
+                PrintedAt = oldSfi.PrintedAt,
+                Type = oldSfi.Type,
+                TotalPages = oldSfi.TotalPages,
+                Copies = oldSfi.Copies,
+                UserTokenEvaluated = oldSfi.UserTokenEvaluated,
+                UserToken = oldSfi.UserToken,
+                PrinterParameter = profileGuid == null
+                    ? oldSfi.PrinterParameter
+                    : "",
+                ProfileParameter = profileGuid ?? oldSfi.ProfileParameter,
+                OutputFileParameter = oldSfi.OutputFileParameter
+            };
+
+            return newSfi;
+        }
+
+        private string GetDestinationPath(string filename, string destinationFolder)
+        {
+            var destinationFilename = PathSafe.GetFileNameWithoutExtension(filename);
+            var destinationPath = PathSafe.Combine(destinationFolder, destinationFilename);
+            return _uniqueFilenameFactory.Build(destinationPath).CreateUniqueFileName();
         }
     }
 }

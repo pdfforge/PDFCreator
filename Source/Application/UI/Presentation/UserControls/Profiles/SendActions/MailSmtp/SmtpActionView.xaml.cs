@@ -5,7 +5,7 @@ using Prism.Regions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailSmtp
 {
-    public partial class SmtpActionView : UserControl, IRegionMemberLifetime, IActionUserControl
+    public partial class SmtpActionView : UserControl, IRegionMemberLifetime, IActionView
     {
         public bool KeepAlive { get; } = true;
 

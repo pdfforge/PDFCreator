@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="utf-8"?>
 <datastorage>
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
     <addRaisePropertyChanged>True</addRaisePropertyChanged>
-    <generatorVersion>1.5.0.0</generatorVersion>
+    <generatorVersion>1.6.0.0</generatorVersion>
   </options>
   <classes>
     <class name="ParameterSettings" propertyName="ParameterSettings" readonly="False" classtype="Class">
@@ -79,6 +79,9 @@
             </value>
             <value name="Password" type="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
+            </value>
+            <value name="SendMode" type="value" datatype="Enum" enumname="HttpSendMode" defaultvalue="HttpSendMode.HttpPost" islist="False">
+              <comment />
             </value>
             <value name="Timeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
               <comment>Timeout in seconds for upload</comment>
@@ -199,6 +202,9 @@
         <value name="ConversionTimeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
           <comment />
         </value>
+        <value name="DontRecommendArchitect" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+          <comment>Don't recommend Pdf Architect</comment>
+        </value>
         <value name="EnableTips" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
           <comment />
         </value>
@@ -213,6 +219,9 @@
         </value>
         <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
           <comment />
+        </value>
+        <value name="SharedSettingsFilename" type="value" datatype="String" enumname="" defaultvalue="settings" islist="False">
+          <comment>Set the filename of the shared settings file. The default is 'settings.ini'.</comment>
         </value>
         <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
           <comment>Defines the unit of measurement for the signature position.</comment>
@@ -240,7 +249,10 @@
           <value name="EnsureUniqueFilenames" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>Existing files will not be overwritten. Existing filenames automatically get an appendix.</comment>
           </value>
-        </class>
+          <value name="AutoMergeFiles" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+            <comment>Existing files will not be overwritten. Existing files automatically get append with the new files.</comment>
+          </value>
+		</class>
         <class name="BackgroundPage" propertyName="BackgroundPage" readonly="False" classtype="Class">
           <comment>Adds a page background to the resulting document</comment>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -432,12 +444,12 @@
           <value name="AlternateCorner" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
             <comment>Whether to switch left/right corner every page.</comment>
           </value>
-					<value name="BeginOn" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
-						<comment>The page to begin numbering on.</comment>
-					</value>
-					<value name="BeginWith" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
-						<comment>The number to start counting at.</comment>
-					</value>
+          <value name="BeginOn" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
+            <comment>The page to begin numbering on.</comment>
+          </value>
+          <value name="BeginWith" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
+            <comment>The number to start counting at.</comment>
+          </value>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, this action will be executed</comment>
           </value>
@@ -462,9 +474,9 @@
           <value name="Position" type="value" datatype="Enum" enumname="PageNumberPosition" defaultvalue="PageNumberPosition.BottomRight" islist="False">
             <comment>Where to put the page numbers.</comment>
           </value>
-	        <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
-		        <comment>Defines the unit of measurement for the page number position.</comment>
-	        </value>
+          <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
+            <comment>Defines the unit of measurement for the page number position.</comment>
+          </value>
           <value name="UseRomanNumerals" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Print the numbers as roman numerals.</comment>
           </value>
@@ -554,14 +566,32 @@
             <value name="AllowMultiSigning" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>If true, the PDF file may be signed by additional persons</comment>
             </value>
+            <value name="BackgroundImageFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+              <comment>The Path of the background image to use.</comment>
+            </value>
             <value name="CertificateFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment>Path to the certificate</comment>
             </value>
-            <value name="DisplaySignatureInDocument" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-              <comment>If true, the signature will be displayed in the PDF file</comment>
+            <value name="DisplaySignature" type="value" datatype="Enum" enumname="DisplaySignature" defaultvalue="DisplaySignature.NoDisplay" islist="False">
+              <comment>Defines the display level of the signature in the document.</comment>
             </value>
             <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>If true, the signature will be displayed in the PDF document</comment>
+            </value>
+            <value name="FitTextToSignatureSize" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+              <comment>Resize signature text to fit into displayed signature</comment>
+            </value>
+            <value name="FontColor" type="value" datatype="Color" enumname="" defaultvalue="#000000" islist="False">
+              <comment>Font color of the signature text</comment>
+            </value>
+            <value name="FontFile" type="value" datatype="String" enumname="" defaultvalue="arial.ttf" islist="False">
+              <comment>PostScript name of the signature font</comment>
+            </value>
+            <value name="FontName" type="value" datatype="String" enumname="" defaultvalue="Arial" islist="False">
+              <comment>Font name of the signature text  (this is only used as a hint, FontFile contains the real name)</comment>
+            </value>
+            <value name="FontSize" type="value" datatype="Float" enumname="" defaultvalue="12" islist="False">
+              <comment>Size of the signature font</comment>
             </value>
             <value name="LeftX" type="value" datatype="Float" enumname="" defaultvalue="100" islist="False">
               <comment>Signature location: Top left corner (X part)</comment>
@@ -723,7 +753,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Activate parsing ps files for user tokens (Only available in the PDFCreator business editions)</comment>
           </value>
-          <value name="Seperator" type="value" datatype="Enum" enumname="UserTokenSeperator" defaultvalue="UserTokenSeperator.SquareBrackets" islist="False">
+          <value name="Separator" type="value" datatype="Enum" enumname="UserTokenSeparator" defaultvalue="UserTokenSeparator.SquareBrackets" islist="False">
             <comment>UserToken separator in the document</comment>
           </value>
         </class>
@@ -796,6 +826,9 @@
         <value name="TitleTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobName&gt;" islist="False">
           <comment>Template for the Title field. This may contain tokens.</comment>
         </value>
+        <value name="UseGsNewPDF" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+          <comment>Use the new Ghostscript PDF Interpreter introduced with gs 9.55.0</comment>
+        </value>
         <value name="WarnSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
           <comment>Show a warning for failing send actions (only if SkipSendFailures is active)</comment>
         </value>
@@ -820,7 +853,7 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="11" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="13" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
         </value>
       </class>

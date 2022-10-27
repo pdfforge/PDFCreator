@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
 
         public MessageIconToIconConverter()
         {
-            _resourceDictionary = new ResourceDictionary { Source = new Uri("PDFCreator.Presentation;component/Styles/Logos.xaml", UriKind.Relative) };
+            _resourceDictionary = new ResourceDictionary { Source = new Uri("PDFCreator.Presentation;component/Styles/Redesign5/Icons/MessageIcons.xaml", UriKind.Relative) };
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -36,16 +36,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
                         return GetResourceAsSomething("Warning");
 
                     case MessageIcon.Exclamation:
-                        img.Source = ConvertBitmap(SystemIcons.Exclamation.ToBitmap());
-                        return img;
+                        return GetResourceAsSomething("Warning");
 
                     case MessageIcon.Question:
-                        img.Source = ConvertBitmap(SystemIcons.Question.ToBitmap());
-                        return img;
+                        return GetResourceAsSomething("Question");
 
                     case MessageIcon.Info:
-                        img.Source = ConvertBitmap(SystemIcons.Information.ToBitmap());
-                        return img;
+                        return GetResourceAsSomething("Info");
 
                     case MessageIcon.PDFCreator:
                         return GetResourceAsSomething("PDFCreatorLogo");

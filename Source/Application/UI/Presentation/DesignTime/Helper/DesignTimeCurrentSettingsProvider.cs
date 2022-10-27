@@ -40,6 +40,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
             });
 
             SelectedProfile = Settings.ConversionProfiles.First();
+            SelectedProfile.PdfSettings.Signature.DisplaySignature = DisplaySignature.ImageAndText;
             Profiles = new ObservableCollection<ConversionProfile>(Settings.ConversionProfiles);
         }
 

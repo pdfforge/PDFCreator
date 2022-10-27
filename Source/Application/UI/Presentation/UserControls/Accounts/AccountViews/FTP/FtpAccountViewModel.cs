@@ -1,13 +1,20 @@
 ﻿using Optional;
+using pdfforge.Obsidian;
+using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities.Tokens;
+using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
@@ -16,16 +23,30 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         private readonly IOpenFileInteractionHelper _openFileInteractionHelper;
         private readonly ITokenHelper _tokenHelper;
         private readonly ITokenViewModelFactory _tokenViewModelFactory;
+        private readonly IFtpConnectionTester _ftpConnectionTester;
+        private readonly IInteractionRequest _interactionRequest;
+        private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         public FtpAccount FtpAccount { get; set; }
         public TokenViewModel<FtpAccount> FtpAccountTokenViewModel { get; set; }
         public TokenReplacer TokenReplacer { get; private set; }
+        public AsyncCommand TestFtpConnectionCommand { get; private set; }
 
-        public FtpAccountViewModel(ITranslationUpdater translationUpdater, IOpenFileInteractionHelper openFileInteractionHelper,
-            ITokenHelper tokenHelper, ITokenViewModelFactory tokenViewModelFactory) : base(translationUpdater)
+        public FtpAccountViewModel(ITranslationUpdater translationUpdater,
+            IOpenFileInteractionHelper openFileInteractionHelper,
+            ITokenHelper tokenHelper,
+            ITokenViewModelFactory tokenViewModelFactory,
+            IFtpConnectionTester ftpConnectionTester,
+            IInteractionRequest interactionRequest,
+            ErrorCodeInterpreter errorCodeInterpreter) : base(translationUpdater)
         {
             _openFileInteractionHelper = openFileInteractionHelper;
             _tokenHelper = tokenHelper;
             _tokenViewModelFactory = tokenViewModelFactory;
+            _ftpConnectionTester = ftpConnectionTester;
+            _interactionRequest = interactionRequest;
+            _errorCodeInterpreter = errorCodeInterpreter;
+
+            TestFtpConnectionCommand = new AsyncCommand(TestFtpConnectionExecute);
         }
 
         private Option<string> SelectPrivateKeyFile(string arg)
@@ -179,6 +200,51 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(IsSftpConnection));
             RaisePropertyChanged(nameof(ProtocolPrefix));
             SaveCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task TestFtpConnectionExecute(object parameter)
+        {
+            var accountCopy = FtpAccount.Copy();
+            var passwordRequired = accountCopy.AuthenticationType != AuthenticationType.KeyFileAuthentication || accountCopy.KeyFileRequiresPass;
+            if (passwordRequired && string.IsNullOrWhiteSpace(accountCopy.Password))
+            {
+                var passwordInteraction = new PasswordOverlayInteraction(PasswordMiddleButton.None,
+                    Translation.TestFtpAccount,
+                    Translation.PasswordRequiredForConnectionTest,
+                    false);
+                await _interactionRequest.RaiseAsync(passwordInteraction);
+
+                if (passwordInteraction.Result == PasswordResult.Cancel)
+                    return;
+
+                accountCopy.Password = passwordInteraction.Password;
+            }
+
+            var result = _ftpConnectionTester.CheckAccount(accountCopy, false);
+            if (!result)
+            {
+                var message = _errorCodeInterpreter.GetFirstErrorText(result, false);
+                var interaction = new MessageInteraction(message, Translation.TestFtpAccount, MessageOptions.OK, MessageIcon.Error);
+                _interactionRequest.Raise(interaction);
+                return;
+            }
+
+            await TryEstablishFtpConnection(accountCopy);
+        }
+
+        private async Task TryEstablishFtpConnection(FtpAccount ftpAccount)
+        {
+            var connectionResult = await Task.Run(() => _ftpConnectionTester.TestFtpConnection(ftpAccount));
+
+            var resultText = connectionResult ? Translation.SuccessfulConnectionTest : Translation.UnsuccessfulConnectionTest;
+            var icon = connectionResult ? MessageIcon.PDFCreator : MessageIcon.Warning;
+
+            var messageInteraction = new MessageInteraction(
+                resultText,
+                Translation.TestFtpAccount,
+                MessageOptions.OK,
+                icon);
+            _interactionRequest.Raise(messageInteraction);
         }
 
         protected override void ClearPassword()

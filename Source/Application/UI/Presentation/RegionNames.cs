@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
     {
         public static string MainRegion => NameOfProperty();
         public static string ApplicationSettingsTabsRegion => NameOfProperty();
-        public static string ConvertTabOverlayContentRegion => NameOfProperty();
+        public static string OutputFormatOverlayContentRegion => NameOfProperty();
         public static string GeneralSettingsTabContentRegion => NameOfProperty();
         public static string DebugSettingsTabContentRegion => NameOfProperty();
         public static string ApplicationSaveCancelButtonsRegion => NameOfProperty();
@@ -17,19 +17,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string LicenseSettingsRegion => NameOfProperty();
         public static string BusinessHintStatusBarRegion => NameOfProperty();
         public static string TestButtonWorkflowEditorRegion => NameOfProperty();
-        public static string AddActionWorkflowEditorRegion => NameOfProperty();
         public static string RssFeedRegion => NameOfProperty();
         public static string HomeViewBannerRegion => NameOfProperty();
         public static string ProfileWorkflowEditorOverlayRegion => NameOfProperty();
         public static string SaveOutputFormatMetadataView => nameof(UserControls.Profiles.SaveOutputFormatMetadataView);
         public static string WorkflowEditorView => nameof(UserControls.Profiles.WorkflowEditor.WorkflowEditorView);
-        public static string AboutView => nameof(UserControls.AboutView);
-        public static string AccountsView => nameof(UserControls.Accounts.AccountsView);
-        public static string ArchitectView => nameof(UserControls.Architect.ArchitectView);
-        public static string HomeView => nameof(UserControls.Home.HomeView);
-        public static string PrinterView => nameof(UserControls.Printer.PrinterView);
-        public static string ProfilesView => nameof(UserControls.Profiles.ProfilesView);
-        public static string ApplicationSettingsView => nameof(UserControls.Settings.ApplicationSettingsView);
     }
 
     public class PrintJobRegionNames : RegionNameCollection

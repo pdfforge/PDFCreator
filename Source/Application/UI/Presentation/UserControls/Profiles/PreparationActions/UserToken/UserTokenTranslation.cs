@@ -14,22 +14,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationA
         public string DefaultValueExplanation { get; private set; } = "The default value will be used in case the user token is not defined in your document.";
         public string SelectSeparator { get; private set; } = "Select Separator:";
         public string UserGuideButtonText { get; private set; } = "More on user tokens";
-        public EnumTranslation<UserTokenSeperator>[] UserTokenSeperatorValues { get; set; } = EnumTranslation<UserTokenSeperator>.CreateDefaultEnumTranslation();
+        public EnumTranslation<UserTokenSeparator>[] UserTokenSeperatorValues { get; set; } = EnumTranslation<UserTokenSeparator>.CreateDefaultEnumTranslation();
 
-        public string GetUserTokenDocumentExample(UserTokenSeperator userTokenSeperator)
+        public string GetUserTokenDocumentExample(UserTokenSeparator userTokenSeparator)
         {
-            switch (userTokenSeperator)
+            switch (userTokenSeparator)
             {
-                case UserTokenSeperator.AngleBrackets:
+                case UserTokenSeparator.AngleBrackets:
                     return "<<<" + UserTokenDocumentExample + ">>>";
 
-                case UserTokenSeperator.CurlyBrackets:
+                case UserTokenSeparator.CurlyBrackets:
                     return "{{{" + UserTokenDocumentExample + "}}}";
 
-                case UserTokenSeperator.RoundBrackets:
+                case UserTokenSeparator.RoundBrackets:
                     return "(((" + UserTokenDocumentExample + ")))";
 
-                case UserTokenSeperator.SquareBrackets:
+                case UserTokenSeparator.SquareBrackets:
                 default:
                     return "[[[" + UserTokenDocumentExample + "]]]";
             }

@@ -10,7 +10,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Expression = System.Linq.Expressions.Expression;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 {
@@ -50,9 +53,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         public void SetTokens(IList<string> tokens)
         {
-            Tokens = new ObservableCollection<TokenWithCommand>();
+            TokenMenuItems = new ObservableCollection<MenuItem>();
             foreach (var token in tokens)
-                Tokens.Add(new TokenWithCommand(token, ExecuteMethod));
+            {
+                var menuItem = new MenuItem
+                {
+                    Header = token,
+                    Command = new DelegateCommand(o => InsertTokenExecute(token)),
+                    Padding = new Thickness(5, 0, 5, 0),
+                    Height = 18
+                };
+                TokenMenuItems.Add(menuItem);
+            }
         }
 
         public T CurrentValue
@@ -76,7 +88,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             }
         }
 
-        public ObservableCollection<TokenWithCommand> Tokens { get; set; }
+        public ObservableCollection<MenuItem> TokenMenuItems { get; set; }
 
         public int CurrentCursorPos { get; set; }
 
@@ -113,7 +125,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
                 Preview = _generatePreview(Text);
         }
 
-        private void ExecuteMethod(string text)
+        private void InsertTokenExecute(string text)
         {
             var newSelectionStart = CurrentCursorPos + text.Length;
             Text = Text.Insert(CurrentCursorPos, text);
@@ -145,17 +157,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         public virtual void UnmountView()
         {
         }
-    }
-
-    public class TokenWithCommand
-    {
-        public TokenWithCommand(string name, Action<string> execute)
-        {
-            Name = name;
-            MyCommand = new DelegateCommand(o => execute(Name));
-        }
-
-        public string Name { get; set; }
-        public DelegateCommand MyCommand { get; set; }
     }
 }

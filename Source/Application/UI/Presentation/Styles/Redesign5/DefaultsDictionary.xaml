@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BorderlessTextBox.xaml" />
+        <ResourceDictionary Source="Labels.xaml" />
+        <ResourceDictionary Source="Buttons/DefaultButtons.xaml" />
+        <ResourceDictionary Source="Combobox.xaml" />
+        <ResourceDictionary Source="CheckBoxes/DefaultCheckBox.xaml" />
+        <ResourceDictionary Source="Fonts.xaml" />
+        <ResourceDictionary Source="TextBlock.xaml" />
+        <ResourceDictionary Source="ScrollBar.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource BorderlessTextBox}" />
+    <Style TargetType="Label" BasedOn="{StaticResource RegularLabel}" />
+    <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}" />
+    <Style TargetType="ComboBox" BasedOn="{StaticResource BorderlessCombobox}" />
+    <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBox}" />
+    <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}" />
+
+    <Style TargetType="Window">
+        <Setter Property="FontFamily" Value="{StaticResource Inter}" />
+    </Style>
+
+    <Style TargetType="ScrollBar" BasedOn="{StaticResource DefaultScrollBar}"></Style>
+</ResourceDictionary>

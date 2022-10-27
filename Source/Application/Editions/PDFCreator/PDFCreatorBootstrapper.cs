@@ -14,6 +14,7 @@ using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Editions.EditionBase;
@@ -45,7 +46,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override Color EditionHighlightColor => Color.FromRgb(215, 40, 40);
         protected override bool HideLicensing => true;
 
-        protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit);
+        protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit, false);
 
         public override void InitializeServices(Container container)
         {
@@ -87,6 +88,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override void RegisterUserTokenExtractor(Container container)
         {
             container.Register<IUserTokenExtractor, UserTokenExtractorDummy>();
+            container.Register<IPsToPdfConverter, PsToPdfConverter>();
         }
 
         protected override IGpoSettings GetGpoSettings()

@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 if (checkLevel == CheckLevel.RunningJob)
                 {
-                    if(!_fontPathHelper.GetFontPath(profile.Stamping.FontFile, out _))
+                    if(!_fontPathHelper.TryGetFontPath(profile.Stamping.FontFile, out _))
                         actionResult.Add(ErrorCode.Stamp_FontNotFound);
                 }
             }

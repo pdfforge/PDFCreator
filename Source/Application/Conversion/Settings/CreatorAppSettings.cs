@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed
 		/// </summary>
-		public int SettingsVersion { get; set; } = 11;
+		public int SettingsVersion { get; set; } = 13;
 		
 		
 		public void ReadValues(Data data, string path = "")
@@ -50,7 +50,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
 			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
 			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
-			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 11;
+			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 13;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -108,13 +108,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is CreatorAppSettings)) return false;
 			CreatorAppSettings v = o as CreatorAppSettings;
 			
-			if (!AskSwitchDefaultPrinter.Equals(v.AskSwitchDefaultPrinter)) return false;
-			if (!HotStandbyMinutes.Equals(v.HotStandbyMinutes)) return false;
-			if (!LastLoginVersion.Equals(v.LastLoginVersion)) return false;
-			if (!LastSaveDirectory.Equals(v.LastSaveDirectory)) return false;
-			if (!LastUsedProfileGuid.Equals(v.LastUsedProfileGuid)) return false;
-			if (!PrimaryPrinter.Equals(v.PrimaryPrinter)) return false;
-			if (!SettingsVersion.Equals(v.SettingsVersion)) return false;
+			if (!Object.Equals(AskSwitchDefaultPrinter, v.AskSwitchDefaultPrinter)) return false;
+			if (!Object.Equals(HotStandbyMinutes, v.HotStandbyMinutes)) return false;
+			if (!Object.Equals(LastLoginVersion, v.LastLoginVersion)) return false;
+			if (!Object.Equals(LastSaveDirectory, v.LastSaveDirectory)) return false;
+			if (!Object.Equals(LastUsedProfileGuid, v.LastUsedProfileGuid)) return false;
+			if (!Object.Equals(PrimaryPrinter, v.PrimaryPrinter)) return false;
+			if (!Object.Equals(SettingsVersion, v.SettingsVersion)) return false;
 			return true;
 		}
 		

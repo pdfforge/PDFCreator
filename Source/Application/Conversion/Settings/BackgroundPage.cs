@@ -102,11 +102,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is BackgroundPage)) return false;
 			BackgroundPage v = o as BackgroundPage;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!File.Equals(v.File)) return false;
-			if (!FitToPage.Equals(v.FitToPage)) return false;
-			if (!Opacity.Equals(v.Opacity)) return false;
-			if (!Repetition.Equals(v.Repetition)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(File, v.File)) return false;
+			if (!Object.Equals(FitToPage, v.FitToPage)) return false;
+			if (!Object.Equals(Opacity, v.Opacity)) return false;
+			if (!Object.Equals(Repetition, v.Repetition)) return false;
 			return true;
 		}
 		

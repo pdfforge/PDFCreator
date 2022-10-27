@@ -140,7 +140,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             {
                 case ConversionMode.PdfConversion:
                 case ConversionMode.IntermediateConversion:
-                    CollectIntermediateFiles(outputDevice.Job);
+                    CollectIntermediatePdfFile(outputDevice.Job);
                     break;
 
                 case ConversionMode.ImmediateConversion:
@@ -161,7 +161,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
                 job.TempOutputFiles.Add(file);
         }
 
-        private void CollectIntermediateFiles(Job job)
+        private void CollectIntermediatePdfFile(Job job)
         {
             job.IntermediatePdfFile = Directory.GetFiles(job.IntermediateFolder).Single();
         }

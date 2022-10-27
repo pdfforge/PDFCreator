@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -29,6 +29,7 @@
 % After %%HiResBoundingBox processed, state is 3 if OK or 4 if cropped.
 % After %%EndComments processed, state is 5.
 /EPSBoundingBoxState 5 def
+/EPSBoundingBoxString () def	% set if either BoundingBox is seen (even if invalid)
 /EPSBoundingBoxSetState {
   //systemdict /EPSBoundingBoxState 3 -1 roll .forceput
 } .bind executeonly odef % .forceput must be bound and hidden
@@ -59,53 +60,73 @@
 % Rescale, translate and rotate to fit the BoundingBox on the page
 /EPSBoundingBoxFitPage { % llx lly urx ury --
   EPSDEBUG { (gs_epsf.ps: Rescaling EPS to fit page\n) print flush } if
-  clippath pathbbox newpath
-  % translate to new origin at lower left of clippath
-  3 index 3 index translate
-  % Figure out if rotate is needed.
-
-  1 index 4 index sub 1 index 4 index sub eq not {
-  1 index 4 index sub 1 index 4 index sub gt	% bbox page-clipbox page-is-landscape
-  6 index 10 index sub 6 index 10 index sub gt % bbox page-clipbox page-is-landscape bbox-is-landscape
-  xor
-  }{
-    //false
-  }ifelse
-  dup 10 1 roll	% need-rotate compute need-rotate.
-
-  % if we are rotating the contents, we need to also rotate the
-  % bounding box of the content!
-  {
-    8 -4 roll
-    exch 4 -2 roll exch 4 2 roll
+  clippath pathbbox newpath    % ellx elly eurx eury  pllx plly purx pury
+  EPSDEBUG {
+    (Page Coordinates: LLX: ) print 3 index =print (, LLY: ) print
+    2 index =print (, URX: ) print 1 index =print (, URY: ) print dup = flush
+  } if
+  % Convert box corners to coordinates of the center and box sizes
+  2 {	% loop doing the page coordinates, the the EPS bbox coordinates
+    3 -1 roll exch        % ... llx urx lly ury
+    2 {		% loop doing Y then X coordnates
+      2 copy exch sub     % ... llx urx lly ury ury-lly
+      3 1 roll            % ... llx urx ury-lly lly ury
+      add 2 div           % ... llx urx ury-lly (lly+ury)/2
+      4 2 roll            % ... ury-lly (lly+ury)/2 llx urx
+    } repeat
     8 4 roll
+  } repeat
+  % edx, edy = EPS dimension X and Y, ecx, ecy = EPS Center X and Y.
+  % pdx and pcx, etc, are for the Page values.
+  % edx ecx edy ecy pdx pcx pdy pcy
+
+  % Move the origin to the center of the printable area.
+  3 -1 roll exch          % edx ecx edy ecy pdx pdy pcx pcy
+  translate               % edx ecx edy ecy pdx pdy
+
+  % Find orientation of the best fit. Square pages or files don't rotate.
+  2 copy sub              % edx ecx edy ecy pdx pdy pdx-pdy
+  EPSDEBUG {
+    (pdx: ) print 2 index =print (, pdy: ) print 1 index =print
+    (, pdx-pdy: ) print dup = flush
+  } if
+  6 index 5 index sub
+  EPSDEBUG {
+    (edx: ) print 7 index =print (, edy: ) print 5 index =print
+    (, edx-edy: ) print dup = flush
+  } if
+  mul % edx ecx edy ecy pdx pdy (pdx-pdy)*(edx-edy)
+  EPSDEBUG {
+    (product: ) print dup = flush
+  } if
+  0 lt {
+    90 rotate
+    exch
   } if
 
-  % stack: rotate-needed bbox page-clipbox
-  % calculate scale to fit smaller of width or height
-  exch 4 -1 roll sub 3 1 roll exch sub
-  4 2 roll 5 index 5 index 4 2 roll
-  exch 4 -1 roll sub 3 1 roll exch sub
-  4 2 roll
-  exch 4 -1 roll div 3 1 roll exch div
-  1 index 1 index lt {pop}{exch pop} ifelse
-  dup scale
-  % translate to EPS -llx,-lly
-  exch neg exch neg translate
-  % Finally perform the rotate if needed.
-  { clippath pathbbox pop 0 translate 90 rotate pop pop } if
+  % Scale to fit in the most restricting direction.
+  4 -1 roll div           % edx ecx ecy pdx pdy/edy
+  exch 5 -1 roll div      % ecx ecy pdy/edy pdx/edx
+  //.min exec
+  dup scale               % ecx ecy
+
+  % Center the document
+  neg exch neg exch translate
+
 } bind executeonly odef
 
 /EPSBoundingBoxProcess { % (llx lly urx ury) state --
+  % The following 'lt' check prioritzies HiResBoundingBox over BoundingBox
+  % even if HiResBoundingBox occurs first in the EPS file.
   //systemdict /EPSBoundingBoxState get 1 index lt {
-    exch EPSBoundingBoxParse
+    % save the BBoxString for possible FitPage when EndComments is seen
+    exch dup //systemdict /EPSBoundingBoxString 3 -1 roll .forceput
+    EPSBoundingBoxParse
     {
       //systemdict /EPSCrop known {
         EPSBoundingBoxCrop
       } {
-        //systemdict /EPSFitPage known {
-          EPSBoundingBoxFitPage
-        } {
+        //systemdict /EPSFitPage known not {
           % Warn if some of the EPS file will be clipped
           clippath pathbbox newpath
           { % context for exit
@@ -121,10 +142,17 @@
             flush
             1 add
           } if
+        } {
+          pop pop pop pop
         } ifelse
       } ifelse
       EPSBoundingBoxSetState
     } {
+      % improperly formed BoundingBox string.
+      QUIET not {
+        (\n   **** Warning: BoundingBox values are invalid and will be ignored: ') print
+        EPSBoundBoxString print (') = flush
+      } if
       pop % state
     } ifelse
   } {
@@ -132,6 +160,25 @@
   } ifelse
 } bind executeonly odef
 
+% Perform anchorsearch on the strings in the array until a match is found.
+/anchorsearchforany { % haystack [needle1 ...] --> post needle true
+                      %                        --> haystack false
+    false 3 1 roll    % false haystack [...]
+    {                 % false haystack needle
+      dup 3 1 roll    % false needle haystack needle
+      anchorsearch {
+                      % false needle post needle
+        pop           % false needle post
+        3 1 roll      % post false needle
+        exch not exch % post true needle
+        exit
+      } {
+                      % false needle haystack
+        exch pop      % false haystack
+      } ifelse
+    } forall
+    exch              % haystack false | post needle true
+} bind def
 
 /ProcessEPSComment { % file comment --  file comment
   /EPSBoundingBoxState .systemvar 3 lt {
@@ -185,12 +232,23 @@
           } ifelse
         } ifelse
     } {
-      (%%EndComments) anchorsearch {
-        pop pop
+      {(%%EndComments) (%%BeginProlog) (%%BeginSetup)} anchorsearchforany {
+        EPSDEBUG { (EPSComment processing finished, encountered: ) print dup = } if
+        pop pop	% discard the strings from the anchorsearch
+        % We may have seen BoundingBox or HiResBounfingBox. If so and if EPSFitPage
+        % is set, then we do the transformation here to scale and center the page,
+        % rotating if needed (and AllowFitPageRotation is true -- the default.)
+        //systemdict /EPSFitPage known
+        //systemdict /EPSBoundingBoxState get 0 gt
+        and {
+          EPSBoundingBoxString EPSBoundingBoxParse {
+            EPSBoundingBoxFitPage
+          } if
+        } if
         % Ignore any following comments
         5 EPSBoundingBoxSetState
       } {
-        pop
+        pop	% Not %%EndComments -- ignore it
       } ifelse
     } ifelse
   } if
@@ -212,13 +270,14 @@
 /.runNoEPS /run load def
 
 /.runEPS { % file OR string --
+  .updatematrices
   /runEPS_save save def
   /runEPS_dict_count countdictstack def
   /runEPS_op_count count 2 sub def
-  /runEPS_page_count currentpagedevice /PageCount get def
+  /runEPS_page_count .currentshowpagecount not {0} if def
   0 EPSBoundingBoxSetState
   //.runNoEPS
-  currentpagedevice /PageCount get runEPS_page_count sub 0 eq
+  .currentshowpagecount not {0} if runEPS_page_count sub 0 eq
   { /showpage load exec } if
   count runEPS_op_count sub {pop} repeat
   countdictstack runEPS_dict_count sub {end} repeat
@@ -307,6 +366,7 @@ end
     /.runnoepsf
     /.runEPS
     /EPSBoundingBoxSetState
+    /EPSBoundingBoxString
     /EPSBoundingBoxCrop
     /EPSBoundingBoxFitPage
     /EPSBoundingBoxParse

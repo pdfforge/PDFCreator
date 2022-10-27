@@ -1,102 +1,94 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
-using pdfforge.PDFCreator.UI.Presentation.Controls;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
 using System.Threading.Tasks;
-using Translatable;
+using System.Windows.Input;
+using pdfforge.Obsidian;
 
 namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
 {
-    public abstract class JobStepPasswordViewModelBase<T> : TranslatableViewModelBase<T>, IPasswordButtonViewModel, IWorkflowViewModel
-        where T : ITranslatable, new()
+    public abstract class JobStepPasswordViewModelBase<T> : TranslatableViewModelBase<T>, IWorkflowViewModel
+    where T : PasswordButtonControlTranslation, new()
     {
         protected Job Job;
 
-        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
 
-        private readonly string SettingPropertyName;
-        public PasswordButtonController PasswordButtonController { get; }
-        public Action RaiseOkCanExecuteChanged { get; set; }
+        private string _password;
 
         public string Password
         {
-            get { return PasswordButtonController.Password; }
-            set { PasswordButtonController.Password = value; }
+            get { return _password; }
+            set
+            {
+                _password = value;
+                ContinueCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(Password));
+            }
         }
 
-        protected JobStepPasswordViewModelBase(ITranslationUpdater translationUpdater, string settingPropertyName) : base(translationUpdater)
+        public DelegateCommand ContinueCommand { get; }
+        public ICommand SkipCommand { get; }
+        public ICommand CancelCommand { get; }
+
+        protected JobStepPasswordViewModelBase(ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
-            SettingPropertyName = settingPropertyName;
-            PasswordButtonController = new PasswordButtonController(translationUpdater, this, true, false);
+            ContinueCommand = new DelegateCommand(ContinueExecute, ContinueCanExecute);
+            SkipCommand = new DelegateCommand(SkipExecute);
+            CancelCommand = new DelegateCommand(CancelExecute);
         }
 
         public Task ExecuteWorkflowStep(Job job)
         {
             Job = job;
-            ReadPassword();
-            ExecuteWorkflow();
+            InitializeWorkflowStep();
 
             return _taskCompletionSource.Task;
         }
 
-        protected abstract void ExecuteWorkflow();
+        /// <summary>
+        /// Set all properties of current workflow step
+        /// </summary>
+        protected abstract void InitializeWorkflowStep();
 
-        protected virtual void ReadPassword()
+        protected virtual bool ContinueCanExecute(object obj)
         {
-            Password = string.Empty;
+            return !string.IsNullOrEmpty(Password);
         }
 
-        public virtual void SetPassword(string values)
+        protected abstract void StorePasswordsInJobPasswords();
+
+        private void ContinueExecute(object obj)
         {
-            var propertyInfo = Job.Passwords.GetType().GetProperty(SettingPropertyName);
-            if (propertyInfo != null)
-                propertyInfo.SetValue(Job.Passwords, values);
+            StorePasswordsInJobPasswords();
+            Finish();
         }
 
-        public virtual void SkipHook()
+        protected abstract void DisableAction();
+
+        private void SkipExecute(object obj)
         {
+            DisableAction();
+            Finish();
         }
 
-        public void CancelHook()
+        private void CancelExecute(object obj)
         {
-            throw new AbortWorkflowException(GetCancelErrorMessage());
+            Finish();
+
+            var cancelMessage = "User cancelled in " + GetType().UnderlyingSystemType.Name;
+            throw new AbortWorkflowException(cancelMessage);
         }
 
-        protected virtual string GetCancelErrorMessage()
-        {
-            return string.Empty;
-        }
-
-        public virtual void OkHook()
-        {
-        }
-
-        public virtual void RemoveHook()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual bool CanExecuteHook()
-        {
-            if (string.IsNullOrWhiteSpace(Password))
-                return false;
-            return true;
-        }
-
-        public event EventHandler StepFinished;
-
-        public virtual void ClearPasswordFields()
-        {
-            Password = String.Empty;
-        }
-
-        public virtual void FinishedHook()
+        private void Finish()
         {
             StepFinished?.Invoke(this, EventArgs.Empty);
             _taskCompletionSource.SetResult(null);
         }
+
+        public event EventHandler StepFinished;
     }
 }

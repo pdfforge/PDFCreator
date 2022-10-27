@@ -5,53 +5,57 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:settings="clr-namespace:pdfforge.PDFCreator.Conversion.Settings;assembly=PDFCreator.Settings"
-    xmlns:Enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
     mc:Ignorable="d"
-    xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:DefaultViewerSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings"
-    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     d:DesignHeight="600" d:DesignWidth="500"
-    d:DataContext="{d:DesignInstance designTime:DesignTimeDefaultViewerViewModel, d:IsDesignTimeCreatable=True}"
-    Name="mainUserControl">
+    help:HelpProvider.HelpTopic="AppViewer"
+    d:DataContext="{d:DesignInstance designTime:DesignTimeDefaultViewerViewModel, d:IsDesignTimeCreatable=True}">
     <!-- Added margin to prevent save button overlap when the user control goes below a certain height -->
-    <Grid Margin="0 0 0 35">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}"
-                                Header="{Binding Translation.DefaultViewerSettingsHeader}"
-                                DockPanel.Dock="Top">
+    <UserControl.Resources>
 
-            <StackPanel>
-                <TextBlock Margin="0 10 0 0" Text="{Binding Translation.Description}"/>
-                <DockPanel LastChildFill="True" Margin="0 10 0 0">
-                    <ItemsControl ItemsSource="{Binding DefaultViewers }"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBox" BasedOn="{StaticResource BorderlessTextBox}">
+                <Style.Setters>
+                    <Setter Property="Background" Value="White"/>
+                </Style.Setters>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Margin="0 0 0 0">
+
+        <Label Content="{Binding Translation.DefaultViewerSettingsHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 0 0 10"/>
+        <StackPanel>
+            <TextBlock Margin="0 10 0 0" Text="{Binding Translation.Description}" TextWrapping="Wrap" Width="600" HorizontalAlignment="Left"/>
+            <DockPanel LastChildFill="True" Margin="0 10 0 0">
+                <ItemsControl ItemsSource="{Binding DefaultViewers }"
                                 Grid.IsSharedSizeScope="True"
                                 Background="Transparent"
                              BorderThickness="0"
                          
                              BorderBrush="Transparent">
-                        <ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemTemplate>
 
-                            <DataTemplate DataType="settings:DefaultViewer">
-                                <Grid Margin="0 0 10 10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                        <DataTemplate DataType="settings:DefaultViewer">
+                            <Grid Margin="0 20 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="300"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <UserControl Grid.Column="0"
+                                <UserControl Grid.Column="0"
                                                  Grid.Row="0"
                                                  Grid.RowSpan="2"
                                                  Margin="0 0 10 0"
@@ -59,69 +63,62 @@
                                                  DataContext="{Binding OutputFormat}"
                                                  Style="{DynamicResource OutputFormatContentControlStyle}" />
 
-                                    
-                                    <controls:ToggleSwitch
-                                        Grid.Column="1"
-                                        Grid.Row="1"
-                                        OnSwitchBrush="#333"
-                                        OffSwitchBrush="White"
-                                        BorderThickness="1"
-                                        IsTabStop="True"
-                                        Style="{DynamicResource DefaultViewerToggleSwitch}"
-                                        IsChecked="{Binding IsActive}" Height="36" VerticalAlignment="Bottom" Margin="0 0 0 8" />
 
-                                    <Label Grid.Column="2"
+                                <controls:ToggleSwitch
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    OnSwitchBrush="#333"
+                                    OffSwitchBrush="White"
+                                    BorderThickness="0"
+                                    BorderBrush="Transparent"
+                                    IsTabStop="True"
+                                    Padding="0"
+                                    Height="40"
+                                    Style="{DynamicResource DefaultViewerToggleSwitch}"
+                                    IsChecked="{Binding IsActive}" VerticalAlignment="Bottom" />
+
+                                <Label Grid.Column="2"
                                            Grid.Row="0"
+                                           Margin="10 0 10 0"
                                            IsEnabled="{Binding IsActive}"
                                            Content= "{Binding Path=DataContext.Translation.Path, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
-                                    <TextBox Grid.Column="2"
-                                             Margin="5 0"
+                                <TextBox Grid.Column="2"
                                              Grid.Row="1"
+                                             Margin="10 0 10 0"
                                              VerticalAlignment="Center"
                                              IsReadOnlyCaretVisible="True"
                                              IsEnabled="{Binding IsActive}"
                                              Text="{Binding Path}" />
 
-                                    <Button Grid.Column="3"
+                                <Button Grid.Column="3"
                                             Grid.Row="1"
-                                            Padding="5"
-                                            MinWidth="35"
-                                            Margin="0 0 10 0"
+                                            Margin="10 0 10 0"
                                             VerticalAlignment="Center"
+                                            Width="33"
                                             Command="{Binding Path=DataContext.FindPathCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}"
                                             IsEnabled="{Binding IsActive}"
-                                            Style="{DynamicResource SmallLightGreyButton}" >...</Button>
+                                            >...</Button>
 
-                                    <Label Grid.Column="4"
+                                <Label Grid.Column="4"
                                            Grid.Row="0"
+                                           Margin="10 0 10 0"
                                            IsEnabled="{Binding IsActive}"
                                            VerticalAlignment="Center"
                                            Content= "{Binding Path=DataContext.Translation.Parameters, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
-                                    <TextBox Grid.Column="4"
-                                             Margin="5 0"
+                                <TextBox Grid.Column="4"
                                              Grid.Row="1"
+                                             Margin="10 0 10 0"
                                              VerticalAlignment="Center"
                                              IsEnabled="{Binding IsActive}"
                                              Text="{Binding Parameters}"/>
-
-                                    <!--<Button Grid.Column="5"
-                                            Grid.Row="1"
-                                            Padding="5"
-                                            MinWidth="35"
-                                            Margin="10 0 0 0"
-                                            VerticalAlignment="Center"
-                                            IsEnabled="{Binding IsActive}"
-                                            Style="{DynamicResource SmallLightGreyButton}"
-                                            Content= "{Binding Path=DataContext.Translation.Test, RelativeSource={RelativeSource AncestorType=UserControl}}" />-->
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DockPanel>
-            </StackPanel>
-        </HeaderedContentControl>
-    </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

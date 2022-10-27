@@ -1,14 +1,14 @@
-﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
+﻿using System;
+using NLog;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Helper;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using System;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public abstract class ForwardToFurtherProfileActionBase : ActionBase<ForwardToFurtherProfile>, IPreConversionAction, IBusinessFeatureAction
     {

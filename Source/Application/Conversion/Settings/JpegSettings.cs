@@ -80,9 +80,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is JpegSettings)) return false;
 			JpegSettings v = o as JpegSettings;
 			
-			if (!Color.Equals(v.Color)) return false;
-			if (!Dpi.Equals(v.Dpi)) return false;
-			if (!Quality.Equals(v.Quality)) return false;
+			if (!Object.Equals(Color, v.Color)) return false;
+			if (!Object.Equals(Dpi, v.Dpi)) return false;
+			if (!Object.Equals(Quality, v.Quality)) return false;
 			return true;
 		}
 		

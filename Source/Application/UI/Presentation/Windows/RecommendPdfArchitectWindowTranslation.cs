@@ -19,5 +19,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string SplitAndMerge { get; private set; } = "Split and merge files";
         public string InfoButtonContent { get; private set; } = "More info";
         public string DownloadButtonContent { get; private set; } = "Install";
+        public string DontShowAgain { get; private set; } = "Don't show this window again";
     }
 }

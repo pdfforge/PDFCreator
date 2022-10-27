@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using Prism.Events;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor
 {

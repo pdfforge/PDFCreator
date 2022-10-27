@@ -12,7 +12,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     {
         private readonly ICurrentSettings<ApplicationSettings> _applicationSettings;
         private readonly IGpoSettings _gpoSettings;
-        public string Title => Translation.DebugTabTitle;
+        //todo alex, title might need to be removed
+        public string Title => "";
         public IconList Icon => IconList.DebugSettings;
         public bool HiddenByGPO => false;
         public bool BlockedByGPO => DebugIsDisabled;

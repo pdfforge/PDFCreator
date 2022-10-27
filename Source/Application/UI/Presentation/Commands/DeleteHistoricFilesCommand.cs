@@ -8,7 +8,9 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Conversion.Jobs;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
@@ -31,39 +33,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public void Execute(object parameter)
         {
-            _historicFiles = parameter as IList<HistoricFile>;
-            if (_historicFiles == null)
+            if (parameter is HistoricJob historicJob)
             {
-                IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Error));
+                DeleteFilesWithQuery(historicJob.HistoricFiles);
                 return;
             }
-            DeleteFilesWithQuery();
+            IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Error));
         }
 
-        private IList<HistoricFile> _historicFiles;
-
-        private void DeleteFilesWithQuery()
+        private void DeleteFilesWithQuery(IList<HistoricFile> files)
         {
-            const int maxDisplayFiles = 5;
-            var title = Translation.GetDeleteFilesTitle(_historicFiles.Count);
-            var message = Translation.GetAreYouSureYouWantToDeleteFilesMessage(_historicFiles.Count);
-            foreach (var historicFile in _historicFiles.Take(maxDisplayFiles))
-            {
-                message += "\r\n" + historicFile.Path;
-            }
-
-            var remainingFiles = _historicFiles.Skip(maxDisplayFiles).Count();
-            if (remainingFiles > 0)
-            {
-                message += "\r\n" + Translation.GetAndXMoreMessage(remainingFiles);
-            }
-
-            var interaction = new MessageInteraction(message, title, MessageOptions.YesNo, MessageIcon.Question);
-
-            _interactionRequest.Raise(interaction, DeleteFilesCallback);
+            var interaction = BuildDeleteFilesInteraction(files);
+            _interactionRequest.Raise(interaction, i => Callback(i, files));
         }
 
-        private void DeleteFilesCallback(MessageInteraction interaction)
+        private void Callback(MessageInteraction interaction, IList<HistoricFile> files)
         {
             if (interaction.Response != MessageResponse.Yes)
             {
@@ -71,8 +55,34 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 return;
             }
 
+            DoDeleteFiles(files);
+
+            IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+        }
+
+        private MessageInteraction BuildDeleteFilesInteraction(IList<HistoricFile> files)
+        {
+            const int maxDisplayFiles = 5;
+            var title = Translation.GetDeleteFilesTitle(files.Count);
+            var message = Translation.GetAreYouSureYouWantToDeleteFilesMessage(files.Count);
+            foreach (var historicFile in files.Take(maxDisplayFiles))
+            {
+                message += "\r\n" + historicFile.Path;
+            }
+
+            var remainingFiles = files.Skip(maxDisplayFiles).Count();
+            if (remainingFiles > 0)
+            {
+                message += "\r\n" + Translation.GetAndXMoreMessage(remainingFiles);
+            }
+
+            return new MessageInteraction(message, title, MessageOptions.YesNo, MessageIcon.Question);
+        }
+
+        private void DoDeleteFiles(IList<HistoricFile> files)
+        {
             var notDeletedFiles = new List<HistoricFile>();
-            foreach (var historicFile in _historicFiles)
+            foreach (var historicFile in files)
             {
                 try
                 {
@@ -86,12 +96,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             }
 
             if (notDeletedFiles.Count > 0)
-                NotfiyUserAboutNotDeletedFiles(notDeletedFiles);
-
-            IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+                NotifyUserAboutNotDeletedFiles(notDeletedFiles);
         }
 
-        private void NotfiyUserAboutNotDeletedFiles(List<HistoricFile> notDeletedFiles)
+        private void NotifyUserAboutNotDeletedFiles(IList<HistoricFile> notDeletedFiles)
         {
             var title = Translation.ErrorDuringDeletionTitle;
             var message = Translation.GetCouldNotDeleteTheFollowingFilesMessage(notDeletedFiles.Count);

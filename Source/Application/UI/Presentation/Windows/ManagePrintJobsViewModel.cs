@@ -6,7 +6,6 @@ using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using System;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -25,12 +25,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private readonly IJobInfoManager _jobInfoManager;
         private readonly IDispatcher _dispatcher;
         private readonly ApplicationNameProvider _applicationNameProvider;
+        private readonly IVersionHelper _versionHelper;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly ObservableCollection<JobInfo> _jobInfos;
         private Helper.SynchronizedCollection<JobInfo> _synchronizedJobs;
         public IDropTarget CustomDropHandler { get; } = new CustomDropEventHandler();
 
-        public ManagePrintJobsViewModel(IJobInfoQueue jobInfoQueue, DragAndDropEventHandler dragAndDrop, IJobInfoManager jobInfoManager, IDispatcher dispatcher, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider)
+        public ManagePrintJobsViewModel(IJobInfoQueue jobInfoQueue, DragAndDropEventHandler dragAndDrop, IJobInfoManager jobInfoManager,
+            IDispatcher dispatcher, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider,
+            IVersionHelper versionHelper)
             : base(translationUpdater)
         {
             _jobInfoQueue = jobInfoQueue;
@@ -38,20 +41,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _jobInfoManager = jobInfoManager;
             _dispatcher = dispatcher;
             _applicationNameProvider = applicationNameProvider;
+            _versionHelper = versionHelper;
             _jobInfoQueue.OnNewJobInfo += OnNewJobInfo;
 
             ListSelectionChangedCommand = new DelegateCommand(ListSelectionChanged);
             DeleteJobCommand = new DelegateCommand(ExecuteDeleteJob);
             MergeJobsCommand = new DelegateCommand(ExecuteMergeJobs, CanExecuteMergeJobs);
-            MergeAllJobsCommand = new DelegateCommand(ExecuteMergeAllJobs, CanExecuteMergeAllJobs);
-            DoNothingCommand = new DelegateCommand(o => { }, CanExecuteMergeAllJobs);
+            MergeAllJobsCommand = new DelegateCommand(ExecuteMergeAllJobs, HasMoreThanOneJob);
             WindowClosedCommand = new DelegateCommand(OnWindowClosed);
             WindowActivatedCommand = new DelegateCommand(OnWindowActivated);
             DragEnterCommand = new DelegateCommand<DragEventArgs>(OnDragEnter);
             DropCommand = new DelegateCommand<DragEventArgs>(OnDrop);
             KeyDownCommand = new DelegateCommand<KeyEventArgs>(OnKeyDown);
-            SortCommand = new DelegateCommand(o => OnSortCommand(MergeSortingEnum.AlphabeticalDescending));
-            SetupSortCommands();
+
+            SortCommand = new DelegateCommand(SortCommandExecute, HasMoreThanOneJob);
+            SetupSortMenuItems();
 
             _synchronizedJobs = new Helper.SynchronizedCollection<JobInfo>(_jobInfoQueue.JobInfos);
             _jobInfos = _synchronizedJobs.ObservableCollection;
@@ -59,29 +63,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             JobListSelectionChanged = new DelegateCommand(ListItemChange);
         }
 
-        private void SetupSortCommands()
+        private void SetupSortMenuItems()
         {
-            SortCommands = new List<DropDownButtonItem>
+            SortMenuItems = new List<MenuItem>
             {
-                GetQuickActionItem(() => Translation.IdAscending, MergeSortingEnum.IdAscending),
-                GetQuickActionItem(() => Translation.IdDescending, MergeSortingEnum.IdDescending),
-                GetQuickActionItem(() => Translation.AlphabeticalAscending, MergeSortingEnum.AlphabeticalAscending),
-                GetQuickActionItem(() => Translation.AlphabeticalDescending, MergeSortingEnum.AlphabeticalDescending),
-                GetQuickActionItem(() => Translation.DateAscending, MergeSortingEnum.DateAscending),
-                GetQuickActionItem(() => Translation.DateDescending, MergeSortingEnum.DateDescending),
+                new MenuItem { Header = Translation.IdAscending, CommandParameter = MergeSortingEnum.IdAscending },
+                new MenuItem { Header = Translation.IdDescending, CommandParameter = MergeSortingEnum.IdDescending },
+                new MenuItem { Header = Translation.AlphabeticalAscending, CommandParameter = MergeSortingEnum.AlphabeticalAscending },
+                new MenuItem { Header = Translation.AlphabeticalDescending, CommandParameter = MergeSortingEnum.AlphabeticalDescending },
+                new MenuItem { Header = Translation.DateAscending, CommandParameter = MergeSortingEnum.DateAscending },
+                new MenuItem { Header = Translation.DateDescending, CommandParameter = MergeSortingEnum.DateDescending }
             };
         }
 
-        private DropDownButtonItem GetQuickActionItem(Func<string> text, MergeSortingEnum sortingEnum)
-        {
-            return new DropDownButtonItem(text, () => null, new DelegateCommand((x) => OnSortCommand(sortingEnum)));
-        }
-
-        private void OnSortCommand(MergeSortingEnum sortType)
+        private void SortCommandExecute(object parameter)
         {
             var list = _jobInfos.ToList();
 
-            switch (sortType)
+            switch ((MergeSortingEnum)parameter)
             {
                 case MergeSortingEnum.IdAscending:
                     list = list.OrderBy(info => info.SourceFiles[0].JobCounter).ToList();
@@ -115,12 +114,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
                 _jobInfos.Add(jobInfo);
             }
 
-            RaiseRefreshView();
+            JobInfos.Refresh();
         }
 
         private void ListItemChange(object obj)
         {
-            RaiseRefreshView();
+            MergeJobsCommand.RaiseCanExecuteChanged();
+            MergeAllJobsCommand.RaiseCanExecuteChanged();
             RaisePropertyChanged(nameof(SelectedPrintJob));
         }
 
@@ -136,10 +136,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public DelegateCommand MergeAllJobsCommand { get; }
         public DelegateCommand WindowClosedCommand { get; }
         public DelegateCommand WindowActivatedCommand { get; }
-        public DelegateCommand DoNothingCommand { get; }
 
-        //        public CommandCollection<ManagePrintJobsWindowTranslation> SortCommands { get; private set; }
-        public IEnumerable<DropDownButtonItem> SortCommands { get; private set; }
+        public IEnumerable<MenuItem> SortMenuItems { get; private set; }
 
         public DelegateCommand SortCommand { get; }
         public DelegateCommand<DragEventArgs> DragEnterCommand { get; }
@@ -150,7 +148,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         private void ListSelectionChanged(object obj)
         {
-            DeleteJobCommand.RaiseCanExecuteChanged();
             MergeJobsCommand.RaiseCanExecuteChanged();
         }
 
@@ -162,7 +159,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         private void OnWindowActivated(object obj)
         {
-            RaiseRefreshView();
+            MergeJobsCommand.RaiseCanExecuteChanged();
+            MergeAllJobsCommand.RaiseCanExecuteChanged();
+            SortCommand.RaiseCanExecuteChanged();
         }
 
         private void OnDrop(DragEventArgs e)
@@ -189,29 +188,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private void AddJobInfo(JobInfo jobInfo)
         {
             _synchronizedJobs.SuspendUpdates();
-            _jobInfos.Add(jobInfo);
+
+            var nextJob = _jobInfos.FirstOrDefault(j => j.PrintDateTime > jobInfo.PrintDateTime);
+
+            var targetPosition = nextJob == null
+                ? _jobInfos.Count
+                : _jobInfos.IndexOf(nextJob);
+
+            _jobInfos.Insert(targetPosition, jobInfo);
+
             _synchronizedJobs.ResumeUpdates();
 
             if (JobInfos.CurrentItem == null)
                 JobInfos.MoveCurrentToFirst();
 
-            RaiseRefreshView();
-        }
-
-        public void RaiseRefreshView()
-        {
-            RaiseRefreshView(false);
-        }
-
-        private void RaiseRefreshView(bool refreshCollectionView)
-        {
-            DeleteJobCommand.RaiseCanExecuteChanged();
             MergeJobsCommand.RaiseCanExecuteChanged();
             MergeAllJobsCommand.RaiseCanExecuteChanged();
-            DoNothingCommand.RaiseCanExecuteChanged();
-
-            if (refreshCollectionView)
-                JobInfos.Refresh();
+            SortCommand.RaiseCanExecuteChanged();
         }
 
         private void ExecuteDeleteJob(object o)
@@ -228,7 +221,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             if (_jobInfos.Count > 0)
                 JobInfos.MoveCurrentToPosition(Math.Max(0, position - 1));
 
-            RaiseRefreshView();
+            MergeJobsCommand.RaiseCanExecuteChanged();
+            MergeAllJobsCommand.RaiseCanExecuteChanged();
+            SortCommand.RaiseCanExecuteChanged();
         }
 
         private void ExecuteMergeJobs(object o)
@@ -256,7 +251,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
             _jobInfoManager.SaveToInfFile(first);
 
-            RaiseRefreshView(true);
+            MergeJobsCommand.RaiseCanExecuteChanged();
+            MergeAllJobsCommand.RaiseCanExecuteChanged();
+            SortCommand.RaiseCanExecuteChanged();
+
+            JobInfos.Refresh();
         }
 
         private bool CanExecuteMergeJobs(object o)
@@ -271,14 +270,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             RaisePropertyChanged(nameof(SelectedPrintJob));
         }
 
-        private bool CanExecuteMergeAllJobs(object o)
+        private bool HasMoreThanOneJob(object o)
         {
             return _jobInfos.Count > 1;
         }
 
-        public override string Title => _applicationNameProvider.ApplicationName;
-
-        public IEnumerable<MergeSortingEnum> MergeSortingTypes => Enum.GetValues(typeof(MergeSortingEnum)) as MergeSortingEnum[];
+        public override string Title => _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
     }
 
     public enum MergeSortingEnum

@@ -1,8 +1,8 @@
 ﻿using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
@@ -128,7 +128,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             profile.Guid = ProfileGuids.SECURED_PDF_PROFILE_GUID;
 
             profile.OutputFormat = OutputFormat.Pdf;
-            _actionOrderHelper.ForceDefaultOrder(profile);
+            _actionOrderHelper.EnsureValidOrder(profile.ActionOrder);
             profile.PdfSettings.Security.Enabled = true;
             profile.ActionOrder.Add(profile.PdfSettings.Security.GetType().Name);
             profile.PdfSettings.Security.EncryptionLevel = EncryptionLevel.Aes256Bit;
@@ -167,7 +167,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
 
             printProfile.Printing.Enabled = true;
             printProfile.ActionOrder.Add(printProfile.Printing.GetType().Name);
-            _actionOrderHelper.ForceDefaultOrder(printProfile);
+            _actionOrderHelper.EnsureValidOrder(printProfile.ActionOrder);
             printProfile.Printing.SelectPrinter = SelectPrinter.ShowDialog;
 
             SetDefaultProperties(printProfile, true);

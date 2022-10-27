@@ -1,4 +1,5 @@
 using iText.Kernel;
+using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
@@ -7,6 +8,7 @@ using NLog;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pkcs;
 using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
@@ -25,6 +27,13 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
     {
         //ActionId = 12;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IFontPathHelper _fontPathHelper;
+
+        public ITextSigner(IFontPathHelper fontPathHelper)
+        {
+            _fontPathHelper = fontPathHelper;
+        }
 
         /// <summary>
         ///     Add a signature (set in profile) to a document, that is opened in the stamper.
@@ -133,8 +142,8 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 return null;
 
             return timeServerAccount.IsSecured
-                ? new TSAClientBouncyCastle(timeServerAccount.Url, timeServerAccount.UserName, timeServerAccount.Password)
-                : new TSAClientBouncyCastle(timeServerAccount.Url);
+                ? new TSAClientBouncyCastle(timeServerAccount.Url, timeServerAccount.UserName, timeServerAccount.Password, 8192, "SHA-256")
+                : new TSAClientBouncyCastle(timeServerAccount.Url, "", "", 8192, "SHA-256");
         }
 
         private IOcspClient BuildOcspClient()
@@ -143,24 +152,38 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             return new OcspClientBouncyCastle(verifier);
         }
 
-        private void BuildSignatureAppearance(PdfSigner signer, Signature signing)
+        private void BuildSignatureAppearance(PdfSigner signer, Signature signing, string signatureSubjectName)
         {
             // Creating the appearance
             PdfSignatureAppearance appearance = signer.GetSignatureAppearance();
+
+            appearance.SetRenderingMode(PdfSignatureAppearance.RenderingMode.DESCRIPTION);
             appearance.SetReason(signing.SignReason);
             appearance.SetContact(signing.SignContact);
             appearance.SetLocation(signing.SignLocation);
 
-            var arial = PdfFontFactory.CreateFont(Environment.GetEnvironmentVariable("WINDIR") + "\\Fonts\\Arial.ttf", PdfName.WinAnsiEncoding.GetValue(), true);
+            var signatureText = SigningHelper.BuildSignatureText(signing, signatureSubjectName);
 
-            appearance.SetLayer2Font(arial);
+            appearance.SetLayer2Text(signatureText);
+
+            if (!_fontPathHelper.TryGetFontPath(signing.FontFile, out var fontPath))
+                throw new ProcessingException("Error during font path detection.", ErrorCode.Signature_FontNotFound);
+            var font = PdfFontFactory.CreateFont(fontPath, PdfName.WinAnsiEncoding.GetValue(), true);
+            appearance.SetLayer2Font(font);
+
+            var color = new DeviceRgb(signing.FontColor);
+            appearance.SetLayer2FontColor(color);
+
+            if (!signing.FitTextToSignatureSize)
+                appearance.SetLayer2FontSize(signing.FontSize);
+
             if (!signing.AllowMultiSigning)
             {
                 signer.SetCertificationLevel(PdfSigner.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS);
                 appearance.SetCertificate(signer.GetSignatureAppearance().GetCertificate());
             }
 
-            if (signing.DisplaySignatureInDocument)
+            if (signing.DisplaySignature != DisplaySignature.NoDisplay)
             {
                 var signPage = SignPageNr(signer, signing);
                 var left = signing.LeftX;
@@ -180,13 +203,15 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var certificateAlias = GetCertificateAlias(store);
             var pk = GetPrivateKey(store, certificateAlias);
 
-            BuildSignatureAppearance(signer, signing);
-
             // Creating the signature
             IExternalSignature pks = new PrivateKeySignature(pk, DigestAlgorithms.SHA512);
             var chain = GetCertificateChain(store, certificateAlias).ToArray();
             var ocspClient = BuildOcspClient();
             var tsaClient = BuildTimeServerClient(timeServerAccount);
+
+            var signatureSubjectName = chain.First().SubjectDN.ToString().Replace("CN=", "");
+
+            BuildSignatureAppearance(signer, signing, signatureSubjectName);
 
             var cryptoStandard = PdfSigner.CryptoStandard.CADES;
             signer.SignDetached(pks, chain, null, ocspClient, tsaClient, 0, cryptoStandard);
@@ -196,7 +221,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         {
             try
             {
-                var cert = new X509Certificate2(certificateFilename, certificatePassword);
+                _ = new X509Certificate2(certificateFilename, certificatePassword);
                 return true;
             }
             catch (CryptographicException)

@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.OnOffLabelToggleSwitchCheckBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="this">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../ColorDictionary.xaml" />
+                <ResourceDictionary Source="ToggleSwitchCheckBox.xaml" />
+                <ResourceDictionary Source="../Labels.xaml" />
+                <ResourceDictionary Source="../DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <!-- OffContent Label -->
+        <Grid Grid.Column="0">
+            <!-- Transparent bold Label to preserve space -->
+            <Label Content="{Binding OffContent, ElementName=this}"
+                   FontWeight="Bold" Opacity="0" HorizontalAlignment="Left"
+                   Style="{StaticResource LightLabel}"/>
+            <Label Content="{Binding OffContent, ElementName=this}"
+                   IsEnabled="False" HorizontalAlignment="Left">
+                <Label.Style>
+                    <Style TargetType="Label" BasedOn="{StaticResource LightLabel}">
+                        <Setter Property="FontWeight" Value="Regular" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsChecked, ElementName=this}" Value="false" />
+                                    <Condition Binding="{Binding IsEnabled, ElementName=this}" Value="true" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{StaticResource SwitchToggleButtonIsCheckedBrush}" />
+                                <Setter Property="IsEnabled" Value="true" />
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=this}" Value="false">
+                                <Setter Property="FontWeight" Value="DemiBold" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+        </Grid>
+
+        <!-- (O  ) -->
+        <CheckBox Grid.Column="1" Margin="10 2 10 0"
+                  IsChecked="{Binding IsChecked, ElementName=this}"
+                  Style="{StaticResource ToggleSwitchCheckBox}" 
+                  VerticalAlignment="Center"/>
+
+        <!-- OnContent Label -->
+        <Grid Grid.Column="2">
+            <!-- Transparent bold Label to preserve space -->
+            <Label Content="{Binding OnContent, ElementName=this}"
+                   FontWeight="Bold" Opacity="0" HorizontalAlignment="Right"
+                   Style="{StaticResource LightLabel}"/>
+            <Label Content="{Binding OnContent, ElementName=this}"
+                   IsEnabled="False" HorizontalAlignment="Right">
+                <Label.Style>
+                    <Style TargetType="Label" BasedOn="{StaticResource LightLabel}">
+                        <Setter Property="FontWeight" Value="Regular" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsChecked, ElementName=this}" Value="true" />
+                                    <Condition Binding="{Binding IsEnabled, ElementName=this}" Value="true" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{StaticResource SwitchToggleButtonIsCheckedBrush}" />
+                                <Setter Property="IsEnabled" Value="true" />
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=this}" Value="true">
+                                <Setter Property="FontWeight" Value="DemiBold" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+        </Grid>
+    </Grid>
+</UserControl>

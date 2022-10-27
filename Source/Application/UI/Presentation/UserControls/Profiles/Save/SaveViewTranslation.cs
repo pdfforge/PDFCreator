@@ -26,8 +26,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string SelectTargetDirectory { get; private set; } = "Select target directory";
 
         public string DontOverwriteFiles { get; private set; } = "Ensure unique filenames - don't overwrite existing files";
+        public string AppendFiles { get; private set; } = "Auto merge - Append new files to existing files";
+        public string OverWriteFiles { get; private set; } = "Overwrite files";
         public string UniqueFilenameHint { get; private set; } = "If a file already exists, an incrementing number is added to the filename, i.e. 'file_5.pdf'";
 
         public string ShowQuickActions { get; private set; } = "Show quick actions after the documents were converted";
+
+        public string ExistingFileDescription { get; private set; } = "Behavior if file already exists:";
+
+        public string ShowAllNotifications { get; private set; } = "Show tray notification after converting a document";
+        public string ShowOnlyErrorNotifications { get; private set; } = "Only show notification for errors";
     }
 }

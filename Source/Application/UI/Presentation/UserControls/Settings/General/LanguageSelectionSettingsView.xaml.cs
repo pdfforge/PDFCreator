@@ -7,9 +7,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     /// </summary>
     public partial class LanguageSelectionSettingsView : UserControl
     {
-        public LanguageSelectionSettingsView(LanguageSelectionSettingsViewModel viewModel)
+        public LanguageSelectionSettingsView()
         {
             InitializeComponent();
+        }
+
+        public void SetDataContext(AGeneralSettingsItemControlModel viewModel)
+        {
             DataContext = viewModel;
         }
     }

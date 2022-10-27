@@ -130,6 +130,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string PdfforgeWebsiteUrl => Urls.PdfforgeWebsiteUrl;
 
         public bool DisplayUpdateWarning => _updateIntervalProvider.Settings == UpdateInterval.Never;
+        public bool IsCustom => _editionHelper.IsCustom;
 
         public UpdateInterval CurrentUpdateInterval
         {

@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -34,7 +34,7 @@
 % Interpreter library version number
 % NOTE: the interpreter code requires that the first non-comment token
 % in this file be an integer, and that it match the compiled-in version!
-952
+9550
 
 % Check the interpreter revision.
 dup revision ne
@@ -144,7 +144,8 @@ currentdict /PDFNOCIDFALLBACK known /PDFNOCIDFALLBACK exch def
 
 currentdict /BATCH known   /BATCH exch def
 currentdict /DELAYBIND known   /DELAYBIND exch def
-currentdict /DOINTERPOLATE .knownget { { -1 } { 0 } ifelse /InterpolateControl exch def } if
+currentdict /DOINTERPOLATE .knownget { { -1 } { 1 } ifelse /InterpolateControl exch def } if
+currentdict /NOINTERPOLATE .knownget { { 0 } { 1 } ifelse /InterpolateControl exch def } if
 currentdict /ESTACKPRINT known   /ESTACKPRINT exch def
 currentdict /FAKEFONTS known   /FAKEFONTS exch def
 currentdict /FIXEDMEDIA known   /FIXEDMEDIA exch def
@@ -159,7 +160,6 @@ currentdict /NODISPLAY known   not /DISPLAYING exch def
 currentdict /NOFONTMAP known   /NOFONTMAP exch def
 currentdict /NOFONTPATH known   /NOFONTPATH exch def
 currentdict /NOGC known   /NOGC exch def
-currentdict /NOINTERPOLATE .knownget { /InterpolateControl 0 def } if
 currentdict /NOMEDIAATTRS known /NOMEDIAATTRS exch def
 currentdict /NOOUTERSAVE known   /NOOUTERSAVE exch def
 currentdict /NOPAGEPROMPT known   /NOPAGEPROMPT exch def
@@ -214,6 +214,13 @@ currentdict /SCANCONVERTERTYPE known
 currentdict /EPSFitPage known { /PSFitPage //true def } if
 % This is a "convenience" option that sets a combination of EPSFitPage, PDFFitPage and PSFitPage
 currentdict /FitPage known { /EPSFitPage //true def /PDFFitPage //true def /PSFitPage //true def } if
+
+currentdict /SimulateOverprint known {
+  (\n**** -dSimulateOverprint={true|false} is no longer supported.    ****\n) print
+  (**** It has been replaced by -dOverprint={enable|disable|simulate} ****\n\n) print
+  % Set the new variable appropriately.
+  /Overprint SimulateOverprint { /enable } { /disable } ifelse def
+} if
 
 % Acquire environment variables.
 currentdict /DEVICE known not
@@ -276,9 +283,9 @@ userdict /=string 256 string put
    (\)\n) revisiondate 10 mod revisiondate 10 idiv 10 mod (-)
    revisiondate 100 idiv 10 mod revisiondate 1000 idiv 10 mod (-)
    revisiondate 10000 idiv ( \()
-   revision 10 mod
-   revision 100 mod 10 idiv (.)
-   revision 100 idiv ( )
+   revision 10 mod (.)
+   revision 1000 mod 10 idiv (.)
+   revision 1000 idiv ( )
    product
    counttomark
     { (%stdout) (w) file exch 0 .writecvp
@@ -469,6 +476,7 @@ userdict /#copies 1 put
 % We have to guard against the BeginPage procedure not popping its operand.
 % This is really stupid, but the Genoa CET does it.
 /.beginpage {		% - .beginpage -
+  .updatematrices
   .currentshowpagecount {
     .currentpagedevice pop
     dup //null ne { /BeginPage .knownget } { pop //false } ifelse {
@@ -484,6 +492,7 @@ userdict /#copies 1 put
 
 % Guard similarly against EndPage not popping its operand.
 /.endpage {		% <reason> .endpage <print_bool>
+  .updatematrices
   .currentshowpagecount {
     1 index .currentpagedevice pop
     dup //null ne { /EndPage .knownget } { pop //false } ifelse {
@@ -2408,7 +2417,7 @@ currentdict /.locksafeglobal .undef
   [
   /.bitadd /.charboxpath /.cond /.runandhide /.popdevicefilter
   /.execfile /.filenamesplit /.file_name_parent
-  /.setdefaultmatrix /.isprocfilter /.unread /.psstringencode
+  /.setdefaultmatrix /.updatematrices /.isprocfilter /.unread /.psstringencode
   /.buildsampledfunction /.isencapfunction /.currentaccuratecurves /.currentcurvejoin /.currentdashadapt /.currentdotlength
   /.currentlimitclamp /.dotorientation /.setaccuratecurves /.setcurvejoin /.setdashadapt /.setdotorientation
   /.setlimitclamp /.currentscreenlevels /.dashpath /.pathbbox /.identeq /.identne /.tokenexec /.forgetsave /.pantonecallback

@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
     {
         private readonly EditionHelper _editionHelper;
 
-        public bool SupportsPdfAValidation => !_editionHelper.IsFreeEdition;
+        public bool EditionContainsPdfAValidation => !_editionHelper.IsFreeEdition;
 
         public OutputFormatPdfViewModel(ITranslationUpdater translationUpdater, ISelectedProfileProvider selectedProfile,
                                     EditionHelper editionHelper, IDispatcher dispatcher) : base(translationUpdater, selectedProfile, dispatcher)

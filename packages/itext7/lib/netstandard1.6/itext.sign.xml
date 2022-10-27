@@ -156,10 +156,13 @@
         <member name="T:iText.Signatures.CertificateInfo.X509NameTokenizer">
             <summary>
             Class for breaking up an X500 Name into it's component tokens, similar to
-            <see cref="T:iText.IO.Util.StringTokenizer"/>
-            .
-            We need this class as some of the lightweight Java environments don't support classes such as StringTokenizer.
+            <see cref="T:iText.IO.Util.StringTokenizer"/>.
             </summary>
+            <remarks>
+            Class for breaking up an X500 Name into it's component tokens, similar to
+            <see cref="T:iText.IO.Util.StringTokenizer"/>.
+            We need this class as some of the lightweight Java environments don't support classes such as StringTokenizer.
+            </remarks>
         </member>
         <member name="M:iText.Signatures.CertificateInfo.X509NameTokenizer.#ctor(System.String)">
             <summary>Creates an X509NameTokenizer.</summary>
@@ -203,25 +206,16 @@
             <summary>Gets a CRL from an X509 certificate.</summary>
             <param name="certificate">the X509Certificate to extract the CRL from</param>
             <returns>CRL or null if there's no CRL available</returns>
-            <exception cref="T:System.IO.IOException">thrown when the URL couldn't be opened properly.</exception>
-            <exception cref="!:Java.Security.Cert.CertificateException">thrown if there's no X509 implementation in the provider.
-                </exception>
-            <exception cref="!:Java.Security.Cert.CRLException">thrown when encountering errors when parsing the CRL.</exception>
         </member>
         <member name="M:iText.Signatures.CertificateUtil.GetCRLURL(Org.BouncyCastle.X509.X509Certificate)">
             <summary>Gets the URL of the Certificate Revocation List for a Certificate</summary>
             <param name="certificate">the Certificate</param>
             <returns>the String where you can check if the certificate was revoked</returns>
-            <exception cref="T:Org.BouncyCastle.Security.Certificates.CertificateParsingException"/>
         </member>
         <member name="M:iText.Signatures.CertificateUtil.GetCRL(System.String)">
             <summary>Gets the CRL object using a CRL URL.</summary>
             <param name="url">the URL where the CRL is located</param>
             <returns>CRL object</returns>
-            <exception cref="T:System.IO.IOException">thrown when the URL couldn't be opened properly.</exception>
-            <exception cref="!:Java.Security.Cert.CertificateException">thrown if there's no X509 implementation in the provider.
-                </exception>
-            <exception cref="!:Java.Security.Cert.CRLException">thrown when encountering errors when parsing the CRL.</exception>
         </member>
         <member name="M:iText.Signatures.CertificateUtil.GetOCSPURL(Org.BouncyCastle.X509.X509Certificate)">
             <summary>Retrieves the OCSP URL from the given certificate.</summary>
@@ -237,13 +231,11 @@
             <param name="certificate">the certificate from which we need the ExtensionValue</param>
             <param name="oid">the Object Identifier value for the extension.</param>
             <returns>the extension value as an ASN1Primitive object</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.CertificateUtil.GetStringFromGeneralName(Org.BouncyCastle.Asn1.Asn1Object)">
             <summary>Gets a String from an ASN1Primitive</summary>
             <param name="names">the ASN1Primitive</param>
             <returns>a human-readable String</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.Signatures.CertificateVerification">
             <summary>This class consists of some methods that allow you to verify certificates.</summary>
@@ -254,79 +246,77 @@
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificate(Org.BouncyCastle.X509.X509Certificate,System.Collections.Generic.ICollection{Org.BouncyCastle.X509.X509Crl})">
             <summary>Verifies a single certificate for the current date.</summary>
             <param name="cert">the certificate to verify</param>
-            <param name="crls">the certificate revocation list or <CODE>null</CODE></param>
+            <param name="crls">the certificate revocation list or <c>null</c></param>
             <returns>
-            a <CODE>String</CODE> with the error description or <CODE>null</CODE>
+            a <c>String</c> with the error description or <c>null</c>
             if no error
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificate(Org.BouncyCastle.X509.X509Certificate,System.Collections.Generic.ICollection{Org.BouncyCastle.X509.X509Crl},System.DateTime)">
             <summary>Verifies a single certificate.</summary>
             <param name="cert">the certificate to verify</param>
-            <param name="crls">the certificate revocation list or <CODE>null</CODE></param>
+            <param name="crls">the certificate revocation list or <c>null</c></param>
             <param name="calendar">the date, shall not be null</param>
             <returns>
-            a <CODE>String</CODE> with the error description or <CODE>null</CODE>
+            a <c>String</c> with the error description or <c>null</c>
             if no error
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificates(Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate},System.Collections.Generic.ICollection{Org.BouncyCastle.X509.X509Crl})">
             <summary>Verifies a certificate chain against a KeyStore for the current date.</summary>
             <param name="certs">the certificate chain</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
-            <param name="crls">the certificate revocation list or <CODE>null</CODE></param>
+            <param name="keystore">the <c>KeyStore</c></param>
+            <param name="crls">the certificate revocation list or <c>null</c></param>
             <returns>
             empty list if the certificate chain could be validated or a
-            <CODE>Object[]{cert,error}</CODE> where <CODE>cert</CODE> is the
-            failed certificate and <CODE>error</CODE> is the error message
+            <c>Object[]{cert,error}</c> where <c>cert</c> is the
+            failed certificate and <c>error</c> is the error message
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificates(Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate},System.Collections.Generic.ICollection{Org.BouncyCastle.X509.X509Crl},System.DateTime)">
             <summary>Verifies a certificate chain against a KeyStore.</summary>
             <param name="certs">the certificate chain</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
-            <param name="crls">the certificate revocation list or <CODE>null</CODE></param>
+            <param name="keystore">the <c>KeyStore</c></param>
+            <param name="crls">the certificate revocation list or <c>null</c></param>
             <param name="calendar">the date, shall not be null</param>
             <returns>
             empty list if the certificate chain could be validated or a
-            <CODE>Object[]{cert,error}</CODE> where <CODE>cert</CODE> is the
-            failed certificate and <CODE>error</CODE> is the error message
+            <c>Object[]{cert,error}</c> where <c>cert</c> is the
+            failed certificate and <c>error</c> is the error message
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificates(Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate})">
             <summary>Verifies a certificate chain against a KeyStore for the current date.</summary>
             <param name="certs">the certificate chain</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
+            <param name="keystore">the <c>KeyStore</c></param>
             <returns>
-            <CODE>null</CODE> if the certificate chain could be validated or a
-            <CODE>Object[]{cert,error}</CODE> where <CODE>cert</CODE> is the
-            failed certificate and <CODE>error</CODE> is the error message
+            <c>null</c> if the certificate chain could be validated or a
+            <c>Object[]{cert,error}</c> where <c>cert</c> is the
+            failed certificate and <c>error</c> is the error message
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyCertificates(Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate},System.DateTime)">
             <summary>Verifies a certificate chain against a KeyStore.</summary>
             <param name="certs">the certificate chain</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
+            <param name="keystore">the <c>KeyStore</c></param>
             <param name="calendar">the date, shall not be null</param>
             <returns>
-            <CODE>null</CODE> if the certificate chain could be validated or a
-            <CODE>Object[]{cert,error}</CODE> where <CODE>cert</CODE> is the
-            failed certificate and <CODE>error</CODE> is the error message
+            <c>null</c> if the certificate chain could be validated or a
+            <c>Object[]{cert,error}</c> where <c>cert</c> is the
+            failed certificate and <c>error</c> is the error message
             </returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyOcspCertificates(Org.BouncyCastle.Ocsp.BasicOcspResp,System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate})">
             <summary>Verifies an OCSP response against a KeyStore.</summary>
             <param name="ocsp">the OCSP response</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
-            <param name="provider">the provider or <CODE>null</CODE> to use the BouncyCastle provider</param>
-            <returns><CODE>true</CODE> is a certificate was found</returns>
+            <param name="keystore">the <c>KeyStore</c></param>
+            <returns><c>true</c> is a certificate was found</returns>
         </member>
         <member name="M:iText.Signatures.CertificateVerification.VerifyTimestampCertificates(Org.BouncyCastle.Tsp.TimeStampToken,System.Collections.Generic.List{Org.BouncyCastle.X509.X509Certificate})">
             <summary>Verifies a time stamp against a KeyStore.</summary>
             <param name="ts">the time stamp</param>
-            <param name="keystore">the <CODE>KeyStore</CODE></param>
-            <param name="provider">the provider or <CODE>null</CODE> to use the BouncyCastle provider</param>
-            <returns><CODE>true</CODE> is a certificate was found</returns>
+            <param name="keystore">the <c>KeyStore</c></param>
+            <returns><c>true</c> is a certificate was found</returns>
         </member>
         <member name="T:iText.Signatures.CertificateVerifier">
             <summary>
@@ -335,8 +325,8 @@
             </summary>
             <remarks>
             Superclass for a series of certificate verifiers that will typically
-            be used in a chain. It wraps another <code>CertificateVerifier</code>
-            that is the next element in the chain of which the <code>verify()</code>
+            be used in a chain. It wraps another <c>CertificateVerifier</c>
+            that is the next element in the chain of which the <c>verify()</c>
             method will be called.
             </remarks>
         </member>
@@ -363,15 +353,8 @@
             <param name="signCert">the certificate that needs to be checked</param>
             <param name="issuerCert">its issuer</param>
             <param name="signDate">the date the certificate needs to be valid</param>
-            <returns>a list of <code>VerificationOK</code> objects. The list will be empty if the certificate couldn't be verified.
+            <returns>a list of <c>VerificationOK</c> objects. The list will be empty if the certificate couldn't be verified.
                 </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException">
-            thrown if the certificate has expired, isn't valid yet, or if an exception has been thrown in
-            <see cref="M:Org.BouncyCastle.X509.X509Certificate.Verify(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">Certificate#verify
-                </see>
-            .
-            </exception>
-            <exception cref="T:System.IO.IOException">Deprecated</exception>
         </member>
         <member name="T:iText.Signatures.CrlClientOffline">
             <summary>
@@ -478,12 +461,10 @@
             <param name="signCert">the certificate that needs to be checked</param>
             <param name="issuerCert">its issuer</param>
             <returns>
-            a list of <code>VerificationOK</code> objects.
+            a list of <c>VerificationOK</c> objects.
             The list will be empty if the certificate couldn't be verified.
             </returns>
             <seealso cref="M:iText.Signatures.RootStoreVerifier.Verify(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.CRLVerifier.Verify(Org.BouncyCastle.X509.X509Crl,Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)">
             <summary>Verifies a certificate against a single CRL.</summary>
@@ -492,7 +473,6 @@
             <param name="issuerCert">its issuer</param>
             <param name="signDate">the sign date</param>
             <returns>true if the verification succeeded</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.CRLVerifier.GetCRL(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate)">
             <summary>Fetches a CRL for a specific certificate online (without further checking).</summary>
@@ -536,35 +516,24 @@
         <member name="M:iText.Signatures.DigestAlgorithms.GetMessageDigestFromOid(System.String)">
             <summary>Get a digest algorithm.</summary>
             <param name="digestOid">oid of the digest algorithm</param>
-            <param name="provider">the provider you want to use to create the hash</param>
             <returns>MessageDigest object</returns>
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
-            <exception cref="!:Java.Security.NoSuchProviderException"/>
         </member>
         <member name="M:iText.Signatures.DigestAlgorithms.GetMessageDigest(System.String)">
             <summary>Creates a MessageDigest object that can be used to create a hash.</summary>
             <param name="hashAlgorithm">the algorithm you want to use to create a hash</param>
-            <param name="provider">the provider you want to use to create the hash</param>
             <returns>a MessageDigest object</returns>
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
-            <exception cref="!:Java.Security.NoSuchProviderException"/>
         </member>
         <member name="M:iText.Signatures.DigestAlgorithms.Digest(System.IO.Stream,System.String)">
             <summary>Creates a hash using a specific digest algorithm and a provider.</summary>
             <param name="data">the message of which you want to create a hash</param>
             <param name="hashAlgorithm">the algorithm used to create the hash</param>
-            <param name="provider">the provider used to create the hash</param>
             <returns>the hash</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.DigestAlgorithms.Digest(System.IO.Stream,Org.BouncyCastle.Crypto.IDigest)">
             <summary>Create a digest based on the inputstream.</summary>
             <param name="data">data to be digested</param>
             <param name="messageDigest">algorithm to be used</param>
             <returns>digest of the data</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.DigestAlgorithms.GetDigest(System.String)">
             <summary>Gets the digest name for a certain id</summary>
@@ -612,9 +581,6 @@
             <param name="filter">PdfName of the signature handler to use when validating this signature</param>
             <param name="subFilter">PdfName that describes the encoding of the signature</param>
         </member>
-        <member name="M:iText.Signatures.ExternalBlankSignatureContainer.Sign(System.IO.Stream)">
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-        </member>
         <member name="T:iText.Signatures.ICrlClient">
             <summary>
             Interface that needs to be implemented if you want to embed
@@ -652,7 +618,6 @@
             </summary>
             <param name="message">The message you want to be hashed and signed.</param>
             <returns>A signed message digest.</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="T:iText.Signatures.IExternalSignatureContainer">
             <summary>Interface to sign a document.</summary>
@@ -665,7 +630,6 @@
             <param name="data">the data to sign</param>
             <returns>a container with the signature and other objects, like CRL and OCSP. The container will generally be a PKCS7 one.
                 </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.IExternalSignatureContainer.ModifySigningDictionary(iText.Kernel.Pdf.PdfDictionary)">
             <summary>Modifies the signature dictionary to suit the container.</summary>
@@ -726,13 +690,11 @@
             <see cref="T:Org.BouncyCastle.Crypto.IDigest"/>
             object.
             </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.ITSAClient.GetTimeStampToken(System.Byte[])">
             <summary>Returns RFC 3161 timeStampToken.</summary>
             <param name="imprint">byte[] - data imprint to be time-stamped</param>
             <returns>byte[] - encoded, TSA signed data of the timeStampToken</returns>
-            <exception cref="T:System.Exception">- TSA request failed</exception>
         </member>
         <member name="T:iText.Signatures.ITSAInfoBouncyCastle">
             <summary>
@@ -810,8 +772,6 @@
             <param name="level">the validation options to include</param>
             <param name="certInclude">certificate inclusion options</param>
             <returns>true if a validation was generated, false otherwise</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerification.GetParent(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate[])">
             <summary>Get the issuing certificate for a child certificate.</summary>
@@ -826,31 +786,9 @@
             <param name="crls">collection of crls</param>
             <param name="certs">collection of certificates</param>
             <returns>boolean</returns>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.BuildOCSPResponse(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.GetSignatureHashKey(System.String)">
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.HashBytesSha1(System.Byte[])">
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerification.Merge">
             <summary>Merges the validation with any validation already in the document or creates a new one.</summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.UpdateDss">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.CreateDss">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerification.OutputDss(iText.Kernel.Pdf.PdfDictionary,iText.Kernel.Pdf.PdfDictionary,iText.Kernel.Pdf.PdfArray,iText.Kernel.Pdf.PdfArray,iText.Kernel.Pdf.PdfArray)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerification.ConvertToHex(System.Byte[])">
             <summary>Converts an array of bytes to a String of hexadecimal values</summary>
@@ -876,7 +814,7 @@
             <summary>The fields in the revision that is being verified.</summary>
         </member>
         <member name="F:iText.Signatures.LtvVerifier.signDate">
-            <summary>The date the revision was signed, or <code>null</code> for the highest revision.</summary>
+            <summary>The date the revision was signed, or <c>null</c> for the highest revision.</summary>
         </member>
         <member name="F:iText.Signatures.LtvVerifier.signatureName">
             <summary>The signature that covers the revision.</summary>
@@ -896,7 +834,6 @@
         <member name="M:iText.Signatures.LtvVerifier.#ctor(iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a VerificationData object for a PdfReader</summary>
             <param name="document">The document we want to verify.</param>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.SetVerifier(iText.Signatures.CertificateVerifier)">
             <summary>Sets an extra verifier.</summary>
@@ -924,13 +861,9 @@
         <member name="M:iText.Signatures.LtvVerifier.Verify(System.Collections.Generic.IList{iText.Signatures.VerificationOK})">
             <summary>Verifies all the document-level timestamps and all the signatures in the document.</summary>
             <param name="result"/>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.VerifySignature">
             <summary>Verifies a document level timestamp.</summary>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.VerifyChain(Org.BouncyCastle.X509.X509Certificate[])">
             <summary>
@@ -939,39 +872,27 @@
             do they chain up correctly?
             </summary>
             <param name="chain">the certificate chain</param>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.Verify(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)">
             <summary>Verifies certificates against a list of CRLs and OCSP responses.</summary>
             <param name="signCert">the signing certificate</param>
             <param name="issuerCert">the issuer's certificate</param>
             <returns>
-            a list of <code>VerificationOK</code> objects.
+            a list of <c>VerificationOK</c> objects.
             The list will be empty if the certificate couldn't be verified.
             </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
             <seealso cref="M:iText.Signatures.RootStoreVerifier.Verify(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.SwitchToPreviousRevision">
             <summary>Switches to the previous revision.</summary>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.GetCRLsFromDSS">
             <summary>Gets a list of X509CRL objects from a Document Security Store.</summary>
             <returns>a list of CRLs</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.GetOCSPResponsesFromDSS">
             <summary>Gets OCSP responses from the Document Security Store.</summary>
             <returns>a list of BasicOCSPResp objects</returns>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-        </member>
-        <member name="M:iText.Signatures.LtvVerifier.InitLtvVerifier(iText.Kernel.Pdf.PdfDocument)">
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.LtvVerifier.CoversWholeDocument">
             <summary>
@@ -979,7 +900,6 @@
             and throws an exception if the document was altered
             </summary>
             <returns>a PdfPKCS7 object</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="T:iText.Signatures.OcspClientBouncyCastle">
             <summary>OcspClient implementation using BouncyCastle.</summary>
@@ -1023,16 +943,6 @@
             <param name="issuerCert">certificate of the issues</param>
             <param name="serialNumber">serial number</param>
             <returns>an OCSP request</returns>
-            <exception cref="T:Org.BouncyCastle.Ocsp.OcspException"/>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="!:Org.BouncyCastle.Operator.OperatorException"/>
-            <exception cref="T:Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
-        </member>
-        <member name="M:iText.Signatures.OcspClientBouncyCastle.GetOcspResponse(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.String)">
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:Org.BouncyCastle.Ocsp.OcspException"/>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="!:Org.BouncyCastle.Operator.OperatorException"/>
         </member>
         <member name="T:iText.Signatures.OCSPVerifier">
             <summary>
@@ -1061,12 +971,10 @@
             <param name="signCert">the certificate that needs to be checked</param>
             <param name="issuerCert">its issuer</param>
             <returns>
-            a list of <code>VerificationOK</code> objects.
+            a list of <c>VerificationOK</c> objects.
             The list will be empty if the certificate couldn't be verified.
             </returns>
             <seealso cref="M:iText.Signatures.RootStoreVerifier.Verify(Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.OCSPVerifier.Verify(Org.BouncyCastle.Ocsp.BasicOcspResp,Org.BouncyCastle.X509.X509Certificate,Org.BouncyCastle.X509.X509Certificate,System.DateTime)">
             <summary>Verifies a certificate against a single OCSP response</summary>
@@ -1080,8 +988,6 @@
             <see langword="true"/>
             , in case successful check, otherwise false.
             </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.OCSPVerifier.IsValidResponse(Org.BouncyCastle.Ocsp.BasicOcspResp,Org.BouncyCastle.X509.X509Certificate)">
             <summary>
@@ -1092,8 +998,6 @@
             <param name="ocspResp">the OCSP response</param>
             <param name="issuerCert">the issuer certificate. This certificate is considered trusted and valid by this method.
                 </param>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.OCSPVerifier.IsValidResponse(Org.BouncyCastle.Ocsp.BasicOcspResp,Org.BouncyCastle.X509.X509Certificate,System.DateTime)">
             <summary>
@@ -1105,7 +1009,6 @@
             <param name="issuerCert">the issuer certificate. This certificate is considered trusted and valid by this method.
                 </param>
             <param name="signDate">sign date</param>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.OCSPVerifier.IsSignatureValid(Org.BouncyCastle.Ocsp.BasicOcspResp,Org.BouncyCastle.X509.X509Certificate)">
             <summary>Checks if an OCSP response is genuine</summary>
@@ -1257,23 +1160,20 @@
             <param name="certChain">the certificate chain</param>
             <param name="interfaceDigest">the interface digest</param>
             <param name="hashAlgorithm">the hash algorithm</param>
-            <param name="provider">the provider or <code>null</code> for the default provider</param>
-            <param name="hasRSAdata"><CODE>true</CODE> if the sub-filter is adbe.pkcs7.sha1</param>
-            <exception cref="T:Org.BouncyCastle.Security.InvalidKeyException">on error</exception>
-            <exception cref="!:Java.Security.NoSuchProviderException">on error</exception>
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException">on error</exception>
+            <param name="provider">the provider or <c>null</c> for the default provider</param>
+            <param name="hasRSAdata"><c>true</c> if the sub-filter is adbe.pkcs7.sha1</param>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.#ctor(System.Byte[],System.Byte[])">
             <summary>Use this constructor if you want to verify a signature using the sub-filter adbe.x509.rsa_sha1.</summary>
             <param name="contentsKey">the /Contents key</param>
             <param name="certsKey">the /Cert key</param>
-            <param name="provider">the provider or <code>null</code> for the default provider</param>
+            <param name="provider">the provider or <c>null</c> for the default provider</param>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.#ctor(System.Byte[],iText.Kernel.Pdf.PdfName)">
             <summary>Use this constructor if you want to verify a signature.</summary>
             <param name="contentsKey">the /Contents key</param>
             <param name="filterSubtype">the filtersubtype</param>
-            <param name="provider">the provider or <code>null</code> for the default provider</param>
+            <param name="provider">the provider or <c>null</c> for the default provider</param>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetSignName">
             <summary>Getter for property sigName.</summary>
@@ -1322,8 +1222,7 @@
             <returns>the version of the PKCS#7 "SignerInfo" object.</returns>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.digestAlgorithmOid">
-            <summary>The ID of the digest algorithm, e.g.</summary>
-            <remarks>The ID of the digest algorithm, e.g. "2.16.840.1.101.3.4.2.1".</remarks>
+            <summary>The ID of the digest algorithm, e.g. "2.16.840.1.101.3.4.2.1".</summary>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.messageDigest">
             <summary>The object that will create the digest</summary>
@@ -1335,12 +1234,10 @@
             <summary>The digest attributes</summary>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetDigestAlgorithmOid">
-            <summary>Getter for the ID of the digest algorithm, e.g.</summary>
-            <remarks>Getter for the ID of the digest algorithm, e.g. "2.16.840.1.101.3.4.2.1"</remarks>
+            <summary>Getter for the ID of the digest algorithm, e.g. "2.16.840.1.101.3.4.2.1"</summary>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetHashAlgorithm">
-            <summary>Returns the name of the digest algorithm, e.g.</summary>
-            <remarks>Returns the name of the digest algorithm, e.g. "SHA256".</remarks>
+            <summary>Returns the name of the digest algorithm, e.g. "SHA256".</summary>
             <returns>the digest algorithm name, e.g. "SHA256"</returns>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.digestEncryptionAlgorithmOid">
@@ -1350,8 +1247,7 @@
             <summary>Getter for the digest encryption algorithm</summary>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetDigestAlgorithm">
-            <summary>Get the algorithm used to calculate the message digest, e.g.</summary>
-            <remarks>Get the algorithm used to calculate the message digest, e.g. "SHA1withRSA".</remarks>
+            <summary>Get the algorithm used to calculate the message digest, e.g. "SHA1withRSA".</summary>
             <returns>the algorithm used to calculate the message digest</returns>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.externalDigest">
@@ -1365,8 +1261,8 @@
             <param name="digest">the digest. This is the actual signature</param>
             <param name="rsaData">the extra data that goes into the data tag in PKCS#7</param>
             <param name="digestEncryptionAlgorithm">
-            the encryption algorithm. It may must be <CODE>null</CODE> if the <CODE>digest</CODE>
-            is also <CODE>null</CODE>. If the <CODE>digest</CODE> is not <CODE>null</CODE>
+            the encryption algorithm. It may must be <c>null</c> if the <c>digest</c>
+            is also <c>null</c>. If the <c>digest</c> is not <c>null</c>
             then it may be "RSA" or "DSA"
             </param>
         </member>
@@ -1379,16 +1275,6 @@
         <member name="F:iText.Signatures.PdfPKCS7.rsaData">
             <summary>The RSA data</summary>
         </member>
-        <member name="M:iText.Signatures.PdfPKCS7.InitSignature(Org.BouncyCastle.Crypto.ICipherParameters)">
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
-            <exception cref="!:Java.Security.NoSuchProviderException"/>
-            <exception cref="T:Org.BouncyCastle.Security.InvalidKeyException"/>
-        </member>
-        <member name="M:iText.Signatures.PdfPKCS7.InitSignature(Org.BouncyCastle.Crypto.AsymmetricKeyParameter)">
-            <exception cref="T:Org.BouncyCastle.Security.SecurityUtilityException"/>
-            <exception cref="!:Java.Security.NoSuchProviderException"/>
-            <exception cref="T:Org.BouncyCastle.Security.InvalidKeyException"/>
-        </member>
         <member name="M:iText.Signatures.PdfPKCS7.Update(System.Byte[],System.Int32,System.Int32)">
             <summary>Update the digest with the specified bytes.</summary>
             <remarks>
@@ -1398,7 +1284,6 @@
             <param name="buf">the data buffer</param>
             <param name="off">the offset in the data buffer</param>
             <param name="len">the data length</param>
-            <exception cref="!:Java.Security.SignatureException">on error</exception>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS1">
             <summary>Gets the bytes for the PKCS#1 object.</summary>
@@ -1412,7 +1297,7 @@
             <summary>Gets the bytes for the PKCS7SignedData object.</summary>
             <remarks>
             Gets the bytes for the PKCS7SignedData object. Optionally the authenticatedAttributes
-            in the signerInfo can also be set. If either of the parameters is <CODE>null</CODE>, none will be used.
+            in the signerInfo can also be set. If either of the parameters is <c>null</c>, none will be used.
             </remarks>
             <param name="secondDigest">the digest in the authenticatedAttributes</param>
             <returns>the bytes for the PKCS7SignedData object</returns>
@@ -1464,7 +1349,6 @@
             </remarks>
             <param name="timeStampToken">byte[] - time stamp token, DER encoded signedData</param>
             <returns>ASN1EncodableVector</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.GetAuthenticatedAttributeBytes(System.Byte[],System.Byte[],System.Collections.Generic.ICollection{System.Byte[]},iText.Signatures.PdfSigner.CryptoStandard)">
             <summary>When using authenticatedAttributes the authentication process is different.</summary>
@@ -1473,8 +1357,7 @@
             The document digest is generated and put inside the attribute. The signing is done over the DER encoded
             authenticatedAttributes. This method provides that encoding and the parameters must be
             exactly the same as in
-            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>
-            .
+            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>.
             <para />
             A simple example:
             <para />
@@ -1510,8 +1393,7 @@
             The document digest is generated and put inside the attribute. The signing is done over the DER encoded
             authenticatedAttributes. This method provides that encoding and the parameters must be
             exactly the same as in
-            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>
-            .
+            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>.
             <para />
             A simple example:
             <para />
@@ -1544,8 +1426,7 @@
             <summary>
             This method provides that encoding and the parameters must be
             exactly the same as in
-            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>
-            .
+            <see cref="M:iText.Signatures.PdfPKCS7.GetEncodedPKCS7(System.Byte[])"/>.
             </summary>
             <param name="secondDigest">the content digest</param>
             <returns>the byte array representation of the authenticatedAttributes ready to be signed</returns>
@@ -1567,13 +1448,7 @@
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.Verify">
             <summary>Verify the digest.</summary>
-            <returns><CODE>true</CODE> if the signature checks out, <CODE>false</CODE> otherwise</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException">
-            if this signature object is not initialized properly,
-            the passed-in signature is improperly encoded or of the wrong type, if this signature algorithm is unable to
-            process the input data provided, if the public key is invalid or if security provider or signature algorithm
-            are not recognized, etc.
-            </exception>
+            <returns><c>true</c> if the signature checks out, <c>false</c> otherwise</returns>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.VerifySignatureIntegrityAndAuthenticity">
             <summary>
@@ -1594,21 +1469,11 @@
             <see cref="M:iText.Signatures.SignatureUtil.SignatureCoversWholeDocument(System.String)"/>
             method.
             </remarks>
-            <returns><CODE>true</CODE> if the signature checks out, <CODE>false</CODE> otherwise</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException">
-            if this signature object is not initialized properly,
-            the passed-in signature is improperly encoded or of the wrong type, if this signature algorithm is unable to
-            process the input data provided, if the public key is invalid or if security provider or signature algorithm
-            are not recognized, etc.
-            </exception>
-        </member>
-        <member name="M:iText.Signatures.PdfPKCS7.VerifySigAttributes(System.Byte[])">
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
+            <returns><c>true</c> if the signature checks out, <c>false</c> otherwise</returns>
         </member>
         <member name="M:iText.Signatures.PdfPKCS7.VerifyTimestampImprint">
             <summary>Checks if the timestamp refers to this document.</summary>
             <returns>true if it checks false otherwise</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException">on error</exception>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.certs">
             <summary>All the X.509 certificates in no particular order.</summary>
@@ -1668,7 +1533,6 @@
         <member name="M:iText.Signatures.PdfPKCS7.FindOcsp(Org.BouncyCastle.Asn1.Asn1Sequence)">
             <summary>Helper method that creates the BasicOCSPResp object.</summary>
             <param name="seq"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="F:iText.Signatures.PdfPKCS7.isTsp">
             <summary>True if there's a PAdES LTV time stamp.</summary>
@@ -1719,8 +1583,7 @@
             which usually has a value either
             <see cref="F:iText.Kernel.Pdf.PdfName.Adbe_pkcs7_detached"/>
             or
-            <see cref="F:iText.Kernel.Pdf.PdfName.ETSI_CAdES_DETACHED"/>
-            .
+            <see cref="F:iText.Kernel.Pdf.PdfName.ETSI_CAdES_DETACHED"/>.
             </returns>
         </member>
         <member name="M:iText.Signatures.PdfSignature.GetType">
@@ -1730,13 +1593,20 @@
             for a signature
             dictionary or
             <see cref="F:iText.Kernel.Pdf.PdfName.DocTimeStamp"/>
+            for a timestamp signature dictionary.
+            </summary>
+            <remarks>
+            The type of PDF object that the wrapped dictionary describes; if present, shall be
+            <see cref="F:iText.Kernel.Pdf.PdfName.Sig"/>
+            for a signature
+            dictionary or
+            <see cref="F:iText.Kernel.Pdf.PdfName.DocTimeStamp"/>
             for a timestamp signature dictionary. Shall be not null if it's value
             is
             <see cref="F:iText.Kernel.Pdf.PdfName.DocTimeStamp"/>
             . The default value is:
-            <see cref="F:iText.Kernel.Pdf.PdfName.Sig"/>
-            .
-            </summary>
+            <see cref="F:iText.Kernel.Pdf.PdfName.Sig"/>.
+            </remarks>
             <returns>
             a
             <see cref="T:iText.Kernel.Pdf.PdfName"/>
@@ -1846,8 +1716,7 @@
             <summary>Provides convenient methods to make a signature appearance.</summary>
             <remarks>
             Provides convenient methods to make a signature appearance. Use it in conjunction with
-            <see cref="T:iText.Signatures.PdfSigner"/>
-            .
+            <see cref="T:iText.Signatures.PdfSigner"/>.
             </remarks>
         </member>
         <member name="F:iText.Signatures.PdfSignatureAppearance.TOP_SECTION">
@@ -2140,14 +2009,9 @@
         </member>
         <member name="M:iText.Signatures.PdfSignatureAppearance.GetAppearance">
             <summary>Constructs appearance (top-level) for a signature.</summary>
-            <remarks>
-            Constructs appearance (top-level) for a signature.
-            <para />
-            Consult <A HREF="http://partners.adobe.com/asn/developer/pdfs/tn/PPKAppearances.pdf">PPKAppearances.pdf</A>
-            for further details.
-            </remarks>
+            <seealso><a href="http://partners.adobe.com/asn/developer/pdfs/tn/ppkappearances.pdf">PPKAppearances.pdf</a> for further details
+                </seealso>
             <returns>a top-level signature appearance</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSignatureAppearance.GetSignDate">
             <summary>Returns the signature date.</summary>
@@ -2199,12 +2063,17 @@
             <summary>
             Gets the
             <see cref="T:iText.Signatures.PdfSignatureApp"/>
+            from this dictionary.
+            </summary>
+            <remarks>
+            Gets the
+            <see cref="T:iText.Signatures.PdfSignatureApp"/>
             from this dictionary. If it
             does not exist, it adds a new
             <see cref="T:iText.Signatures.PdfSignatureApp"/>
             and
             returns this instance.
-            </summary>
+            </remarks>
             <returns>
             
             <see cref="T:iText.Signatures.PdfSignatureApp"/>
@@ -2296,7 +2165,6 @@
             <param name="reader">PdfReader that reads the PDF file</param>
             <param name="outputStream">OutputStream to write the signed PDF file</param>
             <param name="append">boolean to indicate whether the signing should happen in append mode or not</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.#ctor(iText.Kernel.Pdf.PdfReader,System.IO.Stream,System.String,System.Boolean)">
             <summary>Creates a PdfSigner instance.</summary>
@@ -2309,7 +2177,6 @@
             <param name="outputStream">OutputStream to write the signed PDF file</param>
             <param name="path">File to which the output is temporarily written</param>
             <param name="append">boolean to indicate whether the signing should happen in append mode or not</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.#ctor(iText.Kernel.Pdf.PdfReader,System.IO.Stream,iText.Kernel.Pdf.StampingProperties)">
             <summary>Creates a PdfSigner instance.</summary>
@@ -2326,7 +2193,6 @@
             for the signing document. Note that encryption will be
             preserved regardless of what is set in properties.
             </param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.#ctor(iText.Kernel.Pdf.PdfReader,System.IO.Stream,System.String,iText.Kernel.Pdf.StampingProperties)">
             <summary>Creates a PdfSigner instance.</summary>
@@ -2344,7 +2210,6 @@
             for the signing document. Note that encryption will be
             preserved regardless of what is set in properties.
             </param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.GetSignDate">
             <summary>Gets the signature date.</summary>
@@ -2361,19 +2226,21 @@
             customize the appearance of the signature.
             <para />
             Be aware:
-            <ul>
-            <li>If you create new signature field (either use
+            <list type="bullet">
+            <item><description>If you create new signature field (either use
             <see cref="M:iText.Signatures.PdfSigner.SetFieldName(System.String)"/>
             with
             the name that doesn't exist in the document or don't specify it at all) then
-            the signature is invisible by default.</li>
-            <li>If you sign already existing field, then the signature appearance object
+            the signature is invisible by default.
+            </description></item>
+            <item><description>If you sign already existing field, then the signature appearance object
             is modified to have all the properties (page num., rect etc.) consistent with
             the state of the field (<strong>if you customized the appearance object
             before the
             <see cref="M:iText.Signatures.PdfSigner.SetFieldName(System.String)"/>
-            call you'll have to do it again</strong>)</li>
-            </ul>
+            call you'll have to do it again</strong>)
+            </description></item>
+            </list>
             <para />
             </remarks>
             <returns>
@@ -2387,8 +2254,7 @@
             <remarks>
             Returns the document's certification level.
             For possible values see
-            <see cref="M:iText.Signatures.PdfSigner.SetCertificationLevel(System.Int32)"/>
-            .
+            <see cref="M:iText.Signatures.PdfSigner.SetCertificationLevel(System.Int32)"/>.
             </remarks>
             <returns>The certified status.</returns>
         </member>
@@ -2396,20 +2262,20 @@
             <summary>Sets the document's certification level.</summary>
             <param name="certificationLevel">
             a new certification level for a document.
-            Possible values are: <ul>
-            <li>
+            Possible values are: <list type="bullet">
+            <item><description>
             <see cref="F:iText.Signatures.PdfSigner.NOT_CERTIFIED"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Signatures.PdfSigner.CERTIFIED_NO_CHANGES_ALLOWED"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Signatures.PdfSigner.CERTIFIED_FORM_FILLING"/>
-            </li>
-            <li>
+            </description></item>
+            <item><description>
             <see cref="F:iText.Signatures.PdfSigner.CERTIFIED_FORM_FILLING_AND_ANNOTATIONS"/>
-            </li>
-            </ul>
+            </description></item>
+            </list>
             </param>
         </member>
         <member name="M:iText.Signatures.PdfSigner.GetFieldName">
@@ -2483,11 +2349,8 @@
             <param name="crlList">the CRL list</param>
             <param name="ocspClient">the OCSP client</param>
             <param name="tsaClient">the Timestamp client</param>
-            <param name="externalDigest">an implementation that provides the digest</param>
             <param name="estimatedSize">the reserved size for the signature. It will be estimated if 0</param>
             <param name="sigtype">Either Signature.CMS or Signature.CADES</param>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.SignDetached(iText.Signatures.IExternalSignature,Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.ICollection{iText.Signatures.ICrlClient},iText.Signatures.IOcspClient,iText.Signatures.ITSAClient,System.Int32,iText.Signatures.PdfSigner.CryptoStandard,iText.Signatures.SignaturePolicyInfo)">
             <summary>Signs the document using the detached mode, CMS or CAdES equivalent.</summary>
@@ -2502,12 +2365,9 @@
             <param name="crlList">the CRL list</param>
             <param name="ocspClient">the OCSP client</param>
             <param name="tsaClient">the Timestamp client</param>
-            <param name="externalDigest">an implementation that provides the digest</param>
             <param name="estimatedSize">the reserved size for the signature. It will be estimated if 0</param>
             <param name="sigtype">Either Signature.CMS or Signature.CADES</param>
             <param name="signaturePolicy">the signature policy (for EPES signatures)</param>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.SignDetached(iText.Signatures.IExternalSignature,Org.BouncyCastle.X509.X509Certificate[],System.Collections.Generic.ICollection{iText.Signatures.ICrlClient},iText.Signatures.IOcspClient,iText.Signatures.ITSAClient,System.Int32,iText.Signatures.PdfSigner.CryptoStandard,Org.BouncyCastle.Asn1.Esf.SignaturePolicyIdentifier)">
             <summary>Signs the document using the detached mode, CMS or CAdES equivalent.</summary>
@@ -2522,12 +2382,9 @@
             <param name="crlList">the CRL list</param>
             <param name="ocspClient">the OCSP client</param>
             <param name="tsaClient">the Timestamp client</param>
-            <param name="externalDigest">an implementation that provides the digest</param>
             <param name="estimatedSize">the reserved size for the signature. It will be estimated if 0</param>
             <param name="sigtype">Either Signature.CMS or Signature.CADES</param>
             <param name="signaturePolicy">the signature policy (for EPES signatures)</param>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.SignExternalContainer(iText.Signatures.IExternalSignatureContainer,System.Int32)">
             <summary>Sign the document using an external container, usually a PKCS7.</summary>
@@ -2540,8 +2397,6 @@
             </remarks>
             <param name="externalSignatureContainer">the interface providing the actual signing</param>
             <param name="estimatedSize">the reserved size for the signature</param>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.Timestamp(iText.Signatures.ITSAClient,System.String)">
             <summary>Signs a document with a PAdES-LTV Timestamp.</summary>
@@ -2556,8 +2411,6 @@
             the signature name or null to have a name generated
             automatically
             </param>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.SignDeferred(iText.Kernel.Pdf.PdfDocument,System.String,System.IO.Stream,iText.Signatures.IExternalSignatureContainer)">
             <summary>Signs a PDF where space was already reserved.</summary>
@@ -2568,8 +2421,6 @@
             the signature container doing the actual signing. Only the
             method ExternalSignatureContainer.sign is used
             </param>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.ProcessCrl(Org.BouncyCastle.X509.X509Certificate,System.Collections.Generic.ICollection{iText.Signatures.ICrlClient})">
             <summary>Processes a CRL list.</summary>
@@ -2588,15 +2439,14 @@
             This is the first method to be called when using external signatures. The general sequence is:
             preClose(), getDocumentBytes() and close().
             <para />
-            <CODE>exclusionSizes</CODE> must contain at least
-            the <CODE>PdfName.CONTENTS</CODE> key with the size that it will take in the
+            <c>exclusionSizes</c> must contain at least
+            the <c>PdfName.CONTENTS</c> key with the size that it will take in the
             document. Note that due to the hex string coding this size should be byte_size*2+2.
             </remarks>
             <param name="exclusionSizes">
             Map with names and sizes to be excluded in the signature
             calculation. The key is a PdfName and the value an Integer. At least the /Contents must be present
             </param>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.Signatures.PdfSigner.GetRangeStream">
             <summary>Gets the document bytes that are hashable when using external signatures.</summary>
@@ -2607,15 +2457,13 @@
             ,
             <see cref="M:iText.Signatures.PdfSigner.GetRangeStream"/>
             and
-            <see cref="M:iText.Signatures.PdfSigner.Close(iText.Kernel.Pdf.PdfDictionary)"/>
-            .
+            <see cref="M:iText.Signatures.PdfSigner.Close(iText.Kernel.Pdf.PdfDictionary)"/>.
             </remarks>
             <returns>
             The
             <see cref="T:System.IO.Stream"/>
             of bytes to be signed.
             </returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.Close(iText.Kernel.Pdf.PdfDictionary)">
             <summary>This is the last method to be called when using external signatures.</summary>
@@ -2625,20 +2473,17 @@
             <para />
             update is a PdfDictionary that must have exactly the
             same keys as the ones provided in
-            <see cref="!:PreClose(System.Collections.Generic.IDictionary&lt;K, V&gt;)"/>
-            .
+            <see cref="!:PreClose(System.Collections.Generic.IDictionary&lt;K, V&gt;)"/>.
             </remarks>
             <param name="update">
             a PdfDictionary with the key/value that will fill the holes defined
             in
             <see cref="!:PreClose(System.Collections.Generic.IDictionary&lt;K, V&gt;)"/>
             </param>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.Signatures.PdfSigner.GetUnderlyingSource">
             <summary>Returns the underlying source.</summary>
             <returns>The underlying source</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.PdfSigner.AddDocMDP(iText.Signatures.PdfSignature)">
             <summary>Adds keys to the signature dictionary that define the certification level and the permissions.</summary>
@@ -2716,11 +2561,10 @@
         </member>
         <member name="M:iText.Signatures.PrivateKeySignature.Sign(System.Byte[])">
             <summary><inheritDoc/></summary>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="T:iText.Signatures.RootStoreVerifier">
             <summary>
-            Verifies a certificate against a <code>KeyStore</code>
+            Verifies a certificate against a <c>KeyStore</c>
             containing trusted anchors.
             </summary>
         </member>
@@ -2741,11 +2585,9 @@
             <param name="issuerCert">the issuer certificate</param>
             <param name="signDate">the date the certificate needs to be valid</param>
             <returns>
-            a list of <code>VerificationOK</code> objects.
+            a list of <c>VerificationOK</c> objects.
             The list will be empty if the certificate couldn't be verified.
             </returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.Signatures.SecurityIDs">
             <summary>A list of IDs that are used by the security classes</summary>
@@ -2870,6 +2712,11 @@
             Prepares an
             <see cref="T:iText.Signatures.PdfPKCS7"/>
             instance for the given signature.
+            </summary>
+            <remarks>
+            Prepares an
+            <see cref="T:iText.Signatures.PdfPKCS7"/>
+            instance for the given signature.
             This method handles signature parsing and might throw an exception if
             signature is malformed.
             <para />
@@ -2882,9 +2729,8 @@
             use
             <see cref="M:iText.Signatures.SignatureUtil.SignatureCoversWholeDocument(System.String)"/>
             method.
-            </summary>
+            </remarks>
             <param name="name">the signature field name</param>
-            <param name="provider">the security provider or null for the default provider</param>
             <returns>
             a
             <see cref="T:iText.Signatures.PdfPKCS7"/>
@@ -2894,6 +2740,11 @@
         </member>
         <member name="M:iText.Signatures.SignatureUtil.ReadSignatureData(System.String)">
             <summary>
+            Prepares an
+            <see cref="T:iText.Signatures.PdfPKCS7"/>
+            instance for the given signature.
+            </summary>
+            <remarks>
             Prepares an
             <see cref="T:iText.Signatures.PdfPKCS7"/>
             instance for the given signature.
@@ -2912,9 +2763,8 @@
             revision please use
             <see cref="M:iText.Signatures.SignatureUtil.SignatureCoversWholeDocument(System.String)"/>
             method.
-            </summary>
+            </remarks>
             <param name="signatureFieldName">the signature field name</param>
-            <param name="securityProvider">the security provider or null for the default provider</param>
             <returns>
             a
             <see cref="T:iText.Signatures.PdfPKCS7"/>
@@ -2926,7 +2776,7 @@
             <summary>Gets the signature dictionary, the one keyed by /V.</summary>
             <param name="name">the field name</param>
             <returns>
-            the signature dictionary keyed by /V or <CODE>null</CODE> if the field is not
+            the signature dictionary keyed by /V or <c>null</c> if the field is not
             a signature
             </returns>
         </member>
@@ -2942,7 +2792,6 @@
             <summary>Extracts a revision from the document.</summary>
             <param name="field">the signature field name</param>
             <returns>an InputStream covering the revision. Returns null if it's not a signature field</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.Signatures.SignatureUtil.SignatureCoversWholeDocument(System.String)">
             <summary>Checks if the signature covers the entire document (except for signature's Contents) or just a part of it.
@@ -2969,20 +2818,12 @@
             <param name="name">name of the field</param>
             <returns>boolean does the signature field exist</returns>
         </member>
-        <member name="M:iText.Signatures.SignatureUtil.ContentsChecker.#ctor(iText.IO.Source.IRandomAccessSource)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.Signatures.SignatureUtil.ContentsChecker.ReadDictionary(System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.Signatures.SignUtils.ParseCrlFromStream(System.IO.Stream)">
             <summary>
             Parses a CRL from an input Stream.
             </summary>
             <param name="input">The input Stream holding the unparsed CRL.</param>
             <returns>The parsed CRL object.</returns>
-            <exception cref="T:Org.BouncyCastle.Security.Certificates.CertificateException"/>
-            <exception cref="T:Org.BouncyCastle.Security.Certificates.CrlException"/>
         </member>
         <member name="M:iText.Signatures.SignUtils.HasUnsupportedCriticalExtension(Org.BouncyCastle.X509.X509Certificate)">
              <summary>
@@ -2996,7 +2837,6 @@
              </summary>
              <param name="cert"></param>
              <returns></returns>
-             <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="T:iText.Signatures.TSAClientBouncyCastle">
             <summary>
@@ -3077,7 +2917,7 @@
         </member>
         <member name="M:iText.Signatures.TSAClientBouncyCastle.GetTSAReqPolicy">
             <summary>Gets the TSA request policy that will be used when retrieving timestamp token.</summary>
-            <returns>policy id, or <code>null</code> if not set</returns>
+            <returns>policy id, or <c>null</c> if not set</returns>
         </member>
         <member name="M:iText.Signatures.TSAClientBouncyCastle.SetTSAReqPolicy(System.String)">
             <summary>Sets the TSA request policy that will be used when retrieving timestamp token.</summary>
@@ -3086,7 +2926,6 @@
         <member name="M:iText.Signatures.TSAClientBouncyCastle.GetMessageDigest">
             <summary>Gets the MessageDigest to digest the data imprint</summary>
             <returns>the digest algorithm name</returns>
-            <exception cref="T:Org.BouncyCastle.Security.GeneralSecurityException"/>
         </member>
         <member name="M:iText.Signatures.TSAClientBouncyCastle.GetTimeStampToken(System.Byte[])">
             <summary>Get RFC 3161 timeStampToken.</summary>
@@ -3096,13 +2935,10 @@
             </remarks>
             <param name="imprint">data imprint to be time-stamped</param>
             <returns>encoded, TSA signed data of the timeStampToken</returns>
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="!:Org.BouncyCastle.Tsp.TSPException"/>
         </member>
         <member name="M:iText.Signatures.TSAClientBouncyCastle.GetTSAResponse(System.Byte[])">
             <summary>Get timestamp token - communications layer</summary>
             <returns>- byte[] - TSA response, raw bytes (RFC 3161 encoded)</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.Signatures.VerificationException">
             <summary>An exception that is thrown when something is wrong with a certificate.</summary>

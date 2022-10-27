@@ -7,7 +7,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeManagePrintJobsVm : ManagePrintJobsViewModel
     {
-        public DesignTimeManagePrintJobsVm() : base(new DesignTimeJobInfoQueue(), new DesignTimeDragAndDropHandler(), new JobInfoManager(null, null), new DispatcherWrapper(), new DesignTimeTranslationUpdater(), new DesignTimeApplicationNameProvider())
+        public DesignTimeManagePrintJobsVm() :
+            base(new DesignTimeJobInfoQueue(),
+                new DesignTimeDragAndDropHandler(),
+                new JobInfoManager(null, null),
+                new DispatcherWrapper(), new DesignTimeTranslationUpdater(),
+                new DesignTimeApplicationNameProvider(),
+                new DesignTimeVersionHelper())
         {
         }
     }

@@ -160,17 +160,17 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PdfSettings)) return false;
 			PdfSettings v = o as PdfSettings;
 			
-			if (!CompressColorAndGray.Equals(v.CompressColorAndGray)) return false;
-			if (!CompressMonochrome.Equals(v.CompressMonochrome)) return false;
-			if (!Security.Equals(v.Security)) return false;
-			if (!Signature.Equals(v.Signature)) return false;
-			if (!ColorModel.Equals(v.ColorModel)) return false;
-			if (!DocumentView.Equals(v.DocumentView)) return false;
-			if (!EnablePdfAValidation.Equals(v.EnablePdfAValidation)) return false;
-			if (!NoFonts.Equals(v.NoFonts)) return false;
-			if (!PageOrientation.Equals(v.PageOrientation)) return false;
-			if (!PageView.Equals(v.PageView)) return false;
-			if (!ViewerStartsOnPage.Equals(v.ViewerStartsOnPage)) return false;
+			if (!Object.Equals(CompressColorAndGray, v.CompressColorAndGray)) return false;
+			if (!Object.Equals(CompressMonochrome, v.CompressMonochrome)) return false;
+			if (!Object.Equals(Security, v.Security)) return false;
+			if (!Object.Equals(Signature, v.Signature)) return false;
+			if (!Object.Equals(ColorModel, v.ColorModel)) return false;
+			if (!Object.Equals(DocumentView, v.DocumentView)) return false;
+			if (!Object.Equals(EnablePdfAValidation, v.EnablePdfAValidation)) return false;
+			if (!Object.Equals(NoFonts, v.NoFonts)) return false;
+			if (!Object.Equals(PageOrientation, v.PageOrientation)) return false;
+			if (!Object.Equals(PageView, v.PageView)) return false;
+			if (!Object.Equals(ViewerStartsOnPage, v.ViewerStartsOnPage)) return false;
 			return true;
 		}
 		

@@ -1,9 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using System;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper
 {
@@ -32,16 +29,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper
         void RemoveAction();
     }
 
-    public class PresenterActionFacade<TActionUserControl> : IPresenterActionFacade
-        where TActionUserControl : IActionUserControl
+    public class PresenterActionFacade<TActionUserControl, TActionViewModel> : IPresenterActionFacade
+        where TActionUserControl : IActionView
+        where TActionViewModel : IActionViewModel
     {
-        private readonly IActionOrderHelper _actionOrderHelper;
-
-        public PresenterActionFacade(TActionUserControl actionUserControl, IActionOrderHelper actionOrderHelper)
+        public PresenterActionFacade(TActionViewModel viewModel)
         {
-            _actionOrderHelper = actionOrderHelper;
-            OverlayViewName = actionUserControl.GetType().Name;
-            ActionViewModel = actionUserControl.ViewModel;
+            OverlayViewName = typeof(TActionUserControl).Name;
+            ActionViewModel = viewModel;
         }
 
         public string OverlayViewName { get; }

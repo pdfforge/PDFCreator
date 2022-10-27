@@ -14,10 +14,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
-        //SmtpPasswordStep
-        public string SmtpPasswordOverlayTitle { get; set; } = "SMTP Mail";
-
-        public string SmtpAccountLabel { get; set; } = "SMTP Account:";
+        //Password Overlay
         public string SmtpServerPasswordLabel { get; set; } = "SMTP Server Password:";
 
         //Edit Command
@@ -64,8 +61,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public EnumTranslation<EmailFormatSetting>[] EmailFormatValues { get; set; } = EnumTranslation<EmailFormatSetting>.CreateDefaultEnumTranslation();
 
         public string MultipleRecipientsHintText { get; set; } = "Hint: Multiple recipients can be separated by commas";
-
-        public string Edit { get; set; } = "Edit";
 
         public string BlankToField { get; set; } = "Blank 'To' field";
         public string RecipientsToText { get; set; } = "To:";

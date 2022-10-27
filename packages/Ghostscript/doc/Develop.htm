@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -45,7 +36,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -540,17 +530,10 @@ DCT (JPEG):
 JBIG2:
 <a href="../base/sjbig2.h">base/sjbig2.h</a>,
 <a href="../base/sjbig2.c">base/sjbig2.c</a>
-or
-<a href="../base/sjbig2_luratech.h">base/sjbig2_luratech.h</a>,
-<a href="../base/sjbig2_luratech.c">base/sjbig2_luratech.c</a>.
-
 <dt>
 JPX (JPEG 2000):
 <a href="../base/sjpx_openjpeg.h">base/sjpx_openjpeg.h</a>,
 <a href="../base/sjpx_openjpeg.c">base/sjpx_openjpeg.c</a>
-or
-<a href="../base/sjpx_luratech.h">base/sjpx_luratech.h</a>,
-<a href="../base/sjpx_luratech.c">base/sjpx_luratech.c</a>.
 <dt>
 Other compression/decompression:
 <dd>
@@ -1063,7 +1046,7 @@ virtual procedure in the device color, either <code>fill_rectangle</code>
 or <code>fill_mask</code> to actually paint pixels.  For rectangle fills,
 pure colors call the device's <code>fill_rectangle</code> procedure;
 halftones and tiled Patterns call the device's
-<code>tile_rectangle</code>; shaded Patterns, and painting operations
+<code>strip_tile_rectangle</code>; shaded Patterns, and painting operations
 that involve a RasterOp, do something more complicated.
 
 <dl>
@@ -1311,8 +1294,6 @@ Alpha channel and compositing:
 <dd>
 <a href="../base/gsalpha.c">base/gsalpha.c</a>,
 <a href="../base/gsalpha.h">base/gsalpha.h</a>,
-<a href="../base/gsalphac.c">base/gsalphac.c</a>,
-<a href="../base/gsalphac.h">base/gsalphac.h</a>,
 <a href="../base/gsdpnext.h">base/gsdpnext.h</a>,
 <a href="../base/gxalpha.h">base/gxalpha.h</a>.
 
@@ -4759,7 +4740,7 @@ Edit the output file name in the line 5.
 <hr>
 
 <p>
-<small>Copyright &copy; 2001-2019 Artifex Software, Inc.  All rights
+<small>Copyright &copy; 2001-2021 Artifex Software, Inc.  All rights
 reserved.</small>
 
 <p>
@@ -4773,7 +4754,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -4801,7 +4782,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

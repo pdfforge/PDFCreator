@@ -12,10 +12,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             InitializeComponent();
             TransposerHelper.Register(this, vm);
         }
-
-        private void FrameworkElement_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

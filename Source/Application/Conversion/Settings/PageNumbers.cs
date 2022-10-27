@@ -207,20 +207,20 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PageNumbers)) return false;
 			PageNumbers v = o as PageNumbers;
 			
-			if (!AlternateCorner.Equals(v.AlternateCorner)) return false;
-			if (!BeginOn.Equals(v.BeginOn)) return false;
-			if (!BeginWith.Equals(v.BeginWith)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!FontColor.Equals(v.FontColor)) return false;
-			if (!FontFile.Equals(v.FontFile)) return false;
-			if (!FontName.Equals(v.FontName)) return false;
-			if (!FontSize.Equals(v.FontSize)) return false;
-			if (!Format.Equals(v.Format)) return false;
-			if (!HorizontalOffset.Equals(v.HorizontalOffset)) return false;
-			if (!Position.Equals(v.Position)) return false;
-			if (!UnitOfMeasurement.Equals(v.UnitOfMeasurement)) return false;
-			if (!UseRomanNumerals.Equals(v.UseRomanNumerals)) return false;
-			if (!VerticalOffset.Equals(v.VerticalOffset)) return false;
+			if (!Object.Equals(AlternateCorner, v.AlternateCorner)) return false;
+			if (!Object.Equals(BeginOn, v.BeginOn)) return false;
+			if (!Object.Equals(BeginWith, v.BeginWith)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(FontColor, v.FontColor)) return false;
+			if (!Object.Equals(FontFile, v.FontFile)) return false;
+			if (!Object.Equals(FontName, v.FontName)) return false;
+			if (!Object.Equals(FontSize, v.FontSize)) return false;
+			if (!Object.Equals(Format, v.Format)) return false;
+			if (!Object.Equals(HorizontalOffset, v.HorizontalOffset)) return false;
+			if (!Object.Equals(Position, v.Position)) return false;
+			if (!Object.Equals(UnitOfMeasurement, v.UnitOfMeasurement)) return false;
+			if (!Object.Equals(UseRomanNumerals, v.UseRomanNumerals)) return false;
+			if (!Object.Equals(VerticalOffset, v.VerticalOffset)) return false;
 			return true;
 		}
 		

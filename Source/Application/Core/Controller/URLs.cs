@@ -4,13 +4,14 @@
     {
         public const string ArchitectDownloadUrl = "https://go.pdfforge.org/pdfarchitect/download";
         public const string ArchitectWebsiteUrl = "https://go.pdfforge.org/pdfarchitect/info";
+        public const string SodaPdfWebsiteUrl = "https://go.pdfforge.org/pdfcreator/recommend-soda";
         public const string Facebook = "https://go.pdfforge.org/facebook";
 
         public const string ProfessionalHintUrl = "https://go.pdfforge.org/pdfcreator-plus/inapp-hint";
         public const string BusinessHintLink = "https://go.pdfforge.org/pdfcreator-business/inapp-hint";
 
         public const string PdfforgeWebsiteUrl = "https://www.pdfforge.org";
-        public const string PdfforgeTranslationUrl = "https://translate.pdfforge.org/projects/pdfcreator/";
+        public const string PdfforgeTranslationUrl = "https://translate.pdfforge.org/projects/pdfcreator/#information";
         public const string PrioritySupport = "https://go.pdfforge.org/priority-support";
 
         public const string Forums = "https://go.pdfforge.org/forums";
@@ -35,7 +36,8 @@
 
         public const string PdfCreatorTerminalServerUrl = "https://go.pdfforge.org/pdfcreator-terminal-server";
 
-        public const string LicenseServerUrl = "https://license.pdfforge.org";
+        public const string LicenseServerManageLicenses = "https://go.pdfforge.org/pdfcreator/manage-licenses";
+        public const string LicenseServerManageSingleLicense = "https://go.pdfforge.org/pdfcreator/manage-single-license";
 
         public const string UsageStatisticsEndpointUrl = "https://stat.pdfforge.org/event/api/v1/single/";
 
@@ -48,7 +50,6 @@
         public const string SentryDsnUrl = "https://83989e10cffe463194d1a14a7ed97828@sentry.pdfforge.org/25";
 
         public const string UserGuideCommandLineUrl = "https://docs.pdfforge.org/pdfcreator/en/pdfcreator/using-pdfcreator/command-line-parameters/";
-
 
         /*Tips*/
         public const string Tip_AutoSaveUrl = "https://go.pdfforge.org/pdfcreator/tips/auto-save";

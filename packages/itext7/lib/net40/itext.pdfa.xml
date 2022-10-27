@@ -10,48 +10,62 @@
             method implementations from the abstract
             <see cref="T:iText.Pdfa.Checker.PdfAChecker"/>
             class.
+            </summary>
+            <remarks>
+            PdfA1Checker defines the requirements of the PDF/A-1 standard and contains
+            method implementations from the abstract
+            <see cref="T:iText.Pdfa.Checker.PdfAChecker"/>
+            class.
             <para />
             The specification implemented by this class is ISO 19005-1
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Pdfa.Checker.PdfA1Checker.#ctor(iText.Kernel.Pdf.PdfAConformanceLevel)">
             <summary>Creates a PdfA1Checker with the required conformance level</summary>
             <param name="conformanceLevel">
-            the required conformance level, <code>a</code> or
-            <code>b</code>
+            the required conformance level, <c>a</c> or
+            <c>b</c>
             </param>
         </member>
         <member name="T:iText.Pdfa.Checker.PdfA2Checker">
             <summary>
             PdfA2Checker defines the requirements of the PDF/A-2 standard and contains a
             number of methods that override the implementations of its superclass
-            <see cref="T:iText.Pdfa.Checker.PdfA1Checker"/>
-            .
+            <see cref="T:iText.Pdfa.Checker.PdfA1Checker"/>.
+            </summary>
+            <remarks>
+            PdfA2Checker defines the requirements of the PDF/A-2 standard and contains a
+            number of methods that override the implementations of its superclass
+            <see cref="T:iText.Pdfa.Checker.PdfA1Checker"/>.
             <para />
             The specification implemented by this class is ISO 19005-2
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.Pdfa.Checker.PdfA2Checker.#ctor(iText.Kernel.Pdf.PdfAConformanceLevel)">
             <summary>Creates a PdfA2Checker with the required conformance level</summary>
             <param name="conformanceLevel">
-            the required conformance level, <code>a</code> or
-            <code>u</code> or <code>b</code>
+            the required conformance level, <c>a</c> or
+            <c>u</c> or <c>b</c>
             </param>
         </member>
         <member name="T:iText.Pdfa.Checker.PdfA3Checker">
             <summary>
             PdfA3Checker defines the requirements of the PDF/A-3 standard and contains a
             number of methods that override the implementations of its superclass
-            <see cref="T:iText.Pdfa.Checker.PdfA2Checker"/>
-            .
-            The specification implemented by this class is ISO 19005-3
+            <see cref="T:iText.Pdfa.Checker.PdfA2Checker"/>.
             </summary>
+            <remarks>
+            PdfA3Checker defines the requirements of the PDF/A-3 standard and contains a
+            number of methods that override the implementations of its superclass
+            <see cref="T:iText.Pdfa.Checker.PdfA2Checker"/>.
+            The specification implemented by this class is ISO 19005-3
+            </remarks>
         </member>
         <member name="M:iText.Pdfa.Checker.PdfA3Checker.#ctor(iText.Kernel.Pdf.PdfAConformanceLevel)">
             <summary>Creates a PdfA3Checker with the required conformance level</summary>
             <param name="conformanceLevel">
-            the required conformance level, <code>a</code> or
-            <code>u</code> or <code>b</code>
+            the required conformance level, <c>a</c> or
+            <c>u</c> or <c>b</c>
             </param>
         </member>
         <member name="T:iText.Pdfa.Checker.PdfAChecker">
@@ -100,11 +114,16 @@
             <summary>The Monitor device class</summary>
         </member>
         <member name="F:iText.Pdfa.Checker.PdfAChecker.maxGsStackDepth">
-            <summary>The maximum Graphics State stack depth in PDF/A documents, i.e.</summary>
+            <summary>
+            The maximum Graphics State stack depth in PDF/A documents, i.e. the
+            maximum number of graphics state operators with code <c>q</c> that
+            may be opened (i.e. not yet closed by a corresponding <c>Q</c>) at
+            any point in a content stream sequence.
+            </summary>
             <remarks>
             The maximum Graphics State stack depth in PDF/A documents, i.e. the
-            maximum number of graphics state operators with code <code>q</code> that
-            may be opened (i.e. not yet closed by a corresponding <code>Q</code>) at
+            maximum number of graphics state operators with code <c>q</c> that
+            may be opened (i.e. not yet closed by a corresponding <c>Q</c>) at
             any point in a content stream sequence.
             Defined as 28 by PDF/A-1 section 6.1.12, by referring to the PDF spec
             Appendix C table 1 "architectural limits".
@@ -175,8 +194,7 @@
             <summary>
             This method checks compliance with the graphics state architectural
             limitation, explained by
-            <see cref="F:iText.Pdfa.Checker.PdfAChecker.maxGsStackDepth"/>
-            .
+            <see cref="F:iText.Pdfa.Checker.PdfAChecker.maxGsStackDepth"/>.
             </summary>
             <param name="stackOperation">the operation to check the graphics state counter for</param>
         </member>
@@ -319,6 +337,12 @@
             <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
             and is in charge of creating files
             that comply with the PDF/A standard.
+            </summary>
+            <remarks>
+            This class extends
+            <see cref="T:iText.Kernel.Pdf.PdfDocument"/>
+            and is in charge of creating files
+            that comply with the PDF/A standard.
             Client code is still responsible for making sure the file is actually PDF/A
             compliant: multiple steps must be undertaken (depending on the
             <see cref="T:iText.Kernel.Pdf.PdfAConformanceLevel"/>
@@ -328,12 +352,11 @@
             ,
             and thus refuse to output a PDF/A file if at any point the document does not
             adhere to the PDF/A guidelines specified by the
-            <see cref="T:iText.Kernel.Pdf.PdfAConformanceLevel"/>
-            .
-            </summary>
+            <see cref="T:iText.Kernel.Pdf.PdfAConformanceLevel"/>.
+            </remarks>
         </member>
         <member name="M:iText.Pdfa.PdfADocument.#ctor(iText.Kernel.Pdf.PdfWriter,iText.Kernel.Pdf.PdfAConformanceLevel,iText.Kernel.Pdf.PdfOutputIntent)">
-            <summary>Constructs a new PdfADocument for writing purposes, i.e.</summary>
+            <summary>Constructs a new PdfADocument for writing purposes, i.e. from scratch.</summary>
             <remarks>
             Constructs a new PdfADocument for writing purposes, i.e. from scratch. A
             PDF/A file has a conformance level, and must have an explicit output
@@ -351,7 +374,7 @@
             </param>
         </member>
         <member name="M:iText.Pdfa.PdfADocument.#ctor(iText.Kernel.Pdf.PdfWriter,iText.Kernel.Pdf.PdfAConformanceLevel,iText.Kernel.Pdf.PdfOutputIntent,iText.Kernel.Pdf.DocumentProperties)">
-            <summary>Constructs a new PdfADocument for writing purposes, i.e.</summary>
+            <summary>Constructs a new PdfADocument for writing purposes, i.e. from scratch.</summary>
             <remarks>
             Constructs a new PdfADocument for writing purposes, i.e. from scratch. A
             PDF/A file has a conformance level, and must have an explicit output
@@ -387,16 +410,12 @@
             <summary>
             Gets the PdfAConformanceLevel set in the constructor or in the metadata
             of the
-            <see cref="T:iText.Kernel.Pdf.PdfReader"/>
-            .
+            <see cref="T:iText.Kernel.Pdf.PdfReader"/>.
             </summary>
             <returns>
             a
             <see cref="T:iText.Kernel.Pdf.PdfAConformanceLevel"/>
             </returns>
-        </member>
-        <member name="M:iText.Pdfa.PdfADocument.FlushObject(iText.Kernel.Pdf.PdfObject,System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.Pdfa.PdfAXMPUtil">
             <summary>Utilities to construct an XMP for a PDF/A file.</summary>

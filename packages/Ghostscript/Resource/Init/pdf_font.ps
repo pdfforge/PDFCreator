@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -1234,6 +1234,23 @@ setglobal
   { /undef_proc_warning /missing-type1-procs /readonly-op-dict }
   { currentdict exch undef } forall
 
+  % Bug703454.pdf contains a number of fonts with multiple definitions
+  % of a given glyph name in the CharStrings dict - i.e. two entries
+  % for /a - the first of which is "correct" the second is "wrong".
+  % Normal Postscript behaviour replaces the first value with the second
+  % for the given key/value pair.
+  % To handle this, *only* for Type 1 fonts embedded in PDFs, we
+  % have a special definition of "def" which won't overwrite existing
+  % values in the CharStrings dict.
+  /def
+  {
+    3 index /CharStrings eq
+    currentdict 3 index known and
+    { pop pop }
+    { systemdict /def get exec }
+    ifelse
+  } bind executeonly def
+
 end readonly def
 
 currentdict /eexec_pdf_param_dict .undef
@@ -1284,7 +1301,7 @@ currentdict /eexec_pdf_param_dict .undef
     /Resources 1 index /Resources knownoget {
        oforce
     } {
-       LocalResources
+      0 dict
     } ifelse def
     /FontBBox 1 index /FontBBox get cvx def
     /FontMatrix 1 index /FontMatrix oget def
@@ -1322,8 +1339,9 @@ currentdict /eexec_pdf_param_dict .undef
           0 0 0 0 0 0
           pdfopdict /d1 get exec
         }{
-          { //false resolvestream
-                % Stack: filepos stream
+          {
+            dup //false resolvestream
+                % Stack: filepos streamdict stream
                 % Don't let setgcolor set the color inside the BuildGlyph
                 % procedure, because this causes an /undefined error.
             q
@@ -1334,7 +1352,17 @@ currentdict /eexec_pdf_param_dict .undef
             %% we use 'nodict'[ to store other PDF state stuff that isn't gstate, and we
             %% probably always will, so it may well be more trouble than its worth.
             /Dummy //false gput
-            Font /Resources get exch pdfopdict
+            Font /Resources get  % Stack: filepos streamdict stream resdict
+            dup length 0 eq {
+              3 -1 roll /Resources knownoget {
+                exch pop
+                (   **** Warning: Type 3 font has resource dictionary in glyph stream.\n)
+                pdfformatwarning
+              } if
+            } {
+              3 -1 roll pop
+            } ifelse
+            exch pdfopdict
             /BuildCharDictDepth countdictstack def
             .pdfruncontext
             countdictstack BuildCharDictDepth sub
@@ -1481,7 +1509,9 @@ currentdict /eexec_pdf_param_dict .undef
   } {
                                           % filepos fontres stream
     1 index /FontDescriptor oget
-    /Flags oget 4 and 0 ne {
+    /Flags oget dup                       % only believe the symbolic flag if the non-symbolic flag is not also set!
+    4 and 0 ne
+    exch 32 and 0 eq and {
        //true  %  symbolic
     } {
        1 index /Encoding oknown not  % no encoding => symbolic
@@ -2422,9 +2452,25 @@ currentdict /CMap_read_dict undef
     } 2 bndef
 
   <01000401> % Type 1C
-    { exch pop
-      1 index /Subtype knownoget dup { pop /CIDFontType0 eq } if {
-        readCIDFontType0C
+    {
+      exch pop
+
+      1 index /Subtype knownoget {
+        dup /CIDFontType2 eq{
+          pop
+          (   **** Error: Subtype of a Type 1 CID font is not /CIDFontType0\n) pdfformaterror
+          (               Output may be incorrect.\n) pdfformaterror
+          1 index /Subtype /CIDFontType0 put
+          readCIDFontType0C
+        }
+        {
+          /CIDFontType0 eq {
+            readCIDFontType0C
+          }
+          {
+            readType1C
+          } ifelse
+        } ifelse
       } {
         readType1C
       } ifelse
@@ -2705,7 +2751,7 @@ drawopdict begin
       {
         PDFSTOPONERROR
         {
-          /typecheck cvx signalerror
+          /typecheck signalerror
         }
         {
           % Bug 689450
@@ -2723,7 +2769,7 @@ drawopdict begin
     {
       PDFSTOPONERROR
       {
-          pop /undefined cvx signalerror
+          pop /undefined signalerror
       }
       {
         % Bug 689037

@@ -69,8 +69,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PngSettings)) return false;
 			PngSettings v = o as PngSettings;
 			
-			if (!Color.Equals(v.Color)) return false;
-			if (!Dpi.Equals(v.Dpi)) return false;
+			if (!Object.Equals(Color, v.Color)) return false;
+			if (!Object.Equals(Dpi, v.Dpi)) return false;
 			return true;
 		}
 		

@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:overlay="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance overlay:DesignTimeOverwriteOrAppendViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
+
+                <ResourceDictionary>
+                    <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrueConverter" TrueValue="Visible" FalseValue="Collapsed" />
+                    <converter:BoolToVisibilityConverter x:Key="VisibleWhenFalseConverter" TrueValue="Collapsed" FalseValue="Visible" />
+
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultInlineButton}" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid VerticalAlignment="Top" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" FlowDirection="LeftToRight"
+                    Orientation="Vertical">
+            <TextBlock TextWrapping="Wrap" FontSize="12" Visibility="{Binding Interaction.MergeIsSupported, Converter={StaticResource VisibleWhenTrueConverter}}" Text="{Binding Translation.OverwriteOrAppendWarningText}" />
+            <TextBlock TextWrapping="Wrap" FontSize="12" Visibility="{Binding Interaction.MergeIsSupported, Converter={StaticResource VisibleWhenFalseConverter}}" Text="{Binding Translation.OverwriteWarningText}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"  Margin="0 30 0 0">
+            <Button Content="{Binding Translation.Overwrite}" Command="{Binding OverwriteCommand}" />
+            <Button Content="{Binding Translation.Merge}" Command="{Binding MergeCommand}" Visibility="{Binding Interaction.MergeIsSupported, Converter={StaticResource VisibleWhenTrueConverter}}" />
+            <Button Content="{Binding Translation.Cancel}" Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -164,13 +164,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
                 jobInfo.OutputFileParameter = sourceFiles[0].OutputFileParameter;
 
                 jobInfo.JobType = sourceFiles[0].Type;
+                jobInfo.PrintDateTime = sourceFiles[0].PrintedAt;
             }
 
             ConsiderStoredParameters(jobInfo);
 
             jobInfo.Metadata = metadata;
-
-            jobInfo.PrintDateTime = File.GetCreationTime(infFile);
 
             return jobInfo;
         }

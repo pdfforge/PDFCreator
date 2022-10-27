@@ -1,10 +1,12 @@
 ﻿using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using System.Collections.Generic;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
@@ -12,6 +14,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
     {
         private HttpAccount _httpAccount;
         private readonly IHttpAction _httpAction;
+        public IList<HttpSendMode> HttpSendModes => new List<HttpSendMode> { HttpSendMode.HttpPost, HttpSendMode.HttpWebDav };
 
         public HttpAccountViewModel(ITranslationUpdater translationUpdater,
             ITokenViewModelFactory tokenViewModelFactory, IHttpAction httpAction) : base(translationUpdater)
@@ -65,6 +68,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             }
         }
 
+        public HttpSendMode SendMode
+        {
+            get { return _httpAccount?.SendMode ?? HttpSendMode.HttpPost; }
+            set
+            {
+                if (_httpAccount == null)
+                    return;
+                _httpAccount.SendMode = value;
+                SaveCommand.RaiseCanExecuteChanged();
+                RaisePropertyChanged(nameof(SendMode));
+            }
+        }
+
         public bool IsBasicAuthentication
         {
             get { return _httpAccount != null && _httpAccount.IsBasicAuthentication; }
@@ -98,6 +114,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             RaisePropertyChanged(nameof(IsBasicAuthentication));
             RaisePropertyChanged(nameof(Username));
             RaisePropertyChanged(nameof(Password));
+            RaisePropertyChanged(nameof(SendMode));
             AskForPasswordLater = string.IsNullOrWhiteSpace(Password);
             RaisePropertyChanged(nameof(AskForPasswordLater));
             SaveCommand.RaiseCanExecuteChanged();

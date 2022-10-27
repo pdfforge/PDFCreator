@@ -24,6 +24,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
         public bool HidePdfArchitectInfo => _gpoSettings.HidePdfArchitectInfo;
         public string Language => _gpoSettings.ApplicationSettings.Language;
         public string UpdateInterval => _gpoSettings.ApplicationSettings.UpdateInterval;
+        public string SharedSettingsFilename => _gpoSettings.SharedSettingsFilename;
 
         public int? HotStandbyMinutes =>
             _gpoSettings.CreatorAppSettings.HotStandbyMinutes >= 0

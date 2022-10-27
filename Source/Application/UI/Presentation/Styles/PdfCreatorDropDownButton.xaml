@@ -5,47 +5,35 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ContextMenu.xaml" />
+        <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Color x:Key="PdfCreator.DarkGrey">#333333</Color>
-    <Thickness x:Key="PdfCreator.ContextMenu.BorderThickness">1</Thickness>
-    <Thickness x:Key="PdfCreator.DropDownButton.BorderThickness">0</Thickness>
-    <SolidColorBrush x:Key="PdfCreator.DarkGreyBrush"  Color="{StaticResource PdfCreator.DarkGrey}" />
-    <SolidColorBrush x:Key="PdfCreator.DropDownButton.Button.BackgroundBrush"  Color="{StaticResource PdfCreator.DarkGrey}" />
-    <SolidColorBrush x:Key="PdfCreator.DropDownButton.Button.ForegroundBrush" Color="White" />
-    <SolidColorBrush x:Key="PdfCreator.DropDownButton.Arrow.Brush" Color="White" />
-    <SolidColorBrush x:Key="PdfCreator.DropDownButton.Arrow.MouseOverBrush" Color="{StaticResource PdfCreator.DarkGrey}" />
-    <SolidColorBrush x:Key="PdfCreator.DropDownButton.Border.Brush" Color="{StaticResource PdfCreator.DarkGrey}" />
-    <SolidColorBrush x:Key="PdfCreator.ContextMenu.BackgroundBrush" Color="White" />
-    <SolidColorBrush x:Key="PdfCreator.ContextMenu.BorderBrush" Color="#AAAAAA" />
-    <SolidColorBrush x:Key="PdfCreator.ContextMenu.Item.BackgroundBrush" Color="White" />
-    <SolidColorBrush x:Key="PdfCreator.ContextMenu.Item.ForegroundBrush" Color="{StaticResource PdfCreator.DarkGrey}" />
-
     <Style x:Key="CustomColorContextMenuStyle" TargetType="ContextMenu" BasedOn="{StaticResource MetroContextMenu}">
-        <Setter Property="BorderThickness" Value="{DynamicResource PdfCreator.ContextMenu.BorderThickness}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PdfCreator.ContextMenu.BorderBrush}" />
-        <Setter Property="Background" Value="{DynamicResource PdfCreator.ContextMenu.BackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderedElementColorBrush}" />
+        <Setter Property="Background" Value="{StaticResource ButtonColorBrush}" />
     </Style>
+
     <Style x:Key="CustomColorContextMenuItemStyle" TargetType="MenuItem">
         <Setter Property="Padding" Value="10 10 10 10" />
         <Setter Property="Header" Value="{Binding Name}" />
         <!--<Setter Property="Command" Value="{Binding Path=Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:DropDownButton}}}" />-->
         <Setter Property="Command" Value="{Binding Command}" />
         <Setter Property="CommandParameter" Value="{Binding Parameter}" />
-
-        <Setter Property="Background" Value="{DynamicResource PdfCreator.ContextMenu.Item.BackgroundBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource PdfCreator.ContextMenu.Item.ForegroundBrush}" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{StaticResource ButtonColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ButtonForegroundColorBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderedElementColorBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
+
     <Style x:Key="CustomColorDropDownButton" TargetType="{x:Type controls:DropDownButton}">
-        <Setter Property="ArrowBrush" Value="{DynamicResource PdfCreator.DropDownButton.Arrow.Brush}" />
-        <Setter Property="ArrowMouseOverBrush" Value="{DynamicResource PdfCreator.DropDownButton.Arrow.MouseOverBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource PdfCreator.DropDownButton.Button.ForegroundBrush}" />
-        <Setter Property="Background" Value="{DynamicResource PdfCreator.DropDownButton.Button.BackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PdfCreator.DropDownButton.Border.Brush}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource PdfCreator.DropDownButton.BorderThickness}" />
-        <Setter Property="ButtonStyle" Value="{DynamicResource FlatGreyButton}" />
+        <Setter Property="ArrowBrush" Value="{StaticResource ButtonForegroundColorBrush}" />
+        <Setter Property="ArrowMouseOverBrush" Value="{StaticResource ButtonForegroundColorBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ButtonForegroundColorBrush}" />
+        <Setter Property="Background" Value="{StaticResource ButtonColorBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderedElementColorBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="MenuStyle" Value="{DynamicResource CustomColorContextMenuStyle}" />
         <Setter Property="ItemContainerStyle" Value="{DynamicResource CustomColorContextMenuItemStyle}" />
     </Style>

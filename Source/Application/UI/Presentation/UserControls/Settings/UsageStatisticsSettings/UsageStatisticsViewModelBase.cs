@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.Utilities;
 using System.Windows.Input;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
+using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Help;
@@ -32,6 +33,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
         public abstract bool ShowServiceSample { get; }
 
         public ICommand VisitWebsiteCommand { get; }
+        public ICommand ShowUserGuideCommand { get; }
         public string UsageStatisticsExplanationText => Translation.FormatUsageStatisticsExplanationText(ApplicationNameWithEdition);
 
         public string SampleStatisticsJobData => GetJobSampleData();
@@ -60,6 +62,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
             _applicationNameProvider = applicationNameProvider;
 
             VisitWebsiteCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.PrivacyPolicyUrl);
+            ShowUserGuideCommand = commandLocator.GetCommand<ShowUserGuideCommand>();
         }
 
         protected override void OnTranslationChanged()

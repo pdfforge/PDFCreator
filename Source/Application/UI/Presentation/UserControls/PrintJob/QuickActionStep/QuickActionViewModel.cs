@@ -77,7 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
 
         public Task ExecuteWorkflowStep(Job job)
         {
-            _job = job;
+            Job = job;
             OutputFormat = job.Profile.OutputFormat;
             var firstFile = job.OutputFiles.First();
 
@@ -89,6 +89,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         }
 
         public event EventHandler StepFinished;
+
+        public Job Job
+        {
+            get => _job;
+            private set
+            {
+                _job = value;
+                RaisePropertyChanged(nameof(Job));
+            }
+        }
 
         public OutputFormat OutputFormat
         {

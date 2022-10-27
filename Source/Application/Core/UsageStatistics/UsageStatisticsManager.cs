@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.UsageStatistics;
 using System;
@@ -84,7 +85,7 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             metric.Encryption = job.Profile.PdfSettings.Security.Enabled;
             metric.Signature = job.Profile.PdfSettings.Signature.Enabled;
             metric.DisplaySignatureInDocument = job.Profile.PdfSettings.Signature.Enabled
-                                                && job.Profile.PdfSettings.Signature.DisplaySignatureInDocument;
+                                                && job.Profile.PdfSettings.Signature.DisplaySignature != DisplaySignature.NoDisplay;
             metric.Script = job.Profile.Scripting.Enabled;
             metric.CustomScript = job.Profile.CustomScript.Enabled;
             metric.UserToken = job.Profile.UserTokens.Enabled;

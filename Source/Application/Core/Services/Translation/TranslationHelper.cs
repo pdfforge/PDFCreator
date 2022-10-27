@@ -1,7 +1,6 @@
 ﻿using NGettext;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using SystemInterface.Microsoft.Win32;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using Translatable;
 using Translatable.NGettext;
 

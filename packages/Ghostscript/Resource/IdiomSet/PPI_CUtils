@@ -1,0 +1,24 @@
+%%
+%% Idioms for the PPI Media GmbH PPI_ColorUtils ProcSet
+%% This appears to be a kind of desktop colour separation utility. If it is
+%% used with the pdfwrite PassThroughJPEGImages feature then instead of
+%% converting images from colour to gray, we embed the colour image data
+%% but with a DeviceGray colour space, which leads to incorrect output.
+%% To fix that, turn off the feature if cuForceGray is set to true. This
+%% is the first time we've seen this, and more work may be required.
+%%
+
+currentuserparams /IdiomRecognition get
+<</IdiomRecognition false>> setuserparams
+
+/PPI_CUtils
+<<
+/cuForceGray [
+{/_cuForceGray exch cuPut} bind
+{dup //true eq {currentdevice //null //false mark /PassThroughJPEGImages //false .putdeviceparamsonly}if /_cuForceGray exch cuPut} bind
+]
+>>
+
+/IdiomSet defineresource pop
+
+<</IdiomRecognition 3 -1 roll>> setuserparams

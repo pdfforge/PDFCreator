@@ -1,9 +1,8 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Core.Printing.Port;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using SystemInterface.Microsoft.Win32;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {

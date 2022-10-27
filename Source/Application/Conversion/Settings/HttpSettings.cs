@@ -65,8 +65,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is HttpSettings)) return false;
 			HttpSettings v = o as HttpSettings;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
 			return true;
 		}
 		

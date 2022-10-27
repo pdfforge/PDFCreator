@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -47,7 +38,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -410,32 +400,6 @@ directory.</p>
 
 <p>Supporting third party libraries will also be in their own sub-directories (e.g. <code>jpeg</code>, <code>freetype</code> and so on).</p>
 
-<h4>Luratech compressor libraries</h4>
-
-<p>Ghostscript has optional support for the Luratech proprietary JBIG2
-and JPEG 2000 implementations. If you have the source code for these
-and wish the compile them into Ghostscript, the build system expects
-them to be in directories named <code>luratech/ldf_jb2</code> and
-<code>luratech/lwf_jp2</code> in the top level gs source directory, alongside
-the other third-party libraries. With the Luratech source directories in the
-expected place, the build system will automatically include them.</p>
-<p>
-If you have the Luratech code but wish to build without it, on "configure"
-based builds you can achieve this by doing:</p>
-<blockquote>
-<code>./configure --without-luratech</code>
-</blockquote>
-<p>
-On Windows, you can achieve it by adding:</p>
-
-<blockquote>
-<code>NO_LURATECH=1</code>
-</blockquote>
-to your nmake command line.
-<p>
-With either of these options, the build will fall back to the defaults for
-both JBIG2 and JPEG2000 decoding.</p>
-
 <hr>
 
 <h2><a name="Bug_check"></a>How to check for post-release bug fixes</h2>
@@ -519,21 +483,6 @@ substantially, and since they all include documentation for the various
 options, here we don't duplicate most of that documentation: we recommend
 strongly that you review the entire makefile specific for your operating
 system and compiler before building Ghostscript.</p>
-
-<h3>Building against the Luratech compression libraries</h3>
-
-<p>
-To compile Ghostscript against the proprietary Luratech JBIG2 and JPEG
-2000 implementations, simply ensure that the <code>luratech/ldf_jb2</code> and
-<code>luratech/lwf_jp2</code> containing the Luratech code exist in the top level
-gs source directory, and (re-)run <code>configure</code> (ensuring to <code>make clean</code> before
-re-running make). The configure
-script will detect the presence of the directories, and apply the appropriate
-settings in the Makefile.</p>
-<p>
-If you have the Luratech directories in place, but want Ghostscript built
-without it, you can run configure with the <code>--without-luratech</code> option, and
-the script will behave as if the directories did not exist.</p>
 
 <h3><a name="Preparing_makefiles"></a>Changes for your environment</h3>
 
@@ -796,8 +745,13 @@ time with the <code>-DDEBUG</code> or
 <dl>
     <dt><code>make so</code></dt>
     <dd>On some platforms (Linux, *BSD, Darwin/Mac OS X, SunOS),
-    it is possible to build ghostscript as a shared object library.
+    it is possible to build Ghostscript as a shared object library.
     There is a corresponding "<code>make soclean</code>" for cleaning up.</dd>
+</dl>
+
+<dl>
+    <dt><code>make sanitize</code></dt>
+    <dd>Builds Ghostscript with AddressSanitizer. Output is placed in ./sanbin .</dd>
 </dl>
 
 <p>
@@ -1005,25 +959,6 @@ and/or unsupported switches - this is because the compiler switches are set
 in the makefiles, and are applied when building with all versions of Visual
 Studio, but not all options are supported (or required) by all versions of
 Visual Studio. These warnings are benign and can be ignored.</p>
-
-<h4>Building with the Luratech compression libraries</h4>
-
-<p>
-If you wish to compile Ghostscript with the Luratech JBIG2 and JPEG 2000
-implementations, the source should be installed in the top-level
-directory of the Ghostscript source.
-If you have an appropriately licensed source distribution this should
-already have been done.</p>
-
-<p>
-With the Luratech source in the <code>luratech/ldf_jb2</code> and
-<code>luratech/lwf_jp2</code> directories in the top level gs source
-directory, the nmake makefile will detect their presence, and use them
-automatically.</p>
-<p>
-If you have the Luratech code in place, but wish Ghostsrcipt to be built
-without the Luratech decoders, you can do so by passing NO_LURATECH=1 on
-the nmake command line, or add the define to your Visual Studio project.</p>
 
 <h3><a name="Microsoft_build_64"></a>Microsoft Environment for 64-bit</h3>
 
@@ -1514,7 +1449,7 @@ msvc.mak sets the other options automatically.</p>
 <hr>
 
 <p>
-<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+<small>Copyright &copy; 2000-2021 Artifex Software, Inc.  All rights reserved.</small>
 
 <p>
 This software is provided AS-IS with no warranty, either express or
@@ -1527,7 +1462,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -1554,7 +1489,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

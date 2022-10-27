@@ -101,11 +101,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Scripting)) return false;
 			Scripting v = o as Scripting;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!ParameterString.Equals(v.ParameterString)) return false;
-			if (!ScriptFile.Equals(v.ScriptFile)) return false;
-			if (!Visible.Equals(v.Visible)) return false;
-			if (!WaitForScript.Equals(v.WaitForScript)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(ParameterString, v.ParameterString)) return false;
+			if (!Object.Equals(ScriptFile, v.ScriptFile)) return false;
+			if (!Object.Equals(Visible, v.Visible)) return false;
+			if (!Object.Equals(WaitForScript, v.WaitForScript)) return false;
 			return true;
 		}
 		

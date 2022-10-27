@@ -59,7 +59,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
             {
                 try
                 {
-                    _processStarter.Start(architectPath, "--print-dlg \"" + filePath + "\"");
+                    _processStarter.Start(architectPath, "--print \"" + filePath + "\"");
                     Logger.Trace("Print: " + filePath);
                 }
                 catch

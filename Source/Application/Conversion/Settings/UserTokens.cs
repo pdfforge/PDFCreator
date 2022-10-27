@@ -30,19 +30,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// UserToken separator in the document
 		/// </summary>
-		public UserTokenSeperator Seperator { get; set; } = UserTokenSeperator.SquareBrackets;
+		public UserTokenSeparator Separator { get; set; } = UserTokenSeparator.SquareBrackets;
 		
 		
 		public void ReadValues(Data data, string path = "")
 		{
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			Seperator = Enum.TryParse<UserTokenSeperator>(data.GetValue(@"" + path + @"Seperator"), out var tmpSeperator) ? tmpSeperator : UserTokenSeperator.SquareBrackets;
+			Separator = Enum.TryParse<UserTokenSeparator>(data.GetValue(@"" + path + @"Separator"), out var tmpSeparator) ? tmpSeparator : UserTokenSeparator.SquareBrackets;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"Seperator", Seperator.ToString());
+			data.SetValue(@"" + path + @"Separator", Separator.ToString());
 		}
 		
 		public UserTokens Copy()
@@ -50,7 +50,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			UserTokens copy = new UserTokens();
 			
 			copy.Enabled = Enabled;
-			copy.Seperator = Seperator;
+			copy.Separator = Separator;
 			return copy;
 		}
 		
@@ -59,8 +59,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(Seperator != source.Seperator)
-				Seperator = source.Seperator;
+			if(Separator != source.Separator)
+				Separator = source.Separator;
 				
 		}
 		
@@ -69,8 +69,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is UserTokens)) return false;
 			UserTokens v = o as UserTokens;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Seperator.Equals(v.Seperator)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(Separator, v.Separator)) return false;
 			return true;
 		}
 		

@@ -1,4 +1,4 @@
-/* Copyright (C) 2001-2019 Artifex Software, Inc.
+/* Copyright (C) 2001-2021 Artifex Software, Inc.
    All Rights Reserved.
 
    This software is provided AS-IS with no warranty, either express or
@@ -200,15 +200,18 @@ ds32_print_page(gx_device_printer * pdev, FILE * file)
     int *trap_order = dsdev->downscale.trap_order;
     gx_downscaler_t ds;
 
-    if (num_comps == 4) {
-        if (dsdev->icclink == NULL) {
-            code = gx_downscaler_init_trapped(&ds, (gx_device *)pdev, 8, bpc, num_comps,
-                factor, 0 /*mfs*/, &fax_adjusted_width, 0 /*aw*/, trap_w, trap_h, trap_order);
-        } else {
-            code = gx_downscaler_init_trapped_cm(&ds, (gx_device *)pdev, 8, bpc, num_comps,
-                factor, 0 /*mfs*/, &fax_adjusted_width, 0 /*aw*/, trap_w, trap_h, trap_order,
-                ds32_chunky_post_cm, dsdev->icclink, dsdev->icclink->num_output);
-        }
+    if (dsdev->icclink == NULL) {
+        code = gx_downscaler_init(&ds, (gx_device *)pdev,
+                                  8, bpc, num_comps,
+                                  &dsdev->downscale,
+                                  &fax_adjusted_width, 0 /*aw*/);
+    } else {
+        code = gx_downscaler_init_cm(&ds, (gx_device *)pdev,
+                                     8, bpc, num_comps,
+                                     &dsdev->downscale,
+                                     &fax_adjusted_width, 0, /*aw*/
+                                     ds32_chunky_post_cm, dsdev->icclink,
+                                     dsdev->icclink->num_output);
     }
     if (code < 0)
         return code;

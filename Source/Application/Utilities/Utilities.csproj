@@ -62,6 +62,7 @@
     <Compile Include="IO\UniqueFilenameFactory.cs" />
     <Compile Include="IShellExecuteHelper.cs" />
     <Compile Include="ITempDirectoryHelper.cs" />
+    <Compile Include="WindowsApi\Kernel32Wrapper.cs" />
     <Compile Include="OutputFormatHelper.cs" />
     <Compile Include="PathUtil.cs" />
     <Compile Include="DownloadSpeed.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="TempDirectoryHelper.cs" />
     <Compile Include="TestFileDummyHelper.cs" />
     <Compile Include="Threading\IThreadManager.cs" />
+    <Compile Include="Threading\LocalMutex.cs" />
     <Compile Include="Threading\ThreadManager.cs" />
     <Compile Include="Tokens\TokenIdentifier.cs" />
     <Compile Include="Tokens\UserToken.cs" />
@@ -114,7 +116,6 @@
     <Compile Include="Web\TrackingParameterReader.cs" />
     <Compile Include="Web\TrackingParameters.cs" />
     <Compile Include="Web\WebLinkLauncher.cs" />
-    <Compile Include="WindowsApi\Kernel32.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
@@ -155,35 +156,20 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="Microsoft.CSharp">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.Configuration">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Core">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceModel">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Xml">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -226,6 +212,9 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Data">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="System.Data.OracleClient">
           <Paket>True</Paket>
         </Reference>
@@ -236,6 +225,9 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.ServiceProcess">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Security.Permissions">

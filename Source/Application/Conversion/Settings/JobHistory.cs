@@ -109,12 +109,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is JobHistory)) return false;
 			JobHistory v = o as JobHistory;
 			
-			if (!Capacity.Equals(v.Capacity)) return false;
-			if (!Column.Equals(v.Column)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!LastDateFrom.Equals(v.LastDateFrom)) return false;
-			if (!LastDateTo.Equals(v.LastDateTo)) return false;
-			if (!LastSearchText.Equals(v.LastSearchText)) return false;
+			if (!Object.Equals(Capacity, v.Capacity)) return false;
+			if (!Object.Equals(Column, v.Column)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(LastDateFrom, v.LastDateFrom)) return false;
+			if (!Object.Equals(LastDateTo, v.LastDateTo)) return false;
+			if (!Object.Equals(LastSearchText, v.LastSearchText)) return false;
 			return true;
 		}
 		

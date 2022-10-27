@@ -15,9 +15,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password
 
             InitializeComponent();
         }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-        }
     }
 }

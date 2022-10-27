@@ -27,12 +27,14 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
         private readonly ITextStampAdder _stampAdder;
         private readonly ITextPageNumbersAdder _pageNumbersAdder;
+        private readonly IFontPathHelper _fontPathHelper;
 
         // StampAdder needs to be created via container
-        public ITextPdfProcessor(IFile file, ITextStampAdder stampAdder, ITextPageNumbersAdder pageNumbersAdder) : base(file)
+        public ITextPdfProcessor(IFile file, ITextStampAdder stampAdder, ITextPageNumbersAdder pageNumbersAdder, IFontPathHelper fontPathHelper) : base(file)
         {
             _stampAdder = stampAdder;
             _pageNumbersAdder = pageNumbersAdder;
+            _fontPathHelper = fontPathHelper;
         }
 
         /// <summary>
@@ -55,8 +57,8 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             if (string.IsNullOrEmpty(file))
                 return "";
 
-            var newFileName = Path.GetFileNameWithoutExtension(file) + tail + Path.GetExtension(file);
-            var newFile = Path.Combine(Path.GetDirectoryName(file), newFileName);
+            var newFileName = PathSafe.GetFileNameWithoutExtension(file) + tail + PathSafe.GetExtension(file);
+            var newFile = PathSafe.Combine(PathSafe.GetDirectoryName(file), newFileName);
             return newFile;
         }
 
@@ -114,7 +116,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 return;
 
             var docContext = OpenPdfDocument(job);
-            
+
             _pageNumbersAdder.AddPageNumbers(docContext.Document, job.Profile);
             WritePdfDocument(docContext);
         }
@@ -129,6 +131,36 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var watermarkAdder = new ITextWatermarkAdder();
             watermarkAdder.AddForeground(docContext.Document, job.Profile);
             WritePdfDocument(docContext);
+        }
+
+        public override void MergePDFs(string targetPdf, string sourcePdf)
+        {
+            DocumentContext documentContext;
+
+            var originalSourceFile = targetPdf;
+            documentContext.OriginalFileName = targetPdf;
+            documentContext.TempFileName = AddTailToFile(originalSourceFile, Guid.NewGuid().ToString());
+            var writerProperties = new WriterProperties();
+            writerProperties.SetPdfVersion(PdfVersion.PDF_1_6);
+            try
+            {
+                PdfReader pdfReader = new PdfReader(documentContext.OriginalFileName);
+                PdfWriter pdfWriter = new PdfWriter(documentContext.TempFileName, writerProperties);
+                var document = new PdfDocument(pdfReader, pdfWriter);
+                ITextPdfMerger merge = new ITextPdfMerger();
+                merge.AddAttachment(document, sourcePdf);
+                document.Close();
+                File.Delete(documentContext.OriginalFileName);
+                File.Move(documentContext.TempFileName, documentContext.OriginalFileName);
+            }
+            catch (Exception e)
+            {
+                if (File.Exists(documentContext.TempFileName))
+                    File.Delete(documentContext.TempFileName);
+
+                Logger.Trace(e.Message);
+                throw;
+            }
         }
 
         private PdfVersion DeterminePdfVersionAsEnum(ConversionProfile profile)
@@ -322,7 +354,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 {
                     try
                     {
-                        new ITextSigner().SignPdfFile(signer, job.Profile, job.Passwords, job.Accounts);
+                        new ITextSigner(_fontPathHelper).SignPdfFile(signer, job.Profile, job.Passwords, job.Accounts);
                     }
                     catch (ProcessingException)
                     {

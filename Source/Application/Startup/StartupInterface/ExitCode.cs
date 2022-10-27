@@ -14,6 +14,7 @@
         LicenseInvalidAfterReactivation = 23,
         LicenseInvalidAndHiddenWithGpo = 24,
         TrialExpired = 25,
+        MissingLicenseKey = 26,
         SpoolFolderInaccessible = 31,
         SpoolerNotRunning = 32,
         InvalidSettingsFile = 41,
@@ -28,7 +29,8 @@
         NoAccessPrivileges = 72,
         InvalidPdfToolsSecureLicense = 81,
         InvalidPdfToolsPdf2PdfLicense = 82,
-        InvalidPdfToolsDocumentLicense = 83,
-        InvalidPdfAValidatorLicense = 84
+        InvalidPdfToolboxLicense = 83,
+        InvalidPdfToolsFourHeightsLicense = 84,
+        InvalidPdfAValidatorLicense = 85
     }
 }

@@ -1,12 +1,16 @@
 ﻿using NLog;
+using pdfforge.Communication;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Communication;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Utilities.Threading;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.ComImplementation
 {
@@ -47,18 +51,74 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             get { return JobById(0); }
         }
 
+        public bool IsStandbyRunningInCurrentSession()
+        {
+            var mutex = new Mutex(false, ThreadManager.StandbyMutexName);
+
+            try
+            {
+                var acquired = mutex.WaitOne(0);
+                if (acquired)
+                    mutex.ReleaseMutex();
+
+                return !acquired;
+            }
+            catch (AbandonedMutexException)
+            {
+                return false;
+            }
+        }
+
+        public void TerminateStandby()
+        {
+            var pipeName = "PDFCreator-" + Process.GetCurrentProcess().SessionId;
+            var pipeClient = new PipeClient(pipeName);
+
+            pipeClient.SendMessage("StopHotStandby|", 500);
+        }
+
+        public bool IsServerInstanceShutdown(TimeSpan timeout)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            do
+            {
+                if (!IsServerInstanceRunning)
+                    break;
+
+                Thread.Sleep(100);
+            } while (stopWatch.Elapsed < timeout);
+            stopWatch.Stop();
+
+            Logger.Trace("IsServerInstanceRunning (after shutdown standby): " + IsServerInstanceRunning);
+
+            if (!IsServerInstanceRunning)
+                Logger.Trace($"It took {stopWatch.ElapsedMilliseconds} ms to shut down the standby.");
+
+            return !IsServerInstanceRunning;
+        }
+
         public void Initialize()
         {
             Logger.Trace("COM: Starting initialization process");
-
             _isComActive = true;
 
             var startupCheck = _startupConditionChecker.CheckStartupConditions();
             if (!startupCheck.Item1)
                 throw new InvalidOperationException("Can't initialize the COM interface! " + startupCheck.Item2);
 
+            if (IsStandbyRunningInCurrentSession())
+            {
+                Logger.Trace("Standby is running in current session. Send message to shutdown standby.");
+                TerminateStandby();
+                if (!IsServerInstanceShutdown(TimeSpan.FromSeconds(5)))
+                {
+                    throw new InvalidOperationException("COM interface cannot initialize. Standby cannot be terminated.");
+                }
+            }
+
             if (IsServerInstanceRunning)
-                throw new InvalidOperationException("Access forbidden. An instance of PDFCreator is currently running.");
+                throw new InvalidOperationException("COM interface cannot initialize. An instance of PDFCreator is currently running.");
 
             JobInfoQueue.OnNewJobInfo += (sender, eventArgs) => OnNewJob();
 

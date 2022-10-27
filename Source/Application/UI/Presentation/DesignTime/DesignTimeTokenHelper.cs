@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System.Collections.Generic;
 
@@ -53,14 +54,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             return new List<string>();
         }
 
-        public bool ContainsInsecureTokens(string textWithTokens)
+        public TokenWarningCheckResult TokenWarningCheck(string textWithTokens, ConversionProfile profile)
         {
-            return true;
-        }
-
-        public bool ContainsUserToken(string textWithToken)
-        {
-            return true;
+            return TokenWarningCheckResult.NoWarning;
         }
     }
 }

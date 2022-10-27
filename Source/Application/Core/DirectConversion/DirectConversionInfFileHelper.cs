@@ -179,6 +179,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             sourceFileInfo.Copies = 1;
             sourceFileInfo.DocumentTitle = PathSafe.GetFileNameWithoutExtension(jobFolderFile.OriginalFilePath);
             sourceFileInfo.OriginalFilePath = jobFolderFile.OriginalFilePath;
+            sourceFileInfo.PrintedAt = DateTime.Now;
             sourceFileInfo.JobCounter = 0;
             sourceFileInfo.JobId = 0;
             sourceFileInfo.PrinterParameter = appStartParameters.Printer;

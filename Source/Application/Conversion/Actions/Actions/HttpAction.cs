@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.IO;
 using System.Net;
@@ -124,11 +125,26 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         {
             var result = new ActionResult();
 
+            var account = job.Accounts.GetHttpAccount(job.Profile);
+
             // setup and send request
-            var uploadFileViaHttp = UploadFileViaHttp(job);
+            HttpResponseMessage httpResponseMessage;
+            switch (account.SendMode)
+            {
+                case HttpSendMode.HttpPost:
+                    httpResponseMessage = UploadFileViaHttpPost(job);
+                    break;
+
+                case HttpSendMode.HttpWebDav:
+                    httpResponseMessage = UploadFileViaHttpPut(job);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             // wait for the result
-            var httpResponse = uploadFileViaHttp;
+            var httpResponse = httpResponseMessage;
             if (httpResponse.IsSuccessStatusCode == false)
             {
                 switch (httpResponse.StatusCode)
@@ -145,7 +161,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return result;
         }
 
-        private HttpResponseMessage UploadFileViaHttp(Job job)
+        private HttpResponseMessage UploadFileViaHttpPost(Job job)
         {
             try
             {
@@ -172,6 +188,62 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             }
         }
 
+        private HttpResponseMessage UploadFileViaHttpPut(Job job)
+        {
+            var httpClient = new HttpClient();
+            var account = job.Accounts.GetHttpAccount(job.Profile);
+            var timeout = account.Timeout;
+
+            if (timeout < 0)
+                timeout = 60;
+
+            httpClient.Timeout = TimeSpan.FromSeconds(timeout);
+
+            var url = job.TokenReplacer.ReplaceTokens(account.Url);
+
+            HttpResponseMessage message = null;
+
+            var msg = new HttpRequestMessage(new HttpMethod("PUT"), new Uri(url));
+
+            foreach (var jobOutputFile in job.OutputFiles)
+            {
+                var multiContent = new MultipartContent();
+
+                var fileStream = new FileStream(jobOutputFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var outputFile = new StreamContent(fileStream);
+                var mimeMapping = MimeMapping.GetMimeMapping(jobOutputFile);
+                outputFile.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
+                outputFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                outputFile.Headers.ContentDisposition.FileName = Path.GetFileName(jobOutputFile);
+                outputFile.Headers.ContentDisposition.Name = GetRandomString(12);
+                multiContent.Add(outputFile);
+
+                httpClient.DefaultRequestHeaders.Add("RequestId", Guid.NewGuid().ToString());
+                httpClient.DefaultRequestHeaders.Add("UserId", account.UserName);
+                httpClient.DefaultRequestHeaders.Add("SessionId", Guid.NewGuid().ToString());
+                httpClient.DefaultRequestHeaders.Add("ContentType", mimeMapping);
+
+                if (account.IsBasicAuthentication)
+                {
+                    var asciiAuth = Encoding.ASCII.GetBytes($"{account.UserName}:{job.Passwords.HttpPassword}");
+                    var endcoded = Convert.ToBase64String(asciiAuth);
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", endcoded);
+                }
+
+                try
+                {
+                    message = MakePutRequest(job, multiContent, true, Path.GetFileName(jobOutputFile)).Result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
+            return message;
+        }
+
         private string GetRandomString(int length)
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -186,7 +258,18 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             return new string(stringChars);
         }
 
-        private async Task<HttpResponseMessage> MakePostRequest(Job job, HttpContent message)
+        private string GetUrlFromJob(Job job)
+        {
+            var account = job.Accounts.GetHttpAccount(job.Profile);
+
+            var url = job.TokenReplacer.ReplaceTokens(account.Url);
+
+            Logger.Debug("Http upload to url: " + url);
+
+            return url;
+        }
+
+        private HttpClient GetHttpClient(Job job)
         {
             var account = job.Accounts.GetHttpAccount(job.Profile);
             var httpClient = new HttpClient();
@@ -197,16 +280,34 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             httpClient.Timeout = TimeSpan.FromSeconds(timeout);
 
-            var url = job.TokenReplacer.ReplaceTokens(account.Url);
-            Logger.Debug("Http upload url: " + url);
-            var uri = new Uri(url);
             if (account.IsBasicAuthentication)
             {
                 var asciiAuth = Encoding.ASCII.GetBytes($"{account.UserName}:{job.Passwords.HttpPassword}");
                 var endcoded = Convert.ToBase64String(asciiAuth);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", endcoded);
             }
+
+            return httpClient;
+        }
+
+        private async Task<HttpResponseMessage> MakePostRequest(Job job, HttpContent message)
+        {
+            var httpClient = GetHttpClient(job);
+
+            var url = GetUrlFromJob(job);
+            var uri = new Uri(url);
+
             return await httpClient.PostAsync(uri, message).ConfigureAwait(false);
+        }
+
+        private async Task<HttpResponseMessage> MakePutRequest(Job job, HttpContent message, bool includeFilePath = false, string fileName = default)
+        {
+            var httpClient = GetHttpClient(job);
+
+            var url = GetUrlFromJob(job);
+            var uri = includeFilePath && !string.IsNullOrEmpty(fileName) ? new Uri(Path.Combine(url, fileName)) : new Uri(url);
+
+            return await httpClient.PutAsync(uri, message).ConfigureAwait(false);
         }
 
         protected override void SetPassword(Job job, string password)

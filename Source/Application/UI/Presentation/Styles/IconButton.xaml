@@ -25,7 +25,7 @@
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
                 </MultiDataTrigger.Conditions>
-                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="Foreground" Value="{DynamicResource IconButtonMouseOverColorBrush}" />
             </MultiDataTrigger>
 
             <DataTrigger Binding="{Binding Path=IsPressed, RelativeSource={RelativeSource Self}}" Value="True">

@@ -1,8 +1,8 @@
 ﻿using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
-using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -13,8 +13,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         public CreatorSettingsUpgrader(Data settingsData, IFontHelper fontHelper) : base(settingsData)
         {
             _fontHelper = fontHelper;
-            VersionSettingPaths = new string[] { @"CreatorAppSettings\SettingsVersion", @"ApplicationSettings\SettingsVersion", @"ApplicationProperties\SettingsVersion" };
         }
+
+        protected override string ProfilePath => "ConversionProfiles";
+        public override string SettingsVersionPath => @"CreatorAppSettings\SettingsVersion";
+        protected override string[] VersionSettingPaths => new string[] { SettingsVersionPath, @"ApplicationSettings\SettingsVersion", @"ApplicationProperties\SettingsVersion" };
 
         protected override void AddUpgradeMethods()
         {
@@ -31,6 +34,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV8ToV9);
             UpgradeMethods.Add(UpgradeV9ToV10);
             UpgradeMethods.Add(UpgradeV10ToV11);
+            UpgradeMethods.Add(UpgradeV11ToV12);
+            UpgradeMethods.Add(UpgradeV12ToV13);
         }
 
         private void UpgradeV0ToV1()
@@ -101,12 +106,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             ApplyV7TargetFolder();
             UpgradeToImprovedRegexTitleReplacements(@"ApplicationSettings\TitleReplacement");
 
-            var profilePath = "ConversionProfiles";
             var applicationPath = "ApplicationSettings";
 
-            ExtractTimeServerAccounts(profilePath, applicationPath);
-            ExtractFtpAccounts(profilePath, applicationPath);
-            ExtractSmtpAccounts(profilePath, applicationPath);
+            ExtractTimeServerAccounts(applicationPath);
+            ExtractFtpAccounts(applicationPath);
+            ExtractSmtpAccounts(applicationPath);
         }
 
         private void UpgradeV7ToV8()
@@ -121,9 +125,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             ForAllProfiles((path, i) =>
             {
                 var fontFamily = Data.GetValue(path + @"Stamping\FontName");
-                var ttfFile = _fontHelper.GetFontFilename(fontFamily) ?? "arial.ttf";
+                var ttfFile = _fontHelper.GetFontFilename(fontFamily) ?? FontHelper.DEFAULT_FONT_FILE;
                 Data.SetValue(path + @"Stamping\FontFile", ttfFile);
-            }, "ConversionProfiles");
+            });
 
             Data.SetValue(SettingsVersionPath, "9");
         }
@@ -167,8 +171,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                     Data.SetValue(s + "TargetDirectory", Data.GetValue(s + @"AutoSave\TargetDirectory"));
                 else
                     Data.SetValue(s + "TargetDirectory", Data.GetValue(s + @"SaveDialog\Folder"));
-            },
-                "ConversionProfiles");
+            });
         }
 
         private void UpgradeV9ToV10()
@@ -186,9 +189,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                     MigrateOpenViewer(profileOffset, orderedList);
 
                     SetList(profileOffset, orderedList, "ActionOrder");
-                },
-                "ConversionProfiles"
-
+                }
             );
 
             Data.SetValue(SettingsVersionPath, "10");
@@ -213,11 +214,39 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                     else
                         Data.SetValue(s + @"EmailClientSettings\Format", "Auto");
                     Data.RemoveValue(s + @"EmailClientSettings\Html");
-                },
-                "ConversionProfiles"
+                }
             );
 
             Data.SetValue(SettingsVersionPath, "11");
+        }
+
+        private void UpgradeV11ToV12()
+        {
+            MoveSettingInAllProfiles("UserTokens\\Seperator", "UserTokens\\Separator");
+            Data.SetValue(SettingsVersionPath, "12");
+        }
+
+        private void UpgradeV12ToV13()
+        {
+            ForAllProfiles
+            (
+                (s, i) =>
+                {
+                    string displaySignature;
+                    if (GetBool(Data.GetValue(s + @"PdfSettings\Signature\DisplaySignatureInDocument")) == true)
+                    {
+                        displaySignature = GetBool(Data.GetValue(s + @"PdfSettings\Signature\DisplayOnlyImage")) == true ? "ImageOnly" : "ImageAndText";
+                    }
+                    else
+                    {
+                        displaySignature = "NoDisplay";
+                    }
+                    Data.SetValue(s + @"PdfSettings\Signature\DisplaySignature", displaySignature);
+                    Data.RemoveValue(s + @"PdfSettings\Signature\DisplayOnlyImage");
+                    Data.RemoveValue(s + @"PdfSettings\Signature\DisplaySignatureInDocument");
+                }
+            );
+            Data.SetValue(SettingsVersionPath, "13");
         }
 
         protected IList<string> GetActionOrder(string profileOffset)

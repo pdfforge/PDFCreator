@@ -1,29 +1,32 @@
 ﻿<controls:MetroWindow x:Class="pdfforge.PDFCreator.UI.Presentation.InteractionHostWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
                       mc:Ignorable="d"
                       Height="300" Width="300"
                       WindowStartupLocation="CenterOwner"
                       SizeToContent="WidthAndHeight"
                       Title="{Binding Interaction.Title, FallbackValue=PDFCreator}"
+                      TitleCharacterCasing="Normal"
                       Name="This"
                       Unloaded="InteractionHostWindow_OnUnloaded"
-                      BorderBrush="{DynamicResource AccentColorBrush}"
-                      GlowBrush="{DynamicResource AccentColorBrush}"
-                      BorderThickness="1">
+                      BorderBrush="{DynamicResource TitleBarBackground}"
+                      GlowBrush="{DynamicResource TitleBarBackground}"
+                      WindowTitleBrush="{DynamicResource TitleBarBackground}"
+                      BorderThickness="1"
+                      Background="{DynamicResource WindowBackgroundBrush}">
 
     <controls:MetroWindow.WindowButtonCommands>
         <controls:WindowButtonCommands Style="{DynamicResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
     </controls:MetroWindow.WindowButtonCommands>
 
-    <Window.Resources>
+    <controls:MetroWindow.Resources>
         <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
-    </Window.Resources>
+    </controls:MetroWindow.Resources>
 
     <b:Interaction.Triggers>
         <trigger:InteractionRequestTrigger x:Name="OverlayActionTrigger" SourceObject="{Binding InteractionRequest, Mode=OneWay, ElementName=This}">

@@ -7,10 +7,12 @@ using pdfforge.PDFCreator.Core.Services.Cache;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
+using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
+using pdfforge.PDFCreator.UI.Presentation.Help;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.Utilities;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -19,30 +21,39 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace pdfforge.PDFCreator.UI.RssFeed
 {
     public class RssFeedViewModel : TranslatableViewModelBase<MainShellTranslation>, IMountable
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private readonly ICurrentSettings<Conversion.Settings.RssFeed> _rssFeedSettingsProvider;
         private readonly IGpoSettings _gpoSettings;
         private readonly IRssService _rssService;
         private readonly IFileCacheFactory _fileCacheFactory;
         private readonly ITempFolderProvider _tempFolderProvider;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly EditionHelper _editionHelper;
         private List<FeedItem> _feedItems;
         private readonly FileCache _fileCache;
         private const string CacheFilename = "rssfeed.bin";
 
         public ICommand UrlOpenCommand { get; }
         public ICommand ShowRssFeedCommand { get; }
-        private static object RedBrushColor => new BrushConverter().ConvertFromString("#c5091d");
-        public Brush TitleBarColor { get; set; } = Brushes.Gray;
         public bool ShowReadMore { get; set; } = true;
-        public IconList RssFeedIcon { get; set; } = IconList.RssFeedIcon;
         public bool RssFeedIsOpen { get; set; }
+
+        public bool AllowPrioritySupport => !_editionHelper.IsFreeEdition;
+
+        public ICommand WhatsNewCommand { get; }
+
+        public ICommand PrioritySupportCommand { get; }
+
+        private readonly string _editionWithVersion;
+        public string WelcomeText => Translation?.GetWelcomeText(_editionWithVersion);
+
         public bool ShowWelcome { get; set; }
+
         private bool RssFeedIsEnabled => _rssFeedSettingsProvider.Settings.Enable;
 
         public bool DisableRssFeedViaGpo => _gpoSettings.DisableRssFeed;
@@ -54,7 +65,9 @@ namespace pdfforge.PDFCreator.UI.RssFeed
         public RssFeedViewModel(ICommandLocator commandLocator, ICurrentSettings<Conversion.Settings.RssFeed> rssFeedSettingsProvider,
                                 IGpoSettings gpoSettings, ITranslationUpdater translationUpdater,
                                 IWelcomeSettingsHelper welcomeSettingsHelper, IRssService rssService,
-                                IFileCacheFactory fileCacheFactory, ITempFolderProvider tempFolderProvider)
+                                IFileCacheFactory fileCacheFactory, ITempFolderProvider tempFolderProvider,
+                                EditionHelper editionHelper, IVersionHelper versionHelper,
+                                ApplicationNameProvider applicationNameProvider)
                                 : base(translationUpdater)
         {
             _rssFeedSettingsProvider = rssFeedSettingsProvider;
@@ -62,18 +75,30 @@ namespace pdfforge.PDFCreator.UI.RssFeed
             _rssService = rssService;
             _fileCacheFactory = fileCacheFactory;
             _tempFolderProvider = tempFolderProvider;
+            _editionHelper = editionHelper;
 
             _feedItems = new List<FeedItem>();
             _fileCache = GetFileCache();
 
-            ShowWelcome = welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion();  //Because the CheckIfRequiredAndSetCurrentVersion() sets the version in the registry,
-            RaisePropertyChanged(nameof(ShowWelcome));                       // ShowWelcome has to be set here in the ctor and not directly in the property
+            //Because the CheckIfRequiredAndSetCurrentVersion() sets the version in the registry
+            ShowWelcome = welcomeSettingsHelper.CheckIfRequiredAndSetCurrentVersion();
+            // ShowWelcome has to be set here in the constructor and not directly in the property
+            RaisePropertyChanged(nameof(ShowWelcome));
+            ShowWelcomeWindow();
+
+            _editionWithVersion = applicationNameProvider?.EditionName + " " + versionHelper?.FormatWithThreeDigits();
+            RaisePropertyChanged(WelcomeText);
 
             UrlOpenCommand = commandLocator.GetCommand<UrlOpenCommand>();
+            ShowRssFeedCommand = new DelegateCommand(ShowRssFeedExecute);
 
-            ShowRssFeedCommand = new DelegateCommand(ShowRssFeed);
+            WhatsNewCommand = commandLocator.GetInitializedCommand<ShowUserGuideCommand, HelpTopic>(HelpTopic.WhatsNew);
+            PrioritySupportCommand = commandLocator.GetCommand<IPrioritySupportUrlOpenCommand>();
+        }
 
-            ShowWelcomeWindow();
+        protected override void OnTranslationChanged()
+        {
+            RaisePropertyChanged(nameof(WelcomeText));
         }
 
         private void ShowWelcomeWindow()
@@ -83,27 +108,12 @@ namespace pdfforge.PDFCreator.UI.RssFeed
 
             RssFeedIsOpen = true;
             RaisePropertyChanged(nameof(RssFeedIsOpen));
-            ChangeTitleBarColor();
-            ChangeRssFeedIcon();
         }
 
-        private void ShowRssFeed()
+        private void ShowRssFeedExecute()
         {
             RssFeedIsOpen = !RssFeedIsOpen;
-            ChangeRssFeedIcon();
             RaisePropertyChanged(nameof(RssFeedIsOpen));
-        }
-
-        private void ChangeRssFeedIcon()
-        {
-            RssFeedIcon = RssFeedIsOpen ? IconList.RssFeedArrowIcon : IconList.RssFeedIcon;
-            RaisePropertyChanged(nameof(RssFeedIcon));
-        }
-
-        private void ChangeTitleBarColor()
-        {
-            TitleBarColor = (Brush)RedBrushColor;
-            RaisePropertyChanged(nameof(TitleBarColor));
         }
 
         public List<FeedItem> FeedItems
@@ -141,8 +151,6 @@ namespace pdfforge.PDFCreator.UI.RssFeed
             {
                 RssFeedIsOpen = true;
                 RaisePropertyChanged(nameof(RssFeedIsOpen));
-                ChangeTitleBarColor();
-                ChangeRssFeedIcon();
             }
 
             _rssFeedSettingsProvider.Settings.LatestRssUpdate = _newestFeedEntry;

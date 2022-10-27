@@ -9,43 +9,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls.Buttons
 {
     public partial class ColoredDropDownButton : DropDownButton
     {
-        public static readonly DependencyProperty PrimaryColorDependencyProperty =
-            DependencyProperty.Register("PrimaryColor", typeof(Color), typeof(ColoredDropDownButton), new PropertyMetadata(Colors.Black, OnChangePrimaryColor));
-
-        private static void OnChangePrimaryColor(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ColoredDropDownButton)d).SetColor();
-        }
-
-        public static readonly DependencyProperty SecondaryColorDependencyProperty =
-            DependencyProperty.Register("SecondaryColor", typeof(Color), typeof(ColoredDropDownButton), new PropertyMetadata(Colors.Red, OnChangeSecondaryColor));
-
-        private static void OnChangeSecondaryColor(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ColoredDropDownButton)d).SetColor();
-        }
-
-        private SolidColorBrush _foregroundBrush;
+        private Color _grayedForegroundColor;
+        private Color _grayedBackgroundColor;
+        private ColorAnimation _toForegroundAnimation;
+        private ColorAnimation _toBackgroundAnimation;
+        private ColorAnimation _toGrayForegroundAnimation;
+        private ColorAnimation _toGrayBackgroundAnimation;
         private SolidColorBrush _backgroundBrush;
-        private ColorAnimation _invertedColorAnimation;
-        private ColorAnimation _colorAnimation;
-        private bool _brushesAreSet;
-
-        public Color PrimaryColor
-        {
-            get => (Color)GetValue(PrimaryColorDependencyProperty);
-            set => SetValue(PrimaryColorDependencyProperty, value);
-        }
-
-        public Color SecondaryColor
-        {
-            get => (Color)GetValue(SecondaryColorDependencyProperty);
-            set => SetValue(SecondaryColorDependencyProperty, value);
-        }
+        private SolidColorBrush _foregroundBrush;
 
         public ColoredDropDownButton()
         {
-            SetColor();
             InitializeComponent();
 
             MouseEnter += OnMouseEnter;
@@ -53,47 +27,42 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls.Buttons
             IsEnabledChanged += OnIsEnabledChanged;
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        private Color GetGrayedColor(Color color)
         {
-            _backgroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            _foregroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-        }
-
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var mouseDownAnimationBackground = new ColorAnimation(Color.FromRgb(0xf6, 0xf6, 0xf6), new Duration(TimeSpan.FromSeconds(0)));
-            var mouseDownAnimationForeground = new ColorAnimation(PrimaryColor, new Duration(TimeSpan.FromSeconds(0)));
-            _backgroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, mouseDownAnimationBackground);
-            _foregroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, mouseDownAnimationForeground);
+            var grayingFactor = 0.8;
+            return Color.FromRgb(
+                (byte)(color.R * grayingFactor),
+                (byte)(color.G * grayingFactor),
+                (byte)(color.B * grayingFactor));
         }
 
         public void SetColor()
         {
-            if (_backgroundBrush == null)
-                _backgroundBrush = new SolidColorBrush(PrimaryColor);
-            else
-                _backgroundBrush.Color = PrimaryColor;
+            var foreground = (Color)(Foreground.GetValue(SolidColorBrush.ColorProperty));
+            _foregroundBrush = new SolidColorBrush(foreground);
+            ArrowBrush = _foregroundBrush;
+            ArrowMouseOverBrush = _foregroundBrush;
+            ArrowPressedBrush = _foregroundBrush;
+            Foreground = _foregroundBrush;
+            BorderThickness = new Thickness(0);
 
-            if (_foregroundBrush == null)
-                _foregroundBrush = new SolidColorBrush(SecondaryColor);
-            else
-                _foregroundBrush.Color = SecondaryColor;
+            _grayedForegroundColor = GetGrayedColor(foreground);
+            _toForegroundAnimation = new ColorAnimation(foreground, new Duration(TimeSpan.FromSeconds(0.1)));
+            _toGrayForegroundAnimation = new ColorAnimation(_grayedForegroundColor, new Duration(TimeSpan.FromSeconds(0.1)));
 
-            if (!_brushesAreSet)
-            {
-                ArrowBrush = _foregroundBrush;
-                Foreground = _foregroundBrush;
-                ArrowMouseOverBrush = _foregroundBrush;
-                ArrowPressedBrush = _foregroundBrush;
-                BorderBrush = _foregroundBrush;
+            var backgroundColor = (Color)(Background.GetValue(SolidColorBrush.ColorProperty));
+            _backgroundBrush = new SolidColorBrush(backgroundColor);
+            Background = _backgroundBrush;
 
-                Background = _backgroundBrush;
+            _grayedBackgroundColor = GetGrayedColor(backgroundColor);
+            _toBackgroundAnimation = new ColorAnimation(backgroundColor, new Duration(TimeSpan.FromSeconds(0.1)));
+            _toGrayBackgroundAnimation = new ColorAnimation(_grayedBackgroundColor, new Duration(TimeSpan.FromSeconds(0.1)));
+        }
 
-                _brushesAreSet = true;
-            }
-
-            _colorAnimation = new ColorAnimation(PrimaryColor, SecondaryColor, new Duration(TimeSpan.FromSeconds(0.1)));
-            _invertedColorAnimation = new ColorAnimation(SecondaryColor, PrimaryColor, new Duration(TimeSpan.FromSeconds(0.1)));
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Background.BeginAnimation(SolidColorBrush.ColorProperty, _toBackgroundAnimation);
+            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, _toForegroundAnimation);
         }
 
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -109,20 +78,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls.Buttons
 
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
-            BorderThickness = new Thickness(0);
-            _foregroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _colorAnimation);
-            _backgroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _invertedColorAnimation);
+            Background.BeginAnimation(SolidColorBrush.ColorProperty, _toBackgroundAnimation);
+            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, _toForegroundAnimation);
         }
 
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
-            BorderThickness = new Thickness(1);
-            _foregroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _invertedColorAnimation);
-            _backgroundBrush.BeginAnimation(SolidColorBrush.ColorProperty, _colorAnimation);
+            Background.BeginAnimation(SolidColorBrush.ColorProperty, _toGrayBackgroundAnimation);
+            Foreground.BeginAnimation(SolidColorBrush.ColorProperty, _toGrayForegroundAnimation);
         }
 
-        public void Connect(int connectionId, object target)
+        private void Border_OnLoaded(object sender, RoutedEventArgs e)
         {
+            SetColor();
         }
     }
 }

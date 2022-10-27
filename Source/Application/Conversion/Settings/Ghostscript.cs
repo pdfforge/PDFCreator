@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Ghostscript)) return false;
 			Ghostscript v = o as Ghostscript;
 			
-			if (!AdditionalGsParameters.Equals(v.AdditionalGsParameters)) return false;
+			if (!Object.Equals(AdditionalGsParameters, v.AdditionalGsParameters)) return false;
 			return true;
 		}
 		

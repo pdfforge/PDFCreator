@@ -1,0 +1,79 @@
+﻿<UserControl
+    x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenActionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+    xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+    xmlns:userToken="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="600"
+    d:DataContext="{d:DesignInstance designTime:DesignTimeUserTokenActionViewModel, IsDesignTimeCreatable=True}"
+    help:HelpProvider.HelpTopic="UserTokens">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
+        <HeaderedContentControl.Resources>
+            <userToken:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
+        </HeaderedContentControl.Resources>
+
+        <HeaderedContentControl.Header>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource LargeLabel}" Content="{Binding Translation.UserTokenTitle}" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" />
+            </StackPanel>
+        </HeaderedContentControl.Header>
+
+        <StackPanel MaxWidth="500" HorizontalAlignment="Left">
+            <TextBlock Margin="0 10 0 0" Text="{Binding Translation.UserTokenIntroduction}" TextWrapping="Wrap" />
+
+            <TextBlock Text="{Binding Translation.UserTokenInDocumentText}" Margin="0 0 0 0" Padding="0" />
+
+            <Label Style="{StaticResource LargeLabel}" Margin="0 10 0 0">
+                <TextBox Background="{StaticResource TextBoxDisabledBackgroundBrush}" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap"
+                         Padding="5 0">
+                    <MultiBinding Converter="{StaticResource SeparatorToExampleStringConverter}">
+                        <Binding Path="Translation" />
+                        <Binding Path="CurrentProfile.UserTokens.Separator" />
+                    </MultiBinding>
+                </TextBox>
+            </Label>
+            <TextBlock Margin="0 10 0 0" Text="{Binding Translation.UserTokenInSettingsText}" TextWrapping="Wrap" />
+
+            <Label Style="{StaticResource LargeLabel}" Margin="0 10 0 0">
+                <TextBox Background="{StaticResource TextBoxDisabledBackgroundBrush}" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap"
+                         Padding="5 0"
+                         Text="{Binding Translation.UserTokenSettingsExample, Mode=OneWay}" />
+            </Label>
+
+            <TextBlock Margin="0 10 0 0" Text="{Binding Translation.DefaultValueExplanation}" TextWrapping="Wrap" />
+
+            <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.SelectSeparator}" />
+            <ComboBox Margin="0 10 0 0"
+                      Width="100"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      SelectedValue="{Binding CurrentProfile.UserTokens.Separator}"
+                      SelectedValuePath="Value"
+                      DisplayMemberPath="Translation"
+                      ItemsSource="{Binding Translation.UserTokenSeperatorValues}" />
+
+            <Button Margin="0 20 0 0"
+                    Command="{Binding OpenUserGuideCommand}" DockPanel.Dock="Right"
+                    Content="{Binding Translation.UserGuideButtonText}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource DefaultButton}" />
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

@@ -1,16 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq.Expressions;
-using pdfforge.Obsidian;
+﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq.Expressions;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
 {
-    public class FontSelectorControlViewModelBuilder
+    public interface IFontSelectorControlViewModelBuilder
+    {
+        IFontSelectorControlViewModelBuilder WithFontNameSelector(Expression<Func<ConversionProfile, string>> selector);
+
+        IFontSelectorControlViewModelBuilder WithFontFileSelector(Expression<Func<ConversionProfile, string>> selector);
+
+        IFontSelectorControlViewModelBuilder WithFontSizeSelector(Expression<Func<ConversionProfile, float>> selector);
+
+        IFontSelectorControlViewModelBuilder WithFontColorSelector(Expression<Func<ConversionProfile, Color>> selector);
+
+        FontSelectorControlViewModel Build();
+    }
+
+    public class FontSelectorControlViewModelBuilder : IFontSelectorControlViewModelBuilder
     {
         private readonly IFontHelper _fontHelper;
         private readonly IInteractionInvoker _interactionInvoker;
@@ -34,25 +47,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
             _dispatcher = dispatcher;
         }
 
-        public FontSelectorControlViewModelBuilder WithFontNameSelector(Expression<Func<ConversionProfile, string>> selector)
+        public IFontSelectorControlViewModelBuilder WithFontNameSelector(Expression<Func<ConversionProfile, string>> selector)
         {
             _fontNameSelector = selector;
             return this;
         }
 
-        public FontSelectorControlViewModelBuilder WithFontFileSelector(Expression<Func<ConversionProfile, string>> selector)
+        public IFontSelectorControlViewModelBuilder WithFontFileSelector(Expression<Func<ConversionProfile, string>> selector)
         {
             _fontFileSelector = selector;
             return this;
         }
 
-        public FontSelectorControlViewModelBuilder WithFontSizeSelector(Expression<Func<ConversionProfile, float>> selector)
+        public IFontSelectorControlViewModelBuilder WithFontSizeSelector(Expression<Func<ConversionProfile, float>> selector)
         {
             _fontSizeSelector = selector;
             return this;
         }
 
-        public FontSelectorControlViewModelBuilder WithFontColorSelector(Expression<Func<ConversionProfile, Color>> selector)
+        public IFontSelectorControlViewModelBuilder WithFontColorSelector(Expression<Func<ConversionProfile, Color>> selector)
         {
             _fontColorSelector = selector;
             return this;

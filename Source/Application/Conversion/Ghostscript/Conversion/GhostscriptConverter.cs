@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
         private readonly StringBuilder _ghostscriptOutput = new StringBuilder();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private GhostscriptVersion _ghostscriptVersion;
+        private readonly GhostscriptVersion _ghostscriptVersion;
 
         public GhostscriptConverter(GhostscriptVersion ghostscriptVersion)
         {
@@ -50,6 +50,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                     break;
 
                 case ConversionMode.IntermediateConversion:
+                    DoConversion(job, ConversionMode.IntermediateConversion);
+                    break;
+
+                case ConversionMode.IntermediateToTargetConversion:
                     DoConversion(job, ConversionMode.IntermediateToTargetConversion);
                     break;
 
@@ -63,6 +67,61 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
         private void MovePdfFileFromIntermediateToTempOutputFiles(Job job)
         {
             job.TempOutputFiles = new[] { job.IntermediatePdfFile };
+        }
+
+        public void CreateIntermediatePdf(Job job)
+        {
+            DoConversion(job, new PdfIntermediateDevice(job));
+        }
+
+        private void DoConversion(Job job, OutputDevice device)
+        {
+            var ghostScript = GetGhostscript();
+            NumberOfPages = job.NumberOfPages;
+
+            try
+            {
+                ghostScript.Output += Ghostscript_Output;
+                job.OutputFiles.Clear();
+
+                _logger.Debug("Starting Ghostscript Job");
+
+                _logger.Trace("Output format is: {0}", job.Profile.OutputFormat);
+
+                ghostScript.Output += Ghostscript_Logging;
+                var success = ghostScript.Run(device, job.JobTempFolder);
+                ghostScript.Output -= Ghostscript_Logging;
+
+                _logger.Trace("Finished Ghostscript execution");
+
+                if (!success)
+                {
+                    var errorMessage = ExtractGhostscriptErrors(ConverterOutput);
+                    _logger.Error("Ghostscript execution failed: " + errorMessage);
+                    if (errorMessage.Contains("Redistilling encrypted PDF is not permitted"))
+                    {
+                        throw new ProcessingException("Ghostscript execution failed: " + errorMessage, ErrorCode.Conversion_Ghostscript_PasswordProtectedPDFError);
+                    }
+
+                    throw new ProcessingException("Ghostscript execution failed: " + errorMessage, ErrorCode.Conversion_GhostscriptError);
+                }
+
+                _logger.Trace("Ghostscript Job was successful");
+            }
+            catch (ProcessingException ex)
+            {
+                _logger.Error("There was a Ghostscript error while converting the Job {0}: {1}", job.JobInfo.InfFile, ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("There was an unexpected error while converting the Job {0}: {1}", job.JobInfo.InfFile, ex);
+                throw new ProcessingException("Ghostscript execution failed", ErrorCode.Conversion_GhostscriptError);
+            }
+            finally
+            {
+                ghostScript.Output -= Ghostscript_Output;
+            }
         }
 
         private void DoConversion(Job job, ConversionMode conversionMode)
@@ -226,9 +285,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                 {
                     start += pageMarker.Length;
                     var page = output.Substring(start, end - start);
-                    int pageNumber;
 
-                    if (int.TryParse(page, out pageNumber))
+                    if (int.TryParse(page, out var pageNumber))
                     {
                         if (pageNumber <= NumberOfPages)
                             ReportProgress(pageNumber * 100 / NumberOfPages);

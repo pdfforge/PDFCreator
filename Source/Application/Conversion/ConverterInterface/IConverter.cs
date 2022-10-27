@@ -11,6 +11,8 @@ namespace pdfforge.PDFCreator.Conversion.ConverterInterface
 
         void SecondConversionStep(Job job);
 
+        void CreateIntermediatePdf(Job job);
+
         string ConverterOutput { get; }
 
         event EventHandler<ConversionProgressChangedEventArgs> OnReportProgress;

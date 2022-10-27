@@ -15,13 +15,16 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
     ///     There is one update method from each version to the next (0 to 1, 1 to 2 etc.) and they are called subsequently, if
     ///     required.
     /// </summary>
-    public class SettingsUpgrader : DataUpgrader, ISettingsUpgrader
+    public abstract class SettingsUpgrader : DataUpgrader, ISettingsUpgrader
     {
-        protected string[] VersionSettingPaths;
+        protected abstract string ProfilePath { get; }
+        public abstract string SettingsVersionPath { get; }
+        
+        protected abstract string[] VersionSettingPaths { get; }
 
         protected readonly List<Action> UpgradeMethods = new List<Action>();
 
-        public SettingsUpgrader(Data settingsData)
+        protected SettingsUpgrader(Data settingsData)
         {
             Data = settingsData;
             AddUpgradeMethods();
@@ -49,23 +52,6 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             }
         }
 
-        public string SettingsVersionPath
-        {
-            get
-            {
-                var path = "";
-                foreach (string settingsPath in VersionSettingPaths)
-                {
-                    var versionString = Data.GetValue(settingsPath);
-                    var version = GetInt(versionString) ?? 0;
-                    path = settingsPath;
-                    if (version != 0)
-                        return path;
-                }
-                return path;
-            }
-        }
-
         public int NumberOfUpgradeMethods()
         {
             return UpgradeMethods.Count;
@@ -86,15 +72,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             return targetVersion > SettingsVersion;
         }
 
-        protected void ForAllProfiles(Action<string, int> func, string profilePath)
+        protected void ForAllProfiles(Action<string, int> func)
         {
-            var numProfiles = GetInt(Data.GetValue($@"{profilePath}\numClasses"));
+            var numProfiles = GetInt(Data.GetValue($@"{ProfilePath}\numClasses"));
 
             if (numProfiles != null)
             {
                 for (var i = 0; i < numProfiles; i++)
                 {
-                    var path = $@"{profilePath}\{i}\";
+                    var path = $@"{ProfilePath}\{i}\";
 
                     func(path, i);
                 }
@@ -103,13 +89,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
         protected void MoveSettingInAllProfiles(string oldPath, string newPath)
         {
-            var numProfiles = GetInt(Data.GetValue(@"ConversionProfiles\numClasses"));
+            var numProfiles = GetInt(Data.GetValue($@"{ProfilePath}\numClasses"));
 
             if (numProfiles != null)
             {
                 for (var i = 0; i < numProfiles; i++)
                 {
-                    var path = string.Format(@"ConversionProfiles\{0}\", i);
+                    var path = $@"{ProfilePath}\{i}\";
                     MoveValue(path + oldPath, path + newPath);
                 }
             }
@@ -138,13 +124,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
         protected void MapSettingInAllProfiles(string path, Func<string, string> mapFunction)
         {
-            var numProfiles = GetInt(Data.GetValue(@"ConversionProfiles\numClasses"));
+            var numProfiles = GetInt(Data.GetValue($@"{ProfilePath}\numClasses"));
 
             if (numProfiles != null)
             {
                 for (var i = 0; i < numProfiles; i++)
                 {
-                    var p = string.Format(@"ConversionProfiles\{0}\" + path, i);
+                    var p = $@"{ProfilePath}\{i}\{path}";
                     MapValue(p, mapFunction);
                 }
             }
@@ -152,19 +138,19 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
         protected void ApplyNewSettingInAllProfiles(string path, string defaultValue)
         {
-            var numProfiles = GetInt(Data.GetValue(@"ConversionProfiles\numClasses"));
+            var numProfiles = GetInt(Data.GetValue($@"{ProfilePath}\numClasses"));
 
             if (numProfiles != null)
             {
                 for (var i = 0; i < numProfiles; i++)
                 {
-                    var p = string.Format(@"ConversionProfiles\{0}\" + path, i);
+                    var p = $@"{ProfilePath}\{i}\{path}";
                     Data.SetValue(p, defaultValue);
                 }
             }
         }
 
-        protected void ExtractTimeServerAccounts(string sourceProfilePath, string targetAccountsPath)
+        protected void ExtractTimeServerAccounts(string targetAccountsPath)
         {
             var accounts = new Dictionary<TimeServerAccount, List<int>>();
             accounts[new TimeServerAccount { Url = "https://freetsa.org/tsr" }] = new List<int>();
@@ -193,7 +179,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
                     accounts[account] = new List<int>();
                     accounts[account].Add(profileIndex);
                 }
-            }, sourceProfilePath);
+            });
 
             for (var i = 0; i < accounts.Count; i++)
             {
@@ -204,7 +190,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
                 foreach (var profileId in accounts[account])
                 {
-                    Data.SetValue($@"{sourceProfilePath}\{profileId}\PdfSettings\Signature\TimeServerAccountId", account.AccountId);
+                    Data.SetValue($@"{ProfilePath}\{profileId}\PdfSettings\Signature\TimeServerAccountId", account.AccountId);
                 }
             }
             Data.SetValue($@"{targetAccountsPath}\Accounts\TimeServerAccounts\numClasses", accounts.Keys.Count.ToString());
@@ -287,7 +273,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             }
         }
 
-        protected void ExtractFtpAccounts(string sourceProfilePath, string targetAccountsPath)
+        protected void ExtractFtpAccounts(string targetAccountsPath)
         {
             var accounts = new Dictionary<FtpAccount, List<int>>();
 
@@ -312,7 +298,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
                     accounts[account] = new List<int>();
                     accounts[account].Add(profileIndex);
                 }
-            }, sourceProfilePath);
+            });
 
             for (var i = 0; i < accounts.Count; i++)
             {
@@ -323,13 +309,13 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
                 foreach (var profileId in accounts[account])
                 {
-                    Data.SetValue($@"{sourceProfilePath}\{profileId}\Ftp\AccountId", account.AccountId);
+                    Data.SetValue($@"{ProfilePath}\{profileId}\Ftp\AccountId", account.AccountId);
                 }
             }
             Data.SetValue($@"{targetAccountsPath}\Accounts\FtpAccounts\numClasses", accounts.Keys.Count.ToString());
         }
 
-        protected void ExtractSmtpAccounts(string sourceProfilePath, string targetAccountsPath)
+        protected void ExtractSmtpAccounts(string targetAccountsPath)
         {
             var accounts = new Dictionary<SmtpAccount, List<int>>();
 
@@ -357,7 +343,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
                     accounts[account] = new List<int>();
                     accounts[account].Add(indexOfProfile);
                 }
-            }, sourceProfilePath);
+            });
 
             for (var i = 0; i < accounts.Count; i++)
             {
@@ -368,7 +354,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
                 foreach (var profileId in accounts[account])
                 {
-                    Data.SetValue($@"{sourceProfilePath}\{profileId}\EmailSmtpSettings\AccountId", account.AccountId);
+                    Data.SetValue($@"{ProfilePath}\{profileId}\EmailSmtpSettings\AccountId", account.AccountId);
                 }
             }
             Data.SetValue($@"{targetAccountsPath}\Accounts\SmtpAccounts\numClasses", accounts.Keys.Count.ToString());

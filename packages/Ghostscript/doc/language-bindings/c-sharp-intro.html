@@ -1,0 +1,218 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link selected"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+        <div class="main">
+
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link selected"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+
+            <div class="middle">
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="c-overview">C# overview</h1>
+<div class="banner">
+    <div class="c-sharp-text"></div>
+    <div class="vendor-logo c-sharp-logo"></div>
+</div>
+
+<h2 id="about">About</h2>
+<p>In the <a href="https://github.com/ArtifexSoftware/ghostpdl">GhostPDL repository</a> a sample <code>C#</code> project can be found in <code>/demos/csharp</code>.</p>
+<p>Within this project the following namespaces and corresponding <code>C#</code> files are of relevance:</p>
+<ul>
+<li><a href="#ghostapi">GhostAPI</a> <code>ghostapi.cs</code></li>
+<li><a href="#ghostnet">GhostNET</a> <code>ghostnet.cs</code></li>
+<li><a href="#ghostmono">GhostMono</a> <code>ghostmono.cs</code></li>
+</ul>
+<h2 id="platform-setup">Platform &amp; setup</h2>
+<h3 id="building-ghostscript">Building Ghostscript</h3>
+<p>Ghostscript should be built as a shared library for your platform.</p>
+<p>See <a href="index.html#building-ghostscript">Building Ghostscript</a>.</p>
+<h2 id="ghostapi">GhostAPI</h2>
+<p><code>GhostAPI</code> is the main wrapper responsible for bridging over to the <code>C</code> library and ensuring that the correct DLLs are imported.</p>
+<p><code>GhostAPI</code> contains the <code>ghostapi</code> class which <em>does not</em> need to be instantiated as it provides <code>public static</code> methods. These methods, which mirror their <code>C</code> counterparts, are as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="c-sharp-ghost-api#gsapi_revision">gsapi_revision</a></td>
+<td>Returns the revision numbers and strings of the Ghostscript interpreter library</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_new_instance">gsapi_new_instance</a></td>
+<td>Create a new instance of Ghostscript</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_delete_instance">gsapi_delete_instance</a></td>
+<td>Destroy an instance of Ghostscript</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_stdio_with_handle">gsapi_set_stdio_with_handle</a></td>
+<td>Set the callback functions for <code>stdio</code>, together with the handle to use in the callback functions</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_stdio">gsapi_set_stdio</a></td>
+<td>Set the callback functions for <code>stdio</code></td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_poll_with_handle">gsapi_set_poll_with_handle</a></td>
+<td>Set the callback function for polling, together with the handle to pass to the callback function</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_poll">gsapi_set_poll</a></td>
+<td>Set the callback function for polling</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_display_callback">gsapi_set_display_callback</a></td>
+<td><em>deprecated</em></td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_register_callout">gsapi_register_callout</a></td>
+<td>This call registers a callout handler</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_deregister_callout">gsapi_deregister_callout</a></td>
+<td>This call deregisters a previously registered callout handler</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_arg_encoding">gsapi_set_arg_encoding</a></td>
+<td>Set the encoding used for the interpretation of all subsequent args supplied via the gsapi interface on this instance</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_default_device_list">gsapi_set_default_device_list</a></td>
+<td>Set the string containing the list of default device names</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_get_default_device_list">gsapi_get_default_device_list</a></td>
+<td>Returns a pointer to the current default device string</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_init_with_args">gsapi_init_with_args</a></td>
+<td>Initialise the interpreter</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_run_wildcard">gsapi_run_*</a></td>
+<td>Wildcard for various "run" methods</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_exit">gsapi_exit</a></td>
+<td>Exit the interpreter</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_set_param">gsapi_set_param</a></td>
+<td>Set a parameter</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_get_param">gsapi_get_param</a></td>
+<td>Get a parameter</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_enumerate_params">gsapi_enumerate_params</a></td>
+<td>Enumerate the current parameters</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_add_control_path">gsapi_add_control_path</a></td>
+<td>Add a (case sensitive) path to one of the lists of permitted paths for file access</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_remove_control_path">gsapi_remove_control_path</a></td>
+<td>Remove a (case sensitive) path from one of the lists of permitted paths for file access</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_purge_control_paths">gsapi_purge_control_paths</a></td>
+<td>Clear all the paths from one of the lists of permitted paths for file access</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_activate_path_control">gsapi_activate_path_control</a></td>
+<td>Enable/Disable path control</td>
+</tr>
+<tr>
+<td><a href="c-sharp-ghost-api#gsapi_is_path_control_active">gsapi_is_path_control_active</a></td>
+<td>Query whether path control is activated or not</td>
+</tr>
+</tbody></table>
+<h2 id="ghostnet">GhostNET</h2>
+<p><code>GhostNET</code> is the <a href="https://dotnet.microsoft.com/">.NET</a> interface into <code>GhostAPI</code>. It exemplifies how to do more complex operations involving multiple API calls and sequences.</p>
+<h3 id="ghostnet-wpf-example">GhostNET WPF example</h3>
+<p>In <code>demos/csharp/windows/ghostnet.sln</code> there is a sample C# demo project.</p>
+<p>This project can be opened in <a href="https://visualstudio.microsoft.com">Visual Studio</a> and used to test the Ghostscript API alongside a UI which handles opening PostScript and PDF files. The sample application here allows for file browsing and Ghostscript file viewing.</p>
+<p>Below is a screenshot of the sample application with a PDF open:</p>
+<p><img src="images/ghostnet-wpf-example.png" alt="ghostnet wpf example UI"></p>
+<h2 id="ghostmono">GhostMono</h2>
+<p><code>GhostMono</code> is the <a href="https://www.mono-project.com/">Mono</a> equivalent of <code>GhostNET</code> and as such has no dependancy on a Windows environment.</p>
+</article>
+
+            </div>
+
+            <div class="right">
+
+                <div class="link"><a href="#about">About</a></div>
+                <div class="link"><a href="#platform-setup">Platform & setup</a></div>
+                <div class="sub-link"><a href="#building-ghostscript">Building Ghostscript</a></div>
+                <div class="link"><a href="#ghostapi">GhostAPI</a></div>
+                <div class="link"><a href="#ghostnet">GhostNET</a></div>
+                <div class="sub-link"><a href="#ghostnet-wpf-example">GhostNET WPF example</a></div>
+                <div class="link"><a href="#ghostmono">GhostMono</a></div>
+
+            </div>
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+</html>

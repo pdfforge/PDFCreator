@@ -6,10 +6,12 @@
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
-             d:DataContext="{d:DesignInstance debugSettings:TestPageSettingsViewModel}">
-    <Button Style="{DynamicResource LightGreyButton}" 
-            Content="{Binding Translation.PdfCreatorTestpage}" 
-            FontSize="16" Height="40"
+             d:DataContext="{d:DesignInstance debugSettings:CreatorTestPageSettingsViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+    </UserControl.Resources>
+    <Button Content="{Binding Translation.PdfCreatorTestpage}"
+            Style="{StaticResource BrightButton}"
             ToolTip="{Binding Translation.PrintTestPageTooltip}" 
             Command="{Binding PrintPdfCreatorTestPageCommand}"
             HorizontalAlignment="Left" />

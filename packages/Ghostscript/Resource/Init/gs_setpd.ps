@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -919,7 +919,7 @@ SETPDDEBUG { (Installing.) = pstack flush } if
    .currentpagedevice pop exch
    { .setdevice } stopped {
      cleartomark exch pop
-     /setpagedevice $error /errorname get
+     /setpagedevice cvx $error /errorname get
      signalerror
    } if
    pop

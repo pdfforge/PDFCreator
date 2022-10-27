@@ -1,11 +1,13 @@
 ﻿using pdfforge.Communication;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.CLI.Commands;
 using pdfforge.PDFCreator.UI.CLI.Helper;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.UI.CLI.CommandExecutors
 {

@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     {
         public DesignTimeLicenseSettingsViewModel()
             : base(new ProcessStarter(), new DesignTimeLicenseChecker(), new UnlicensedOfflineActivator(), new InteractionRequest(),
-                new DesignTimeTranslationUpdater(), new GpoSettingsDefaults(), new DesignTimeEventAggregator())
+                new DesignTimeTranslationUpdater(), new GpoSettingsDefaults())
         {
         }
     }
@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         public DesignTimeLicenseChecker()
         {
             _activation = new Activation(true);
-            _activation.SetResult(Result.OK, "OK");
+            _activation.SetResult(Result.OK, "Ok");
             _activation.TimeOfActivation = DateTime.Today;
             _activation.ActivatedTill = DateTime.Today.AddDays(7);
             _activation.LicenseExpires = DateTime.Today.AddDays(7);

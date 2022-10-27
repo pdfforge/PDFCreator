@@ -2,10 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Microsoft.Xaml.Behaviors.Wpf</id>
-    <version>1.1.19</version>
+    <version>1.1.39</version>
     <title>Microsoft.Xaml.Behaviors.Wpf</title>
     <authors>Microsoft</authors>
-    <owners>Microsoft</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
@@ -14,13 +13,17 @@
     <description>Easily add interactivity to your apps using XAML Behaviors for WPF. Behaviors encapsulate reusable functionalities for elements that can be easily added to your XAML without the need for more imperative code.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>Behavior Action Behaviors Actions Blend Managed C# Interaction Interactivity Interactions</tags>
-    <repository type="git" url="https://github.com/microsoft/XamlBehaviorsWpf" commit="b88a49dfadcc98f41634624124ee19f9d9dc4df2" />
+    <repository type="git" url="https://github.com/microsoft/XamlBehaviorsWpf" commit="6c12334a7309811be225de9d19e24f678e74ae08" />
     <dependencies>
       <group targetFramework=".NETFramework4.5" />
-      <group targetFramework=".NETCoreApp3.0" />
+      <group targetFramework=".NETCoreApp3.1" />
+      <group targetFramework="net5.0-windows7.0" />
     </dependencies>
     <frameworkReferences>
-      <group targetFramework=".NETCoreApp3.0">
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework="net5.0-windows7.0">
         <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
       </group>
     </frameworkReferences>

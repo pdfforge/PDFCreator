@@ -1,13 +1,12 @@
-﻿using System;
-using SystemInterface.IO;
-using NLog;
+﻿using NLog;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
+using System;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
 {
@@ -16,16 +15,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IFtpConnectionFactory _ftpConnectionFactory;
         private readonly IPathUtil _pathUtil;
-        private readonly IFile _file;
+        private readonly IFtpConnectionTester _ftpConnectionTester;
 
         protected override string PasswordText => "FTP";
 
-        public FtpAction(IFtpConnectionFactory ftpConnectionFactory, IPathUtil pathUtil, IFile file)
+        public FtpAction(IFtpConnectionFactory ftpConnectionFactory, IPathUtil pathUtil, IFtpConnectionTester ftpConnectionTester)
             : base(p => p.Ftp)
         {
             _ftpConnectionFactory = ftpConnectionFactory;
             _pathUtil = pathUtil;
-            _file = file;
+            _ftpConnectionTester = ftpConnectionTester;
         }
 
         public override void ApplyPreSpecifiedTokens(Job job)
@@ -40,7 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
             if (!IsEnabled(profile))
                 return actionResult;
 
-            var isFinal = checkLevel == CheckLevel.RunningJob;
+            var isRunningJob = checkLevel == CheckLevel.RunningJob;
 
             var ftpAccount = settings.Accounts.GetFtpAccount(profile);
             if (ftpAccount == null)
@@ -51,66 +50,17 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
                 return actionResult;
             }
 
-            if (string.IsNullOrEmpty(ftpAccount.Server))
-            {
-                Logger.Error("No FTP server specified.");
-                actionResult.Add(ErrorCode.Ftp_NoServer);
-            }
+            var ignoreMissingPassword = !profile.AutoSave.Enabled;
+            var checkAccountResult = _ftpConnectionTester.CheckAccount(ftpAccount, ignoreMissingPassword);
+            actionResult.Add(checkAccountResult);
 
-            if (string.IsNullOrEmpty(ftpAccount.UserName))
-            {
-                Logger.Error("No FTP username specified.");
-                actionResult.Add(ErrorCode.Ftp_NoUser);
-            }
-
-            if (ftpAccount.AuthenticationType == AuthenticationType.KeyFileAuthentication)
-            {
-                var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(ftpAccount.PrivateKeyFile);
-                switch (pathUtilStatus)
-                {
-                    case PathUtilStatus.InvalidRootedPath:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
-
-                    case PathUtilStatus.PathTooLongEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_PathTooLong);
-
-                    case PathUtilStatus.NotSupportedEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
-
-                    case PathUtilStatus.ArgumentEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_IllegalCharacters);
-                }
-
-                if (!isFinal && ftpAccount.PrivateKeyFile.StartsWith(@"\\"))
-                    return new ActionResult();
-
-                if (!_file.Exists(ftpAccount.PrivateKeyFile))
-                {
-                    Logger.Error("The private key file \"" + ftpAccount.PrivateKeyFile + "\" does not exist.");
-                    return new ActionResult(ErrorCode.FtpKeyFilePath_FileDoesNotExist);
-                }
-            }
-
-            if (profile.AutoSave.Enabled && string.IsNullOrEmpty(ftpAccount.Password) || KeyFilePasswordIsRequired(ftpAccount))
-            {
-                Logger.Error("Automatic saving without ftp password.");
-                actionResult.Add(ErrorCode.Ftp_AutoSaveWithoutPassword);
-            }
-
-            if (!isFinal && TokenIdentifier.ContainsTokens(profile.Ftp.Directory))
+            if (!isRunningJob && TokenIdentifier.ContainsTokens(profile.Ftp.Directory))
                 return actionResult;
 
             if (!ValidName.IsValidFtpPath(profile.Ftp.Directory))
                 actionResult.Add(ErrorCode.FtpDirectory_InvalidFtpPath);
 
             return actionResult;
-        }
-
-        private bool KeyFilePasswordIsRequired(FtpAccount ftpAccount)
-        {
-            return ftpAccount.AuthenticationType == AuthenticationType.KeyFileAuthentication
-                   && ftpAccount.KeyFileRequiresPass
-                && string.IsNullOrEmpty(ftpAccount.Password);
         }
 
         protected override ActionResult DoActionProcessing(Job job)

@@ -18,8 +18,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         public string TitleLabel { get; private set; } = "Title:";
         public string AuthorLabel { get; private set; } = "Author:";
         public string PagesLabel { get; private set; } = "Pages:";
-        public string Open { get; private set; } = "Open";
-        public string DeleteFile { get; private set; } = "Delete";
+        public string Actions { get; private set; } = "Actions";
+        public string DeleteFileFromHistory { get; private set; } = "Delete";
         public string OpenDefaultProgram { get; private set; } = "Open with default viewer";
         public string OpenExplorer { get; private set; } = "Open folder";
         public string PrintWithPDFArchitect { get; private set; } = "Print with PDF Architect";

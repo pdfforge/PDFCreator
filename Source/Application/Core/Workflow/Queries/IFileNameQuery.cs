@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Queries
 {
     public interface IFileNameQuery
     {
-        QueryResult<OutputFilenameResult> GetFileName(string directory, string filename, OutputFormat outputFormat);
+        QueryResult<OutputFilenameResult> GetFileName(string directory, string filename, OutputFormat outputFormat, bool requiresOverwriteCheck = true);
     }
 
     public class OutputFilenameResult

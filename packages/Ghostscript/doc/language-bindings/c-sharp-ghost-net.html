@@ -1,0 +1,621 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link selected"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+        <div class="main">
+
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link selected"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+
+            <div class="middle">
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="ghostnet">GhostNET</h1>
+<div class="banner">
+    <div class="c-sharp-text"></div>
+    <div class="vendor-logo c-sharp-logo"></div>
+</div>
+
+
+<h2 id="about">About</h2>
+<p><code>GhostNET</code> is the <code>C#</code> interface into the <code>GhostAPI</code> library developed for Windows systems.</p>
+<h2 id="enums">Enums</h2>
+<h3 id="tasks">Tasks</h3>
+<p>The Ghostscript task type <code>enum</code> is used to inform <code>GhostAPI</code> of the type of operation which is being requested.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PS_DISTILL</td>
+<td>Task associated with converting a PostScript stream to a PDF document</td>
+</tr>
+<tr>
+<td>CREATE_XPS</td>
+<td>Task associated with outputting  a copy of a document to XPS</td>
+</tr>
+<tr>
+<td>SAVE_RESULT</td>
+<td>Task associated with saving documents</td>
+</tr>
+<tr>
+<td>GET_PAGE_COUNT</td>
+<td>Task associated with getting the page count of a document</td>
+</tr>
+<tr>
+<td>GENERIC</td>
+<td>Generic task identifier</td>
+</tr>
+<tr>
+<td>DISPLAY_DEV_THUMBS</td>
+<td>Display Device task associated with rendering thumbnails</td>
+</tr>
+<tr>
+<td>DISPLAY_DEV_NON_PDF</td>
+<td>Display Device task associated with non-PDF or non-XPS rendering <sup><a href="#1-ghostscript-page-description-languages">1</a></sup></td>
+</tr>
+<tr>
+<td>DISPLAY_DEV_PDF</td>
+<td>Display Device task associated with PDF &amp; XPS rendering <sup><a href="#1-ghostscript-page-description-languages">1</a></sup></td>
+</tr>
+<tr>
+<td>DISPLAY_DEV_RUN_FILE</td>
+<td>Display Device task associated with running files</td>
+</tr>
+</tbody></table>
+<p>Task types are defined as <code>GS_Task_t</code>.</p>
+<div class="tag enumDefinition csharp"></div>
+
+<pre><code class="language-c">public enum GS_Task_t
+{
+    PS_DISTILL,
+    CREATE_XPS,
+    SAVE_RESULT,
+    GET_PAGE_COUNT,
+    GENERIC,
+    DISPLAY_DEV_THUMBS,
+    DISPLAY_DEV_NON_PDF,
+    DISPLAY_DEV_PDF,
+    DISPLAY_DEV_RUN_FILE
+}</code></pre>
+<h3 id="results">Results</h3>
+<p>Result types are defined as <code>GS_Result_t</code>.</p>
+<div class="tag enumDefinition csharp"></div>
+
+<pre><code class="language-c">public enum GS_Result_t
+{
+    gsOK,
+    gsFAILED,
+    gsCANCELLED
+}</code></pre>
+<h3 id="status">Status</h3>
+<p>Status is defined as <code>gsStatus</code>.</p>
+<div class="tag enumDefinition csharp"></div>
+
+<pre><code class="language-c">public enum gsStatus
+{
+    GS_READY,
+    GS_BUSY,
+    GS_ERROR
+};</code></pre>
+<h2 id="the-parameter-struct">The Parameter Struct</h2>
+<p>The parameter struct <code>gsParamState_t</code> allows for bundles of information to be processed by Ghostscript to complete overall requests.</p>
+<div class="tag structDefinition csharp"></div>
+
+<pre><code class="language-c">public struct gsParamState_t
+{
+    public String outputfile;
+    public String inputfile;
+    public GS_Task_t task;
+    public GS_Result_t result;
+    public int num_pages;
+    public List&lt;int&gt; pages;
+    public int firstpage;
+    public int lastpage;
+    public int currpage;
+    public List&lt;String&gt; args;
+    public int return_code;
+    public double zoom;
+    public bool aa;
+    public bool is_valid;
+};</code></pre>
+<h3 id="parameters-explained">Parameters explained</h3>
+<p>Setting up your parameters (with any dedicated bespoke method(s) which your application requires) is needed when communicating directly with <code>GhostAPI</code>.</p>
+<p>When requesting Ghostscript to process an operation an application developer should send a parameter payload which defines the details for the operation.</p>
+<p>For example in <code>GhostNET</code> we can see the public method as follows:</p>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">public gsStatus DistillPS(String fileName, int resolution)
+{
+    gsParamState_t gsparams = new gsParamState_t();
+    gsparams.args = new List&lt;string&gt;();
+
+    gsparams.inputfile = fileName;
+    gsparams.args.Add("gs");
+    gsparams.args.Add("-sDEVICE=pdfwrite");
+    gsparams.outputfile = Path.GetTempFileName();
+    gsparams.args.Add("-o" + gsparams.outputfile);
+    gsparams.task = GS_Task_t.PS_DISTILL;
+
+    return RunGhostscriptAsync(gsparams);
+}</code></pre>
+<p>Here we can see a parameter payload being setup before being passed on to the asynchronous method <code>RunGhostscriptAsync</code> which sets up a worker thread to run according to the task type in the payload.</p>
+<p><code>GhostNET</code> handles many common operations on an application developer's behalf, however if you require to write your own methods to interface with <code>GhostAPI</code> then referring to the public methods in <code>GhostNET</code> is a good starting point.</p>
+<p>For full documentation on parameters refer to <a href="https://www.ghostscript.com/doc/current/Use.htm#Parameters">Ghostscript parameters</a>.</p>
+<h2 id="the-event-class">The Event class</h2>
+<p><code>GhostNET</code> contains a public class <code>gsEventArgs</code> which is an extension of the C# class <a href="https://docs.microsoft.com/en-us/dotnet/api/system.eventargs?view=net-5.0">EventArgs</a>. This class is used to set and get events as they occur. <code>GhostNET</code> will create these payloads and deliver them back to the application layer's <code>ProgressCallBack</code> method <a href="#delegates">asynchronously</a>.</p>
+<div class="tag classDefinition csharp"></div>
+
+<pre><code class="language-c">public class gsEventArgs : EventArgs
+{
+    private bool m_completed;
+    private int m_progress;
+    private gsParamState_t m_param;
+    public bool Completed
+    {
+        get { return m_completed; }
+    }
+    public gsParamState_t Params
+    {
+        get { return m_param; }
+    }
+    public int Progress
+    {
+        get { return m_progress; }
+    }
+    public gsEventArgs(bool completed, int progress, gsParamState_t param)
+    {
+        m_completed = completed;
+        m_progress = progress;
+        m_param = param;
+    }
+}</code></pre>
+<h2 id="gsnet">GSNET</h2>
+<p>This class should be instantiated as a member variable in your application with callback definitions setup as required.</p>
+<p>Handlers for asynchronous operations can injected by providing your own bespoke callback methods to your instance's <code>ProgressCallBack</code> function.</p>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">/* Set up ghostscript with callbacks for system updates */
+m_ghostscript = new GSNET();
+m_ghostscript.ProgressCallBack += new GSNET.Progress(gsProgress);
+m_ghostscript.StdIOCallBack += new GSNET.StdIO(gsIO);
+m_ghostscript.DLLProblemCallBack += new GSNET.DLLProblem(gsDLL);
+m_ghostscript.PageRenderedCallBack += new GSNET.PageRendered(gsPageRendered);
+m_ghostscript.DisplayDeviceOpen();
+
+/* example callback stubs for asynchronous operations */
+private void gsProgress(gsEventArgs asyncInformation)
+{
+    Console.WriteLine($"gsProgress().progress:{asyncInformation.Progress}");
+
+    if (asyncInformation.Completed) // task complete
+    {
+        // what was the task?
+        switch (asyncInformation.Params.task)
+        {
+            case GS_Task_t.CREATE_XPS:
+                Console.WriteLine($"CREATE_XPS.outputfile:");
+                Console.WriteLine($"{asyncInformation.Params.result.outputfile}");
+                break;
+
+            case GS_Task_t.PS_DISTILL:
+                Console.WriteLine($"PS_DISTILL.outputfile:");
+                Console.WriteLine($"{asyncInformation.Params.result.outputfile}");
+                break;
+
+            case GS_Task_t.SAVE_RESULT:
+
+                break;
+
+            case GS_Task_t.DISPLAY_DEV_THUMBS:
+
+                break;
+
+            case GS_Task_t.DISPLAY_DEV_RUN_FILE:
+
+                break;
+
+            case GS_Task_t.DISPLAY_DEV_PDF:
+
+                break;
+
+            case GS_Task_t.DISPLAY_DEV_NON_PDF:
+
+                break;
+
+            default:
+
+                break;
+        }
+
+        // task failed
+        if (asyncInformation.Params.result == GS_Result_t.gsFAILED)
+        {
+            switch (asyncInformation.Params.task)
+            {
+                case GS_Task_t.CREATE_XPS:
+
+                    break;
+
+                case GS_Task_t.PS_DISTILL:
+
+                    break;
+
+                case GS_Task_t.SAVE_RESULT:
+
+                    break;
+
+                default:
+
+                    break;
+            }
+            return;
+        }
+
+        // task cancelled
+        if (asyncInformation.Params.result == GS_Result_t.gsCANCELLED)
+        {
+
+        }
+    }
+    else // task is still running
+    {
+        switch (asyncInformation.Params.task)
+        {
+            case GS_Task_t.CREATE_XPS:
+
+                break;
+
+            case GS_Task_t.PS_DISTILL:
+
+                break;
+
+            case GS_Task_t.SAVE_RESULT:
+
+                break;
+        }
+    }
+}
+
+private void gsIO(String message, int len)
+{
+    Console.WriteLine($"gsIO().message:{message}, length:{len}");
+}
+
+private void gsDLL(String message)
+{
+    Console.WriteLine($"gsDLL().message:{message}");
+}
+
+private void gsPageRendered(int width,
+                            int height,
+                            int raster,
+                            IntPtr data,
+                            gsParamState_t state)
+{
+
+};</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>Once a Ghostscript operation is in progress any defined callback functions will be called as the operation runs up unto completion. These callback methods are essential for your application to interpret activity events and react accordingly.</p>
+</blockquote>
+<p>An explanation of callbacks and the available public methods within <code>GSNET</code> are explained below.</p>
+<h3 id="delegates">Delegates</h3>
+<p>To handle asynchronous events <code>GhostNET</code> has four delegates which define callback methods that an application can assign to.</p>
+<table>
+<thead>
+<tr>
+<th>Callback</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DLLProblemCallBack</code></td>
+<td>Occurs if there is some issue with the Ghostscript DLL</td>
+</tr>
+<tr>
+<td><code>StdIOCallBack</code></td>
+<td>Occurs if Ghostscript outputs something to <code>stderr</code> or <code>stdout</code></td>
+</tr>
+<tr>
+<td><code>ProgressCallBack</code></td>
+<td>Occurs as Ghostscript makes its way through a file</td>
+</tr>
+<tr>
+<td><code>PageRenderedCallBack</code></td>
+<td>Occurs when a page has been rendered and the data from the display device is ready</td>
+</tr>
+</tbody></table>
+<h4 id="dllproblemcallback">DLLProblemCallBack</h4>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">internal delegate void DLLProblem(String mess);
+internal event DLLProblem DLLProblemCallBack;</code></pre>
+<h4 id="stdiocallback">StdIOCallBack</h4>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">internal delegate void StdIO(String mess,
+                             int len);
+internal event StdIO StdIOCallBack;</code></pre>
+<h4 id="progresscallback">ProgressCallBack</h4>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">internal delegate void Progress(gsEventArgs info);
+internal event Progress ProgressCallBack;</code></pre>
+<h4 id="pagerenderedcallback">PageRenderedCallBack</h4>
+<div class="tag callbackDefinition csharp"></div>
+
+<pre><code class="language-c">internal delegate void PageRendered(int width,
+                                    int height,
+                                    int raster,
+                                 IntPtr data,
+                         gsParamState_t state);
+internal event PageRendered PageRenderedCallBack;</code></pre>
+<h3 id="getversion">GetVersion</h3>
+<p>Use this method to get Ghostscript version info as a handy <code>String</code>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public String GetVersion()</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">String gs_vers = m_ghostscript.GetVersion();</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>An exception will be thrown if there is any issue with the Ghostscript DLL.</p>
+</blockquote>
+<h3 id="displaydeviceopen">DisplayDeviceOpen</h3>
+<p>Sets up the <a href="https://ghostscript.com/doc/current/Devices.htm#Display_devices">display device</a> ahead of time.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public gsParamState_t DisplayDeviceOpen()</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DisplayDeviceOpen();</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>Calling this method <a href="c-sharp-ghost-api.html#gsapi_new_instance">instantiates ghostscript</a> and configures the encoding and the callbacks for the display device.</p>
+</blockquote>
+<h3 id="displaydeviceclose">DisplayDeviceClose</h3>
+<p>Closes the <a href="https://ghostscript.com/doc/current/Devices.htm#Display_devices">display device</a> and deletes the instance.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public gsParamState_t DisplayDeviceClose()</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DisplayDeviceClose();</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>Calling this method <a href="c-sharp-ghost-api.html#gsapi_delete_instance">deletes ghostscript</a>.</p>
+</blockquote>
+<h3 id="getpagecount">GetPageCount</h3>
+<p>Use this method to get the number of pages in a supplied document.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public int GetPageCount(String fileName)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">int page_number = m_ghostscript.GetPageCount("my_document.pdf");</code></pre>
+<blockquote>
+<p><strong>NOTE</strong><br>If Ghostscript is unable to determine the page count then this method will return <code>-1</code>.</p>
+</blockquote>
+<h3 id="createxps">CreateXPS</h3>
+<p>Launches a thread to create an XPS document for Windows printing. This method is <a href="#delegates">asynchronous</a> and logic should be hooked into your application upon <a href="#gsnet">GSNET instantiation</a> to interpret progress.</p>
+<div class="tag methodDefinition csharp async"></div>
+
+<pre><code class="language-c">public gsStatus CreateXPS(String fileName,
+                             int resolution,
+                             int num_pages,
+                          double width,
+                          double height,
+                            bool fit_page,
+                             int firstpage,
+                             int lastpage)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.CreateXPS("my_document.pdf",
+                        300,
+                        10,
+                        1000,
+                        1000,
+                        true,
+                        0,
+                        9);</code></pre>
+<span class="smallText alignRight">
+
+<p><em><a href="#delegates">asynchronous</a></em></p>
+</span>
+
+<h3 id="distillps">DistillPS</h3>
+<p>Launches a thread rendering all the pages of a supplied PostScript file to a PDF.</p>
+<div class="tag methodDefinition csharp async"></div>
+
+<pre><code class="language-c">public gsStatus DistillPS(String fileName, int resolution)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DistillPS("my_postscript_document.ps", 300);</code></pre>
+<span class="smallText alignRight">
+
+<p><em><a href="#delegates">asynchronous</a></em></p>
+</span>
+
+
+<h3 id="displaydevicerunfile">DisplayDeviceRunFile</h3>
+<p>Launches a thread to run a file with the <a href="https://ghostscript.com/doc/current/Devices.htm#Display_devices">display device</a>.</p>
+<div class="tag methodDefinition csharp async"></div>
+
+<pre><code class="language-c">public gsStatus DisplayDeviceRunFile(String fileName,
+                                     double zoom,
+                                       bool aa, // anti-aliasing value
+                                        int firstpage,
+                                        int lastpage)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DisplayDeviceRunFile("my_document.pdf",
+                                   1.0,
+                                   true,
+                                   0,
+                                   9);</code></pre>
+<span class="smallText alignRight">
+
+<p><em><a href="#delegates">asynchronous</a></em></p>
+</span>
+
+<h3 id="displaydevicerenderthumbs">DisplayDeviceRenderThumbs</h3>
+<p>Launches a thread rendering all the pages with the <a href="https://ghostscript.com/doc/current/Devices.htm#Display_devices">display device</a> to collect thumbnail images.</p>
+<p>Recommended zoom level for thumbnails is between 0.05 and 0.2, additionally anti-aliasing is probably not required.</p>
+<div class="tag methodDefinition csharp async"></div>
+
+<pre><code class="language-c">public gsStatus DisplayDeviceRenderThumbs(String fileName,
+                                          double zoom,
+                                            bool aa)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DisplayDeviceRenderThumbs("my_document.pdf",
+                                        0.1,
+                                        false);</code></pre>
+<span class="smallText alignRight">
+
+<p><em><a href="#delegates">asynchronous</a></em></p>
+</span>
+
+<h3 id="displaydevicerenderpages">DisplayDeviceRenderPages</h3>
+<p>Launches a thread rendering a set of pages with the <a href="https://ghostscript.com/doc/current/Devices.htm#Display_devices">display device</a>. For use with languages that can be indexed via pages which include PDF and XPS. <sup><a href="#1-ghostscript-page-description-languages">1</a></sup></p>
+<div class="tag methodDefinition csharp async"></div>
+
+<pre><code class="language-c">public gsStatus DisplayDeviceRenderPages(String fileName,
+                                            int first_page,
+                                            int last_page,
+                                         double zoom)</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.DisplayDeviceRenderPages("my_document.pdf",
+                                       0,
+                                       9,
+                                       1.0);</code></pre>
+<span class="smallText alignRight">
+
+<p><em><a href="#delegates">asynchronous</a></em></p>
+</span>
+
+
+
+
+<h3 id="getstatus">GetStatus</h3>
+<p>Returns the current <a href="#status">status</a> of <code>Ghostscript</code>.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public gsStatus GetStatus()</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">gsStatus status = m_ghostscript.GetStatus();</code></pre>
+<h3 id="cancel">Cancel</h3>
+<p>Cancels <a href="#delegates">asynchronous</a> operations.</p>
+<div class="tag methodDefinition csharp"></div>
+
+<pre><code class="language-c">public void Cancel()</code></pre>
+<div class="tag sampleCode csharp"></div>
+
+<pre><code class="language-c">m_ghostscript.Cancel();</code></pre>
+<h3 id="ghostscriptexception">GhostscriptException</h3>
+<p>An application developer can log any exceptions in this public class as required by editing the constructor.</p>
+<div class="tag classDefinition csharp"></div>
+
+<pre><code class="language-c">public class GhostscriptException : Exception
+{
+    public GhostscriptException(string message) : base(message)
+    {
+        // Report exceptions as required
+    }
+}</code></pre>
+<h2 id="notes">Notes</h2>
+<h4 id="1-ghostscript-page-description-languages">1: Ghostscript &amp; Page Description Languages</h4>
+<p>Ghostscript handles the following <a href="https://en.wikipedia.org/wiki/Page_description_language">PDLs</a>: <code>PCL</code> <code>PDF</code> <code>PS</code> <code>XPS</code>.</p>
+<p><code>PCL</code> and <code>PS</code> do not allow random access, meaning that, to print page 2 in a 100 page document, Ghostscript has to read the entire document stream of 100 pages.</p>
+<p>On the other hand, <code>PDF</code> and <code>XPS</code> allow for going directly to page 2 and then only dealing with that content. The tasks <code>DISPLAY_DEV_NON_PDF</code> and <code>DISPLAY_DEV_PDF</code> keep track of what sort of input Ghostscript is dealing with and enables the application to direct progress or completion callbacks accordingly.</p>
+</article>
+
+            </div><!-- /middle -->
+
+            <div class="right">
+
+                <div class="link"><a href="#about">About</a></div>
+                <div class="link"><a href="#enums">Enums</a></div>
+                    <div class="sub-link"><a href="#tasks">Tasks</a></div>
+                    <div class="sub-link"><a href="#results">Results</a></div>
+                    <div class="sub-link"><a href="#status">Status</a></div>
+                <div class="link"><a href="#the-parameter-struct">The Parameter Struct</a></div>
+                    <div class="sub-link"><a href="#parameters-explained">Parameters explained</a></div>
+                <div class="link"><a href="#the-event-class">The Event class</a></div>
+                <div class="link"><a href="#gsnet">GSNET</a></div>
+                    <div class="sub-link"><a href="#delegates">Delegates</a></div>
+                    <div class="sub-link"><a href="#getversion">GetVersion</a></div>
+                    <div class="sub-link"><a href="#displaydeviceopen">DisplayDeviceOpen</a></div>
+                    <div class="sub-link"><a href="#displaydeviceclose">DisplayDeviceClose</a></div>
+                    <div class="sub-link"><a href="#getpagecount">GetPageCount</a></div>
+                    <div class="sub-link"><a href="#createxps">CreateXPS</a></div>
+                    <div class="sub-link"><a href="#distillps">DistillPS</a></div>
+                    <div class="sub-link"><a href="#displaydevicerunfile">DisplayDeviceRunFile</a></div>
+                    <div class="sub-link"><a href="#displaydevicerenderthumbs">DisplayDeviceRenderThumbs</a></div>
+                    <div class="sub-link"><a href="#displaydevicerenderpages">DisplayDeviceRenderPages</a></div>
+                    <div class="sub-link"><a href="#getstatus">GetStatus</a></div>
+                    <div class="sub-link"><a href="#cancel">Cancel</a></div>
+                    <div class="sub-link"><a href="#ghostscriptexception">GhostscriptException</a></div>
+                <div class="link"><a href="#notes">Notes</a></div>
+
+            </div>
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+</html>

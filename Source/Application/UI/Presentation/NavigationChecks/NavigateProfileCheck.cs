@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
         private readonly IProfileChecker _profileChecker;
         private readonly ISettingsChanged _settingsChanged;
 
-        public string ProfileSettingsRegionName { get; set; } = RegionNames.ProfilesView;
+        public string ProfileSettingsRegionName { get; set; } = RegionViewName.ProfilesView;
 
         public NavigateProfileCheck(ICurrentSettingsProvider currentSettingsProvider, IProfileChecker profileChecker, ISettingsChanged settingsChanged)
         {

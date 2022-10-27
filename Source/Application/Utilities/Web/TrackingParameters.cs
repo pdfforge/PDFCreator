@@ -64,7 +64,7 @@ namespace pdfforge.PDFCreator.Utilities.Web
             if (presentParams.Count > 0)
                 cleanedParamString = "?" + ToParamString(presentParams);
 
-            return cleanUrl + cleanedParamString;
+            return cleanUrl + cleanedParamString + uri.Fragment;
         }
 
         private string ToParamString(Dictionary<string, string> dict)

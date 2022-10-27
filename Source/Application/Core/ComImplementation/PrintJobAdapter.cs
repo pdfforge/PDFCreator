@@ -1,10 +1,11 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.COM;
 using pdfforge.PDFCreator.Utilities;
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SystemInterface.IO;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 
 namespace pdfforge.PDFCreator.Core.ComImplementation
 {
@@ -23,7 +23,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IDirectory _directory;
         private readonly IPathUtil _pathUtil;
-        private readonly IActionOrderChecker _actionOrderChecker;
+        private readonly IActionOrderHelper _actionOrderHelper;
         private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
@@ -42,7 +42,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         private readonly IComWorkflowFactory _workflowFactory;
 
-        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil, IActionOrderChecker actionOrderChecker)
+        public PrintJobAdapter(ISettingsProvider settingsProvider, IComWorkflowFactory workflowFactory, ThreadPool threadPool, IJobInfoQueue jobInfoQueue, ErrorCodeInterpreter errorCodeInterpreter, IDirectory directory, IPathUtil pathUtil, IActionOrderHelper actionOrderHelper)
         {
             _settingsProvider = settingsProvider;
             _workflowFactory = workflowFactory;
@@ -51,7 +51,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             _errorCodeInterpreter = errorCodeInterpreter;
             _directory = directory;
             _pathUtil = pathUtil;
-            _actionOrderChecker = actionOrderChecker;
+            _actionOrderHelper = actionOrderHelper;
         }
 
         public Job Job { get; set; }
@@ -256,7 +256,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
         public void SortAndUpdateActions()
         {
-            _actionOrderChecker.Check(new[] { Job.Profile });
+            _actionOrderHelper.CleanUpAndEnsureValidOrder(new[] { Job.Profile });
         }
     }
 }

@@ -1,176 +1,164 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:settings="clr-namespace:pdfforge.PDFCreator.Conversion.Settings;assembly=PDFCreator.Settings"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.ContextMenuButton"
              xmlns:accounts="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
+             help:HelpProvider.HelpTopic="Accounts"
              d:DataContext="{d:DesignInstance designTime:DesignTimeAccountsViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/ListBox.xaml" />
-                <ResourceDictionary Source="../../Styles/FlatPDFCreatorButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ContextMenu.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Datagrid.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/HoverBorder.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Icons/AccountIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid Margin="40 40 40 20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="33" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
 
-    <Grid>
-        <Grid.Resources>
-            <converter:IdToResourceConverter x:Key="IdToResourceConverter" />
+                    <!--Manage Accounts Header-->
+                    <Label Grid.Row="0" Grid.Column="0" Margin="0 0 0 40"
+                           Style="{StaticResource LargeLabel}"
+                           Content="{Binding Translation.ManageAccounts}" />
 
-            <Style TargetType="Button" x:Key="LocalLightGrayButton" BasedOn="{StaticResource FlatGreyButton}">
-                <Setter Property="Height" Value="34" />
-                <Setter Property="Margin" Value="20 0 0 0" />
-                <Setter Property="Padding" Value="10" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Cursor" Value="Hand" />
-            </Style>
-        </Grid.Resources>
-        <Grid VerticalAlignment="Stretch" Margin="0 30 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="6*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <HeaderedContentControl Grid.Column="1"
-                                    Template="{DynamicResource BorderlessHeaderPanelTemplate}"
-                                    Header="{Binding Translation.ManageAccounts}">
-                <StackPanel>
-                    <TextBlock Margin="0 0 0 10" Text="{Binding Translation.ManageAccountsDescription}"
-                               TextWrapping="Wrap" />
+                    <!-- Accounts Label -->
+                    <Label Grid.Row="1" Grid.Column="0"
+                                    Content="{Binding Translation.Accounts}"
+                                    Style="{StaticResource LightLabel}" />
 
-                    <StackPanel Orientation="Horizontal" Margin="0 20 0 15">
-                        <controls:DropDownButton ItemsSource="{Binding AddAccountsToken}" Style ="{DynamicResource CustomColorDropDownButton}"
-                                                 Height="34" Cursor="Hand" Padding="0" ArrowVisibility="Visible" Content="{Binding Translation.AddAccount}">
-                            <controls:DropDownButton.ButtonStyle>
-                                <Style TargetType="Button" BasedOn="{StaticResource FlatGreyButton}">
-                                    <Setter Property="Padding" Value="10 0 5 0" />
-                                </Style>
-                            </controls:DropDownButton.ButtonStyle>
-                            <controls:DropDownButton.ItemContainerStyle>
-                                <Style TargetType="MenuItem">
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="Command" Value="{Binding Path=Command}" />
-                                    <Setter Property="HeaderTemplate">
-                                        <Setter.Value>
-                                            <DataTemplate DataType="accounts:AccountToken">
-                                                <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-                                                    <Viewbox Height="20" Width="20" Margin="0 0 10 0">
-                                                        <ContentControl Focusable="False">
-                                                            <ContentControl.Content>
-                                                                <MultiBinding Converter="{StaticResource IdToResourceConverter}">
-                                                                    <Binding RelativeSource="{RelativeSource Self}" />
-                                                                    <Binding Path="NameOfIcon" />
-                                                                </MultiBinding>
-                                                            </ContentControl.Content>
-                                                        </ContentControl>
-                                                    </Viewbox>
-                                                    <TextBlock Text="{Binding Translation}" />
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </controls:DropDownButton.ItemContainerStyle>
-                        </controls:DropDownButton>
+                    <!--Add account -->
+                    <StackPanel Grid.Row="1" Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Margin="10 0 0 0">
+                        <Label Content="{Binding Translation.AddAccount}"
+                           Style="{StaticResource LightLabel}" />
 
-                        <Button Command="{Binding RemoveSelectedAccountCommand}"
-                                Content="{Binding Translation.RemoveAccount}"
-                                Style="{StaticResource LocalLightGrayButton}" />
-
-                        <Button Command="{Binding EditSelectedAccountCommand}"
-                                Style="{StaticResource LocalLightGrayButton}"
-                                Content="{Binding Translation.EditAccount}" />
+                        <contextMenuButton:ContextMenuButton Margin="10 0 0 0"
+                                                         ItemsSource="{Binding AddAccountMenuItems}"
+                                                         Style="{StaticResource SquaredIconButton}"
+                                                         IconForeground="{StaticResource AccountIconBrush}"
+                                                         ShowArrow="False"
+                                                         ContextMenuPosition="BottomLeft">
+                            <iconPacks:PackIconMaterialDesign Kind="PlaylistAdd" />
+                        </contextMenuButton:ContextMenuButton>
                     </StackPanel>
-                    <ListBox
-                        ItemsSource="{Binding AllAccounts}"
-                        SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        Grid.IsSharedSizeScope="True">
 
-                        <ListBox.Style>
-                            <Style TargetType="ListBox"  BasedOn="{StaticResource {x:Type ListBox}}">
-                                <Setter Property="ItemContainerStyle">
-                                    <Setter.Value>
-                                        <Style TargetType="ListBoxItem"  BasedOn="{StaticResource PdfCreatorListBoxItemStyle}">
-                                            <Setter Property="BorderThickness" Value="0" />
-                                        </Style>
-                                    </Setter.Value>
-                                </Setter>
+                    <!--Main Data Grid-->
+                    <DataGrid Grid.Row="2" Grid.Column="0"
+                      ItemsSource="{Binding AllAccounts}"
+                      Style="{StaticResource NoHoverUnchangeableDataGrid}"
+                      RowHeaderWidth="0"
+                      HeadersVisibility="None"
+                      VerticalAlignment="Top"
+                      IsSynchronizedWithCurrentItem="False">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Margin" Value="0 0 0 20" />
                             </Style>
-                        </ListBox.Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Resources>
 
-                        <ListBox.Resources>
+                            <!--SMTP Account Template -->
                             <DataTemplate DataType="{x:Type settings:SmtpAccount}">
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <StackPanel Height="20" Width="45" DockPanel.Dock="Left">
-                                        <ContentControl Focusable="False" Height="20" Width="20" Content="{DynamicResource EmailIcon}" />
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding DataContext.Translation.SmtpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                               FontWeight="Bold" VerticalAlignment="Center" Margin="0 0 10 0" DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Path=AccountInfo}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" />
-                                </DockPanel>
+                                <accounts:AccountCell
+                                AccountNameString="{Binding DataContext.Translation.SmtpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                EditCommand="{Binding DataContext.SmtpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                RemoveCommand="{Binding DataContext.SmtpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                                    <accounts:AccountCell.Icon>
+                                        <iconPacks:MaterialDesign Kind="Mail" Width="25" />
+                                    </accounts:AccountCell.Icon>
+                                </accounts:AccountCell>
                             </DataTemplate>
 
+                            <!-- Dropbox Account Template -->
                             <DataTemplate DataType="{x:Type settings:DropboxAccount}">
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
-                                        <ContentControl Focusable="False" Content="{DynamicResource DropboxIcon}" />
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding DataContext.Translation.DropboxAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                               FontWeight="Bold" VerticalAlignment="Center" Margin="0 0 10 0" DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Path=AccountInfo}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" />
-                                </DockPanel>
+                                <!-- Dropbox Accounts can't be edited. Not setting the EditCommand hides the button -->
+                                <accounts:AccountCell
+                                AccountNameString="{Binding DataContext.Translation.DropboxAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                RemoveCommand="{Binding DataContext.DropboxAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                                    <accounts:AccountCell.Icon>
+                                        <ContentControl Content="{StaticResource DropboxIcon}" />
+                                    </accounts:AccountCell.Icon>
+                                </accounts:AccountCell>
                             </DataTemplate>
 
+                            <!-- FTP Account Template -->
                             <DataTemplate DataType="{x:Type settings:FtpAccount}">
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
-                                        <ContentControl Focusable="False" Content="{DynamicResource FtpIcon}" />
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding DataContext.Translation.FtpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                               FontWeight="Bold" VerticalAlignment="Center" Margin="0 0 10 0" DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Path=AccountInfo}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" />
-                                </DockPanel>
+                                <accounts:AccountCell
+                                AccountNameString="{Binding DataContext.Translation.FtpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                EditCommand="{Binding DataContext.FtpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                RemoveCommand="{Binding DataContext.FtpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                                    <accounts:AccountCell.Icon>
+                                        <ContentControl Content="{StaticResource FtpIcon}" />
+                                    </accounts:AccountCell.Icon>
+                                </accounts:AccountCell>
                             </DataTemplate>
 
+                            <!--HTTP Account Template -->
                             <DataTemplate DataType="{x:Type settings:HttpAccount}">
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
-                                        <ContentControl Focusable="False" Content="{DynamicResource HttpIcon}" />
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding DataContext.Translation.HttpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                               FontWeight="Bold" VerticalAlignment="Center" Margin="0 0 10 0" DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Path=AccountInfo}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" />
-                                </DockPanel>
+                                <accounts:AccountCell
+                                    AccountNameString="{Binding DataContext.Translation.HttpAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                    EditCommand="{Binding DataContext.HttpAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                    RemoveCommand="{Binding DataContext.HttpAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                                    <accounts:AccountCell.Icon>
+                                        <iconPacks:MaterialDesign Kind="Http" Width="23" />
+                                    </accounts:AccountCell.Icon>
+                                </accounts:AccountCell>
                             </DataTemplate>
 
+                            <!--TimeServer Account Template-->
                             <DataTemplate DataType="{x:Type settings:TimeServerAccount}">
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5" LastChildFill="True" VerticalAlignment="Center">
-                                    <Viewbox Height="20" Width="45" DockPanel.Dock="Left">
-                                        <ContentControl Focusable="False" Content="{DynamicResource TimeServerIcon}" />
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding DataContext.Translation.TimeServerAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                               FontWeight="Bold" VerticalAlignment="Center" Margin="0 0 10 0" DockPanel.Dock="Left" />
-                                    <TextBlock Text="{Binding Path=AccountInfo}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" />
-                                </DockPanel>
+                                <accounts:AccountCell
+                                AccountNameString="{Binding DataContext.Translation.TimeServerAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                EditCommand="{Binding DataContext.TimeServerAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                RemoveCommand="{Binding DataContext.TimeServerAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                                    <accounts:AccountCell.Icon>
+                                        <ContentControl Content="{StaticResource TimeServerIcon}" />
+                                    </accounts:AccountCell.Icon>
+                                </accounts:AccountCell>
                             </DataTemplate>
-                        </ListBox.Resources>
-                    </ListBox>
-                </StackPanel>
-            </HeaderedContentControl>
-        </Grid>
+                        </DataGrid.Resources>
 
-        <gpo:GPOLockLayer IsLockedByGpo="{ Binding IsAccountsDisabled }" />
-    </Grid>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+            <gpo:GPOLockLayer IsLockedByGpo="{ Binding IsAccountsDisabled }" />
+        </Grid>
+    </ScrollViewer>
 </UserControl>

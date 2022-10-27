@@ -14,8 +14,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
     {
         private readonly ILicenseExpirationReminder _licenseExpirationReminder;
         private readonly IWebLinkLauncher _webLinkLauncher;
+        private readonly string _licenseKey;
         public ICommand RemindMeLaterCommand { get; }
-        public ICommand ManageLicensesCommand { get; }
+        public ICommand ManageLicenseCommand { get; }
         public bool ShowLicenseExpireReminder { get; set; }
 
         public LicenseExpirationReminderViewModel(ILicenseExpirationReminder licenseExpirationReminder, ICommandLocator commandLocator,
@@ -23,9 +24,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
         {
             _licenseExpirationReminder = licenseExpirationReminder;
             _webLinkLauncher = webLinkLauncher;
+            _licenseKey = _licenseExpirationReminder.LicenseKey;
 
-            ManageLicensesCommand = commandLocator?.CreateMacroCommand()
-                .AddCommand(new DelegateCommand(_ => ManageLicensesCommandExecute()))
+            ManageLicenseCommand = commandLocator?.CreateMacroCommand()
+                .AddCommand(new DelegateCommand(_ => ManageLicenseCommandExecute()))
                 .AddCommand(new DelegateCommand(_ => SetReminderForLicenseExpiration()))
                 .Build();
 
@@ -34,9 +36,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
             RemindMeLaterCommand = new DelegateCommand(o => SetReminderForLicenseExpiration());
         }
 
-        private void ManageLicensesCommandExecute()
+        private void ManageLicenseCommandExecute()
         {
-            _webLinkLauncher.Launch(Urls.LicenseServerUrl);
+            _webLinkLauncher.Launch($"{Urls.LicenseServerManageSingleLicense}?license_key={_licenseKey}");
         }
 
         public string LicenseReminderInfo =>

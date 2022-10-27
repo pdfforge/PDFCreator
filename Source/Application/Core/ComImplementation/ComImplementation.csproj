@@ -41,6 +41,10 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="pdfforge.Communication, Version=1.1.8.0, Culture=neutral, PublicKeyToken=fc6825f92a0342e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\pdfforge.Communication\lib\pdfforge.Communication.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -69,6 +73,14 @@
     <None Include="pdfforge.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Conversion\ActionsInterface\ActionsInterface.csproj">
+      <Project>{8DE100B3-17E1-46E3-830B-5E0B072483CA}</Project>
+      <Name>ActionsInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Conversion\Actions\Actions.csproj">
+      <Project>{1DBB980A-80ED-4263-BC5D-B90377466E14}</Project>
+      <Name>Actions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
       <Project>{18354054-45F6-4F51-8730-D05643A400A3}</Project>
       <Name>Jobs</Name>
@@ -108,6 +120,10 @@
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
       <Name>Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SettingsManagementInterface\SettingsManagementInterface.csproj">
+      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
+      <Name>SettingsManagementInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\SettingsManagement\SettingsManagement.csproj">
       <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
@@ -149,17 +165,8 @@
         <Reference Include="System.IO.Compression">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceModel">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -190,6 +197,9 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.ServiceProcess">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="WindowsBase">

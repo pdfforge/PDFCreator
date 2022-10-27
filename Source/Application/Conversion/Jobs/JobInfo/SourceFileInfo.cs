@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Utilities.Tokens;
+using System;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 {
@@ -47,6 +48,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         ///     ID of the Job as given from Windows printer
         /// </summary>
         public int JobId { get; set; }
+
+        /// <summary>
+        /// The time stamp of when the print job was started
+        /// </summary>
+        public DateTime PrintedAt { get; set; }
 
         /// <summary>
         ///     The Title of the document

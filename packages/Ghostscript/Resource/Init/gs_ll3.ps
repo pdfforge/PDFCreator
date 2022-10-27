@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -113,9 +113,9 @@ currentdict /.bind_ undef
 } bind def
 
 /.bigstring {	% <size> .bigstring <string|bytestring>
-  count 1 lt { /.bigstring /stackunderflow signalerror } if
+  count 1 lt { /.bigstring cvx /stackunderflow signalerror } if
   dup type /integertype ne {
-    /.bigstring /typecheck signalerror
+    /.bigstring cvx /typecheck signalerror
   } if
   dup 65400 gt { .bytestring } { string } ifelse
 } bind def

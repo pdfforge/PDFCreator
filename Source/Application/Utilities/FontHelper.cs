@@ -18,6 +18,9 @@ namespace pdfforge.PDFCreator.Utilities
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        public static string DEFAULT_FONT_FILE = "arial.ttf";
+        public static string DEFAULT_FONT_NAME = "Arial";
+
         private string MatchRegistryFontKey(Font font, RegistryKey fonts)
         {
             string suffix = "(?: Regular)?";
