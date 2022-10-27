@@ -2,11 +2,15 @@
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Threading.Tasks;
+using SystemInterface.IO;
+using IInteractionRequest = pdfforge.Obsidian.Trigger.IInteractionRequest;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
@@ -21,6 +25,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
     {
         private readonly IInteractiveProfileChecker _interactiveProfileChecker;
         private readonly IInteractiveFileExistsChecker _interactiveFileExistsChecker;
+        private readonly IFile _file;
+        private readonly IInteractionRequest _interactionRequest;
         private Func<Job> _getJob;
         private Action _callFinishInteraction;
         private Func<string> _getLatestConfirmedPath;
@@ -28,10 +34,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public ChangeJobCheckAndProceedCommandBuilder(
             IInteractiveProfileChecker interactiveProfileChecker,
-            IInteractiveFileExistsChecker interactiveFileExistsChecker)
+            IInteractiveFileExistsChecker interactiveFileExistsChecker,
+            IFile file,
+            IInteractionRequest interactionRequest)
         {
             _interactiveProfileChecker = interactiveProfileChecker;
             _interactiveFileExistsChecker = interactiveFileExistsChecker;
+            _file = file;
+            _interactionRequest = interactionRequest;
         }
 
         public void Init(Func<Job> getJob, Action callFinishInteraction, Func<string> getLatestConfirmedPath, Action<string> setLatestConfirmedPath)
@@ -54,7 +64,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 _callFinishInteraction,
                 _getLatestConfirmedPath,
                 _setLatestConfirmedPath,
-                changeJobAction,
+            changeJobAction,
+                _file,
+                _interactionRequest,
                 preSaveCommand);
         }
     }
@@ -65,6 +77,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private readonly IInteractiveFileExistsChecker _interactiveFileExistsChecker;
         private readonly Func<Job> _getJob;
         private readonly Action<Job> _changeJobAction;
+        private readonly IFile _file;
+        private readonly IInteractionRequest _interactionRequest;
         private readonly Action _callFinishInteraction;
         private readonly Func<string> _getLatestConfirmedPath;
         private readonly Action<string> _setLatestConfirmedPath;
@@ -80,12 +94,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             Func<string> getLatestConfirmedPath,
             Action<string> setLatestConfirmedPath,
             Action<Job> changeJobAction,
+            IFile file,
+            IInteractionRequest interactionRequest,
             IMacroCommand preProcessingCommand = null)
         {
             _interactiveProfileChecker = interactiveProfileChecker;
             _interactiveFileExistsChecker = interactiveFileExistsChecker;
             _getJob = getJob;
             _changeJobAction = changeJobAction;
+            _file = file;
+            _interactionRequest = interactionRequest;
             _callFinishInteraction = callFinishInteraction;
 
             _getLatestConfirmedPath = getLatestConfirmedPath;
@@ -145,9 +163,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             if (!_interactiveProfileChecker.CheckWithErrorResultInOverlay(job))
                 return false;
 
-            var fileExistsResult = await _interactiveFileExistsChecker.CheckIfFileExistsWithResultInOverlay(job, _getLatestConfirmedPath());
-            _setLatestConfirmedPath(fileExistsResult.ConfirmedPath);
-            return fileExistsResult.Success;
+            //var fileExistsResult = await _interactiveFileExistsChecker.CheckIfFileExistsWithResultInOverlay(job, _getLatestConfirmedPath());
+            var latestConfirmedPath = _getLatestConfirmedPath();
+            var filePath = job.OutputFileTemplate;
+
+            //Do not inform user, if SaveFileDialog already did
+            if (filePath == latestConfirmedPath)
+                return true;
+
+            if (job.Profile.SaveFileTemporary || !_file.Exists(filePath))
+                return true;
+
+            var interaction = new OverwriteOrAppendInteraction() { MergeIsSupported = job.Profile.OutputFormat.IsPdf() };
+
+            var result = await _interactionRequest.RaiseAsync(interaction);
+
+            if (result.Cancel)
+                return false;
+
+            switch (result.Chosen)
+            {
+                case ExistingFileBehaviour.Merge:
+                    job.ExistingFile = ExistingFileBehaviour.Merge;
+                    break;
+
+                case ExistingFileBehaviour.Overwrite:
+                    job.ExistingFile = ExistingFileBehaviour.Overwrite;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            _setLatestConfirmedPath(latestConfirmedPath);
+
+            return true;
         }
     }
 }

@@ -48,8 +48,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.Barcode128.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.Barcode128.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -75,7 +74,7 @@
             </summary>
             <param name="text">the text to convert</param>
             <param name="ucc">
-            <CODE>true</CODE> if it is an UCC/EAN-128. In this case
+            <c>true</c> if it is an UCC/EAN-128. In this case
             the character FNC1 is added
             </param>
             <param name="codeSet">forced code set, or AUTO for optimized barcode.</param>
@@ -92,7 +91,7 @@
             </remarks>
             <param name="text">the text to convert</param>
             <param name="ucc">
-            <CODE>true</CODE> if it is an UCC/EAN-128. In this case
+            <c>true</c> if it is an UCC/EAN-128. In this case
             the character FNC1 is added
             </param>
             <returns>the code ready to be fed to getBarsCode128Raw()</returns>
@@ -118,44 +117,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode128.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode128.SetCode(System.String)">
@@ -164,14 +163,14 @@
             Sets the code to generate. If it's an UCC code and starts with '(' it will
             be split by the AI. This code in UCC mode is valid:
             <br />
-            <code>(01)00000090311314(10)ABC123(15)060916</code>
+            <c>(01)00000090311314(10)ABC123(15)060916</c>
             </remarks>
             <param name="code">the code to generate</param>
         </member>
         <member name="M:iText.Barcodes.Barcode128.IsNextDigits(System.String,System.Int32,System.Int32)">
             <summary>
-            Returns <CODE>true</CODE> if the next <CODE>numDigits</CODE>
-            starting from index <CODE>textIndex</CODE> are numeric skipping any FNC1.
+            Returns <c>true</c> if the next <c>numDigits</c>
+            starting from index <c>textIndex</c> are numeric skipping any FNC1.
             </summary>
             <param name="text">the text to check</param>
             <param name="textIndex">where to check from</param>
@@ -200,7 +199,7 @@
         </member>
         <member name="F:iText.Barcodes.Barcode1D.font">
             <summary>The text font.</summary>
-            <remarks>The text font. <CODE>null</CODE> if no text.</remarks>
+            <remarks>The text font. <c>null</c> if no text.</remarks>
         </member>
         <member name="F:iText.Barcodes.Barcode1D.size">
             <summary>
@@ -269,12 +268,12 @@
         </member>
         <member name="M:iText.Barcodes.Barcode1D.GetFont">
             <summary>Gets the text font.</summary>
-            <remarks>Gets the text font. <CODE>null</CODE> if no text.</remarks>
-            <returns>the text font. <CODE>null</CODE> if no text</returns>
+            <remarks>Gets the text font. <c>null</c> if no text.</remarks>
+            <returns>the text font. <c>null</c> if no text</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode1D.SetFont(iText.Kernel.Font.PdfFont)">
             <summary>Sets the text font.</summary>
-            <param name="font">the text font. Set to <CODE>null</CODE> to suppress any text</param>
+            <param name="font">the text font. Set to <c>null</c> to suppress any text</param>
         </member>
         <member name="M:iText.Barcodes.Barcode1D.SetSize(System.Single)">
             <summary>Sets the size of the text.</summary>
@@ -388,44 +387,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode1D.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode1D.GetInkSpreading">
@@ -462,8 +461,8 @@
         </member>
         <member name="M:iText.Barcodes.Barcode1D.CreateFormXObject(iText.Kernel.Colors.Color,iText.Kernel.Colors.Color,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode.</summary>
-            <param name="barColor">The color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">The color of the text. It can be <CODE>null</CODE></param>
+            <param name="barColor">The color of the bars. It can be <c>null</c></param>
+            <param name="textColor">The color of the text. It can be <c>null</c></param>
             <param name="document">The document</param>
             <returns>the XObject</returns>
             <seealso cref="M:iText.Barcodes.Barcode1D.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)"/>
@@ -488,14 +487,14 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode2D.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="foreground">the foreground color. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="foreground">the foreground color. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode2D.CreateFormXObject(iText.Kernel.Pdf.PdfDocument)">
@@ -509,7 +508,7 @@
         </member>
         <member name="M:iText.Barcodes.Barcode2D.CreateFormXObject(iText.Kernel.Colors.Color,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode.</summary>
-            <param name="foreground">The color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">The color of the pixels. It can be <c>null</c></param>
             <param name="document">The document</param>
             <returns>the XObject.</returns>
         </member>
@@ -518,7 +517,7 @@
         </member>
         <member name="F:iText.Barcodes.Barcode39.CHARS">
             <summary>
-            The index chars to <CODE>BARS</CODE>, symbol * use only start and stop  characters,
+            The index chars to <c>BARS</c>, symbol * use only start and stop  characters,
             the * character will not appear in the input data.
             </summary>
         </member>
@@ -533,8 +532,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.Barcode39.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.Barcode39.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -576,48 +574,48 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.Barcode39.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="F:iText.Barcodes.BarcodeCodabar.CHARS">
-            <summary>The index chars to <CODE>BARS</CODE>.</summary>
+            <summary>The index chars to <c>BARS</c>.</summary>
         </member>
         <member name="F:iText.Barcodes.BarcodeCodabar.BARS">
             <summary>The bars to generate the code.</summary>
@@ -630,8 +628,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.BarcodeCodabar.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.BarcodeCodabar.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -657,44 +654,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeCodabar.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="F:iText.Barcodes.BarcodeDataMatrix.DM_NO_ERROR">
@@ -745,7 +742,7 @@
         </member>
         <member name="M:iText.Barcodes.BarcodeDataMatrix.CreateFormXObject(iText.Kernel.Colors.Color,System.Single,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode with given module width and module height.</summary>
-            <param name="foreground">The color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">The color of the pixels. It can be <c>null</c></param>
             <param name="moduleSide">The side (width and height) of the pixels.</param>
             <param name="document">The document</param>
             <returns>the XObject.</returns>
@@ -758,14 +755,14 @@
         </member>
         <member name="M:iText.Barcodes.BarcodeDataMatrix.SetCode(System.String)">
             <summary>Creates a barcode.</summary>
-            <remarks>Creates a barcode. The <CODE>String</CODE> is interpreted with the ISO-8859-1 encoding</remarks>
+            <remarks>Creates a barcode. The <c>String</c> is interpreted with the ISO-8859-1 encoding</remarks>
             <param name="text">the text</param>
             <returns>
             the status of the generation. It can be one of this values:
-            <CODE>DM_NO_ERROR</CODE> - no error.<br />
-            <CODE>DM_ERROR_TEXT_TOO_BIG</CODE> - the text is too big for the symbology capabilities.<br />
-            <CODE>DM_ERROR_INVALID_SQUARE</CODE> - the dimensions given for the symbol are illegal.<br />
-            <CODE>DM_ERROR_EXTENSION</CODE> - an error was while parsing an extension.
+            <c>DM_NO_ERROR</c> - no error.<br />
+            <c>DM_ERROR_TEXT_TOO_BIG</c> - the text is too big for the symbology capabilities.<br />
+            <c>DM_ERROR_INVALID_SQUARE</c> - the dimensions given for the symbol are illegal.<br />
+            <c>DM_ERROR_EXTENSION</c> - an error was while parsing an extension.
             </returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeDataMatrix.SetCode(System.Byte[],System.Int32,System.Int32)">
@@ -775,17 +772,17 @@
             <param name="textSize">the text size</param>
             <returns>
             the status of the generation. It can be one of this values:
-            <CODE>DM_NO_ERROR</CODE> - no error.<br />
-            <CODE>DM_ERROR_TEXT_TOO_BIG</CODE> - the text is too big for the symbology capabilities.<br />
-            <CODE>DM_ERROR_INVALID_SQUARE</CODE> - the dimensions given for the symbol are illegal.<br />
-            <CODE>DM_ERROR_EXTENSION</CODE> - an error was while parsing an extension.
+            <c>DM_NO_ERROR</c> - no error.<br />
+            <c>DM_ERROR_TEXT_TOO_BIG</c> - the text is too big for the symbology capabilities.<br />
+            <c>DM_ERROR_INVALID_SQUARE</c> - the dimensions given for the symbol are illegal.<br />
+            <c>DM_ERROR_EXTENSION</c> - an error was while parsing an extension.
             </returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeDataMatrix.GetHeight">
             <summary>Gets the height of the barcode.</summary>
             <remarks>
             Gets the height of the barcode. Will contain the real height used after a successful call
-            to <CODE>generate()</CODE>. This height doesn't include the whitespace border, if any.
+            to <c>generate()</c>. This height doesn't include the whitespace border, if any.
             </remarks>
             <returns>the height of the barcode</returns>
         </member>
@@ -832,7 +829,7 @@
             <summary>Gets the width of the barcode.</summary>
             <remarks>
             Gets the width of the barcode. Will contain the real width used after a successful call
-            to <CODE>generate()</CODE>. This width doesn't include the whitespace border, if any.
+            to <c>generate()</c>. This width doesn't include the whitespace border, if any.
             </remarks>
             <returns>the width of the barcode</returns>
         </member>
@@ -892,17 +889,17 @@
             <remarks>
             Sets the options for the barcode generation. The options can be:<para />
             One of:<br />
-            <CODE>DM_AUTO</CODE> - the best encodation will be used<br />
-            <CODE>DM_ASCII</CODE> - ASCII encodation<br />
-            <CODE>DM_C40</CODE> - C40 encodation<br />
-            <CODE>DM_TEXT</CODE> - TEXT encodation<br />
-            <CODE>DM_B256</CODE> - binary encodation<br />
-            <CODE>DM_X12</CODE> - X12 encodation<br />
-            <CODE>DM_EDIFACT</CODE> - EDIFACT encodation<br />
-            <CODE>DM_RAW</CODE> - no encodation. The bytes provided are already encoded and will be added directly to the barcode, using padding if needed. It assumes that the encodation state is left at ASCII after the last byte.<br />
+            <c>DM_AUTO</c> - the best encodation will be used<br />
+            <c>DM_ASCII</c> - ASCII encodation<br />
+            <c>DM_C40</c> - C40 encodation<br />
+            <c>DM_TEXT</c> - TEXT encodation<br />
+            <c>DM_B256</c> - binary encodation<br />
+            <c>DM_X12</c> - X12 encodation<br />
+            <c>DM_EDIFACT</c> - EDIFACT encodation<br />
+            <c>DM_RAW</c> - no encodation. The bytes provided are already encoded and will be added directly to the barcode, using padding if needed. It assumes that the encodation state is left at ASCII after the last byte.<br />
             <br />
             One of:<br />
-            <CODE>DM_EXTENSION</CODE> - allows extensions to be embedded at the start of the text:<para />
+            <c>DM_EXTENSION</c> - allows extensions to be embedded at the start of the text:<para />
             exxxxxx - ECI number xxxxxx<br />
             m5 - macro 5<br />
             m6 - macro 6<br />
@@ -913,7 +910,7 @@
             Example for a structured append, symbol 2 of 6, with FNC1 and ECI 000005. The actual text is "Hello".<para />
             s020600075fe000005.Hello<para />
             One of:<br />
-            <CODE>DM_TEST</CODE> - doesn't generate the image but returns all the other information.
+            <c>DM_TEST</c> - doesn't generate the image but returns all the other information.
             </remarks>
             <param name="options">the barcode options</param>
         </member>
@@ -1004,8 +1001,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.BarcodeEAN.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.BarcodeEAN.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -1023,11 +1019,11 @@
             <summary>Converts an UPCA code into an UPCE code.</summary>
             <remarks>
             Converts an UPCA code into an UPCE code. If the code can not
-            be converted a <CODE>null</CODE> is returned.
+            be converted a <c>null</c> is returned.
             </remarks>
             <param name="text">the code to convert. It must have 12 numeric characters</param>
             <returns>
-            the 8 converted digits or <CODE>null</CODE> if the
+            the 8 converted digits or <c>null</c> if the
             code could not be converted
             </returns>
         </member>
@@ -1068,44 +1064,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeEAN.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="F:iText.Barcodes.BarcodeEANSUPP.ean">
@@ -1131,44 +1127,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeEANSUPP.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="T:iText.Barcodes.BarcodeInter25">
@@ -1201,8 +1197,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.BarcodeInter25.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.BarcodeInter25.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -1212,9 +1207,9 @@
             <param name="font">The font to use</param>
         </member>
         <member name="M:iText.Barcodes.BarcodeInter25.KeepNumbers(System.String)">
-            <summary>Deletes all the non numeric characters from <CODE>text</CODE>.</summary>
+            <summary>Deletes all the non numeric characters from <c>text</c>.</summary>
             <param name="text">the text</param>
-            <returns>a <CODE>String</CODE> with only numeric characters</returns>
+            <returns>a <c>String</c> with only numeric characters</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeInter25.GetChecksum(System.String)">
             <summary>Calculates the checksum.</summary>
@@ -1238,58 +1233,58 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeInter25.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.<para />
             The bars and text are written in the following colors:
             <br />
-            <TABLE BORDER="1" SUMMARY="barcode properties">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="barcode properties">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="T:iText.Barcodes.BarcodeMSI">
             <summary>Implements the MSI Barcode.</summary>
             <remarks>
             Implements the MSI Barcode.
-            The <CODE>code</CODE> may only contain numeric characters.
+            The <c>code</c> may only contain numeric characters.
             The
             <see cref="M:iText.Barcodes.BarcodeMSI.GetChecksum(System.String)">getChecksum</see>
             method returns the mod 10 checksum digit which is the most widely used for MSI barcodes.
             </remarks>
         </member>
         <member name="F:iText.Barcodes.BarcodeMSI.CHARS">
-            <summary>The index chars to <CODE>BARS</CODE> representing valid characters in the <CODE>code</CODE></summary>
+            <summary>The index chars to <c>BARS</c> representing valid characters in the <c>code</c></summary>
         </member>
         <member name="F:iText.Barcodes.BarcodeMSI.BARS_START">
             <summary>The sequence prepended to the start of all MSI Barcodes.</summary>
@@ -1301,7 +1296,7 @@
             <summary>The bars to generate the code.</summary>
         </member>
         <member name="F:iText.Barcodes.BarcodeMSI.BARS_PER_CHARACTER">
-            <summary>The number of individual bars either drawn or not drawn per character of the <CODE>code</CODE></summary>
+            <summary>The number of individual bars either drawn or not drawn per character of the <c>code</c></summary>
         </member>
         <member name="M:iText.Barcodes.BarcodeMSI.#ctor(iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a new BarcodeMSI.</summary>
@@ -1311,8 +1306,7 @@
             <see cref="M:iText.Kernel.Pdf.PdfDocument.GetDefaultFont"/>
             will be implicitly called.
             If you want to use this barcode in PDF/A documents, please consider using
-            <see cref="M:iText.Barcodes.BarcodeMSI.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>
-            .
+            <see cref="M:iText.Barcodes.BarcodeMSI.#ctor(iText.Kernel.Pdf.PdfDocument,iText.Kernel.Font.PdfFont)"/>.
             </remarks>
             <param name="document">The document to which the barcode will be added</param>
         </member>
@@ -1333,44 +1327,44 @@
             <returns>the size the barcode occupies.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeMSI.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,iText.Kernel.Colors.Color)">
-            <summary>Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.
             <para />
             The bars and text are written in the following colors:
-            <TABLE BORDER="1" summary="">
-            <TR>
-            <TH><CODE>barColor</CODE></TH>
-            <TH><CODE>textColor</CODE></TH>
-            <TH>Result</TH>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with current fill color</TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>null</CODE></TD>
-            <TD>bars and text painted with <CODE>barColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>null</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with current color<br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            <TR>
-            <TD><CODE>barColor</CODE></TD>
-            <TD><CODE>textColor</CODE></TD>
-            <TD>bars painted with <CODE>barColor</CODE><br />text painted with <CODE>textColor</CODE></TD>
-            </TR>
-            </TABLE>
+            <table border="1" summary="">
+            <tr>
+            <th><c>barColor</c></th>
+            <th><c>textColor</c></th>
+            <th>Result</th>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with current fill color</td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>null</c></td>
+            <td>bars and text painted with <c>barColor</c></td>
+            </tr>
+            <tr>
+            <td><c>null</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with current color<br />text painted with <c>textColor</c></td>
+            </tr>
+            <tr>
+            <td><c>barColor</c></td>
+            <td><c>textColor</c></td>
+            <td>bars painted with <c>barColor</c><br />text painted with <c>textColor</c></td>
+            </tr>
+            </table>
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="barColor">the color of the bars. It can be <CODE>null</CODE></param>
-            <param name="textColor">the color of the text. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="barColor">the color of the bars. It can be <c>null</c></param>
+            <param name="textColor">the color of the text. It can be <c>null</c></param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeMSI.GetBarsMSI(System.String)">
@@ -1384,21 +1378,21 @@
             <returns>the checksum digit</returns>
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_USE_ASPECT_RATIO">
-            <summary>Auto-size is made based on <CODE>aspectRatio</CODE> and <CODE>yHeight</CODE>.</summary>
+            <summary>Auto-size is made based on <c>aspectRatio</c> and <c>yHeight</c>.</summary>
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_FIXED_RECTANGLE">
-            <summary>The size of the barcode will be at least <CODE>codeColumns*codeRows</CODE>.</summary>
+            <summary>The size of the barcode will be at least <c>codeColumns*codeRows</c>.</summary>
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_FIXED_COLUMNS">
             <summary>
-            The size will be at least <CODE>codeColumns</CODE>
-            with a variable number of <CODE>codeRows</CODE>.
+            The size will be at least <c>codeColumns</c>
+            with a variable number of <c>codeRows</c>.
             </summary>
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_FIXED_ROWS">
             <summary>
-            The size will be at least <CODE>codeRows</CODE>
-            with a variable number of <CODE>codeColumns</CODE>.
+            The size will be at least <c>codeRows</c>
+            with a variable number of <c>codeColumns</c>.
             </summary>
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_AUTO_ERROR_LEVEL">
@@ -1416,7 +1410,7 @@
         </member>
         <member name="F:iText.Barcodes.BarcodePDF417.PDF417_USE_RAW_CODEWORDS">
             <summary>
-            No <CODE>text</CODE> interpretation is done and the content of <CODE>codewords</CODE>
+            No <c>text</c> interpretation is done and the content of <c>codewords</c>
             is used directly.
             </summary>
         </member>
@@ -1470,7 +1464,7 @@
             <summary>Holds value of property yHeight.</summary>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.#ctor">
-            <summary>Creates a new <CODE>BarcodePDF417</CODE> with the default settings.</summary>
+            <summary>Creates a new <c>BarcodePDF417</c> with the default settings.</summary>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.SetMacroSegmentId(System.Int32)">
             <summary>Sets the segment id for macro PDF417 encoding</summary>
@@ -1488,8 +1482,8 @@
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.SetDefaultParameters">
             <summary>
-            Set the default settings that correspond to <CODE>PDF417_USE_ASPECT_RATIO</CODE>
-            and <CODE>PDF417_AUTO_ERROR_LEVEL</CODE>.
+            Set the default settings that correspond to <c>PDF417_USE_ASPECT_RATIO</c>
+            and <c>PDF417_AUTO_ERROR_LEVEL</c>.
             </summary>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.PaintCode">
@@ -1498,12 +1492,12 @@
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.CreateFormXObject(iText.Kernel.Colors.Color,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode.</summary>
-            <param name="foreground">the color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">the color of the pixels. It can be <c>null</c></param>
             <returns>the XObject.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.CreateFormXObject(iText.Kernel.Colors.Color,System.Single,System.Single,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode with given module width and module height.</summary>
-            <param name="foreground">The color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">The color of the pixels. It can be <c>null</c></param>
             <param name="moduleWidth">The width of the pixels.</param>
             <param name="moduleHeight">The height of the pixels.</param>
             <param name="document">The document</param>
@@ -1513,21 +1507,21 @@
             <summary>Gets the raw image bits of the barcode.</summary>
             <remarks>
             Gets the raw image bits of the barcode. The image will have to
-            be scaled in the Y direction by <CODE>yHeight</CODE>.
+            be scaled in the Y direction by <c>yHeight</c>.
             </remarks>
             <returns>The raw barcode image</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.GetBitColumns">
-            <summary>Gets the number of X pixels of <CODE>outBits</CODE>.</summary>
-            <returns>the number of X pixels of <CODE>outBits</CODE></returns>
+            <summary>Gets the number of X pixels of <c>outBits</c>.</summary>
+            <returns>the number of X pixels of <c>outBits</c></returns>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.GetCodeRows">
-            <summary>Gets the number of Y pixels of <CODE>outBits</CODE>.</summary>
+            <summary>Gets the number of Y pixels of <c>outBits</c>.</summary>
             <remarks>
-            Gets the number of Y pixels of <CODE>outBits</CODE>.
+            Gets the number of Y pixels of <c>outBits</c>.
             It is also the number of rows in the barcode.
             </remarks>
-            <returns>the number of Y pixels of <CODE>outBits</CODE></returns>
+            <returns>the number of Y pixels of <c>outBits</c></returns>
         </member>
         <member name="M:iText.Barcodes.BarcodePDF417.SetCodeRows(System.Int32)">
             <summary>Sets the number of barcode rows.</summary>
@@ -1553,7 +1547,7 @@
             <summary>Gets the codeword array.</summary>
             <remarks>
             Gets the codeword array. This array is always 928 elements long.
-            It can be written to if the option <CODE>PDF417_USE_RAW_CODEWORDS</CODE>
+            It can be written to if the option <c>PDF417_USE_RAW_CODEWORDS</c>
             is set.
             </remarks>
             <returns>the codeword array</returns>
@@ -1610,7 +1604,7 @@
             <summary>Sets the options to generate the barcode.</summary>
             <remarks>
             Sets the options to generate the barcode. This can be all
-            the <CODE>PDF417_*</CODE> constants.
+            the <c>PDF417_*</c> constants.
             </remarks>
             <param name="options">the options to generate the barcode</param>
         </member>
@@ -1695,25 +1689,25 @@
             <returns>The size of the barcode</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeQRCode.PlaceBarcode(iText.Kernel.Pdf.Canvas.PdfCanvas,iText.Kernel.Colors.Color,System.Single)">
-            <summary>* Places the barcode in a <CODE>PdfCanvas</CODE>.</summary>
+            <summary>* Places the barcode in a <c>PdfCanvas</c>.</summary>
             <remarks>
-            * Places the barcode in a <CODE>PdfCanvas</CODE>. The
+            * Places the barcode in a <c>PdfCanvas</c>. The
             barcode is always placed at coordinates (0, 0). Use the
             translation matrix to move it elsewhere.
             </remarks>
-            <param name="canvas">the <CODE>PdfCanvas</CODE> where the barcode will be placed</param>
-            <param name="foreground">the foreground color. It can be <CODE>null</CODE></param>
+            <param name="canvas">the <c>PdfCanvas</c> where the barcode will be placed</param>
+            <param name="foreground">the foreground color. It can be <c>null</c></param>
             <param name="moduleSide">the size of the square grid cell</param>
             <returns>the dimensions the barcode occupies</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeQRCode.CreateFormXObject(iText.Kernel.Colors.Color,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode.</summary>
-            <param name="foreground">the color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">the color of the pixels. It can be <c>null</c></param>
             <returns>the XObject.</returns>
         </member>
         <member name="M:iText.Barcodes.BarcodeQRCode.CreateFormXObject(iText.Kernel.Colors.Color,System.Single,iText.Kernel.Pdf.PdfDocument)">
             <summary>Creates a PdfFormXObject with the barcode.</summary>
-            <param name="foreground">The color of the pixels. It can be <CODE>null</CODE></param>
+            <param name="foreground">The color of the pixels. It can be <c>null</c></param>
             <param name="moduleSize">The size of the pixels.</param>
             <param name="document">The document</param>
             <returns>the XObject.</returns>
@@ -1774,7 +1768,6 @@
             <param name="end">end of range, exclusive</param>
             <param name="value">if true, checks that bits in range are set, otherwise checks that they are not set</param>
             <returns>true iff all bits are set or not set in range, according to value argument</returns>
-            <exception cref="T:System.ArgumentException">if end is less than or equal to start</exception>
         </member>
         <member name="M:iText.Barcodes.Qrcode.BitArray.GetBitArray">
             <returns>
@@ -1892,7 +1885,7 @@
             - appendBits(0xff, 8) adds 11111111.
             </remarks>
             <param name="value">int interpreted as bitvector</param>
-            <param name="numBits">0&lt;= numBits &lt;= 32.</param>
+            <param name="numBits">0 &lt;= numBits &lt;= 32.</param>
         </member>
         <member name="M:iText.Barcodes.Qrcode.BitVector.AppendBitVector(iText.Barcodes.Qrcode.BitVector)">
             <summary>Append a different BitVector to this BitVector</summary>
@@ -2079,8 +2072,6 @@
             <param name="content">String to encode</param>
             <param name="ecLevel">Error-correction level to use</param>
             <param name="qrCode">QR code to store the result in</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.Encode(System.String,iText.Barcodes.Qrcode.ErrorCorrectionLevel,System.Collections.Generic.IDictionary{iText.Barcodes.Qrcode.EncodeHintType,System.Object},iText.Barcodes.Qrcode.QRCode)">
             <summary>Encode "bytes" with the error correction level "ecLevel".</summary>
@@ -2099,8 +2090,6 @@
             <param name="ecLevel">Error-correction level to use</param>
             <param name="hints">Optional Map containing  encoding and suggested minimum version to use</param>
             <param name="qrCode">QR code to store the result in</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.GetAlphanumericCode(System.Int32)">
             <returns>
@@ -2124,20 +2113,15 @@
             <param name="encoding">hint for the encoding to use</param>
             <returns>mode to use</returns>
         </member>
-        <member name="M:iText.Barcodes.Qrcode.Encoder.ChooseMaskPattern(iText.Barcodes.Qrcode.BitVector,iText.Barcodes.Qrcode.ErrorCorrectionLevel,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.InitQRCode(System.Int32,iText.Barcodes.Qrcode.ErrorCorrectionLevel,System.Int32,iText.Barcodes.Qrcode.Mode,iText.Barcodes.Qrcode.QRCode)">
             <summary>Initialize "qrCode" according to "numInputBytes", "ecLevel", and "mode".</summary>
             <remarks>
             Initialize "qrCode" according to "numInputBytes", "ecLevel", and "mode". On success,
             modify "qrCode".
             </remarks>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.TerminateBits(System.Int32,iText.Barcodes.Qrcode.BitVector)">
             <summary>Terminate bits as described in 8.4.8 and 8.4.9 of JISX0510:2004 (p.24).</summary>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.GetNumDataBytesAndNumECBytesForBlockID(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32[],System.Int32[])">
             <summary>Get number of data bytes and number of error correction bytes for block id "blockID".</summary>
@@ -2146,7 +2130,6 @@
             the result in "numDataBytesInBlock", and "numECBytesInBlock". See table 12 in 8.5.1 of
             JISX0510:2004 (p.30)
             </remarks>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.InterleaveWithECBytes(iText.Barcodes.Qrcode.BitVector,System.Int32,System.Int32,System.Int32,iText.Barcodes.Qrcode.BitVector)">
             <summary>Interleave "bits" with corresponding error correction bytes.</summary>
@@ -2154,7 +2137,6 @@
             Interleave "bits" with corresponding error correction bytes. On success, store the result in
             "result". The interleave rule is complicated. See 8.6 of JISX0510:2004 (p.37) for details.
             </remarks>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.AppendModeInfo(iText.Barcodes.Qrcode.Mode,iText.Barcodes.Qrcode.BitVector)">
             <summary>Append mode info.</summary>
@@ -2163,21 +2145,10 @@
         <member name="M:iText.Barcodes.Qrcode.Encoder.AppendLengthInfo(System.Int32,System.Int32,iText.Barcodes.Qrcode.Mode,iText.Barcodes.Qrcode.BitVector)">
             <summary>Append length info.</summary>
             <remarks>Append length info. On success, store the result in "bits".</remarks>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Encoder.AppendBytes(System.String,iText.Barcodes.Qrcode.Mode,iText.Barcodes.Qrcode.BitVector,System.String)">
             <summary>Append "bytes" in "mode" mode (encoding) into "bits".</summary>
             <remarks>Append "bytes" in "mode" mode (encoding) into "bits". On success, store the result in "bits".</remarks>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.Encoder.AppendAlphanumericBytes(System.String,iText.Barcodes.Qrcode.BitVector)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.Encoder.Append8BitBytes(System.String,iText.Barcodes.Qrcode.BitVector,System.String)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.Encoder.AppendKanjiBytes(System.String,iText.Barcodes.Qrcode.BitVector)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="T:iText.Barcodes.Qrcode.ErrorCorrectionLevel">
             <summary>See ISO 18004:2006, 6.5.1.</summary>
@@ -2232,7 +2203,7 @@
             to establish best match
             </param>
             <returns>
-            information about the format it specifies, or <code>null</code>
+            information about the format it specifies, or <c>null</c>
             if doesn't seem to match any known pattern
             </returns>
         </member>
@@ -2257,7 +2228,7 @@
             This class contains utility methods for performing mathematical operations over
             the Galois Field GF(256). Operations use a given primitive polynomial in calculations.
             <para />
-            Throughout this package, elements of GF(256) are represented as an <code>int</code>
+            Throughout this package, elements of GF(256) are represented as an <c>int</c>
             for convenience and speed (but at the cost of memory).
             Only the bottom 8 bits are really used.
             </remarks>
@@ -2314,11 +2285,6 @@
             coefficients as ints representing elements of GF(256), arranged
             from most significant (highest-power term) coefficient to least significant
             </param>
-            <exception cref="T:System.ArgumentException">
-            if argument is null or empty,
-            or if leading coefficient is 0 and this is not a
-            constant polynomial (that is, it is not the monomial "0")
-            </exception>
         </member>
         <member name="M:iText.Barcodes.Qrcode.GF256Poly.GetDegree">
             <returns>degree of this polynomial</returns>
@@ -2424,7 +2390,6 @@
             <param name="version">Version of the QR code, [1 .. 40]</param>
             <param name="maskPattern">masking pattern</param>
             <param name="matrix">Bytematrix in which the output will be stored</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedBasicPatterns(System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
             <summary>Embed basic patterns.</summary>
@@ -2438,14 +2403,12 @@
             </remarks>
             <param name="version">Version of the QR code, [1 .. 40]</param>
             <param name="matrix">Bytematrix in which the output will be stored</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedTypeInfo(iText.Barcodes.Qrcode.ErrorCorrectionLevel,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
             <summary>Embed type information into the matrix</summary>
             <param name="ecLevel">The error correction level (L,M,Q,H)</param>
             <param name="maskPattern">the masking pattern</param>
             <param name="matrix">Bytematrix in which the output will be stored</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.MaybeEmbedVersionInfo(System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
             <summary>Embed version information if need be.</summary>
@@ -2457,8 +2420,6 @@
             </remarks>
             <param name="version">QR code version</param>
             <param name="matrix">Byte matrix representing the QR code</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedDataBits(iText.Barcodes.Qrcode.BitVector,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
             <summary>Embed "dataBits" using "getMaskPattern".</summary>
@@ -2470,8 +2431,6 @@
             <param name="dataBits">data bits to embed in the QR code</param>
             <param name="maskPattern">masking pattern to apply to the data bits</param>
             <param name="matrix">Byte matrix representing the QR code</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.FindMSBSet(System.Int32)">
             <summary>Return the position of the most significant bit set (to one) in the "value".</summary>
@@ -2526,8 +2485,6 @@
             <param name="ecLevel">error correction level of the QR code</param>
             <param name="maskPattern">masking pattern to use</param>
             <param name="bits">Vactor of bits to contain the result</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.MatrixUtil.MakeVersionInfoBits(System.Int32,iText.Barcodes.Qrcode.BitVector)">
             <summary>Make bit vector of version information.</summary>
@@ -2537,32 +2494,6 @@
             </remarks>
             <param name="version">Version of the QR-code</param>
             <param name="bits">Vector of bits to contain the result</param>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedTimingPatterns(iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedDarkDotAtLeftBottomCorner(iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedHorizontalSeparationPattern(System.Int32,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedVerticalSeparationPattern(System.Int32,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedPositionAdjustmentPattern(System.Int32,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedPositionDetectionPattern(System.Int32,System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.EmbedPositionDetectionPatternsAndSeparators(iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-        </member>
-        <member name="M:iText.Barcodes.Qrcode.MatrixUtil.MaybeEmbedPositionAdjustmentPatterns(System.Int32,iText.Barcodes.Qrcode.ByteMatrix)">
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="T:iText.Barcodes.Qrcode.Mode">
             <summary>See ISO 18004:2006, 6.4.1, Tables 2 and 3.</summary>
@@ -2579,7 +2510,6 @@
             <see cref="T:iText.Barcodes.Qrcode.Mode"/>
             encoded by these bits
             </returns>
-            <exception cref="T:System.ArgumentException">if bits do not correspond to a known mode</exception>
         </member>
         <member name="M:iText.Barcodes.Qrcode.Mode.GetCharacterCountBits(iText.Barcodes.Qrcode.Version)">
             <param name="version">version in question</param>
@@ -2734,8 +2664,6 @@
             <param name="width">width of the QR-code</param>
             <param name="height">height of the QR-code</param>
             <returns>2D Greyscale map containing the visual representation of the QR-code, stored as a Bytematrix</returns>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="M:iText.Barcodes.Qrcode.QRCodeWriter.Encode(System.String,System.Int32,System.Int32,System.Collections.Generic.IDictionary{iText.Barcodes.Qrcode.EncodeHintType,System.Object})">
             <summary>Encode a string into a QR code with dimensions width x height.</summary>
@@ -2748,8 +2676,6 @@
             <param name="height">height of the QR-code</param>
             <param name="hints">Map containing suggestions for error-correction level and version</param>
             <returns>2D Greyscale map containing the visual representation of the QR-code, stored as a Bytematrix</returns>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
-            <exception cref="T:iText.Barcodes.Qrcode.WriterException"/>
         </member>
         <member name="T:iText.Barcodes.Qrcode.ReedSolomonEncoder">
             <summary>Implements Reed-Solomon encoding, as the name implies.</summary>
@@ -2761,8 +2687,13 @@
             Creates a SolomonEncoder object based on a
             <see cref="T:iText.Barcodes.Qrcode.GF256"/>
             object.
-            Only QR codes are supported at the moment.
             </summary>
+            <remarks>
+            Creates a SolomonEncoder object based on a
+            <see cref="T:iText.Barcodes.Qrcode.GF256"/>
+            object.
+            Only QR codes are supported at the moment.
+            </remarks>
             <param name="field">the galois field</param>
         </member>
         <member name="M:iText.Barcodes.Qrcode.ReedSolomonEncoder.Encode(System.Int32[],System.Int32)">

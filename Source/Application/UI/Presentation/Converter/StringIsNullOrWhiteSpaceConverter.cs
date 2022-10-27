@@ -23,4 +23,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
             throw new NotSupportedException();
         }
     }
+
+    public class IsNullConverter : IValueConverter
+    {
+        public object TrueValue { get; set; }
+        public object FalseValue { get; set; }
+
+        public object Convert(object value, Type targetType, object parameter,
+            CultureInfo culture)
+        {
+            return value == null ? TrueValue : FalseValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
 }

@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 new DesignTimeDispatcher(),
                 new GpoSettingsDefaults(),
                 new DesignTimeDefaultSettingsBuilder(),
-                new DesignTimeActionOrderHelper(true, false))
+                new DesignTimeActionOrderHelper())
         {
         }
     }

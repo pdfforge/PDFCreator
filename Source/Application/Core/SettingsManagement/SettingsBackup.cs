@@ -2,6 +2,7 @@
 using System;
 using SystemInterface.IO;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {

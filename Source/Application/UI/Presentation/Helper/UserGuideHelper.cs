@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.UserGuide;
 using System;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper

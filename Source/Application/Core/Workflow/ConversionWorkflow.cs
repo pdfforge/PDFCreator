@@ -197,7 +197,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             try
             {
                 DoWorkflowWork(job);
-
                 WorkflowResultState = WorkflowResultState.Finished;
 
                 SendJobEvents(job);

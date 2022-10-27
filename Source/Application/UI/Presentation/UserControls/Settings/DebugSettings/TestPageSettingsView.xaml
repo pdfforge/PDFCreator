@@ -4,21 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
-             d:DataContext="{d:DesignInstance debugSettings:TestPageSettingsViewModel}">
-    <Grid>
-        <HeaderedContentControl Header="{Binding Translation.TestPagesControlHeader}">
-            <UniformGrid Columns="2" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
-                <Button Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}"
-                        Command="{Binding PrintPdfCreatorTestPageCommand}">
+             d:DataContext="{d:DesignInstance debugSettings:CreatorTestPageSettingsViewModel}">
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CanBeShownConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel Visibility="{Binding CanBeShown, Converter={StaticResource CanBeShownConverter}}">
+
+        <Label Content="{Binding Translation.TestPagesControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 10 0 10"/>
+        <Grid HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel VerticalAlignment="Bottom">
+                <Button Margin="0 10 0 0"
+                            Command="{Binding PrintPdfCreatorTestPageCommand}">
                     <TextBlock Text="{Binding Translation.PdfCreatorTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
                 </Button>
-                <Button Margin="5 0 0 0" Style="{DynamicResource LightGreyButton}"
-                        Command="{Binding PrintWindowsTestPageCommand}">
+                <Button Margin="0 10 0 0"
+                            Command="{Binding PrintWindowsTestPageCommand}">
                     <TextBlock Text="{Binding Translation.WindowsTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
                 </Button>
-            </UniformGrid>
-        </HeaderedContentControl>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

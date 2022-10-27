@@ -13,9 +13,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string UploadWithFtp { get; private set; } = "Upload with FTP";
         public string RemoveFtpAccount { get; private set; } = "Remove FTP account";
         public string EditFtpAccount { get; private set; } = "Edit FTP Account";
-        public string FtpUploadTitle { get; private set; } = "FTP Upload";
-        public string FtpAccountColon { get; private set; } = "FTP Account:";
-        public string FtpServerPassword { get; private set; } = "FTP Server Password:";
         public string Title { get; set; } = "FTP";
         public string InfoText { get; set; } = "Uploads the document with FTP.";
 

@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!(o is GpoSettingsContainer)) return false;
 			GpoSettingsContainer v = o as GpoSettingsContainer;
 			
-			if (!GpoSettings.Equals(v.GpoSettings)) return false;
+			if (!Object.Equals(GpoSettings, v.GpoSettings)) return false;
 			return true;
 		}
 		

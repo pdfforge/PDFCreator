@@ -34,6 +34,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             var bannerControl = await _bannerManager.GetBanner(BannerSlots.PrintJob);
             if (bannerControl != null)
             {
+                ViewModel.HasBanner = true;
                 _regionManager.AddToRegion(PrintJobRegionNames.PrintJobViewBannerRegion, bannerControl);
             }
         }

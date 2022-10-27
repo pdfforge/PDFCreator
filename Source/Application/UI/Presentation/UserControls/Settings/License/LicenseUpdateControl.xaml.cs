@@ -11,6 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         {
             _licenseSettingsView = licenseSettingsView;
             InitializeComponent();
+            _licenseSettingsView.Margin = new Thickness(10);
             PartContent.Children.Add(licenseSettingsView);
         }
 

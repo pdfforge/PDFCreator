@@ -103,6 +103,10 @@
       <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
       <Name>SettingsManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
+      <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Presentation\Presentation.csproj">
       <Project>{CF5FF5FD-39AD-472D-ABC3-44D4E7909E68}</Project>
       <Name>Presentation</Name>
@@ -130,6 +134,22 @@
         </Reference>
         <Reference Include="System.Windows.Interactivity">
           <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="MahApps.Metro.IconPacks.Core">
+          <HintPath>..\..\..\..\packages\MahApps.Metro.IconPacks.MaterialDesign\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="MahApps.Metro.IconPacks.MaterialDesign">
+          <HintPath>..\..\..\..\packages\MahApps.Metro.IconPacks.MaterialDesign\lib\net47\MahApps.Metro.IconPacks.MaterialDesign.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

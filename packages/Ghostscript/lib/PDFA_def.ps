@@ -35,13 +35,13 @@ def
         /CMYK eq {
           /N 4 false
         }{
-          (ColorConversionStrategy not a device space, falling back to ProcessColorModel, output may not be valid PDF/A.)=
+          (\tColorConversionStrategy not a device space, falling back to ProcessColorModel, output may not be valid PDF/A.\n)=
           true
         } ifelse
       } ifelse
     } ifelse
   } {
-    (ColorConversionStrategy not set, falling back to ProcessColorModel, output may not be valid PDF/A.)=
+    (\tColorConversionStrategy not set, falling back to ProcessColorModel, output may not be valid PDF/A.\n)=
     true
   } ifelse
 
@@ -56,7 +56,7 @@ def
         dup /DeviceCMYK eq {
           pop /N 4
         } {
-          (ProcessColorModel not a device space.)=
+          (\tProcessColorModel not a device space.)=
           /ProcessColorModel cvx /rangecheck signalerror
         } ifelse
       } ifelse
@@ -65,15 +65,27 @@ def
 %% ----------8<--------------8<-------------8<--------------8<----------
 
 >> /PUT pdfmark
-[{icc_PDFA} ICCProfile (r) file /PUT pdfmark
+[
+{icc_PDFA}
+{ICCProfile (r) file} stopped
+{
+  (\n\tFailed to open the supplied ICCProfile for reading. This may be due to\n) print
+  (\t  an incorrect filename or a failure to add --permif-file-read=<profile>\n) print
+  (\t  to the command line. This PostScript program needs to open the file\n) print
+  (\t  and you must explicitly grant it permission to do so.\n\n) print
+  (\tPDF/A processing aborted, output may not be a PDF/A file.\n\n) print
+  cleartomark
+}
+{
+  /PUT pdfmark
+  % Define the output intent dictionary :
 
-% Define the output intent dictionary :
-
-[/_objdef {OutputIntent_PDFA} /type /dict /OBJ pdfmark
-[{OutputIntent_PDFA} <<
-  /Type /OutputIntent               % Must be so (the standard requires).
-  /S /GTS_PDFA1                     % Must be so (the standard requires).
-  /DestOutputProfile {icc_PDFA}     % Must be so (see above).
-  /OutputConditionIdentifier (sRGB) % Customize
->> /PUT pdfmark
-[{Catalog} <</OutputIntents [ {OutputIntent_PDFA} ]>> /PUT pdfmark
+  [/_objdef {OutputIntent_PDFA} /type /dict /OBJ pdfmark
+  [{OutputIntent_PDFA} <<
+    /Type /OutputIntent               % Must be so (the standard requires).
+    /S /GTS_PDFA1                     % Must be so (the standard requires).
+    /DestOutputProfile {icc_PDFA}     % Must be so (see above).
+    /OutputConditionIdentifier (sRGB) % Customize
+  >> /PUT pdfmark
+  [{Catalog} <</OutputIntents [ {OutputIntent_PDFA} ]>> /PUT pdfmark
+} ifelse

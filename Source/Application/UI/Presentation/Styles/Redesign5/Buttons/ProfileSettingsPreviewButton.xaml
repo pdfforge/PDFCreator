@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
+        <ResourceDictionary Source="../ColorDictionary.xaml" />
+        <ResourceDictionary Source="SquaredIconButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="CornerButton" BasedOn="{StaticResource SquaredIconButton}"  TargetType="{x:Type ButtonBase}" x:Shared="False">
+        <Setter Property="Border.CornerRadius" Value=" 0 2 0 2" />
+    </Style>
+
+    <Style x:Key="ProfileSettingsPreviewButton" TargetType="{x:Type Button}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="10 10 10 15" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="2">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="0 0 0 2" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Background" Value="White" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#fafafa" />
+                                        <Setter Property="BorderBrush">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource AccentBlue}" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Style="{StaticResource CornerButton}"
+                                    Command="{TemplateBinding Command}">
+                                <iconPacks:PackIconMaterialDesign Kind="Build" />
+                            </Button>
+                            <ContentPresenter DockPanel.Dock="Top"
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding Content}"
+                                              IsHitTestVisible="False" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

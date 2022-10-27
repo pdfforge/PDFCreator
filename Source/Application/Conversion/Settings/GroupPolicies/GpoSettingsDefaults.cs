@@ -17,6 +17,7 @@
         
         public string Language => null;
         public string UpdateInterval => null;
+        public string SharedSettingsFilename => "settings";
         public int? HotStandbyMinutes => null;
 
         public bool LoadSharedAppSettings => false;

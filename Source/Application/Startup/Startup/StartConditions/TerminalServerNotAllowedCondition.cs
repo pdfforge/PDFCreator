@@ -1,9 +1,9 @@
 ﻿using NLog;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Core.Controller;
-using pdfforge.PDFCreator.Core.Services.Licensing;
 using pdfforge.PDFCreator.Core.Startup.Translations;
 using pdfforge.PDFCreator.Core.StartupInterface;
+using pdfforge.PDFCreator.Setup.Shared.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.Utilities;
@@ -35,7 +35,7 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
 
         public StartupConditionResult Check()
         {
-            if (!_terminalServerDetection.IsTerminalServer())
+            if (!_terminalServerDetection.IsTerminalServer() || _terminalServerDetection.IsWindowsEnterpriseMultiSession())
                 return StartupConditionResult.BuildSuccess();
 
             var errorMessage = $"It is not possible to run {_applicationNameProvider.ApplicationName} with installed Terminal Services. Please use the Terminal Server Edition instead.";

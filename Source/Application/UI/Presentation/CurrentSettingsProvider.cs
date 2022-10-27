@@ -1,11 +1,11 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.UI.Presentation
 {

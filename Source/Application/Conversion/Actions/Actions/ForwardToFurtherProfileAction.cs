@@ -1,7 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class ForwardToFurtherProfileAction : ForwardToFurtherProfileActionBase
     {

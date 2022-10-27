@@ -21,6 +21,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		#pragma warning restore 67
 		
 		
+		/// <summary>
+		/// Existing files will not be overwritten. Existing files automatically get append with the new files.
+		/// </summary>
+		public bool AutoMergeFiles { get; set; } = false;
+		
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
@@ -31,12 +36,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public void ReadValues(Data data, string path = "")
 		{
+			AutoMergeFiles = bool.TryParse(data.GetValue(@"" + path + @"AutoMergeFiles"), out var tmpAutoMergeFiles) ? tmpAutoMergeFiles : false;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : true;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
+			data.SetValue(@"" + path + @"AutoMergeFiles", AutoMergeFiles.ToString());
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
 			data.SetValue(@"" + path + @"EnsureUniqueFilenames", EnsureUniqueFilenames.ToString());
 		}
@@ -45,6 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		{
 			AutoSave copy = new AutoSave();
 			
+			copy.AutoMergeFiles = AutoMergeFiles;
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			return copy;
@@ -52,6 +60,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public void ReplaceWith(AutoSave source)
 		{
+			if(AutoMergeFiles != source.AutoMergeFiles)
+				AutoMergeFiles = source.AutoMergeFiles;
+				
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
@@ -65,8 +76,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is AutoSave)) return false;
 			AutoSave v = o as AutoSave;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
+			if (!Object.Equals(AutoMergeFiles, v.AutoMergeFiles)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(EnsureUniqueFilenames, v.EnsureUniqueFilenames)) return false;
 			return true;
 		}
 		

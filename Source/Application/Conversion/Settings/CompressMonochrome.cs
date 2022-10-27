@@ -91,10 +91,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is CompressMonochrome)) return false;
 			CompressMonochrome v = o as CompressMonochrome;
 			
-			if (!Compression.Equals(v.Compression)) return false;
-			if (!Dpi.Equals(v.Dpi)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Resampling.Equals(v.Resampling)) return false;
+			if (!Object.Equals(Compression, v.Compression)) return false;
+			if (!Object.Equals(Dpi, v.Dpi)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(Resampling, v.Resampling)) return false;
 			return true;
 		}
 		

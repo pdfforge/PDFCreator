@@ -83,7 +83,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is AttachmentPage)) return false;
 			AttachmentPage v = o as AttachmentPage;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
 			if (!Files.SequenceEqual(v.Files)) return false;
 			return true;
 		}

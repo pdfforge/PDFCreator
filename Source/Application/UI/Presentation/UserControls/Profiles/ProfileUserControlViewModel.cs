@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
     public class ProfileUserControlViewModel<TTranslation> : TranslatableViewModelBase<TTranslation>, IMountable, IRegionMemberLifetime where TTranslation : ITranslatable, new()
     {
         protected readonly IDispatcher _dispatcher;
-        private readonly ISelectedProfileProvider _selectedProfileProvider;
+        protected readonly ISelectedProfileProvider _selectedProfileProvider;
         public ConversionProfile CurrentProfile => _selectedProfileProvider.SelectedProfile;
 
         public event EventHandler CurrentProfileChanged;

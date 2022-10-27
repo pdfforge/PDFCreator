@@ -1,8 +1,8 @@
-﻿using System;
+﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
+using Renci.SshNet;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using Renci.SshNet;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
 {
@@ -10,7 +10,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
     {
         private readonly SftpClient _sftpClient;
 
-        public SftpClientWrap(string host, string userName, string password, string keyFilePath, AuthenticationType authenticationType)
+        private const int DefaultPort = 22;
+
+        public SftpClientWrap(string host, int? port, string userName, string password, string keyFilePath, AuthenticationType authenticationType)
         {
             var methods = new List<AuthenticationMethod>();
             if (authenticationType == AuthenticationType.KeyFileAuthentication)
@@ -21,7 +23,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
             else
                 methods.Add(new PasswordAuthenticationMethod(userName, password));
 
-            var con = new ConnectionInfo(host, 22, userName, methods.ToArray());
+            var con = new ConnectionInfo(host, port ?? DefaultPort, userName, methods.ToArray());
             _sftpClient = new SftpClient(con);
         }
 

@@ -5,36 +5,64 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:ExportSettingsViewModel}">
-        <HeaderedContentControl Margin="0 20 0 0"
-                                Header="{Binding Translation.ExportSettingsControlHeader}">
-            <DockPanel>
-                <UniformGrid DockPanel.Dock="Top" Columns="3" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
-                    <Button Style="{DynamicResource LightGreyButton}"
-                            Command="{Binding SaveIniSettingsCommand}">
-                        <TextBlock Text="{Binding Translation.SaveSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </Button>
-                    <Button Margin="10 0 0 0"  Style="{DynamicResource LightGreyButton}"
-                            Command="{Binding SaveIniSettingsCommand}">
-                        <Button.CommandParameter>
-                            <system:Boolean>True</system:Boolean>
-                        </Button.CommandParameter>
-                    <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </Button>
-                    <Button Margin="10 0 0 0" Style="{DynamicResource LightGreyButton}"
-                            Command="{Binding LoadIniSettingsCommand}">
-                        <TextBlock Text="{Binding Translation.LoadSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                    </Button>
-                </UniformGrid>
 
-                <StackPanel Orientation="Horizontal" Margin="0 10">
-                    <ContentPresenter Content="{DynamicResource InfoIcon}"
-                                      Margin="0 0 5 0"
-                                      Height="12"/>
-                <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsHint}" />
-                </StackPanel>
-            </DockPanel>
-    </HeaderedContentControl>
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+
+        <Label Content="{Binding Translation.ExportSettingsControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10" />
+        <Grid HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="0" VerticalAlignment="Bottom">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Width="300" Margin="0 0 0 0" HorizontalAlignment="Left">
+                        <Button Command="{Binding SaveIniSettingsCommand}">
+                            <TextBlock Text="{Binding Translation.SaveSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Button>
+
+                        <Button Margin="0 10 0 0"
+                                Command="{Binding SaveIniSettingsCommand}">
+                            <Button.CommandParameter>
+                                <system:Boolean>True</system:Boolean>
+                            </Button.CommandParameter>
+                            <TextBlock Text="{Binding Translation.SaveSettingsWithoutPasswordsButtonContent}" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Button>
+
+                        <Button Margin="0 10 0 0"
+                                Command="{Binding LoadIniSettingsCommand}">
+                            <TextBlock Text="{Binding Translation.LoadSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Button>
+
+                        <Button Margin="0 10 0 0"
+                                Command="{Binding LoadSpecificProfilesCommand}">
+                        <TextBlock Text="{Binding Translation.LoadSingleProfileFromFile}" TextWrapping="Wrap" TextAlignment="Center" />
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Top" Grid.Column="1" Margin="30 0 0 0">
+                <Border Background="White" Padding="10">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoIconBrush}" VerticalAlignment="Top" Margin="0" Kind="Info" />
+                        <TextBlock Margin="5 3 0 0" Width="200" Text="{Binding Translation.SaveSettingsWithoutPasswordsHint}" TextWrapping="Wrap" LineHeight="20" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

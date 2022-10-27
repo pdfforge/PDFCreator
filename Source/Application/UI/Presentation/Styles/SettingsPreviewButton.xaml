@@ -4,7 +4,22 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
         <ResourceDictionary Source="Icons.xaml" />
+        <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="IconOnlyEditControl" TargetType="{x:Type ContentControl}">
+        <Setter Property="Foreground" Value="{StaticResource IconButtonColorBrush}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}"
+                         Value="True">
+                <Setter Property="Foreground" Value="{StaticResource IconButtonMouseOverColorBrush}" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource IconButtonMouseOverColorBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="SettingsPreviewButton" BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -21,11 +36,11 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}"
                                              Value="True">
-                                    <Setter Property="Background" Value="WhiteSmoke" />
+                                    <Setter Property="Background" Value="{StaticResource ButtonColorBrush}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=IsPressed, RelativeSource={RelativeSource FindAncestor, AncestorType=Button}}"
                                              Value="True">
-                                    <Setter Property="Background" Value="#B9B9B9" />
+                                    <Setter Property="Background" Value="{StaticResource ButtonMouseOverColorBrush}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

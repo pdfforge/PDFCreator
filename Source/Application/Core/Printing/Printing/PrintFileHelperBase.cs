@@ -1,10 +1,10 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Core.Printing.Printer;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Printing.Printing

@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.Utilities.Registry;
+﻿using pdfforge.PDFCreator.Utilities.Registry;
 using System.Security;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.Microsoft.Win32;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement

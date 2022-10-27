@@ -1,0 +1,598 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link selected"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+        <div class="main">
+
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link selected"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+
+            <div class="middle">
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="gsapi-py">gsapi.py</h1>
+<div class="banner">
+<div class="python-text"></div>
+<div class="vendor-logo python-logo"></div>
+</div>
+
+
+<h2 id="about">About</h2>
+<p><code>gsapi.py</code> is the <code>Python</code> binding into the Ghostscript <code>C</code> library.</p>
+<p>Assuming that the <a href="python-intro.html#platform-setup">Ghostscript library has been built</a> for your project then <code>gsapi</code> should be imported into your own <code>Python</code> scripts for API usage.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>import gsapi</code></pre><h2 id="gsapi">gsapi</h2>
+<h3 id="overview">Overview</h3>
+<p>Implemented using Python's ctypes module.</p>
+<p>All functions have the same name as the <code>C</code> function that they wrap.</p>
+<p>Functions raise a <code>GSError</code> exception if the underlying function returned a
+negative <a href="#return-codes">error code</a>.</p>
+<p>Functions that don't have out-params return <code>None</code>. Out-params are returned
+directly (using tuples if there are more than one).</p>
+<h3 id="return-codes">Return codes</h3>
+<p><code>gsapi_run_*</code> and <code>gsapi_exit</code> methods return an <code>int</code> code which can be interpreted as follows:</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0</code></td>
+<td>no error</td>
+</tr>
+<tr>
+<td><code>gsConstants.E_QUIT</code></td>
+<td>"quit" has been executed. This is not an error. <a href="#gsapi_exit">gsapi_exit</a> must be called next</td>
+</tr>
+<tr>
+<td><code>&lt;0</code></td>
+<td>error</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>NOTE</strong><br>
+For full detail on these return code please see:
+<a href="https://www.ghostscript.com/doc/current/API.htm#return_codes">https://www.ghostscript.com/doc/current/API.htm#return_codes</a></p>
+</blockquote>
+<h3 id="gsapi_revision">gsapi_revision</h3>
+<p>Returns a <code>gsapi_revision_t</code>.</p>
+<p>This method returns the revision numbers and strings of the Ghostscript interpreter library; you should call it before any other interpreter library functions to make sure that the correct version of the Ghostscript interpreter has been loaded.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_revision()</code></pre><div class="tag sampleCode python"></div>
+
+<pre><code>version_info = gsapi.gsapi_revision()
+print (version_info)</code></pre><h3 id="gsapi_new_instance">gsapi_new_instance</h3>
+<p>Returns a new instance of Ghostscript to be used with other <code>gsapi_*()</code> functions.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_new_instance(caller_handle)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>caller_handle</code>: Typically unused, but is passed to callbacks e.g. via <code>gsapi_set_stdio()</code>. Must be convertible to a <code>C void*</code>, so <code>None</code> or an
+    integer is ok but other types such as strings will fail.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>instance = gsapi.gsapi_new_instance(1)</code></pre><h3 id="gsapi_delete_instance">gsapi_delete_instance</h3>
+<p>Destroy an instance of Ghostscript. Before you call this, Ghostscript should ensure to have finished any processes.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_delete_instance(instance)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_delete_instance(instance)</code></pre><h3 id="gsapi_set_stdio">gsapi_set_stdio</h3>
+<p>Set the callback functions for <code>stdio</code>, together with the handle to use in the callback functions.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_stdio(instance, stdin_fn, stdout_fn, stderr_fn)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>stdin_fn</code>: If not <code>None</code>, will be called with:</p>
+<ul>
+<li><code>(caller_handle, text, len_)</code>:<ul>
+<li><code>caller_handle</code>: As passed originally to <code>gsapi_new_instance()</code>.</li>
+<li><code>text</code>: A <code>ctypes.LP_c_char</code> of length <code>len_</code>.</li>
+</ul>
+</li>
+</ul>
+<p><code>stdout_fn</code> and <code>stderr_fn</code>:If not <code>None</code>, called with:</p>
+<ul>
+<li><code>(caller_handle, text)</code>:<ul>
+<li><code>caller_handle</code>: As passed originally to <code>gsapi_new_instance()</code>.</li>
+<li><code>text</code>: A Python bytes object.</li>
+</ul>
+</li>
+</ul>
+<p>Should return the number of bytes of <code>text</code> that they handled; for convenience <code>None</code> is converted to <code>len(text)</code>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>def stdout_fn(caller_handle, bytes_):
+    sys.stdout.write(bytes_.decode('latin-1'))
+
+gsapi.gsapi_set_stdio(instance, None, stdout_fn, None)
+print('gsapi_set_stdio() ok.')</code></pre><h3 id="gsapi_set_poll">gsapi_set_poll</h3>
+<p>Set the callback function for polling.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_poll(instance, poll_fn)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>poll_fn</code>: Will be called with <code>caller_handle</code> as passed
+    to <code>gsapi_new_instance()</code>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>def poll_fn(caller_handle, bytes_):
+    sys.stdout.write(bytes_.decode('latin-1'))
+
+gsapi.gsapi_set_poll(instance, poll_fn)
+print('gsapi_set_poll() ok.')</code></pre><h3 id="gsapi_set_display_callback">gsapi_set_display_callback</h3>
+<p>Sets the <a href="https://ghostscript.com/doc/current/API.htm#display">display</a> callback.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_display_callback(instance, callback)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>callback</code>: Must be a <code>display_callback</code> instance.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>d = display_callback()
+gsapi.gsapi_set_display_callback(instance, d)
+print('gsapi_set_display_callback() ok.')</code></pre><h3 id="gsapi_set_arg_encoding">gsapi_set_arg_encoding</h3>
+<p>Set the encoding used for the interpretation of all subsequent arguments supplied via the <code>GhostAPI</code> interface on this instance. By default we expect args to be in encoding <code>0</code> (the 'local' encoding for this OS). On Windows this means "the currently selected codepage". On Linux this typically means <code>utf8</code>. This means that omitting to call this function will leave Ghostscript running exactly as it always has.</p>
+<p>This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_arg_encoding(instance, encoding)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>encoding</code>: Encoding must be one of:</p>
+<table>
+<thead>
+<tr>
+<th>Encoding enum</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GS_ARG_ENCODING_LOCAL</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>GS_ARG_ENCODING_UTF8</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>GS_ARG_ENCODING_UTF16LE</code></td>
+<td>2</td>
+</tr>
+</tbody></table>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_set_arg_encoding(instance, gsapi.GS_ARG_ENCODING_UTF8)</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+Please note that use of the 'local' encoding (<code>GS_ARG_ENCODING_LOCAL</code>) is now deprecated and should be avoided in new code.</p>
+</blockquote>
+<h3 id="gsapi_set_default_device_list">gsapi_set_default_device_list</h3>
+<p>Set the string containing the list of default device names, for example "display x11alpha x11 bbox". Allows the calling application to influence which device(s) Ghostscript will try, in order, in its selection of the default device. This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_default_device_list(instance, list_)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>list_</code>: A string of device names.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_set_default_device_list(instance, 'bmp256 bmp32b bmpgray cdeskjet cdj1600 cdj500')</code></pre><h3 id="gsapi_get_default_device_list">gsapi_get_default_device_list</h3>
+<p>Returns a string containing the list of default device names. This must be called after <a href="#gsapi_new_instance">gsapi_new_instance</a> and before <a href="#gsapi_init_with_args">gsapi_init_with_args</a>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_get_default_device_list(instance)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>device_list = gsapi.gsapi_get_default_device_list(instance)
+print(device_list)</code></pre><h3 id="gsapi_init_with_args">gsapi_init_with_args</h3>
+<p>To initialise the interpreter, pass your <code>instance</code> of Ghostscript and your argument variables with <code>args</code>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_init_with_args(instance, args)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>args</code>: A list/tuple of strings.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>in_filename = 'tiger.eps'
+out_filename = 'tiger.pdf'
+params = ['gs', '-dNOPAUSE', '-dBATCH', '-sDEVICE=pdfwrite',
+          '-o', out_filename, '-f', in_filename]
+gsapi.gsapi_init_with_args(instance, params)</code></pre><h3 id="gsapi_run_-">gsapi_run_*</h3>
+<p>Returns an <a href="#return-codes">exit code</a> or an exception on error.</p>
+<p>There is a 64 KB length limit on any buffer submitted to a <code>gsapi_run_*</code> function for processing. If you have more than 65535 bytes of input then you must split it into smaller pieces and submit each in a separate <a href="#gsapi_run_string_continue">gsapi_run_string_continue</a> call.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>
+All these functions return an <a href="#return-codes">exit code</a></p>
+</blockquote>
+<h3 id="gsapi_run_string_begin">gsapi_run_string_begin</h3>
+<p>Starts a <code>run_string_</code> operation.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_string_begin(instance, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>exitcode = gsapi.gsapi_run_string_begin(instance, 0)</code></pre><h3 id="gsapi_run_string_continue">gsapi_run_string_continue</h3>
+<p>Processes file byte data (<code>str_</code>) to feed as chunks into Ghostscript. This method should typically be called within a buffer context.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>
+An exception is <em>not</em> raised for the <code>gs_error_NeedInput</code> return code.</p>
+</blockquote>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_string_continue(instance, str_, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>str_</code>: Should be either a Python string or a bytes object. If the former,
+it is converted into a bytes object using <code>utf-8</code> encoding.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>exitcode = gsapi.gsapi_run_string_continue(instance, data, 0)</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+For the return code, we don't raise an exception for <code>gs_error_NeedInput</code>.</p>
+</blockquote>
+<h3 id="gsapi_run_string_with_length">gsapi_run_string_with_length</h3>
+<p>Processes file byte data (<code>str_</code>) to feed into Ghostscript when the <code>length</code> is known and the file byte data is immediately available.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_string_with_length(instance, str_, length, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>str_</code>: Should be either a Python string or a bytes object. If the former,
+it is converted into a bytes object using <code>utf-8</code> encoding.</p>
+<p><code>length</code>: An <code>int</code> representing the length of <code>gsapi_run_string_with_length</code>.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_run_string_with_length(instance,"hello",5,0)</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+If using this method then ensure that the file byte data will fit into a single (&lt;64k) buffer.</p>
+</blockquote>
+<h3 id="gsapi_run_string">gsapi_run_string</h3>
+<p>Processes file byte data (<code>str_</code>) to feed into Ghostscript.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_string(instance, str_, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>str_</code>: Should be either a Python string or a bytes object. If the former,
+it is converted into a bytes object using <code>utf-8</code> encoding.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_run_string(instance,"hello",0)</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+This method can only work on a standard, null terminated C string.</p>
+</blockquote>
+<h3 id="gsapi_run_string_end">gsapi_run_string_end</h3>
+<p>Ends a <code>run_string_</code> operation.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_string_end(instance, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>exitcode = gsapi.gsapi_run_string_end(instance, 0)</code></pre><h3 id="gsapi_run_file">gsapi_run_file</h3>
+<p>Runs a file through Ghostscript.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_run_file(instance, filename, user_errors)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>filename</code>: String representing file name.</p>
+<p><code>user_errors</code>: An <code>int</code>, for more see <a href="#1-user-errors-parameter">user errors parameter explained</a>.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>in_filename = 'tiger.eps'
+gsapi.gsapi_run_file(instance, in_filename, 0)</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+This will process the supplied input file with any previously supplied <a href="#gsapi_init_with_args">argument parameters</a>.</p>
+</blockquote>
+<h3 id="gsapi_exit">gsapi_exit</h3>
+<p>Exit the interpreter. This must be called on shutdown if <a href="#gsapi_init_with_args">gsapi_init_with_args</a> has been called, and just before <a href="#gsapi_delete_instance">gsapi_delete_instance</a>.</p>
+<div class="tag methodDefinition python"></div>
+
+
+<pre><code>def gsapi_exit(instance)</code></pre><div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_exit(instance)</code></pre><h3 id="gsapi_set_param">gsapi_set_param</h3>
+<p>Sets a parameter. Broadly, this is equivalent to setting a parameter using -d, -s or -p on the command line. This call cannot be made during a <a href="#gsapi_run_string">gsapi_run_string</a> operation.</p>
+<p>Parameters in this context are not the same as 'arguments' as processed by <a href="#gsapi_init_with_args">gsapi_init_with_args</a>, but often the same thing can be achieved. For example, with <a href="#gsapi_init_with_args">gsapi_init_with_args</a>, we can pass "-r200" to change the resolution. Broadly the same thing can be achieved by using <a href="#gsapi_set_param">gsapi_set_param</a> to set a parsed value of "&lt;&lt;/HWResolution [ 200.0 200.0 ]&gt;&gt;".</p>
+<p>Internally, when we set a parameter, we perform an <code>initgraphics</code> operation. This means that using <a href="#gsapi_set_param">gsapi_set_param</a> other than at the start of a page is likely to give unexpected results.</p>
+<p>Attempting to set a parameter that the device does not recognise will be silently ignored, and that parameter will not be found in subsequent <a href="#gsapi_get_param">gsapi_get_param</a> calls.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_set_param(instance, param, value, type_=None)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>param</code>: Name of parameter, either a bytes or a str; if str it is encoded using latin-1.</p>
+<p><code>value</code>: A bool, int, float, bytes or str. If str, it is encoded into a bytes using utf-8.</p>
+<p><code>type_</code>: If <code>type_</code> is not <code>None</code>, <code>value</code> must be convertible to the Python type implied by <code>type_</code>:</p>
+<h4 id="parameter-list">Parameter list</h4>
+<table>
+<thead>
+<tr>
+<th><code>type_</code></th>
+<th>Python type(s)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gs_spt_null</td>
+<td>[Ignored]</td>
+</tr>
+<tr>
+<td>gs_spt_bool</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>gs_spt_int</td>
+<td>int</td>
+</tr>
+<tr>
+<td>gs_spt_float</td>
+<td>float</td>
+</tr>
+<tr>
+<td>gs_spt_name</td>
+<td>[Error]</td>
+</tr>
+<tr>
+<td>gs_spt_string</td>
+<td>(bytes, str)</td>
+</tr>
+<tr>
+<td>gs_spt_long</td>
+<td>int</td>
+</tr>
+<tr>
+<td>gs_spt_i64</td>
+<td>int</td>
+</tr>
+<tr>
+<td>gs_spt_size_t</td>
+<td>int</td>
+</tr>
+<tr>
+<td>gs_spt_parsed</td>
+<td>(bytes, str)</td>
+</tr>
+<tr>
+<td>gs_spt_more_to_come</td>
+<td>(bytes, str)</td>
+</tr>
+</tbody></table>
+<p>An exception is raised if <code>type_</code> is an integer type and <code>value</code> is outside its range.</p>
+<p>If <code>type_</code> is <code>None</code>, we choose something suitable for type of <code>value</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Python type of <code>value</code></th>
+<th><code>type_</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bool</td>
+<td>gs_spt_bool</td>
+</tr>
+<tr>
+<td>int</td>
+<td>gs_spt_i64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>gs_spt_float</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>gs_spt_parsed</td>
+</tr>
+<tr>
+<td>str</td>
+<td>gs_spt_parsed (encoded with utf-8)</td>
+</tr>
+</tbody></table>
+<p>If <code>value</code> is <code>None</code>, we use <code>gs_spt_null</code>.</p>
+<p>Otherwise <code>type_</code> must be a <code>gs_spt_*</code> except for <code>gs_spt_invalid</code> and <code>gs_spt_name</code>.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>
+This implementation supports automatic inference of type by looking at the type of <code>value</code>.</p>
+</blockquote>
+<div class="tag sampleCode python"></div>
+
+<pre><code>set_margins = gsapi.gsapi_set_param(instance, "Margins", "[10 10]")</code></pre><blockquote>
+<p><strong>NOTE</strong><br>
+For more on the <code>C</code> implementation of parameters see: <a href="https://www.ghostscript.com/doc/current/Use.htm#Parameters">Ghostscript parameters in C</a>.</p>
+</blockquote>
+<h3 id="gsapi_get_param">gsapi_get_param</h3>
+<p>Retrieve the current value of a parameter.</p>
+<p>If an error occurs, the return value is negative. Otherwise the return value is the number of bytes required for storage of the value. Call once with value <code>NULL</code> to get the number of bytes required, then call again with value pointing to at least the required number of bytes where the value will be copied out. Note that the caller is required to know the type of value in order to get it. For all types other than <a href="#parameter-list">gs_spt_string</a>, <a href="#parameter-list">gs_spt_name</a>, and <a href="#parameter-list">gs_spt_parsed</a> knowing the type means you already know the size required.</p>
+<p>This call retrieves parameters/values that have made it to the device. Thus, any values set using <a href="#parameter-list">gs_spt_more_to_come</a> without a following call omitting that flag will not be retrieved. Similarly, attempting to get a parameter before <a href="#gsapi_init_with_args">gsapi_init_with_args</a> has been called will not list any, even if <a href="#gsapi_set_param">gsapi_set_param</a> has been used.</p>
+<p>Attempting to read a parameter that is not set will return <code>gs_error_undefined</code> (-21). Note that calling <a href="#gsapi_set_param">gsapi_set_param</a> followed by <a href="#gsapi_get_param">gsapi_get_param</a> may not find the value, if the device did not recognise the key as being one of its configuration keys.</p>
+<p>For the <code>C</code> documentation please refer to <a href="https://www.ghostscript.com/doc/current/API.htm#get_param">Ghostscript get_param</a>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_get_param(instance, param, type_=None, encoding=None)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>param</code>: Name of parameter, either a <code>bytes</code> or <code>str</code>; if a <code>str</code> it is encoded using <code>latin-1</code>.</p>
+<p><code>type_</code>: A <code>gs_spt_*</code> constant or <code>None</code>. If <code>None</code> we try each <code>gs_spt_*</code> until one succeeds; if none succeeds we raise the last error.</p>
+<p><code>encoding</code>: Only affects string values. If <code>None</code> we return a <code>bytes</code> object, otherwise it should be the encoding to use to decode into a string, e.g. 'utf-8'.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>get_margins = gsapi.gsapi_get_param(instance, "Margins")</code></pre><h3 id="gsapi_enumerate_params">gsapi_enumerate_params</h3>
+<p>Enumerate the current parameters on the instance of Ghostscript.</p>
+<p>Returns an array of <code>(key, value)</code> for each parameter. <code>key</code> is decoded as <code>latin-1</code>.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_enumerate_params(instance)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>for param, type_ in gsapi.gsapi_enumerate_params(instance):
+    val = gsapi.gsapi_get_param(instance,param, encoding='utf-8')
+    print('%-24s : %s' % (param, val))</code></pre><h3 id="gsapi_add_control_path">gsapi_add_control_path</h3>
+<p>Add a (case sensitive) path to one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_add_control_path(instance, type_, path)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>type_</code>: An <code>int</code> which must be one of:</p>
+<table>
+<thead>
+<tr>
+<th>Enum</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GS_PERMIT_FILE_READING</td>
+<td>0</td>
+</tr>
+<tr>
+<td>GS_PERMIT_FILE_WRITING</td>
+<td>1</td>
+</tr>
+<tr>
+<td>GS_PERMIT_FILE_CONTROL</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p><code>path</code>: A <code>string</code> representing the file path.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_add_control_path(instance, gsapi.GS_PERMIT_FILE_READING, "/docs/secure/")</code></pre><h3 id="gsapi_remove_control_path">gsapi_remove_control_path</h3>
+<p>Remove a (case sensitive) path from one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_remove_control_path(instance, type_, path)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>type_</code>: An <code>int</code> representing the permission type.</p>
+<p><code>path</code>: A <code>string</code> representing the file path.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_remove_control_path(instance, gsapi.GS_PERMIT_FILE_READING, "/docs/secure/")</code></pre><h3 id="gsapi_purge_control_paths">gsapi_purge_control_paths</h3>
+<p>Clear all the paths from one of the lists of <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> for file access.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_purge_control_paths(instance, type_)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>type_</code>: An <code>int</code> representing the permission type.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_purge_control_paths(instance, gsapi.GS_PERMIT_FILE_READING)</code></pre><h3 id="gsapi_activate_path_control">gsapi_activate_path_control</h3>
+<p>Enable/Disable path control (i.e. whether paths are checked against <a href="https://ghostscript.com/doc/current/Use.htm#Safer">permitted paths</a> before access is granted).</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_activate_path_control(instance, enable)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<p><code>enable</code>: <code>bool</code> to enable/disable path control.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>gsapi.gsapi_activate_path_control(instance, true)</code></pre><h3 id="gsapi_is_path_control_active">gsapi_is_path_control_active</h3>
+<p>Query whether path control is activated or not.</p>
+<div class="tag methodDefinition python"></div>
+
+<pre><code>def gsapi_is_path_control_active(instance)</code></pre><h4 id="parameters">Parameters</h4>
+<p><code>instance</code>: Your instance of Ghostscript.</p>
+<div class="tag sampleCode python"></div>
+
+<pre><code>isActive = gsapi.gsapi_is_path_control_active(instance)</code></pre><h2 id="notes">Notes</h2>
+<h4 id="1-user-errors-parameter">1: User errors parameter</h4>
+<p>The <code>user_errors</code> argument is normally set to zero to indicate that errors should be handled through the normal mechanisms within the interpreted code. If set to a negative value, the functions will return an error code directly to the caller, bypassing the interpreted language. The interpreted language's error handler is bypassed, regardless of <code>user_errors</code> parameter, for the <code>gs_error_interrupt</code> generated when the polling callback returns a negative value. A positive <code>user_errors</code> is treated the same as zero.</p>
+</article>
+
+
+            </div><!-- / middle -->
+
+            <div class="right">
+
+                <div class="link"><a href="#about">About</a></div>
+                <div class="link"><a href="#gsapi">gsapi</a></div>
+                <div class="sub-link"><a href="#overview">Overview</a></div>
+                <div class="sub-link"><a href="#return-codes">Return codes</a></div>
+                <div class="sub-link"><a href="#gsapi_revision">gsapi_revision</a></div>
+                <div class="sub-link"><a href="#gsapi_new_instance">gsapi_new_instance</a></div>
+                <div class="sub-link"><a href="#gsapi_delete_instance">gsapi_delete_instance</a></div>
+                <div class="sub-link"><a href="#gsapi_set_stdio">gsapi_set_stdio</a></div>
+                <div class="sub-link"><a href="#gsapi_set_poll">gsapi_set_poll</a></div>
+                <div class="sub-link"><a href="#gsapi_set_display_callback">gsapi_set_display_callback</a></div>
+                <div class="sub-link"><a href="#gsapi_set_arg_encoding">gsapi_set_arg_encoding</a></div>
+                <div class="sub-link"><a href="#gsapi_set_default_device_list">gsapi_set_default_device_list</a></div>
+                <div class="sub-link"><a href="#gsapi_get_default_device_list">gsapi_get_default_device_list</a></div>
+                <div class="sub-link"><a href="#gsapi_init_with_args">gsapi_init_with_args</a></div>
+                <div class="sub-link"><a href="#gsapi_run_-">gsapi_run_*</a></div>
+                <div class="sub-link"><a href="#gsapi_run_string_begin">gsapi_run_string_begin</a></div>
+                <div class="sub-link"><a href="#gsapi_run_string_continue">gsapi_run_string_continue</a></div>
+                <div class="sub-link"><a href="#gsapi_run_string_with_length">gsapi_run_string_with_length</a></div>
+                <div class="sub-link"><a href="#gsapi_run_string">gsapi_run_string</a></div>
+                <div class="sub-link"><a href="#gsapi_run_string_end">gsapi_run_string_end</a></div>
+                <div class="sub-link"><a href="#gsapi_run_file">gsapi_run_file</a></div>
+                <div class="sub-link"><a href="#gsapi_exit">gsapi_exit</a></div>
+                <div class="sub-link"><a href="#gsapi_set_param">gsapi_set_param</a></div>
+                <div class="sub-link"><a href="#gsapi_get_param">gsapi_get_param</a></div>
+                <div class="sub-link"><a href="#gsapi_enumerate_params">gsapi_enumerate_params</a></div>
+                <div class="sub-link"><a href="#gsapi_add_control_path">gsapi_add_control_path</a></div>
+                <div class="sub-link"><a href="#gsapi_remove_control_path">gsapi_remove_control_path</a></div>
+                <div class="sub-link"><a href="#gsapi_purge_control_paths">gsapi_purge_control_paths</a></div>
+                <div class="sub-link"><a href="#gsapi_activate_path_control">gsapi_activate_path_control</a></div>
+                <div class="sub-link"><a href="#gsapi_is_path_control_active">gsapi_is_path_control_active</a></div>
+                <div class="link"><a href="#notes">Notes</a></div>
+            </div>
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+</html>

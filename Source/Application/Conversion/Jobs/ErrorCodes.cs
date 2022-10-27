@@ -7,11 +7,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
     [Translatable]
     public enum ErrorCode
     {
-        [Translation("PDF Architect could not open output file.")]
-        Viewer_ArchitectCouldNotOpenOutput = 10100,
-
         [Translation("System could not open output file.")]
         Viewer_CouldNotOpenOutputFile = 10101,
+
+        [Translation("Could not open output file with default viewer.")]
+        Viewer_CouldNotOpenOutputFileWithDefaultViewer = 10102,
 
         [Translation("No compatible e-mail client installed.")]
         MailClient_NoCompatibleEmailClientInstalled = 11101,
@@ -63,6 +63,24 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Unable to find the certification file.")]
         Signature_FileNotFound = 12208,
+
+        [Translation("The path to the signature image has to be an absolute path, e.g. 'C:\\Images\\signature.png'")]
+        Signature_ImageFileInvalidRootedPath = 12209,
+
+        [Translation("The signature image file path is too long.")]
+        Signature_ImageFilePathTooLong = 12210,
+
+        [Translation("The signature image file path contains illegal characters.")]
+        Signature_ImageFileIllegalCharacters = 12211,
+
+        [Translation("The signature image file does not exist.")]
+        Signature_ImageFileDoesNotExist = 12212,
+
+        [Translation("The signature image file type is not supported.")]
+        Signature_ImageFileUnsupportedType = 12213,
+
+        [Translation("The signature font can't be found.")]
+        Signature_FontNotFound = 12214,
 
         [Translation("Error while signing the document.")]
         Signature_GenericError = 12999,
@@ -186,6 +204,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("The specified FTP account is not configured.")]
         Ftp_NoAccount = 18111,
+
+        [Translation("FTP server url has an invalid format.")]
+        Ftp_InvalidServerFormat = 18112,
 
         [Translation("Error while uploading file to FTP server.")]
         Ftp_GenericError = 18999,
@@ -352,7 +373,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Target directory contains illegal characters.")]
         TargetDirectory_IllegalCharacters = 34004,
 
-        [Translation("Background file path is invalid rooted path.")]
+        [Translation("The path to the background file has to be an absolute path, e.g. 'C:\\documents\\background.pdf'")]
         Background_InvalidRootedPath = 36001,
 
         [Translation("Background path is too long.")]
@@ -376,7 +397,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Ftp key file path is invalid path.")]
         FtpKeyFilePath_InvalidKeyFilePath = 40002,
 
-        [Translation("Ftp key file path is invalid rooted path.")]
+        [Translation("The path to the FTP key file has to be an absolute path.")]
         FtpKeyFilePath_InvalidRootedPath = 40003,
 
         [Translation("Ftp key file path is too long.")]
@@ -469,19 +490,19 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No watermark file is specified.")]
         Watermark_NoFileSpecified = 47001,
 
-        [Translation("Watermark file is no PDF file.")]
+        [Translation("The watermark file is no PDF file.")]
         Watermark_NoPdf = 47002,
 
-        [Translation("Watermark file path is invalid rooted path.")]
+        [Translation("The path to the watermark file has to be an absolute path, e.g. 'C:\\documents\\watermark.pdf'")]
         Watermark_InvalidRootedPath = 47003,
 
-        [Translation("Watermark file path is too long.")]
+        [Translation("The watermark file path is too long.")]
         Watermark_PathTooLong = 47004,
 
-        [Translation("Watermark path contains illegal characters.")]
+        [Translation("The watermark file path contains illegal characters.")]
         Watermark_IllegalCharacters = 47005,
 
-        [Translation("Watermark file does not exist.")]
+        [Translation("The watermark file does not exist.")]
         Watermark_FileDoesNotExist = 47006,
 
         [Translation("Unable to add the watermark. The documents' PDF format version is not compatible.")]
@@ -489,6 +510,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Unable to add the watermark. The watermark PDF may not be password protected.")]
         Watermark_BadPassword = 47008,
+
+        [Translation("Watermark file type is not supported.")]
+        Watermark_UnsupportedType = 47009,
 
         [Translation("Error while adding watermark to the document.")]
         Watermark_GenericError = 47999,

@@ -83,7 +83,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is CoverPage)) return false;
 			CoverPage v = o as CoverPage;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
 			if (!Files.SequenceEqual(v.Files)) return false;
 			return true;
 		}

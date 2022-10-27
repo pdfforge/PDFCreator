@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		private string _password = "";
 		public string Password { get { try { return Data.Decrypt(_password); } catch { return ""; } } set { _password = Data.Encrypt(value); } }
 		
+		public HttpSendMode SendMode { get; set; } = HttpSendMode.HttpPost;
+		
 		/// <summary>
 		/// Timeout in seconds for upload
 		/// </summary>
@@ -51,6 +54,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { AccountId = Data.UnescapeString(data.GetValue(@"" + path + @"AccountId")); } catch { AccountId = "";}
 			IsBasicAuthentication = bool.TryParse(data.GetValue(@"" + path + @"IsBasicAuthentication"), out var tmpIsBasicAuthentication) ? tmpIsBasicAuthentication : false;
 			_password = data.GetValue(@"" + path + @"Password");
+			SendMode = Enum.TryParse<HttpSendMode>(data.GetValue(@"" + path + @"SendMode"), out var tmpSendMode) ? tmpSendMode : HttpSendMode.HttpPost;
 			Timeout = int.TryParse(data.GetValue(@"" + path + @"Timeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpTimeout) ? tmpTimeout : 60;
 			try { Url = Data.UnescapeString(data.GetValue(@"" + path + @"Url")); } catch { Url = "https://";}
 			try { UserName = Data.UnescapeString(data.GetValue(@"" + path + @"UserName")); } catch { UserName = "";}
@@ -60,6 +64,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"AccountId", Data.EscapeString(AccountId));
 			data.SetValue(@"" + path + @"IsBasicAuthentication", IsBasicAuthentication.ToString());
 			data.SetValue(@"" + path + @"Password", _password);
+			data.SetValue(@"" + path + @"SendMode", SendMode.ToString());
 			data.SetValue(@"" + path + @"Timeout", Timeout.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"Url", Data.EscapeString(Url));
 			data.SetValue(@"" + path + @"UserName", Data.EscapeString(UserName));
@@ -71,6 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.AccountId = AccountId;
 			copy.IsBasicAuthentication = IsBasicAuthentication;
 			copy.Password = Password;
+			copy.SendMode = SendMode;
 			copy.Timeout = Timeout;
 			copy.Url = Url;
 			copy.UserName = UserName;
@@ -86,6 +92,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 				IsBasicAuthentication = source.IsBasicAuthentication;
 				
 			Password = source.Password;
+			if(SendMode != source.SendMode)
+				SendMode = source.SendMode;
+				
 			if(Timeout != source.Timeout)
 				Timeout = source.Timeout;
 				
@@ -102,12 +111,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is HttpAccount)) return false;
 			HttpAccount v = o as HttpAccount;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!IsBasicAuthentication.Equals(v.IsBasicAuthentication)) return false;
-			if (!Password.Equals(v.Password)) return false;
-			if (!Timeout.Equals(v.Timeout)) return false;
-			if (!Url.Equals(v.Url)) return false;
-			if (!UserName.Equals(v.UserName)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(IsBasicAuthentication, v.IsBasicAuthentication)) return false;
+			if (!Object.Equals(Password, v.Password)) return false;
+			if (!Object.Equals(SendMode, v.SendMode)) return false;
+			if (!Object.Equals(Timeout, v.Timeout)) return false;
+			if (!Object.Equals(Url, v.Url)) return false;
+			if (!Object.Equals(UserName, v.UserName)) return false;
 			return true;
 		}
 		

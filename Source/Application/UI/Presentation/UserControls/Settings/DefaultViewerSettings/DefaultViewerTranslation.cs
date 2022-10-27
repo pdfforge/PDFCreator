@@ -5,7 +5,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
     public class DefaultViewerTranslation: ITranslatable
     {
         public string DefaultViewerSettingsHeader { get; private set; } = "Default Viewer";
-        public string Title { get; private set; } = "Viewer";
         public string AllFiles { get; private set; } = "All files";
         public string ExecutableFiles { get; private set; } = "Executable files";
         public string Path { get; private set; } = "Executable Path:";

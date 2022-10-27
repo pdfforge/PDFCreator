@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -288,9 +288,11 @@ currentdict /num-chars-dict .undef
 % Execute a file, like .pdfrun, for a marking context.
 % This temporarily rebinds LocalResources and DefaultQstate.
 /.pdfruncontext {		% <resdict> <file> <opdict> .pdfruncontext -
-  /.pdfrun load LocalResources DefaultQstate
-  /LocalResources 7 -1 roll
-  dup /ParentResources LocalResources put % save the parent LocalResources
+  /.pdfrun load LocalResources DefaultQstate % res file op .pdfrun Loc Qst
+  /LocalResources 7 -1 roll                  % file op .pdfrun Loc Qst /Loc res
+  dup 4 index ne { % Ensure Loc != res to avoid self-referencing /ParentResources
+     dup /ParentResources 5 index put        % save the parent LocalResources
+  } if
   store		% store new LocalResources
   /DefaultQstate qstate store
   3 .execn
@@ -487,7 +489,12 @@ currentdict /token_nofail_dict .undef
       } if
       oforce                  % but dereference {1 0 R}
       dup type dup /arraytype eq exch /packedarraytype eq or {
-        [ exch 2 index <<>> copy  exch { safe_recursive exch } forall pop]
+        [ exch {
+            counttomark 1 add index <<>> copy	% create a copy for the recursion
+            exch safe_recursive exch
+            pop					% pop the dictionary created for this level
+          } forall
+        ]
       } {
         dup type /dicttype eq {
           << exch 2 index <<>> copy  exch { 3 -1 roll exch safe_recursive 3 -1 roll oforce 3 1 roll exch } forall pop>>
@@ -772,17 +779,19 @@ currentdict /token_nofail_dict .undef
                 % Read the data for all objects.  We check to see if we get
                 % the number of objects that we expect.
                 % Stack: strm# objstreamdict N objectstream [obj#] PDFDEBUG
-  mark 3 -1 roll 		% Get objectstream
+  /ResolveObjectStreamMark 3 -1 roll
   count 4 index add		% Determine stack depth with objects
   3 1 roll
   resolveobjstreamopdict .pdfrun % Get PDF objects
-  count counttomark 1 add index ne
+  count /ResolveObjectStreamMark CountToKey not {0} if
+  1 add index
+  ne
   {
-    count counttomark 1 add index gt {
+    count /ResolveObjectStreamMark CountToKey not {0} if
+    1 add index gt {
       (   **** Error: Incorrect object count in object stream (too many objects).\n) pdfformaterror
       (               Output may be incorrect.\n) pdfformaterror
     } if
-
     % Its possible for us to end up here with a valid file. The way we work is to read the
     % stream and tokenise all the objects, but that assumes there will be delimiters or
     % whitespace between each object in the stream. We can easily think of cases where
@@ -814,13 +823,13 @@ currentdict /token_nofail_dict .undef
     % the stack, in the right order, preceded by a mark, a count, and an array containing
     % all the object numbers.
 
-    % First, discard everything we read up to now; we can reuse the mark which was placed
-    % by the preceding code to do this, as long as we remember to replace that mark.
+    % First, discard everything we read up to now; we can reuse the 'mark' which was placed
+    % by the preceding code to do this, as long as we remember to replace that 'mark'.
     % Handily this will leave the count and the array which contains the object numbers in place.
-    cleartomark
+    /ResolveObjectStreamMark ClearToKey
 
-    % Replace the mark consumed by conttomark above, so that we match what the code following this error handling expects.
-    mark
+    % Replace the 'mark' consumed by conttomark above, so that we match what the code following this error handling expects.
+    /ResolveObjectStreamMark
 
     % copy the ObjStm dictionary and then copy the count of objects expected
     4 index 4 index
@@ -887,14 +896,15 @@ currentdict /token_nofail_dict .undef
     % but leave count of objects. Check that aginst the number of objects
     % retrieved. If we got too few then issue a warning.
 
-    pop pop exch pop counttomark 1 sub lt {
+    pop pop exch pop /ResolveObjectStreamMark CountToKey not {1} if
+    1 sub lt {
       (   **** Error: Incorrect object count in object stream (too few objects).\n) pdfformaterror
       (               Output may be incorrect.\n) pdfformaterror
     } if
   } if
 
                 % We have the object data
-  counttomark array astore	% Put objects into an array
+  /ResolveObjectStreamMark CountToKey not {0} if array astore
   exch pop exch pop		% Remove mark and count
   currentdict //no_debug_dict eq { end } if % Restore debug context
                 % Save the objects into Objects
@@ -1083,15 +1093,30 @@ currentdict /no_debug_dict undef
     % Some (bad) PDf files have invalid stream lengths.  This causes problems
     % if we reposition beyond the end of the file.  So we compare the given
     % length to number of bytes left in the file.
-    dup /Length knownoget {
-      dup PDFfile bytesavailable lt {	% compare to to bytes left in file
-        PDFfile fileposition 		% reposition to the end of stream
-        add PDFfile exch setfileposition
-      } {
-        pop				% bad stream length - do not reposition.
-                                        % This will force a length warning below
-      } ifelse
-    } if
+    dup mark exch /Length {knownoget} stopped {
+      % Bug 703372 is a PDF file where the XRef stream dictionary has a Length which is an
+      % indirect object. Clearly we cannot look that up in an xref which we haevn't yet
+      % read! We catch the error from knownoget and do not reposition the steam. After
+      % that the normal recovery code kicks in and we will eventually manage to read
+      % the compressed xref.
+      cleartomark
+    }
+    {
+      {
+        dup type /realtype eq {
+          (   **** Warning: stream length is a real number; converting to integer.\n) pdfformatwarning
+          cvi 2 copy /Length exch put
+        } if
+        dup PDFfile bytesavailable lt {	% compare to to bytes left in file
+          PDFfile fileposition 		% reposition to the end of stream
+          add PDFfile exch setfileposition
+        } {
+          pop				% bad stream length - do not reposition.
+                                          % This will force a length warning below
+        } ifelse
+      } if
+      pop       % the mark from the Length dereference guard above.
+    } ifelse
   } {
     pop
         % We're already reading from a stream, which we can't reposition.
@@ -1184,7 +1209,7 @@ currentdict /no_debug_dict undef
   //unabbrevfilterdict 1 index .knownget { exch pop } if
   dup /Filter resourcestatus { pop pop } {
     Repaired exch	% this error is not the creator's fault
-    RepiredAnError exch
+    RepairedAnError exch
     (   **** ERROR: Unable to process ) pdfformaterror
     64 string cvs pdfformaterror
     ( data. Page will be missing data.\n) pdfformaterror

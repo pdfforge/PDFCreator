@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
 {
     public interface IFontSelectorControlViewModelFactory
     {
-        FontSelectorControlViewModelBuilder BuilderWithSelectedProfile();
+        IFontSelectorControlViewModelBuilder BuilderWithSelectedProfile();
     }
 
     public class FontSelectorControlControlViewModelFactory : IFontSelectorControlViewModelFactory
@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
             _translationUpdater = translationUpdater;
         }
 
-        public FontSelectorControlViewModelBuilder BuilderWithSelectedProfile()
+        public IFontSelectorControlViewModelBuilder BuilderWithSelectedProfile()
         {
             return new FontSelectorControlViewModelBuilder(_translationUpdater, _selectedProfileProvider, _interactionInvoker, _fontHelper, _dispatcher);
         }

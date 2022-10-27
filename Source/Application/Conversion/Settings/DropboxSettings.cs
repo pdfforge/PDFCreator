@@ -92,11 +92,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is DropboxSettings)) return false;
 			DropboxSettings v = o as DropboxSettings;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!CreateShareLink.Equals(v.CreateShareLink)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
-			if (!SharedFolder.Equals(v.SharedFolder)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(CreateShareLink, v.CreateShareLink)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(EnsureUniqueFilenames, v.EnsureUniqueFilenames)) return false;
+			if (!Object.Equals(SharedFolder, v.SharedFolder)) return false;
 			return true;
 		}
 		

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("pdfforge GmbH")]
 [assembly: AssemblyProduct("PDFCreator.Utilities")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2021")]
+[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,6 +36,6 @@ using System.Runtime.InteropServices;
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("4.2.0.0")]
 
-[assembly: AssemblyVersion("4.4.1.0")]
-[assembly: AssemblyFileVersion("4.4.1.0")]
+[assembly: AssemblyVersion("5.0.1.0")]
+[assembly: AssemblyFileVersion("5.0.1.0")]
 [assembly: NeutralResourcesLanguage("en")]

@@ -96,6 +96,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		/// </summary>
 		public bool LoadSharedProfiles { get; set; } = true;
 		
+		/// <summary>
+		/// Set the filename of the shared settings file. The default is 'settings.ini'.
+		/// </summary>
+		public string SharedSettingsFilename { get; set; } = "settings";
+		
 		
 		public void ReadValues(Data data, string path = "")
 		{
@@ -117,6 +122,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			HidePdfArchitectInfo = bool.TryParse(data.GetValue(@"" + path + @"HidePdfArchitectInfo"), out var tmpHidePdfArchitectInfo) ? tmpHidePdfArchitectInfo : false;
 			LoadSharedAppSettings = bool.TryParse(data.GetValue(@"" + path + @"LoadSharedAppSettings"), out var tmpLoadSharedAppSettings) ? tmpLoadSharedAppSettings : true;
 			LoadSharedProfiles = bool.TryParse(data.GetValue(@"" + path + @"LoadSharedProfiles"), out var tmpLoadSharedProfiles) ? tmpLoadSharedProfiles : true;
+			try { SharedSettingsFilename = Data.UnescapeString(data.GetValue(@"" + path + @"SharedSettingsFilename")); } catch { SharedSettingsFilename = "settings";}
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -139,6 +145,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			data.SetValue(@"" + path + @"HidePdfArchitectInfo", HidePdfArchitectInfo.ToString());
 			data.SetValue(@"" + path + @"LoadSharedAppSettings", LoadSharedAppSettings.ToString());
 			data.SetValue(@"" + path + @"LoadSharedProfiles", LoadSharedProfiles.ToString());
+			data.SetValue(@"" + path + @"SharedSettingsFilename", Data.EscapeString(SharedSettingsFilename));
 		}
 		
 		public GpoSettings Copy()
@@ -163,6 +170,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			copy.HidePdfArchitectInfo = HidePdfArchitectInfo;
 			copy.LoadSharedAppSettings = LoadSharedAppSettings;
 			copy.LoadSharedProfiles = LoadSharedProfiles;
+			copy.SharedSettingsFilename = SharedSettingsFilename;
 			return copy;
 		}
 		
@@ -218,6 +226,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if(LoadSharedProfiles != source.LoadSharedProfiles)
 				LoadSharedProfiles = source.LoadSharedProfiles;
 				
+			if(SharedSettingsFilename != source.SharedSettingsFilename)
+				SharedSettingsFilename = source.SharedSettingsFilename;
+				
 		}
 		
 		public override bool Equals(object o)
@@ -225,24 +236,25 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!(o is GpoSettings)) return false;
 			GpoSettings v = o as GpoSettings;
 			
-			if (!ApplicationSettings.Equals(v.ApplicationSettings)) return false;
-			if (!CreatorAppSettings.Equals(v.CreatorAppSettings)) return false;
-			if (!AllowUserDefinedProfiles.Equals(v.AllowUserDefinedProfiles)) return false;
-			if (!DisableAccountsTab.Equals(v.DisableAccountsTab)) return false;
-			if (!DisableApplicationSettings.Equals(v.DisableApplicationSettings)) return false;
-			if (!DisableDebugTab.Equals(v.DisableDebugTab)) return false;
-			if (!DisableHistory.Equals(v.DisableHistory)) return false;
-			if (!DisableLicenseExpirationReminder.Equals(v.DisableLicenseExpirationReminder)) return false;
-			if (!DisablePrinterTab.Equals(v.DisablePrinterTab)) return false;
-			if (!DisableProfileManagement.Equals(v.DisableProfileManagement)) return false;
-			if (!DisableRssFeed.Equals(v.DisableRssFeed)) return false;
-			if (!DisableTips.Equals(v.DisableTips)) return false;
-			if (!DisableTitleTab.Equals(v.DisableTitleTab)) return false;
-			if (!DisableUsageStatistics.Equals(v.DisableUsageStatistics)) return false;
-			if (!HideLicenseTab.Equals(v.HideLicenseTab)) return false;
-			if (!HidePdfArchitectInfo.Equals(v.HidePdfArchitectInfo)) return false;
-			if (!LoadSharedAppSettings.Equals(v.LoadSharedAppSettings)) return false;
-			if (!LoadSharedProfiles.Equals(v.LoadSharedProfiles)) return false;
+			if (!Object.Equals(ApplicationSettings, v.ApplicationSettings)) return false;
+			if (!Object.Equals(CreatorAppSettings, v.CreatorAppSettings)) return false;
+			if (!Object.Equals(AllowUserDefinedProfiles, v.AllowUserDefinedProfiles)) return false;
+			if (!Object.Equals(DisableAccountsTab, v.DisableAccountsTab)) return false;
+			if (!Object.Equals(DisableApplicationSettings, v.DisableApplicationSettings)) return false;
+			if (!Object.Equals(DisableDebugTab, v.DisableDebugTab)) return false;
+			if (!Object.Equals(DisableHistory, v.DisableHistory)) return false;
+			if (!Object.Equals(DisableLicenseExpirationReminder, v.DisableLicenseExpirationReminder)) return false;
+			if (!Object.Equals(DisablePrinterTab, v.DisablePrinterTab)) return false;
+			if (!Object.Equals(DisableProfileManagement, v.DisableProfileManagement)) return false;
+			if (!Object.Equals(DisableRssFeed, v.DisableRssFeed)) return false;
+			if (!Object.Equals(DisableTips, v.DisableTips)) return false;
+			if (!Object.Equals(DisableTitleTab, v.DisableTitleTab)) return false;
+			if (!Object.Equals(DisableUsageStatistics, v.DisableUsageStatistics)) return false;
+			if (!Object.Equals(HideLicenseTab, v.HideLicenseTab)) return false;
+			if (!Object.Equals(HidePdfArchitectInfo, v.HidePdfArchitectInfo)) return false;
+			if (!Object.Equals(LoadSharedAppSettings, v.LoadSharedAppSettings)) return false;
+			if (!Object.Equals(LoadSharedProfiles, v.LoadSharedProfiles)) return false;
+			if (!Object.Equals(SharedSettingsFilename, v.SharedSettingsFilename)) return false;
 			return true;
 		}
 		

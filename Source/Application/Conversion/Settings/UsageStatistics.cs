@@ -65,8 +65,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is UsageStatistics)) return false;
 			UsageStatistics v = o as UsageStatistics;
 			
-			if (!Enable.Equals(v.Enable)) return false;
-			if (!UsageStatsInfo.Equals(v.UsageStatsInfo)) return false;
+			if (!Object.Equals(Enable, v.Enable)) return false;
+			if (!Object.Equals(UsageStatsInfo, v.UsageStatsInfo)) return false;
 			return true;
 		}
 		

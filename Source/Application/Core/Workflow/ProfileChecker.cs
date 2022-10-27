@@ -14,6 +14,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
         ActionResultDict CheckProfileList(CurrentCheckSettings settings);
 
         ActionResult CheckFileNameAndTargetDirectory(ConversionProfile profile);
+        ActionResult CheckFileName(ConversionProfile profile);
+        ActionResult CheckTargetDirectory(ConversionProfile profile);
 
         ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
@@ -40,6 +42,16 @@ namespace pdfforge.PDFCreator.Core.Workflow
             actionResult.AddRange(CheckFileNameTemplate(profile, checkLevel));
 
             return actionResult;
+        }
+
+        public ActionResult CheckFileName(ConversionProfile profile)
+        {
+            return CheckFileNameTemplate(profile, CheckLevel.EditingProfile);
+        }
+
+        public ActionResult CheckTargetDirectory(ConversionProfile profile)
+        {
+            return CheckTargetDirectory(profile, CheckLevel.EditingProfile);
         }
 
         private ActionResult ProfileCheck(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)

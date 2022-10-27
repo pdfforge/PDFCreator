@@ -1,26 +1,10 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using System;
-using System.Collections.Generic;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
-    public class LanguageChangedEventArgs : EventArgs
-    {
-        private readonly ApplicationSettings _appSettings;
-        private readonly IEnumerable<ConversionProfile> _profiles;
-
-        public LanguageChangedEventArgs(ApplicationSettings appSettings, IEnumerable<ConversionProfile> profiles)
-        {
-            _appSettings = appSettings;
-            _profiles = profiles;
-        }
-
-        public ApplicationSettings AppSettings => _appSettings;
-
-        public IEnumerable<ConversionProfile> Profiles => _profiles;
-    }
-
     public abstract class SettingsProvider : ISettingsProvider
     {
         protected string CurrentLanguage { get; private set; } = "en";

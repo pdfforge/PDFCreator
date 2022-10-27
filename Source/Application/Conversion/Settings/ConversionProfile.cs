@@ -226,6 +226,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string TitleTemplate { get; set; } = "<PrintJobName>";
 		
 		/// <summary>
+		/// Use the new Ghostscript PDF Interpreter introduced with gs 9.55.0
+		/// </summary>
+		public bool UseGsNewPDF { get; set; } = true;
+		
+		/// <summary>
 		/// Show a warning for failing send actions (only if SkipSendFailures is active)
 		/// </summary>
 		public bool WarnSendFailures { get; set; } = false;
@@ -282,6 +287,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { SubjectTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"SubjectTemplate")); } catch { SubjectTemplate = "";}
 			try { TargetDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"TargetDirectory")); } catch { TargetDirectory = "";}
 			try { TitleTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"TitleTemplate")); } catch { TitleTemplate = "<PrintJobName>";}
+			UseGsNewPDF = bool.TryParse(data.GetValue(@"" + path + @"UseGsNewPDF"), out var tmpUseGsNewPDF) ? tmpUseGsNewPDF : true;
 			WarnSendFailures = bool.TryParse(data.GetValue(@"" + path + @"WarnSendFailures"), out var tmpWarnSendFailures) ? tmpWarnSendFailures : false;
 		}
 		
@@ -331,6 +337,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"SubjectTemplate", Data.EscapeString(SubjectTemplate));
 			data.SetValue(@"" + path + @"TargetDirectory", Data.EscapeString(TargetDirectory));
 			data.SetValue(@"" + path + @"TitleTemplate", Data.EscapeString(TitleTemplate));
+			data.SetValue(@"" + path + @"UseGsNewPDF", UseGsNewPDF.ToString());
 			data.SetValue(@"" + path + @"WarnSendFailures", WarnSendFailures.ToString());
 		}
 		public ConversionProfile Copy()
@@ -379,6 +386,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.SubjectTemplate = SubjectTemplate;
 			copy.TargetDirectory = TargetDirectory;
 			copy.TitleTemplate = TitleTemplate;
+			copy.UseGsNewPDF = UseGsNewPDF;
 			copy.WarnSendFailures = WarnSendFailures;
 			return copy;
 		}
@@ -464,6 +472,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(TitleTemplate != source.TitleTemplate)
 				TitleTemplate = source.TitleTemplate;
 				
+			if(UseGsNewPDF != source.UseGsNewPDF)
+				UseGsNewPDF = source.UseGsNewPDF;
+				
 			if(WarnSendFailures != source.WarnSendFailures)
 				WarnSendFailures = source.WarnSendFailures;
 				
@@ -474,49 +485,50 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is ConversionProfile)) return false;
 			ConversionProfile v = o as ConversionProfile;
 			
-			if (!AttachmentPage.Equals(v.AttachmentPage)) return false;
-			if (!AutoSave.Equals(v.AutoSave)) return false;
-			if (!BackgroundPage.Equals(v.BackgroundPage)) return false;
-			if (!CoverPage.Equals(v.CoverPage)) return false;
-			if (!CustomScript.Equals(v.CustomScript)) return false;
-			if (!DropboxSettings.Equals(v.DropboxSettings)) return false;
-			if (!EmailClientSettings.Equals(v.EmailClientSettings)) return false;
-			if (!EmailSmtpSettings.Equals(v.EmailSmtpSettings)) return false;
-			if (!ForwardToFurtherProfile.Equals(v.ForwardToFurtherProfile)) return false;
-			if (!Ftp.Equals(v.Ftp)) return false;
-			if (!Ghostscript.Equals(v.Ghostscript)) return false;
-			if (!HttpSettings.Equals(v.HttpSettings)) return false;
-			if (!JpegSettings.Equals(v.JpegSettings)) return false;
-			if (!OpenViewer.Equals(v.OpenViewer)) return false;
-			if (!PageNumbers.Equals(v.PageNumbers)) return false;
-			if (!PdfSettings.Equals(v.PdfSettings)) return false;
-			if (!PngSettings.Equals(v.PngSettings)) return false;
-			if (!Printing.Equals(v.Printing)) return false;
-			if (!Properties.Equals(v.Properties)) return false;
-			if (!Scripting.Equals(v.Scripting)) return false;
-			if (!Stamping.Equals(v.Stamping)) return false;
-			if (!TextSettings.Equals(v.TextSettings)) return false;
-			if (!TiffSettings.Equals(v.TiffSettings)) return false;
-			if (!UserTokens.Equals(v.UserTokens)) return false;
-			if (!Watermark.Equals(v.Watermark)) return false;
+			if (!Object.Equals(AttachmentPage, v.AttachmentPage)) return false;
+			if (!Object.Equals(AutoSave, v.AutoSave)) return false;
+			if (!Object.Equals(BackgroundPage, v.BackgroundPage)) return false;
+			if (!Object.Equals(CoverPage, v.CoverPage)) return false;
+			if (!Object.Equals(CustomScript, v.CustomScript)) return false;
+			if (!Object.Equals(DropboxSettings, v.DropboxSettings)) return false;
+			if (!Object.Equals(EmailClientSettings, v.EmailClientSettings)) return false;
+			if (!Object.Equals(EmailSmtpSettings, v.EmailSmtpSettings)) return false;
+			if (!Object.Equals(ForwardToFurtherProfile, v.ForwardToFurtherProfile)) return false;
+			if (!Object.Equals(Ftp, v.Ftp)) return false;
+			if (!Object.Equals(Ghostscript, v.Ghostscript)) return false;
+			if (!Object.Equals(HttpSettings, v.HttpSettings)) return false;
+			if (!Object.Equals(JpegSettings, v.JpegSettings)) return false;
+			if (!Object.Equals(OpenViewer, v.OpenViewer)) return false;
+			if (!Object.Equals(PageNumbers, v.PageNumbers)) return false;
+			if (!Object.Equals(PdfSettings, v.PdfSettings)) return false;
+			if (!Object.Equals(PngSettings, v.PngSettings)) return false;
+			if (!Object.Equals(Printing, v.Printing)) return false;
+			if (!Object.Equals(Properties, v.Properties)) return false;
+			if (!Object.Equals(Scripting, v.Scripting)) return false;
+			if (!Object.Equals(Stamping, v.Stamping)) return false;
+			if (!Object.Equals(TextSettings, v.TextSettings)) return false;
+			if (!Object.Equals(TiffSettings, v.TiffSettings)) return false;
+			if (!Object.Equals(UserTokens, v.UserTokens)) return false;
+			if (!Object.Equals(Watermark, v.Watermark)) return false;
 			if (!ActionOrder.SequenceEqual(v.ActionOrder)) return false;
-			if (!AuthorTemplate.Equals(v.AuthorTemplate)) return false;
-			if (!FileNameTemplate.Equals(v.FileNameTemplate)) return false;
-			if (!Guid.Equals(v.Guid)) return false;
-			if (!KeywordTemplate.Equals(v.KeywordTemplate)) return false;
-			if (!Name.Equals(v.Name)) return false;
-			if (!OutputFormat.Equals(v.OutputFormat)) return false;
-			if (!SaveFileTemporary.Equals(v.SaveFileTemporary)) return false;
-			if (!ShowAllNotifications.Equals(v.ShowAllNotifications)) return false;
-			if (!ShowOnlyErrorNotifications.Equals(v.ShowOnlyErrorNotifications)) return false;
-			if (!ShowProgress.Equals(v.ShowProgress)) return false;
-			if (!ShowQuickActions.Equals(v.ShowQuickActions)) return false;
-			if (!SkipPrintDialog.Equals(v.SkipPrintDialog)) return false;
-			if (!SkipSendFailures.Equals(v.SkipSendFailures)) return false;
-			if (!SubjectTemplate.Equals(v.SubjectTemplate)) return false;
-			if (!TargetDirectory.Equals(v.TargetDirectory)) return false;
-			if (!TitleTemplate.Equals(v.TitleTemplate)) return false;
-			if (!WarnSendFailures.Equals(v.WarnSendFailures)) return false;
+			if (!Object.Equals(AuthorTemplate, v.AuthorTemplate)) return false;
+			if (!Object.Equals(FileNameTemplate, v.FileNameTemplate)) return false;
+			if (!Object.Equals(Guid, v.Guid)) return false;
+			if (!Object.Equals(KeywordTemplate, v.KeywordTemplate)) return false;
+			if (!Object.Equals(Name, v.Name)) return false;
+			if (!Object.Equals(OutputFormat, v.OutputFormat)) return false;
+			if (!Object.Equals(SaveFileTemporary, v.SaveFileTemporary)) return false;
+			if (!Object.Equals(ShowAllNotifications, v.ShowAllNotifications)) return false;
+			if (!Object.Equals(ShowOnlyErrorNotifications, v.ShowOnlyErrorNotifications)) return false;
+			if (!Object.Equals(ShowProgress, v.ShowProgress)) return false;
+			if (!Object.Equals(ShowQuickActions, v.ShowQuickActions)) return false;
+			if (!Object.Equals(SkipPrintDialog, v.SkipPrintDialog)) return false;
+			if (!Object.Equals(SkipSendFailures, v.SkipSendFailures)) return false;
+			if (!Object.Equals(SubjectTemplate, v.SubjectTemplate)) return false;
+			if (!Object.Equals(TargetDirectory, v.TargetDirectory)) return false;
+			if (!Object.Equals(TitleTemplate, v.TitleTemplate)) return false;
+			if (!Object.Equals(UseGsNewPDF, v.UseGsNewPDF)) return false;
+			if (!Object.Equals(WarnSendFailures, v.WarnSendFailures)) return false;
 			return true;
 		}
 		

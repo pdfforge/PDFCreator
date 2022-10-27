@@ -5,9 +5,9 @@ using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
-    internal class DesignTimePdfJobStepPasswordsViewModel : PdfJobStepPasswordViewModel
+    internal class DesignTimeSecurityPasswordsStepViewModel : SecurityPasswordsStepViewModel
     {
-        public DesignTimePdfJobStepPasswordsViewModel() : base(new TranslationUpdater(new TranslationFactory(), new ThreadManager()))
+        public DesignTimeSecurityPasswordsStepViewModel() : base(new TranslationUpdater(new TranslationFactory(), new ThreadManager()))
         {
         }
     }

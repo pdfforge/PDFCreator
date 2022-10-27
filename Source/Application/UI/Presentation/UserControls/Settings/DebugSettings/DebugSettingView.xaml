@@ -7,13 +7,22 @@
              xmlns:redesign="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
+             xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeDebugSettingsViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="300">
-
-    <Grid Margin="50 5 50 0">
-        <ItemsControl
-            regions:RegionManager.RegionName="{x:Static presentation:RegionNames.DebugSettingsTabContentRegion}"/>
-
-    </Grid>
+             d:DesignHeight="300" d:DesignWidth="300"
+             help:HelpProvider.HelpTopic="AppDebug">
+    <ScrollViewer>
+        <Grid>
+            <StackPanel Orientation="Vertical"  Margin="0 0 0 0">
+                <debugSettings:LoggingSettingView x:Name="LoggingSettingView"/>
+                <debugSettings:TestPageSettingsView x:Name="TestPageSettingsView"/>
+                <debugSettings:RestoreSettingsView x:Name="RestoreSettingsView"/>
+                <debugSettings:ExportSettingView x:Name="ExportSettingView"/>
+            </StackPanel>
+            <gpo:GPOLockLayer IsLockedByGpo="{ Binding DebugIsDisabled }" />
+        </Grid>
+    </ScrollViewer>
 </UserControl>

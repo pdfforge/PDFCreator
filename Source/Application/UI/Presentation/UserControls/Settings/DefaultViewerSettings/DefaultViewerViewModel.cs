@@ -4,11 +4,9 @@ using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
@@ -81,7 +79,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
         protected override void OnTranslationChanged()
         {
             base.OnTranslationChanged();
-            Title = Translation.Title;
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged();
         }

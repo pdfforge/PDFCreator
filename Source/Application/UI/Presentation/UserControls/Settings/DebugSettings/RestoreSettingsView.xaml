@@ -8,13 +8,29 @@
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:RestoreSettingsViewModel}">
 
-    <HeaderedContentControl Margin="0 20 0 0"
-                            Header="{Binding Translation.DefaultSettingsControlHeader}">
-        <UniformGrid Columns="2" Margin="0 5 0 0" Width="510" HorizontalAlignment="Left">
-            <Button Margin="0 0 5 0" Style="{DynamicResource LightGreyButton}"
-                    Command="{Binding RestoreDefaultSettingsCommand}">
-                <TextBlock Text="{Binding Translation.DefaultSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-            </Button>
-        </UniformGrid>
-    </HeaderedContentControl>
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+
+        <Label Content="{Binding Translation.DefaultSettingsControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 20"/>
+        <Grid HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
+                <Button Command="{Binding RestoreDefaultSettingsCommand}">
+                    <TextBlock Text="{Binding Translation.DefaultSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </UserControl>

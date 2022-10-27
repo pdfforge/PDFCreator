@@ -28,6 +28,8 @@
         string Language { get; }
 
         string UpdateInterval { get; }
+
+        string SharedSettingsFilename { get; }
         int? HotStandbyMinutes { get; }
 
         bool LoadSharedAppSettings { get; }

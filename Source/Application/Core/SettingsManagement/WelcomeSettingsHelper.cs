@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.Utilities;
+﻿using pdfforge.PDFCreator.Utilities;
 using System;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 using SystemInterface.Microsoft.Win32;
 

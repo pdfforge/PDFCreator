@@ -1,0 +1,260 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link selected"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+        <div class="main">
+
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link selected"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+
+            <div class="middle">
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="java-overview">Java overview</h1>
+<div class="banner">
+<div class="java-text"></div>
+<div class="vendor-logo java-logo"></div>
+</div>
+
+<h2 id="about">About</h2>
+<p>In the <a href="https://github.com/ArtifexSoftware/ghostpdl">GhostPDL repository</a> sample <code>Java</code> projects can be found in <code>/demos/java</code>.</p>
+<p>Within this location the following folders are of relevance:</p>
+<ul>
+<li><a href="#jni-building-the-java-native-interface">jni</a> <code>jni</code></li>
+<li><a href="#gsjava-building-the-jar">gsjava</a> <code>gsjava</code></li>
+<li><a href="#gstest">gstest</a> <code>gstest</code></li>
+<li><a href="#gsviewer">gsviewer</a> <code>gsviewer</code></li>
+</ul>
+<h2 id="platform-setup">Platform &amp; setup</h2>
+<h3 id="building-ghostscript">Building Ghostscript</h3>
+<p>Ghostscript should be built as a shared library for your platform.</p>
+<p>See <a href="index.html#building-ghostscript">Building Ghostscript</a>.</p>
+<h3 id="jni-building-the-java-native-interface">jni: Building the Java Native Interface</h3>
+<p>Before building the JNI ensure that Ghostscript has already been built for your platform and that you have JDK installed.</p>
+<p>The JNI is for use in the Java interface,
+this object must be placed somewhere on your Java PATH. On Windows, the DLL
+can be placed in the working directory, next to <code>gsjava.jar</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>JNI file</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>gs_jni.dll</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>gs_jni.dylib</code></td>
+</tr>
+<tr>
+<td>Linux / OpenBSD</td>
+<td><code>gs_jni.so</code></td>
+</tr>
+</tbody></table>
+<h4 id="preparing-your-include-folder">Preparing your include folder</h4>
+<p>The build scripts require the header <code>jni.h</code>, which defines
+all JNI functions, and <code>jni_md.h</code>, which defines all system-specific
+integer types. The build scripts expect an include folder relative to their location which contain these header files from your system.</p>
+<p>These headers are typically found in the following directories:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>jni.h</th>
+<th>jni_md.h</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>C:\Program Files\Java\&lt;JDK Install&gt;\include\jni.h</code></td>
+<td><code>C:\Program Files\Java\&lt;JDK Install&gt;\include\win32\jni_md.h</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>/Library/Java/JavaVirtualMachines/&lt;JDK Install&gt;/Contents/Home/include/jni.h</code></td>
+<td><code>/Library/Java/JavaVirtualMachines/&lt;JDK Install&gt;/Contents/Home/include/darwin/jni_md.h</code></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>/lib/jvm/&lt;JDK Install&gt;/include/jni.h</code></td>
+<td><code>/lib/jvm/&lt;JDK Install&gt;/include/linux/jni_md.h</code></td>
+</tr>
+</tbody></table>
+<p>Once your <code>include</code> folder has been located folder you can copy it and place it in your <code>ghostpdl/demos/java/jni/gs_jni</code> folder.</p>
+<p>Your build scripts should now be ready to run as they will be able to find the required JNI header files in their own relative include folder.</p>
+<h4 id="building-on-windows">Building on Windows</h4>
+<p>The <code>jni</code> folder contains a Visual Studio Solution file <code>/jni/gs_jni/gs_jni.sln</code> which you should use to build the required JNI <code>gs_jni.dll</code> library file.</p>
+<p>With the project open in Visual Studio, select the required architecture from the drop down - then right click on 'gs_jni' in the solution explorer and choose "Build".</p>
+<h4 id="building-on-macos">Building on MacOS</h4>
+<p>On your command line, navigate to <code>ghostpdl/demos/java/jni/gs_jni</code> and ensure that the build script is executable and then run it, with:</p>
+<pre><code>chmod +x build_darwin.sh
+./build_darwin.sh</code></pre><h4 id="building-on-linux">Building on Linux</h4>
+<p>On your command line, navigate to <code>ghostpdl/demos/java/jni/gs_jni</code> and ensure that the build script is executable and then run it, with:</p>
+<pre><code>chmod +x build_linux.sh
+./build_linux.sh</code></pre><h3 id="gsjava-building-the-jar">gsjava: Building the JAR</h3>
+<h4 id="building-with-the-command-line">Building with the command line</h4>
+<p>Navigate to <code>ghostpdl/demos/java/gsjava</code> and use the following:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Run file</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>build_win32.bat</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>build_darwin.sh</code></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>build_linux.sh</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>NOTE</strong><br>
+<code>gsjava</code> has a dependancy on <a href="#jni-building-the-java-native-interface">jni</a>, please ensure that <code>gs_jni</code> is able to be built beforehand.</p>
+</blockquote>
+<h4 id="building-with-eclipse">Building with Eclipse</h4>
+<p>Alternatively you can use <a href="https://www.eclipse.org/eclipseide/">Eclipse</a> to build the JAR file.</p>
+<p>Using <a href="https://www.eclipse.org/eclipseide/">Eclipse</a> import the source folder <code>gsjava</code> as a project and select <code>Export &gt; Java &gt; JAR File</code> as shown in the screenshot example below:</p>
+<p><img src="images/export-jar.png" alt="Eclipse export JAR"></p>
+<h4 id="linking-the-jar">Linking the JAR</h4>
+<p>The built JAR should be properly linked within your project Java Build Path as follows:</p>
+<p><img src="images/linking-jar.png" alt="Linking the JAR"></p>
+<h2 id="demo-projects">Demo projects</h2>
+<h3 id="gstest">gstest</h3>
+<p>This project can be opened in <a href="https://www.eclipse.org/eclipseide/">Eclipse</a> and used to test the Ghostscript API. The sample here simply sets up an instance of Ghostscript and then sets and gets some parameters accordingly.</p>
+<h3 id="gsviewer">gsviewer</h3>
+<p>This project can be used to test the Ghostscript API alongside a UI which handles opening PostScript and PDF files. The sample application here allows for file browsing and Ghostscript file viewing.</p>
+<p>Below is a screenshot of the sample application with a PDF open:</p>
+<p><img src="images/gsviewer.png" alt="gsviewer UI"></p>
+<p>To run the project navigate to the <code>demos/java/gsviewer</code> location and ensure that the required libraries are in the directory:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Ghostscript library file</th>
+<th>JNI library file</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>gpdldll64.dll</code></td>
+<td><code>gs_jni.dll</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>libgpdl.dylib</code></td>
+<td><code>gs_jni.dylib</code></td>
+</tr>
+<tr>
+<td>Linux / OpenBSD</td>
+<td><code>libgpdl.so</code> (this may have been built as <code>libgs.so</code>, so it should be copied into this directory and renamed to <code>libgpdl.so</code>)</td>
+<td><code>gs_jni.so</code></td>
+</tr>
+</tbody></table>
+<h4 id="building-on-windows">Building on Windows</h4>
+<p>Run the <code>build_win32.bat</code> script.</p>
+<h4 id="running-on-windows">Running on Windows</h4>
+<p>To run, open <code>gsviewer.jar</code> either through File Explorer or in the command line through the following command:</p>
+<pre><code>java -jar gsviewer.jar</code></pre><h4 id="building-on-macos">Building on MacOS</h4>
+<p>On your command line, navigate to <code>ghostpdl/demos/java/gsviewer</code> and ensure that the build script is executable and then run it, with:</p>
+<pre><code>chmod +x build_darwin.sh
+./build_darwin.sh</code></pre><p>This will automatically build <code>gs_jni.dylib</code> (in the <code>ghostpdl/demos/java/jni/gs_jni/</code> location) and <code>gsjava.jar</code> <code>gsviewer.jar</code> in the <code>gsviewer</code> directory.</p>
+<h4 id="running-on-macos">Running on MacOS</h4>
+<p>Ensure that the Ghostscript library exists in the <code>gsviewer</code> directory. (Copy and move the built library from <code>ghostpdl/sobin</code> as required).</p>
+<p>Ensure that the run script is executable and then run it, with:</p>
+<pre><code>chmod +x start_darwin.sh
+./start_darwin.sh</code></pre><h4 id="building-on-linux">Building on Linux</h4>
+<p>On your command line, navigate to <code>ghostpdl/demos/java/gsviewer</code> and ensure that the build script is executable and then run it, with:</p>
+<pre><code>chmod +x build_linux.sh
+./build_linux.sh</code></pre><p>This will automatically build <code>gs_jni.so</code> (in the <code>ghostpdl/demos/java/jni/gs_jni/</code> location) and <code>gsjava.jar</code> <code>gsviewer.jar</code> in the <code>gsviewer</code> directory.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>
+On Linux, when using OpenJDK, the property "assistive_technologies" may
+need to be modified for the Java code to build. It can be modified by
+editing the "accessibility.properties" file. This is located at:</p>
+<p><code>/etc/java-8-openjdk/accessibility.properties</code></p>
+</blockquote>
+<h4 id="running-on-linux">Running on Linux</h4>
+<p>Ensure that the Ghostscript library exists in the <code>gsviewer</code> directory. (Copy and move the built library from <code>ghostpdl/sobin</code> as required).</p>
+<p>Ensure that the run script is executable and then run it, with:</p>
+<pre><code>chmod +x start_linux.sh
+./start_linux.sh</code></pre></article>
+
+            </div><!-- /middle -->
+
+            <div class="right">
+                <div class="link"><a href="#about">About</a></div>
+                <div class="link"><a href="#platform-setup">Platform & setup</a></div>
+                <div class="sub-link"><a href="#building-ghostscript">Building Ghostscript</a></div>
+                <div class="sub-link"><a href="#jni-building-the-java-native-interface">jni: Building the Java Native Interface</a></div>
+                <div class="sub-link"><a href="#gsjava-building-the-jar">gsjava: Building the JAR</a></div>
+                <div class="link"><a href="#demo-projects">Demo projects</a></div>
+                <div class="sub-link"><a href="#gstest">gstest</a></div>
+                <div class="sub-link"><a href="#gsviewer">gsviewer</a></div>
+            </div>
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+</html>

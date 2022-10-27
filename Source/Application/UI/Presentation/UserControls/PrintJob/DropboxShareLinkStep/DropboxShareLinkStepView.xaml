@@ -1,67 +1,69 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.DropboxShareLinkStepView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
+             help:HelpProvider.HelpTopic="Dropbox"
              d:DataContext="{d:DesignInstance designTime:DesignTimeDropboxShareLinkStepViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.Resources>
-                <Style TargetType="Separator">
-                    <Setter Property="BorderThickness" Value="0 1 0 0" />
-                    <Setter Property="BorderBrush" Value="#FFCCCCCC" />
-                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                </Style>
-            </Grid.Resources>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="0 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="Dropbox"
-                           FontWeight="Bold"
-                           TextAlignment="Left" />
+        <StackPanel Grid.Row="0">
+            <Label Content="Dropbox"
+                   Style="{StaticResource LargeLabel}" />
 
-                <TextBlock Margin="0 10 0 0" TextWrapping="Wrap" Text="{Binding Translation.DropboxShareLinkLabel}" />
-                <TextBlock Margin="0 5 0 0">
-                    <Hyperlink Command="{Binding UrlOpenCommand}" CommandParameter="{Binding ShareUrl}">
+            <Label Margin="0 20 0 0">
+                <TextBlock Text="{Binding Translation.DropboxShareLinkLabel}"
+                           TextWrapping="Wrap" />
+            </Label>
+            <TextBlock Margin="0 10 0 0">
+                    <Hyperlink Command="{Binding UrlOpenCommand}"
+                               CommandParameter="{Binding ShareUrl}">
                         <Hyperlink.Style>
                             <Style>
                                 <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
                             </Style>
                         </Hyperlink.Style>
-                        <TextBlock Text="{Binding ShareUrl}" TextWrapping="Wrap" FontWeight="DemiBold" />
+                        <TextBlock Text="{Binding ShareUrl}"
+                                   Foreground="{StaticResource HyperlinkBrush}"
+                                   FontWeight="DemiBold" />
                     </Hyperlink>
-                </TextBlock>
-                <TextBlock Margin="0 10 0 0"
-                    FontStyle="Italic"
-                    Text="{Binding Translation.DropboxShareLinkNote}" TextWrapping="Wrap" />
-            </StackPanel>
+            </TextBlock>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
-                <Button
-                    Content="{Binding Translation.OK}"
-                    IsDefault="True"
-                    Command="{Binding OkCommand}"
-                    Style="{DynamicResource FlatGreenButton}"
-                    Margin="10"
-                    Width="100">
-                </Button>
-                <Button
+            <TextBlock Margin="0 20 0 0"
+                       Text="{Binding Translation.DropboxShareLinkNote}" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <UniformGrid Grid.Row="2" Rows="1" VerticalAlignment="Bottom"
+                     HorizontalAlignment="Center">
+            <Button Margin="0 0 5 0"
                     Content="{Binding Translation.Copy}"
                     Command="{Binding CopyToClipboardCommand}"
                     CommandParameter="{Binding ShareUrl}"
-                    ToolTip="{Binding Translation.CopyShareLinkToClipboard}"
-                    Style="{DynamicResource FlatGreyButton}"
-                    Margin="10"
-                    Width="110">
-                </Button>
-            </StackPanel>
-        </Grid>
+                    ToolTip="{Binding Translation.CopyShareLinkToClipboard}" />
+
+            <Button Margin="5 0 0 0"
+                    Content="{Binding Translation.OK}"
+                    IsDefault="True"
+                    Command="{Binding OkCommand}"
+                    Style="{StaticResource AffirmativeButton}" />
+        </UniformGrid>
     </Grid>
 </UserControl>

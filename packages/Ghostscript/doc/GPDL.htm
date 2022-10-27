@@ -1,0 +1,617 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<link rel="shortcut icon" type="image/png" href="../../images/favicon.png">
+<title>The GhostPDL Interpreter Framework</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<link href="gs-style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div class="header">
+    <div class="row">
+    <div class="col-lt-6 logo"><a href="https://www.ghostscript.com/"><img src="images/ghostscript_logo.png" width="108" height="119" alt=""></a></div>
+        <div class="col-6"><div class="row"><div class="artifexlogo"><a href="https://artifex.com" target="_blank"><img src="images/Artifex_logo.png" width="194" height="40" alt=""></a></div>
+        <div class="col-12"><div class="button button1"><a href="https://artifex.com/contact-us/" title="Contact Us" target="_blank">Contact Us</a></div>
+        <div class="button button2 hidden-xs"><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></div></div></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="banner">
+    <div class="row">
+        <div class="col-12">The GhostPDL Interpreter Framework</div>
+    </div>
+    </div>
+
+    <div class="main">
+    <div class="row">
+    <div id="sidebar">
+    <div class="sidebar-item"></div>
+    <div class="col-2 leftnav">
+<ul>
+            <li><a href="https://www.ghostscript.com/">Home</a></li>
+            <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
+            <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
+            <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
+            <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
+            <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
+            <li><a href="http://jbig2dec.com/" title="jbig2dec">jbig2dec</a></li>
+            <li><a href="http://git.ghostscript.com/?p=ghostpdl.git;a=summary">Source</a></li>
+            <li><a href="http://bugs.ghostscript.com/">Bugs</a></li>
+            <li><a href="https://www.ghostscript.com/faq.html" title="FAQ">FAQ</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col-10 page">
+
+<!--START EDITING HERE-->
+
+<h2>Table of contents</h2>
+
+<ul>
+<li><a href="#What_Is_This">What is the GhostPDL Interpreter Framework?</a></li>
+<li><a href="#API">The API</a></li>
+  <ul>
+  <li><a href="#run">The run_string functions</a></li>
+  <li><a href="#string_vs_file">String vs File functions</a></li>
+  </ul>
+<li><a href="#executable">The GPDL executable</a></li>
+<li><a href="#different_switches">Differences in switches from Ghostscript</a></li>
+<li><a href="#languages">Supported languages</a></li>
+  <ul>
+  <li><a href="#PJL">PJL</a></li>
+  <li><a href="#PCL">PCL</a></li>
+  <li><a href="#PCLXL">PCLXL</a></li>
+  <li><a href="#XPS">XPS</a></li>
+  <li><a href="#POSTSCRIPT">POSTSCRIPT</a></li>
+  <li><a href="#URF">URF</a></li>
+  <li><a href="#JPG">JPG</a></li>
+  <li><a href="#PWG">PWG</a></li>
+  <li><a href="#TIFF">TIFF</a></li>
+  <li><a href="#JBIG2">JBIG2</a></li>
+  <li><a href="#JP2K">JP2K</a></li>
+  <li><a href="#PNG">PNG</a></li>
+  </ul>
+<li><a href="#new_language">Adding a new language</a></li>
+  <ul>
+  <li><a href="proc_characteristics">proc_characteristics</a></li>
+  <li><a href="proc_allocate_interp_instance">proc_allocate_interp_instance</a></li>
+  <li><a href="proc_get_device_memory">proc_get_device_memory</a></li>
+  <li><a href="proc_set_param">proc_set_param</a></li>
+  <li><a href="proc_add_path">proc_add_path</a></li>
+  <li><a href="proc_post_args_init">proc_post_args_init</a></li>
+  <li><a href="proc_init_job">proc_init_job</a></li>
+  <li><a href="proc_run_prefix_commands">proc_run_prefix_commands</a></li>
+  <li><a href="proc_process_file">proc_process_file</a></li>
+  <li><a href="proc_process_begin">proc_process_begin</a></li>
+  <li><a href="proc_process">proc_process</a></li>
+  <li><a href="proc_process_end">proc_process_end</a></li>
+  <li><a href="proc_flush_to_eoj">proc_flush_to_eoj</a></li>
+  <li><a href="proc_process_eof">proc_process_eof</a></li>
+  <li><a href="proc_report_errors">proc_report_errors</a></li>
+  <li><a href="proc_dnit_job">proc_dnit_job</a></li>
+  <li><a href="proc_deallocate_interp_instance">proc_deallocate_interp_instance</a></li>
+  </ul>
+
+</ul>
+
+<!-- [1.2 end table of contents] =========================================== -->
+
+<!-- [1.3 begin hint] ====================================================== -->
+
+<p>For other information, see the <a href="Readme.htm">Ghostscript overview</a>.</p>
+
+<!-- [1.3 end hint] ======================================================== -->
+
+<hr>
+
+<!-- [1.0 end visible header] ============================================== -->
+
+<!-- [2.0 begin contents] ================================================== -->
+
+
+<h2><a name="What_Is_This"></a>What is the GhostPDL Interpreter Framework?</h2>
+
+<p>
+The GhostPDL interpreter framework (henceforth, just GhostPDL) is
+a framework into which multiple interpreters can be fitted, together
+with a set of interpreters for different input &quot;languages&quot;.</p>
+<p>The intent is that a build of GPDL will behave as much as possible
+like a build of Ghostscript, but should be able to transparently
+cope with as many different input formats as it has interpreters built
+into it.</p>
+<p>It can be built as a dynamic link library
+(DLL) on Microsoft Windows, as a shared object on the
+Linux, Unix and MacOS X platforms. With some changes, it could be built
+as a static library.</p>
+<p>The reason we dub it a &quot;Framework&quot; is that it is
+designed to be modular, and to readily allow new interpreters to be
+swapped in and out to extend and customise its capabilities.</p>
+
+<p>Jobs must be separated by <code>UEL</code> (Universal End of Language)
+code sequences (or PJL fragments, which implicitly start with a
+<code>UEL</code> marker).</p>
+
+<h2><a name="API"></a>The API</h2>
+
+<p>The API for GPDL (found in <a href="../pcl/pl/plapi.h">plapi.h</a>)
+is deliberately designed to be nearly identical
+to that for Ghostscript itself (found in <a href="../psi/iapi.h">iapi.h</a>).
+Details of Ghostscript's API can be
+found <a href="API.htm">here</a>, and we refer you to that. Only
+differences from that API will be documented here. In particular
+the differences in the handling of switches within the
+<code>gsapi_init_with_args</code> are documented
+<a href="#different_switches">here</a>.</p>
+<p>Our intent is that existing users of the Ghostscript API should be
+able to drop a GPDL DLL in as a replacement with little to no code
+changes.</p>
+
+<h3><a name="run"></a>The run_string APIs</h3>
+
+<p>The <code>run_string</code> APIs have parameters for
+<code>int user_errors</code> and <code>int *error_code</code>.
+Within Ghostscript, these allow a caller to bypass the language's
+standard error handling, and to trap errors externally.
+This makes no sense within a printer implementation (and, in
+particular, no sense for a postscript interpreter running
+jobs within a JobServer loop as GPDL does). Thus these
+parameters are kept for ABI compatibility, but are largely
+ignored within the GPDL implementation of gsapi.
+For sanity, pass 0 for <code>user_errors</code>, and expect
+<code>*error_code</code> to be set to 0 on exit.</p>
+
+<h3><a name="string_vs_file"></a>String vs File functions</h3>
+
+<p>Some file types, such as Postscript and PCL, are designed to be
+'streamable'; that is to say that the files can be fed in and
+consumed as they are interpreted. Other file types, such as PDF or
+XPS require the whole file to be available so that the interpreters
+can seek back and forth within it to extract the data they require.</p>
+
+<p>Traditionally, Ghostscript has relied upon the caller knowing
+which type of data is which; streamable data can be fed in to the
+system using the <code>gsapi_run_string</code> APIs, and complete files
+of data can be fed in using <code>gsapi_run_file</code> or
+<code>gsapi_init_with_args</code> APIs. Streamable data contained
+with a file is simple to deal with, as it's trivial for an interpreter
+to read bytes from a file, but doing random access on a stream is
+much harder.</p>
+
+<p>In systems where data is being streamed in, but it is required
+to be available for random access, the entire stream must be buffered
+for presentation to the language interpreters. With Ghostscript,
+the responsibility for doing this fell to the caller. Unfortunately,
+this means that the caller also has to be responsible for scanning
+the incoming data to spot when it is in a format that requires
+buffering. With the explosion of formats that GPDL supports this
+quickly becomes unpalatable.</p>
+
+<p>While the caller is still free to do such buffering of data
+itself, GPDL will do it automatically if required. If a language
+spots that data being fed to it via the <code>gsapi_run_string</code>
+APIs is in a format that requires buffering, the entire string of
+data will be automatically collected together, and then be
+represented internally to the <code>gsapi_run_file</code> API.</p>
+
+<p>The current implementation buffers the data in memory. Alternative
+implementations could use a backing store if such a thing were
+available. For server based applications the use of memory is not
+likely to be a problem (assuming reasonably sized input files at least).
+For printer integrations, it's entirely possible that no backing
+store will be available, so RAM may be the only option. Integrators
+may wish to place a limit on the size of files that can be buffered
+in this way.</p>
+
+<h2><a name="executable"></a>The GPDL executable</h2>
+
+<p>
+The GPDL executable is a small executable that loads the DLL/shared object,
+and implements, pretty much, the interface described in the
+<a href="Use.htm">usage documentation</a> for Ghostscript, but capable of
+reading any of the configured languages. This executable provides all
+the interaction with the windowing system, including image windows.</p>
+
+<p>Areas where the GPDL executable differs from the Ghostscript
+executable are described <a href="#different_switches">below</a>. These
+are primarily to do with (slightly) esoteric requirements when
+running Postscript in an interactive environment.  Whereas Ghostscript
+is a generic Postscript interpreter, GPDL is unashamedly targeted
+as a print processor.</p>
+
+<p>
+The GPDL framework's library name and characteristics differ
+for each platform:</p>
+
+<ul>
+<li>The Win32 DLL <code>gpdldll32.dll</code>
+can be used by multiple programs simultaneously, but only once
+within each process.</li>
+
+<li>The Linux shared object <code>libgs.so</code>
+can be used by multiple programs simultaneously.</li>
+</ul>
+<p>
+The source for the executable is in <code>plw</code>*.* (Windows)
+and  <code>plx</code>*.* (Linux/Unix).
+See these source files for examples of how to use the DLL.</p>
+
+<p>
+At this stage, GhostPDL does not support multiple instances
+of the interpreter within a single process.</p>
+
+<h2><a name="different_switches"></a>Differences in switches from Ghostscript</h3>
+
+<p>The <code>gsapi_init_with_args</code> API entrypoint takes a
+set of arguments, which can include various switches. We document
+the differences between Ghostscript's handling of switches and
+GhostPDLs here. The GhostPDL executable directly maps parameters
+given on the command-line into this list, so this list of differences
+applies both to API calls and uses of the executable.</p>
+
+<p>GhostPDL does not support the <code>-_</code>, <code>-+</code>,
+<code>-@</code>, <code>-B</code>, <code>-F</code>, <code>-M</code>,
+<code>-N</code>, <code>-P</code>, <code>-u</code>, and <code>-X</code>
+switches that Ghostscript does.
+
+<p>GhostPDL supports a few switches that the Ghostscript executable
+does not.</p>
+
+<ul>
+  <li><b><code>-E #</code>:</b> Sets the &quot;error reporting mode&quot;
+for PCL/PXL.</li>
+  <li><b><code>-H #x#x#x#</code>:</b> Sets the hardware margins to the
+given left/bottom/right/top values (in points).</li>
+  <li><b><code>-j &lt;string&gt;</code>:</b> Passes the string to the
+  PJL level. The string is split on ';'.</li>
+  <li><b><code>-J</code>:</b> Same as <code>-j</code>.</li>
+  <li><b><code>-l {RTL,PCL5E,PCL5C}</code>:</b> Sets the
+    &quot;personality&quot; of the PCL/PXL interpreter.</li>
+  <li><b><code>-L &lt;language&gt;</code>:</b> Sets the language
+    to be used. Run with <code>-L</code> and no string to see a list
+    of languages supported in your build.</li>
+  <li><b><code>-m #x#</code>:</b> Sets the margin values to the
+    left/bottom values (in points).</li>
+</ul>
+
+<h2><a name="languages"></a>Supported languages</h2>
+
+<p>The following is a (possibly non-exhaustive) list of languages
+for which implementations exist for GhostPDL. We use the term
+&quot;language&quot; to include both full page description languages
+(such as PCL, Postscript and XPS), and handlers for simpler formats
+(such as JPEG, PNG and TIFF).</p>
+<p>It is inherent in the design that new handlers can be included,
+and unwanted formats can be dropped from any given build/integration.</p>
+
+<h3><a name="PJL"></a>PJL</h3>
+<p>PJL is special, in that it is the central language implementation
+to which we return between all jobs. As such it always appears first
+in the list, and must be present in all builds.</p>
+<h3><a name="PCL"></a>PCL</h3>
+<p>The PCL language implementation supports PCL5C/PXL5E and HPGL/2
+with RTL.</p>
+<h3><a name="PCLXL"></a>PCLXL</h3>
+<p>The PCLXL language implementation supports PCLXL.</p>
+<h3><a name="XPS"></a>XPS</h3>
+<p>The XPS language implementation supports the XML Paper Specification
+format, as used in modern Windows systems printing pipelines.</p>
+<h3><a name="POSTSCRIPT"></a>POSTSCRIPT</h3>
+<p>The POSTSCRIPT language implementation is the Ghostscript
+  Postscript interpreter, as described in the accompanying
+  documentation.</p>
+<h3><a name="URF"></a>URF</h3>
+<p>Currently available to commercial customers only, the URF language
+implementation implements support for the URF file format, as used
+by Apple Airprint.</p>
+<h3><a name="JPG"></a>JPG</h3>
+<p>The JPG language implementation supports JPEG files
+(in both JFIF and EXIF formats).</p>
+<h3><a name="PWG"></a>PWG</h3>
+<p>The PWG language implementation supports PWG
+(Printer Working Group) format files.</p>
+<h3><a name="TIFF"></a>TIFF</h3>
+<p>The TIFF language implementation supports TIFF format files in
+a variety of compression formats, depending on the exact configuration
+of libtiff used in the build.</p>
+<h3><a name="JBIG2"></a>JBIG2</h3>
+<p>The JBIG2 language implementation supports JBIG2 format images.</p>
+<h3><a name="JP2K"></a>JP2K</h3>
+<p>The JP2K language implementation supports JPEG2000 and JPX format
+images.</p>
+<h3><a name="PNG"></a>PNG</h3>
+<p>The PNG language implementation supports PNG format images.</p>
+
+<h2><a name="new_language"></a>Adding a new language</h2>
+
+<p>Each language implementation in the system appears as an instance
+of a <code>pl_interp_implementation_t</code> structure.
+
+<pre>
+typedef struct pl_interp_implementation_s
+{
+    /* Procedure vector */
+    pl_interp_proc_characteristics_t proc_characteristics;
+    pl_interp_proc_allocate_interp_instance_t proc_allocate_interp_instance;
+    pl_interp_proc_get_device_memory_t proc_get_device_memory;
+    pl_interp_proc_set_param_t proc_set_param;
+    pl_interp_proc_add_path_t proc_add_path;
+    pl_interp_proc_post_args_init_t proc_post_args_init;
+    pl_interp_proc_init_job_t proc_init_job;
+    pl_interp_proc_run_prefix_commands_t proc_run_prefix_commands;
+    pl_interp_proc_process_file_t proc_process_file;
+    pl_interp_proc_process_begin_t proc_process_begin;
+    pl_interp_proc_process_t proc_process;
+    pl_interp_proc_process_end_t proc_process_end;
+    pl_interp_proc_flush_to_eoj_t proc_flush_to_eoj;
+    pl_interp_proc_process_eof_t proc_process_eof;
+    pl_interp_proc_report_errors_t proc_report_errors;
+    pl_interp_proc_dnit_job_t proc_dnit_job;
+    pl_interp_proc_deallocate_interp_instance_t
+        proc_deallocate_interp_instance;
+    void *interp_client_data;
+} pl_interp_implementation_t;
+</pre>
+
+<p>This structure consists of series of function pointers, each
+of which performs some portion of the processing required to handle
+detection of language type and processing of data. These function
+pointers are described in detail below.</p>
+<p>In addition, the <code>interp_client_data</code> field is
+used to hold the running state of a given interpreter.</p>
+
+<p>All the languages to be supported in the build are listed
+in the <code>pdl_implementations</code> array in
+<a href="../pcl/pl/plimpl.c">plimpl.c</a>. To add a new implementation
+the name of the appropriate <code>pl_interp_implementation_t</code>
+should be added here.</a>
+
+<p>The existing range of language implementations may prove useful
+as references when implementing new ones. They can be found as
+<code>gpdl/*top.c</code>. In particular,
+<code><a href="../gpdl/pngtop.c">pngtop.c</a></code> is a simple
+implementation of a well-defined, relatively simple file format
+(PNG), based upon a well-known and well-documented library (libpng),
+so is probably a good place to start.</p>
+
+<h3><a name="proc_characteristics"></a>proc_characteristics</h3>
+<pre>
+typedef const pl_interp_characteristics_t
+    *(*pl_interp_proc_characteristics_t) (const pl_interp_implementation_t *);
+</pre>
+<p>This entrypoint is called to request details of the characteristics
+of the language. This must be implemented in all instances.</p>
+<p>This returns a pointer to a <code>pl_interp_characteristics_t</code>
+  structure:</p>
+<pre>
+typedef struct pl_interp_characteristics_s
+{
+    const char *language;       /* generic language should correspond with
+                                   HP documented PJL name */
+    int (*auto_sense)(const char *string, int length);      /* routine used to detect language - returns a score: 0 is definitely not, 100 is definitely yes. */
+    const char *manufacturer;   /* manuf str */
+    const char *version;        /* version str */
+    const char *build_date;     /* build date str */
+} pl_interp_characteristics_t;
+</pre>
+<p>The <code>language</code> entry contains a simple NULL terminated
+  string that names the interpreter. Similarly, the <code>manufacturer</code>,
+  <code>version</code>, and <code>build_date</code> fields are for
+  informational purposes only.</p>
+<p>The <code>auto_sense</code> function is called with a prefix of data
+  from each new source. Each language is passed the data in turn, and
+  &quot;scores;&quot; according to how sure it is the file is that format.</p>
+<p>For many file formats this means looking for known in the first
+few bytes (such as PNG or TIFF looking for their signature bytes). For
+others, such as XPS, the best that can be done is to spot that it's a
+  zip file. For still others, such as PCL, heuristics have to be used.</p>
+<p>A 'definite' match is returned as 100, a definite rejection as 0, with
+intermediate values used appropriately.</p>
+<h3><a name="proc_allocate_interp_instance"></a>proc_allocate_interp_instance</h3>
+<pre>
+typedef int (*pl_interp_proc_allocate_interp_instance_t)
+                                                (pl_interp_implementation_t *,
+                                                 gs_memory_t *);
+</pre>
+<p>On startup, the GPDL library calls around all the languages
+via this function, getting them to allocate themselves an instance.
+  What this means will vary between languages, but typically it involves
+  allocating a state structure, and storing the pointer to that in the
+  <code>interp_client_data</code> pointer of the
+  <code>pl_interp_implementation_t *</code>. Part of this state structure
+  will typically be a <code>gstate</code> to use to drive the graphics
+  library.</p>
+<h3><a name="proc_get_device_memory"></a>proc_get_device_memory</h3>
+<pre>
+typedef gs_memory_t *(*pl_interp_proc_get_device_memory_t)
+                                               (pl_interp_implementation_t *);
+</pre>
+<p>On shutdown, the GPDL library calls around all the languages
+via this function, getting them to release their resources and
+deallocate any memory.</p>
+<h3><a name="proc_set_param"></a>proc_set_param</h3>
+<pre>
+typedef int (*pl_interp_proc_set_param_t) (pl_interp_implementation_t *,
+                                           pl_set_param_type,
+                                           const char *,
+                                           const void *);
+</pre>
+<p>Some languages (particularly Postscript) can have their behaviour
+changed by the use of parameters. This function provides a generic
+method for the GPDL library to pass parameters into a language. Each
+language is free to ignore the parameters that do not apply to it. For
+most languages, this can safely be passed as <code>NULL</code>.</p>
+<h3><a name="proc_add_path"></a>proc_add_path</h3>
+<pre>
+typedef int (*pl_interp_proc_add_path_t) (pl_interp_implementation_t *,
+                                          const char *);
+</pre>
+<p>Some languages (particularly Postscript) have the ability to
+  open files from the local storage. These files can be found
+  in a variety of different locations within the local storage.
+  As such this call allows the GPDL library to add paths to
+  the current list of locations that will be searched. For
+  most languages, this can safely be passed as <code>NULL</code>.</p>
+<h3><a name="proc_post_args_init"></a>proc_post_args_init</h3>
+<pre>
+typedef int (*pl_interp_proc_post_args_init_t) (pl_interp_implementation_t *);
+</pre>
+<p></p>
+<h3><a name="proc_init_job"></a>proc_init_job</h3>
+<pre>
+typedef int (*pl_interp_proc_init_job_t) (pl_interp_implementation_t *,
+                                          gx_device *);
+</pre>
+<p>Once the GPDL library has identified which language should be used
+for an incoming job, it will call this entrypoint to initialise the
+language for the job. What this means will vary between languages,
+but at the very minimum the job will need to take note of the device
+to be used.</p>
+<h3><a name="proc_run_prefix_commands"></a>proc_run_prefix_commands</h3>
+<pre>
+typedef int (*pl_interp_proc_run_prefix_commands_t)
+                                               (pl_interp_implementation_t *,
+                                                const char *prefix);
+</pre>
+<p>The GPDL library (and executable) allow language commands to be
+sent in the argument parameters using the <code>-c</code> switch. These
+are collected into a buffer, and forwarded to a language to be run
+as part of the same job as any following file.</p>
+<p>Currently, only the Postscript language handler implements this
+function, all others should pass <code>NULL</code>.</p>
+<h3><a name="proc_process_file"></a>proc_process_file</h3>
+<pre>
+typedef int (*pl_interp_proc_process_file_t) (pl_interp_implementation_t *,
+                                              const char *);
+</pre>
+<p>If the GPDL library is given a filename to process, and this function
+is non-NULL, it will call this to run the file. For file formats such as
+PDF (which need to be buffered so they can be read out of order), this
+can avoid the need to feed in all the data via <code>proc_process</code>,
+buffer it somewhere, and then process it at the end.</p>
+<p>For many languages this can be <code>NULL</code>.</p>
+<h3><a name="proc_process_begin"></a>proc_process_begin</h3>
+<pre>
+typedef int (*pl_interp_proc_process_begin_t) (pl_interp_implementation_t *);
+</pre>
+<p>Once the GPDL library has data to process (that it cannot process
+with <code>proc_process_file</code>, it will call this function to
+setup the transfer of data.</p>
+<h3><a name="proc_process"></a>proc_process</h3>
+<pre>
+typedef int (*pl_interp_proc_process_t) (pl_interp_implementation_t *,
+                                         stream_cursor_read *);
+</pre>
+<p>After the GPDL library has called <code>proc_process_begin</code>
+this function may be called multiple times to actually transfer
+the data in. The implementation is expected to consume as many bytes
+as it can (but not necessarily all of them) before returning with
+an updated read pointer. If this function cannot advance without more
+data, it should return with <code>gs_error_NeedInput</code>.</p>
+<h3><a name="proc_process_end"></a>proc_process_end</h3>
+<pre>
+typedef int (*pl_interp_proc_process_end_t) (pl_interp_implementation_t *);
+</pre>
+<p>After the GPDL library has called <code>proc_process_begin</code>
+(and possibly made a number of calls to <code>proc_process</code>) it
+will call <code>proc_process_end</code> to signify the end of the
+data. This does not necessarily signal the end of the job.</p>
+<h3><a name="proc_flush_to_eoj"></a>proc_flush_to_eoj</h3>
+<pre>
+typedef int (*pl_interp_proc_flush_to_eoj_t) (pl_interp_implementation_t *,
+                                              stream_cursor_read *);
+</pre>
+<p>In the event of a problem while processing data, GPDL may seek to
+abandon processing of a transfer in progress by calling
+<code>proc_flush_to_eoj</code>. If possible, the language should
+continue to process data until a reasonable stopping point, or until
+<code>UEL</code> is reached.</p>
+<h3><a name="proc_process_eof"></a>proc_process_eof</h3>
+<pre>
+typedef int (*pl_interp_proc_process_eof_t) (pl_interp_implementation_t *);
+</pre>
+<p>Called when GPDL reaches EOF in processing a job. A language
+implementation should assume no more data is forthcoming.</p>
+<h3><a name="proc_report_errors"></a>proc_report_errors</h3>
+<pre>
+typedef int (*pl_interp_proc_report_errors_t) (pl_interp_implementation_t *,
+                                               int,
+                                               long,
+                                               bool);
+</pre>
+<p>Called after running a job to give the language implementation the
+chance to report any errors it may have detected as it ran.</p>
+<h3><a name="proc_dnit_job"></a>proc_dnit_job</h3>
+<pre>
+typedef int (*pl_interp_proc_dnit_job_t) (pl_interp_implementation_t *);
+</pre>
+<p>Called after a job is complete so that the language implementation
+may clean up. The interpreter is kept open so that more jobs can be
+fed to it, but no state should be kept from this job to the next.</p>
+<h3><a name="proc_deallocate_interp_instance"></a>proc_deallocate_interp_instance</h3>
+<pre>
+typedef int (*pl_interp_proc_deallocate_interp_instance_t)
+                                              (pl_interp_implementation_t *);
+</pre>
+<p>Called on shutdown of the GPDL library to close down the language
+instance and free all the resources.</p>
+
+<!-- [2.0 end contents] ==================================================== -->
+<!-- [3.0 begin visible trailer] =========================================== -->
+<hr>
+<p>
+<small>Copyright &copy; 2000-2021 Artifex Software, Inc. All rights reserved.</small></p>
+
+<p>
+This software is provided AS-IS with no warranty, either express or
+implied.</p>
+
+This software is distributed under license and may not be copied, modified
+or distributed except as expressly authorized under the terms of that
+license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
+or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
+Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.</p>
+
+<p>
+<small>Ghostscript version 9.55.0, 27 September 2021
+
+<!-- [3.0 end visible trailer] ============================================= -->
+
+<!--FINISH EDITING HERE-->
+
+    </div>
+    </div>
+    </div>
+
+    <div class="footer">
+    <div class="row">
+        <div class="col-7 footleft">
+        <ul>
+            <li><a href="https://artifex.com/contact-us/" target="blank">CONTACT US</a></li>
+            <li><a href="https://artifex.com/about-us/" target="blank">ABOUT</a></li>
+            <li><a href="https://ghostscript.com/security.html">SECURITY</a></li>
+        </ul>
+        </div>
+        <div class="col-1 footcenter">
+         <ul>
+           <li><a href="https://artifex.com/support/" target="blank">SUPPORT</a></li>
+           <li><a href="https://artifex.com/blog/artifex/" target="blank">BLOG</a></li>
+           <li><a href="https://artifex.com/privacy-policy/" target="blank">PRIVACY</a></li>
+           </ul>
+        </div>
+        <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
+            All rights reserved.
+        </div>
+          </div>
+    </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -7,9 +7,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     /// </summary>
     public partial class RestoreSettingsView : UserControl
     {
-        public RestoreSettingsView(RestoreSettingsViewModel viewModel)
+        public RestoreSettingsView()
         {
             InitializeComponent();
+        }
+
+        public void SetDataContext(RestoreSettingsViewModelBase viewModel)
+        {
             DataContext = viewModel;
         }
     }

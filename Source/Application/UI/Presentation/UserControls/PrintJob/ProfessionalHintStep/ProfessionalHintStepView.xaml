@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
@@ -15,7 +15,7 @@
                 DockPanel.Dock="Left"
                 Margin="30 10 10 10"
                 Width="150"
-                Style="{DynamicResource FlatGreenButton}"
+                Style="{DynamicResource AffirmativeButton}"
                 Command="{Binding ProfessionalHintCommand}"
                 Content="{Binding Translation.MoreInformation, Mode=OneWay}" />
 
@@ -23,7 +23,6 @@
                 DockPanel.Dock="Right"
                 Margin="10 10 30 10"
                 Width="150"
-                Style="{DynamicResource FlatPdfCreatorButton}"
                 IsCancel="True"
                 Command="{Binding FinishStepCommand}"
                 Content="{Binding Translation.NoThanksButtonContent, Mode=OneWay}">

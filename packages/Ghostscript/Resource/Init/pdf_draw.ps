@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -92,10 +92,10 @@ pdfdict begin
   exch dup length dict copy             % filepos stream fndict2
   dup /Function undef                   % filepos stream fndict2
   exch dup token not {
-    () /rangecheck cvx signalerror
+    () /rangecheck signalerror
   } if
   exch token {
-    /rangecheck cvx signalerror
+    /rangecheck signalerror
   } if
                 % Use .bind to avoid idiom recognition.
   .bind
@@ -529,7 +529,7 @@ end
       pdfformaterror
       (        Output may be incorrect.\n) pdfformaterror
       //pdfdict /.gs_warning_issued //true .forceput
-      PDFSTOPONERROR { /gs /undefined signalerror } if
+      PDFSTOPONERROR { /gs cvx /undefined signalerror } if
     } executeonly if
   } executeonly
   ifelse
@@ -749,7 +749,6 @@ def
   /GroupGState .knownget { setgstate } if
 
   newpath //null SMask
-  1 .setopacityalpha 1 .setshapealpha
   1 CA 1 ca
   /Compatible .setblendmode
         % Execute the body of the Form, similar to DoForm.
@@ -763,6 +762,24 @@ def
 
   .pdfruncontext
   end grestore
+
+  % check for extra garbage on the operand stack and clean it up
+  count pdfemptycount sub dup 0 ne {
+    (   **** Error: Transparency Group, Form XObject execution corrupted the stack.\n) pdfformaterror
+    (               Output may be incorrect.\n) pdfformaterror
+    PDFSTOPONERROR {
+       /.execgroup cvx /rangecheck signalerror
+    } {
+      dup 0 gt {
+        { pop } repeat
+      }{
+        pop
+      } ifelse
+    } ifelse
+  } {
+    pop
+  } ifelse
+
   /pdfemptycount exch store
 } bind executeonly def
 
@@ -797,12 +814,22 @@ def
   %% as arguments to .execgroup
   mark currentcolor counttomark array astore exch pop
   currentcolorspace 5 2 roll
-
-  dup /Group oget exch /BBox oget
+  dup /Group oget dup type /dicttype eq {
+    exch /BBox oget dup type /arraytype eq {
                 % Stack: resdict stream groupdict bbox
-  .beginformgroup
-  .execgroup
-  .endtransparencygroup
+      .beginformgroup
+      .execgroup
+      .endtransparencygroup
+    }{
+      (   **** Error: Form XObject has a BBox entry with an invalid type.\n) pdfformaterror
+      (               Ignoring transparency Group, output may be incorrect.\n) pdfformaterror
+      pop pop pop pop pop pop
+    } ifelse
+  } {
+    (   **** Error: Form XObject has a Group entry with an invalid type.\n) pdfformaterror
+    (               Ignoring transparency Group, output may be incorrect.\n) pdfformaterror
+    pop pop pop pop pop pop
+  } ifelse
 } bind executeonly def
 
 % Make an ImageType 103 (soft-masked) image.
@@ -874,7 +901,15 @@ currentdict /csncompdict undef
   dup dup 1 oget
   mark exch { oforce } forall .dicttomark
   dup dup //true resolvestream
-  /ReusableStreamDecode filter /DataSource exch put
+  {
+    /ReusableStreamDecode filter
+  } stopped
+  {
+    pop null
+%    (   **** Error: Failed to read ICC profile for an ICCBased colour space.\n) pdfformaterror
+%    (               Falling back to a colour space determined by the /N value.\n) pdfformaterror
+  }if
+  /DataSource exch put
   dup /.hash 0 put	% placeholder for use by seticc icc_profile_cache key
   % Check that the number of components (/N) defined in the ICCBased
   % dictionry matches the actual profile. Bug #696120
@@ -1470,7 +1505,7 @@ drawopdict begin
 
   /sh {
       OFFlevels length 0 eq {
-        setfillstate resolvesh
+        setsmaskstate resolvesh
         //sh_save 0 save put
         PDFusingtransparency {
           gsave
@@ -1723,14 +1758,16 @@ currentdict /jp2_csp_dict .undef
 % <resdict> <key> <value> -> <resdict>
 /add-to-last-param {
   2 index /DecodeParms knownoget {
-    dup {} eq {
+    dup type /dicttype ne 1 index type /arrratype ne and 1 index length 1 lt or {
       pop //false
     } {
       //true
     } ifelse
   } {
     //false
-  } ifelse {
+  }
+  ifelse
+  {
     dup type /arraytype eq {
       [ exch { oforce } forall
         dup //null eq { pop 1 dict } if
@@ -2145,25 +2182,48 @@ currentdict /last-ditch-bpc-csp undef
   %% and don't exhaust memory. Note that we have to copy the actual colour space array too, copying
   %% the dictionary just copies the opriginal array as well.
   %%
-  dup /ColorSpace known {
-    dup /ColorSpace get dup type /arraytype eq {
-      exch dup length dict copy exch
-      dup length array copy /ColorSpace exch 2 index 3 1 roll put
-    } {pop} ifelse
-  } if
+  1 dict begin
+  /.ImageDictStackDepth countdictstack def
+  /.ImageOpStackDepth count 2 sub def
+  {
+    dup /ColorSpace known {
+      dup /ColorSpace get dup type /arraytype eq {
+        exch dup length dict copy exch
+        dup length array copy /ColorSpace exch 2 index 3 1 roll put
+      } {pop} ifelse
+    } if
 
-  checkaltimage dup length 6 add dict  % <<image>> <<>>
-  1 index /SMask knownoget {           % <<image>> <<>> <<sm>>
-    dup 3 index ne {                   % <<image>> <<>> <<sm>> <<sm>>
-      1 index exch /SMask exch put
-    } {
-      pop
-      (   **** Error: ignoring recursive /SMask attribute.\n) pdfformaterror
-      (               Output may be incorrect.\n) pdfformaterror
-    } ifelse
+    checkaltimage dup length 6 add dict  % <<image>> <<>>
+    1 index /SMask knownoget {           % <<image>> <<>> <<sm>>
+      dup 3 index ne {                   % <<image>> <<>> <<sm>> <<sm>>
+        1 index exch /SMask exch put
+      } {
+        pop
+        (   **** Error: ignoring recursive /SMask attribute.\n) pdfformaterror
+        (               Output may be incorrect.\n) pdfformaterror
+      } ifelse
+    } if
+    1 index /Mask knownoget {
+      dup type dup /dicttype eq exch /arraytype eq or { % Bug #703681
+        1 index exch /Mask exch put
+      } {
+        pop
+        (   **** Error: Ignoring Mask attribute that is not an array or a dictionary.\n)
+        pdfformaterror
+      } ifelse
+    } if
+    makeimagedict doimagesmask
+  } PDFSTOPONERROR {exec false}{stopped} ifelse
+  {
+    (\n   **** Error: File encountered ')
+    $error /errorname get dup length string cvs concatstrings
+    (' error while processing an image.\n) concatstrings
+    (               Output may be incorrect.\n) concatstrings
+    pdfformaterror
   } if
-  1 index /Mask knownoget { 1 index exch /Mask exch put } if
-  makeimagedict doimagesmask
+  count .ImageOpStackDepth sub {pop} repeat
+  countdictstack .ImageDictStackDepth sub {end} repeat
+  end
 } bind executeonly def
 /makemaskimage {	% <datasource> <imagemask> <Mask> makemaskimage
                         %   <datasource> <imagemask>, updates currentdict =
@@ -2280,11 +2340,18 @@ currentdict /last-ditch-bpc-csp undef
     currentdict /SMask knownoget {
       % We are doing transparency and SMask is present in the image
       % stack: <imagemask> <SMask>
+      % Normalize /Matte attribute for .begintransparencymaskimage
+      dup /Matte .knownget {
+        oforce dup //null eq {
+          pop dup /Matte undef
+        } {
+          1 index /Matte [ 4 -1 roll { oforce } forall ] put
+        } ifelse
+      } if
       .begintransparencymaskimage
       PDFfile fileposition exch
       gsave //nodict begin
       //null .setSMask
-      1 .setopacityalpha 1 .setshapealpha
       1 CA 1 ca
       /Compatible .setblendmode
       DoImage
@@ -2302,12 +2369,17 @@ currentdict /last-ditch-bpc-csp undef
          % code only picks up the current colour space, not the space from the dictionary.
          currentdict /SMask get /Matte known {/CS currentdict /ColorSpace get dup pdfopdict /cs get exec } if
       >> 0 0 1 1
+      gsave 1 1 moveto 0 0 lineto
+      % If we get an error, just emit an empty box
+      { pathbbox } stopped { 0 0 0 0 } if
+      4 array astore grestore
+      /image
+      setup_trans
       .begintransparencygroup
-      .currentstrokeconstantalpha .currentfillconstantalpha .currentshapealpha .currentopacityalpha 5 -1 roll
+      .currentstrokeconstantalpha .currentfillconstantalpha 3 -1 roll
       1 .setfillconstantalpha 1 .setstrokeconstantalpha
-      1 .setopacityalpha 1 .setshapealpha
       doimage
-      .setopacityalpha .setshapealpha .setfillconstantalpha .setstrokeconstantalpha
+      .setfillconstantalpha .setstrokeconstantalpha
       .endtransparencygroup
       % tell the compositor we're done with the SMask.
       % Note that any SMask in the ExtGState should be reapplied
@@ -2320,10 +2392,10 @@ currentdict /last-ditch-bpc-csp undef
         % the image doesn't have an SMask, but the ExtGState does, force a group.
         << /Subtype /Group /Isolated //true >> 0 0 1 1
         .begintransparencygroup
-        .currentstrokeconstantalpha .currentfillconstantalpha .currentshapealpha .currentopacityalpha 5 -1 roll
-        1 .setopacityalpha 1 .setshapealpha
+        .currentstrokeconstantalpha .currentfillconstantalpha 3 -1 roll
+        1 .setfillconstantalpha 1 .setstrokeconstantalpha
         doimage
-        .setopacityalpha .setshapealpha .setfillconstantalpha .setstrokeconstantalpha
+        .setfillconstantalpha .setstrokeconstantalpha
         .endtransparencygroup
       } {
         doimage
@@ -2404,14 +2476,8 @@ currentdict /last-ditch-bpc-csp undef
       makemaskimage
   } if
                 % Stack: datasource imagemask
-  gsave 1 1 moveto 0 0 lineto
-  % If we get an error, just emit an empty box
-  { pathbbox } stopped { 0 0 0 0 } if
-  4 array astore grestore
-  /image
-  setup_trans
-  { currentdict end setfillstate //true ValidateDecode { imagemask } }
-  { ColorSpace setgcolorspace currentdict end setfillblend //false ValidateDecode { image } }
+  { currentdict end setsmaskstate //true ValidateDecode { imagemask } }
+  { ColorSpace setgcolorspace currentdict end setsmaskstate //false ValidateDecode { image } }
   ifelse
   PDFSTOPONERROR { exec //false } { stopped } ifelse {
     dup type /dicttype eq { pop } if % Sometimes image fails to restore the stack
@@ -2446,7 +2512,7 @@ currentdict /last-ditch-bpc-csp undef
 
 /.paintform {	% <formdict> <resdict> <stream> .paintform -
   1 index /FormResDict gput  % For broken forms that inherit resources from the context.
-  3 -1 roll dup /Group known PDFusingtransparency and {
+  3 -1 roll dup /Group oknown PDFusingtransparency and {
     .paintgroupform
   } {
     pop pdfopdict .pdfruncontext
@@ -2630,7 +2696,27 @@ pdfdict
     } forall
   } if
 
-  3 index //false /resolvestream cvx
+  3 index
+  % /Contents for the stream is not per the spec, but Acrobat handles it
+  dup /Contents knownoget
+  {
+      % We want to make it's a dictionary, and represents a stream
+      dup type /dicttype eq
+      {
+        dup /FilePosition known
+        {
+            PDFSTOPONERROR { /DoForm cvx /undefinedresource signalerror } if
+            (   **** Error: Invalid Form definition. Output may be incorrect.\n) pdfformaterror
+            exch pop
+        }
+        {pop} ifelse
+      }
+      {
+        pop
+      }
+      ifelse
+  }if
+  //false /resolvestream cvx
   /.paintform cvx
   ] cvx /PaintProc exch put
     % Adjust pdfemptycount since we have an extra dictionary on the stack
@@ -2667,6 +2753,38 @@ pdfdict
   } if
   pop
   /pdfemptycount exch store
+
+  % We've now seen Form XObjects leaving junk on the stack, so we
+  % can't assume that when we finish the form the stack will be restored
+  % nor can we assume that the junk won't include a 'mark' so we an't
+  % simply do a cleartomark. Instead clear the stack until we get back
+  % to a dictionary which contains /saved_DG. We can still get errors;
+  % if the stream removes too many objects from the stack we will end
+  % up with a stackunderflow, but there's nothing we can do about that.
+  dup type /dicttype eq not {
+    //true
+  } {
+    dup /saved_DG known {
+      //false
+    } {
+      //true
+    } ifelse
+  } ifelse
+  {
+    (   **** Error: Form stream left garbage on the stack, attempting to recover.\n) pdfformaterror
+    (               Output may be incorrect.\n) pdfformaterror
+    {
+      dup type /dicttype eq not {
+        pop
+      } {
+        dup /saved_DG known {
+          exit
+        } {
+          pop
+        } ifelse
+      } ifelse
+    } loop
+  } if
 
   %% Put back pre-existing Default* ColorSpace definitions.
     dup type /dicttype eq {
@@ -2751,6 +2869,7 @@ currentdict end readonly def
           {
             %% We are behaving as a printer, check the Print state
             /Print .knownget {
+              oforce
               /PrintState .knownget {
                 oforce
                 /OFF eq {
@@ -2770,6 +2889,7 @@ currentdict end readonly def
             /View .knownget {
               oforce
               /ViewState .knownget {
+                oforce
                 /OFF eq {
                   //false
                 }{
@@ -2816,7 +2936,7 @@ drawopdict begin
       (               Output may be incorrect.\n) pdfformaterror
       currentdict /qTextSaveMatrix get setmatrix
     } if
-    setfillblend
+    setsmaskstate
     PDFfile fileposition exch                      % pos /Name
 
     % Bug #698226, Acrobat signals an error for recursive XObjects in a PDF file
@@ -2951,6 +3071,12 @@ drawopdict begin
     /File PDFsource def
     currentdict makeimagekeys
     OFFlevels length 0 eq {
+      gsave 1 1 moveto 0 0 lineto
+      % If we get an error, just emit an empty box
+      { pathbbox } stopped { 0 0 0 0 } if
+      4 array astore grestore
+      /image
+      setup_trans
       doimage
     } {
       pop Width
@@ -3234,7 +3360,7 @@ end
       {} 2 index /S knownoget {
         /D eq { 2 index /D knownoget not { {3} } if exch pop } if
       } if
-      3 index /CA knownoget {.setopacityalpha} if
+      3 index /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       3 -1 roll pop
 %      2 index annotsetcolor {
       0 setdash setlinewidth stroke
@@ -3244,7 +3370,7 @@ end
       % If element 3 of the /Border array is 0, then don't draw the border
       dup 0 ne {
         exch dup length 3 gt { 3 get } { pop {} } ifelse
-        3 index /CA knownoget {.setopacityalpha} if
+        3 index /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
 %        2 index annotsetcolor {
         0 setdash setlinewidth stroke
 %        } if
@@ -3253,7 +3379,7 @@ end
       } ifelse
     } ifelse
   } {
-    3 index /CA knownoget {.setopacityalpha} if
+    dup /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
     1 {}
 %    2 index annotsetcolor {
     0 setdash setlinewidth stroke
@@ -3265,7 +3391,7 @@ end
 
 /fillborderpath {		% <annot> fillborderpath -
   gsave
-  dup /ca knownoget {.setopacityalpha} if
+  dup /ca knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
   annotsetinteriorcolor
   {fill} if
   grestore
@@ -3742,14 +3868,14 @@ currentdict /set_bc_color undef
       annotsetinteriorcolor
       {
         gsave
-        dup /ca knownoget {.setopacityalpha} if
+        dup /ca knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
         dup annotrect
         5 index /RD knownoget {
           applyRD
         } if
         rectfill
         grestore
-        dup /CA knownoget {.setopacityalpha} if
+        dup /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
         dup annotsetcolor {
           drawborder
         } if
@@ -3851,10 +3977,10 @@ currentdict /set_bc_color undef
 
       {
         gsave
-        dup /ca knownoget {.setopacityalpha} if
+        dup /ca knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
         fill
         grestore
-        dup /CA knownoget {.setopacityalpha} if
+        dup /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
         dup annotsetcolor {
           strokeborderpath
         } if
@@ -3890,7 +4016,7 @@ currentdict /set_bc_color undef
       dup 1 index exch lineto
       dup neg lineto
       closepath
-      1 index /CA knownoget {.setopacityalpha} if
+      1 index /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       1 index fillborderpath
       grestore
       3 mul
@@ -3916,7 +4042,7 @@ currentdict /set_bc_color undef
       2.5 mul dup
       0 moveto
       0 0 3 -1 roll 0 360 arc
-      1 index /CA knownoget {.setopacityalpha} if
+      1 index /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       1 index fillborderpath
       grestore
       3 mul dup
@@ -3941,7 +4067,7 @@ currentdict /set_bc_color undef
       dup 0 exch lineto
       0 lineto
       closepath
-      1 index /CA knownoget {.setopacityalpha} if
+      1 index /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       1 index fillborderpath
       grestore
       3 mul
@@ -3991,7 +4117,7 @@ currentdict /set_bc_color undef
       dup 2 div sub
       dup 8.4 mul neg 1 index 5.9 mul neg moveto dup 1.2 div neg 0 lineto
       dup 8.4 mul neg exch 5.9 mul lineto closepath
-      dup /CA knownoget {.setopacityalpha} if
+      dup /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       fillborderpath
       grestore
     } bind executeonly def
@@ -4050,7 +4176,7 @@ currentdict /set_bc_color undef
       dup 2 div sub
       dup 8.4 mul neg 1 index 5.9 mul neg moveto dup 1.2 div neg 0 lineto
       dup 8.4 mul neg exch 5.9 mul lineto closepath
-      dup /CA knownoget {.setopacityalpha} if
+      dup /CA knownoget {dup .setstrokeconstantalpha .setfillconstantalpha} if
       fillborderpath
       grestore
     } bind executeonly def
@@ -4090,7 +4216,7 @@ currentdict /set_bc_color undef
             3 index aload pop 4 2 roll pop pop
             translate
             0 0 moveto
-            atan                  % <annot> [x1 y1 x2 y2] [LE1 LE2]
+            {atan} stopped {pop pop 0} if           % <annot> [x1 y1 x2 y2] [LE1 LE2]
             rotate
             dup 1 get             % <annot> [x1 y1 x2 y2] [LE1 LE2] LE1
             dup //LineEnd_dict exch known not
@@ -4109,7 +4235,7 @@ currentdict /set_bc_color undef
             3 index aload pop pop pop
             translate
             0 0 moveto
-            atan 180 add
+            {atan} stopped {pop pop 0} if 180 add
             rotate
             0 get dup //LineEnd_dict exch known not {pop /None} if //LineEnd_dict exch get 3 index exch exec
             grestore
@@ -4137,15 +4263,16 @@ currentdict /set_bc_color undef
     } {
       gsave
       //startannottransparency exec
+      dup annotsetcolor pop
       dup /Vertices knownoget {
         1 index /LE knownoget {
           gsave
           1 index 0 4 getinterval aload pop
           4 2 roll
           2 copy translate 4 2 roll
-          3 -1 roll sub      % x1 x2 dy
-          3 1 roll exch sub  % dy dx
-          atan
+          3 -1 roll exch sub      % x1 x2 dy
+          3 1 roll sub  % dy dx
+          {atan} stopped {pop pop 0} if
           rotate
           dup 0 get dup //LineEnd_dict exch known not {pop /None} if //LineEnd_dict exch get 3 index exch exec
           grestore
@@ -4155,7 +4282,7 @@ currentdict /set_bc_color undef
           2 copy translate
           3 -1 roll sub      % x1 x2 dy
           3 1 roll exch sub  % dy dx
-          atan
+          {atan} stopped {pop pop 0} if
           rotate
           1 get dup //LineEnd_dict exch known not {pop /None} if //LineEnd_dict exch get 3 index exch exec
           grestore
@@ -4194,7 +4321,7 @@ currentdict /set_bc_color undef
     dup annotsetcolor {
       dup drawborder dup calc_annot_scale
       2 copy mul 0 ne
-      {3 -1 roll drawwidget //false}
+      {3 -1 roll drawwidget}
       {
         pop pop
         (   **** Error: ignoring annotation with scale factor of 0\n) pdfformaterror
@@ -4202,6 +4329,7 @@ currentdict /set_bc_color undef
       }ifelse
     } if
     //endannottransparency exec
+    //false
   } bind executeonly def
 
   /Ink { % <annot> -> <annot> <true>
@@ -4222,7 +4350,7 @@ currentdict /set_bc_color undef
             scale
             dup /InkList knownoget {
               { oforce
-                mark exch { oforce } forall
+                [ exch { oforce } forall ]
                 .pdfinkpath
                 stroke
               } forall
@@ -4514,11 +4642,11 @@ currentdict /set_bc_color undef
       dup annotrect rectclip
 
       dup /CA knownoget {
-        .setopacityalpha
+        dup .setstrokeconstantalpha .setfillconstantalpha
       } if
 
       dup /ca knownoget {
-        .setopacityalpha
+        dup .setstrokeconstantalpha .setfillconstantalpha
       } if
 
       dup /C knownoget {
@@ -4586,6 +4714,21 @@ currentdict /set_bc_color undef
         /K  {setcmykcolor}
       >> def
 
+      % Set some sane defaults, in case the /DA does not.
+      0 setgray
+      /Helvetica findfont
+      % re-encode the font to PDFDocEncoding
+      dup length dict begin
+      {
+        1 index /FID ne 2 index /UniqueID ne and { def } { pop pop } ifelse
+      } forall
+      /Encoding /PDFDocEncoding /Encoding findresource def
+      /FontName /Helvetica-PDFDocEncoding def
+      currentdict
+      end
+      /Helvetica-PDFDocEncoding exch definefont
+      12 scalefont setfont
+
       dup /DA knownoget {
         length string /tempstr exch def
         dup /DA get tempstr copy pop
@@ -4620,21 +4763,7 @@ currentdict /set_bc_color undef
         } stopped
         {cleartomark setgstate}
         {cleartomark pop} ifelse
-      } {
-        0 setgray
-        /Helvetica findfont
-        % re-encode the font to PDFDocEncoding
-        dup length dict begin
-        {
-          1 index /FID ne 2 index /UniqueID ne and { def } { pop pop } ifelse
-        } forall
-        /Encoding /PDFDocEncoding /Encoding findresource def
-        /FontName /Helvetica-PDFDocEncoding def
-        currentdict
-        end
-        /Helvetica-PDFDocEncoding exch definefont
-        12 scalefont setfont
-      }ifelse
+      } if
 
       %% draw the border, if we don't have a border style dictionary, draw a default one.
       dup /BS knownoget
@@ -5301,14 +5430,9 @@ currentdict /drawannottypes undef
 
 /Ink {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
 
-/Line {
-  mark exch dup /L .knownget {
-    aload 5 1 roll transform 4 -2 roll transform 4 2 roll
-    5 -1 roll astore
-    1 index /L 3 -1 roll put
-  } if
-  loadannot /ANN pdfmark //false
-} bind executeonly def
+/PolyLine {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
+
+/Line {mark exch loadannot /ANN pdfmark //false} bind executeonly def
 
 /Link {
     /NO_PDFMARK_DESTS where {pop NO_PDFMARK_DESTS not}{//true}ifelse
@@ -5398,7 +5522,8 @@ currentdict /drawannottypes undef
     //false
 } bind executeonly def
 
-/Movie {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
+%% We don't handle movies correctly, so don't try to preserve them
+%/Movie {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
 /Popup {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
 /Sound {mark exch loadannot /ANN pdfmark  //false} bind executeonly def
 /Square {mark exch loadannot /ANN pdfmark //false} bind executeonly def
@@ -5659,22 +5784,25 @@ currentdict end def
 % The recursive enumeration of the form fields doesn't descend into widget annotations.
 
 /draw_form_field { % <field> draw_form_field -
-  dup /Kids knownoget {                       % field []
-    dup length 0 gt {
-      dup 0 oget /Parent knownoget {            % field [] kid
-        pop % mon-terminal field                % field []
-        exch pop                                % []
-        { oforce draw_form_field } forall
+  dup type /dicttyype eq {	% File for Bug692447 has 'null' Fields entries
+                                % This matches what pdf_main process_trailer_attrs
+    dup /Kids knownoget {                       % field []
+      dup length 0 gt {
+        dup 0 oget /Parent knownoget {            % field [] kid
+          pop % mon-terminal field                % field []
+          exch pop                                % []
+          { oforce draw_form_field } forall
+        } {
+          pop draw_terminal_field % separate annots % -
+        } ifelse
       } {
-        pop draw_terminal_field % separate annots % -
+          (  **** Error: Ignoring empty /Kids array in Form field.\n) pdfformaterror
+          (              Output may be incorrect.\n) pdfformaterror
       } ifelse
     } {
-        (  **** Error: Ignoring empty /Kids array in Form field.\n) pdfformaterror
-        (              Output may be incorrect.\n) pdfformaterror
+      draw_terminal_field % merged annotation   % -
     } ifelse
-  } {
-    draw_terminal_field % merged annotation   % -
-  } ifelse
+  } if
 } bind executeonly def
 
 /draw_acro_form {		% <form> draw_acro_form -

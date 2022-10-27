@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!(o is CreatorAppSettings)) return false;
 			CreatorAppSettings v = o as CreatorAppSettings;
 			
-			if (!HotStandbyMinutes.Equals(v.HotStandbyMinutes)) return false;
+			if (!Object.Equals(HotStandbyMinutes, v.HotStandbyMinutes)) return false;
 			return true;
 		}
 		

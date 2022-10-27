@@ -1,86 +1,77 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:quickActionStep="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeQuickActionViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="QuickAction">
     <UserControl.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Padding" Value="0 10 0 3"></Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/OutputFormat/OutputFormatIconAndDescriptionControl.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel>
-        <DockPanel.Resources>
-            <Style TargetType="Separator">
-                <Setter Property="BorderThickness" Value="0 1 0 0" />
-                <Setter Property="BorderBrush" Value="#FFCCCCCC" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-            </Style>
-        </DockPanel.Resources>
+    <DockPanel Margin="0 20">
+        <Label DockPanel.Dock="Top"
+               Content="{Binding Translation.QuickActionWorkflowStepTitle}"
+               Style="{StaticResource LargeLabel}" />
 
-        <StackPanel Margin="10 0 0 0" DockPanel.Dock="Bottom">
+        <DockPanel DockPanel.Dock="Top" Margin="0 20 0 0">
+            <ContentControl Style="{StaticResource OutputFormatIconAndDescriptionControl}" />
+
+            <StackPanel DockPanel.Dock="Top" Margin="30 0 0 0">
+                <Label Content="{Binding Translation.SelectFilename}" />
+                <TextBox Margin="0 10 0 0"
+                         TextWrapping="Wrap" Text="{Binding FileName}"
+                         Padding="0"
+                         Height="Auto"
+                         IsReadOnly="True" Background="Transparent"
+                         AcceptsReturn="True" />
+
+                <Label Margin="0 20 0 0"
+                       Content="{Binding Translation.SelectFolder}" />
+                <TextBox Margin="0 10 0 0"
+                         TextWrapping="Wrap" Text="{Binding FileDirectory, Mode=OneWay}"
+                         Padding="0"
+                         Height="Auto"
+                         IsReadOnly="True" Background="Transparent"
+                         AcceptsReturn="True" />
+
+                <Label Margin="0 20 0 0"
+                       Content="{Binding Translation.TotalFileSize}" />
+                <TextBlock Margin="0 10 0 0"
+                           TextWrapping="Wrap" Text="{Binding FileSize}" />
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
             <CheckBox Content="{Binding Translation.DontShowUntilNextUpdate}" IsChecked="{Binding IsActive}" Margin="0 0 0 10" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <StackPanel.Resources>
-                    <Color x:Key="MenuItem.MouseOver.Color" >#DDDDDD</Color>
-                    <SolidColorBrush x:Key="MenuItemSelectionFill" Color="{StaticResource MenuItem.MouseOver.Color}" />
-                    <SolidColorBrush x:Key="MenuItemSelectionStroke" Color="{StaticResource MenuItem.MouseOver.Color}" />
-                </StackPanel.Resources>
 
-                <controls:DropDownButton
-                    ItemsSource="{Binding QuickActionSendList}"
-                    Content ="{Binding Translation.Send}"
-                    Width="110"
-                    Margin="10"
-                    Style ="{DynamicResource CustomColorDropDownButton}" />
+            <UniformGrid Margin="-5 20 -5 0" Rows="1">
+                <buttons:ColoredDropDownButton Margin="5 0"
+                                               ItemsSource="{Binding QuickActionSendList}"
+                                               Content ="{Binding Translation.Send}"
+                                               Background="{StaticResource DefaultButtonBackgroundBrush}" />
 
-                <controls:DropDownButton
+                <buttons:ColoredDropDownButton Margin="5 0"
                     ItemsSource="{Binding QuickActionOpenList}"
                     Content ="{Binding Translation.Open}"
-                    Width="110"
-                    Margin="10"
-                    Style ="{DynamicResource CustomColorDropDownButton}" />
+                    Background="{StaticResource DefaultButtonBackgroundBrush}" />
 
-                <Button
+                <Button Margin="5 0"
                     IsDefault="True"
                     Content="{Binding Translation.OkButton}"
-                    Style="{DynamicResource FlatGreenButton}"
-                    Command ="{Binding FinishCommand}"
-                    Margin="10"
-                    Width="110" />
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Margin="10 0 0 0" Orientation="Vertical" FlowDirection="LeftToRight">
-            <TextBlock Text="{Binding Translation.QuickActionWorkflowStepTitle}"
-                       FontWeight="Bold"
-                       TextAlignment="Left"
-                       FontSize="24"
-                       Margin="0,10">
-            </TextBlock>
-
-            <DockPanel Margin="0 10 0 0">
-                <ContentControl Margin ="0 10 20 0" ContentTemplate="{DynamicResource FileTypeIconDropDownTemplate}" />
-                <StackPanel VerticalAlignment="Center">
-
-                    <Label FontWeight="Bold" Content="{Binding Translation.SelectFilename}" />
-                    <TextBox TextWrapping="Wrap"  Margin ="-5 0 0 0" Text="{Binding FileName}"  BorderThickness="0" IsReadOnly="True" Background="Transparent" />
-
-                    <Label FontWeight="Bold" Content="{Binding Translation.SelectFolder}" />
-                    <TextBox TextWrapping="Wrap" Margin ="-5 0 0 0" Text="{Binding FileDirectory, Mode=OneWay}" BorderThickness="0" IsReadOnly="True" Background="Transparent" />
-
-                    <Label FontWeight="Bold" Content="{Binding Translation.TotalFileSize}" />
-                    <TextBlock TextWrapping="Wrap" Text="{Binding FileSize}" />
-                </StackPanel>
-            </DockPanel>
+                    Style="{DynamicResource AffirmativeButton}"
+                    Command ="{Binding FinishCommand}" />
+            </UniformGrid>
         </StackPanel>
     </DockPanel>
 </UserControl>

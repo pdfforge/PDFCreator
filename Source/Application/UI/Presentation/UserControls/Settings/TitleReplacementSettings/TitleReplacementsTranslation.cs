@@ -5,7 +5,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
     public class TitleReplacementsTranslation: ITranslatable
     {
         public string CancelButtonContent { get; private set; } = "Cancel";
-        public string Title { get; private set; } = "Title";
         public string EditTextReplacementTitle { get; private set; } = "Edit Title Replacement";
         public string RadioButtonRemoveAll { get; private set; } = "Remove All";
         public string RadioButtonRemoveAtBeginning { get; private set; } = "Remove at beginning";
@@ -16,9 +15,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         public string SearchForText { get; private set; } = "Search for:";
         public string SearchModelText { get; private set; } = "Search mode:";
         public string ReplaceWithText { get; private set; } = "Replace with:";
-        public string OkButtonContent { get; private set; } = "OK";
+        public string OkButtonContent { get; private set; } = "Ok";
         public string PreviewTitleText { get; private set; } = "Replaced Title:";
         public string SampleTitleText { get; private set; } = "Sample Title:";
+        public string AddTitle { get; private set; } = "Add Title";
         public string TitleReplacementControlHeader { get; private set; } = "Title Replacement";
         public string TitleReplacementPreviewHeader { get; private set; } = "Preview";
 

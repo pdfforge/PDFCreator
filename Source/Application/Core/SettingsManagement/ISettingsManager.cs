@@ -1,5 +1,6 @@
 using System;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {

@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -47,7 +38,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -111,6 +101,11 @@
 <li><a href="#CIDDecodingResources">CIDDecoding resources</a></li>
 <li><a href="#GlyphNames2Unicode">GlyphNames2Unicode</a></li>
 <li><a href="#MultipleResourceDirectories">Multiple Resource directories</a></li>
+</ul>
+<li><a href="#PDF_scripting">Scripting the PDF interpreter</a></li>
+<ul>
+<li><a href="#PS_functions">PostScript functions</a></li>
+<li><a href="#PDF_PS_operators">PostScript operators</a></li>
 </ul>
 </ul></blockquote>
 
@@ -458,11 +453,13 @@ class="offsite">Adobe
 Technical Note</a> #5407, "<a
 href="http://partners.adobe.com/asn/developer/acrosdk/DOCS/PDF_Transparency.pdf"
 class="offsite">Transparency
-in PDF</a>". Note, however, that
-Ghostscript's model generalizes that of PDF 1.4 in that Ghostscript
-maintains separate alpha and mask values for opacity and shape, rather than
-a single value with a Boolean that says whether it represents opacity or
-shape.</p>
+in PDF</a>". Previously (in 9.52 and earlier), Ghostscript's model
+maintained separate alpha and mask values for opacity and shape.  This
+model has been changed (as of 9.53) and instead Ghostscript maintains separate
+float values for stroke and fill alpha values with a boolean that indicates
+if these should be interpreted as shape or alpha values to be more in line with the
+PDF specification.
+</p>
 <p>
 What follows is a subset of all the custom operators related to transparency, but
 covers the most useful, most common requirements.
@@ -504,25 +501,70 @@ the blending mode is <code>/Compatible</code>.</dd>
 </dl>
 
 <dl>
-<dt><code>&lt;0..1&gt; .setopacityalpha -</code></dt>
+<dt><code>[Deprecated as of 9.53] &lt;0..1&gt; .setopacityalpha -</code></dt>
 <dd>Sets the opacity alpha value in the graphics state.
-The initial opacity alpha value is 1.</dd>
+The initial opacity alpha value is 1.  Note, it is strongly
+suggested that this method not be used as it currently may
+give inconsistent results when mixed with methods that
+set stroke and fill alpha values. </dd>
 </dl>
 
 <dl>
-<dt><code>- .currentopacityalpha &lt;0..1&gt;</code></dt>
-<dd>Returns the graphics state opacity alpha on the stack.</dd>
+<dt><code>[Deprecated as of 9.53] - .currentopacityalpha &lt;0..1&gt;</code></dt>
+<dd>Returns the graphics state opacity alpha on the stack. Note, it is strongly
+suggested that this method not be used as it currently may
+give inconsistent results when mixed with methods that
+set stroke and fill alpha values.</dd>
 </dl>
 
 <dl>
-<dt><code>&lt;0..1&gt; .setshapealpha -</code></dt>
+<dt><code>[Deprecated as of 9.53] &lt;0..1&gt; .setshapealpha -</code></dt>
 <dd>Sets the shape alpha value in the graphics state.
-The initial shape alpha value is 1.</dd>
+The initial shape alpha value is 1. Note, it is strongly
+suggested that this method not be used as it currently may
+give inconsistent results when mixed with methods that
+set stroke and fill alpha values.</dd>
 </dl>
 
 <dl>
-<dt><code>- .currentshapealpha &lt;0..1&gt;</code></dt>
-<dd>Returns the graphics state shape alpha on the stack.</dd>
+<dt><code>[Deprecated as of 9.53] - .currentshapealpha &lt;0..1&gt;</code></dt>
+<dd>Returns the graphics state shape alpha on the stack. Note, it is strongly
+suggested that this method not be used as it currently may
+give inconsistent results when mixed with methods that
+set stroke and fill alpha values.</dd>
+</dl>
+
+<dl>
+<dt><code>&lt;0..1&gt; .setstrokeconstantalpha -</code></dt>
+<dd>Sets the stroke alpha value in the graphics state.
+The initial stroke alpha value is 1.</dd>
+</dl>
+
+<dl>
+<dt><code> - .currentstrokeconstantalpha &lt;0..1&gt;</code></dt>
+<dd>Returns the graphics state stroke alpha value on the stack.</dd>
+</dl>
+
+<dl>
+<dt><code>&lt;0..1&gt; .setfillconstantalpha -</code></dt>
+<dd>Sets the fill alpha value in the graphics state.
+The initial fill alpha value is 1.</dd>
+</dl>
+
+<dl>
+<dt><code> - .currentfillconstantalpha &lt;0..1&gt;</code></dt>
+<dd>Returns the graphics state fill alpha value on the stack.</dd>
+</dl>
+
+<dl>
+<dt><code>&lt;bool&gt; .setalphaisshape -</code></dt>
+<dd>If true, the values set by setstrokeconstantalpha and setfillconstantalpha are interpreted as shape values.
+The initial value of the AIS flag is <code>false</code>.</dd>
+</dl>
+
+<dl>
+<dt><code> - .currentalphaisshape &lt;0..1&gt;</code></dt>
+<dd>Returns the graphics state alpha is shape (AIS) on the stack.</dd>
 </dl>
 
 <dl>
@@ -576,7 +618,7 @@ onto the group that now becomes current.</dd>
 </dl>
 
 <dl>
-<dt><code>&lt;paramdict&gt; &lt;llx&gt; &lt;lly&gt; &lt;urx&gt; &lt;ury&gt;
+<dt><code>&lt;cs_set?&gt; &lt;paramdict&gt; &lt;llx&gt; &lt;lly&gt; &lt;urx&gt; &lt;ury&gt;
 .begintransparencymaskgroup -</code></dt>
 <dd>Begins a new transparency mask, which is represented as a group.
 The <code>ll/ur</code> coordinates
@@ -592,6 +634,22 @@ are the bounding box of the mask in the current user coordinate system.
 <dd>(optional) Function object (produced by applying
 <code>.buildfunction</code> to a Function dictionary).</dd>
 </dl>
+The <code>cs_set</code> parameter is a boolean indicating whether the color
+space for the mask group is the current color space in the graphics state, or
+whether mask group color space should be inherited from the previous group
+in the transparency group stack. In general, for the most consistent results,
+it is recommended that this be set to <code>true</code>, and the intended
+color space set in the graphics state prior to the <code>.begintransparencymaskgroup</code>
+call.
+</dl>
+<dl>
+<dt><code>&lt;mask#&gt; .endtransparencymask -</code></dt>
+<dd>Ends the current transparency mask group, compositing the mask group being ended
+and setting it as the current soft mask in the graphics state.
+<p>
+The <code>mask#</code> parameter indicates whether the mask should be treated as
+as opacity mask (<code>0</code>) or shape (<code>1</code>).
+</dd>
 </dl>
 
 <h5><a name="Transparency_ImageType"></a>New ImageType</h5>
@@ -969,24 +1027,6 @@ in place until the interpreter shuts down.
 <dd>
 Returns <code>true</code> on the operand stack if file access control has been
 activated, <code>false</code> if not.
-</dd>
-</dl>
-
-<dl>
-<dt><a name=".setpdfwrite"></a>
-<code>.setpdfwrite</code></dt>
-<dd>
-<strong>This operator is now deprecated, and its use is discouraged</strong>
-<p>This operator conditions the environment for the <tt>pdfwrite</tt> output device.
-It is a shorthand for setting parameters that have been deemed benificial. While not strictly necessary, it is usually helpful to set call this when using the pdfwrite device.
-For example, this is how the ps2pdf script calls Ghostscript:
-<blockquote><code>
-gs -q -dSAFER -dNOPAUSE -dBATCH -sOutputFile=file.pdf </code><em>[more options]</em><code> \<br>
-&nbsp;&nbsp;-sDEVICE=pdfwrite -c .setpdfwrite -f </code><em>source1.ps [more files]</em>
-</blockquote>
-<p>Currently, the operator just sets a minimum 3&nbsp;MB vmthreshold to allow for
-accumulating shared object data and to reduce the incidence of garbage
-collection as a performance improvement. Additional settings may be added in the future.</p>
 </dd>
 </dl>
 
@@ -1709,7 +1749,10 @@ the <code>BufferSpace</code> parameter, not <code>BandBufferSpace</code>.</p>
 <dd>The height of bands when banding.  0 means use the largest band height
 that will fit within the <code>BandBufferSpace</code> (or <code>BufferSpace</code>,
 if <code>BandBufferSpace</code> is not specified). If <code>BandHeight</code>
-is larger than the number of lines that will fit in the buffer, opening the device will fail.</dd>
+is larger than the number of lines that will fit in the buffer, opening the device will fail.
+If the value is -1, the  BandHeight will automatically be set to the page height
+(1 band for the entire page). This is primarily for developers debugging clist issues.
+</dd>
 </dl>
 
 <dl>
@@ -2006,13 +2049,254 @@ specifying an absolute path. The default value for
 a default invocation with a PostScript installer
 will install resource files into <code>/gs/Resource</code>.</p>
 
+<h2><a name="PDF_scripting"></a>Scripting the PDF interpreter</h2>
+
+<h3><a name="PS_functions"></a>PostScript functions</h3>
+
+<p>We have not previously documented the internals of the Ghostscript PDF interpreter, but we have, on
+occasion, provided solutions that rely upon scripting the interpreter from PostScript. This was
+possible because the interpreter was written in PostScript.</p>
+
+<p>From release 9.55.0 Ghostscript comes supplied with two PDF interpreters, the original written in PostScript
+and a brand-new interpreter written in C. While the new interpreter can be run as part of the GhostPDL family
+it has also been integrated into Ghostscript, and can be run from the PostScript environment in a similar fashion
+to the old interpreter. We plan to deprecate, and eventually remove, the old interpreter and carry on with the new one.</p>
+
+<p>Because we have supplied solutions in the past based on the old interpreter, we have had to implement
+the same capabilities in the integration of the new interpreter. Since this has meant discovering which internal
+portions were being used, working out how those function, and duplicating them anew, it seemed a good time to
+document these officially, so that in future the functionality would be available to all.</p>
+
+<p>The following functions existed in the original PDF interpreter and have been replicated for the new
+interpreter. It should be possible to use these for the forseeable future.</p>
+
+<dt><code>&ltfile&gt runpdf - </code></dt>
+<dd>     Called from the modified PostScript run operator (which copies stdin to a temp
+     file if required). Checks for PDF collections, processes all requested pages.</dd>
+
+<p><dt><code>&ltfile&gt runpdfbegin -</code></dt>
+<dd>     This must be called before performing any further operations. Its exact action depends on which
+interpreter is being used, but it essentially sets up the environment to process the file as a PDF</dd></p>
+
+<p><dt><code>&ltint&gt pdfgetpage &ltpagedict&gt | &ltnull&gt</code></dt>
+<dd>     int is a number from 1 to N indicating the desired page number from
+     the PDF file. Returns the a dictionary containing various informational key/value pairs.
+     If this fails, returns a null object.</dd></p>
+
+<p><dt><code> - pdfshowpage_init -</code></dt>
+<dd>     In the PostScript PDF interpreter this simply adds 1 to the /DSCPageCount value in a dictionary.
+It has no effect in the new PDF interpreter but is maintained for backwards compatibility.</dd></p>
+
+<p><dt><code>&ltpagedict&gt pdfshowpage_setpage &ltpagedict&gt</code></dt>
+<dd>     Takes a dictionary as returned from pdfgetpage, extracts various
+     parameters from it, and sets the media size for the page, taking into
+     account the boxes, and requested Box, Rotate value and PDFFitPage.</dd></p>
+
+<p><dt><code>&ltpagedict&gt pdfshowpage_finish -</code></dt>
+<dd>     Takes a dictionary as returned from pdfgetpage, renders the page content
+     executes showpage to transfer the rendered content to the device.</dd></p>
+
+<p><dt><code>- runpdfend        -</code></dt>
+<dd>     Terminates the PDF processing, executes restore and various cleanup activities.</dd></p>
+
+<p><dt><code>&ltfile&gt pdfopen &ltdict&gt</code></dt>
+<dd>     Open a PDF file and read the header, trailer
+     and cross-reference.</dd></p>
+
+<p><dt><code>&ltdict&gt pdfclose -</code></dt>
+<dd>     Terminates processing the original PDF file object. The dictionary parameter
+ should be the one returned from pdfopen</dd></p>
+
+<p><dt><code>&ltpagedict&gt pdfshowpage -</code></dt>
+<dd>     Takes a dictionary returned from pdfgetpage and calls the pdfshowpage_init
+     pdfshowpage_setpage, pdfshowpage_finish trio to start the page, set up the
+     media and render the page.</dd></p>
+
+<p><dt><code>&ltint&gt &ltint&gt dopdfpages -</code></dt>
+<dd>     The integers are the first and last pages to be run from the file. Runs a loop from
+     the fist integer to the last. NOTE! If the current dictionary contains a PDFPageList
+     array then we 'get' the entry from the array corresponding to the current loop
+     index, and use that to determine whether we should draw the page. Otherwise we
+     simply draw the page. Uses pdfshowpage to actually render the page.</dd></p>
+
+<p><dt><code>- runpdfpagerange &ltint&gt &ltint&gt</code></dt>
+<dd>     Processes the PostScript /FirstPage, /LastPage and /PageList parameters. These are used together to build an internal array
+     of page numbers to run, which is used by dopdfpages to actually process the pages if PageList is present,
+     and a FirstPage and LastPage value. Despite the name this function does not actually 'run' any pages at all.</dd></p>
+
+<p>Normal operation simply calls runpdf with an opened-for-read PostScript file object. The table below shows the normal
+calling sequence</p>
+
+<blockquote><table>
+<tr valign="bottom">
+    <th align="left">Function</th>
+    <th>&nbsp;&nbsp;</th>
+    <th align="left">Calls</th>
+    <th>&nbsp;&nbsp;</th>
+    <th align="left">Calls</th>
+    <th>&nbsp;&nbsp;</th>
+    <th align="left">Calls</th></tr>
+<tr valign="top">
+    <td>runpdf</td>
+    <td>&nbsp;</td>
+    <td>runpdfbegin</td>
+    <td>&nbsp;</td>
+    <td>pdfopen</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>process_trailer_attrs</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>runpdfpagerange</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>dopdfpages</td>
+    <td>&nbsp;</td>
+    <td>pdfgetpage</td>
+    <td>&nbsp;</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>pdfshowpage</td>
+    <td>&nbsp;</td>
+    <td>pdfshowpage_init</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>pdfshowpage_setpage</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>pdfshowpage_finish</td></tr>
+<tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>runpdfend</td>
+    <td>&nbsp;</td>
+    <td>pdfclose</td>
+    <td>&nbsp;</td></tr>
+</table></blockquote>
+
+<p>It is important to get the number of spots and the presence of transparency correct when
+rendering. Failure to do so will lead to odd output, and potentially crahses. This can be important in situations
+such as N-up ordering.</p>
+<p>As an example, if we have 2 A4 pages and want to render them side-by-side on A3 media, we might set up
+the media size to A3, draw the first page contents, translate the origin, draw the second page contents
+and then render the final content. If the first PDF page did not contain transparency, but the second did, it
+would be necessary to set /PageHasTransparency before drawing the first PDF page.</p>
+
+<h3><a name="PDF_PS_operators"></a>PostScript operators interfacing to the PDF interpreter</h3>
+<p>The PostScript functions documented above must somehow interface with the actual PDF interpreter, and this is done
+using a small number of custom PostScript operators. These operators do not exist in standard PostScript; they
+are specific to the Ghostscript implementation. These operators are documented here for the benefit of any
+developers wishing to use them directly.</p>
+
+<p><dt><code>dict .PDFInit &ltPDFContext&gt</code></dt>
+<dd>     Initialises an instance of the PDF interpreter. dict is an optional dictionary that contains any interpreter-level
+switches, such as PDFDEBUG, this is used to set the initial state of the PDF interpreter.
+The return value is a PDFcontext object which is an opaque object to be used with the other PDF operators.</dd></p>
+
+<p><dt><code>filename PDFcontext .PDFFile -</code></dt>
+<dd>     Opens a named file and associates it with the instance of the PDF interpreter.
+Filename is a string containing a fully qualified path to the PDF file to open, this file must have been made accesible
+by setting --permit-file-read.
+</dd></p>
+
+<p><dt><code>file PDFcontext .PDFStream -</code></dt>
+<dd>     Takes an already open (disk-based) file and associates it with the instance of the PDF interpreter.
+</dd></p>
+
+<p><dt><code>PDFcontext .PDFClose -</code></dt>
+<dd>     If the context contains an open PDF file which was opened via the .PDFfile operator, this closes the file.
+Files associated with the context by the .PDFStream operator are unaffected. Regardless of the source it then shuts down the PDF interpreter and frees the associated memory.
+</dd></p>
+
+<p><dt><code>PDFcontext .PDFInfo dict</code></dt>
+<dd>     PDFcontext is a PDFcontext object returned from a previous call to .PDFInit.
+The returned dictionary contains various key/value pairs with useful file level information:
+<blockquote>
+    <code>/NumPages</code> int<br>
+	<code>/Creator</code> string<br>
+	<code>/Producer</code> string<br>
+	<code>/IsEncrypted</code> boolean<br>
+</blockquote>
+</dd></p>
+
+<p><dt><code>PDFcontext .PDFMetadata -</code></dt>
+<dd>     PDFcontext is a PDFcontext object returned from a previous call to .PDFInit.
+For the benefit of high level devices, this is a replacement for 'process_trailer_attrs' which is a seriously misnamed function now.
+This function needs to write any required output intents, load and send Outlines to the device, copy the Author, Creator, Title, Subject
+and Keywords from the Info dict to the output device, copy Optional Content Properties (OCProperties) to the output device.
+If an AcroForm is present send all its fields and link widget annotations to fields, and finally copy the PageLabels. If we add support for anything else, it will be here too..
+</dd></p>
+
+<p><dt><code>PDFcontext int .PDFPageInfo -</code></dt>
+<dd>     The integer argument is the page number to retrieve information for.
+Returns a dictionary with the following key/value pairs:
+<blockquote>
+    <code>/UsesTransparency</code> true|false<br>
+	<code>/SpotColours</code> array of names, may be empty|<br>
+	<code>/MediaBox</code> [llx lly urx ury]<br>
+	<code>/HasAnnots</code> true|false<br>
+	<code>/FontsUsed</code> array of names, may be empty.<br>
+</blockquote>
+May also contain (if they are present in the Page dictionary)
+<blockquote>
+	<code>/ArtBox</code> [llx lly urx ury]<br>
+	<code>/CropBox</code> [llx lly urx ury]<br>
+	<code>/BleedBox</code> [llx lly urx ury]<br>
+	<code>/TrimBox</code> [llx lly urx ury]<br>
+	<code>/UserUnit</code> int<br>
+</blockquote>
+</dd></p>
+
+<p><dt><code>PDFcontext int .PDFDrawPage -</code></dt>
+<dd>     PDFcontext is a PDFcontext object returned from a previous call to .PDFInit.
+The integer argument is the page number to be processed.
+Interprets the page content stream(s) of the specified page using the current graphics state.
+</dd></p>
+
+<p><dt><code>PDFcontext int .PDFDrawAnnots -</code></dt>
+<dd>     PDFcontext is a PDFcontext object returned from a previous call to .PDFInit.
+The integer argument is the page number to be processed.
+Renders the Annotations (if any) of the specified page using the current graphics state
+For correct results, the graphics state when this operator is run should be the same as when
+PDFDrawPage is executed.
+</dd></p>
+
+<p>Note: The PDFcontext object created by PDFInit must (clearly) have a PDF file associated
+with it before you can usefully use it. Attempting to use a PDFcontext with
+any of the processing operators (eg .PDFDrawPage) before using either .PDFStream of .PDFFile
+to associate a file with the context will result in an error.
+</p>
 <!-- [2.0 end contents] ==================================================== -->
 
 <!-- [3.0 begin visible trailer] =========================================== -->
 <hr>
 
 <p>
-<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+<small>Copyright &copy; 2000-2021 Artifex Software, Inc.  All rights reserved.</small>
 
 <p>
 This software is provided AS-IS with no warranty, either express or
@@ -2025,7 +2309,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -2052,7 +2336,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

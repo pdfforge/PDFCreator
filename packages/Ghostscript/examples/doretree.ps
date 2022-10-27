@@ -2476,10 +2476,11 @@ gsave
 0.2 20 20 592 592 BDR
 
 grestore
-showpage
 %%Trailer
 %%Pages: 1
 end
 clear cleardictstack
 doretreesave restore
+% Per page independence description in the PLRM Section 3.7.3, showpage follows restore
+showpage
 %%EOF

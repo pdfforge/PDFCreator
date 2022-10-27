@@ -91,10 +91,10 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Ftp)) return false;
 			Ftp v = o as Ftp;
 			
-			if (!AccountId.Equals(v.AccountId)) return false;
-			if (!Directory.Equals(v.Directory)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!EnsureUniqueFilenames.Equals(v.EnsureUniqueFilenames)) return false;
+			if (!Object.Equals(AccountId, v.AccountId)) return false;
+			if (!Object.Equals(Directory, v.Directory)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(EnsureUniqueFilenames, v.EnsureUniqueFilenames)) return false;
 			return true;
 		}
 		

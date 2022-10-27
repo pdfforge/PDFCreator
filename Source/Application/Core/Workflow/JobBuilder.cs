@@ -1,5 +1,4 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -15,13 +14,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
     public abstract class JobBuilder : IJobBuilder
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IMailSignatureHelper _mailSignatureHelper;
         private readonly IVersionHelper _versionHelper;
         private readonly ApplicationNameProvider _applicationNameProvider;
 
-        public JobBuilder(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+        public JobBuilder(IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
         {
-            _mailSignatureHelper = mailSignatureHelper;
             _versionHelper = versionHelper;
             _applicationNameProvider = applicationNameProvider;
         }
@@ -83,8 +80,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
     public class JobBuilderFree : JobBuilder
     {
-        public JobBuilderFree(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
-            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
+        public JobBuilderFree(IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(versionHelper, applicationNameProvider)
         {
         }
 
@@ -97,8 +94,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
     public class JobBuilderProfessional : JobBuilder
     {
-        public JobBuilderProfessional(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
-            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
+        public JobBuilderProfessional(IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(versionHelper, applicationNameProvider)
         {
         }
 
@@ -110,8 +107,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
     public class JobBuilderServer : JobBuilder
     {
-        public JobBuilderServer(IMailSignatureHelper mailSignatureHelper, IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
-            : base(mailSignatureHelper, versionHelper, applicationNameProvider)
+        public JobBuilderServer(IVersionHelper versionHelper, ApplicationNameProvider applicationNameProvider)
+            : base(versionHelper, applicationNameProvider)
         {
         }
 

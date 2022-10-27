@@ -1,16 +1,17 @@
 ﻿using pdfforge.DataStorage;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Linq;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
-using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
@@ -19,7 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         private readonly IIniSettingsLoader _iniSettingsLoader;
         private readonly IPrinterProvider _printerProvider;
         private readonly IUacAssistant _uacAssistant;
-        private readonly IActionOrderChecker _actionOrderChecker;
+        private readonly IActionOrderHelper _actionOrderHelper;
         private readonly ISettingsManager _settingsManager;
         private readonly ISettingsProvider _settingsProvider;
 
@@ -32,7 +33,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             IIniSettingsLoader iniSettingsLoader,
             IPrinterProvider printerProvider,
             IUacAssistant uacAssistant,
-            IActionOrderChecker actionOrderChecker,
+            IActionOrderHelper actionOrderHelper,
             EditionHelper editionHelper)
             : base(interactionInvoker, dataStorageFactory, translationUpdater, editionHelper)
         {
@@ -41,7 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             _iniSettingsLoader = iniSettingsLoader;
             _printerProvider = printerProvider;
             _uacAssistant = uacAssistant;
-            _actionOrderChecker = actionOrderChecker;
+            _actionOrderHelper = actionOrderHelper;
         }
 
         public override bool LoadIniSettings()
@@ -71,7 +72,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 if (missingPrinters.Any())
                     QueryAndAddMissingPrinters(missingPrinters);
 
-                _actionOrderChecker.Check(settings.ConversionProfiles);
+                _actionOrderHelper.CleanUpAndEnsureValidOrder(settings.ConversionProfiles);
 
                 foreach (var profile in settings.ConversionProfiles)
                 {

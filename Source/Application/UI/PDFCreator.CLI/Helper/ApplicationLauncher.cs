@@ -1,9 +1,9 @@
 ﻿using CliWrap;
 using Microsoft.Win32;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.CLI.Helper

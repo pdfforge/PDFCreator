@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -46,7 +37,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -521,103 +511,41 @@ Now we've got all the garbage collector machinery out of the way we can deal wit
 /* Device procedures */<br />
 static dev_proc_text_begin(black_text_text_begin);
 </code>
+<p>Then we define the procedure to initialize the device procs:
+</p>
+<code>
+void black_text_init_dev_procs(gx_device *dev)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;default_subclass_initialize_device_procs(dev);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;set_dev_proc(dev, text_begin, black_text_text_begin);<br />
+}
+</code>
 <p>Then we define the actual device:
 </p>
 <code>
 const
-gx_device_black_text gs_black_text_device =
-{
-<dd>    std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
-                        MAX_COORD, MAX_COORD,<br />
-                        MAX_RESOLUTION, MAX_RESOLUTION,<br />
-                        1, 8, 255, 0, 256, 1),<br />
-    {default_subclass_open_device,<br />
-     default_subclass_get_initial_matrix,<br />
-     default_subclass_sync_output,            /* sync_output */<br />
-     default_subclass_output_page,<br />
-     default_subclass_close_device,<br />
-     default_subclass_map_rgb_color,<br />
-     default_subclass_map_color_rgb,<br />
-     default_subclass_fill_rectangle,<br />
-     default_subclass_tile_rectangle,            /* tile_rectangle */<br />
-     default_subclass_copy_mono,<br />
-     default_subclass_copy_color,<br />
-     default_subclass_draw_line,            /* draw_line */<br />
-     default_subclass_get_bits,            /* get_bits */<br />
-     default_subclass_get_params,<br />
-     default_subclass_put_params,<br />
-     default_subclass_map_cmyk_color,<br />
-     default_subclass_get_xfont_procs,            /* get_xfont_procs */<br />
-     default_subclass_get_xfont_device,            /* get_xfont_device */<br />
-     default_subclass_map_rgb_alpha_color,<br />
-     default_subclass_get_page_device,<br />
-     default_subclass_get_alpha_bits,            /* get_alpha_bits */<br />
-     default_subclass_copy_alpha,<br />
-     default_subclass_get_band,            /* get_band */<br />
-     default_subclass_copy_rop,            /* copy_rop */<br />
-     default_subclass_fill_path,<br />
-     default_subclass_stroke_path,<br />
-     default_subclass_fill_mask,<br />
-     default_subclass_fill_trapezoid,<br />
-     default_subclass_fill_parallelogram,<br />
-     default_subclass_fill_triangle,<br />
-     default_subclass_draw_thin_line,<br />
-     default_subclass_begin_image,<br />
-     default_subclass_image_data,            /* image_data */<br />
-     default_subclass_end_image,            /* end_image */<br />
-     default_subclass_strip_tile_rectangle,<br />
-     default_subclass_strip_copy_rop,<br />
-     default_subclass_get_clipping_box,            /* get_clipping_box */<br />
-     default_subclass_begin_typed_image,<br />
-     default_subclass_get_bits_rectangle,            /* get_bits_rectangle */<br />
-     default_subclass_map_color_rgb_alpha,<br />
-     default_subclass_create_compositor,<br />
-     default_subclass_get_hardware_params,            /* get_hardware_params */<br />
-     black_text_text_begin,<br />
-     default_subclass_finish_copydevice,            /* finish_copydevice */<br />
-     default_subclass_begin_transparency_group,            /* begin_transparency_group */<br />
-     default_subclass_end_transparency_group,            /* end_transparency_group */<br />
-     default_subclass_begin_transparency_mask,            /* begin_transparency_mask */<br />
-     default_subclass_end_transparency_mask,            /* end_transparency_mask */<br />
-     default_subclass_discard_transparency_layer,            /* discard_transparency_layer */<br />
-     default_subclass_get_color_mapping_procs,            /* get_color_mapping_procs */<br />
-     default_subclass_get_color_comp_index,            /* get_color_comp_index */<br />
-     default_subclass_encode_color,            /* encode_color */<br />
-     default_subclass_decode_color,            /* decode_color */<br />
-     default_subclass_pattern_manage,            /* pattern_manage */<br />
-     default_subclass_fill_rectangle_hl_color,            /* fill_rectangle_hl_color */<br />
-     default_subclass_include_color_space,            /* include_color_space */<br />
-     default_subclass_fill_linear_color_scanline,            /* fill_linear_color_scanline */<br />
-     default_subclass_fill_linear_color_trapezoid,            /* fill_linear_color_trapezoid */<br />
-     default_subclass_fill_linear_color_triangle,            /* fill_linear_color_triangle */<br />
-     default_subclass_update_spot_equivalent_colors,            /* update_spot_equivalent_colors */<br />
-     default_subclass_ret_devn_params,            /* ret_devn_params */<br />
-     default_subclass_fillpage,        /* fillpage */<br />
-     default_subclass_push_transparency_state,                      /* push_transparency_state */<br />
-     default_subclass_pop_transparency_state,                      /* pop_transparency_state */<br />
-     default_subclass_put_image,                      /* put_image */<br />
-     default_subclass_dev_spec_op,                      /* dev_spec_op */<br />
-     default_subclass_copy_planes,                      /* copy_planes */<br />
-     default_subclass_get_profile,                      /* get_profile */<br />
-     default_subclass_set_graphics_type_tag,                      /* set_graphics_type_tag */<br />
-     default_subclass_strip_copy_rop2,<br />
-     default_subclass_strip_tile_rect_devn,<br />
-     default_subclass_copy_alpha_hl_color,<br />
-     default_subclass_process_page
-</dd>    }
+gx_device_black_text gs_black_text_device =<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX_COORD, MAX_COORD,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX_RESOLUTION, MAX_RESOLUTION,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1, 8, 255, 0, 256, 1),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;black_text_initialize_device_procs<br />
 };
 </code>
-<p>Much of this is simply boilerplate, defining the device methods as being the default methods for a subclassing device. The
- exception being the text_begin method. The main body of the macro is:</p>
+<p>The call to default_subclass_initialize_device_procs assigns the
+default methods for a subclassing device. We then override the
+text_begin method to our specific one. The main body of the macro is:</p>
 <code>
 const
-gx_device_black_text gs_black_text_device =
-{
-<dd>    std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
-                        MAX_COORD, MAX_COORD,<br />
-                        MAX_RESOLUTION, MAX_RESOLUTION,<br />
-                        1, 8, 255, 0, 256, 1),
-</dd></code>
+gx_device_black_text gs_black_text_device =<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;std_device_dci_type_body(gx_device_black_text, 0, "black_text", &st_black_text_device,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX_COORD, MAX_COORD,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX_RESOLUTION, MAX_RESOLUTION,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1, 8, 255, 0, 256, 1),
+</code>
 <p>This simply defines an instance of the 'gx_device_black_text' structure (which is simply a gx_device_s structure) initialised
  using a macro (yet another family of macros). Here we use the 'st_black_text_device' structure descriptor we created above,
  and some dummy values for the resolution, colour depth etc. Since this device doesn't do rendering these values aren't useful
@@ -795,7 +723,7 @@ int black_text_text_begin(gx_device *dev, gs_imager_state *pis, const gs_text_pa
 <hr>
 
 <p>
-<small>Copyright &copy; 2013-2019 Artifex Software, Inc.  All rights
+<small>Copyright &copy; 2013-2021 Artifex Software, Inc.  All rights
 reserved.</small>
 
 <p>
@@ -812,7 +740,7 @@ or contact Artifex Software, Inc., 1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -839,7 +767,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

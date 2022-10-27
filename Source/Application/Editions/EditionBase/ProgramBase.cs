@@ -7,11 +7,13 @@ using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Startup;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.ErrorReport;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Help;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.Utilities;
 using Prism.Regions;
 using SimpleInjector;
@@ -82,6 +84,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 Logger.Error($"The parameter {ex.ParameterName} was moved to PDFCreator-cli.exe. Please refer to the user guide on how to use the CLI: {Urls.UserGuideCommandLineUrl}");
                 return (int)ExitCode.DeprecatedParameter;
             }
+
+            var editorHelper = _container.GetInstance<IPdfEditorHelper>();
+            PdfArchitectCheck.UseSodaPdf = editorHelper.UseSodaPdf;
 
             VerifyContainer();
 

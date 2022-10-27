@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.FTP.FTPActionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeFtpActionViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="UploadWithFtp">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.UploadWithFtp}">
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="Label" BasedOn="{StaticResource RegularLabel}">
+                    <Setter Property="Margin" Value="0 10" />
+                </Style>
+            </StackPanel.Resources>
+
+            <Label>
+                <TextBlock Text="{Binding Translation.SelectFtpAccount}" />
+            </Label>
+            <DockPanel>
+                <StackPanel Style="{DynamicResource GpoStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                            IsEnabled="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
+                            Command="{Binding EditAccountCommand}"
+                            CommandParameter="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Build" />
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Command="{Binding AddAccountCommand}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Add" />
+                    </Button>
+                </StackPanel>
+                <Grid>
+                    <ComboBox Name="FtpAccountsComboBox"
+                              DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
+                              SelectedValue="{Binding CurrentProfile.Ftp.AccountId}"
+                              ItemsSource="{Binding FtpAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                    <!-- Overlay for empty accounts hint -->
+                    <Label Margin="10 0 0 0" VerticalAlignment="Center"
+                           IsHitTestVisible="False"
+                           Content="{Binding Translation.SelectOrAddAccount}"
+                           Visibility="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                </Grid>
+            </DockPanel>
+
+            <StackPanel Margin="0 5 0 0">
+                <Label Content="{Binding Translation.DirectoryLabel}" />
+                <controls:TokenControl DataContext="{Binding DirectoryTokenViewModel}" />
+            </StackPanel>
+
+            <CheckBox Margin="0 10" IsChecked="{Binding CurrentProfile.Ftp.EnsureUniqueFilenames}">
+                <TextBlock Text="{Binding Translation.EnsureUniqueFilenames}" TextWrapping="Wrap" />
+            </CheckBox>
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

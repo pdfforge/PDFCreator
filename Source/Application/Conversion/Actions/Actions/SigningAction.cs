@@ -1,15 +1,15 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using SystemInterface.IO;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class SigningAction : ActionBase<Signature>, IConversionAction
     {
@@ -18,13 +18,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions
         private readonly IFile _file;
         private readonly IPathUtil _pathUtil;
         private readonly ISignaturePasswordCheck _signaturePasswordCheck;
+        private readonly IFontPathHelper _fontPathHelper;
 
-        public SigningAction(IFile file, IPathUtil pathUtil, ISignaturePasswordCheck signaturePasswordCheck)
+        public SigningAction(IFile file, IPathUtil pathUtil, ISignaturePasswordCheck signaturePasswordCheck, IFontPathHelper fontPathHelper)
             : base(p => p.PdfSettings.Signature)
         {
             _file = file;
             _pathUtil = pathUtil;
             _signaturePasswordCheck = signaturePasswordCheck;
+            _fontPathHelper = fontPathHelper;
         }
 
         protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
@@ -44,6 +46,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
         public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
+            var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
+
             if (!profile.PdfSettings.Signature.Enabled)
                 return new ActionResult();
             if (!profile.OutputFormat.IsPdf())
@@ -91,6 +95,45 @@ namespace pdfforge.PDFCreator.Conversion.Actions
                     }
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(profile.PdfSettings.Signature.BackgroundImageFile) &&
+                (isJobLevelCheck || !TokenIdentifier.ContainsTokens(profile.PdfSettings.Signature.BackgroundImageFile)))
+            {
+                var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.PdfSettings.Signature.BackgroundImageFile);
+                switch (pathUtilStatus)
+                {
+                    case PathUtilStatus.InvalidRootedPath:
+                        result.Add(ErrorCode.Signature_ImageFileInvalidRootedPath);
+                        break;
+
+                    case PathUtilStatus.PathTooLongEx:
+                        result.Add(ErrorCode.Signature_ImageFilePathTooLong);
+                        break;
+
+                    case PathUtilStatus.NotSupportedEx:
+                        result.Add(ErrorCode.Signature_ImageFileUnsupportedType);
+                        break;
+
+                    case PathUtilStatus.ArgumentEx:
+                        result.Add(ErrorCode.Signature_ImageFileIllegalCharacters);
+                        break;
+
+                    case PathUtilStatus.Success:
+                        {
+                            if (isJobLevelCheck || !profile.PdfSettings.Signature.BackgroundImageFile.StartsWith(@"\\"))
+                                if (!_file.Exists(profile.PdfSettings.Signature.BackgroundImageFile))
+                                {
+                                    _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
+                                    result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
+                                }
+                        }
+                        break;
+                }
+            }
+
+            if (isJobLevelCheck)
+                if (!_fontPathHelper.TryGetFontPath(profile.PdfSettings.Signature.FontFile, out _))
+                    result.Add(ErrorCode.Signature_FontNotFound);
 
             return result;
         }

@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using pdfforge.Obsidian;
+﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
@@ -7,6 +6,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailSmtp
 {
@@ -25,6 +25,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
     {
         private readonly EditionHelper _editionHelper;
         public override string Title => Translation.SpecifySender;
+
+        public bool IsFreeEdition => _editionHelper.IsFreeEdition;
 
         public string OkBack => _editionHelper.IsFreeEdition ? Translation.Back : Translation.OK;
 

@@ -106,6 +106,10 @@
       <Project>{fd68eb7e-2ae8-4c8e-ba9c-71f9ad98e33e}</Project>
       <Name>Printing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\SettingsManagementInterface\SettingsManagementInterface.csproj">
+      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
+      <Name>SettingsManagementInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
       <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
       <Name>SettingsManagement</Name>
@@ -239,32 +243,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="Microsoft.CSharp">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.Configuration">
           <Paket>True</Paket>
         </Reference>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Runtime.Serialization">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceModel">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Xml">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net45\NLog.dll</HintPath>
+          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -307,6 +296,9 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Data">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="System.Data.OracleClient">
           <Paket>True</Paket>
         </Reference>
@@ -317,6 +309,9 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Security">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Transactions">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Security.Permissions">

@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         List<string> GetTokenListForEmailRecipients();
 
         /// <summary>
-        ///     Detection if string contains insecure tokens, like NumberOfPages, InputFilename or InputFilePath/InputDirectory
+        ///     Detection if UserTokens need to be enabled
+        ///     or if string contains insecure tokens, like NumberOfPages, InputFilename or InputFilePath/InputDirectory
         /// </summary>
-        bool ContainsInsecureTokens(string textWithTokens);
-
-        bool ContainsUserToken(string textWithToken);
+        TokenWarningCheckResult TokenWarningCheck(string textWithTokens, ConversionProfile profile);
     }
 
     public class TokenHelper : ITokenHelper
@@ -258,7 +258,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         /// <summary>
         ///     Detection if string contains insecure tokens, like NumberOfPages, InputFilename, InputFilePath/InputDirectory
         /// </summary>
-        public bool ContainsInsecureTokens(string textWithTokens)
+        private bool ContainsInsecureTokens(string textWithTokens)
         {
             if (Contains_IgnoreCase(textWithTokens, "<NumberOfPages>"))
                 return true;
@@ -271,16 +271,34 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             return false;
         }
 
-        public bool ContainsUserToken(string textWithToken)
+        private bool ContainsUserToken(string textWithToken)
         {
             if (Contains_IgnoreCase(textWithToken, "<User:"))
                 return true;
             return false;
         }
 
+        public TokenWarningCheckResult TokenWarningCheck(string textWithTokens, ConversionProfile profile)
+        {
+            if (!profile.UserTokens.Enabled && ContainsUserToken(textWithTokens))
+                return TokenWarningCheckResult.RequiresEnablingUserTokens;
+
+            if (ContainsInsecureTokens(textWithTokens))
+                return TokenWarningCheckResult.ContainsInsecureTokens;
+
+            return TokenWarningCheckResult.NoWarning;
+        }
+
         private bool Contains_IgnoreCase(string source, string value)
         {
             return source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
         }
+    }
+
+    public enum TokenWarningCheckResult
+    {
+        NoWarning,
+        ContainsInsecureTokens,
+        RequiresEnablingUserTokens
     }
 }

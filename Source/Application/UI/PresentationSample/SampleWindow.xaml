@@ -1,0 +1,146 @@
+﻿<Window x:Class="PresentationSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationSample" xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5;assembly=PDFCreator.Presentation"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        x:Name="this"
+        Title="PDFCreator Presentation Sample"
+        Height="600" Width="1000">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/CheckBoxes/DefaultCheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/CheckBoxes/ToggleSwitchCheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/BorderlessTextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Combobox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Icons/ComponentIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <ScrollViewer>
+        <StackPanel>
+            <!-- DefaultButtons -->
+            <UniformGrid Columns="2" Background="AliceBlue">
+                <Button Margin="10" Style="{StaticResource DefaultButton}">DefaultButton</Button>
+                <Button Margin="10" Style="{StaticResource DefaultButton}" IsEnabled="False">DefaultButton (disabled)</Button>
+                <Button Margin="10" Style="{StaticResource BrightButton}">BrightButton</Button>
+                <Button Margin="10" Style="{StaticResource BrightButton}" IsEnabled="False">BrightButton (disabled)</Button>
+                <Button Margin="10" Style="{StaticResource AffirmativeButton}">AffirmativeButton</Button>
+                <Button Margin="10" Style="{StaticResource AffirmativeButton}" IsEnabled="False">AffirmativeButton (disabled)</Button>
+                <Button Margin="10" Style="{StaticResource CancelButton}">CancelButton</Button>
+                <Button Margin="10" Style="{StaticResource CancelButton}" IsEnabled="False">CancelButton (disabled)</Button>
+            </UniformGrid>
+
+            <!-- SquaredIconButtons -->
+            <UniformGrid Columns="2">
+                <Button Margin="10" Style="{StaticResource SquaredIconButton}">
+                    <Viewbox><TextBlock><Run>Squared</Run><LineBreak /><Run>Icon</Run><LineBreak /><Run>Button</Run></TextBlock></Viewbox>
+                </Button>
+                <Button Margin="10" Style="{StaticResource SquaredIconButton}" IsEnabled="False">
+                    <Viewbox><TextBlock><Run>Squared</Run><LineBreak /><Run>Icon</Run><LineBreak /><Run>Button</Run></TextBlock></Viewbox>
+                </Button>
+            </UniformGrid>
+
+            <!-- CheckBoxes -->
+            <UniformGrid Columns="4">
+                <CheckBox Margin="10" Style="{StaticResource DefaultCheckBox}" IsChecked="True" IsEnabled="True">DefaultCheckBox</CheckBox>
+                <CheckBox Margin="10" Style="{StaticResource DefaultCheckBox}" IsChecked="False" IsEnabled="True">DefaultCheckBox</CheckBox>
+                <CheckBox Margin="10" Style="{StaticResource DefaultCheckBox}" IsChecked="True" IsEnabled="False">DefaultCheckBox (disabled)</CheckBox>
+                <CheckBox Margin="10" Style="{StaticResource DefaultCheckBox}" IsChecked="False" IsEnabled="False">DefaultCheckBox (disabled)</CheckBox>
+            </UniformGrid>
+            <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">OnOffLabelToggleSwitchCheckBox</TextBlock>
+            <UniformGrid Columns="4">
+                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" />
+                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" />
+                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
+                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
+            </UniformGrid>
+            <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">ToggleSwitchCheckBox</TextBlock>
+            <UniformGrid Columns="4">
+                <CheckBox Margin="10" Style="{StaticResource ToggleSwitchCheckBox}" IsChecked="False" />
+                <CheckBox Margin="10" Style="{StaticResource ToggleSwitchCheckBox}" IsChecked="True" />
+                <CheckBox Margin="10" Style="{StaticResource ToggleSwitchCheckBox}" IsChecked="False" IsEnabled="False" />
+                <CheckBox Margin="10" Style="{StaticResource ToggleSwitchCheckBox}" IsChecked="True" IsEnabled="False" />
+            </UniformGrid>
+
+            <!-- TextBox -->
+            <UniformGrid Columns="2">
+                <TextBox Margin="10" Style="{StaticResource BorderlessTextBox}">BorderlessTextBox</TextBox>
+                <TextBox Margin="10" Style="{StaticResource BorderlessTextBox}" IsEnabled="False">BorderlessTextBox (disabled)</TextBox>
+            </UniformGrid>
+
+            <!-- ComboBox -->
+            <UniformGrid Columns="2">
+                <ComboBox Margin="10" Style="{StaticResource BorderlessCombobox}" Text="BorderlessCombobox">
+                    <ComboBoxItem IsSelected="True">ComboBoxItem</ComboBoxItem>
+                    <ComboBoxItem>ComboBoxItem</ComboBoxItem>
+                    <ComboBoxItem>ComboBoxItem</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Margin="10" Style="{StaticResource BorderlessCombobox}" IsEnabled="False" Text="BorderlessCombobox (disabled)">
+                    <ComboBoxItem IsSelected="True">ComboBoxItem</ComboBoxItem>
+                    <ComboBoxItem>ComboBoxItem</ComboBoxItem>
+                    <ComboBoxItem>ComboBoxItem</ComboBoxItem>
+                </ComboBox>
+            </UniformGrid>
+
+            <!-- Labels -->
+            <UniformGrid Columns="2">
+                <Label Margin="10" Style="{StaticResource RegularLabel}">RegularLabel</Label>
+                <Label Margin="10" Style="{StaticResource RegularLabel}" IsEnabled="false">RegularLabel (disabled)</Label>
+                <Label Margin="10" Style="{StaticResource LargeLabel}">LargeLabel</Label>
+                <Label Margin="10" Style="{StaticResource LargeLabel}" IsEnabled="False">LargeLabel (disabled)</Label>
+                <Label Margin="10" Style="{StaticResource LightLabel}">LightLabel</Label>
+                <Label Margin="10" Style="{StaticResource LightLabel}" IsEnabled="False">LightLabel (disabled)</Label>
+            </UniformGrid>
+
+            <!-- ProfilesComboBox -->
+            <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">ProfilesComboBox</TextBlock>
+            <UniformGrid Columns="2">
+                <redesign5:ProfilesComboBox Margin="10"
+                                            Profiles="{Binding Profiles, ElementName=this, Mode=OneWay}"
+                                            SelectedProfile="{Binding Profiles[0], ElementName=this, Mode=OneWay}" />
+                <redesign5:ProfilesComboBox Margin="10"
+                                            Profiles="{Binding Profiles, ElementName=this, Mode=OneWay}"
+                                            SelectedProfile="{Binding Profiles[0], ElementName=this, Mode=OneWay}" />
+            </UniformGrid>
+
+            <!-- Material Icons -->
+            <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">ComponentIcons</TextBlock>
+            <UniformGrid HorizontalAlignment="Center">
+                <UniformGrid.Resources>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Height" Value="100" />
+                        <Setter Property="Foreground" Value="DarkSlateBlue" />
+                    </Style>
+                </UniformGrid.Resources>
+                <ContentControl Content="{StaticResource CheckMark}" ToolTip="CheckMark" />
+                <ContentControl Content="{StaticResource RoundedArrowDown}" ToolTip="RoundedArrowDown" />
+                <ContentControl Content="{StaticResource TriangleDown}" ToolTip="TriangleDown" />
+            </UniformGrid>
+
+            <!-- Material Icons -->
+            <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">MaterialIcons</TextBlock>
+            <UniformGrid HorizontalAlignment="Center">
+                <UniformGrid.Resources>
+                    <Style TargetType="iconPacks:PackIconMaterialDesign">
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Foreground" Value="DarkSlateBlue" />
+                    </Style>
+                </UniformGrid.Resources>
+                <iconPacks:PackIconMaterialDesign Kind="Build" ToolTip="Build" />
+                <iconPacks:PackIconMaterialDesign Kind="Delete" ToolTip="Delete" />
+                <iconPacks:PackIconMaterialDesign Kind="DragHandle" ToolTip="DragHandle" />
+                <iconPacks:PackIconMaterialDesign Kind="Notifications" Height="12" ToolTip="Notifications Height=12" />
+                <iconPacks:PackIconMaterialDesign Kind="PlaylistAdd" Width="20" ToolTip="PlaylistAdd Width=20" />
+                <iconPacks:PackIconMaterialDesign Kind="VisibilityOff" ToolTip="VisibilityOff" />
+            </UniformGrid>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

@@ -20,6 +20,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
 
             // dummy reference to force GongSolutions.Wpf.DragDrop to be copied to bin folder
             var t = typeof(GongSolutions.Wpf.DragDrop.DragDrop);
+            // same for MahApps IconPacks
+            var t2 = typeof(MahApps.Metro.IconPacks.MaterialDesignExtension);
         }
 
         private void WorkflowEditorView_OnLoaded(object sender, RoutedEventArgs e)

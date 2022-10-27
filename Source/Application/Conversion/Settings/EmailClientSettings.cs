@@ -161,15 +161,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is EmailClientSettings)) return false;
 			EmailClientSettings v = o as EmailClientSettings;
 			
-			if (!AddSignature.Equals(v.AddSignature)) return false;
+			if (!Object.Equals(AddSignature, v.AddSignature)) return false;
 			if (!AdditionalAttachments.SequenceEqual(v.AdditionalAttachments)) return false;
-			if (!Content.Equals(v.Content)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!Format.Equals(v.Format)) return false;
-			if (!Recipients.Equals(v.Recipients)) return false;
-			if (!RecipientsBcc.Equals(v.RecipientsBcc)) return false;
-			if (!RecipientsCc.Equals(v.RecipientsCc)) return false;
-			if (!Subject.Equals(v.Subject)) return false;
+			if (!Object.Equals(Content, v.Content)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(Format, v.Format)) return false;
+			if (!Object.Equals(Recipients, v.Recipients)) return false;
+			if (!Object.Equals(RecipientsBcc, v.RecipientsBcc)) return false;
+			if (!Object.Equals(RecipientsCc, v.RecipientsCc)) return false;
+			if (!Object.Equals(Subject, v.Subject)) return false;
 			return true;
 		}
 		

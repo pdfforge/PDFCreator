@@ -1,13 +1,12 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
-using pdfforge.PDFCreator.Utilities.Tokens;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
 {
     public class UserTokenExtractorDummy : IUserTokenExtractor
     {
-        public UserToken ExtractUserTokenFromPsFile(string psFile, UserTokenSeperator seperator)
+        public ParsedFile ParsePdfFileForUserTokens(string pdfFile, UserTokenSeparator separator)
         {
-            return new UserToken();
+            return new ParsedFile(pdfFile);
         }
     }
 }

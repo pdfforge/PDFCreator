@@ -90,7 +90,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         protected override void OnTranslationChanged()
         {
             base.OnTranslationChanged();
-            Title = Translation.Title;
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged();
         }
@@ -115,7 +114,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
                 if (TitleReplacements == null)
                     return true;
 
-                return GpoSettings != null ? !GpoSettings.DisableTitleTab : true;
+                return GpoSettings != null ? GpoSettings.DisableTitleTab : true;
             }
         }
 

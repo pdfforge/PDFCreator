@@ -1,5 +1,6 @@
 <UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:regions="http://prismlibrary.com/"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,7 +19,7 @@
              help:HelpProvider.HelpTopic="WorkflowEditor"
              x:Name="OverlayView">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Styles/LightGreyButton.xaml" />
+        <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel Margin="20 20 20 20"
@@ -27,9 +28,7 @@
             <DockPanel.Resources>
                 <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalse" TrueValue="Visible" FalseValue="Collapsed" />
                 <converter:BoolToVisibilityConverter x:Key="CollapsedWhenTrue" TrueValue="Collapsed" FalseValue="Visible" />
-                <Style TargetType="Button" BasedOn="{StaticResource LightGreyButton}">
-                    <Setter Property="Margin" Value="10 0 0 0" />
-                    <Setter Property="MinWidth" Value="80" />
+                <Style TargetType="Button" BasedOn="{StaticResource DefaultInlineButton}">
                     <Setter Property="VerticalAlignment" Value="Bottom" />
                 </Style>
             </DockPanel.Resources>
@@ -47,14 +46,14 @@
             <Button Command="{Binding OkCommand}"
                     Content="{Binding Translation.Ok}"
                     Visibility="{Binding Interaction.IsDisabled, Converter={StaticResource CollapsedWhenTrue}}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    Style="{StaticResource AccentButton}"
+                    VerticalAlignment="Bottom" />
 
             <DockPanel Visibility="{Binding StatusHintViewModel.HideStatusInOverlay, ElementName=OverlayView, Converter={StaticResource CollapsedWhenTrue}}">
                 <DockPanel FlowDirection="LeftToRight" VerticalAlignment="Center"
                            Visibility="{Binding StatusHintViewModel.HasWarning, ElementName=OverlayView, Converter={StaticResource CollapsedWhenFalse}}">
-                    <Viewbox Stretch="Uniform" Width="18">
-                        <ContentPresenter Content="{DynamicResource WarningIconRed}" />
-                    </Viewbox>
+                    <iconPacks:PackIconMaterialDesign Kind="Notifications" Foreground="{DynamicResource PdfforgeRedBrush}" />
                     <TextBlock Text="{Binding StatusHintViewModel.StatusText, ElementName=OverlayView}"
                                Foreground="{DynamicResource PdfforgeRedBrush}"
                                TextWrapping="Wrap"

@@ -51,27 +51,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         public int IconSize { get; set; } = 32;
 
         public string LeftButtonContent { get; set; }
+        public bool ShowUacShield { get; set; }
         public string MiddleButtonContent { get; set; }
         public string RightButtonContent { get; set; }
-
-        private void RightButtonExecute(object obj)
-        {
-            switch (Interaction.Buttons)
-            {
-                case MessageOptions.OKCancel:
-                case MessageOptions.RetryCancel:
-                case MessageOptions.MoreInfoCancel:
-                case MessageOptions.YesNoCancel:
-                case MessageOptions.YesCancel:
-                    Interaction.Response = MessageResponse.Cancel;
-                    break;
-
-                case MessageOptions.YesNo:
-                    Interaction.Response = MessageResponse.No;
-                    break;
-            }
-            FinishInteraction();
-        }
 
         private void ButtonLeftExecute(object obj)
         {
@@ -91,6 +73,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                     break;
 
                 case MessageOptions.YesNo:
+                case MessageOptions.YesNoUac:
                 case MessageOptions.YesNoCancel:
                 case MessageOptions.YesCancel:
                     Interaction.Response = MessageResponse.Yes;
@@ -104,6 +87,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             switch (Interaction.Buttons)
             {
                 case MessageOptions.YesNoCancel:
+                    Interaction.Response = MessageResponse.No;
+                    break;
+            }
+            FinishInteraction();
+        }
+
+        private void RightButtonExecute(object obj)
+        {
+            switch (Interaction.Buttons)
+            {
+                case MessageOptions.OKCancel:
+                case MessageOptions.RetryCancel:
+                case MessageOptions.MoreInfoCancel:
+                case MessageOptions.YesNoCancel:
+                case MessageOptions.YesCancel:
+                    Interaction.Response = MessageResponse.Cancel;
+                    break;
+
+                case MessageOptions.YesNo:
+                case MessageOptions.YesNoUac:
                     Interaction.Response = MessageResponse.No;
                     break;
             }
@@ -174,6 +177,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 
         private void SetButtonContent(MessageOptions option)
         {
+            ShowUacShield = false;
+
             switch (option)
             {
                 case MessageOptions.MoreInfoCancel:
@@ -200,6 +205,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                     RightButtonContent = Translation.No;
                     break;
 
+                case MessageOptions.YesNoUac:
+                    ShowUacShield = true;
+                    LeftButtonContent = Translation.Yes;
+                    RightButtonContent = Translation.No;
+                    break;
+
                 case MessageOptions.YesNoCancel:
                     LeftButtonContent = Translation.Yes;
                     RightButtonContent = Translation.Cancel;
@@ -210,8 +221,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                     LeftButtonContent = Translation.Yes;
                     RightButtonContent = Translation.Cancel;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(option), option, null);
             }
 
+            RaisePropertyChanged(nameof(ShowUacShield));
             RaisePropertyChanged(nameof(RightButtonContent));
             RaisePropertyChanged(nameof(MiddleButtonContent));
             RaisePropertyChanged(nameof(LeftButtonContent));

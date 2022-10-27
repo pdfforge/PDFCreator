@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -201,7 +201,7 @@ end
      [ /GenericResourceDir /FontResourceDir /GenericResourcePathSep ] {
        2 copy .knownget {
          exch //pssystemparams exch .knownget {
-           ne { /setsystemparams /invalidaccess signalerror } if
+           ne { /setsystemparams cvx /invalidaccess signalerror } if
          } {
            pop
          } ifelse
@@ -279,7 +279,7 @@ end
   /.checkFilePermitparams {
     type /arraytype eq {
       currentuserparams /LockFilePermissions get {
-        5 { pop } repeat /setuserparams /invalidaccess signalerror
+        5 { pop } repeat /setuserparams cvx /invalidaccess signalerror
       }{
         % in addition to validating the value, ensure the value is read/only
         dup { readonly exch } forall
@@ -288,7 +288,7 @@ end
       }
       ifelse
     } {
-      5 { pop } repeat /setuserparams /typecheck signalerror
+      5 { pop } repeat /setuserparams cvx /typecheck signalerror
     }
     ifelse
     //true
@@ -534,7 +534,7 @@ serverdict begin
 
 /exitserver {			% <password> exitserver -
   //true exch { .startnewjob } .startjob not {
-    /exitserver /invalidaccess signalerror
+    /exitserver cvx /invalidaccess signalerror
   } if
 } bind def
 
@@ -621,13 +621,13 @@ currentuserparams /WaitTimeout known
    .dicttomark setpagedevice
  } bind def
 /setresolution
- { count 1 lt { /setresolution /stackunderflow signalerror } if
+ { count 1 lt { /setresolution cvx /stackunderflow signalerror } if
    dup type dup /integertype eq exch /realtype eq or not
    {
-      /setresolution /typecheck signalerror
+      /setresolution cvx /typecheck signalerror
    } if
    dup 2 array astore /HWResolution //.pair2dict exec { setpagedevice } stopped {
-     pop /setresolution $error /errorname get signalerror
+     pop /setresolution cvx $error /errorname get signalerror
    } if
  } bind def
 %END PAGEDEVICE
@@ -1139,13 +1139,14 @@ def
   }{
     % Check that the tint is a number between 0 and 1
     dup type dup /integertype eq exch /realtype eq or not {
-      /setcustomcolor /typecheck cvx signalerror
+      /setcustomcolor cvx /typecheck signalerror
     } if
+    % Bug 703869. Apparently Adobe (at least Acrobat Pro) silently clamps values
     dup 1 le not {
-      /setcustomcolor /rangecheck cvx signalerror
+      pop 1
     } if
     dup 0 ge not {
-      /setcustomcolor /rangecheck cvx signalerror
+      pop 0
     } if
 
     % The array is supposed to be the result of fundcmykcustomcolor. Our
@@ -1157,20 +1158,20 @@ def
     {
       1 index exch get dup
       type dup /integertype eq exch /realtype eq or not {
-        /setcustomcolor /typecheck cvx signalerror
+        /setcustomcolor cvx /typecheck signalerror
       } if
       dup
       1 le not {
-        /setcustomcolor /rangecheck cvx signalerror
+        /setcustomcolor cvx /rangecheck signalerror
       } if
       0 ge not {
-        /setcustomcolor /rangecheck cvx signalerror
+        /setcustomcolor cvx /rangecheck signalerror
       } if
     } for
 
     % Finally, check the last element of the array, which must be a string.
     dup length 1 sub get type /stringtype eq not {
-      /setcustomcolor /typecheck cvx signalerror
+      /setcustomcolor cvx /typecheck signalerror
     } if
 
     exch //buildcolorspacearray exec

@@ -8,22 +8,22 @@ namespace pdfforge.PDFCreator.Core.Services.Update
         Version Version { get; }
         string DownloadUrl { get; }
         string FileHash { get; }
-        List<Release> VersionInfos { get; }
+        List<ReleaseInfo> ReleaseInfos { get; }
     }
 
     public class ApplicationVersion : IApplicationVersion
     {
-        public ApplicationVersion(Version version, string downloadUrl, string fileHash, List<Release> versionInfos)
+        public ApplicationVersion(Version version, string downloadUrl, string fileHash, List<ReleaseInfo> versionInfos)
         {
             Version = version;
             DownloadUrl = downloadUrl;
             FileHash = fileHash;
-            VersionInfos = versionInfos ?? new List<Release>();
+            ReleaseInfos = versionInfos ?? new List<ReleaseInfo>();
         }
 
         public Version Version { get; }
         public string DownloadUrl { get; }
         public string FileHash { get; }
-        public List<Release> VersionInfos { get; }
+        public List<ReleaseInfo> ReleaseInfos { get; }
     }
 }

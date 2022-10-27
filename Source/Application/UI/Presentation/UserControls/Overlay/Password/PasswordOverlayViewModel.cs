@@ -13,15 +13,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password
     {
         public PasswordOverlayViewModel(ITranslationUpdater translationUpdater) : base(translationUpdater)
         {
-            OkCommand = new DelegateCommand(ExecuteOk, CanExecuteOk);
+            OkCommand = new DelegateCommand(OkExecute, OkCanExecute);
             RemoveCommand = new DelegateCommand(ExecuteRemove);
-            SkipCommand = new DelegateCommand(ExecuteSkip);
             CancelCommand = new DelegateCommand(ExecuteCancel);
         }
 
         public DelegateCommand OkCommand { get; protected set; }
         public DelegateCommand RemoveCommand { get; protected set; }
-        public DelegateCommand SkipCommand { get; protected set; }
         public DelegateCommand CancelCommand { get; protected set; }
 
         public string Password
@@ -34,8 +32,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password
         }
 
         public bool ShowIntroText => !string.IsNullOrWhiteSpace(Interaction?.IntroText);
-
-        public bool CanSkip => Interaction?.MiddleButtonAction == PasswordMiddleButton.Skip;
         public bool CanRemovePassword => Interaction?.MiddleButtonAction == PasswordMiddleButton.Remove;
 
         public Action<string> SetPasswordAction { get; set; }
@@ -45,19 +41,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password
             SetPasswordAction?.Invoke(Interaction.Password);
             OkCommand.RaiseCanExecuteChanged();
 
-            RaisePropertyChanged(nameof(CanSkip));
             RaisePropertyChanged(nameof(CanRemovePassword));
             RaisePropertyChanged(nameof(ShowIntroText));
         }
 
         public override string Title => Interaction.Title;
-
-        private void ExecuteSkip(object obj)
-        {
-            Interaction.Password = "";
-            Interaction.Result = PasswordResult.Skip;
-            FinishInteraction();
-        }
 
         private void ExecuteCancel(object obj)
         {
@@ -73,22 +61,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password
             FinishInteraction();
         }
 
-        private bool CanExecuteOk(object obj)
+        private bool OkCanExecute(object obj)
         {
             return !string.IsNullOrEmpty(Interaction?.Password);
         }
 
-        private void ExecuteOk(object obj)
+        private void OkExecute(object obj)
         {
             Interaction.Result = PasswordResult.StorePassword;
             FinishInteraction();
-        }
-    }
-
-    public class DesignTimePasswordOverlayViewModel : PasswordOverlayViewModel
-    {
-        public DesignTimePasswordOverlayViewModel() : base(new TranslationUpdater(new TranslationFactory(), new ThreadManager()))
-        {
         }
     }
 }

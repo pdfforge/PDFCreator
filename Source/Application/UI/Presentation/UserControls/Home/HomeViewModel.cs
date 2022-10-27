@@ -7,17 +7,17 @@ using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -33,6 +33,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         private readonly ICommandLocator _commandLocator;
         private readonly IGpoSettings _gpoSettings;
         private readonly IInteractionInvoker _interactionInvoker;
+        private readonly CollectionViewSource _collectionViewSource;
         private readonly ObservableCollection<HistoricJob> _jobHistoryList;
 
         public HomeViewModel(IInteractionInvoker interactionInvoker, IFileConversionAssistant fileConversionAssistant, ITranslationUpdater translationUpdater,
@@ -51,11 +52,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 
             _jobHistoryList = new ObservableCollection<HistoricJob>();
 
-            var viewSource = new CollectionViewSource();
-            viewSource.SortDescriptions.Add(new SortDescription(nameof(HistoricJob.CreationTime), ListSortDirection.Descending));
-            viewSource.Source = _jobHistoryList;
+            _collectionViewSource = new CollectionViewSource();
+            _collectionViewSource.SortDescriptions.Add(new SortDescription(nameof(HistoricJob.CreationTime), ListSortDirection.Descending));
+            _collectionViewSource.Source = _jobHistoryList;
 
-            JobHistory = viewSource.View;
+            JobHistory = _collectionViewSource.View;
             JobHistory.MoveCurrentTo(null); //unselect first item
 
             ConvertFileCommand = new DelegateCommand(o => ConvertFileExecute());
@@ -71,23 +72,51 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
                 .AddCommand(new AsyncCommand(o => _jobHistoryActiveRecord.Refresh()))
                 .Build();
 
-            QuickActionOpenList = new List<DropDownButtonItem>
+            HistoryQuickActionMenuItems = new List<MenuItem>
             {
-                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(() =>Translation.OpenPDFArchitect),
-                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(() =>Translation.OpenDefaultProgram),
-                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(() =>Translation.OpenExplorer),
-                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(() =>Translation.PrintWithPDFArchitect),
-                GetQuickActionItem<QuickActionOpenMailClientCommand>(() =>Translation.OpenMailClient)
+                new MenuItem
+                {
+                    Header = Translation.DeleteFileFromHistory,
+                    Command = DeleteHistoricFilesCommand
+                },
+
+                new MenuItem
+                {
+                    Header = Translation.OpenPDFArchitect,
+                    Command = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>()
+                },
+
+                new MenuItem
+                {
+                    Header = Translation.OpenDefaultProgram,
+                    Command = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>()
+},
+
+                new MenuItem
+                {
+                    Header = Translation.OpenExplorer,
+                    Command = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>()
+                },
+                new MenuItem
+                {
+                    Header = Translation.PrintWithPDFArchitect,
+                    Command = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>()
+                },
+                new MenuItem
+                {
+                    Header = Translation.OpenMailClient,
+                    Command = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>()
+                }
             };
         }
 
         public void MountView()
         {
+            _collectionViewSource.Source = _jobHistoryList;
             _settingsProvider.Settings.ApplicationSettings.JobHistory.PropertyChanged += JobHistoryOnPropertyChanged;
             _jobHistoryActiveRecord.HistoryChanged += JobHistoryActiveRecordOnHistoryChanged;
             JobHistoryActiveRecordOnHistoryChanged(this, EventArgs.Empty);
             RaisePropertyChanged(nameof(HistoryEnabled));
-            RaisePropertyChanged(nameof(NumberOfHistoricJobs));
         }
 
         public void UnmountView()
@@ -106,8 +135,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             {
                 _jobHistoryList.Remove(job);
             }
-
-            RaisePropertyChanged(nameof(NumberOfHistoricJobs));
         }
 
         private void JobHistoryActiveRecordOnHistoryChanged(object sender, EventArgs e)
@@ -120,12 +147,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             RaisePropertyChanged(nameof(HistoryEnabled));
         }
 
-        private DropDownButtonItem GetQuickActionItem<TCommand>(Func<string> text) where TCommand : class, ICommand
-        {
-            return new DropDownButtonItem(text, () => JobHistory.CurrentItem, _commandLocator.GetCommand<TCommand>());
-        }
-
-        public IList<DropDownButtonItem> QuickActionOpenList { get; private set; }
+        public IEnumerable<MenuItem> HistoryQuickActionMenuItems { get; private set; }
         public ICollectionView JobHistory { get; }
         public ICommand ConvertFileCommand { get; set; }
         public ICommand ClearHistoryCommand { get; set; }
@@ -133,8 +155,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         public ICommand ToggleHistoryEnabledCommand { get; set; }
         public ICommand RemoveHistoricJobCommand { get; set; }
         public ICommand DeleteHistoricFilesCommand { get; set; }
-
-        public int NumberOfHistoricJobs => _jobHistoryActiveRecord.History.Count;
 
         public bool HistoryEnabledByGpo => !_gpoSettings.DisableHistory;
 
@@ -168,15 +188,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 
         protected override void OnTranslationChanged()
         {
-            if (QuickActionOpenList != null)
-            {
-                foreach (var quickActionListItemVo in QuickActionOpenList)
-                {
-                    quickActionListItemVo.NotifyPropertyChanged();
-                }
-            }
-
             RaisePropertyChanged(nameof(CallToActionText));
+            RaisePropertyChanged(nameof(HistoryQuickActionMenuItems));
         }
     }
 }

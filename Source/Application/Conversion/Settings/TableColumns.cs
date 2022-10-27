@@ -7,11 +7,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
     {
         [Translation("Author")]
         Author,
+        [Translation("Filename")]
+        FileName,
         [Translation("Title")]
         Title,
         [Translation("Keywords")]
-        Keywords,
-        [Translation("Date")]
-        Date
+        Keywords
     }
 }

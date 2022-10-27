@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
                 Document doc = new Document(pdfDocument);
 
-                var result = _fontPathHelper.GetFontPath(fontFile, out var fontPath);
+                var result = _fontPathHelper.TryGetFontPath(fontFile, out var fontPath);
                 if (!result)
                     throw new ProcessingException("Error during font path detection.", ErrorCode.Stamp_FontNotFound);
                 var font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H, true);

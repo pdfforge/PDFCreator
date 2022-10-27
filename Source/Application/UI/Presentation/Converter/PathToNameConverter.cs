@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
         {
             if (!(value is string))
                 return null;
-            return PathSafe.GetFileName((string) value);
+            return PathSafe.GetFileName((string)value);
         }
 
         public object ConvertBack(object value, Type targetType,

@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptActionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance designTime:DesignTimeScriptActionViewModel, IsDesignTimeCreatable=True}"
+    help:HelpProvider.HelpTopic="RunScript">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}"
+                            Header="{Binding Translation.DisplayName}">
+        <StackPanel>
+            <Label Content="{Binding Translation.ScriptFileText}" />
+            <controls:TokenControl Margin="0 10 0 0" 
+                                   DataContext="{Binding ScriptFileTokenViewModel}" />
+
+            <Label Margin="0 20 0 0" 
+                   Content="{Binding Translation.AdditionalParametersText}" />
+            <controls:TokenControl Margin="0 10 0 0" 
+                                   DataContext="{Binding ParameterTokenViewModel}" />
+
+            <Label Margin="0 20 0 0" 
+                   Content="{Binding Translation.ScriptCallPreviewText}" />
+            <TextBox Margin="0 10 0 0"  
+                     Name="ScriptCallPreviewTextBox" IsReadOnly="True" Text="{Binding PreviewScriptCall}"
+                     Background="{StaticResource TextBoxDisabledBackgroundBrush}" />
+            
+            <CheckBox  Margin="0 20 0 0" IsChecked="{Binding CurrentProfile.Scripting.WaitForScript}">
+                <TextBlock Text="{Binding Translation.WaitForScriptText}" TextWrapping="Wrap" />
+            </CheckBox>
+        </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

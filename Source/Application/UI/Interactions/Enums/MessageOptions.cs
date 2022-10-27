@@ -8,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Interactions.Enums
         RetryCancel,
         YesNoCancel,
         YesNo,
+        YesNoUac,
         YesCancel
     }
 }

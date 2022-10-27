@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
     public class SaveViewModel : ProfileUserControlViewModel<SaveViewTranslation>, IStatusHintViewModel
     {
         public bool HideStatusInOverlay => false;
-        public bool IsServer { get; private set; }
 
         private readonly ITokenButtonFunctionProvider _buttonFunctionProvider;
         private readonly ITokenHelper _tokenHelper;
@@ -27,6 +26,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public TokenViewModel<ConversionProfile> FileNameViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> FolderViewModel { get; private set; }
+
+        public bool IsServer { get; private set; }
+        public bool AllowNotifications { get; }
         public bool AllowSkipPrintDialog { get; }
 
         public string StatusText
@@ -41,6 +43,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         }
 
         public bool HasWarning { get; private set; }
+
+        public bool ShouldOverwriteFiles =>
+            CurrentProfile?.AutoSave == null ||
+            !CurrentProfile.AutoSave.EnsureUniqueFilenames && !CurrentProfile.AutoSave.AutoMergeFiles;
 
         private (bool HasWarning, string StatusText) DetermineActionStatus()
         {
@@ -81,6 +87,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         {
             IsServer = editionHelper.IsServer;
             AllowSkipPrintDialog = !editionHelper.IsFreeEdition;
+            AllowNotifications = !editionHelper.IsFreeEdition;
+
             _buttonFunctionProvider = buttonFunctionProvider;
             _tokenHelper = tokenHelper;
             _tokenViewModelFactory = tokenViewModelFactory;
@@ -177,10 +185,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
         }
 
+        public bool ShowAllNotifications
+        {
+            get => CurrentProfile!= null && CurrentProfile.ShowAllNotifications && AllowNotifications;
+            set => CurrentProfile.ShowAllNotifications = value;
+        }
+
         protected override void OnCurrentProfileChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             base.OnCurrentProfileChanged(sender, propertyChangedEventArgs);
             RaisePropertyChanged(nameof(TemporarySaveFiles));
+            RaisePropertyChanged(nameof(ShowAllNotifications));
         }
     }
 }

@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -454,6 +454,81 @@ systemdict /check_r6_password .forceundef
     printProducer
     /pdf_process_Encrypt cvx /undefined signalerror
   } if
+
+  % Bug 702598: We can have a trailer dictionary with an /Encrypt entry, and if the
+  % Encrypt dictionary is V 4 or greater we can (should ?) have StrF and stmF entries.
+  %
+  % The code below checks for the existence of StmF and StrF entries. Its possible
+  % that both may be /Identity (which means no encryption) in which case we don't need to check
+  % the password, as we won't need to decrypt any streams or strings. Note that the dict may still
+  % have a non-Identity /EFF (embedded files) key, but Ghostscript doesn't process embedded
+  % files so we don't have to worry about that.
+  Trailer /Encrypt oget dup
+  /V get 4 ge {
+    % NB: Entries in the Encrypt dictionary cannot be indirect references
+    dup /StmF .knownget {
+      /Identity eq not
+    } {
+      false		% default StmF is Identity
+    }ifelse
+    1 index /StrF .knownget {
+      /Identity eq not
+    } {
+      false		% default StrF is Identity
+    }ifelse
+    or
+    % ...still in the V4 or above checking...
+    % Even if StmF and StrF are Identity, if the StdCF is missing AuthEvent
+    % or it is DocOpen, we require the password. Check for that.
+    1 index /CF .knownget {
+      oforce dup type /dicttype eq {
+        /StdCF .knownget {
+          oforce dup type /dicttype eq {
+            /AuthEvent .knownget {
+              oforce dup type /nametype eq {
+                /DocOpen eq
+                or
+              }{
+                (   **** Error: AuthEvent has wrong type.\n) pdfformaterror
+                (               Cannot decrypt PDF file.\n) pdfformaterror
+                /pdf_process_Encrypt cvx /invalidfileaccess signalerror
+              } ifelse
+            } {
+              pop true	% no AuthEvent, default is DocOpen, require password
+            } ifelse
+          }{
+            (   **** Error: StdCF has wrong type.\n) pdfformaterror
+            (               Cannot decrypt PDF file.\n) pdfformaterror
+            /pdf_process_Encrypt cvx /invalidfileaccess signalerror
+          } ifelse
+        } {
+          pop true	% no StdCF, require password
+        } ifelse
+      }{
+        (   **** Error: CF has wrong type.\n) pdfformaterror
+        (               Cannot decrypt PDF file.\n) pdfformaterror
+        /pdf_process_Encrypt cvx /invalidfileaccess signalerror
+      } ifelse
+    } {
+      pop true		% no CF, require password
+    } ifelse
+    exch pop		% discard Encrypt dict
+  }{
+    % Not V4 or later
+    pop true		% discard Encrypt dict, require password
+  } ifelse
+  % If we were given a PDFPassword, check it anyway, even if the
+  % code above said we didn't need one. This will allow us to process
+  % PDF files with an initial CryptFilter which has StrF=StmF=Identity,
+  % but contains streams which themselves have non-Identity StmF or StrF.
+  /PDFPassword where {
+    pop true
+  }
+  {
+    false
+  } ifelse
+  or
+  {
   () pdf_check_password
   {
     /FileKey exch def
@@ -504,13 +579,13 @@ systemdict /check_r6_password .forceundef
       /pdf_process_Encrypt cvx /invalidfileaccess signalerror
     } ifelse
   } ifelse
-
-%   Trailer /Encrypt oget /P oget 4 and 0 eq #? and
-%    { (   ****This owner of this file has requested you do not print it.\n)
-%      pdfformaterror printProducer
-%      /pdf_process_Encrypt cvx /invalidfileaccess signalerror
-%    }
-%   if
+  }
+  {
+      (   **** This file has an Encryption dictionary, but both the StmF and StrF entries\n) pdfformatwarning
+      (   **** are /Identity, and AuthEvent allows the document to be opened. It is possible\n) pdfformatwarning
+      (   **** that embedded streams may still use encryption, if the file fails to process\n) pdfformatwarning
+      (   **** you may need to supply a User or Owner password by setting -sPDFPassword=\n) pdfformatwarning
+  } ifelse
 } bind executeonly def
 
 % Calculate the key used to decrypt an object (to pass to .decpdfrun or

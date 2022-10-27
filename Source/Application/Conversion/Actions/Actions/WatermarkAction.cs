@@ -67,7 +67,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     return new ActionResult(ErrorCode.Watermark_PathTooLong);
 
                 case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.Watermark_InvalidRootedPath);
+                    return new ActionResult(ErrorCode.Watermark_UnsupportedType);
 
                 case PathUtilStatus.ArgumentEx:
                     return new ActionResult(ErrorCode.Watermark_IllegalCharacters);

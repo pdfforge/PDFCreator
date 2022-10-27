@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow

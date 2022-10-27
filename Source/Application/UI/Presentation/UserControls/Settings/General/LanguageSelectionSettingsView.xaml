@@ -5,29 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:general="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General"
              xmlns:controller="clr-namespace:pdfforge.PDFCreator.Core.Controller;assembly=PDFCreator.Controller"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance general:LanguageSelectionSettingsViewModel}">
-    <HeaderedContentControl Margin="0 0 0 10" Header="{Binding Translation.LanguageControlHeader, Mode=OneWay}"
-                             Template="{DynamicResource BorderlessHeaderPanelTemplate}">
-        <StackPanel HorizontalAlignment="Left" MinWidth="250" Style="{DynamicResource GpoStyle}"
-                    IsEnabled="{Binding LanguageIsEnabled}">
-            
-            <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Translation.SelectLanguageLabelText, Mode=OneWay}" />
-            
-            <StackPanel Orientation="Horizontal">
-                <ComboBox Width="300" DisplayMemberPath="NativeName"
-                          SelectedValuePath="Iso2" SelectedValue="{Binding CurrentLanguage, Mode=TwoWay}"
-                          ItemsSource="{Binding Languages}" />
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+
+        <Label Content="{Binding Translation.LanguageControlHeader}" FontSize="14" Style="{StaticResource LightLabel}"/>
+        <Grid HorizontalAlignment="Left" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding LanguageIsEnabled}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            <StackPanel Margin="0 0 0 0" VerticalAlignment="Bottom">
+                <Label Content="{Binding Translation.SelectLanguageLabelText, Mode=OneWay}" Margin="0 10 0 10" VerticalAlignment="Center" />
+
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Width="260" DisplayMemberPath="NativeName" Background="White" Height="33"
+                              SelectedValuePath="Iso2" SelectedValue="{Binding CurrentLanguage, Mode=TwoWay}"
+                              ItemsSource="{Binding Languages}" />
+                </StackPanel>
             </StackPanel>
 
-            <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" >
-                <Run Text="{Binding Translation.TranslatorHintText, Mode=OneWay}"/>
-                <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
-                           Command="{Binding VisitWebsiteCommand}">
-                    <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" Style="{DynamicResource HyperLinkTextBlock}"/>
-                </Hyperlink>
-            </TextBlock>
-        </StackPanel>
-    </HeaderedContentControl>
+            <Border Grid.Column="1" Background="White" Padding="10">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoBrush}" VerticalAlignment="Top" Margin="0" Kind="LiveHelp" />
+
+                    <TextBlock TextWrapping="Wrap" Margin="5 0 0 0"  Width="400" LineStackingStrategy="BlockLineHeight" LineHeight="20" >
+                        <Run Text="{Binding Translation.TranslatorHintText, Mode=OneWay}"/>
+                        <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
+                                   Command="{Binding VisitWebsiteCommand}">
+                            <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" Style="{DynamicResource HyperLinkTextBlock}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </StackPanel>
 </UserControl>

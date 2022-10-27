@@ -8,8 +8,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeFtpAccountViewModel : FtpAccountViewModel
     {
-        public DesignTimeFtpAccountViewModel() : base(new DesignTimeTranslationUpdater(), new OpenFileInteractionHelper(new InteractionInvoker()),
-            new TokenHelper(new DesignTimeTranslationUpdater()), new DesignTimeTokenViewModelFactory())
+        public DesignTimeFtpAccountViewModel() : base(new DesignTimeTranslationUpdater(),
+            new OpenFileInteractionHelper(new InteractionInvoker()), new TokenHelper(new DesignTimeTranslationUpdater()),
+            new DesignTimeTokenViewModelFactory(),
+            new DesignTimeFtpConnectionTester(),
+            new DesignTimeInteractionRequest(),
+            new DesignTimeErrorCodeInterpreter())
         {
         }
     }

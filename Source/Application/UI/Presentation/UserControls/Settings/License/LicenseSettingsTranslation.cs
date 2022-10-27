@@ -16,7 +16,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         public string Never { get; private set; } = "Never";
         public string LicenseTabText { get; private set; } = "License";
         public string Expires { get; private set; } = "Expires:";
-        public string License { get; private set; } = "License";
         public string LicenseKeyContainsIllegalCharacters { get; private set; } = "The license key contains illegal characters. Valid characters are: A-Z, 0-9 and the dash.";
         public string LicenseKey { get; private set; } = "License Key:";
         public string LicenseStatusActivationExpired { get; private set; } = "The activation has expired. Please renew your activation.";

@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationA
             try
             {
                 var translation = values.First(v => v is UserTokenTranslation) as UserTokenTranslation;
-                var separator = (UserTokenSeperator)values.First(v => v is UserTokenSeperator);
+                var separator = (UserTokenSeparator)values.First(v => v is UserTokenSeparator);
 
                 return translation?.GetUserTokenDocumentExample(separator);
             }

@@ -8,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
         public string Send { get; set; } = "Send";
 
         public string Actions { get; private set; } = "Actions";
+        public string AddAction { get; private set; } = "Add action";
         public string Preparation { get; set; } = "Preparation";
 
         public string AddActionHint { get; private set; } = "Add actions to modify, send or prepare your documents";

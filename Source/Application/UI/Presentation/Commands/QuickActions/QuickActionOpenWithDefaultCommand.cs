@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -11,18 +10,19 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
 {
     public class QuickActionOpenWithDefaultCommand : QuickActionCommandBase<FtpActionTranslation>
     {
-        protected readonly IDefaultViewerAction Action;
+        protected readonly IOpenFileAction Action;
         protected readonly IFileAssoc FileAssoc;
         protected readonly ICommandLocator CommandLocator;
         protected readonly ISettingsProvider SettingsProvider;
         protected readonly IInteractionInvoker InteractionInvoker;
 
-        public QuickActionOpenWithDefaultCommand(ITranslationUpdater translationUpdater, IDefaultViewerAction action, IFileAssoc fileAssoc, ICommandLocator commandLocator, ISettingsProvider settingsProvider, IInteractionInvoker interactionInvoker) : base(translationUpdater)
+        public QuickActionOpenWithDefaultCommand(ITranslationUpdater translationUpdater, IOpenFileAction action, IFileAssoc fileAssoc, ICommandLocator commandLocator, ISettingsProvider settingsProvider, IInteractionInvoker interactionInvoker) : base(translationUpdater)
 
         {
             Action = action;

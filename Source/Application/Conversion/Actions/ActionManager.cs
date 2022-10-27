@@ -46,7 +46,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
         {
             return _allActions
                 .OfType<IPostConversionAction>()
-                .Where(a => !(a is DefaultViewerAction))
+                .Where(a => !(a is OpenFileAction))
                 .Any(a => a.IsEnabled(profile));
         }
     }

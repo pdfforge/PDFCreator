@@ -2,9 +2,8 @@ using Microsoft.Win32;
 using NLog;
 using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using System;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 {

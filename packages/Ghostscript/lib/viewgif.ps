@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -42,7 +42,9 @@
    GlobalColor
     { PaletteSize 3 mul string readstring pop
       /GlobalPalette exch def
-    } if
+    } {
+      pop
+    } ifelse
    currentdict end
  } bind def
 
@@ -159,7 +161,7 @@
  } bind def
 
 % This lets you do stuff on the command line like:
-% gs -sDEVICE=pdfwrite -o stuff%03d.pdf viewgif.ps -c "(image.gif) << /PageSize 2 index viewGIFgetsize 2 array astore  >> setpagedevice viewGIF"
+% gs -sDEVICE=pdfwrite -o stuff%03d.pdf viewgif.ps -c "(image.gif) << /PageSize 2 index viewGIFgetsize 2 array astore /HWResolution [ 72 72 ] >> setpagedevice viewGIF"
 % so the output size is influenced by the original image.
 /viewGIFgetsize		% <file|string> ==> [width height]
 {

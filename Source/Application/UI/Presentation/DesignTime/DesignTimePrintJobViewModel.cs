@@ -27,7 +27,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                   new DesignTimeChangeJobCheckAndProceedCommandBuilder(),
                   new DesignTimeBrowseFileCommandBuilder(),
                   new DispatcherWrapper(),
-                  new DesignTimeJobDataUpdater()
+                  new DesignTimeJobDataUpdater(),
+                  null
                   )
         {
             var jobInfo = new JobInfo()

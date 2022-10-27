@@ -10,11 +10,23 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:titleReplacementSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings"
     xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
+    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     d:DesignHeight="400" d:DesignWidth="500"
     d:DataContext="{d:DesignInstance titleReplacementSettings:DesignTimeTitleReplacementsViewModel, d:IsDesignTimeCreatable=True}"
-    Name="mainUserControl">
+    Name="mainUserControl"
+    help:HelpProvider.HelpTopic="AppTitle">
     <UserControl.Resources>
         <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary  Source="../../../Styles/PDFCreatorIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+     
+
             <Viewbox x:Key="RightArrow">
                 <Canvas Width="176.604" Height="176.604">
                     <Ellipse Fill="{DynamicResource TagForegroundBrush}" Margin="10" Width="146.604" Height="156.604" />
@@ -25,202 +37,189 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Style="{DynamicResource GpoStyle}"
-          IsEnabled="{Binding TitleIsEnabled}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}"
-                                Header="{Binding Translation.TitleReplacementControlHeader}"
-                                DockPanel.Dock="Top">
+    <Grid>
+        <StackPanel Margin="0 0 0 0">
+            <Label Content="{Binding Translation.TitleReplacementControlHeader}" DockPanel.Dock="Top" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 0 0 10"/>
 
-            
-            <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Right" Margin="20 0 0 0">
-                    <Button Command="{Binding TitleAddCommand}" Style="{DynamicResource LightGreyButton}"
-                            Padding="10 4 10 5" Content="+" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+
+                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Margin="20 0 0 0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Label Content="{Binding Translation.AddTitle}"
+                           Style="{StaticResource LightLabel}" />
+                    <Button Margin="10 0 0 0"
+                            Command="{Binding TitleAddCommand}"
+                            Style="{StaticResource SquaredIconButton}">
+                        <iconPacks:PackIconMaterialDesign Kind="PlaylistAdd"/>
+                    </Button>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding TitleReplacements }"
-                            DataContextChanged="FrameworkElement_OnDataContextChanged" Grid.IsSharedSizeScope="True"
-                            Background="Transparent" MaxHeight="280">
-                    <ListBox.Resources>
-                        
-                        
-                        <DataTemplate x:Key="RemoveStartTemplate" DataType="settings:TitleReplacement">
-                            <DataTemplate.Resources>
-                                <Enums:ReplacementType x:Key="ReplacementType">Start</Enums:ReplacementType>
-                            </DataTemplate.Resources>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl
-                                    Background="{DynamicResource TagBackgroundBrush}"
-                                    Foreground="{DynamicResource TagForegroundBrush}"
-                                    Content="{Binding 
-                                    Path=DataContext.Translation, 
-                                    ElementName=mainUserControl, 
-                                    Converter={StaticResource TranslatedEnumConverter}, 
-                                    ConverterParameter={StaticResource ReplacementType}}"
-                                    Template="{DynamicResource RoundDarkBackgroundTextboxControlTemplate}"
-                                    Margin="0 0 10 0" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Inlines>
-                                        <!-- Caution the ' are import and should not be removed -->
-                                        '<Run Text="{Binding Search}" />'
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="RemoveEndTemplate" DataType="settings:TitleReplacement">
-                            <DataTemplate.Resources>
-                                <Enums:ReplacementType x:Key="ReplacementType">End</Enums:ReplacementType>
-                            </DataTemplate.Resources>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl
-                                    Background="{DynamicResource TagBackgroundBrush}"
-                                    Foreground="{DynamicResource TagForegroundBrush}"
-                                    Content="{Binding 
-                                    Path=DataContext.Translation, 
-                                    ElementName=mainUserControl, 
-                                    Converter={StaticResource TranslatedEnumConverter}, 
-                                    ConverterParameter={StaticResource ReplacementType}}"
-                                    Template="{DynamicResource RoundDarkBackgroundTextboxControlTemplate}"
-                                    Margin="0 0 10 0" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Inlines>
-                                        <!-- Caution the ' are import and should not be removed -->
-                                        '<Run Text="{Binding Search}" />'
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="RemoveAllTemplate" DataType="{x:Type settings:TitleReplacement}">
-                            <DataTemplate.Resources>
-                                <Enums:ReplacementType x:Key="ReplacementType">Replace</Enums:ReplacementType>
-                            </DataTemplate.Resources>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl
-                                    Background="{DynamicResource TagBackgroundBrush}"
-                                    Foreground="{DynamicResource TagForegroundBrush}"
-                                    Content="{Binding 
-                                    Path=DataContext.Translation, 
-                                    ElementName=mainUserControl, 
-                                    Converter={StaticResource TranslatedEnumConverter}, 
-                                    ConverterParameter={StaticResource ReplacementType}}"
-                                    Template="{DynamicResource RoundDarkBackgroundTextboxControlTemplate}"
-                                    Margin="0 0 10 0" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Inlines>
-                                        <!-- Caution the ' are import and should not be removed -->
-                                        '<Run Text="{Binding Search}" />'
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="RegularExpressionTemplate" DataType="{x:Type settings:TitleReplacement}">
-                            <DataTemplate.Resources>
-                                <Enums:ReplacementType x:Key="ReplacementType">RegEx</Enums:ReplacementType>
-                            </DataTemplate.Resources>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ContentControl
-                                    Background="{DynamicResource TagBackgroundBrush}"
-                                    Foreground="{DynamicResource TagForegroundBrush}"
-                                    Content="{Binding 
-                                    Path=DataContext.Translation, 
-                                    ElementName=mainUserControl, 
-                                    Converter={StaticResource TranslatedEnumConverter}, 
-                                    ConverterParameter={StaticResource ReplacementType}}"
-                                    Template="{DynamicResource RoundDarkBackgroundTextboxControlTemplate}"
-                                    Margin="0 0 10 0" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Inlines>
-                                        <!-- Caution the ' are import and should not be removed -->
-                                        '
-                                        <Run Text="{Binding Search}" /> '
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                                <ContentControl Width="15" Height="20"
-                                                Margin="5 0"
-                                                Foreground="{DynamicResource AccentColorBrush}"
-                                                Background="Black"
-                                                Content="{DynamicResource RightArrow}" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <TextBlock.Inlines>
-                                        <!-- Caution the ' are import and should not be removed -->
-                                        '<Run Text="{Binding Replace}" />'
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
 
-                        <titleReplacementSettings:TitleReplacementDataTemplateSelector
-                            x:Key="DataTemplateSelector"
-                            RegexDataTemplate="{StaticResource RegularExpressionTemplate}"
-                            ReplaceAllDataTemplate="{StaticResource RemoveAllTemplate}"
-                            ReplaceAtBeginningDataTemplate="{StaticResource RemoveStartTemplate}"
-                            ReplaceAtEndDataTemplate="{StaticResource RemoveEndTemplate}" />
+                <DockPanel Grid.Row="0" Grid.Column="0" LastChildFill="True">
+                    <ListBox ItemsSource="{Binding TitleReplacements }"
+                             Grid.IsSharedSizeScope="True" 
+                             Background="Transparent" MaxHeight="280">
+                        <ListBox.Resources>
 
-                        <DataTemplate DataType="{x:Type settings:TitleReplacement}">
 
-                            <DockPanel LastChildFill="True" Margin="0 0 20 0">
+                            <DataTemplate x:Key="RemoveStartTemplate" DataType="settings:TitleReplacement">
+                                <DataTemplate.Resources>
+                                    <Enums:ReplacementType x:Key="ReplacementType">Start</Enums:ReplacementType>
+                                </DataTemplate.Resources>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Label Padding="10 5" VerticalAlignment="Center" Width="75"
+                                            Content="{Binding DataContext.Translation, ElementName=mainUserControl, Converter={StaticResource TranslatedEnumConverter}, ConverterParameter={StaticResource ReplacementType}}" />
+                                    <TextBlock VerticalAlignment="Center" Margin="10 0 0 0">
+                                        <TextBlock.Inlines>
+                                             <!--Caution the ' are import and should not be removed--> 
+                                            '
+                                            <Run Text="{Binding Search}" /> '
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                            <DataTemplate x:Key="RemoveEndTemplate" DataType="settings:TitleReplacement">
+                                <DataTemplate.Resources>
+                                    <Enums:ReplacementType x:Key="ReplacementType">End</Enums:ReplacementType>
+                                </DataTemplate.Resources>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Label Padding="10 5" VerticalAlignment="Center" Width="75"
+                                           Content="{Binding DataContext.Translation, ElementName=mainUserControl, Converter={StaticResource TranslatedEnumConverter}, ConverterParameter={StaticResource ReplacementType}}" />
+                                    <TextBlock VerticalAlignment="Center" Margin="10 0 0 0">
+                                        <TextBlock.Inlines>
+                                            <!-- Caution the ' are import and should not be removed -->
+                                            '
+                                            <Run Text="{Binding Search}" /> '
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                            <DataTemplate x:Key="RemoveAllTemplate" DataType="{x:Type settings:TitleReplacement}">
+                                <DataTemplate.Resources>
+                                    <Enums:ReplacementType x:Key="ReplacementType">Replace</Enums:ReplacementType>
+                                </DataTemplate.Resources>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Label Padding="10 5" VerticalAlignment="Center" Width="75"
+                                           Content="{Binding DataContext.Translation, ElementName=mainUserControl, Converter={StaticResource TranslatedEnumConverter}, ConverterParameter={StaticResource ReplacementType}}" />
+                                    <TextBlock VerticalAlignment="Center" Margin="10 0 0 0">
+                                        <TextBlock.Inlines>
+                                            <!-- Caution the ' are import and should not be removed -->
+                                            '
+                                            <Run Text="{Binding Search}" /> '
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                            <DataTemplate x:Key="RegularExpressionTemplate" DataType="{x:Type settings:TitleReplacement}">
+                                <DataTemplate.Resources>
+                                    <Enums:ReplacementType x:Key="ReplacementType">RegEx</Enums:ReplacementType>
+                                </DataTemplate.Resources>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Label Padding="10 5" VerticalAlignment="Center" Width="75"
+                                           Content="{Binding DataContext.Translation, ElementName=mainUserControl, Converter={StaticResource TranslatedEnumConverter}, ConverterParameter={StaticResource ReplacementType}}" />
+                                    <TextBlock VerticalAlignment="Center" Margin="10 0 0 0">
+                                        <TextBlock.Inlines>
+                                            <!-- Caution the ' are import and should not be removed -->
+                                            '
+                                            <Run Text="{Binding Search}" /> '
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                    <ContentControl Width="15" Height="20"
+                                                        Margin="5 0"
+                                                        Foreground="{DynamicResource AccentColorBrush}"
+                                                        Background="Black"
+                                                        Content="{DynamicResource RightArrow}" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <TextBlock.Inlines>
+                                            <!-- Caution the ' are import and should not be removed -->
+                                            '
+                                            <Run Text="{Binding Replace}" /> '
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+
+                            <titleReplacementSettings:TitleReplacementDataTemplateSelector
+                                    x:Key="DataTemplateSelector"
+                                    RegexDataTemplate="{StaticResource RegularExpressionTemplate}"
+                                    ReplaceAllDataTemplate="{StaticResource RemoveAllTemplate}"
+                                    ReplaceAtBeginningDataTemplate="{StaticResource RemoveStartTemplate}"
+                                    ReplaceAtEndDataTemplate="{StaticResource RemoveEndTemplate}" />
+
+                            <DataTemplate DataType="{x:Type settings:TitleReplacement}">
+
+                                <DockPanel LastChildFill="True" Margin="0 0 20 0">
 
                                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                                     <Button MaxHeight="14" Margin="5"
-                                            Command="{Binding DataContext.TitleEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource EditButtonIcon}" />
+                                                Command="{Binding DataContext.TitleEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{DynamicResource ListBoxButton}"
+                                                Content="{DynamicResource EditButtonIcon}" />
                                     <Button MaxHeight="14" Margin="20 5 0 5"
-                                            Command="{Binding DataContext.TitleDeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListBoxButton}"
-                                            Content="{DynamicResource RemoveButtonIcon}" />
+                                                Command="{Binding DataContext.TitleDeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{DynamicResource ListBoxButton}"
+                                                Content="{DynamicResource RemoveButtonIcon}" />
                                 </StackPanel>
 
-                                <ContentControl ContentTemplateSelector="{DynamicResource DataTemplateSelector}"
-                                                Content="{Binding}">
-                                    <ContentControl.Style>
-                                        <Style TargetType="ContentControl">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=ReplacementType}"
-                                                                Value="{x:Static Enums:ReplacementType.RegEx}">
-                                                    <Setter Property="ContentTemplate"
-                                                            Value="{DynamicResource RegularExpressionTemplate}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=ReplacementType}"
-                                                                Value="{x:Static Enums:ReplacementType.End}">
-                                                    <Setter Property="ContentTemplate"
-                                                            Value="{DynamicResource RemoveEndTemplate}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=ReplacementType}"
-                                                                Value="{x:Static Enums:ReplacementType.Start}">
-                                                    <Setter Property="ContentTemplate"
-                                                            Value="{DynamicResource RemoveStartTemplate}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=ReplacementType}"
-                                                                Value="{x:Static Enums:ReplacementType.Replace}">
-                                                    <Setter Property="ContentTemplate"
-                                                            Value="{DynamicResource RemoveAllTemplate}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ContentControl.Style>
-                                </ContentControl>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListBox.Resources>
-                </ListBox>
-            </DockPanel>
-        </HeaderedContentControl>
+                                    <ContentControl ContentTemplateSelector="{DynamicResource DataTemplateSelector}"
+                                                        Content="{Binding}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="ContentControl">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=ReplacementType}"
+                                                                        Value="{x:Static Enums:ReplacementType.RegEx}">
+                                                        <Setter Property="ContentTemplate"
+                                                                    Value="{DynamicResource RegularExpressionTemplate}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=ReplacementType}"
+                                                                        Value="{x:Static Enums:ReplacementType.End}">
+                                                        <Setter Property="ContentTemplate"
+                                                                    Value="{DynamicResource RemoveEndTemplate}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=ReplacementType}"
+                                                                        Value="{x:Static Enums:ReplacementType.Start}">
+                                                        <Setter Property="ContentTemplate"
+                                                                    Value="{DynamicResource RemoveStartTemplate}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=ReplacementType}"
+                                                                        Value="{x:Static Enums:ReplacementType.Replace}">
+                                                        <Setter Property="ContentTemplate"
+                                                                    Value="{DynamicResource RemoveAllTemplate}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                    </ContentControl>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>
+                </DockPanel>
 
-        <HeaderedContentControl Grid.Row="1" Margin="0 5"
-                                Header="{Binding Translation.TitleReplacementPreviewHeader}">
-            <StackPanel>
-                <TextBlock Margin="0 5 0 0" Text="{Binding Translation.SampleTitleText}" />
-                <TextBox Text="{Binding SampleText, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock Margin="0 5 0 0" Text="{Binding Translation.PreviewTitleText}" />
-                <TextBox Text="{Binding ReplacedSampleText}" IsReadOnly="True" />
-            </StackPanel>
-        </HeaderedContentControl>
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5">
+                    <Label Content="{Binding Translation.TitleReplacementControlHeader}" DockPanel.Dock="Top" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
+                    <StackPanel>
+                        <Label Margin="0 0 0 10" Content="{Binding Translation.SampleTitleText}" />
+                        <TextBox Background="White" Text="{Binding SampleText, UpdateSourceTrigger=PropertyChanged}" />
 
+                        <Label Margin="0 10 0 10" Content="{Binding Translation.PreviewTitleText}" />
+                        <TextBox Background="White" Text="{Binding ReplacedSampleText}" IsReadOnly="True" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <gpo:GPOLockLayer IsLockedByGpo="{ Binding TitleIsEnabled }" />
     </Grid>
 </UserControl>

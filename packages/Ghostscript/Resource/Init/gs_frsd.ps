@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -61,13 +61,29 @@ level2dict begin
 
     .currentglobal 1 index gcheck .setglobal exch
     currentpacking //false setpacking exch
+    2 dict begin /filelen 0 def		% scratch dict for filelen and pos (below).
                 % Stack: dict filters parms CloseSource oldglobal oldpacking file
-    [ exch { dup 40000 string readstring not { exit } if exch } loop
+    [ exch {
+        dup 40000 string readstring
+        /filelen 2 index length filelen add def	% accumulate filelen
+        not { exit } if exch
+      } loop
       exch pop
     ]
-                        % Stack: dict filters parms CloseSource oldglobal oldpacking [()...]
+    { filelen string } stopped {	% try allocating a single string
+      pop	% couldn't make a string - discard filelen value
+    } {
+      % transfer the array-of-strings to the single string.
+      % stack: ... [() ...] string
+      /pos 0 def exch {
+        1 index exch pos exch putinterval /pos pos 40000 add def
+      } forall
+    } ifelse
+    % top of stack is either array of strings or one string == stream_data
+    end	% done with scratch dict
+                        % Stack: dict filters parms CloseSource oldglobal oldpacking stream_data
     3 1 roll setpacking setglobal
-                        % Stack: dict filters parms CloseSource [()...]
+                        % Stack: dict filters parms CloseSource stream_data
     1 index .reusablestream
   } if
                 % We created the stream successfully: clean up.

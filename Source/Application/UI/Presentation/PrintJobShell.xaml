@@ -1,23 +1,27 @@
 ﻿<metro:MetroWindow x:Class="pdfforge.PDFCreator.UI.Presentation.PrintJobShell"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:regions="http://prismlibrary.com/"
-                   xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-                   xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-                   xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
-                   xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-                   xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
-                   xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:trigger="clr-namespace:pdfforge.Obsidian.Trigger;assembly=Obsidian"
+                   xmlns:obsidian="clr-namespace:pdfforge.Obsidian;assembly=Obsidian"
+                   xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
+                   xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+                   xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
                    mc:Ignorable="d"
                    Title="{Binding ApplicationNameAndVersion}"
-                   Height="700" Width="520"
+                   Height="730" Width="520"
                    BorderThickness="1"
-                   BorderBrush="{DynamicResource AccentColorBrush}"
-                   GlowBrush="{DynamicResource AccentColorBrush}"
+
+                   BorderBrush="{DynamicResource TitleBarBackground}"
+                   GlowBrush="{DynamicResource TitleBarBackground}"
+                   WindowTitleBrush="{DynamicResource TitleBarBackground}"
+
+                   Icon="Resources/pdfcreator_icon.png"
+
                    WindowStartupLocation="CenterScreen"
                    ResizeMode="CanMinimize"
                    Loaded="PrintJobShell_OnLoaded"
@@ -52,10 +56,6 @@
         </Grid.Resources>
 
         <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
-            <userControls:ApplicationLogoControl DockPanel.Dock="Top"
-                                                 Margin="40 25"
-                                                 Foreground="Black" />
-
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem Margin="30 0">&#169; pdfforge</StatusBarItem>
             </StatusBar>

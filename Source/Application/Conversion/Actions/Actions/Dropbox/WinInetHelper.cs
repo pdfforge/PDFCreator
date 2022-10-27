@@ -1,41 +1,44 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-public interface IWinInetHelper
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
 {
-    bool EndBrowserSession();
-}
-
-public class WinInetHelper : IWinInetHelper
-{
-    public bool EndBrowserSession()
+    public interface IWinInetHelper
     {
-        // 42 = INTERNET_OPTION_END_BROWSER_SESSION
-        return SetOption(42, null);
+        bool EndBrowserSession();
     }
 
-    private bool SetOption(int settingCode, int? option)
+    public class WinInetHelper : IWinInetHelper
     {
-        IntPtr optionPtr = IntPtr.Zero;
-        int size = 0;
-        if (option.HasValue)
+        public bool EndBrowserSession()
         {
-            size = sizeof(int);
-            optionPtr = Marshal.AllocCoTaskMem(size);
-            Marshal.WriteInt32(optionPtr, option.Value);
+            // 42 = INTERNET_OPTION_END_BROWSER_SESSION
+            return SetOption(42, null);
         }
 
-        bool success = InternetSetOption(0, settingCode, optionPtr, size);
+        private bool SetOption(int settingCode, int? option)
+        {
+            IntPtr optionPtr = IntPtr.Zero;
+            int size = 0;
+            if (option.HasValue)
+            {
+                size = sizeof(int);
+                optionPtr = Marshal.AllocCoTaskMem(size);
+                Marshal.WriteInt32(optionPtr, option.Value);
+            }
 
-        if (optionPtr != IntPtr.Zero) Marshal.Release(optionPtr);
-        return success;
+            bool success = InternetSetOption(0, settingCode, optionPtr, size);
+
+            if (optionPtr != IntPtr.Zero) Marshal.Release(optionPtr);
+            return success;
+        }
+
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool InternetSetOption(
+            int hInternet,
+            int dwOption,
+            IntPtr lpBuffer,
+            int dwBufferLength
+        );
     }
-
-    [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern bool InternetSetOption(
-        int hInternet,
-        int dwOption,
-        IntPtr lpBuffer,
-        int dwBufferLength
-    );
 }

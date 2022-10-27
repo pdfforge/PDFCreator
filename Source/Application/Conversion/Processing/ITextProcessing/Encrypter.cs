@@ -52,9 +52,13 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                     break;
 
                 case EncryptionLevel.Aes128Bit:
-                case EncryptionLevel.Aes256Bit:
                     writerProperties.SetStandardEncryption(userPassword, ownerPassword,
                         encryption, EncryptionConstants.ENCRYPTION_AES_128);
+                    break;
+
+                case EncryptionLevel.Aes256Bit:
+                    writerProperties.SetStandardEncryption(userPassword, ownerPassword,
+                        encryption, EncryptionConstants.ENCRYPTION_AES_256);
                     break;
             }
         }

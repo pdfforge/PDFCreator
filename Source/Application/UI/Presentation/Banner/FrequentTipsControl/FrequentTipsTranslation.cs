@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
     public class FrequentTipsTranslation : ITranslatable
     {
         public string UserTokensTitle { get; private set; } = "User Tokens";
-        public string UserTokensText { get; private set; } = "User Tokens allow you to predefine information like e-mail address, subject, text and more directly in the document without having to manually opening PDFCreator for each conversion.";
+        public string UserTokensText { get; private set; } = "User Tokens allow to predefine information like the e-mail address, subject, and text directly in the document without having to manually open PDFCreator settings for each conversion.";
 
         //------------------
         public string F1HelpTitle { get; private set; } = "Need help?";

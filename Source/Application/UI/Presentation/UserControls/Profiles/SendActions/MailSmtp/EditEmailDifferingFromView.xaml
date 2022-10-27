@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
@@ -12,42 +13,44 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/LightGreyButton.xaml" />
                 <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="10">
+    <Grid Margin="20">
         <StackPanel>
             <userControls:BusinessFeatureBadge Edition="AllLicensed" HorizontalAlignment="Left" />
-            <Label>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Translation.OnBehalfOfLabel}" />
-                    <ContentPresenter Content="{DynamicResource InfoIcon}"
-                                      ToolTip="{Binding Translation.DifferingFromToolTip}"
-                                      Margin="5 0 0 0" />
-                </StackPanel>
-            </Label>
-            <controls:TokenControl DataContext="{Binding OnBehalfOfTokenViewModel}" />
+            <StackPanel IsEnabled="{Binding IsFreeEdition, Converter={StaticResource BoolNegationConverter}}">
+                <Label>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0" VerticalAlignment="Center">
+                        <Label Content="{Binding Translation.OnBehalfOfLabel}"
+                           Margin="0 0 0 0" />
+                        <ContentPresenter Content="{DynamicResource InfoIcon}" VerticalAlignment="Center"
+                                          ToolTip="{Binding Translation.DifferingFromToolTip}"
+                                          Margin="5 0 0 0" />
+                    </StackPanel>
+                </Label>
+                <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding OnBehalfOfTokenViewModel}" />
 
-            <Label>
-                <TextBlock Text="{Binding Translation.DisplayName}"></TextBlock>
-            </Label>
-            <controls:TokenControl DataContext="{Binding DisplayNameTokenViewModel}" />
+                <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.DisplayName}" />
+                <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding DisplayNameTokenViewModel}" />
 
-            <Label>
-                <TextBlock Text="{Binding Translation.ReplyTo}"></TextBlock>
-            </Label>
-            <controls:TokenControl DataContext="{Binding ReplyToTokenViewModel}" />
+                <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.ReplyTo}" />
+                <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding ReplyToTokenViewModel}" />
+            </StackPanel>
 
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 20 0 0">
                 <Button Content="{Binding OkBack}"
-                        Command="{Binding OkCommand}"
-                        Style="{DynamicResource LightGreyButton}" />
+                        Command="{Binding OkCommand}" />
                 <Button Margin="10 0 0 0"
                         Content="{Binding Translation.Cancel}"
-                        Command="{Binding CancelCommand}"
-                        Style="{DynamicResource LightGreyButton}" />
+                        Command="{Binding CancelCommand}" />
             </StackPanel>
         </StackPanel>
     </Grid>

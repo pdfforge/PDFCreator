@@ -27,6 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
         protected override void AddDeviceSpecificParameters(IList<string> parameters)
         {
+            parameters.Add("-dNEWPDF=" + "false"); //Job.Profile.UseGsNewPDF.ToString().ToLower()); //this will be the default for GS >9.55 and can be removed then
             parameters.Add("-sDEVICE=pdfwrite");
             parameters.Add("-dCompatibilityLevel=1.4");
             parameters.Add("-dPDFSETTINGS=/default");
@@ -153,9 +154,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /ColorImageDict <</QFactor 2.4 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /ColorImageDict <</QFactor 2.4 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /GrayImageDict <</QFactor 2.4 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /GrayImageDict <</QFactor 2.4 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;
 
                 case CompressionColorAndGray.JpegHigh:
@@ -166,9 +167,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /ColorImageDict <</QFactor 1.3 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /ColorImageDict <</QFactor 1.3 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /GrayImageDict <</QFactor 1.3 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /GrayImageDict <</QFactor 1.3 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;
 
                 case CompressionColorAndGray.JpegMedium:
@@ -179,9 +180,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /ColorImageDict <</QFactor 0.76 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /ColorImageDict <</QFactor 0.76 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /GrayImageDict <</QFactor 0.76 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /GrayImageDict <</QFactor 0.76 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;
 
                 case CompressionColorAndGray.JpegLow:
@@ -192,9 +193,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /ColorImageDict <</QFactor 0.40 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /ColorImageDict <</QFactor 0.40 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /GrayImageDict <</QFactor 0.40 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /GrayImageDict <</QFactor 0.40 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;
 
                 case CompressionColorAndGray.JpegMinimum:
@@ -205,9 +206,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /ColorImageDict <</QFactor 0.15 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /ColorImageDict <</QFactor 0.15 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     distillerDictonaries.Add(
-                        ".setpdfwrite << /GrayImageDict <</QFactor 0.15 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
+                        "<< /GrayImageDict <</QFactor 0.15 /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;
 
                 case CompressionColorAndGray.Zip:
@@ -226,10 +227,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     parameters.Add("-dEncodeGrayImages=true");
                     parameters.Add("-dColorImageFilter=/DCTEncode");
                     parameters.Add("-dGrayImageFilter=/DCTEncode");
-                    distillerDictonaries.Add(".setpdfwrite << /ColorImageDict <</QFactor " +
+                    distillerDictonaries.Add("<< /ColorImageDict <</QFactor " +
                                              Job.Profile.PdfSettings.CompressColorAndGray.JpegCompressionFactor.ToString(CultureInfo.InvariantCulture) +
                                              " /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
-                    distillerDictonaries.Add(".setpdfwrite << /GrayImageDict <</QFactor " +
+                    distillerDictonaries.Add("<< /GrayImageDict <</QFactor " +
                                              Job.Profile.PdfSettings.CompressColorAndGray.JpegCompressionFactor.ToString(CultureInfo.InvariantCulture) +
                                              " /Blend 1 /HSample [2 1 1 2] /VSample [2 1 1 2]>> >> setdistillerparams");
                     break;

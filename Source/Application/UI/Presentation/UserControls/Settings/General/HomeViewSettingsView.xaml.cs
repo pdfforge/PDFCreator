@@ -6,9 +6,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     
     public partial class HomeViewSettingsView : UserControl
     {
-        public HomeViewSettingsView(HomeViewSettingsViewModel viewModel)
+        public HomeViewSettingsView()
         {
             InitializeComponent();
+        }
+        
+        public void SetDataContext(HomeViewSettingsViewModel viewModel)
+        {
             DataContext = viewModel;
         }
     }

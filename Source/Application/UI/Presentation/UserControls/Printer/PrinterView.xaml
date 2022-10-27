@@ -1,166 +1,167 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:wrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Wrapper"
-             xmlns:conversionwrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
-             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
+             xmlns:wrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Wrapper"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrinterViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="600" d:DesignWidth="800"
-             Name="UserControlX">
+             Name="This">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Profiles/../../Styles/CustomListView.xaml" />
-                <ResourceDictionary Source="../Profiles/../../Styles/LightGreyButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/CheckBoxes/DefaultCheckBox.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Datagrid.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Redesign5/HoverBorder.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="6*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Grid Margin="40 40 40 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!--Manage Printers Header-->
+                <Label Grid.Column="0" Margin="0 0 0 40"
+                       Style="{StaticResource LargeLabel}"
+                       Content="{Binding Translation.ManagePrinters}" />
 
-            <HeaderedContentControl Grid.Row="1" Grid.Column="1"
-                                Header="{Binding Translation.ManagePrinters}"
-                                Template="{DynamicResource BorderlessHeaderPanelTemplate}">
-                <DataGrid
-                Name="PrinterList"
-                VerticalAlignment="Top"
-                ItemsSource="{Binding PrinterMappings}"
-                IsSynchronizedWithCurrentItem="True"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
-                AutoGenerateColumns="False">
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Height" Value="Auto" />
-                            <Setter Property="Foreground" Value="Black" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Margin" Value="10" />
-                            <Setter Property="FontWeight" Value="Bold" />
-                            <Setter Property="IsTabStop" Value="False" />
-                            <Setter Property="IsEnabled" Value="False" />
+                <!-- Printer DataGrid -->
+                <DataGrid Grid.Row="1" Grid.Column="0"
+                      Style="{StaticResource NoHoverUnchangeableDataGrid}"
+                      ItemsSource="{Binding PrinterMappings}"
+                      RowHeaderWidth="0"
+                      VerticalAlignment="Top"
+                      IsSynchronizedWithCurrentItem="True">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Margin" Value="0 0 0 20" />
                         </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                    </DataGrid.RowStyle>
 
-                    <DataGrid.Resources>
-                        <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}" x:Key="IsPrimaryCell">
-                            <StackPanel HorizontalAlignment="Center" Margin="3 0 0 0">
-                                <CheckBox IsChecked="{Binding IsPrimaryPrinter, Mode=OneWay}"
-                                      Command="{Binding DataContext.SetPrimaryPrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                      CommandParameter="{Binding}" />
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate    x:Key="ProfilesCell">
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}" x:Key="PrinterCell">
-                            <TextBlock Text="{Binding PrinterName}" MinWidth="100" Margin="10" />
-                        </DataTemplate>
-                    </DataGrid.Resources>
                     <DataGrid.Columns>
-
-                        <DataGridTemplateColumn CellTemplate="{StaticResource PrinterCell}" Width="Auto" MinWidth="150">
+                        <!-- Printer column -->
+                        <DataGridTemplateColumn Width="2*">
                             <DataGridTemplateColumn.HeaderTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding DataContext.Translation.PrinterColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    <!--The margin 3 because there is a margin of (approximately) 2 units being set by something mysterious -->
+                                    <Label Margin="3 0 0 0"
+                                       Content="{Binding DataContext.Translation.PrinterColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       Style="{StaticResource LightLabel}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.HeaderTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn CellTemplate="{StaticResource IsPrimaryCell}" MinWidth="50">
-                            <DataGridTemplateColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DataContext.Translation.PrimaryColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.HeaderTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Width="*" MaxWidth="400">
                             <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
+                                    <Border Style="{StaticResource HoverBorder}">
+                                        <DockPanel Margin="10 0">
+                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   Text="{Binding PrinterName}"
+                                                   Style="{StaticResource DefaultTextBlock}" />
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- IsPrimary Checkbox and ProfilesCombobox column -->
+                        <DataGridTemplateColumn Width="3*">
+                            <DataGridTemplateColumn.HeaderTemplate>
                                 <DataTemplate>
-                                    <profiles:ProfilesComboBox
-                                    Profiles="{Binding Path=DataContext.ConversionProfiles,ElementName=UserControlX}"
-                                    SelectedProfile="{Binding Profile,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Column="1" Margin="10 0" />
+                                    <Label Margin="10 0 0 0"
+                                       Content="{Binding DataContext.Translation.PrimaryColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       HorizontalAlignment="Left"
+                                       Style="{StaticResource LightLabel}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
+                                    <DockPanel FlowDirection="LeftToRight">
+                                        <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
+                                        <CheckBox Height="33" HorizontalAlignment="Center"
+                                              Margin="8 0 0 0"
+                                              Background="White"
+                                              IsChecked="{Binding IsPrimaryPrinter, Mode=OneWay}"
+                                              Command="{Binding DataContext.SetPrimaryPrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                              CommandParameter="{Binding}" />
+                                        <Border Margin="10 0 0 0"
+                                            Style="{StaticResource HoverBorder}">
+                                            <redesign5:ProfilesComboBox>
+                                                <redesign5:ProfilesComboBox.Style>
+                                                    <Style TargetType="{x:Type redesign5:ProfilesComboBox}">
+                                                        <Setter Property="Background" Value="White" />
+                                                        <Setter Property="Profiles" Value="{Binding Path=DataContext.ConversionProfiles, ElementName=This}" />
+                                                        <Setter Property="SelectedProfile" Value="{Binding Profile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=DataGridRow}}" Value="True">
+                                                                <Setter Property="Background" Value="{StaticResource ComboBoxMouseOverBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </redesign5:ProfilesComboBox.Style>
+                                            </redesign5:ProfilesComboBox>
+                                        </Border>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Rename and Delete Buttons column -->
+                        <DataGridTemplateColumn Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
+                                    <DockPanel>
+                                        <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
+                                        <Button Margin="8 0 0 0"
+                                            Command="{Binding DataContext.RenamePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                            CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}"
+                                            Style="{StaticResource SquaredIconButton}">
+                                            <iconPacks:PackIconMaterialDesign Kind="Build" />
+                                        </Button>
+                                        <Button Margin="10 0 0 0"
+                                        Command="{Binding DataContext.DeletePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                        CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}"
+                                        Style="{StaticResource SquaredIconButton}">
+                                            <iconPacks:PackIconMaterialDesign Kind="Delete" />
+                                        </Button>
+                                    </DockPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </HeaderedContentControl>
 
-            <UniformGrid Grid.Row="2" Grid.Column="1" Columns="3">
-                <UniformGrid.Resources>
-                    <Style TargetType="Button" BasedOn="{StaticResource LightGreyButton}">
-                    </Style>
-                    <Style x:Key="UacStyle" TargetType="ContentControl">
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.4" />
-                            </Trigger>
-                        </Style.Triggers>
-                        <Setter Property="Width" Value="16" />
-                        <Setter Property="Margin" Value="5 0" />
-                    </Style>
-                    <Style x:Key="UacText" TargetType="TextBlock">
-                        <Setter Property="TextWrapping" Value="Wrap" />
-                        <Setter Property="MaxWidth" Value="100" />
-                        <Setter Property="TextAlignment" Value="Center" />
-                    </Style>
-                </UniformGrid.Resources>
-                <Button Command="{Binding AddPrinterCommand}" HorizontalAlignment="Stretch" Margin="0 0 5 0">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl Visibility="{Binding RequiresUacVisibility}"
-                                        Style="{StaticResource UacStyle}" Focusable="False">
-                            <DynamicResource ResourceKey="UacShield" />
-                        </ContentControl>
-                        <TextBlock VerticalAlignment="Center"
-                                   Style="{StaticResource UacText}"
-                                   Text="{Binding Translation.AddPrinterButtonText}" />
-                    </StackPanel>
-                </Button>
-                <Button Command="{Binding RenamePrinterCommand}" Margin="5 0"
-                        CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl Visibility="{Binding RequiresUacVisibility}"
-                                        Style="{StaticResource UacStyle}" Focusable="False">
-                            <DynamicResource ResourceKey="UacShield" />
-                        </ContentControl>
-                        <TextBlock VerticalAlignment="Center"
-                                   Style="{DynamicResource UacText}"
-                                   Text="{Binding Translation.RenamePrinterButtonText}" />
-                    </StackPanel>
-                </Button>
-                <Button Command="{Binding DeletePrinterCommand}" Margin="5 0 0 0"
-                        CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl Visibility="{Binding RequiresUacVisibility}"
-                                        Style="{DynamicResource UacStyle}" Focusable="False">
-                            <DynamicResource ResourceKey="UacShield" />
-                        </ContentControl>
-                        <TextBlock VerticalAlignment="Center"
-                                   Style="{DynamicResource UacText}"
-                                   Text="{Binding Translation.DeletePrinterButtonText}" />
-                    </StackPanel>
-                </Button>
-            </UniformGrid>
+                <!-- Add Printer Button -->
+                <StackPanel Grid.Row="1" Grid.Column="1"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Margin="10 0 0 0"
+                        Orientation="Horizontal">
+                    <Label Content="{Binding DataContext.Translation.AddPrinterButtonText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           Style="{StaticResource LightLabel}" />
+                    <Button Margin="10 0 0 0"
+                        Command="{Binding DataContext.AddPrinterCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Style="{StaticResource SquaredIconButton}">
+                        <iconPacks:PackIconMaterialDesign Kind="PlaylistAdd" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <gpo:GPOLockLayer IsLockedByGpo="{Binding PrinterIsDisabled}" />
         </Grid>
-
-        <gpo:GPOLockLayer IsLockedByGpo="{ Binding PrinterIsDisabled }" />
-    </Grid>
+    </ScrollViewer>
 </UserControl>

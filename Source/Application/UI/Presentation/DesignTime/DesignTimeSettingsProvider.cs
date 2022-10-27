@@ -1,8 +1,8 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using System;
 using System.Linq;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {

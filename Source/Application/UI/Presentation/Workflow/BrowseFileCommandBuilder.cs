@@ -21,7 +21,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
     {
         void Init(Func<Job> getJob, Action updateUi, Func<string> getLastConfirmedPath, Action<string> setLastConfirmedPath);
 
-        IMacroCommand BuildCommand(Predicate<object> canExecute = null);
+        IMacroCommand BuildCommand(IList<ICommand> postExecutionCommands = default, Predicate<object> canExecute = null);
     }
 
     public class BrowseFileCommandBuilder : IBrowseFileCommandBuilder
@@ -54,14 +54,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             _getLastConfirmedPath = getLastConfirmedPath;
         }
 
-        public IMacroCommand BuildCommand(Predicate<object> canExecute = null)
+        public IMacroCommand BuildCommand(IList<ICommand> postExecutionCommands, Predicate<object> canExecute = null)
         {
             if (_getJob == null || _updateUi == null || _setLastConfirmedPath == null || _getLastConfirmedPath == null)
                 throw new InvalidOperationException($"Call {nameof(BrowseFileCommandBuilder)}.Init first to set communication functions.");
 
             var waitableAsyncCommand = new WaitableAsyncCommand(BrowseFileWithNotificationForTooLongInput, canExecute);
 
-            return new MacroCommand(new List<ICommand> { waitableAsyncCommand });
+            var commandList = new List<ICommand> { waitableAsyncCommand };
+            if (postExecutionCommands != null)
+                commandList.AddRange(postExecutionCommands);
+
+            return new MacroCommand(commandList);
         }
 
         private async Task<MacroCommandIsDoneEventArgs> BrowseFileWithNotificationForTooLongInput(object arg)
@@ -76,7 +80,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
 
             var result = await GetFileOrRetry(inputDirectory, inputFilename, job.Profile.OutputFormat);
 
-            if (result.Success)
+            if (result is { Success: true })
             {
                 job.OutputFileTemplate = result.Data.Filepath;
                 job.Profile.OutputFormat = result.Data.OutputFormat;
@@ -95,7 +99,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             {
                 try
                 {
-                    return _fileNameQuery.GetFileName(dir, file, format);
+                    return _fileNameQuery.GetFileName(dir, file, format, false);
                 }
                 catch (PathTooLongException)
                 {

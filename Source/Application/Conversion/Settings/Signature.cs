@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Text;
 using System;
 
@@ -28,19 +29,49 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool AllowMultiSigning { get; set; } = false;
 		
 		/// <summary>
+		/// The Path of the background image to use.
+		/// </summary>
+		public string BackgroundImageFile { get; set; } = "";
+		
+		/// <summary>
 		/// Path to the certificate
 		/// </summary>
 		public string CertificateFile { get; set; } = "";
 		
 		/// <summary>
-		/// If true, the signature will be displayed in the PDF file
+		/// Defines the display level of the signature in the document.
 		/// </summary>
-		public bool DisplaySignatureInDocument { get; set; } = false;
+		public DisplaySignature DisplaySignature { get; set; } = DisplaySignature.NoDisplay;
 		
 		/// <summary>
 		/// If true, the signature will be displayed in the PDF document
 		/// </summary>
 		public bool Enabled { get; set; } = false;
+		
+		/// <summary>
+		/// Resize signature text to fit into displayed signature
+		/// </summary>
+		public bool FitTextToSignatureSize { get; set; } = true;
+		
+		/// <summary>
+		/// Font color of the signature text
+		/// </summary>
+		public Color FontColor { get; set; } = ColorTranslator.FromHtml("#000000");
+		
+		/// <summary>
+		/// PostScript name of the signature font
+		/// </summary>
+		public string FontFile { get; set; } = "arial.ttf";
+		
+		/// <summary>
+		/// Font name of the signature text  (this is only used as a hint, FontFile contains the real name)
+		/// </summary>
+		public string FontName { get; set; } = "Arial";
+		
+		/// <summary>
+		/// Size of the signature font
+		/// </summary>
+		public float FontSize { get; set; } = 12f;
 		
 		/// <summary>
 		/// Signature location: Top left corner (X part)
@@ -102,9 +133,20 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public void ReadValues(Data data, string path = "")
 		{
 			AllowMultiSigning = bool.TryParse(data.GetValue(@"" + path + @"AllowMultiSigning"), out var tmpAllowMultiSigning) ? tmpAllowMultiSigning : false;
+			try { BackgroundImageFile = Data.UnescapeString(data.GetValue(@"" + path + @"BackgroundImageFile")); } catch { BackgroundImageFile = "";}
 			try { CertificateFile = Data.UnescapeString(data.GetValue(@"" + path + @"CertificateFile")); } catch { CertificateFile = "";}
-			DisplaySignatureInDocument = bool.TryParse(data.GetValue(@"" + path + @"DisplaySignatureInDocument"), out var tmpDisplaySignatureInDocument) ? tmpDisplaySignatureInDocument : false;
+			DisplaySignature = Enum.TryParse<DisplaySignature>(data.GetValue(@"" + path + @"DisplaySignature"), out var tmpDisplaySignature) ? tmpDisplaySignature : DisplaySignature.NoDisplay;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
+			FitTextToSignatureSize = bool.TryParse(data.GetValue(@"" + path + @"FitTextToSignatureSize"), out var tmpFitTextToSignatureSize) ? tmpFitTextToSignatureSize : true;
+			try
+			{
+				string value = data.GetValue(@"" + path + @"FontColor").Trim();
+				if (value.Length == 0) FontColor = ColorTranslator.FromHtml("#000000"); else FontColor = ColorTranslator.FromHtml(value);
+			}
+			catch { FontColor =  ColorTranslator.FromHtml("#000000");}
+			try { FontFile = Data.UnescapeString(data.GetValue(@"" + path + @"FontFile")); } catch { FontFile = "arial.ttf";}
+			try { FontName = Data.UnescapeString(data.GetValue(@"" + path + @"FontName")); } catch { FontName = "Arial";}
+			FontSize = float.TryParse(data.GetValue(@"" + path + @"FontSize"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpFontSize) ? tmpFontSize : 12f;
 			LeftX = float.TryParse(data.GetValue(@"" + path + @"LeftX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftX) ? tmpLeftX : 100f;
 			LeftY = float.TryParse(data.GetValue(@"" + path + @"LeftY"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpLeftY) ? tmpLeftY : 100f;
 			RightX = float.TryParse(data.GetValue(@"" + path + @"RightX"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpRightX) ? tmpRightX : 200f;
@@ -121,9 +163,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"AllowMultiSigning", AllowMultiSigning.ToString());
+			data.SetValue(@"" + path + @"BackgroundImageFile", Data.EscapeString(BackgroundImageFile));
 			data.SetValue(@"" + path + @"CertificateFile", Data.EscapeString(CertificateFile));
-			data.SetValue(@"" + path + @"DisplaySignatureInDocument", DisplaySignatureInDocument.ToString());
+			data.SetValue(@"" + path + @"DisplaySignature", DisplaySignature.ToString());
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
+			data.SetValue(@"" + path + @"FitTextToSignatureSize", FitTextToSignatureSize.ToString());
+			data.SetValue(@"" + path + @"FontColor", ColorTranslator.ToHtml(FontColor));
+			data.SetValue(@"" + path + @"FontFile", Data.EscapeString(FontFile));
+			data.SetValue(@"" + path + @"FontName", Data.EscapeString(FontName));
+			data.SetValue(@"" + path + @"FontSize", FontSize.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"LeftX", LeftX.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"LeftY", LeftY.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"RightX", RightX.ToString(System.Globalization.CultureInfo.InvariantCulture));
@@ -142,9 +190,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Signature copy = new Signature();
 			
 			copy.AllowMultiSigning = AllowMultiSigning;
+			copy.BackgroundImageFile = BackgroundImageFile;
 			copy.CertificateFile = CertificateFile;
-			copy.DisplaySignatureInDocument = DisplaySignatureInDocument;
+			copy.DisplaySignature = DisplaySignature;
 			copy.Enabled = Enabled;
+			copy.FitTextToSignatureSize = FitTextToSignatureSize;
+			copy.FontColor = FontColor;
+			copy.FontFile = FontFile;
+			copy.FontName = FontName;
+			copy.FontSize = FontSize;
 			copy.LeftX = LeftX;
 			copy.LeftY = LeftY;
 			copy.RightX = RightX;
@@ -164,14 +218,32 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(AllowMultiSigning != source.AllowMultiSigning)
 				AllowMultiSigning = source.AllowMultiSigning;
 				
+			if(BackgroundImageFile != source.BackgroundImageFile)
+				BackgroundImageFile = source.BackgroundImageFile;
+				
 			if(CertificateFile != source.CertificateFile)
 				CertificateFile = source.CertificateFile;
 				
-			if(DisplaySignatureInDocument != source.DisplaySignatureInDocument)
-				DisplaySignatureInDocument = source.DisplaySignatureInDocument;
+			if(DisplaySignature != source.DisplaySignature)
+				DisplaySignature = source.DisplaySignature;
 				
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
+				
+			if(FitTextToSignatureSize != source.FitTextToSignatureSize)
+				FitTextToSignatureSize = source.FitTextToSignatureSize;
+				
+			if(FontColor != source.FontColor)
+				FontColor = source.FontColor;
+				
+			if(FontFile != source.FontFile)
+				FontFile = source.FontFile;
+				
+			if(FontName != source.FontName)
+				FontName = source.FontName;
+				
+			if(FontSize != source.FontSize)
+				FontSize = source.FontSize;
 				
 			if(LeftX != source.LeftX)
 				LeftX = source.LeftX;
@@ -211,21 +283,27 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Signature)) return false;
 			Signature v = o as Signature;
 			
-			if (!AllowMultiSigning.Equals(v.AllowMultiSigning)) return false;
-			if (!CertificateFile.Equals(v.CertificateFile)) return false;
-			if (!DisplaySignatureInDocument.Equals(v.DisplaySignatureInDocument)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!LeftX.Equals(v.LeftX)) return false;
-			if (!LeftY.Equals(v.LeftY)) return false;
-			if (!RightX.Equals(v.RightX)) return false;
-			if (!RightY.Equals(v.RightY)) return false;
-			if (!SignContact.Equals(v.SignContact)) return false;
-			if (!SignLocation.Equals(v.SignLocation)) return false;
-			if (!SignReason.Equals(v.SignReason)) return false;
-			if (!SignatureCustomPage.Equals(v.SignatureCustomPage)) return false;
-			if (!SignaturePage.Equals(v.SignaturePage)) return false;
-			if (!SignaturePassword.Equals(v.SignaturePassword)) return false;
-			if (!TimeServerAccountId.Equals(v.TimeServerAccountId)) return false;
+			if (!Object.Equals(AllowMultiSigning, v.AllowMultiSigning)) return false;
+			if (!Object.Equals(BackgroundImageFile, v.BackgroundImageFile)) return false;
+			if (!Object.Equals(CertificateFile, v.CertificateFile)) return false;
+			if (!Object.Equals(DisplaySignature, v.DisplaySignature)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(FitTextToSignatureSize, v.FitTextToSignatureSize)) return false;
+			if (!Object.Equals(FontColor, v.FontColor)) return false;
+			if (!Object.Equals(FontFile, v.FontFile)) return false;
+			if (!Object.Equals(FontName, v.FontName)) return false;
+			if (!Object.Equals(FontSize, v.FontSize)) return false;
+			if (!Object.Equals(LeftX, v.LeftX)) return false;
+			if (!Object.Equals(LeftY, v.LeftY)) return false;
+			if (!Object.Equals(RightX, v.RightX)) return false;
+			if (!Object.Equals(RightY, v.RightY)) return false;
+			if (!Object.Equals(SignContact, v.SignContact)) return false;
+			if (!Object.Equals(SignLocation, v.SignLocation)) return false;
+			if (!Object.Equals(SignReason, v.SignReason)) return false;
+			if (!Object.Equals(SignatureCustomPage, v.SignatureCustomPage)) return false;
+			if (!Object.Equals(SignaturePage, v.SignaturePage)) return false;
+			if (!Object.Equals(SignaturePassword, v.SignaturePassword)) return false;
+			if (!Object.Equals(TimeServerAccountId, v.TimeServerAccountId)) return false;
 			return true;
 		}
 		

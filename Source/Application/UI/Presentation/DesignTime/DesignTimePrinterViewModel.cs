@@ -21,7 +21,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             new DesignTimeCurrentSettings<ObservableCollection<PrinterMapping>>(),
             new DesignTimeCurrentSettings<ObservableCollection<ConversionProfile>>(),
             null,
-            null,
             new DesignTimeTranslationUpdater(),
             new DesignTimePrinterHelper(),
             new GpoSettingsDefaults()
@@ -33,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 _printerMappings = new Presentation.Helper.SynchronizedCollection<PrinterMappingWrapper>(new List<PrinterMappingWrapper>());
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator", ""), profiles));
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator2", ""), profiles));
-            PdfCreatorPrinters = new List<string>{string.Empty};
+            PdfCreatorPrinters = new List<string> { string.Empty };
             PrimaryPrinter = PdfCreatorPrinters.First();
         }
     }

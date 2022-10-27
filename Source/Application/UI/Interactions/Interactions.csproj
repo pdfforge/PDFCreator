@@ -40,10 +40,16 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PDFCreator.Presentation">
+      <HintPath>..\..\..\UnitTest\UI\Presentation.UnitTest\bin\Debug\PDFCreator.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadSpecificProfileInteraction.cs" />
+    <Compile Include="DrawSignatureInteraction.cs" />
     <Compile Include="EditEmailTextInteraction.cs" />
     <Compile Include="EncryptionPasswordInteraction.cs" />
     <Compile Include="Enums\MessageIcon.cs" />
@@ -61,7 +67,6 @@
     <Compile Include="ManagePrintJobsInteraction.cs" />
     <Compile Include="BasicPasswordOverlayInteraction.cs" />
     <Compile Include="SmtpAccountInteraction.cs" />
-    <Compile Include="UpdateAvailableInteraction.cs" />
     <Compile Include="MessageInteraction.cs" />
     <Compile Include="OfflineActivationInteraction.cs" />
     <Compile Include="PasswordMiddleButton.cs" />

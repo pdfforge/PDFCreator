@@ -4,41 +4,69 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance designTime:DesignTimeUpdateIntervalSettingsViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
 
-    <Grid Margin="0 5 0 10">
-        <HeaderedContentControl Header="{Binding Translation.UpdateCheckControlHeader, Mode=OneWay}">
-            <StackPanel HorizontalAlignment="Left" MinWidth="250" Style="{DynamicResource GpoStyle}"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" FalseValue="Visible"  TrueValue="Collapsed"/>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel Visibility="{Binding IsCustom, Converter={StaticResource CollapsedIfTrueConverter}}">
+
+        <Label Content="{Binding Translation.UpdateCheckControlHeader}" FontSize="14" Style="{StaticResource LightLabel}"  Margin="0 30 0 10"/>
+        <Grid Style="{DynamicResource GpoStyle}" IsEnabled="{Binding UpdateIsEnabled}">
+            <StackPanel Margin="0 0 10 10" VerticalAlignment="Bottom">
+
+                <StackPanel HorizontalAlignment="Left" MinWidth="250" Style="{DynamicResource GpoStyle}"
                         IsEnabled="{Binding UpdateIsEnabled}">
 
-                <TextBlock Margin="0 5 0 5" TextWrapping="Wrap" Text="{Binding Translation.UpdateIntervalLabelText, Mode=OneWay}" />
+                    <Label Margin="0 5 0 5" Content="{Binding Translation.UpdateIntervalLabelText, Mode=OneWay}" />
 
-                <StackPanel Orientation="Horizontal" Margin="0 5 0 0" IsEnabled="{Binding UpdateIsEnabled}">
-                    <ComboBox Width="300" HorizontalAlignment="Left"
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0" IsEnabled="{Binding UpdateIsEnabled}">
+                        <ComboBox Width="160" HorizontalAlignment="Left" Background="White" Height="33"
                               SelectedValue="{Binding CurrentUpdateInterval}" SelectedValuePath="Value"
                               DisplayMemberPath="Translation" ItemsSource="{Binding TranslatedUpdateInterval}" />
-                    <Button Margin="10 0 0 0" MinWidth="80" Style="{DynamicResource LightGreyButton}"
+                        <Button Margin="10 0 0 0" MinWidth="80"
                             Command="{Binding UpdateCheckCommand}"
                             Content="{Binding Translation.CheckUpdateButtonContent, Mode=OneWay}" />
-                </StackPanel>
+                    </StackPanel>
 
-                <DockPanel Name="UpdateNeverWarning" VerticalAlignment="Center" Margin="0 5 0 0"
+                    <DockPanel Name="UpdateNeverWarning" VerticalAlignment="Center" Margin="0 10 0 0"
                            Visibility="{Binding DisplayUpdateWarning, Converter={StaticResource BooleanToVisibilityConverter}}"
                            LastChildFill="True">
-                    <ContentControl DockPanel.Dock="Left" Content="{DynamicResource WarningIconGray}" Width="15"
+                        <ContentControl DockPanel.Dock="Left" Content="{DynamicResource WarningIconGray}" Width="15"
                                     Height="15"
                                     Foreground="Yellow"
                                     VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding Translation.NeverUpdateWarningText}"
+                        <TextBlock Text="{Binding Translation.NeverUpdateWarningText}"
                                TextWrapping="Wrap" VerticalAlignment="Center" Margin="5 0 0 0" />
-                </DockPanel>
-                <StackPanel Visibility="{Binding UpdateCheckControlVisibility}">
-                    <TextBlock Margin="0 5 0 0"  >
+                    </DockPanel>
+                    <Border Margin="0 10 0 0"  BorderBrush="{DynamicResource WarningYellowBrush}" BorderThickness="2" CornerRadius="5" 
+                        Visibility="{Binding ShouldShowUpdate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="{Binding NewUpdateMessage}" />
+                            <DockPanel Width="Auto" Margin="0 10 0 0">
+                                <Button Command="{Binding InstallUpdateCommand}" DockPanel.Dock="Left" Content="{Binding Translation.Install}"/>
+                                <DockPanel DockPanel.Dock="Right" Margin="100 0 0 0">
+                                    <Button Command="{Binding AskLaterCommand}"  Content="{Binding Translation.AskLater}" Margin="10 0 0 0" MinWidth="80"/>
+                                    <Button Command="{Binding SkipVersionCommand}" Content="{Binding Translation.SkipVersion}" Margin="10 0 0 0" MinWidth="80"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding UpdateCheckControlVisibility}" VerticalAlignment="Bottom">
+                    <TextBlock Margin="0 10 0 0" >
                         <Run Text="{Binding Translation.DownloadLatestVersionText, Mode=OneWay}"/>
                         <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
                                    Command="{Binding VisitWebsiteCommand}">
@@ -46,21 +74,7 @@
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
-                <Border Margin="0 10 0 0"  BorderBrush="{DynamicResource WarningYellowBrush}" BorderThickness="2" CornerRadius="5" 
-                        Visibility="{Binding ShouldShowUpdate, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        Padding="15">
-                    <StackPanel>
-                        <TextBlock Text="{Binding NewUpdateMessage}" />
-                        <DockPanel Width="Auto" Margin="0 10 0 0">
-                            <Button Command="{Binding InstallUpdateCommand}" DockPanel.Dock="Left" Content="{Binding Translation.Install}"/>
-                            <DockPanel DockPanel.Dock="Right" Margin="100 0 0 0">
-                                <Button Command="{Binding AskLaterCommand}"  Content="{Binding Translation.AskLater}" Margin="10 0 0 0" MinWidth="80"/>
-                                <Button Command="{Binding SkipVersionCommand}" Content="{Binding Translation.SkipVersion}" Margin="10 0 0 0" MinWidth="80"/>
-                            </DockPanel>
-                        </DockPanel>
-                    </StackPanel>
-                </Border>
             </StackPanel>
-        </HeaderedContentControl>
-    </Grid>
+        </Grid>
+    </StackPanel>
 </UserControl>

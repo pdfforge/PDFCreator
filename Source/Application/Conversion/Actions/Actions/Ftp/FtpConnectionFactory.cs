@@ -12,10 +12,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
     {
         public IFtpClient BuildConnection(FtpAccount account, string password)
         {
-            if (account.FtpConnectionType == FtpConnectionType.Sftp)
-                return new SftpClientWrap(account.Server, account.UserName, password, account.PrivateKeyFile, account.AuthenticationType);
+            var host = account.GetHost();
+            var port = account.GetPort();
 
-            return new FtpClientWrap(account.Server, account.UserName, password);
+            if (account.FtpConnectionType == FtpConnectionType.Sftp)
+                return new SftpClientWrap(host, port, account.UserName, password, account.PrivateKeyFile, account.AuthenticationType);
+
+            return new FtpClientWrap(host, port, account.UserName, password);
         }
     }
 }

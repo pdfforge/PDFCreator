@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2019 Artifex Software, Inc.
+% Copyright (C) 2001-2021 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -38,10 +38,13 @@
 %	--detect
 %		treat the file as PostScript if it starts with %!
 %	--first-page <n>
-%     --duplex(|-long-edge|-short-edge)
-%             use duplex if available; if not specified, select long edge
-%             for portrait printing, short edge for landscape
+%	--duplex(|-long-edge|-short-edge)
+%		use duplex if available; if not specified, select long edge
+%		for portrait printing, short edge for landscape
 %		start printing at page <n>
+%	--encoding <encodingname>	default ISOLatin1Encoding
+%		Note this only takes effect during -f or -F option thus the
+%		body text and header text can use different encodings.
 %	--kern <file.afm>
 %		kern using information from the given .AFM file
 %	--last-page <n>
@@ -60,17 +63,26 @@
 /lpdict 150 dict def
 lpdict begin
 
-% build iso-latin-1 version of a font
-/font-to-iso-latin-1 {	% <font> font-to-iso-latin-1 <font>
+/encoding /ISOLatin1Encoding def	% the default encoding
+
+% build a version of the font with the requested encoding (default ISOLatin1)
+/font-to-encoding {	% <font> font-to-encoding <font>
     %% reencode for iso latin1; from the 2nd edition red book, sec 5.6.1
     dup length dict begin {1 index /FID ne {def} {pop pop} ifelse} forall
-    /Encoding ISOLatin1Encoding def currentdict end
-    dup /FontName get 80 string cvs (-ISOLatin1) concatstrings cvn
+    /Encoding encoding /Encoding findresource readonly def
+    currentdict end
+    % strip off the "Encoding" part of the encoding (if present)
+    dup /FontName get 80 string cvs
+    encoding 256 string cvs (Encoding) search {
+      exch pop exch pop
+    } if
+    exch (-) concatstrings exch
+    concatstrings cvn
     exch definefont
 } def
 
 /find-latin-font {	% <name> find-latin-font <font>
-  findfont font-to-iso-latin-1
+  findfont font-to-encoding
 } def
 
 % Define the initial values of the printing parameters.
@@ -275,14 +287,17 @@ lpdict begin
 /StringTAB (\t) def
 /CharTAB StringTAB 0 get def
 
-/showline		% line -> leftover_line (handles \f)
- {  { showline1 dup length 0 eq { exit } if
-      dup 0 get CharFF ne { exit } if
+/showline {		% line -> leftover_line (handles \f)
+   { showline1 dup length 0 eq { exit } if
+      dup 0 get CharFF ne {
+         Truncate { pop () } if
+         exit
+      } if
       EjectFF { endpage beginpage } { endcolumn } ifelse
       skip1
-    }
+   }
    loop
- } def
+} def
 
 /showline1		% line -> leftover_line (handles page break)
  { lindex llength eq { endpage beginpage } if
@@ -409,9 +424,9 @@ lpdict begin
   /S {currentfile =string readline pop show} lpdef
   /RE {		% <isoname> <fontname> RE <font>
     findfont
-        %% reencode for iso latin1; from the 2nd edition red book, sec 5.6.1
+        %% reencode for current 'encoding' from the 2nd edition red book, sec 5.6.1
     dup length dict begin {1 index /FID ne {def} {pop pop} ifelse} forall
-    /Encoding ISOLatin1Encoding def currentdict end
+    /Encoding encoding def currentdict end
     definefont
   } lpdef
 } def
@@ -506,24 +521,31 @@ lpdict begin
 
 % Iterate through the file.
    lpline
-    { dup length /pos exch def
-      lbuf exch 0 exch putinterval
-       { lpfile lbuf pos lbuf length pos sub getinterval readline } stopped
-       {	% Filled the line before a CR or EOF.
-         exch pop showline
-       }
-       {	% Reached CR and/or EOF first.
+   % First handle new-lines in the initial string (--detect mode)
+   (\n) search {
+     showline	% output up to the first new-line
+     pop pop	% done with that string and the new-line
+     (\n) search {
+       showline	% output the second new-line
+       pop pop	% done
+     } if
+   } if
+   { dup length /pos exch def
+     lbuf exch 0 exch putinterval
+      { lpfile lbuf pos lbuf length pos sub getinterval readline } stopped
+      {	% Filled the line before a CR or EOF.
+        exch pop showline
+      }
+      {	% Reached CR and/or EOF first.
          exch length pos add lbuf exch 0 exch getinterval
          1 index { showline } if		% omit final empty line
-          { dup length 0 eq Truncate or { pop () exit } if
+         { dup length 0 eq { pop () exit } if
             showline
-          }
-         loop
+         } loop
          exch not { exit } if
-       }
-      ifelse
+      } ifelse
       pindex PageLast gt { exit } if
-    } loop
+   } loop
    pop
 
 % Wrap up.
@@ -588,6 +610,7 @@ lpdict begin
 /--duplex { /Duplex {Landscape} def } def
 /--duplex-long-edge { /Duplex false def } def
 /--duplex-short-edge { /Duplex true def } def
+/--encoding { cvn /encoding exch def } def
 /--first-page { cvi /PageFirst exch def } def
 /--footing-center { /FootingCenter exch def   /Footers true def } def
 /--footing-left { /FootingLeft exch def   /Footers true def } def

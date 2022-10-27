@@ -68,8 +68,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is OpenViewer)) return false;
 			OpenViewer v = o as OpenViewer;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!OpenWithPdfArchitect.Equals(v.OpenWithPdfArchitect)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(OpenWithPdfArchitect, v.OpenWithPdfArchitect)) return false;
 			return true;
 		}
 		

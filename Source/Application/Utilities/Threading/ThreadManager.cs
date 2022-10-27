@@ -99,13 +99,15 @@ namespace pdfforge.PDFCreator.Utilities.Threading
 
         private async Task WaitForStandbyDuration()
         {
-            var standbyMutex = new GlobalMutex(StandbyMutexName);
+            var standbyGlobalMutex = new GlobalMutex(StandbyMutexName);
+            var standbyLocalMutex = new LocalMutex(StandbyMutexName);
 
             var systemShutdownHandler = new SessionEndingEventHandler((sender, args) => _stopHotStandbyCompletionSource?.TrySetResult(true));
             SystemEvents.SessionEnding += systemShutdownHandler;
 
             _stopHotStandbyCompletionSource = new TaskCompletionSource<bool>();
-            standbyMutex.Acquire();
+            standbyGlobalMutex.Acquire();
+            standbyLocalMutex.Acquire();
 
             StandbyStarted?.Invoke(this, EventArgs.Empty);
 
@@ -116,14 +118,15 @@ namespace pdfforge.PDFCreator.Utilities.Threading
                     ? TimeSpan.FromMilliseconds(-1)
                     : HotStandbyDuration;
 
-                if (IsStandbyDisabled)
+                if (IsStandbyDisabled || UpdateAfterShutdownAction != null)
                     standbyDuration = TimeSpan.Zero;
 
                 await Task.WhenAny(_stopHotStandbyCompletionSource.Task, Task.Delay(standbyDuration));
             }
             finally
             {
-                standbyMutex.Release();
+                standbyGlobalMutex.Release();
+                standbyLocalMutex.Release();
                 _stopHotStandbyCompletionSource = null;
                 SystemEvents.SessionEnding -= systemShutdownHandler;
                 StandbyEnded?.Invoke(this, EventArgs.Empty);

@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is ParameterSettings)) return false;
 			ParameterSettings v = o as ParameterSettings;
 			
-			if (!Parameters.Equals(v.Parameters)) return false;
+			if (!Object.Equals(Parameters, v.Parameters)) return false;
 			return true;
 		}
 		

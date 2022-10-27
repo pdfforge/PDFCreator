@@ -8,22 +8,18 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.Helper
     {
         public Data Data { get; set; }
 
-        public void MoveValue(string oldPath, string newPath)
+        protected void MoveValue(string oldPath, string newPath)
         {
-            var v = Data.GetValue(oldPath);
-            Data.SetValue(newPath, v);
+            var value = Data.GetValue(oldPath);
+            Data.SetValue(newPath, value);
             Data.RemoveValue(oldPath);
         }
 
-        public void MoveValue(string name, string oldSection, string newSection)
+        protected void MapValue(string path, Func<string, string> mapFunction)
         {
-            MoveValue(oldSection + name, newSection + name);
-        }
-
-        public void MapValue(string path, Func<string, string> mapFunction)
-        {
-            var v = Data.GetValue(path);
-            Data.SetValue(path, mapFunction(v));
+            var value = Data.GetValue(path);
+            var newValue = mapFunction(value);
+            Data.SetValue(path, newValue);
         }
 
         private IEnumerable<string> GetSubSections(string path)

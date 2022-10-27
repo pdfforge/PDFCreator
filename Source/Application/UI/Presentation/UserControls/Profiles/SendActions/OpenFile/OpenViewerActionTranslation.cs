@@ -4,10 +4,21 @@
     {
         public string OpenFileActionTitle { get; set; } = "Open File";
         public string OpenWithPdfArchitect { get; private set; } = "Use PDF Architect";
-        public string OpenWithDefault { get; private set; } = "Use windows default viewer";
-        public string OpenInViewer { get; private set; } = "Open file in viewer.";
-        public string OpenViewerDescription { get; private set; } = "The default viewer is determined by Windows. You can set up your own viewer in our viewer section in the settings or change the windows default";
+        private string OpenWithCustomViewer { get; set; } = "Use {0}";
+        public string OpenWithDefault { get; private set; } = "Use Windows default viewer";
+        public string OpenViewerDescription { get; private set; } = "The default viewer is determined by Windows. You can set up your own viewer in the Viewer section of the settings in PDFCreator or change your default viewer for Windows.";
         public override string Title { get; set; } = "Open File";
         public override string InfoText { get; set; } = "Open file in viewer.";
+        private string EditorMoreInfo { get; set; } = "Click here for more info on {0}";
+
+        public string FormatOpenWithCustomViewer(string viewerName)
+        {
+            return string.Format(OpenWithCustomViewer, viewerName);
+        }
+
+        public string FormatEditorMoreInfo(string viewerName)
+        {
+            return string.Format(EditorMoreInfo, viewerName);
+        }
     }
 }

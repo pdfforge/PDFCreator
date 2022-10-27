@@ -79,9 +79,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Properties)) return false;
 			Properties v = o as Properties;
 			
-			if (!Deletable.Equals(v.Deletable)) return false;
-			if (!IsShared.Equals(v.IsShared)) return false;
-			if (!Renamable.Equals(v.Renamable)) return false;
+			if (!Object.Equals(Deletable, v.Deletable)) return false;
+			if (!Object.Equals(IsShared, v.IsShared)) return false;
+			if (!Object.Equals(Renamable, v.Renamable)) return false;
 			return true;
 		}
 		

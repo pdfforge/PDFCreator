@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         {
         }
 
-        public IMacroCommand BuildCommand(Predicate<object> canExecute = null)
+        public IMacroCommand BuildCommand(IList<ICommand> postExecutionCommands = default, Predicate<object> canExecute = null)
         {
             return new MacroCommand(new List<ICommand>());
         }

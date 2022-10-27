@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pdfforge.Obsidian;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -136,6 +137,10 @@ namespace pdfforge.PDFCreator.Core.Services.Macros
                     status = await taskCompletionSource.Task;
 
                     waitableCommand.IsDone -= IsDoneHandler;
+                }
+                else if (command is IAsyncCommand asyncCommand)
+                {
+                    await asyncCommand.ExecuteAsync(parameter);
                 }
                 else
                 {

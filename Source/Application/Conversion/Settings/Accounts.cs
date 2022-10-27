@@ -220,35 +220,45 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Accounts v = o as Accounts;
 			
 			
-			if (DropboxAccounts.Count != v.DropboxAccounts.Count) return false;
+			if (DropboxAccounts?.Count != v.DropboxAccounts?.Count) return false;
+			if (Object.ReferenceEquals(DropboxAccounts, v.DropboxAccounts)) return true;
+			
 			for (int i = 0; i < DropboxAccounts.Count; i++)
 			{
 				if (!DropboxAccounts[i].Equals(v.DropboxAccounts[i])) return false;
 			}
 			
 			
-			if (FtpAccounts.Count != v.FtpAccounts.Count) return false;
+			if (FtpAccounts?.Count != v.FtpAccounts?.Count) return false;
+			if (Object.ReferenceEquals(FtpAccounts, v.FtpAccounts)) return true;
+			
 			for (int i = 0; i < FtpAccounts.Count; i++)
 			{
 				if (!FtpAccounts[i].Equals(v.FtpAccounts[i])) return false;
 			}
 			
 			
-			if (HttpAccounts.Count != v.HttpAccounts.Count) return false;
+			if (HttpAccounts?.Count != v.HttpAccounts?.Count) return false;
+			if (Object.ReferenceEquals(HttpAccounts, v.HttpAccounts)) return true;
+			
 			for (int i = 0; i < HttpAccounts.Count; i++)
 			{
 				if (!HttpAccounts[i].Equals(v.HttpAccounts[i])) return false;
 			}
 			
 			
-			if (SmtpAccounts.Count != v.SmtpAccounts.Count) return false;
+			if (SmtpAccounts?.Count != v.SmtpAccounts?.Count) return false;
+			if (Object.ReferenceEquals(SmtpAccounts, v.SmtpAccounts)) return true;
+			
 			for (int i = 0; i < SmtpAccounts.Count; i++)
 			{
 				if (!SmtpAccounts[i].Equals(v.SmtpAccounts[i])) return false;
 			}
 			
 			
-			if (TimeServerAccounts.Count != v.TimeServerAccounts.Count) return false;
+			if (TimeServerAccounts?.Count != v.TimeServerAccounts?.Count) return false;
+			if (Object.ReferenceEquals(TimeServerAccounts, v.TimeServerAccounts)) return true;
+			
 			for (int i = 0; i < TimeServerAccounts.Count; i++)
 			{
 				if (!TimeServerAccounts[i].Equals(v.TimeServerAccounts[i])) return false;

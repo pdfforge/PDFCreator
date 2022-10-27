@@ -4,8 +4,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class PrintJobViewTranslation : ITranslatable
     {
-        private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
-
         public string AuthorLabel { get; private set; } = "_Author:";
 
         [Context("PrintJobWindowButton")]
@@ -35,14 +33,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         [Context("PrintJobWindowButton")]
         public string Email { get; private set; } = "_E-mail";
 
-        public string Smtp { get; private set; } = "SMTP";
-
-        public string Dropbox { get; private set; } = "Dropbox";
-        public string Ftp { get; private set; } = "FTP";
-
         public string SubjectLabel { get; private set; } = "S_ubject:";
         public string TitleLabel { get; private set; } = "_Title:";
         public string FilenameText { get; private set; } = "File_name:";
         public string DirectoryLabel { get; private set; } = "_Directory:";
+        public string SaveTempOnlyIsEnabled { get; private set; } = "You have selected to save files only temporarily. If you want to set the target directory click here.";
+        public string RemoveAds { get; private set; } = "Remove ads";
     }
 }

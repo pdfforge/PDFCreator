@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54391264-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-54391264-2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -47,7 +38,6 @@
             <li><a href="https://www.ghostscript.com/">Home</a></li>
             <li><a href="https://www.ghostscript.com/license.html">Licensing</a></li>
             <li><a href="https://www.ghostscript.com/releases.html">Releases</a></li>
-            <li><a href="https://www.ghostscript.com/release_history.html">Release History</a></li>
             <li><a href="https://www.ghostscript.com/documentation.html" title="Documentation">Documentation</a></li>
             <li><a href="https://www.ghostscript.com/download.html" title="Download">Download</a></li>
             <li><a href="https://www.ghostscript.com/performance.html" title="Performance">Performance</a></li>
@@ -80,17 +70,24 @@
 <li><a href="#BMP">BMP file format</a></li>
 <li><a href="#PCX">PCX file format</a></li>
 <li><a href="#PSD">PSD file format (DeviceN color model)</a></li>
+<li><a href="#PDFimage">Bitmap PDF output, PCLm output</a></li>
+</ul>
+<li><a href="#OCR-Devices">OCR Devices</a></li>
+<ul>
+<li><a href="#OCR">OCR text output</a></li>
+<li><a href="#PDFocr">Bitmap PDF output (with OCR text)</a></li>
+<li><a href="#PDFwriteocr">Vector PDF output (with OCR Unicode CMaps)</a></li>
 </ul>
 <li><a href="#High-level">High level formats</a></li>
 <ul>
 <li><a href="#PDF">PDF file output</a></li>
-<li><a href="#PDFimage">Bitmap PDF output, PCLm output</a></li>
+<li><a href="#OCR">OCR devices</a></li>
 <li><a href="#PS">PostScript file output</a></li>
 <li><a href="#EPS">EPS file output</a></li>
 <li><a href="#PXL">PCL-XL file output</a></li>
 <li><a href="#TXT">Text output</a></li>
 </ul>
-<li><a href="#Dis    play_devices">Display devices</a></li>
+<li><a href="#Display_devices">Display devices</a></li>
 <ul>
 <li><a href="#x11_devices">X Window System</a></li>
 <li><a href="#display_device">display device (MS Windows, OS/2, gtk+)</a></li>
@@ -325,6 +322,8 @@ page.</dd>
 </pre>
 </blockquote>
 
+<p>In commercial builds, the <code>png16m</code> device will accept a <code>-dDeskew</code> option to automatically detect/correct skew when generating output bitmaps.</p>
+
 <h3><a name="JFIF"></a>JPEG file format (JFIF)</h3>
 
 <p>
@@ -546,6 +545,9 @@ device(s) 2 additional &quot;special&quot; ratios
 are available, 32 and 34. 32 provides a 3:2 downscale (so from 300 to
 200 dpi, say). 34 produces a 3:4 upscale (so from 300 to 400 dpi, say).</p>
 
+<p>In commercial builds, with 8 bit per component output, the <code>-dDeskew</code> option
+can be used to automatically detect/correct skew when generating output bitmaps.</p>
+
 <p>The <code>tiffscaled</code> and <code>tiffscaled4</code> devices
 can optionally use Even Toned Screening, rather than simple Floyd Steinberg
 error diffusion. This patented technique gives better quality at the
@@ -608,6 +610,7 @@ The <code>tiffscaled24</code> device renders internally at the specified resolut
 (set by <code>-dDownScaleFactor</code>= described below). The compression can be set using
 -sCompression= as described below.</dd>
 
+<p>In commercial builds, the <code>-dDeskew</code> option can be used to automatically detect/correct skew when generating output bitmaps.</p>
 
 <a name="tiffscaled32"></a><dt><code>tiffscaled32</code></dt>
 <dd>
@@ -615,6 +618,8 @@ The <code>tiffscaled32</code> device renders internally at the specified resolut
 32 bit cmyk image. This is then scaled down by an integer scale factor
 (set by <code>-dDownScaleFactor</code>= described below). The compression can be set using
 -sCompression= as described below.</dd>
+
+<p>In commercial builds, the <code>-dDeskew</code> option can be used to automatically detect/correct skew when generating output bitmaps.</p>
 
 </dl>
 </blockquote>
@@ -908,6 +913,8 @@ format for the &quotOutputFile&quot (or &quot-o&quot) file name parameter (see
 to output multiple pages to a single PSD file (i.e. without the &quot%d&quot format) will
 result in an <code>ioerror</code> Postscript error.</p>
 
+<p>In commercial builds, for the <code>psdcmyk</code> and <code>psdrgb</code> devices, the <code>-dDeskew</code> option can be used to automatically detect/correct skew when generating output bitmaps.</p>
+
 <h3><a name="PDFimage"></a>PDF image output</h3>
 
 <p>
@@ -926,6 +933,7 @@ PDF files with a colour depth of 8 (Gray), 24 (RGB) or 32 (CMYK), the PCLm devic
 These are all implemented as 'downscale' devices, which means they can implement page level
 anti-aliasing using the <code>-dDownScaleFactor</code> switch.
 </p>
+
 <blockquote>
 <dl>
 <dt><code>-dDownScaleFactor=</code><b><em>integer</em></b></dt>
@@ -939,6 +947,8 @@ anti-aliasing using the <code>-dDownScaleFactor</code> switch.
 </blockquote>
 </blockquote>
 
+<p>In commercial builds, the <code>-dDeskew</code> option can be used to automatically detect/correct skew when generating the output file.</p>
+
 <p>
 The type of compression used for the image data can also be selected using the <code>-sCompression</code> switch.
 Valid compression types are <code>None</code>, <code>LZW</code>, <code>Flate</code>, <code>JPEG</code>
@@ -946,13 +956,24 @@ and <code>RLE</code>.Note that LZW is not supported on PCLm (not valid) and None
 on PCLm for debugging purposes.
 </p>
 <p>
-Finally, the PCLm device supports the <code>-dStripHeight</code> switch to set the vertical height
-of the strips of image content, as required by the specification.
-</p>
-
-<p>
 For JPEG compression the devices support both the JPEGQ and QFactor switches as documented for the <a href="#JFIF">JPEG</a> file format device.
 </p>
+<p>
+In addition, the PCLm device supports some other parameters. Firstly, the
+<code>-dStripHeight</code> switch to set the vertical height
+of the strips of image content, as required by the specification.
+</p>
+<p>Secondly, the standard postscript <code>-dDuplex</code> and
+<code>-dTumble</code>switches are supported, in that if both are
+set to true, every verso page (i.e. all even pages) will be
+rotated by 180 degrees.</p>
+
+<p>As an extension to this, a <code>-dTumble2</code> parameter is
+also supported that will add an additional X-axis flip for every
+verso page. Thus <code>-dDuplex=true -dTumble=false -dTumble2=true</code>
+will result in verso pages being flipped horizontally, and
+<code>-dDuplex=true -dTumble=true -dTumble2=true</code> will result
+in verso pages being flipped vertically.</p>
 
 <hr>
 
@@ -961,6 +982,140 @@ In addition to raster image files, Ghostscript supports output in a number
 of 'high-level' formats. These allow Ghostscript to preserve (as much as
 possible) the drawing elements of the input file maintaining flexibility,
 resolution independence, and editability.</p>
+
+<hr>
+
+<h2><a name="OCR-Devices"></a>Optical Character Recognition (OCR) devices</h2>
+
+<h3><a name="OCR"></a>OCR text output</h3>
+
+<p>
+  These devices render internally in 8 bit greyscale, and then
+  feed the resultant image into an OCR engine. Currently, we
+  are using the Tesseract engine. Not only is this both free
+  and open source, it gives very good results, and supports
+  a huge number of languages/scripts.
+</p>
+<p>
+  The Tesseract engine relies on files to encapsulate each
+  language and/or script. These &quot;traineddata&quot; files
+  are available in different forms, including <a href="http://github.com/tesseract-ocr/tessdata_fast">fast</a>
+  and <a href="http://github.com/tesseract-ocr/tessdata_best">best</a> variants.
+  Alternatively, people can train their own data using the
+  standard Tesseract tools.
+</p>
+<p>
+  These files are looked for from a variety of places.
+</p>
+<ul>
+  <li>Firstly, files will be searched for in the directory given by the
+    environment variable TESSDATA_PREFIX.
+  <li>Next, they will be searched for within the ROM filing system. Any
+    files placed in &quot;tessdata&quot; will be included within the ROM
+    filing system in the binary for any standard (COMPILE_INITS=1) build.
+  <li>Next, files will be searched for in the configured 'tessdata' path. On
+    Unix, this can be specified at the configure stage using
+    '--with-tessdata=&lt;path&gt;' (where &lt;path&gt; is a list of
+    directories to search, separated by ':' (on Unix) or ';' (on Windows)).
+  <li>Finally, we resort to searching the current directory.
+</ul>
+<p>
+  Please note, this pattern of directory searching differs from the original
+  release of the OCR devices.
+</p>
+<p>
+  By default, the OCR process defaults to looking for English text,
+  using &quot;eng.traineddata&quot;. This can be changed by using the
+  <code>-sOCRLanguage=</code> switch;
+</p>
+<blockquote>
+<dl>
+<dt><code>-sOCRLanguage=</code><b><em>language</em></b></dt>
+<dd>This sets the trained data sets to use within the Tesseract
+  OCR engine. For example, the following will use English and
+  Arabic:</dd></dl>
+<blockquote>
+<pre>
+ <kbd>gs -sDEVICE=ocr -r200 -sOCRLanguage="eng+ara" -o out.txt\
+      zlib/zlib.3.pdf</kbd>
+</pre>
+</blockquote>
+</blockquote>
+<p>
+  The first device is named ocr. It extracts data as unicode codepoints
+  and outputs them to the device as a stream of UTF-8 bytes.
+</p>
+<p>
+  The second device is named hocr. This extracts the data in
+  <a href="wikipedia.org/wiki/HOCR">hOCR</a> format.
+</p>
+<p>
+  These devices are implemented as downscaling devices, so the
+  standard parameters can be used to control this process. It
+  may seem strange to use downscaling on an image that is not
+  actually going to be output, but there are actually good reasons
+  for this. Firstly, the higher the resolution, the slower the
+  OCR process. Secondly, the way the Tesseract OCR engine works
+  means that anti-aliased images perform broadly as well as the
+  super-sampled image from which it came.
+</p>
+
+<h3><a name="PDFocr"></a>PDF image output (with OCR text)</h3>
+
+<p>
+  These devices do the same render to bitmap and wrap as a PDF process as
+  the <a name="PDFimage">PDFimage</a> devices above, but with the addition
+  of an OCR step at the end. The OCR'd text is overlaid &quot;invisibly&quot;
+  over the images, so searching and cut/paste should still work.
+</p>
+<p>
+  The OCR engine being used is Tesseract. For information on this
+  including how to control what language data is used, see the <a href="OCR">
+  OCR devices</a> section above.
+</p>
+<p>
+  There are three devices named pdfocr8, pdfocr24 and pdfocr32. These
+  produce valid PDF files with a colour depth of 8 (Gray), 24 (RGB) or
+  32 (CMYK).
+</p>
+<p>
+  These devices accept all the same flags as the <a name="PDFimage">PDFimage</a>
+  devices described above.
+</p>
+<p>
+
+<h3><a name="PDFwriteocr"></a>Vector PDF output (with OCR Unicode CMaps)</h3>
+<p>
+The pdfwrite device has been augmented to use the OCR engine to analyse text
+(not images!) in the input stream, and derive Unicode code points for it.
+That information can then be used to create ToUnicode CMaps which are attached
+to the Font (or CIDFont) objects embedded in the PDF file.
+</p>
+<p>
+Fonts which have ToUnicode CMaps can be reliably (limited by the accuracy of
+the CMap) used in search and copy/paste functions, as well as text extraction
+from PDF files. Note that OCR is not a 100% perfect process; it is possible
+that some text might be misidentified.
+</p>
+<p>
+OCR is a slow operation! In addition it can (for Latin text at least) sometimes
+be preferable not to add ToUnicode information which may be incorrect, but instead
+to use the existing font Encoding. For English text this may give better results.
+</p>
+<p>For these reasons the OCR functionality of pdfwrite can be controlled by using a new
+parameter <code>-sUseOCR</code>. This has three possible values;
+</p>
+<dt><code>-sUseOCR=</code><b><em>string</em></b></dt>
+<dd>
+  <dl>
+    <dt>Never<dd>Default - don't use OCR at all even if support is built-in.
+    <dt>AsNeeded<dd>If there is no existing ToUnicode information, use OCR.
+    <dt>Always<dd>Ignore any existing information and always use OCR.
+  </dl>
+</dd>
+</p>
+
+<hr>
 
 <h2><a name="High-level"></a>High-level devices</h2>
 
@@ -2002,7 +2157,7 @@ spot colors.</p>
 <hr>
 
 <p>
-<small>Copyright &copy; 2000-2019 Artifex Software, Inc.  All rights reserved.</small>
+<small>Copyright &copy; 2000-2021 Artifex Software, Inc.  All rights reserved.</small>
 
 <p>
 This software is provided AS-IS with no warranty, either express or
@@ -2015,7 +2170,7 @@ or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
 Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
 
 <p>
-<small>Ghostscript version 9.52, 19 March 2020
+<small>Ghostscript version 9.55.0, 27 September 2021
 
 <!-- [3.0 end visible trailer] ============================================= -->
 
@@ -2043,7 +2198,7 @@ Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
            </ul>
         </div>
         <div class="col-ft-3 footright"><img src="images/Artifex_logo.png" width="194" height="40" alt=""/> <br>
-              © Copyright 2019 Artifex Software, Inc. <br>
+              © Copyright 2019-2021 Artifex Software, Inc. <br>
             All rights reserved.
         </div>
           </div>

@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.UI.CLI.Commands;
 using pdfforge.PDFCreator.UI.CLI.Helper;
 using System;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.CLI.CommandExecutors

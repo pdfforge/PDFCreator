@@ -56,8 +56,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is PrinterMapping)) return false;
 			PrinterMapping v = o as PrinterMapping;
 			
-			if (!PrinterName.Equals(v.PrinterName)) return false;
-			if (!ProfileGuid.Equals(v.ProfileGuid)) return false;
+			if (!Object.Equals(PrinterName, v.PrinterName)) return false;
+			if (!Object.Equals(ProfileGuid, v.ProfileGuid)) return false;
 			return true;
 		}
 		

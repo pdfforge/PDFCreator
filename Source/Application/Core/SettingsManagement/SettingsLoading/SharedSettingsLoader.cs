@@ -53,6 +53,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             {
                 var dir = _programDataDirectoryHelper.GetDir();
                 var files = _directory.GetFiles(dir, "*.ini");
+                foreach (var file in files)
+                {
+                    if (string.Equals(PathSafe.GetFileNameWithoutExtension(file), _gpoSettings.SharedSettingsFilename))
+                        return file;
+                }
                 if (files.Length > 0)
                     return files[0];
             }

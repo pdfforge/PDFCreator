@@ -1,0 +1,735 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+html, body {
+    position: relative;
+    height: 100%;
+}
+
+body {
+    -webkit-touch-callout: none;        /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;     /* prevent webkit from resizing text to fit */
+    -webkit-user-select: text;          /* prevent copy paste, to allow, change 'none' to 'text' */
+    color:black;
+    background:#f9f9f9;
+    font-family:"Source Sans Pro", sans-serif; /* 200 = ExtraLight, 300 = Light, 400 = regular, 600 = semi-bold, 700 = bold, 900 = black */
+    font-weight:400;
+    font-size:16px;
+    margin:0px;
+    padding:0px;
+}
+
+.markdown-body, .entry-content {
+    padding: 0;
+}
+
+.markdown-body code {
+    background-color: #ddd;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-family: monospace;
+}
+
+.markdown-body pre {
+    background-color: #ddd;
+    word-wrap:normal;
+    margin-bottom:20px;
+    padding:20px;
+    overflow:auto;
+    font-size:85%;
+    line-height:1.45;
+    border-radius:3px
+}
+
+.markdown-body pre>code {
+    padding:0;
+    margin:0;
+    font-size:100%;
+    word-break:normal;
+    white-space:pre;
+    background:transparent;
+    border:0;
+}
+
+.markdown-body pre code, .markdown-body pre tt {
+    display:inline;
+    padding:0;
+    margin:0;
+    overflow:visible;
+    line-height:inherit;
+    word-wrap:normal;
+    background-color:transparent;
+    border:0
+}
+
+.markdown-body pre code::before,
+.markdown-body pre code::after,
+.markdown-body pre tt::before,
+.markdown-body pre tt::after {
+    content:normal
+}
+
+.markdown-body table {
+    color: #000;
+}
+
+.markdown-body table code {
+    color: #000;
+}
+
+.markdown-body table tr {
+    background-color: #fff;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: #ddd;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    height:50px;
+    background: #0075cf url(../images/ghostscript.png) 10px center no-repeat;
+    background-size: 30px 30px;
+    color: #fff;
+    line-height: 50px;
+    text-indent: 50px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+header .menu-icon {
+    display: none;
+    margin-right: 10px;
+    width:50px;
+    height:50px;
+    background:transparent url(../images/icon-burger-menu.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+header h1::after {
+    content: "Ghostscript language bindings";
+}
+
+footer::after {
+    content:"Copyright \00A9  2021 Artifex Software Inc. All rights reserved.";
+}
+
+a {
+    text-decoration: none;
+    color: #0075cf;
+}
+
+/** for in page anchor positioning - this offset is the height of the fixed header
+/** This appends a pseudo-element before every h2/h3 tag with an id.
+Adjusted height to accommodate header. **/
+h2[id]::before, h3[id]::before, h4[id]::before {
+    content: '';
+    display: block;
+    height: 50px;
+    margin: 0;
+}
+
+.main .middle h2, .main .middle h3, .main .middle h4 {
+    margin-top: -50px;
+    padding-top: 20px;
+}
+
+.main .middle h2 {
+    border-bottom: 3px solid #999;
+}
+
+.main .middle h3 {
+    border-bottom: 1px solid #999;
+}
+
+i {
+    font-style: italic;
+}
+
+p {
+    line-height: 24px;
+}
+
+header h1 {
+    font-size:24px;
+    font-weight:600;
+}
+
+h1 {
+    font-size:40px;
+    font-weight:600;
+}
+
+h2 {
+    font-weight:600;
+    font-size:26px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-weight:600;
+    font-size:20px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-weight:600;
+    font-size:16px;
+    margin-bottom: 10px;
+}
+
+li {
+    margin: 10px;
+}
+
+table {
+    margin: 20px 0;
+    border-collapse: collapse;
+    table-layout:fixed;
+    max-width:600px;
+    width: 100%;
+    border: 1px solid #c0c0c0;
+}
+
+th {
+    font-weight: bold;
+    background-color:#666;
+    color: #fff;
+    border-bottom: 1px solid #c0c0c0;
+    border-right: 1px solid #c0c0c0;
+}
+
+tr {
+    text-overflow:clip;
+}
+
+th, td {
+    text-align: left;
+    padding:14px;
+    word-wrap:break-word;
+}
+
+td {
+    border-right: 1px solid #c0c0c0;
+}
+
+footer {
+    position: relative;
+    left: 20%;
+    width: 60%;
+    height: 100px;
+    margin: 50px 0 0 0;
+    padding: 50px 20px;
+    background: url(../images/artifex-logo.png) 20px 0 no-repeat;
+    background-size: 200px auto;
+}
+
+
+em {
+    font-style: italic;
+}
+
+#burger-menu {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 0;
+    text-align: right;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.95);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    bottom:0;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+#burger-menu.show {
+    display: block;
+}
+
+#burger-menu .navigation .title {
+    color: #fff;
+    margin-top: 8px;
+}
+
+#burger-menu .navigation .link {
+    text-indent: 5px;
+    margin: 5px 10px 5px 0;
+}
+
+.main {
+    padding-top: 50px;
+    display: flex;
+}
+
+.main .left {
+    position: fixed;
+    margin: 0px;
+    inset: 50px auto 0 0;
+    width: 20%;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding: 20px 0 20px 20px;
+    border-right: 1px solid gainsboro;
+}
+
+.main .left div {
+    padding: 2px 0 2px 0;
+}
+
+.main .left .link {
+    padding-left: 40px;
+    text-indent: -20px;
+}
+
+.main .left .link {
+	padding-left: 40px;
+	text-indent: -20px;
+}
+
+.main .left .group {
+	padding-left: 20px;
+}
+
+.main .left .link.selected, #burger-menu .navigation .link.selected {
+    background-color: #0075cf;
+    color: #fff;
+}
+
+.main .left .link.selected a, #burger-menu .navigation .link.selected a{
+    color: #fff;
+}
+
+.main .middle {
+    position: relative;
+    left: 20%;
+    width: 60%;
+    padding: 10px 20px 20px 20px;
+}
+
+.main article {
+	margin: auto;
+}
+
+.main .middle p {
+    margin-bottom: 20px;
+}
+
+.main .middle ul {
+    margin: 0 0 20px 20px;
+}
+
+.main .middle img {
+    width: 100%;
+}
+
+blockquote {
+    background-color: #eee;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 0 20px 0;
+}
+
+blockquote strong {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.markdown-body blockquote code {
+    background: #bbb;
+}
+
+.main .right {
+	inset: 50px 0 0 auto;
+	width: 20%;
+    position:fixed;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding: 20px;
+    border-left: 1px solid gainsboro;
+}
+
+.main .right .link {
+	padding: 2px 0 2px 20px;
+	text-indent: -20px;
+}
+
+.main .right .sub-link {
+	padding: 1px 0 1px 40px;
+	text-indent: -20px;
+    font-size:12px;
+    word-wrap: break-word;
+}
+
+.banner {
+    margin: 20px 0;
+    display:flex;
+    justify-content: space-between;
+    width:100%;
+    height:50px;
+    line-height:50px;
+    font-weight:bold;
+}
+
+.banner.intro {
+    justify-content: flex-end;
+}
+
+.vendor-logo {
+    width:25%;
+    height:50px;
+}
+
+.gs-logo {
+    background: url(../images/ghostscript-grey.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+.c-logo {
+    width:50px;
+    height:50px;
+    background: url(../images/icon-vendor-c.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+.c-sharp-logo {
+    background: url(../images/icon-vendor-c-sharp.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+.java-logo {
+    background: url(../images/icon-vendor-java.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+.python-logo {
+    background: url(../images/icon-vendor-python.png) center center no-repeat;
+    background-size: 50px 50px;
+}
+
+.banner.intro {
+    justify-content: flex-end;
+}
+
+.banner .default-text::after {
+    content:"";
+}
+
+.banner .c-sharp-text::after {
+    content:"C# API";
+}
+
+.banner .java-text::after {
+    content:"Java API";
+}
+
+.banner .python-text::after {
+    content:"Python API";
+}
+
+.tag {
+    padding:5px 0px;
+    background-color:transparent;
+    color:#666;
+    font-size:10px;
+}
+
+.tag.shellCommand::before {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 SHELL COMMAND";
+    background: url(../images/icon-shell-command.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.sampleCode::after {
+    content:"SAMPLE CODE";
+}
+
+.tag.sampleCode.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 SAMPLE CODE";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.sampleCode.java::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 SAMPLE CODE";
+    background: url(../images/icon-vendor-java.png) left center no-repeat;
+    background-size:20px 20px;
+}
+
+.tag.sampleCode.python::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 SAMPLE CODE";
+    background: url(../images/icon-vendor-python.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.structDefinition::after {
+    content:"STRUCT DEFINITION";
+}
+
+.tag.structDefinition.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 STRUCT DEFINITION";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.enumDefinition::after {
+    content:"ENUM DEFINITION";
+}
+
+.tag.enumDefinition.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 ENUM DEFINITION";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.enumDefinition.python::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 ENUM DEFINITION";
+    background: url(../images/icon-vendor-python.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.methodDefinition::after {
+    content:"METHOD DEFINITION";
+}
+
+.tag.methodDefinition.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 METHOD DEFINITION";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.methodDefinition.java::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 METHOD DEFINITION";
+    background: url(../images/icon-vendor-java.png) left center no-repeat;
+    background-size:20px 20px;
+}
+
+.tag.methodDefinition.python::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 METHOD DEFINITION";
+    background: url(../images/icon-vendor-python.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.classDefinition::after {
+    content:"CLASS DEFINITION";
+}
+
+.tag.classDefinition.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 CLASS DEFINITION";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.classDefinition.java::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 CLASS DEFINITION";
+    background: url(../images/icon-vendor-java.png) left center no-repeat;
+    background-size:20px 20px;
+}
+
+.tag.callbackDefinition::after {
+    content:"DELEGATE DEFINITION";
+}
+
+.tag.callbackDefinition.csharp::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 DELEGATE DEFINITION";
+    background: url(../images/icon-vendor-c-sharp.png) left center no-repeat;
+    background-size:13px 13px;
+}
+
+.tag.functionalInterface.java::after {
+    width:100%;
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0 FUNCTIONAL INTERFACE";
+    background: url(../images/icon-vendor-java.png) left center no-repeat;
+    background-size:20px 20px;
+}
+
+.smallText {
+    line-height: 12px;
+    font-size: 12px;
+}
+
+.alignRight {
+    text-align: right;
+}
+
+button.cta {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border:0;
+    text-transform:uppercase;
+    border-radius:5px;
+    font-size:16px;
+    font-weight:500;
+    min-height:40px;
+    line-height:40px;
+    padding: 0 15px;
+    color:#fff;
+    cursor:pointer;
+}
+
+button.cta.orange {
+    width:auto;
+    background-image: linear-gradient(to right, #ea5842, #ec6343, #ed6d45, #ef7747, #f0804a);
+}
+
+button.cta.orange:hover {
+    background:#ea5842;
+}
+
+button.cta a {
+    color:#fff;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background-color: #111;
+        color: white;
+    }
+
+    .markdown-body code, .markdown-body pre, code, .markdown-body blockquote code {
+        background-color: #444;
+    }
+
+    .markdown-body table {
+        color: #fff;
+    }
+
+    .markdown-body table code {
+        color: #fff;
+    }
+
+    .markdown-body table tr {
+        background-color: #000;
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+        background-color: #222;
+    }
+
+    footer {
+        background: url(../images/artifex-logo-white.png) 20px 0 no-repeat;
+        background-size: 200px auto;
+    }
+
+    .main .middle .note, blockquote {
+        color: #000;
+        background-color: #fff;
+    }
+
+    .main .middle .note code, blockquote code {
+        color: #fff;
+    }
+
+    .vendor-logo, .tag {
+        -webkit-filter: invert(100%);
+        filter: invert(100%);
+    }
+}
+
+
+/* responsive sizes */
+@media only screen and (max-width: 1023px) {
+    .banner.intro {
+        justify-content: center;
+    }
+}
+
+/* < Tablet portrait */
+@media all and (max-width : 767px)  {
+    header .menu-icon {
+        display: block;
+    }
+
+    footer {
+        left: 0%;
+        width: 100%;
+    }
+
+    .main .left {
+        width: 0%;
+        display: none;
+    }
+
+    .main .middle {
+        left: 0;
+        width: 100%;
+    }
+
+    .main .right {
+        width: 0;
+        display: none;
+    }
+
+    table {
+        width: 100%;
+    }
+}
+
+@media all and (max-width : 375px)  {
+    header h1 {
+        font-size:20px;
+    }
+
+    table tr td {
+        font-size: 13px;
+    }
+}
+
+@media all and (max-width : 320px)  {
+    header h1 {
+        font-size:16px;
+    }
+}

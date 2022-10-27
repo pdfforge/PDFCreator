@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
 using System.Threading;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using IJobInfoQueue = pdfforge.PDFCreator.Core.JobInfoQueue.IJobInfoQueue;
 using NewJobInfoEventArgs = pdfforge.PDFCreator.Core.JobInfoQueue.NewJobInfoEventArgs;
 
@@ -30,6 +31,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IJobBuilder _jobBuilder;
         private readonly ISettingsProvider _settingsProvider;
         private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
+        private readonly IJobInfoDuplicator _jobInfoDuplicator;
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IManagePrintJobExceptionHandler _managePrintJobExceptionHandler;
@@ -40,7 +42,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private ISynchronizedThread _processingThread;
 
         public JobInfoQueueManager(IManagePrintJobExceptionHandler managePrintJobExceptionHandler, IThreadManager threadManager, IWorkflowFactory workflowFactory,
-                                   IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, IJobHistoryActiveRecord jobHistoryActiveRecord)
+            IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, IJobHistoryActiveRecord jobHistoryActiveRecord, IJobInfoDuplicator jobInfoDuplicator)
         {
             _managePrintJobExceptionHandler = managePrintJobExceptionHandler;
             _threadManager = threadManager;
@@ -49,6 +51,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _jobBuilder = jobBuilder;
             _settingsProvider = settingsProvider;
             _jobHistoryActiveRecord = jobHistoryActiveRecord;
+            _jobInfoDuplicator = jobInfoDuplicator;
 
             _jobInfoQueue.OnNewJobInfo += JobInfoQueue_OnNewJobInfo;
         }
@@ -164,7 +167,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
         ///     Process a single job
         /// </summary>
         /// <param name="jobInfo">The jobinfo to process</param>
-        /// <returns>True if the job was processed. If the user decided to manage the print jobs instead, this returns false</returns>
         private void ProcessJob(JobInfo jobInfo)
         {
             _logger.Trace("Creating job workflow");
@@ -176,6 +178,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             _logger.Trace("Running workflow");
             var workflowResult = workflow.RunWorkflow(job);
+
+            if (!string.IsNullOrWhiteSpace(jobInfo.SplitDocument))
+            {
+                var newJobInfo = _jobInfoDuplicator.CreateJobInfoForSplitDocument(jobInfo, jobInfo.SplitDocument, job.Profile.Guid);
+                _jobInfoQueue.Add(newJobInfo);
+            }
 
             if (workflowResult != WorkflowResultState.Finished)
             {
@@ -196,7 +204,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             }
         }
 
-        private WorkflowModeEnum DetermineMode(Job job)
+        private static WorkflowModeEnum DetermineMode(Job job)
         {
             return job.Profile.AutoSave.Enabled ? WorkflowModeEnum.Autosave : WorkflowModeEnum.Interactive;
         }

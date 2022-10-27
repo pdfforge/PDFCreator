@@ -1,4 +1,6 @@
 ﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp;
+using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
@@ -6,7 +8,6 @@ using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -15,7 +16,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
-using pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.FTP
 {
@@ -23,8 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
     {
         public ICollectionView FtpAccountsView { get; private set; }
 
-        private ObservableCollection<FtpAccount> _ftpAccounts;
-
+        private readonly ObservableCollection<FtpAccount> _ftpAccounts;
         public IMacroCommand EditAccountCommand { get; private set; }
         public IMacroCommand AddAccountCommand { get; private set; }
 
@@ -46,7 +45,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             IActionOrderHelper actionOrderHelper)
             : base(actionLocator, errorCodeInterpreter, translationUpdater, currentSettingsProvider, dispatcher, defaultSettingsBuilder, actionOrderHelper)
         {
-            var commandLocator1 = commandLocator;
             _tokenViewModelFactory = tokenViewModelFactory;
             _gpoSettings = gpoSettings;
 
@@ -56,12 +54,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             FtpAccountsView.SortDescriptions.Add(new SortDescription(nameof(FtpAccount.AccountInfo), ListSortDirection.Ascending));
             FtpAccountsView.CurrentChanged += (sender, args) => RaisePropertyChanged(nameof(ShowAutosaveRequiresPasswords));
 
-            AddAccountCommand = commandLocator1.CreateMacroCommand()
+            AddAccountCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<FtpAccountAddCommand>()
                 .AddCommand(new DelegateCommand(o => SelectNewAccountInView()))
                 .Build();
 
-            EditAccountCommand = commandLocator1.CreateMacroCommand()
+            EditAccountCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<FtpAccountEditCommand>()
                 .AddCommand(new DelegateCommand(o => RefreshAccountsView()))
                 .AddCommand(new DelegateCommand(o => StatusChanged()))

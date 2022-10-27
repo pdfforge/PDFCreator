@@ -1,5 +1,6 @@
 ﻿using pdfforge.DataStorage;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 {

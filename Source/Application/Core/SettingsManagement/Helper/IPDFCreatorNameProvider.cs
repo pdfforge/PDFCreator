@@ -31,7 +31,14 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.Helper
 
         public string GetPortApplicationPath()
         {
-            var candidates = _directory.EnumerateFiles(GetApplicationPath(), "PDFCreator-cli.exe").ToList();
+            var appPath = GetApplicationPath();
+
+            var candidates = _directory.EnumerateFiles(appPath, "PDFCreator-cli.exe").ToList();
+
+            if (candidates.Count == 0 && appPath.EndsWith(@"bin\Debug"))
+            {
+                candidates = _directory.EnumerateFiles(appPath + @"\..\..\..\..\UI\PDFCreator.CLI\bin\Debug", "PDFCreator-cli.exe").ToList();
+            }
 
             if (candidates.Count == 1)
                 return candidates.Single();

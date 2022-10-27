@@ -68,7 +68,8 @@ NumSizes
    FontName findfont CurrentSize scalefont setfont
    /Ratio Ratio dup mul def
  } repeat
-showpage
 
 clear cleardictstack
 alphabetsave restore
+% Per page independence description in the PLRM Section 3.7.3, showpage follows restore
+showpage

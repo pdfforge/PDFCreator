@@ -59,8 +59,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is ForwardToFurtherProfile)) return false;
 			ForwardToFurtherProfile v = o as ForwardToFurtherProfile;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!ProfileGuid.Equals(v.ProfileGuid)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(ProfileGuid, v.ProfileGuid)) return false;
 			return true;
 		}
 		

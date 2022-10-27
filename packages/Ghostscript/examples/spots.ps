@@ -1,0 +1,79 @@
+%!
+
+% Cyan
+1 0 0 0 setcmykcolor
+0 0 50 50 rectfill
+.5 0 0 0 setcmykcolor
+0 50 50 50 rectfill
+
+% Magenta
+0 1 0 0 setcmykcolor
+50 0 50 50 rectfill
+0 0.5 0 0 setcmykcolor
+50 50 50 50 rectfill
+
+% Yellow
+0 0 1 0 setcmykcolor
+100 0 50 50 rectfill
+0 0 .5 0 setcmykcolor
+100 0 50 50 rectfill
+
+% Black
+0 0 0 1 setcmykcolor
+150 0 50 50 rectfill
+0 0 0 .5 setcmykcolor
+150 50 50 50 rectfill
+
+% MuddyCyan
+[/Separation
+ (MuddyCyan)
+ /DeviceCMYK
+ {
+  0.1 0.1 0
+ }
+] setcolorspace
+1 setcolor
+0 100 50 50 rectfill
+0.5 setcolor
+0 150 50 5000 rectfill
+
+% MuddyMagenta
+[/Separation
+ (MuddyMagenta)
+ /DeviceCMYK
+ {
+  0.1 exch 0.1 0
+ }
+] setcolorspace
+1 setcolor
+50 100 50 50 rectfill
+0.5 setcolor
+50 150 50 5000 rectfill
+
+% MuddyYellow
+[/Separation
+ (MuddyYellow)
+ /DeviceCMYK
+ {
+  0.1 exch 0.1 exch 0
+ }
+] setcolorspace
+1 setcolor
+100 100 50 50 rectfill
+0.5 setcolor
+100 150 50 5000 rectfill
+
+% MuddyBlack
+[/Separation
+ (MuddyBlack)
+ /DeviceCMYK
+ {
+  0.1 exch 0.1 exch 0.1 exch
+ }
+] setcolorspace
+1 setcolor
+150 100 50 50 rectfill
+0.5 setcolor
+150 150 50 5000 rectfill
+
+showpage

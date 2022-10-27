@@ -6,9 +6,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 {
     public class UpdateChangeParser : IUpdateChangeParser
     {
-        public List<Release> Parse(string json)
+        public List<ReleaseInfo> Parse(string json)
         {
-            var obj = JsonConvert.DeserializeObject<List<Release>>(json);
+            var obj = JsonConvert.DeserializeObject<List<ReleaseInfo>>(json);
             return obj;
         }
     }

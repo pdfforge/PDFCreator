@@ -5,13 +5,13 @@
 
 systemdict /.setalphaisshape known not
 {
-    (\n\n%%%% WARNING: Transparency operations ignored - probably due to using -dSAFER\n\n) print flush
+    (\n\n%%%% WARNING: Transparency operations ignored - need to include -dALLOWPSTRANSPARENCY\n\n) print flush
     /.pushpdf14devicefilter {pop} bind def
     /.begintransparencygroup {pop pop pop pop pop} bind def
     /.endtransparencygroup {} bind def
     /.poppdf14devicefilter {} bind def
-    /.setopacityalpha {pop} bind def
-    /.setshapealpha {pop} bind def
+    /.setfillconstantalpha {pop} bind def
+    /.setstrokeconstantalpha {pop} bind def
     /PageUsesTransparency false def
 } if
 
@@ -37,7 +37,7 @@ systemdict /.setalphaisshape known not
 
      << >> clippath pathbbox newpath .begintransparencygroup
 
-     .5 .setopacityalpha 1 .setshapealpha
+     .5 .setfillconstantalpha
 
      .9 .3 .1 setrgbcolor
 

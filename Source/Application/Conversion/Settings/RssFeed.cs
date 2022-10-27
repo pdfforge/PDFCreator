@@ -65,8 +65,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is RssFeed)) return false;
 			RssFeed v = o as RssFeed;
 			
-			if (!Enable.Equals(v.Enable)) return false;
-			if (!LatestRssUpdate.Equals(v.LatestRssUpdate)) return false;
+			if (!Object.Equals(Enable, v.Enable)) return false;
+			if (!Object.Equals(LatestRssUpdate, v.LatestRssUpdate)) return false;
 			return true;
 		}
 		

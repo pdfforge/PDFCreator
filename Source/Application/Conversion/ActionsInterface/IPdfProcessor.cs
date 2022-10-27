@@ -22,5 +22,7 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
         void AddPageNumbers(Job job);
 
         void AddWatermark(Job job);
+
+        void MergePDFs(string targetPdf, string sourcePdf);
     }
 }

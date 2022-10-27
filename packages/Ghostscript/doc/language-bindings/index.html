@@ -1,0 +1,168 @@
+<html lang="en">
+    <head>
+        <title>Ghostscript language bindings</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+        <link href="css/default.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/default.js"></script>
+    </head>
+
+    <body>
+
+        <header><h1></h1><div class="menu-icon" onclick="javascript:showMenu();"></div></header>
+
+        <div id="burger-menu">
+            <div class="navigation">
+                <div class="title first">Introduction</div>
+                <div class="link selected"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="left">
+                <div class="title first">Introduction</div>
+                <div class="link selected"><a href="index.html">About our APIs</a></div>
+                <div class="link"><a href="demo-code.html">Demo code</a></div>
+
+                <div class="title">C#</div>
+                <div class="link"><a href="c-sharp-intro.html">Overview</a></div>
+                <div class="link"><a href="c-sharp-ghost-api.html">GhostAPI</a></div>
+                <div class="link"><a href="c-sharp-ghost-net.html">GhostNET</a></div>
+                <div class="link"><a href="c-sharp-ghost-mono.html">GhostMono</a></div>
+
+                <div class="title">Java</div>
+                <div class="link"><a href="java-intro.html">Overview</a></div>
+                <div class="link"><a href="java-gsjavajar.html">gsjava.jar</a></div>
+
+                <div class="title">Python</div>
+                <div class="link"><a href="python-intro.html">Overview</a></div>
+                <div class="link"><a href="python-gsapi.html">gsapi.py</a></div>
+            </div>
+
+            <div class="middle">
+
+
+<!-- note: don't tab indent <article> as it has <pre> code which will have its layout adversly affected -->
+<article class="markdown-body entry-content"><h1 id="introduction">Introduction</h1>
+<div class="banner intro">
+    <div class="default-text"></div>
+    <div class="vendor-logo gs-logo"></div>
+    <div class="vendor-logo c-sharp-logo"></div>
+    <div class="vendor-logo java-logo"></div>
+    <div class="vendor-logo python-logo"></div>
+</div>
+
+<h2 id="about-our-apis">About our APIs</h2>
+<p>The core of Ghostscript is written in <code>C</code>, but also supports <a href="https://en.wikipedia.org/wiki/Language_binding">language bindings</a> for the following programming languages:</p>
+<ul>
+<li><code>C#</code></li>
+<li><code>Java</code></li>
+<li><code>Python</code></li>
+</ul>
+<p>All of the above languages have equivalent methods as defined in the <a href="https://www.ghostscript.com/doc/current/API.htm">C API</a>. <code>Java</code> and <code>C#</code> provide additional helper methods to make the use of the API easier for certain applications. These languages also provide example viewers that make use of these methods.</p>
+<p>This developer documentation is organized by programming language type and includes API reference and sample code.</p>
+<h2 id="the-c-api">The C API</h2>
+<div class="vendor-logo c-logo"></div>
+<p>
+
+</p><p>Ghostscript has been in development for over thirty years and is written in <code>C</code>. The API has evolved over time and is continually being developed. The language bindings into Ghostscript will attempt to mirror this evolution and match the current <a href="https://www.ghostscript.com/doc/current/API.htm">C API</a> as much as possible.</p>
+<h2 id="licensing">Licensing</h2>
+<p>Before using Ghostscript, please make sure that you have a valid license to do so. There are two available licenses; make sure you pick the one whose terms you can comply with.</p>
+<h3 id="open-source-license">Open Source license</h3>
+<p>If your software is open source, you may use Ghostscript under the terms of the GNU Affero General Public License.</p>
+<p>This means that all of the source code for your complete app must be released under a compatible open source license!</p>
+<p>It also means that you may not use any proprietary closed source libraries or components in your app.</p>
+<p>Please read the full text of the AGPL license agreement from the <a href="https://www.gnu.org/licenses/agpl-3.0.html">FSF web site</a></p>
+<p>If you cannot or do not want to comply with these restrictions, you must acquire a commercial license instead.</p>
+<p><button class="cta orange"><a href="https://artifex.com/licensing/" target="new">FIND OUT MORE</a></button></p>
+<h3 id="commercial-license">Commercial license</h3>
+<p>If your project does not meet the requirements of the AGPL, please contact our sales team to discuss a commercial license. Each Artifex commercial license is crafted based on your individual use case.</p>
+<p><button class="cta orange"><a href="https://artifex.com/contact/" target="new">CONTACT US</a></button></p>
+<h2 id="building-ghostscript">Building Ghostscript</h2>
+<p>In order to use Ghostscript language bindings firstly Ghostscript must be built as a shared library for your platform.</p>
+<p>The following built libraries are required for these respective platforms:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Ghostscript library files</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows 32-bit</td>
+<td><code>gpdldll32.dll</code> <code>gsdll32.dll</code></td>
+</tr>
+<tr>
+<td>Windows 64-bit</td>
+<td><code>gpdldll64.dll</code> <code>gsdll64.dll</code></td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td><code>libgpdl.dylib</code> <code>libgs.dylib</code></td>
+</tr>
+<tr>
+<td>Linux / OpenBSD</td>
+<td><code>libgpdl.so</code> <code>libgs.so</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>NOTE</strong><br>
+The actual filenames on MacOS will be appended with the version of Ghostscript with associated symlinks.</p>
+</blockquote>
+<h3 id="building-on-windows">Building on Windows</h3>
+<p>To build the required DLLs, load <code>/windows/ghostpdl.sln</code> into Visual Studio, and select the required architecture from the drop down - then right click on 'ghostpdl' in the solution explorer and choose "Build".</p>
+<h3 id="building-on-macos-or-linux-openbsd">Building on MacOS or Linux / OpenBSD</h3>
+<p>Firstly run the <code>autogen.sh</code> script from the command line to create the required configuration files followed by <code>make so</code> to build the shared libraries. The scripts also depend on having both <code>autoconf</code> and <code>automake</code> installed on your system. <sup>[1]</sup></p>
+<h4 id="autoconf-automake">autoconf &amp; automake</h4>
+<p>If this software is not already on your system (usually this can be found in the following location: <code>usr/local/bin</code>, but it could be located elsewhere depending on your setup) then it can be installed from your OS's package system.</p>
+<p>Alternatively, it can be installed from <a href="https://www.gnu.org/">GNU</a> here:</p>
+<p><a href="https://www.gnu.org/software/autoconf/">https://www.gnu.org/software/autoconf/</a></p>
+<p><a href="https://www.gnu.org/software/automake/">https://www.gnu.org/software/automake/</a></p>
+<p>Or, it can be installed via <a href="https://brew.sh/">Brew</a> by running:</p>
+<pre><code>brew install autoconf automake</code></pre><p>Once built, these libraries can be found in your <code>ghostpdl/sobin/</code> or <code>ghostpdl/sodebugbin</code> location depending on your build command.</p>
+<blockquote>
+<p><strong>NOTE</strong><br>
+For full detailed instructions on how to build your Ghostscript library see <a href="https://ghostscript.com/doc/current/Make.htm">here</a>.</p>
+</blockquote>
+</article>
+
+            </div>
+
+            <div class="right">
+
+                <div class="link"><a href="#about-our-apis">About our APIs</a></div>
+                <div class="link"><a href="#the-c-api">The C API</a></div>
+                <div class="link"><a href="#licensing">Licensing</a></div>
+                    <div class="sub-link"><a href="#open-source-license">Open Source license</a></div>
+                    <div class="sub-link"><a href="#commercial-license">Commercial license</a></div>
+                <div class="link"><a href="#building-ghostscript">Building Ghostscript</a></div>
+                    <div class="sub-link"><a href="#building-on-windows">Building on Windows</a></div>
+                    <div class="sub-link"><a href="#building-on-macos-or-linux-openbsd">Building on MacOS or Linux / OpenBSD</a></div>
+            </div>
+
+
+        </div>
+
+        <footer></footer>
+
+    </body>
+
+
+</html>

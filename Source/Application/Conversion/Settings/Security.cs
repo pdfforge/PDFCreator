@@ -188,19 +188,19 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is Security)) return false;
 			Security v = o as Security;
 			
-			if (!AllowPrinting.Equals(v.AllowPrinting)) return false;
-			if (!AllowScreenReader.Equals(v.AllowScreenReader)) return false;
-			if (!AllowToCopyContent.Equals(v.AllowToCopyContent)) return false;
-			if (!AllowToEditAssembly.Equals(v.AllowToEditAssembly)) return false;
-			if (!AllowToEditComments.Equals(v.AllowToEditComments)) return false;
-			if (!AllowToEditTheDocument.Equals(v.AllowToEditTheDocument)) return false;
-			if (!AllowToFillForms.Equals(v.AllowToFillForms)) return false;
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!EncryptionLevel.Equals(v.EncryptionLevel)) return false;
-			if (!OwnerPassword.Equals(v.OwnerPassword)) return false;
-			if (!RequireUserPassword.Equals(v.RequireUserPassword)) return false;
-			if (!RestrictPrintingToLowQuality.Equals(v.RestrictPrintingToLowQuality)) return false;
-			if (!UserPassword.Equals(v.UserPassword)) return false;
+			if (!Object.Equals(AllowPrinting, v.AllowPrinting)) return false;
+			if (!Object.Equals(AllowScreenReader, v.AllowScreenReader)) return false;
+			if (!Object.Equals(AllowToCopyContent, v.AllowToCopyContent)) return false;
+			if (!Object.Equals(AllowToEditAssembly, v.AllowToEditAssembly)) return false;
+			if (!Object.Equals(AllowToEditComments, v.AllowToEditComments)) return false;
+			if (!Object.Equals(AllowToEditTheDocument, v.AllowToEditTheDocument)) return false;
+			if (!Object.Equals(AllowToFillForms, v.AllowToFillForms)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(EncryptionLevel, v.EncryptionLevel)) return false;
+			if (!Object.Equals(OwnerPassword, v.OwnerPassword)) return false;
+			if (!Object.Equals(RequireUserPassword, v.RequireUserPassword)) return false;
+			if (!Object.Equals(RestrictPrintingToLowQuality, v.RestrictPrintingToLowQuality)) return false;
+			if (!Object.Equals(UserPassword, v.UserPassword)) return false;
 			return true;
 		}
 		

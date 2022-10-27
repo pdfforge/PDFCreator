@@ -29,9 +29,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
             _directoryHelper = directoryHelper;
         }
 
-        public QueryResult<OutputFilenameResult> GetFileName(string directory, string filename, OutputFormat outputFormat)
+        public QueryResult<OutputFilenameResult> GetFileName(string directory, string filename, OutputFormat outputFormat, bool requiresOverwriteCheck = true)
         {
-            var interaction = CreateFileNameInteraction(filename, directory, outputFormat);
+            var interaction = CreateFileNameInteraction(filename, directory, outputFormat, requiresOverwriteCheck);
             var result = InvokeInteraction(interaction, outputFormat, true);
 
             return result;
@@ -50,7 +50,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
             return new QueryResult<string>(result.Success, newFilename);
         }
 
-        private SaveFileInteraction CreateFileNameInteraction(string fileName, string directory, OutputFormat outputFormat)
+        private SaveFileInteraction CreateFileNameInteraction(string fileName, string directory, OutputFormat outputFormat, bool requiresOverwriteCheck = true)
         {
             if (!string.IsNullOrWhiteSpace(directory))
             {
@@ -68,7 +68,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
             interaction.Title = _translation.SelectDestination;
             interaction.Filter = GetAllFilters();
             interaction.FilterIndex = (int)outputFormat + 1;
-            interaction.OverwritePrompt = true;
+            interaction.OverwritePrompt = requiresOverwriteCheck;
             interaction.ForceTopMost = true;
             interaction.FileName = fileName;
             interaction.InitialDirectory = directory;

@@ -10,7 +10,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string Interactive { get; private set; } = "Interactive";
         public string Autosave { get; private set; } = "Automatic";
         public string FilenameLabel { get; private set; } = "Filename:";
-        public string MissingFilename { get; private set; } = "Missing filename";
         public string TargetDirectoryLabel { get; private set; } = "Target Directory:";
 
         public string LastUsedDirectory { get; protected set; } = "Last used directory";
@@ -19,8 +18,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string ShowQuickActions { get; private set; } = "Show quick actions";
         public string SkipPrintDialog { get; private set; } = "Skip print dialog";
         public string SkipSendFailures { get; private set; } = "Skip send failures";
-        public string EnsureUniqueFilenames { get; private set; } = "Ensure unique filenames";
         public string ShowTrayNotification { get; private set; } = "Show tray notification";
+
+        public string ExistingFileLabel { get; private set; } = "Existing file:";
+        public string BehaviorMerge { get; private set; } = "Merge";
+        public string BehaviorOverwrite { get; private set; } = "Overwrite";
+        public string BehaviorUnique { get; private set; } = "Ensure unique filenames";
 
         public string OutputFormat { get; private set; } = "Output Format";
         public string ColorsLabel { get; private set; } = "Colors:";

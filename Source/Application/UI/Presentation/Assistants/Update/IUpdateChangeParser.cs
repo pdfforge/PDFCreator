@@ -5,6 +5,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
 {
     public interface IUpdateChangeParser
     {
-        List<Release> Parse(string json);
+        List<ReleaseInfo> Parse(string json);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Utilities;
 using System;
 using SystemInterface.IO;
 
@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
 {
     public interface IFontPathHelper
     {
-        bool GetFontPath(string fontFile, out string fontPath);
+        bool TryGetFontPath(string fontFile, out string fontPath);
     }
 
     public class FontPathHelper : IFontPathHelper
@@ -20,10 +20,15 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
             _file = file;
         }
 
-        public bool GetFontPath(string fontFile, out string fontPath)
+        public bool TryGetFontPath(string fontFile, out string fontPath)
         {
             var globalFontFolder = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
+
             _logger.Trace("Global font folder: " + globalFontFolder);
+            if (string.IsNullOrEmpty(fontFile))
+            {
+                fontFile = FontHelper.DEFAULT_FONT_FILE;
+            }
 
             fontPath = PathSafe.Combine(globalFontFolder, fontFile);
             if (!_file.Exists(fontPath))

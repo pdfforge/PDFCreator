@@ -35,6 +35,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public int ConversionTimeout { get; set; } = 60;
 		
+		/// <summary>
+		/// Don't recommend Pdf Architect
+		/// </summary>
+		public bool DontRecommendArchitect { get; set; } = false;
+		
 		public bool EnableTips { get; set; } = true;
 		
 		public string Language { get; set; } = "";
@@ -47,6 +52,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public LoggingLevel LoggingLevel { get; set; } = LoggingLevel.Error;
 		
 		public DateTime NextUpdate { get; set; } = DateTime.Now;
+		
+		/// <summary>
+		/// Set the filename of the shared settings file. The default is 'settings.ini'.
+		/// </summary>
+		public string SharedSettingsFilename { get; set; } = "settings";
 		
 		/// <summary>
 		/// Defines the unit of measurement for the signature position.
@@ -87,11 +97,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			UsageStatistics.ReadValues(data, path + @"UsageStatistics\");
 			ConversionTimeout = int.TryParse(data.GetValue(@"" + path + @"ConversionTimeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpConversionTimeout) ? tmpConversionTimeout : 60;
+			DontRecommendArchitect = bool.TryParse(data.GetValue(@"" + path + @"DontRecommendArchitect"), out var tmpDontRecommendArchitect) ? tmpDontRecommendArchitect : false;
 			EnableTips = bool.TryParse(data.GetValue(@"" + path + @"EnableTips"), out var tmpEnableTips) ? tmpEnableTips : true;
 			try { Language = Data.UnescapeString(data.GetValue(@"" + path + @"Language")); } catch { Language = "";}
 			LicenseExpirationReminder = DateTime.TryParse(data.GetValue(@"" + path + @"LicenseExpirationReminder"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLicenseExpirationReminder) ? tmpLicenseExpirationReminder : DateTime.Now;
 			LoggingLevel = Enum.TryParse<LoggingLevel>(data.GetValue(@"" + path + @"LoggingLevel"), out var tmpLoggingLevel) ? tmpLoggingLevel : LoggingLevel.Error;
 			NextUpdate = DateTime.TryParse(data.GetValue(@"" + path + @"NextUpdate"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpNextUpdate) ? tmpNextUpdate : DateTime.Now;
+			try { SharedSettingsFilename = Data.UnescapeString(data.GetValue(@"" + path + @"SharedSettingsFilename")); } catch { SharedSettingsFilename = "settings";}
 			UnitOfMeasurement = Enum.TryParse<UnitOfMeasurement>(data.GetValue(@"" + path + @"UnitOfMeasurement"), out var tmpUnitOfMeasurement) ? tmpUnitOfMeasurement : UnitOfMeasurement.Centimeter;
 			UpdateInterval = Enum.TryParse<UpdateInterval>(data.GetValue(@"" + path + @"UpdateInterval"), out var tmpUpdateInterval) ? tmpUpdateInterval : UpdateInterval.Weekly;
 		}
@@ -119,11 +131,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			UsageStatistics.StoreValues(data, path + @"UsageStatistics\");
 			data.SetValue(@"" + path + @"ConversionTimeout", ConversionTimeout.ToString(System.Globalization.CultureInfo.InvariantCulture));
+			data.SetValue(@"" + path + @"DontRecommendArchitect", DontRecommendArchitect.ToString());
 			data.SetValue(@"" + path + @"EnableTips", EnableTips.ToString());
 			data.SetValue(@"" + path + @"Language", Data.EscapeString(Language));
 			data.SetValue(@"" + path + @"LicenseExpirationReminder", LicenseExpirationReminder.ToString("yyyy-MM-dd HH:mm:ss"));
 			data.SetValue(@"" + path + @"LoggingLevel", LoggingLevel.ToString());
 			data.SetValue(@"" + path + @"NextUpdate", NextUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
+			data.SetValue(@"" + path + @"SharedSettingsFilename", Data.EscapeString(SharedSettingsFilename));
 			data.SetValue(@"" + path + @"UnitOfMeasurement", UnitOfMeasurement.ToString());
 			data.SetValue(@"" + path + @"UpdateInterval", UpdateInterval.ToString());
 		}
@@ -151,11 +165,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.UsageStatistics = UsageStatistics.Copy();
 			copy.ConversionTimeout = ConversionTimeout;
+			copy.DontRecommendArchitect = DontRecommendArchitect;
 			copy.EnableTips = EnableTips;
 			copy.Language = Language;
 			copy.LicenseExpirationReminder = LicenseExpirationReminder;
 			copy.LoggingLevel = LoggingLevel;
 			copy.NextUpdate = NextUpdate;
+			copy.SharedSettingsFilename = SharedSettingsFilename;
 			copy.UnitOfMeasurement = UnitOfMeasurement;
 			copy.UpdateInterval = UpdateInterval;
 			return copy;
@@ -184,6 +200,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(ConversionTimeout != source.ConversionTimeout)
 				ConversionTimeout = source.ConversionTimeout;
 				
+			if(DontRecommendArchitect != source.DontRecommendArchitect)
+				DontRecommendArchitect = source.DontRecommendArchitect;
+				
 			if(EnableTips != source.EnableTips)
 				EnableTips = source.EnableTips;
 				
@@ -199,6 +218,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(NextUpdate != source.NextUpdate)
 				NextUpdate = source.NextUpdate;
 				
+			if(SharedSettingsFilename != source.SharedSettingsFilename)
+				SharedSettingsFilename = source.SharedSettingsFilename;
+				
 			if(UnitOfMeasurement != source.UnitOfMeasurement)
 				UnitOfMeasurement = source.UnitOfMeasurement;
 				
@@ -212,32 +234,38 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is ApplicationSettings)) return false;
 			ApplicationSettings v = o as ApplicationSettings;
 			
-			if (!Accounts.Equals(v.Accounts)) return false;
-			if (!JobHistory.Equals(v.JobHistory)) return false;
+			if (!Object.Equals(Accounts, v.Accounts)) return false;
+			if (!Object.Equals(JobHistory, v.JobHistory)) return false;
 			
-			if (PrinterMappings.Count != v.PrinterMappings.Count) return false;
+			if (PrinterMappings?.Count != v.PrinterMappings?.Count) return false;
+			if (Object.ReferenceEquals(PrinterMappings, v.PrinterMappings)) return true;
+			
 			for (int i = 0; i < PrinterMappings.Count; i++)
 			{
 				if (!PrinterMappings[i].Equals(v.PrinterMappings[i])) return false;
 			}
 			
-			if (!RssFeed.Equals(v.RssFeed)) return false;
+			if (!Object.Equals(RssFeed, v.RssFeed)) return false;
 			
-			if (TitleReplacement.Count != v.TitleReplacement.Count) return false;
+			if (TitleReplacement?.Count != v.TitleReplacement?.Count) return false;
+			if (Object.ReferenceEquals(TitleReplacement, v.TitleReplacement)) return true;
+			
 			for (int i = 0; i < TitleReplacement.Count; i++)
 			{
 				if (!TitleReplacement[i].Equals(v.TitleReplacement[i])) return false;
 			}
 			
-			if (!UsageStatistics.Equals(v.UsageStatistics)) return false;
-			if (!ConversionTimeout.Equals(v.ConversionTimeout)) return false;
-			if (!EnableTips.Equals(v.EnableTips)) return false;
-			if (!Language.Equals(v.Language)) return false;
-			if (!LicenseExpirationReminder.Equals(v.LicenseExpirationReminder)) return false;
-			if (!LoggingLevel.Equals(v.LoggingLevel)) return false;
-			if (!NextUpdate.Equals(v.NextUpdate)) return false;
-			if (!UnitOfMeasurement.Equals(v.UnitOfMeasurement)) return false;
-			if (!UpdateInterval.Equals(v.UpdateInterval)) return false;
+			if (!Object.Equals(UsageStatistics, v.UsageStatistics)) return false;
+			if (!Object.Equals(ConversionTimeout, v.ConversionTimeout)) return false;
+			if (!Object.Equals(DontRecommendArchitect, v.DontRecommendArchitect)) return false;
+			if (!Object.Equals(EnableTips, v.EnableTips)) return false;
+			if (!Object.Equals(Language, v.Language)) return false;
+			if (!Object.Equals(LicenseExpirationReminder, v.LicenseExpirationReminder)) return false;
+			if (!Object.Equals(LoggingLevel, v.LoggingLevel)) return false;
+			if (!Object.Equals(NextUpdate, v.NextUpdate)) return false;
+			if (!Object.Equals(SharedSettingsFilename, v.SharedSettingsFilename)) return false;
+			if (!Object.Equals(UnitOfMeasurement, v.UnitOfMeasurement)) return false;
+			if (!Object.Equals(UpdateInterval, v.UpdateInterval)) return false;
 			return true;
 		}
 		

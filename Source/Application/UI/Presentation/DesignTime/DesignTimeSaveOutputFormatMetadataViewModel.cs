@@ -1,7 +1,9 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+﻿using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
@@ -16,7 +18,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                     new DesignTimeCommandBuilderProvider(),
                     new DispatcherWrapper(),
                     new DesignTimeEditionHelper(),
-                    new DesignTimeActionManager())
+                    new DesignTimeActionManager(),
+                    new DesignTimeProfileChecker(),
+                    new ErrorCodeInterpreter(new TranslationFactory()))
         { }
     }
 }

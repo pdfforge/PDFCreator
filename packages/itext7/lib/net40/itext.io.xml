@@ -19,12 +19,6 @@
             <param name="output">destination for output data</param>
             <param name="blocks">GIF LZW requires block counts for output data</param>
         </member>
-        <member name="M:iText.IO.Codec.BitFile.Flush">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.BitFile.WriteBits(System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Codec.Brotli.Dec.BitReader">
             <summary>Bit reading helpers.</summary>
         </member>
@@ -54,9 +48,6 @@
             <summary>Reads the specified number of bits from Read Buffer.</summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:iText.IO.Codec.Brotli.Dec.BitReader.Init(iText.IO.Codec.Brotli.Dec.BitReader,System.IO.Stream)" -->
-        <member name="M:iText.IO.Codec.Brotli.Dec.BitReader.Close(iText.IO.Codec.Brotli.Dec.BitReader)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <!-- Badly formed XML comment ignored for member "T:iText.IO.Codec.Brotli.Dec.BrotliInputStream" -->
         <member name="F:iText.IO.Codec.Brotli.Dec.BrotliInputStream.buffer">
             <summary>Internal buffer used for efficient byte-by-byte reading.</summary>
@@ -75,11 +66,9 @@
         <!-- Badly formed XML comment ignored for member "M:iText.IO.Codec.Brotli.Dec.BrotliInputStream.#ctor(System.IO.Stream,System.Int32,System.Byte[])" -->
         <member name="M:iText.IO.Codec.Brotli.Dec.BrotliInputStream.ReadByte">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Codec.Brotli.Dec.BrotliInputStream.Read(System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Codec.Brotli.Dec.BrotliRuntimeException">
             <summary>Unchecked exception used internally.</summary>
@@ -174,9 +163,6 @@
             <param name="state">uninitialized state without associated input</param>
             <param name="input">compressed data source</param>
         </member>
-        <member name="M:iText.IO.Codec.Brotli.Dec.State.Close(iText.IO.Codec.Brotli.Dec.State)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Codec.Brotli.Dec.Transform">
             <summary>Transformations on dictionary words.</summary>
         </member>
@@ -249,23 +235,7 @@
             if for_embedding, skip the segment types that are known to be not for acrobat.
             </remarks>
             <param name="for_embedding">True if the bytes represents embedded data, false otherwise</param>
-            <exception cref="T:System.IO.IOException"/>
             <returns>a byte array</returns>
-        </member>
-        <member name="M:iText.IO.Codec.Jbig2SegmentReader.#ctor(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.Jbig2SegmentReader.Read">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.Jbig2SegmentReader.ReadSegment(iText.IO.Codec.Jbig2SegmentReader.Jbig2Segment)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.Jbig2SegmentReader.ReadHeader">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.Jbig2SegmentReader.ReadFileHeader">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Codec.LZWCompressor">
             <summary>
@@ -304,20 +274,17 @@
             <param name="outputStream">destination for compressed data</param>
             <param name="codeSize">the initial code size for the LZW compressor</param>
             <param name="TIFF">flag indicating that TIFF lzw fudge needs to be applied</param>
-            <exception cref="T:System.IO.IOException">if underlying output stream error</exception>
         </member>
         <member name="M:iText.IO.Codec.LZWCompressor.Compress(System.Byte[],System.Int32,System.Int32)">
             <param name="buf">The data to be compressed to output stream</param>
             <param name="offset">The offset at which the data starts</param>
             <param name="length">The length of the data being compressed</param>
-            <exception cref="T:System.IO.IOException">if underlying output stream error</exception>
         </member>
         <member name="M:iText.IO.Codec.LZWCompressor.Flush">
             <summary>
             Indicate to compressor that no more data to go so write out
             any remaining buffered data.
             </summary>
-            <exception cref="T:System.IO.IOException">if underlying output stream error</exception>
         </member>
         <member name="T:iText.IO.Codec.LZWStringTable">
             <summary>General purpose LZW String Table.</summary>
@@ -325,9 +292,9 @@
             General purpose LZW String Table.
             Extracted from GIFEncoder by Adam Doppelt
             Comments added by Robin Luiten
-            <code>expandCode</code> added by Robin Luiten
+            <c>expandCode</c> added by Robin Luiten
             The strLen_ table to give quick access to the lenght of an expanded
-            code for use by the <code>expandCode</code> method added by Robin.
+            code for use by the <c>expandCode</c> method added by Robin.
             </remarks>
         </member>
         <member name="F:iText.IO.Codec.LZWStringTable.RES_CODES">
@@ -401,33 +368,6 @@
         </member>
         <member name="T:iText.IO.Codec.PngWriter">
             <summary>Writes a PNG image.</summary>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.#ctor(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WriteHeader(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WriteEnd">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WriteData(System.Byte[],System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WritePalette(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WriteIccProfile(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.OutputInt(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.OutputInt(System.Int32,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.PngWriter.WriteChunk(System.Byte[],System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Codec.TIFFConstants">
             <summary>A list of constants used in class TIFFImage.</summary>
@@ -1143,7 +1083,6 @@
             </remarks>
             <param name="stream">a SeekableStream to read from.</param>
             <param name="directory">the index of the directory to read.</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.Int64,System.Int32)">
             <summary>Constructs a TIFFDirectory by reading a SeekableStream.</summary>
@@ -1161,10 +1100,6 @@
             one at the current stream offset; zero indicates the IFD
             at the current offset.
             </param>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.Initialize(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.GetNumEntries">
             <summary>Returns the number of directory entries.</summary>
@@ -1305,66 +1240,34 @@
             <param name="tag">The tag</param>
             <returns>The value of index 0 of the given tag as a double</returns>
         </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadShort(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadUnsignedShort(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadInt(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadUnsignedInt(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadLong(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadFloat(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadDouble(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadUnsignedShort(iText.IO.Source.RandomAccessFileOrArray,System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TIFFDirectory.ReadUnsignedInt(iText.IO.Source.RandomAccessFileOrArray,System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.GetNumDirectories(iText.IO.Source.RandomAccessFileOrArray)">
             <summary>
             Returns the number of image directories (subimages) stored in a
-            given TIFF file, represented by a <code>SeekableStream</code>.
+            given TIFF file, represented by a <c>SeekableStream</c>.
             </summary>
             <param name="stream">RandomAccessFileOrArray</param>
             <returns>
             The number of image directories (subimages) stored
             in a given TIFF file
             </returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.IsBigEndian">
             <summary>
             Returns a boolean indicating whether the byte order used in the
-            the TIFF file is big-endian (i.e.
-            </summary>
-            <remarks>
-            Returns a boolean indicating whether the byte order used in the
             the TIFF file is big-endian (i.e. whether the byte order is from
             the most significant to the least significant)
-            </remarks>
+            </summary>
         </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.GetIFDOffset">
             <summary>
             Returns the offset of the IFD corresponding to this
-            <code>TIFFDirectory</code>.
+            <c>TIFFDirectory</c>.
             </summary>
         </member>
         <member name="M:iText.IO.Codec.TIFFDirectory.GetNextIFDOffset">
             <summary>
             Returns the offset of the next IFD after the IFD corresponding to this
-            <code>TIFFDirectory</code>.
+            <c>TIFFDirectory</c>.
             </summary>
         </member>
         <member name="T:iText.IO.Codec.TIFFFaxDecoder">
@@ -1488,7 +1391,7 @@
             type of the TIFF field.  Since there is no available 32-bit
             unsigned data type, long is used. The mapping between types is
             as follows:
-            <table border="1" summary="TIFFField data">
+            <table border="1" summary="tifffield data">
             <tr>
             <th> TIFF type </th> <th> Java type </th>
             </tr>
@@ -1755,16 +1658,15 @@
         </member>
         <member name="M:iText.IO.Codec.TIFFField.CompareTo(iText.IO.Codec.TIFFField)">
             <summary>
-            Compares this <code>TIFFField</code> with another
-            <code>TIFFField</code> by comparing the tags.
+            Compares this <c>TIFFField</c> with another
+            <c>TIFFField</c> by comparing the tags.
             </summary>
             <remarks>
-            Compares this <code>TIFFField</code> with another
-            <code>TIFFField</code> by comparing the tags.
+            Compares this <c>TIFFField</c> with another
+            <c>TIFFField</c> by comparing the tags.
             <para /><b>Note: this class has a natural ordering that is inconsistent
-            with <code>equals()</code>.</b>
+            with <c>equals()</c>.</b>
             </remarks>
-            <exception cref="T:System.ArgumentException">if the parameter is <code>null</code>.</exception>
         </member>
         <member name="T:iText.IO.Codec.TIFFLZWDecoder">
             <summary>A class for performing LZW decoding.</summary>
@@ -1792,24 +1694,15 @@
             <param name="str"/>
         </member>
         <member name="M:iText.IO.Codec.TIFFLZWDecoder.ComposeString(System.Byte[],System.Byte)">
-            <summary>Append <code>newString</code> to the end of <code>oldString</code>.</summary>
+            <summary>Append <c>newString</c> to the end of <c>oldString</c>.</summary>
             <param name="oldString"/>
             <param name="newString"/>
         </member>
         <member name="T:iText.IO.Codec.TiffWriter">
             <summary>Exports images as TIFF.</summary>
         </member>
-        <member name="M:iText.IO.Codec.TiffWriter.WriteFile(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Codec.TiffWriter.FieldBase">
             <summary>Inner class class containing information about a field.</summary>
-        </member>
-        <member name="M:iText.IO.Codec.TiffWriter.FieldBase.WriteField(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TiffWriter.FieldBase.WriteValue(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Codec.TiffWriter.FieldShort">
             <summary>Inner class containing info about a field.</summary>
@@ -1832,15 +1725,6 @@
         <member name="T:iText.IO.Codec.TiffWriter.FieldAscii">
             <summary>Inner class containing info about an ASCII field.</summary>
         </member>
-        <member name="M:iText.IO.Codec.TiffWriter.WriteShort(System.Int32,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TiffWriter.WriteLong(System.Int32,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Codec.TiffWriter.CompressLZW(System.IO.Stream,System.Int32,System.Byte[],System.Int32,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Colors.IccProfile">
             <summary>Class used to represented the International Color Consortium profile</summary>
         </member>
@@ -1849,8 +1733,6 @@
             <param name="data">byte[] containing the raw icc profile data</param>
             <param name="numComponents">number of components the profile contains</param>
             <returns>IccProfile constructed from the data</returns>
-            <exception cref="T:iText.IO.IOException">when the specified number of components and the number of components in the created profile do not match.
-                </exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetInstance(System.Byte[])">
             <summary>Construct an icc profile from the passed byte[], using the passed number of components.</summary>
@@ -1861,31 +1743,26 @@
             <summary>Construct an icc profile from the passed random-access file or array.</summary>
             <param name="file">random-access file or array containing the profile</param>
             <returns>IccProfile constructed from the data</returns>
-            <exception cref="T:iText.IO.IOException">if the source does not contain a valid icc profile</exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetInstance(System.IO.Stream)">
             <summary>Construct an icc profile from the passed InputStream.</summary>
             <param name="stream">inputstream containing the profile</param>
             <returns>IccProfile constructed from the data</returns>
-            <exception cref="T:iText.IO.IOException">if the source does not contain a valid icc profile</exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetInstance(System.String)">
             <summary>Construct an icc profile from the file found at the passed path</summary>
             <param name="filename">path to the file contaning the profile</param>
             <returns>IccProfile constructed from the data</returns>
-            <exception cref="T:iText.IO.IOException">if the source does not contain a valid icc profile</exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetIccColorSpaceName(System.Byte[])">
             <summary>Get the Color space name of the icc profile found in the data.</summary>
             <param name="data">byte[] containing the icc profile</param>
             <returns>String containing the color space of the profile</returns>
-            <exception cref="T:iText.IO.IOException">if the source does not contain a valid icc profile</exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetIccDeviceClass(System.Byte[])">
             <summary>Get the device class of the icc profile found in the data.</summary>
             <param name="data">byte[] containing the icc profile</param>
             <returns>String containing the device class of the profile</returns>
-            <exception cref="T:iText.IO.IOException">if the source does not contain a valid icc profile</exception>
         </member>
         <member name="M:iText.IO.Colors.IccProfile.GetIccNumberOfComponents(System.Byte[])">
             <summary>Get the number of color components of the icc profile found in the data.</summary>
@@ -2124,7 +2001,6 @@
         <member name="M:iText.IO.Font.CFFFontSubset.BuildNewCharString(System.Int32)">
             <summary>Function uses BuildNewIndex to create the new index of the subset charstrings</summary>
             <param name="FontIndex">the font</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.CFFFontSubset.BuildNewLGSubrs(System.Int32)">
             <summary>Function builds the new local and global subsrs indices.</summary>
@@ -2133,7 +2009,6 @@
             the FD Array lsubrs will be subsetted.
             </remarks>
             <param name="Font">the font</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.CFFFontSubset.BuildFDSubrsOffsets(System.Int32,System.Int32)">
             <summary>
@@ -2224,7 +2099,6 @@
             <param name="Used">the Map of the used objects</param>
             <param name="OperatorForUnusedEntries">the operator inserted into the data stream for unused entries</param>
             <returns>the new index subset version</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.CFFFontSubset.BuildNewIndexAndCopyAllGSubrs(System.Int32[],System.Byte)">
             <summary>Function builds the new offset array, object array and assembles the index.</summary>
@@ -2235,7 +2109,6 @@
             <param name="Offsets">the offset array of the original index</param>
             <param name="OperatorForUnusedEntries">the operator inserted into the data stream for unused entries</param>
             <returns>the new index subset version</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.CFFFontSubset.AssembleIndex(System.Int32[],System.Byte[])">
             <summary>
@@ -2366,12 +2239,6 @@
             if it is CJKFont.
             </returns>
         </member>
-        <member name="M:iText.IO.Font.CidFontProperties.LoadRegistry">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.CidFontProperties.ReadFontProperties(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Font.CMapEncoding.#ctor(System.String)">
             <param name="cmap">CMap name.</param>
         </member>
@@ -2437,7 +2304,6 @@
             <c>ArrayList</c>
             to use. It will be cleared before using.
             </param>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapContentParser.ReadDictionary">
             <summary>Reads a dictionary.</summary>
@@ -2447,18 +2313,15 @@
             token.
             </remarks>
             <returns>the dictionary</returns>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapContentParser.ReadArray">
             <summary>Reads an array.</summary>
             <remarks>Reads an array. The tokeniser must be positioned past the "[" token.</remarks>
             <returns>an array</returns>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapContentParser.ReadObject">
             <summary>Reads a pdf object.</summary>
             <returns>the pdf object</returns>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapContentParser.NextValidToken">
             <summary>Reads the next token skipping over the comments.</summary>
@@ -2469,7 +2332,6 @@
             <see langword="false"/>
             if the end of content was reached.
             </returns>
-            <exception cref="T:System.IO.IOException">on error.</exception>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapContentParser.ToHex(System.Int32)">
             <summary>Gets an hex string in the format "&lt;HHHH&gt;".</summary>
@@ -2479,14 +2341,8 @@
         <member name="T:iText.IO.Font.Cmap.CMapLocationFromBytes">
             <author>psoares</author>
         </member>
-        <member name="M:iText.IO.Font.Cmap.CMapLocationFromBytes.GetLocation(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Cmap.CMapLocationResource">
             <author>psoares</author>
-        </member>
-        <member name="M:iText.IO.Font.Cmap.CMapLocationResource.GetLocation(System.String)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.Cmap.CMapObject.ToString">
             <summary>
@@ -2494,12 +2350,6 @@
             <c>value</c>
             field.
             </summary>
-        </member>
-        <member name="M:iText.IO.Font.Cmap.CMapParser.ParseCid(System.String,iText.IO.Font.Cmap.AbstractCMap,iText.IO.Font.Cmap.ICMapLocation)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Cmap.CMapParser.ParseCid(System.String,iText.IO.Font.Cmap.AbstractCMap,iText.IO.Font.Cmap.ICMapLocation,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Cmap.CMapToUnicode">
             <summary>This class represents a CMap file.</summary>
@@ -2519,17 +2369,11 @@
             <param name="length">The length of the data we are getting.</param>
             <returns>The string that matches the lookup.</returns>
         </member>
-        <member name="M:iText.IO.Font.Cmap.CMapToUnicode.CreateReverseMapping">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Cmap.CMapUniCid">
             <author>psoares</author>
         </member>
         <member name="T:iText.IO.Font.Cmap.ICMapLocation">
             <author>psoares</author>
-        </member>
-        <member name="M:iText.IO.Font.Cmap.ICMapLocation.GetLocation(System.String)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Constants.FontDescriptorFlags">
             <summary>Font descriptor flags</summary>
@@ -2574,10 +2418,13 @@
         <member name="T:iText.IO.Font.Constants.StandardFontFamilies">
             <summary>
             Class containing families for
-            <see cref="T:iText.IO.Font.Constants.StandardFonts"/>
-            .
-            This class was made for com.itextpdf.io.font.FontRegisterProvider.
+            <see cref="T:iText.IO.Font.Constants.StandardFonts"/>.
             </summary>
+            <remarks>
+            Class containing families for
+            <see cref="T:iText.IO.Font.Constants.StandardFonts"/>.
+            This class was made for com.itextpdf.io.font.FontRegisterProvider.
+            </remarks>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFontFamilies.COURIER">
             <summary>
@@ -2588,8 +2435,7 @@
             ,
             <see cref="F:iText.IO.Font.Constants.StandardFonts.COURIER_OBLIQUE"/>
             and
-            <see cref="F:iText.IO.Font.Constants.StandardFonts.COURIER_BOLDOBLIQUE"/>
-            .
+            <see cref="F:iText.IO.Font.Constants.StandardFonts.COURIER_BOLDOBLIQUE"/>.
             </summary>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFontFamilies.HELVETICA">
@@ -2601,22 +2447,19 @@
             ,
             <see cref="F:iText.IO.Font.Constants.StandardFonts.HELVETICA_OBLIQUE"/>
             and
-            <see cref="F:iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLDOBLIQUE"/>
-            .
+            <see cref="F:iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLDOBLIQUE"/>.
             </summary>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFontFamilies.SYMBOL">
             <summary>
             Font family for
-            <see cref="F:iText.IO.Font.Constants.StandardFonts.SYMBOL"/>
-            .
+            <see cref="F:iText.IO.Font.Constants.StandardFonts.SYMBOL"/>.
             </summary>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFontFamilies.ZAPFDINGBATS">
             <summary>
             Font family for
-            <see cref="F:iText.IO.Font.Constants.StandardFonts.ZAPFDINGBATS"/>
-            .
+            <see cref="F:iText.IO.Font.Constants.StandardFonts.ZAPFDINGBATS"/>.
             </summary>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFontFamilies.TIMES">
@@ -2628,8 +2471,7 @@
             ,
             <see cref="F:iText.IO.Font.Constants.StandardFonts.TIMES_ITALIC"/>
             and
-            <see cref="F:iText.IO.Font.Constants.StandardFonts.TIMES_BOLDITALIC"/>
-            .
+            <see cref="F:iText.IO.Font.Constants.StandardFonts.TIMES_BOLDITALIC"/>.
             </summary>
         </member>
         <member name="F:iText.IO.Font.Constants.StandardFonts.COURIER">
@@ -2698,25 +2540,41 @@
             if it is CJKFont.
             </returns>
         </member>
+        <member name="M:iText.IO.Font.FontCache.GetCompatibleCidFont(System.String)">
+            <summary>Finds a CJK font family which is compatible to the given CMap.</summary>
+            <param name="cmap">a name of the CMap for which compatible font is searched.</param>
+            <returns>a CJK font name if there's known compatible font for the given cmap name, or null otherwise.</returns>
+        </member>
+        <member name="M:iText.IO.Font.FontCache.GetCompatibleCmaps(System.String)">
+            <summary>
+            Finds all CMap names that belong to the same registry to which a given
+            font belongs.
+            </summary>
+            <param name="fontName">a name of the font for which CMap's are searched.</param>
+            <returns>a set of CMap names corresponding to the given font.</returns>
+        </member>
+        <member name="M:iText.IO.Font.FontCache.GetCid2UniCmap(System.String)">
+            <summary>Parses CMap with a given name producing it in a form of cid to unicode mapping.</summary>
+            <param name="uniMap">a CMap name. It is expected that CMap identified by this name defines unicode to cid mapping.
+                </param>
+            <returns>an object for convenient mapping from cid to unicode. If no CMap was found for provided name an exception is thrown.
+                </returns>
+        </member>
         <member name="M:iText.IO.Font.FontCache.ClearSavedFonts">
             <summary>
             Clears the cache by removing fonts that were added via
-            <see cref="M:iText.IO.Font.FontCache.SaveFont(iText.IO.Font.FontProgram,System.String)"/>
-            .
+            <see cref="M:iText.IO.Font.FontCache.SaveFont(iText.IO.Font.FontProgram,System.String)"/>.
+            </summary>
+            <remarks>
+            Clears the cache by removing fonts that were added via
+            <see cref="M:iText.IO.Font.FontCache.SaveFont(iText.IO.Font.FontProgram,System.String)"/>.
             <para />
             Be aware that in multithreading environment this method call will affect the result of
-            <see cref="M:iText.IO.Font.FontCache.GetFont(System.String)"/>
-            .
+            <see cref="M:iText.IO.Font.FontCache.GetFont(System.String)"/>.
             This in its turn affects creation of fonts via factories when
             <c>cached</c>
             argument is set to true (which is by default).
-            </summary>
-        </member>
-        <member name="M:iText.IO.Font.FontCache.LoadRegistry">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontCache.ReadFontProperties(System.String)">
-            <exception cref="T:System.IO.IOException"/>
+            </remarks>
         </member>
         <member name="T:iText.IO.Font.FontConstants">
             <summary>
@@ -2791,11 +2649,15 @@
         <member name="F:iText.IO.Font.FontEncoding.fontSpecific">
             <summary>
             <see langword="true"/>
+            if the font must use its built in encoding.
+            </summary>
+            <remarks>
+            <see langword="true"/>
             if the font must use its built in encoding. In that case
             the
             <c>encoding</c>
             is only used to map a char to the position inside the font, not to the expected char name.
-            </summary>
+            </remarks>
         </member>
         <member name="F:iText.IO.Font.FontEncoding.unicodeToCode">
             <summary>Mapping map from unicode to simple code according to the encoding.</summary>
@@ -2821,8 +2683,15 @@
             to a
             <c>byte</c>
             array according to the encoding.
-            String could contain a unicode symbols or font specific codes.
             </summary>
+            <remarks>
+            Converts a
+            <c>String</c>
+            to a
+            <c>byte</c>
+            array according to the encoding.
+            String could contain a unicode symbols or font specific codes.
+            </remarks>
             <param name="text">
             the
             <c>String</c>
@@ -2905,16 +2774,14 @@
             not empty
             <c>String[][]</c>
             if any names exists, otherwise
-            <see langword="null"/>
-            .
+            <see langword="null"/>.
             </returns>
         </member>
         <member name="M:iText.IO.Font.FontNames.SetFontWeight(System.Int32)">
             <summary>Sets font weight.</summary>
             <param name="weight">
             integer form 100 to 900. See
-            <see cref="T:iText.IO.Font.Constants.FontWeights"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontWeights"/>.
             </param>
         </member>
         <member name="M:iText.IO.Font.FontNames.GetFontStretch">
@@ -2929,8 +2796,7 @@
             <summary>Sets font stretch in css notation (font-stretch property).</summary>
             <param name="fontStretch">
             
-            <see cref="T:iText.IO.Font.Constants.FontStretches"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontStretches"/>.
             </param>
         </member>
         <member name="M:iText.IO.Font.FontNames.SetMacStyle(System.Int32)">
@@ -2976,8 +2842,13 @@
             Checks whether the
             <see cref="T:iText.IO.Font.FontProgram"/>
             was built with corresponding fontName.
-            Default value is false unless overridden.
             </summary>
+            <remarks>
+            Checks whether the
+            <see cref="T:iText.IO.Font.FontProgram"/>
+            was built with corresponding fontName.
+            Default value is false unless overridden.
+            </remarks>
             <param name="fontName">a font name or path to a font program</param>
             <returns>true, if the FontProgram was built with the fontProgram. Otherwise false.</returns>
         </member>
@@ -2999,16 +2870,14 @@
             <summary>Sets font weight.</summary>
             <param name="fontWeight">
             integer form 100 to 900. See
-            <see cref="T:iText.IO.Font.Constants.FontWeights"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontWeights"/>.
             </param>
         </member>
         <member name="M:iText.IO.Font.FontProgram.SetFontStretch(System.String)">
             <summary>Sets font width in css notation (font-stretch property)</summary>
             <param name="fontWidth">
             
-            <see cref="T:iText.IO.Font.Constants.FontStretches"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontStretches"/>.
             </param>
         </member>
         <member name="M:iText.IO.Font.FontProgram.SetFontFamily(System.String)">
@@ -3027,26 +2896,11 @@
         <member name="T:iText.IO.Font.FontProgramDescriptor">
             <summary>Base font descriptor.</summary>
         </member>
-        <member name="M:iText.IO.Font.FontProgramDescriptorFactory.FetchTTCDescriptor(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramDescriptorFactory.FetchTrueTypeFontDescriptor(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramDescriptorFactory.FetchTrueTypeFontDescriptor(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramDescriptorFactory.FetchOpenTypeFontDescriptor(iText.IO.Font.OpenTypeParser)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramDescriptorFactory.FetchType1FontDescriptor(System.String,System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.FontProgramFactory">
             <summary>Provides methods for creating various types of fonts.</summary>
         </member>
         <member name="F:iText.IO.Font.FontProgramFactory.DEFAULT_CACHED">
-            <summary>This is the default value of the <VAR>cached</VAR> variable.</summary>
+            <summary>This is the default value of the <var>cached</var> variable.</summary>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont">
             <summary>Creates a new standard Helvetica font program file.</summary>
@@ -3055,8 +2909,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             object with Helvetica font description
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.String)">
             <summary>Creates a new font program.</summary>
@@ -3077,8 +2929,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             . This font program may come from the cache
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.String,System.Boolean)">
             <summary>Creates a new font program.</summary>
@@ -3100,8 +2950,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             . This font program may come from the cache
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.Byte[])">
             <summary>Creates a new font program.</summary>
@@ -3122,8 +2970,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             . This font program may come from the cache
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.Byte[],System.Boolean)">
             <summary>Creates a new font program.</summary>
@@ -3145,11 +2991,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             . This font program may come from the cache
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.String,System.Byte[],System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateType1Font(System.Byte[],System.Byte[])">
             <summary>Creates a new Type 1 font by the byte contents of the corresponding AFM/PFM and PFB files</summary>
@@ -3160,8 +3001,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             instance
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateType1Font(System.Byte[],System.Byte[],System.Boolean)">
             <summary>Creates a new Type 1 font by the byte contents of the corresponding AFM/PFM and PFB files</summary>
@@ -3177,8 +3016,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             instance
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateType1Font(System.String,System.String)">
             <summary>Creates a new Type 1 font by the corresponding AFM/PFM and PFB files</summary>
@@ -3189,8 +3026,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             instance
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateType1Font(System.String,System.String,System.Boolean)">
             <summary>Creates a new Type 1 font by the corresponding AFM/PFM and PFB files</summary>
@@ -3206,8 +3041,6 @@
             <see cref="T:iText.IO.Font.FontProgram"/>
             instance
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.String,System.Int32,System.Boolean)">
             <summary>Creates a new TrueType font program from ttc (TrueType Collection) file.</summary>
@@ -3223,8 +3056,6 @@
             instance. This font may come from the cache but only if cached
             is true, otherwise it will always be created new
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateFont(System.Byte[],System.Int32,System.Boolean)">
             <summary>Creates a new TrueType font program from ttc (TrueType Collection) file bytes.</summary>
@@ -3240,8 +3071,6 @@
             instance. This font may come from the cache but only if cached
             is true, otherwise it will always be created new
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateRegisteredFont(System.String,System.Int32,System.Boolean)">
             <summary>Creates a FontProgram from the font file that has been previously registered.</summary>
@@ -3251,8 +3080,7 @@
             </param>
             <param name="style">
             the style of the font to look for. Possible values are listed in
-            <see cref="T:iText.IO.Font.Constants.FontStyles"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontStyles"/>.
             See
             <see cref="F:iText.IO.Font.Constants.FontStyles.BOLD"/>
             ,
@@ -3269,8 +3097,6 @@
             created
             <see cref="T:iText.IO.Font.FontProgram"/>
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateRegisteredFont(System.String,System.Int32)">
             <summary>Creates a FontProgram from the font file that has been previously registered.</summary>
@@ -3280,8 +3106,7 @@
             </param>
             <param name="style">
             the style of the font to look for. Possible values are listed in
-            <see cref="T:iText.IO.Font.Constants.FontStyles"/>
-            .
+            <see cref="T:iText.IO.Font.Constants.FontStyles"/>.
             See
             <see cref="F:iText.IO.Font.Constants.FontStyles.BOLD"/>
             ,
@@ -3297,8 +3122,6 @@
             created
             <see cref="T:iText.IO.Font.FontProgram"/>
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.CreateRegisteredFont(System.String)">
             <summary>Creates a FontProgram from the font file that has been previously registered.</summary>
@@ -3310,8 +3133,6 @@
             created
             <see cref="T:iText.IO.Font.FontProgram"/>
             </returns>
-            <exception cref="T:System.IO.IOException">exception is thrown in case an I/O error occurs when reading the file2
-                </exception>
         </member>
         <member name="M:iText.IO.Font.FontProgramFactory.RegisterFontFamily(System.String,System.String,System.String)">
             <summary>Register a font by giving explicitly the font family and name.</summary>
@@ -3359,14 +3180,8 @@
             <param name="fontName">the name of the font that has to be checked.</param>
             <returns>true if the font is found</returns>
         </member>
-        <member name="M:iText.IO.Font.FontProgramFactory.CreateType1Font(System.String,System.String,System.Byte[],System.Byte[],System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Font.FontProgramFactory.ClearRegisteredFontFamilies">
             <summary>Clears registered font cache</summary>
-        </member>
-        <member name="M:iText.IO.Font.FontProgramFactory.ReadFontBytesFromPath(System.String)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.FontRegisterProvider">
             <summary>
@@ -3385,14 +3200,13 @@
             <summary>Creates new FontRegisterProvider</summary>
         </member>
         <member name="M:iText.IO.Font.FontRegisterProvider.GetFont(System.String,System.Int32)">
-            <summary>Constructs a <CODE>Font</CODE>-object.</summary>
+            <summary>Constructs a <c>Font</c>-object.</summary>
             <param name="fontName">the name of the font</param>
             <param name="style">the style of this font</param>
             <returns>the Font constructed based on the parameters</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.FontRegisterProvider.GetFont(System.String,System.Int32,System.Boolean)">
-            <summary>Constructs a <CODE>Font</CODE>-object.</summary>
+            <summary>Constructs a <c>Font</c>-object.</summary>
             <param name="fontName">the name of the font</param>
             <param name="style">the style of this font</param>
             <param name="cached">
@@ -3400,10 +3214,6 @@
             the cache if new, false if the font is always created new
             </param>
             <returns>the Font constructed based on the parameters</returns>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.FontRegisterProvider.GetFontProgram(System.String,System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.FontRegisterProvider.RegisterFontFamily(System.String,System.String,System.String)">
             <summary>Register a font by giving explicitly the font family and name.</summary>
@@ -3432,7 +3242,7 @@
         <member name="M:iText.IO.Font.FontRegisterProvider.RegisterFontDirectory(System.String,System.Boolean)">
             <summary>Register all the fonts in a directory and possibly its subdirectories.</summary>
             <param name="dir">the directory</param>
-            <param name="scanSubdirectories">recursively scan subdirectories if <code>true</code></param>
+            <param name="scanSubdirectories">recursively scan subdirectories if <c>true</c></param>
             <returns>the number of fonts registered</returns>
         </member>
         <member name="M:iText.IO.Font.FontRegisterProvider.RegisterSystemFontDirectories">
@@ -3463,7 +3273,7 @@
             </summary>
             <remarks>
             Classes implementing this interface can create custom encodings or
-            replace existing ones. It is used in the context of <code>PdfEncoding</code>.
+            replace existing ones. It is used in the context of <c>PdfEncoding</c>.
             </remarks>
             <author>Paulo Soares</author>
         </member>
@@ -3474,7 +3284,7 @@
             the requested encoding. It's mainly of use if the same class
             supports more than one encoding.
             </param>
-            <returns>the conversion or <CODE>null</CODE> if no conversion is supported</returns>
+            <returns>the conversion or <c>null</c> if no conversion is supported</returns>
         </member>
         <member name="M:iText.IO.Font.IExtraEncoding.CharToByte(System.Char,System.String)">
             <summary>Converts an Unicode char to a byte array according to some encoding.</summary>
@@ -3483,7 +3293,7 @@
             the requested encoding. It's mainly of use if the same class
             supports more than one encoding.
             </param>
-            <returns>the conversion or <CODE>null</CODE> if no conversion is supported</returns>
+            <returns>the conversion or <c>null</c> if no conversion is supported</returns>
         </member>
         <member name="M:iText.IO.Font.IExtraEncoding.ByteToChar(System.Byte[],System.String)">
             <summary>Converts a byte array to an Unicode string according to some encoding.</summary>
@@ -3492,7 +3302,7 @@
             the requested encoding. It's mainly of use if the same class
             supports more than one encoding.
             </param>
-            <returns>the conversion or <CODE>null</CODE> if no conversion is supported</returns>
+            <returns>the conversion or <c>null</c> if no conversion is supported</returns>
         </member>
         <member name="T:iText.IO.Font.OpenTypeParser.HeaderTable">
             <summary>The components of table 'head'.</summary>
@@ -3508,13 +3318,13 @@
             <remarks>
             The italic angle. It is usually extracted from the 'post' table or in it's
             absence with the code:
-            <PRE>
+            <pre>
             <c>-Math.atan2(hhea.caretSlopeRun, hhea.caretSlopeRise) * 180 / Math.PI</c>
-            </PRE>
+            </pre>
             </remarks>
         </member>
         <member name="F:iText.IO.Font.OpenTypeParser.PostTable.isFixedPitch">
-            <summary><CODE>true</CODE> if all the glyphs have the same width.</summary>
+            <summary><c>true</c> if all the glyphs have the same width.</summary>
         </member>
         <member name="F:iText.IO.Font.OpenTypeParser.CmapTable.cmap10">
             <summary>The map containing the code information for the table 'cmap', encoding 1.0.</summary>
@@ -3579,28 +3389,13 @@
             <summary>Contains the location of the several tables.</summary>
             <remarks>
             Contains the location of the several tables. The key is the name of
-            the table and the value is an <CODE>int[2]</CODE> where position 0
+            the table and the value is an <c>int[2]</c> where position 0
             is the offset from the start of the file and position 1 is the length
             of the table.
             </remarks>
         </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.#ctor(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.#ctor(System.Byte[],System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.#ctor(System.String,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.#ctor(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Font.OpenTypeParser.GetPsFontName">
             <summary>Gets the Postscript font name.</summary>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.GetFullFont">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadCffFont">
             <summary>
@@ -3613,21 +3408,10 @@
             ever made public: make sure to add a test if (cff == true).
             </remarks>
             <returns>a byte array</returns>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.GetSubset(System.Collections.Generic.ICollection{System.Int32},System.Boolean)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.Close">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.InitializeSfntTables">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.LoadTables(System.Boolean)">
             <summary>Reads the font data.</summary>
             <param name="all">if true, all tables will be read, otherwise only 'head', 'name', and 'os/2'.</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.GetTTCName(System.String)">
             <summary>Gets the name from a composed TTC file name.</summary>
@@ -3644,74 +3428,43 @@
             <remarks>
             Reads the glyphs widths. The widths are extracted from the table 'hmtx'.
             The glyphs are normalized to 1000 units (TrueTypeFont.UNITS_NORMALIZATION).
-            Depends from
-            <c>hhea.numberOfHMetrics</c>
-            property,
-            <seealso>HorizontalHeader</seealso>
+            Depends on
+            <see cref="F:iText.IO.Font.OpenTypeParser.HorizontalHeader.numberOfHMetrics"/>
             and
-            <c>head.unitsPerEm</c>
-            property,
-            <seealso>HeaderTable</seealso>
-            .
+            <see cref="F:iText.IO.Font.OpenTypeParser.HeaderTable.unitsPerEm"/>.
             </remarks>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadKerning(System.Int32)">
             <summary>Reads the kerning information from the 'kern' table.</summary>
             <param name="unitsPerEm">
             
-            <c>head.unitsPerEm</c>
-            property,
-            <seealso>HeaderTable</seealso>
-            .
+            <see cref="F:iText.IO.Font.OpenTypeParser.HeaderTable.unitsPerEm"/>.
             </param>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadBbox(System.Int32)">
             <summary>Read the glyf bboxes from 'glyf' table.</summary>
             <param name="unitsPerEm">
             
-            <c>head.unitsPerEm</c>
-            property,
-            <seealso>HeaderTable</seealso>
-            .
+            <see cref="F:iText.IO.Font.OpenTypeParser.HeaderTable.unitsPerEm"/>
             </param>
-            <exception cref="T:iText.IO.IOException">the font is invalid.</exception>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.ReadNumGlyphs">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadNameTable">
             <summary>Extracts the names of the font in all the languages available.</summary>
-            <exception cref="T:iText.IO.IOException">on error</exception>
-            <exception cref="T:System.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadHheaTable">
             <summary>Read horizontal header, table 'hhea'.</summary>
-            <exception cref="T:iText.IO.IOException">the font is invalid.</exception>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadHeadTable">
             <summary>Read font header, table 'head'.</summary>
-            <exception cref="T:iText.IO.IOException">the font is invalid.</exception>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadOs_2Table">
             <summary>Reads the windows metrics table.</summary>
             <remarks>
             Reads the windows metrics table. The metrics are extracted from the table 'OS/2'.
-            Depends from
-            <c>head.unitsPerEm</c>
-            property,
-            <seealso>HeaderTable</seealso>
-            .
+            Depends on
+            <see cref="F:iText.IO.Font.OpenTypeParser.HeaderTable.unitsPerEm"/>
+            property.
             </remarks>
-            <exception cref="T:iText.IO.IOException">the font is invalid.</exception>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.ReadPostTable">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadCmapTable">
             <summary>Reads the several maps from the table 'cmap'.</summary>
@@ -3719,28 +3472,22 @@
             Reads the several maps from the table 'cmap'. The maps of interest are 1.0 for symbolic
             fonts and 3.1 for all others. A symbolic font is defined as having the map 3.0.
             Depends from
-            <c>readGlyphWidths()</c>
-            .
+            <c>readGlyphWidths()</c>.
             </remarks>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadStandardString(System.Int32)">
             <summary>
-            Reads a <CODE>String</CODE> from the font file as bytes using the Cp1252
+            Reads a <c>String</c> from the font file as bytes using the Cp1252
             encoding.
             </summary>
             <param name="length">the length of bytes to read</param>
-            <returns>the <CODE>String</CODE> read</returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
+            <returns>the <c>String</c> read</returns>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadUnicodeString(System.Int32)">
-            <summary>Reads a Unicode <CODE>String</CODE> from the font file.</summary>
-            <remarks>Reads a Unicode <CODE>String</CODE> from the font file. Each character is represented by two bytes.
-                </remarks>
-            <param name="length">the length of bytes to read. The <CODE>String</CODE> will have <CODE>length</CODE>/2 characters.
-                </param>
-            <returns>the <CODE>String</CODE> read.</returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read.</exception>
+            <summary>Reads a Unicode <c>String</c> from the font file.</summary>
+            <remarks>Reads a Unicode <c>String</c> from the font file. Each character is represented by two bytes.</remarks>
+            <param name="length">the length of bytes to read. The <c>String</c> will have <c>length</c>/2 characters.</param>
+            <returns>the <c>String</c> read.</returns>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.GetGlyphWidth(System.Int32)">
             <summary>Gets a glyph width.</summary>
@@ -3753,8 +3500,7 @@
             The information in the maps of the table 'cmap' is coded in several formats.
             Format 0 is the Apple standard character to glyph index mapping table.
             </remarks>
-            <returns>a <CODE>HashMap</CODE> representing this map</returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
+            <returns>a <c>HashMap</c> representing this map</returns>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadFormat4(System.Boolean)">
             <summary>The information in the maps of the table 'cmap' is coded in several formats.</summary>
@@ -3762,8 +3508,7 @@
             The information in the maps of the table 'cmap' is coded in several formats.
             Format 4 is the Microsoft standard character to glyph index mapping table.
             </remarks>
-            <returns>a <CODE>HashMap</CODE> representing this map</returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
+            <returns>a <c>HashMap</c> representing this map</returns>
         </member>
         <member name="M:iText.IO.Font.OpenTypeParser.ReadFormat6">
             <summary>The information in the maps of the table 'cmap' is coded in several formats.</summary>
@@ -3772,18 +3517,14 @@
             Format 6 is a trimmed table mapping. It is similar to format 0 but can have
             less than 256 entries.
             </remarks>
-            <returns>a <CODE>HashMap</CODE> representing this map</returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
-        </member>
-        <member name="M:iText.IO.Font.OpenTypeParser.ReadFormat12">
-            <exception cref="T:System.IO.IOException"/>
+            <returns>a <c>HashMap</c> representing this map</returns>
         </member>
         <member name="M:iText.IO.Font.Otf.ContextualSubstRule.GetContextLength">
             <returns>length of the context glyph sequence defined by this rule.</returns>
         </member>
         <member name="M:iText.IO.Font.Otf.ContextualSubstRule.GetSubstLookupRecords">
             <returns>
-            an array of <code>SubstLookupRecord</code>. Each record specifies a position in the context glyph
+            an array of <c>SubstLookupRecord</c>. Each record specifies a position in the context glyph
             sequence and a LookupListIndex to the substitution lookup that is applied at that position.
             </returns>
         </member>
@@ -3823,7 +3564,7 @@
             Gets a most preferable context rule that matches the line at current position. If no matching context rule is found,
             it returns null.
             <br /><br />
-            NOTE: if matching context rule is found, the <code>GlyphLine.start</code> and <code>GlyphLine.end</code> will be
+            NOTE: if matching context rule is found, the <c>GlyphLine.start</c> and <c>GlyphLine.end</c> will be
             changed in such way, that they will point at start and end of the matching context glyph sequence inside the glyph line.
             </remarks>
             <param name="line">a line, which is to be checked if it matches some context.</param>
@@ -3991,12 +3732,6 @@
             </remarks>
             <author><a href="mailto:paawak@gmail.com">Palash Ray</a></author>
         </member>
-        <member name="M:iText.IO.Font.Otf.GlyphPositioningTableReader.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.Int32,iText.IO.Font.Otf.OpenTypeGdefTableReader,System.Collections.Generic.IDictionary{System.Int32,iText.IO.Font.Otf.Glyph},System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GlyphPositioningTableReader.ReadLookupTable(System.Int32,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GlyphSubstitutionTableReader">
             <summary>Parses an OpenTypeFont file and reads the Glyph Substitution Table.</summary>
             <remarks>
@@ -4007,41 +3742,11 @@
             </remarks>
             <author><a href="mailto:paawak@gmail.com">Palash Ray</a></author>
         </member>
-        <member name="M:iText.IO.Font.Otf.GlyphSubstitutionTableReader.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.Int32,iText.IO.Font.Otf.OpenTypeGdefTableReader,System.Collections.Generic.IDictionary{System.Int32,iText.IO.Font.Otf.Glyph},System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GlyphSubstitutionTableReader.ReadLookupTable(System.Int32,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GposLookupType2">
             <summary>
             Lookup Type 2:
             Pair Adjustment Positioning Subtable
             </summary>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat1.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat1.ReadFormat(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat1.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat2.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat2.ReadFormat(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType2.PairPosAdjustmentFormat2.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Otf.GposLookupType4">
             <summary>
@@ -4049,23 +3754,11 @@
             MarkToBase Attachment Positioning Subtable
             </summary>
         </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType4.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType4.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GposLookupType5">
             <summary>
             Lookup Type 5:
             MarkToLigature Attachment Positioning Subtable
             </summary>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType5.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType5.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Otf.GposLookupType6">
             <summary>
@@ -4073,40 +3766,16 @@
             MarkToMark Attachment Positioning Subtable
             </summary>
         </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType6.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GposLookupType6.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType1">
             <summary>LookupType 1: Single Substitution Subtable</summary>
             <author>psoares</author>
         </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType1.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType1.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType2">
             <summary>LookupType 2: Multiple Substitution Subtable</summary>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType2.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType2.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType3">
             <summary>LookupType 3: Alternate Substitution Subtable</summary>
             <author>psoares</author>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType3.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType3.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType4">
             <summary>LookupType 4: Ligature Substitution Subtable</summary>
@@ -4119,44 +3788,11 @@
             output ligature
             </remarks>
         </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType4.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType4.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType5">
             <summary>LookupType 5: Contextual Substitution Subtable</summary>
         </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType5.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType5.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType5.ReadSubTableFormat1(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType5.ReadSubTableFormat2(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType5.ReadSubTableFormat3(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.GsubLookupType6">
             <summary>LookupType 6: Chaining Contextual Substitution Subtable</summary>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType6.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType6.ReadSubTableFormat1(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType6.ReadSubTableFormat2(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.GsubLookupType6.ReadSubTableFormat3(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Otf.Lookuptype5.SubTableLookup5Format1">
             <summary>Contextual Substitution Subtable: Simple context glyph substitution</summary>
@@ -4190,44 +3826,8 @@
         <member name="T:iText.IO.Font.Otf.MarkTable">
             <author>psoares</author>
         </member>
-        <member name="M:iText.IO.Font.Otf.OpenTableLookup.ReadSubTables">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTableLookup.ReadSubTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFeature.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="T:iText.IO.Font.Otf.OpenTypeFontTableReader">
             <author><a href="mailto:paawak@gmail.com">Palash Ray</a></author>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.Int32,iText.IO.Font.Otf.OpenTypeGdefTableReader,System.Collections.Generic.IDictionary{System.Int32,iText.IO.Font.Otf.Glyph},System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadLookupTable(System.Int32,System.Int32,System.Int32[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadClassDefinition(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadUShortArray(System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadUShortArray(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadCoverages(System.Int32[],System.Collections.Generic.IList{System.Collections.Generic.ICollection{System.Int32}})">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadCoverageFormat(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadSubstLookupRecords(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadTagAndLocations(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.StartReadingTable">
             <summary>This is the starting point of the class.</summary>
@@ -4237,65 +3837,6 @@
             <see cref="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadLookupTable(System.Int32,System.Int32,System.Int32[])"/>
             method.
             </remarks>
-            <exception cref="T:iText.IO.Font.Otf.FontReadingException"/>
-            <exception cref="T:iText.IO.Font.Otf.FontReadingException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadLookupListTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeFontTableReader.ReadLookupTable(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeGdefTableReader.ReadTable">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeScript.#ctor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeScript.ReadScriptRecord(iText.IO.Font.Otf.TagAndLocation)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OpenTypeScript.ReadLanguageRecord(iText.IO.Font.Otf.TagAndLocation)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfClass.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadUShortArray(iText.IO.Source.RandomAccessFileOrArray,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadUShortArray(iText.IO.Source.RandomAccessFileOrArray,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadCoverages(iText.IO.Source.RandomAccessFileOrArray,System.Int32[],System.Collections.Generic.IList{System.Collections.Generic.ICollection{System.Int32}})">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadCoverageFormat(iText.IO.Source.RandomAccessFileOrArray,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadRangeRecord(iText.IO.Source.RandomAccessFileOrArray,System.Collections.Generic.IList{System.Int32})">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadGposValueRecord(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadGposAnchor(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadMarkArray(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadSubstLookupRecords(iText.IO.Source.RandomAccessFileOrArray,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadAnchorArray(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32[],System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadBaseArray(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Otf.OtfReadCommon.ReadLigatureArray(iText.IO.Font.Otf.OpenTypeFontTableReader,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="F:iText.IO.Font.PdfEncodings.IDENTITY_H">
             <summary>The Unicode encoding with horizontal writing.</summary>
@@ -4428,31 +3969,11 @@
         </member>
         <member name="M:iText.IO.Font.Pfm2afm.#ctor(iText.IO.Source.RandomAccessFileOrArray,System.IO.Stream)">
             <summary>Creates a new instance of Pfm2afm</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.Pfm2afm.Convert(iText.IO.Source.RandomAccessFileOrArray,System.IO.Stream)">
             <summary>Converts a PFM file into an AFM file.</summary>
             <param name="input">the PFM file</param>
             <param name="output">the AFM file</param>
-            <exception cref="T:System.IO.IOException">on error</exception>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.ReadString(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.ReadString">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.Openpfm">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.Putheader">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.Putchartab">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Pfm2afm.Putkerntab">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="F:iText.IO.Font.Pfm2afm.Win2PSStd">
             <summary>Translate table from 1004 to psstd.</summary>
@@ -4478,7 +3999,6 @@
             instance by its bytes.
             </summary>
             <param name="ttc">the byte contents of the collection</param>
-            <exception cref="T:System.IO.IOException">in case the input in mal-formatted</exception>
         </member>
         <member name="M:iText.IO.Font.TrueTypeCollection.#ctor(System.String)">
             <summary>
@@ -4487,13 +4007,11 @@
             instance by its file path.
             </summary>
             <param name="ttcPath">the path of the collection</param>
-            <exception cref="T:System.IO.IOException">in case the input in mal-formatted</exception>
         </member>
         <member name="M:iText.IO.Font.TrueTypeCollection.GetFontByTccIndex(System.Int32)">
             <summary>method return TrueTypeFont by ttc index</summary>
             <param name="ttcIndex">the index for the TTC font</param>
             <returns>TrueTypeFont</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.TrueTypeCollection.GetTTCSize">
             <summary>returns the number of fonts in True Type Collection (file or bytes array)</summary>
@@ -4505,7 +4023,7 @@
             <see cref="M:iText.IO.Font.TrueTypeCollection.GetFontByTccIndex(System.Int32)"/>
             will be cached or not.
             </summary>
-            <returns><code>true</code> if the created fonts will be cached, <code>false</code> otherwise</returns>
+            <returns><c>true</c> if the created fonts will be cached, <c>false</c> otherwise</returns>
         </member>
         <member name="M:iText.IO.Font.TrueTypeCollection.SetCached(System.Boolean)">
             <summary>
@@ -4513,35 +4031,17 @@
             <see cref="M:iText.IO.Font.TrueTypeCollection.GetFontByTccIndex(System.Int32)"/>
             will be cached or not.
             </summary>
-            <param name="cached"><code>true</code> if the created fonts will be cached, <code>false</code> otherwise</param>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeCollection.InitFontSize">
-            <exception cref="T:System.IO.IOException"/>
+            <param name="cached"><c>true</c> if the created fonts will be cached, <c>false</c> otherwise</param>
         </member>
         <member name="F:iText.IO.Font.TrueTypeFont.kerning">
             <summary>The map containing the kerning information.</summary>
             <remarks>
             The map containing the kerning information. It represents the content of
-            table 'kern'. The key is an <CODE>Integer</CODE> where the top 16 bits
+            table 'kern'. The key is an <c>Integer</c> where the top 16 bits
             are the glyph number for the first character and the lower 16 bits are the
             glyph number for the second character. The value is the amount of kerning in
-            normalized 1000 units as an <CODE>Integer</CODE>. This value is usually negative.
+            normalized 1000 units as an <c>Integer</c>. This value is usually negative.
             </remarks>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.#ctor(iText.IO.Font.OpenTypeParser)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.#ctor(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.#ctor(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.#ctor(System.String,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.#ctor(System.Byte[],System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.TrueTypeFont.GetKerning(iText.IO.Font.Otf.Glyph,iText.IO.Font.Otf.Glyph)">
             <summary>Gets the kerning between two glyphs.</summary>
@@ -4556,35 +4056,36 @@
             It is 0 for TTF and may vary for TTC depending on the chosen font.
             </remarks>
         </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.ReadGdefTable">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.ReadGsubTable">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.ReadGposTable">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.InitializeFontProperties">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Font.TrueTypeFont.GetCodePagesSupported">
             <summary>Gets the code pages supported by the font.</summary>
             <returns>the code pages supported by the font</returns>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFont.Close">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.TrueTypeFont.UpdateUsedGlyphs(System.Collections.Generic.SortedSet{System.Int32},System.Boolean,System.Collections.Generic.IList{System.Int32[]})">
             <summary>The method will update usedGlyphs with additional range or with all glyphs if there is no subset.
                 </summary>
             <remarks>
             The method will update usedGlyphs with additional range or with all glyphs if there is no subset.
-            usedGlyphs can be used for width array and ToUnicode CMAP.
+            This set of used glyphs can be used for building width array and ToUnicode CMAP.
             </remarks>
-            <param name="usedGlyphs">used glyphs that will be updated if needed.</param>
+            <param name="usedGlyphs">
+            a set of integers, which are glyph ids that denote used glyphs.
+            This set is updated inside of the method if needed.
+            </param>
             <param name="subset">subset status</param>
             <param name="subsetRanges">additional subset ranges</param>
+        </member>
+        <member name="M:iText.IO.Font.TrueTypeFont.ToCompactRange(System.Collections.Generic.IList{System.Int32[]})">
+            <summary>
+            Normalizes given ranges by making sure that first values in pairs are lower than second values and merges overlapping
+            ranges in one.
+            </summary>
+            <param name="ranges">
+            a
+            <see cref="!:System.Collections.IList&lt;E&gt;"/>
+            of integer arrays, which are constituted by pairs of ints that denote
+            each range limits. Each integer array size shall be a multiple of two.
+            </param>
+            <returns>single merged array consisting of pairs of integers, each of them denoting a range.</returns>
         </member>
         <member name="T:iText.IO.Font.TrueTypeFontSubset">
             <summary>Subsets a True Type font by removing the unneeded glyphs from the font.</summary>
@@ -4616,25 +4117,6 @@
         <member name="M:iText.IO.Font.TrueTypeFontSubset.Process">
             <summary>Does the actual work of subsetting the font.</summary>
             <returns>the subset font</returns>
-            <exception cref="T:System.IO.IOException">on error</exception>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.AssembleFont">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.CreateTableDirectory">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.ReadLoca">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.CreateNewGlyphTables">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.FlatGlyphs">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.TrueTypeFontSubset.CheckGlyphComposite(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.TrueTypeFontSubset.ReadStandardString(System.Int32)">
             <summary>
@@ -4648,7 +4130,6 @@
             <c>String</c>
             read
             </returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
         </member>
         <member name="F:iText.IO.Font.Type1Font.kernPairs">
             <summary>Represents the section KernPairs in the AFM file.</summary>
@@ -4661,12 +4142,6 @@
             <summary>Types of records in a PFB file.</summary>
             <remarks>Types of records in a PFB file. ASCII is 1 and BINARY is 2. They have to appear in the PFB file in this sequence.
                 </remarks>
-        </member>
-        <member name="M:iText.IO.Font.Type1Font.CreateStandardFont(System.String)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Type1Font.#ctor(System.String,System.String,System.Byte[],System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Font.Type1Font.HasKernPairs">
             <summary>Checks if the font has any kerning pairs.</summary>
@@ -4694,26 +4169,12 @@
             <param name="name">Glyph name</param>
             <returns>Glyph instance if found, otherwise null.</returns>
         </member>
-        <member name="M:iText.IO.Font.Type1Font.Process">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Font.Type1Parser.#ctor(System.String,System.String,System.Byte[],System.Byte[])">
             <summary>Creates a new Type1 font file.</summary>
-            <param name="afm">the AFM file if the input is made with a <CODE>byte</CODE> array</param>
-            <param name="pfb">the PFB file if the input is made with a <CODE>byte</CODE> array</param>
+            <param name="afm">the AFM file if the input is made with a <c>byte</c> array</param>
+            <param name="pfb">the PFB file if the input is made with a <c>byte</c> array</param>
             <param name="metricsPath">the name of one of the 14 built-in fonts or the location of an AFM file. The file must end in '.afm'
                 </param>
-            <the>AFM file is invalid</the>
-            <exception cref="T:System.IO.IOException">the AFM file could not be read</exception>
-        </member>
-        <member name="M:iText.IO.Font.Type1Parser.GetMetricsFile">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Type1Parser.GetPostscriptBinary">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Font.Type1Parser.IsAfmFile(iText.IO.Source.RandomAccessFileOrArray)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Font.Woff2.JavaUnsignedUtil">
             <summary>Helper class to deal with unsigned primitives in java</summary>
@@ -4738,9 +4199,6 @@
             By default limits size to kDefaultMaxSize.
             </remarks>
         </member>
-        <member name="M:iText.IO.Font.WoffConverter.Convert(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Image.BmpImageData.GetSize">
             <returns>size of the image</returns>
         </member>
@@ -4755,67 +4213,12 @@
             </remarks>
             <param name="image">the image to process as a BMP image</param>
         </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Process(iText.IO.Image.BmpImageHelper.BmpParameters,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.GetImage(iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadPalette(System.Int32,iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Read1Bit(System.Int32,iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Read4Bit(System.Int32,iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Read8Bit(System.Int32,iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Read24Bit(System.Byte[],iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.Read1632Bit(System.Boolean,iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadRLE8(iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadRLE4(iText.IO.Image.BmpImageHelper.BmpParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadUnsignedByte(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadUnsignedShort(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadShort(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadWord(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadUnsignedInt(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadInt(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadDWord(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.BmpImageHelper.ReadLong(System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Image.DrawingImageFactory.GetImage(System.Drawing.Image,System.Nullable{System.Drawing.Color})">
             <summary>Gets an instance of an Image from <see cref="T:System.Drawing.Image"/></summary>
             <param name="image">the <see cref="T:System.Drawing.Image"/> to convert</param>
             <param name="color">if different from <CODE>null</CODE> the transparency pixels are replaced by this color
             	</param>
             <returns>RawImage</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.DrawingImageFactory.GetImage(System.Drawing.Image,System.Nullable{System.Drawing.Color},System.Boolean)">
             <summary>
@@ -4843,7 +4246,6 @@
             Load data by URL. url must be not null.
             Note, this method doesn't check if data or url is null.
             </remarks>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ProcessImage(iText.IO.Image.GifImageData)">
             <summary>Reads image source and fills GifImage object with parameters (frames, width, height)</summary>
@@ -4854,49 +4256,30 @@
             <param name="image">GifImage</param>
             <param name="lastFrameNumber">the last frame of the gif image should be read</param>
         </member>
-        <member name="M:iText.IO.Image.GifImageHelper.Process(System.IO.Stream,iText.IO.Image.GifImageHelper.GifParameters,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadHeader(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads GIF file header information.</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadLSD(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads Logical Screen Descriptor</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadShort(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads next 16-bit value, LSB first</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadBlock(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads next variable length block from input.</summary>
             <returns>number of bytes stored in "buffer"</returns>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.GifImageHelper.ReadColorTable(System.Int32,iText.IO.Image.GifImageHelper.GifParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.GifImageHelper.ReadContents(iText.IO.Image.GifImageHelper.GifParameters,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadFrame(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads next frame image</summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.GifImageHelper.DecodeImageData(iText.IO.Image.GifImageHelper.GifParameters)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.ReadGraphicControlExt(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>Reads Graphics Control Extension values</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.GifImageHelper.Skip(iText.IO.Image.GifImageHelper.GifParameters)">
             <summary>
             Skips variable length blocks up to and including
             next zero length block.
             </summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="F:iText.IO.Image.ImageData.serialId">
             <summary>a static that is used for attributing a unique id to each image.</summary>
@@ -4911,7 +4294,6 @@
             Load data from URL. url must be not null.
             Note, this method doesn't check if data or url is null.
             </remarks>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.ImageData.GetSerialId">
             <summary>Creates a new serial id.</summary>
@@ -4944,13 +4326,11 @@
             <param name="filename">filename of the file containing the image</param>
             <param name="recoverImage">whether to recover from a image error (for TIFF-images)</param>
             <returns>The created ImageData object.</returns>
-            <exception cref="!:Java.Net.MalformedURLException"/>
         </member>
         <member name="M:iText.IO.Image.ImageDataFactory.Create(System.String)">
             <summary>Create an ImageData instance representing the image from the specified file.</summary>
             <param name="filename">filename of the file containing the image</param>
             <returns>The created ImageData object.</returns>
-            <exception cref="!:Java.Net.MalformedURLException"/>
         </member>
         <member name="M:iText.IO.Image.ImageDataFactory.Create(System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32,System.Byte[],System.Int32[])">
             <summary>Create an ImageData instance from the passed parameters.</summary>
@@ -4979,7 +4359,6 @@
             <param name="color">if different from <CODE>null</CODE> the transparency pixels are replaced by this color
                 </param>
             <returns>RawImage</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.ImageDataFactory.Create(System.Drawing.Image,System.Nullable{System.Drawing.Color},System.Boolean)">
             <summary>Gets an instance of an Image from a java.awt.Image.</summary>
@@ -4988,7 +4367,6 @@
                 </param>
             <param name="forceBW">if <CODE>true</CODE> the image is treated as black and white</param>
             <returns>RawImage</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.ImageDataFactory.CreateBmp(System.Uri,System.Boolean,System.Int32)">
             <summary>Get a bitmap ImageData instance from the specified url.</summary>
@@ -5092,15 +4470,6 @@
         <member name="M:iText.IO.Image.Jpeg2000ImageHelper.ProcessParameters(iText.IO.Image.Jpeg2000ImageData)">
             <summary>This method checks if the image is a valid JPEG and processes some parameters.</summary>
         </member>
-        <member name="M:iText.IO.Image.Jpeg2000ImageHelper.Jp2_read_colr(iText.IO.Image.Jpeg2000ImageHelper.Jpeg2000Box,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.Jpeg2000ImageHelper.Jp2_read_boxhdr(iText.IO.Image.Jpeg2000ImageHelper.Jpeg2000Box,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.Jpeg2000ImageHelper.Cio_read(System.Int32,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="F:iText.IO.Image.JpegImageHelper.NOT_A_MARKER">
             <summary>This is a type of marker.</summary>
         </member>
@@ -5150,19 +4519,16 @@
         </member>
         <member name="M:iText.IO.Image.JpegImageHelper.ProcessParameters(System.IO.Stream,System.String,iText.IO.Image.ImageData)">
             <summary>This method checks if the image is a valid JPEG and processes some parameters.</summary>
-            <exception cref="T:iText.IO.IOException"/>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.JpegImageHelper.GetShort(System.IO.Stream)">
-            <summary>Reads a short from the <CODE>InputStream</CODE>.</summary>
-            <param name="jpegStream">the <CODE>InputStream</CODE></param>
+            <summary>Reads a short from the <c>InputStream</c>.</summary>
+            <param name="jpegStream">the <c>InputStream</c></param>
             <returns>an int</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Image.JpegImageHelper.Marker(System.Int32)">
             <summary>Returns a type of marker.</summary>
             <param name="marker">an int</param>
-            <returns>a type: <VAR>VALID_MARKER</VAR>, <VAR>UNSUPPORTED_MARKER</VAR> or <VAR>NOPARAM_MARKER</VAR></returns>
+            <returns>a type: <var>VALID_MARKER</var>, <var>UNSUPPORTED_MARKER</var> or <var>NOPARAM_MARKER</var></returns>
         </member>
         <member name="F:iText.IO.Image.PngImageHelper.PNGID">
             <summary>Some PNG specific values.</summary>
@@ -5197,29 +4563,20 @@
         <member name="F:iText.IO.Image.PngImageHelper.iCCP">
             <summary>A PNG marker.</summary>
         </member>
-        <member name="M:iText.IO.Image.PngImageHelper.ProcessPng(System.IO.Stream,iText.IO.Image.PngImageHelper.PngParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Image.PngImageHelper.ReadPng(System.IO.Stream,iText.IO.Image.PngImageHelper.PngParameters)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Image.PngImageHelper.GetInt(System.IO.Stream)">
-            <summary>Gets an <CODE>int</CODE> from an <CODE>InputStream</CODE>.</summary>
-            <param name="pngStream">an <CODE>InputStream</CODE></param>
-            <returns>the value of an <CODE>int</CODE></returns>
-            <exception cref="T:System.IO.IOException"/>
+            <summary>Gets an <c>int</c> from an <c>InputStream</c>.</summary>
+            <param name="pngStream">an <c>InputStream</c></param>
+            <returns>the value of an <c>int</c></returns>
         </member>
         <member name="M:iText.IO.Image.PngImageHelper.GetWord(System.IO.Stream)">
-            <summary>Gets a <CODE>word</CODE> from an <CODE>InputStream</CODE>.</summary>
-            <param name="pngStream">an <CODE>InputStream</CODE></param>
-            <returns>the value of an <CODE>int</CODE></returns>
-            <exception cref="T:System.IO.IOException"/>
+            <summary>Gets a <c>word</c> from an <c>InputStream</c>.</summary>
+            <param name="pngStream">an <c>InputStream</c></param>
+            <returns>the value of an <c>int</c></returns>
         </member>
         <member name="M:iText.IO.Image.PngImageHelper.GetString(System.IO.Stream)">
-            <summary>Gets a <CODE>String</CODE> from an <CODE>InputStream</CODE>.</summary>
-            <param name="pngStream">an <CODE>InputStream</CODE></param>
-            <returns>the value of an <CODE>int</CODE></returns>
-            <exception cref="T:System.IO.IOException"/>
+            <summary>Gets a <c>String</c> from an <c>InputStream</c>.</summary>
+            <param name="pngStream">an <c>InputStream</c></param>
+            <returns>the value of an <c>int</c></returns>
         </member>
         <member name="F:iText.IO.Image.RawImageData.CCITTG4">
             <summary>Pure two-dimensional encoding (Group 4)</summary>
@@ -5267,7 +4624,6 @@
             <param name="components">1,3 or 4 for GrayScale, RGB and CMYK</param>
             <param name="bpc">bits per component. Must be 1,2,4 or 8</param>
             <param name="data">the image data</param>
-            <exception cref="T:iText.IO.IOException">on error</exception>
         </member>
         <member name="M:iText.IO.Image.TiffImageData.GetNumberOfPages(iText.IO.Source.RandomAccessFileOrArray)">
             <summary>Gets the number of pages the TIFF document has.</summary>
@@ -5286,9 +4642,6 @@
         <member name="M:iText.IO.Image.TiffImageHelper.ProcessImage(iText.IO.Image.ImageData)">
             <summary>Processes the ImageData as a TIFF image.</summary>
             <param name="image">image to process.</param>
-        </member>
-        <member name="M:iText.IO.Image.TiffImageHelper.ProcessExtraSamples(iText.IO.Source.DeflaterOutputStream,iText.IO.Source.DeflaterOutputStream,System.Byte[],System.Int32,System.Int32,System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.IOException">
             <summary>Exception class for exceptions in io module.</summary>
@@ -5349,27 +4702,27 @@
         <member name="T:iText.IO.Source.ArrayRandomAccessSource">
             <summary>A RandomAccessSource that is based on an underlying byte array</summary>
         </member>
-        <member name="M:iText.IO.Source.ArrayRandomAccessSource.Close">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Source.ByteBuffer.Prepend(System.Byte)">
             <summary>
+            Fill
+            <c>ByteBuffer</c>
+            from the end.
+            </summary>
+            <remarks>
             Fill
             <c>ByteBuffer</c>
             from the end.
             Set byte at
             <c>capacity() - size() - 1</c>
             position.
-            </summary>
+            </remarks>
             <param name="b">
             
-            <c>byte</c>
-            .
+            <c>byte</c>.
             </param>
             <returns>
             
-            <c>ByteBuffer</c>
-            .
+            <c>ByteBuffer</c>.
             </returns>
         </member>
         <member name="M:iText.IO.Source.ByteBuffer.Prepend(System.Byte[])">
@@ -5377,19 +4730,22 @@
             Fill
             <c>ByteBuffer</c>
             from the end.
+            </summary>
+            <remarks>
+            Fill
+            <c>ByteBuffer</c>
+            from the end.
             Set bytes from
             <c>capacity() - size() - b.length</c>
             position.
-            </summary>
+            </remarks>
             <param name="b">
             
-            <c>byte</c>
-            .
+            <c>byte</c>.
             </param>
             <returns>
             
-            <c>ByteBuffer</c>
-            .
+            <c>ByteBuffer</c>.
             </returns>
         </member>
         <member name="M:iText.IO.Source.GetBufferedRandomAccessSource.#ctor(iText.IO.Source.IRandomAccessSource)">
@@ -5398,18 +4754,15 @@
         </member>
         <member name="M:iText.IO.Source.GetBufferedRandomAccessSource.Get(System.Int64)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.GetBufferedRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.GetBufferedRandomAccessSource.Length">
             <summary><inheritDoc/></summary>
         </member>
         <member name="M:iText.IO.Source.GetBufferedRandomAccessSource.Close">
             <summary>Does nothing - the underlying source is not closed</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.GroupedRandomAccessSource">
             <summary>
@@ -5434,7 +4787,6 @@
             based on the specified set of sources
             </summary>
             <param name="sources">the sources used to build this group</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.GetStartingSourceIndex(System.Int64)">
             <summary>For a given offset, return the index of the source that contains the specified offset.</summary>
@@ -5459,22 +4811,18 @@
             </summary>
             <param name="offset">the offset of the byte to look for</param>
             <returns>the SourceEntry that contains the byte at the specified offset</returns>
-            <exception cref="T:System.IO.IOException">if there is a problem with IO (usually the result of the sourceReleased() call)
-                </exception>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.SourceReleased(iText.IO.Source.IRandomAccessSource)">
             <summary>Called when a given source is no longer the active source.</summary>
             <remarks>Called when a given source is no longer the active source.  This gives subclasses the abilty to release resources, if appropriate.
                 </remarks>
             <param name="source">the source that is no longer the active source</param>
-            <exception cref="T:System.IO.IOException">if there are any problems</exception>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.SourceInUse(iText.IO.Source.IRandomAccessSource)">
             <summary>Called when a given source is about to become the active source.</summary>
             <remarks>Called when a given source is about to become the active source.  This gives subclasses the abilty to retrieve resources, if appropriate.
                 </remarks>
             <param name="source">the source that is about to become the active source</param>
-            <exception cref="T:System.IO.IOException">if there are any problems</exception>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.Get(System.Int64)">
             <summary>
@@ -5482,11 +4830,9 @@
             The source that contains the byte at position is retrieved, the correct offset into that source computed, then the value
             from that offset in the underlying source is returned.
             </summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.GroupedRandomAccessSource.Length">
             <summary><inheritDoc/></summary>
@@ -5497,7 +4843,6 @@
             <br/>
             Closes all of the underlying sources.
             </summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.GroupedRandomAccessSource.SourceEntry">
             <summary>Used to track each source, along with useful meta data</summary>
@@ -5542,18 +4887,15 @@
         </member>
         <member name="M:iText.IO.Source.IndependentRandomAccessSource.Get(System.Int64)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.IndependentRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.IndependentRandomAccessSource.Length">
             <summary><inheritDoc/></summary>
         </member>
         <member name="M:iText.IO.Source.IndependentRandomAccessSource.Close">
             <summary>Does nothing - the underlying source is not closed</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.IRandomAccessSource">
             <summary>Represents an abstract source that bytes can be read from.</summary>
@@ -5567,7 +4909,6 @@
             <summary>Gets a byte at the specified position</summary>
             <param name="position">byte position</param>
             <returns>the byte, or -1 if EOF is reached</returns>
-            <exception cref="T:System.IO.IOException">in case of any reading error.</exception>
         </member>
         <member name="M:iText.IO.Source.IRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary>Read an array of bytes of specified length from the specified position of source to the buffer applying the offset.
@@ -5582,7 +4923,6 @@
             <param name="off">offset into the output buffer where results will be placed</param>
             <param name="len">the number of bytes to read</param>
             <returns>the number of bytes actually read, or -1 if the file is at EOF</returns>
-            <exception cref="T:System.IO.IOException">in case of any I/O error.</exception>
         </member>
         <member name="M:iText.IO.Source.IRandomAccessSource.Length">
             <summary>Gets the length of the source</summary>
@@ -5591,19 +4931,6 @@
         <member name="M:iText.IO.Source.IRandomAccessSource.Close">
             <summary>Closes this source.</summary>
             <remarks>Closes this source. The underlying data structure or source (if any) will also be closed</remarks>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.OutputStream`1.Write(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.OutputStream`1.Write(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.OutputStream`1.Write(System.Byte[],System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.OutputStream`1.Flush">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="F:iText.IO.Source.PdfTokenizer.closeStream">
             <summary>Streams are closed automatically.</summary>
@@ -5611,51 +4938,15 @@
         <member name="M:iText.IO.Source.PdfTokenizer.#ctor(iText.IO.Source.RandomAccessFileOrArray)">
             <summary>
             Creates a PdfTokenizer for the specified
-            <see cref="T:iText.IO.Source.RandomAccessFileOrArray"/>
-            .
+            <see cref="T:iText.IO.Source.RandomAccessFileOrArray"/>.
+            </summary>
+            <remarks>
+            Creates a PdfTokenizer for the specified
+            <see cref="T:iText.IO.Source.RandomAccessFileOrArray"/>.
             The beginning of the file is read to determine the location of the header, and the data source is adjusted
             as necessary to account for any junk that occurs in the byte source before the header
-            </summary>
+            </remarks>
             <param name="file">the source</param>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.Seek(System.Int64)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.ReadFully(System.Byte[])">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.GetPosition">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.Close">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.Length">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.Read">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.ReadString(System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.GetHeaderOffset">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.CheckPdfHeader">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.CheckFdfHeader">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.GetStartxref">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.NextValidToken">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.NextToken">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.DecodeStringContent(System.Byte[],System.Int32,System.Int32,System.Boolean)">
             <summary>Resolve escape symbols or hexadecimal symbols.</summary>
@@ -5671,8 +4962,7 @@
             <param name="hexWriting"/>
             <returns>
             byte[] for decrypting or for creating
-            <see cref="T:System.String"/>
-            .
+            <see cref="T:System.String"/>.
             </returns>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.DecodeStringContent(System.Byte[],System.Boolean)">
@@ -5687,8 +4977,7 @@
             <param name="hexWriting"/>
             <returns>
             byte[] for decrypting or for creating
-            <see cref="T:System.String"/>
-            .
+            <see cref="T:System.String"/>.
             </returns>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.IsWhitespace(System.Int32)">
@@ -5698,8 +4987,7 @@
             Is a certain character a whitespace? Currently checks on the following: '0', '9', '10', '12', '13', '32'.
             <br />
             The same as calling
-            <see cref="M:iText.IO.Source.PdfTokenizer.IsWhitespace(System.Int32,System.Boolean)">isWhiteSpace(ch, true)</see>
-            .
+            <see cref="M:iText.IO.Source.PdfTokenizer.IsWhitespace(System.Int32,System.Boolean)">isWhiteSpace(ch, true)</see>.
             </remarks>
             <param name="ch">int</param>
             <returns>boolean</returns>
@@ -5716,16 +5004,10 @@
             <summary>Helper method to handle content errors.</summary>
             <remarks>
             Helper method to handle content errors. Add file position to
-            <c>PdfRuntimeException</c>
-            .
+            <c>PdfRuntimeException</c>.
             </remarks>
             <param name="error">message.</param>
             <param name="messageParams">error params.</param>
-            <exception cref="T:iText.IO.IOException">
-            wrap error message into
-            <c>PdfRuntimeException</c>
-            and add position in file.
-            </exception>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.CheckTrailer(iText.IO.Source.ByteBuffer)">
             <summary>
@@ -5747,12 +5029,10 @@
             for a list of whitespace characters.
             <br />
             The same as calling
-            <see cref="M:iText.IO.Source.PdfTokenizer.ReadLineSegment(iText.IO.Source.ByteBuffer,System.Boolean)">readLineSegment(input, true)</see>
-            .
+            <see cref="M:iText.IO.Source.PdfTokenizer.ReadLineSegment(iText.IO.Source.ByteBuffer,System.Boolean)">readLineSegment(input, true)</see>.
             </remarks>
             <param name="buffer">@see ByteBuffer</param>
             <returns>boolean</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.ReadLineSegment(iText.IO.Source.ByteBuffer,System.Boolean)">
             <summary>Reads data into the provided byte[].</summary>
@@ -5771,15 +5051,11 @@
             <see cref="M:iText.IO.Source.PdfTokenizer.ReadLineSegment(iText.IO.Source.ByteBuffer)">readLineSegment(input)</see>
             </param>
             <returns>boolean</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.PdfTokenizer.CheckObjectStart(iText.IO.Source.PdfTokenizer)">
             <summary>Check whether line starts with object declaration.</summary>
             <param name="lineTokenizer">tokenizer, built by single line.</param>
             <returns>object number and generation if check is successful, otherwise - null.</returns>
-        </member>
-        <member name="M:iText.IO.Source.PdfTokenizer.ReusableRandomAccessSource.Close">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.RAFRandomAccessSource">
             <summary>
@@ -5804,28 +5080,30 @@
         <member name="M:iText.IO.Source.RAFRandomAccessSource.#ctor(System.IO.FileStream)">
             <summary>Creates this object</summary>
             <param name="raf">the source for this RandomAccessSource</param>
-            <exception cref="T:System.IO.IOException">if the RAF can't be read</exception>
         </member>
         <member name="M:iText.IO.Source.RAFRandomAccessSource.Get(System.Int64)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RAFRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RAFRandomAccessSource.Length">
             <summary>
             <inheritDoc/>
             Note: the length is determined when the
             <see cref="T:iText.IO.Source.RAFRandomAccessSource"/>
+            is constructed.
+            </summary>
+            <remarks>
+            <inheritDoc/>
+            Note: the length is determined when the
+            <see cref="T:iText.IO.Source.RAFRandomAccessSource"/>
             is constructed.  If the file length changes
             after construction, that change will not be reflected in this call.
-            </summary>
+            </remarks>
         </member>
         <member name="M:iText.IO.Source.RAFRandomAccessSource.Close">
             <summary>Closes the underlying RandomAccessFile</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.RandomAccessFileOrArray">
             <summary>Class that is used to unify reading from random access files and arrays.</summary>
@@ -5882,7 +5160,6 @@
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Read">
             <summary>Reads a single byte</summary>
             <returns>the byte, or -1 if EOF is reached</returns>
-            <exception cref="T:System.IO.IOException">in case of any reading error.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Read(System.Byte[],System.Int32,System.Int32)">
             <summary>Reads the specified amount of bytes to the buffer applying the offset.</summary>
@@ -5890,7 +5167,6 @@
             <param name="off">offset at which to start storing characters</param>
             <param name="len">maximum number of characters to read</param>
             <returns>the number of bytes actually read or -1 in case of EOF</returns>
-            <exception cref="T:System.IO.IOException">in case of any I/O error</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Read(System.Byte[])">
             <summary>Reads the bytes to the buffer.</summary>
@@ -5898,15 +5174,12 @@
                 </remarks>
             <param name="b">the destination buffer</param>
             <returns>the number of bytes actually read</returns>
-            <exception cref="T:System.IO.IOException">in</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadFully(System.Byte[])">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadFully(System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Skip(System.Int64)">
             <summary>Make an attempt to skip the specified amount of bytes in source.</summary>
@@ -5916,25 +5189,20 @@
             </remarks>
             <param name="n">the number of bytes to skip</param>
             <returns>the actual number of bytes skipped</returns>
-            <exception cref="T:System.IO.IOException">in case of any I/O error</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.SkipBytes(System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Close">
             <summary>Closes the underlying source.</summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Length">
             <summary>Gets the total amount of bytes in the source.</summary>
             <returns>source's size.</returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.Seek(System.Int64)">
             <summary>Sets the current position in the source to the specified index.</summary>
             <param name="pos">the position to set</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.GetPosition">
             <summary>Gets the current position of the source considering the pushed byte to the source.</summary>
@@ -5942,23 +5210,18 @@
             the index of last read byte in the source in
             or the index of last read byte in source - 1 in case byte was pushed.
             </returns>
-            <exception cref="T:System.IO.IOException">in case of any I/O error.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadBoolean">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadByte">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadUnsignedByte">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadShort">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadShortLE">
             <summary>Reads a signed 16-bit number from this stream in little-endian order.</summary>
@@ -5988,15 +5251,9 @@
             the next two bytes of this stream, interpreted as a signed
             16-bit number.
             </returns>
-            <exception cref="T:System.IO.EndOfStreamException">
-            if this stream reaches the end before reading
-            two bytes.
-            </exception>
-            <exception cref="T:System.IO.IOException">if an I/O error occurs.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadUnsignedShort">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadUnsignedShortLE">
             <summary>Reads an unsigned 16-bit number from this stream in little-endian order.</summary>
@@ -6023,15 +5280,9 @@
             the next two bytes of this stream, interpreted as an
             unsigned 16-bit integer.
             </returns>
-            <exception cref="T:System.IO.EndOfStreamException">
-            if this stream reaches the end before reading
-            two bytes.
-            </exception>
-            <exception cref="T:System.IO.IOException">if an I/O error occurs.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadChar">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadCharLE">
             <summary>Reads a Unicode character from this stream in little-endian order.</summary>
@@ -6055,15 +5306,9 @@
             stream is detected, or an exception is thrown.
             </remarks>
             <returns>the next two bytes of this stream as a Unicode character.</returns>
-            <exception cref="T:System.IO.EndOfStreamException">
-            if this stream reaches the end before reading
-            two bytes.
-            </exception>
-            <exception cref="T:System.IO.IOException">if an I/O error occurs.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadInt">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadIntLE">
             <summary>Reads a signed 32-bit integer from this stream in little-endian order.</summary>
@@ -6092,14 +5337,8 @@
             </remarks>
             <returns>
             the next four bytes of this stream, interpreted as an
-            <c>int</c>
-            .
+            <c>int</c>.
             </returns>
-            <exception cref="T:System.IO.EndOfStreamException">
-            if this stream reaches the end before reading
-            four bytes.
-            </exception>
-            <exception cref="T:System.IO.IOException">if an I/O error occurs.</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadUnsignedInt">
             <summary>Reads an unsigned 32-bit integer from this stream.</summary>
@@ -6127,42 +5366,20 @@
             </remarks>
             <returns>
             the next four bytes of this stream, interpreted as a
-            <c>long</c>
-            .
+            <c>long</c>.
             </returns>
-            <exception cref="T:System.IO.EndOfStreamException">
-            if this stream reaches the end before reading
-            four bytes.
-            </exception>
-            <exception cref="T:System.IO.IOException">if an I/O error occurs.</exception>
-        </member>
-        <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadUnsignedIntLE">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadLong">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadLongLE">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadFloat">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadFloatLE">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadDouble">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadDoubleLE">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadLine">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessFileOrArray.ReadString(System.Int32,System.String)">
             <summary>
@@ -6177,7 +5394,6 @@
             <c>String</c>
             read
             </returns>
-            <exception cref="T:System.IO.IOException">the font file could not be read</exception>
         </member>
         <member name="T:iText.IO.Source.RandomAccessSourceFactory">
             <summary>
@@ -6238,9 +5454,6 @@
             <see cref="!:RandomAccessSource"/>
             </returns>
         </member>
-        <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateSource(System.IO.FileStream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateSource(System.Uri)">
             <summary>
             Creates a
@@ -6254,7 +5467,6 @@
             the newly created
             <see cref="!:RandomAccessSource"/>
             </returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateSource(System.IO.Stream)">
             <summary>
@@ -6271,7 +5483,6 @@
             the newly created
             <see cref="!:RandomAccessSource"/>
             </returns>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateBestSource(System.String)">
             <summary>
@@ -6299,10 +5510,6 @@
             the newly created
             <see cref="!:RandomAccessSource"/>
             </returns>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateRanged(iText.IO.Source.IRandomAccessSource,System.Int64[])">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateByReadingToMemory(System.String)">
             <summary>
@@ -6315,8 +5522,6 @@
             the newly created
             <see cref="!:RandomAccessSource"/>
             </returns>
-            <exception cref="T:System.IO.IOException">if reading the underling file or stream fails
-            	</exception>
         </member>
         <member name="M:iText.IO.Source.RandomAccessSourceFactory.CreateByReadingToMemory(System.IO.Stream)">
             <summary>
@@ -6329,8 +5534,6 @@
             the newly created
             <see cref="!:RandomAccessSource"/>
             </returns>
-            <exception cref="T:System.IO.IOException">if reading the underling file or stream fails
-            	</exception>
         </member>
         <member name="T:iText.IO.Source.RASInputStream">
             <summary>
@@ -6352,20 +5555,9 @@
         </member>
         <member name="M:iText.IO.Source.RASInputStream.Read(System.Byte[],System.Int32,System.Int32)">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.RASInputStream.ReadByte">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.ThreadSafeRandomAccessSource.Get(System.Int64)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.ThreadSafeRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Source.ThreadSafeRandomAccessSource.Close">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Source.WindowRandomAccessSource">
             <summary>
@@ -6402,14 +5594,12 @@
             <inheritDoc/>
             Note that the position will be adjusted to read from the corrected location in the underlying source
             </summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.WindowRandomAccessSource.Get(System.Int64,System.Byte[],System.Int32,System.Int32)">
             <summary>
             <inheritDoc/>
             Note that the position will be adjusted to read from the corrected location in the underlying source
             </summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Source.WindowRandomAccessSource.Length">
             <summary>
@@ -6419,7 +5609,6 @@
         </member>
         <member name="M:iText.IO.Source.WindowRandomAccessSource.Close">
             <summary><inheritDoc/></summary>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Util.ArrayUtil">
             <summary>This file is a helper class for internal usage only.</summary>
@@ -6446,9 +5635,6 @@
             Be aware that its API and functionality may be changed in future.
             </summary>
         </member>
-        <member name="M:iText.IO.Util.EncodingUtil.ConvertToBytes(System.Char[],System.String)">
-            <exception cref="!:java.nio.charset.CharacterCodingException"/>
-        </member>
         <member name="T:iText.IO.Util.EnumUtil">
             <summary>
             This file is a helper class for internal usage only.
@@ -6467,9 +5653,6 @@
             This file is a helper class for internal usage only.
             Be aware that its API and functionality may be changed in future.
             </summary>
-        </member>
-        <member name="M:iText.IO.Util.FileUtil.CreatePrintWriter(System.IO.Stream,System.String)">
-            <exception cref="T:System.ArgumentException"/>
         </member>
         <member name="M:iText.IO.Util.FileUtil.DeleteFile(System.IO.FileInfo)">
             Deletes a file and returns whether the operation succeeded.
@@ -6535,23 +5718,22 @@
             This class is a convenience method to sequentially calculate hash code of the
             object based on the field values. The result depends on the order of elements
             appended. The exact formula is the same as for
-            <see cref="!:System.Collections.IList&lt;E&gt;.GetHashCode()"/>
-            .
+            <see cref="!:System.Collections.IList&lt;E&gt;.GetHashCode()"/>.
             If you need order independent hash code just summate, multiply or XOR all
             elements.
             <para />
             Suppose we have class:
-            <pre><code>
+            <pre><c>
             class Thing {
             long id;
             String name;
             float weight;
             }
-            </code></pre>
+            </c></pre>
             The hash code calculation can be expressed in 2 forms.
             <para />
             For maximum performance:
-            <pre><code>
+            <pre><c>
             public int hashCode() {
             int hashCode = HashCode.EMPTY_HASH_CODE;
             hashCode = HashCode.combine(hashCode, id);
@@ -6559,14 +5741,14 @@
             hashCode = HashCode.combine(hashCode, weight);
             return hashCode;
             }
-            </code></pre>
+            </c></pre>
             <para />
             For convenience:
-            <pre><code>
+            <pre><c>
             public int hashCode() {
             return new HashCode().append(id).append(name).append(weight).hashCode();
             }
-            </code></pre>
+            </c></pre>
             </remarks>
             <seealso cref="!:System.Collections.IList&lt;E&gt;.GetHashCode()"/>
         </member>
@@ -6685,19 +5867,15 @@
         <member name="M:iText.IO.Util.IntHashtable.#ctor">
             <summary>
             Constructs a new, empty hashtable with a default capacity and load
-            factor, which is <code>20</code> and <code>0.75</code> respectively.
+            factor, which is <c>20</c> and <c>0.75</c> respectively.
             </summary>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.#ctor(System.Int32)">
             <summary>
             Constructs a new, empty hashtable with the specified initial capacity
-            and default load factor, which is <code>0.75</code>.
+            and default load factor, which is <c>0.75</c>.
             </summary>
             <param name="initialCapacity">the initial capacity of the hashtable.</param>
-            <exception cref="T:System.ArgumentException">
-            if the initial capacity is less
-            than zero.
-            </exception>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.#ctor(System.Int32,System.Single)">
             <summary>
@@ -6706,10 +5884,6 @@
             </summary>
             <param name="initialCapacity">the initial capacity of the hashtable.</param>
             <param name="loadFactor">the load factor of the hashtable.</param>
-            <exception cref="T:System.ArgumentException">
-            if the initial capacity is less
-            than zero, or if the load factor is nonpositive.
-            </exception>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.Size">
             <summary>Returns the number of keys in this hashtable.</summary>
@@ -6718,15 +5892,15 @@
         <member name="M:iText.IO.Util.IntHashtable.IsEmpty">
             <summary>Tests if this hashtable maps no keys to values.</summary>
             <returns>
-            <code>true</code> if this hashtable maps no keys to values;
-            <code>false</code> otherwise.
+            <c>true</c> if this hashtable maps no keys to values;
+            <c>false</c> otherwise.
             </returns>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.Contains(System.Int32)">
             <summary>Tests if some key maps into the specified value in this hashtable.</summary>
             <remarks>
             Tests if some key maps into the specified value in this hashtable.
-            This operation is more expensive than the <code>containsKey</code>
+            This operation is more expensive than the <c>containsKey</c>
             method.
             <para />
             Note that this method is identical in functionality to containsValue,
@@ -6734,39 +5908,38 @@
             </remarks>
             <param name="value">a value to search for.</param>
             <returns>
-            <code>true</code> if and only if some key maps to the
-            <code>value</code> argument in this hashtable as
+            <c>true</c> if and only if some key maps to the
+            <c>value</c> argument in this hashtable as
             determined by the <tt>equals</tt> method;
-            <code>false</code> otherwise.
+            <c>false</c> otherwise.
             </returns>
-            <exception cref="T:System.NullReferenceException">if the value is <code>null</code>.</exception>
             <seealso cref="M:iText.IO.Util.IntHashtable.ContainsKey(System.Int32)"/>
             <seealso cref="M:iText.IO.Util.IntHashtable.ContainsValue(System.Int32)"/>
             <seealso cref="!:System.Collections.IDictionary&lt;K, V&gt;"/>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.ContainsValue(System.Int32)">
             <summary>
-            Returns <code>true</code> if this HashMap maps one or more keys
+            Returns <c>true</c> if this HashMap maps one or more keys
             to this value.
             </summary>
             <remarks>
-            Returns <code>true</code> if this HashMap maps one or more keys
+            Returns <c>true</c> if this HashMap maps one or more keys
             to this value.
             <para />
             Note that this method is identical in functionality to contains
             (which predates the Map interface).
             </remarks>
             <param name="value">value whose presence in this HashMap is to be tested.</param>
-            <returns>boolean <code>true</code> if the value is contained</returns>
+            <returns>boolean <c>true</c> if the value is contained</returns>
             <seealso cref="!:System.Collections.IDictionary&lt;K, V&gt;"/>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.ContainsKey(System.Int32)">
             <summary>Tests if the specified int is a key in this hashtable.</summary>
             <param name="key">possible key.</param>
             <returns>
-            <code>true</code> if and only if the specified int is a
+            <c>true</c> if and only if the specified int is a
             key in this hashtable, as determined by the <tt>equals</tt>
-            method; <code>false</code> otherwise.
+            method; <c>false</c> otherwise.
             </returns>
             <seealso cref="M:iText.IO.Util.IntHashtable.Contains(System.Int32)"/>
         </member>
@@ -6798,24 +5971,23 @@
         </member>
         <member name="M:iText.IO.Util.IntHashtable.Put(System.Int32,System.Int32)">
             <summary>
-            Maps the specified <code>key</code> to the specified
-            <code>value</code> in this hashtable.
+            Maps the specified <c>key</c> to the specified
+            <c>value</c> in this hashtable.
             </summary>
             <remarks>
-            Maps the specified <code>key</code> to the specified
-            <code>value</code> in this hashtable. The key cannot be
-            <code>null</code>.
+            Maps the specified <c>key</c> to the specified
+            <c>value</c> in this hashtable. The key cannot be
+            <c>null</c>.
             <para />
-            The value can be retrieved by calling the <code>get</code> method
+            The value can be retrieved by calling the <c>get</c> method
             with a key that is equal to the original key.
             </remarks>
             <param name="key">the hashtable key.</param>
             <param name="value">the value.</param>
             <returns>
             the previous value of the specified key in this hashtable,
-            or <code>null</code> if it did not have one.
+            or <c>null</c> if it did not have one.
             </returns>
-            <exception cref="T:System.NullReferenceException">if the key is <code>null</code>.</exception>
             <seealso cref="M:iText.IO.Util.IntHashtable.Get(System.Int32)"/>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.Remove(System.Int32)">
@@ -6833,7 +6005,7 @@
             <param name="key">the key that needs to be removed.</param>
             <returns>
             the value to which the key had been mapped in this hashtable,
-            or <code>null</code> if the key did not have a mapping.
+            or <c>null</c> if the key did not have a mapping.
             </returns>
         </member>
         <member name="M:iText.IO.Util.IntHashtable.Clear">
@@ -6850,12 +6022,6 @@
             <param name="key">The key used to enter this in the table</param>
             <param name="value">The value for this key</param>
             <param name="next">A reference to the next entry in the table</param>
-        </member>
-        <member name="M:iText.IO.Util.IntHashtable.Entry.Clone">
-            <exception cref="!:Java.Lang.CloneNotSupportedException"/>
-        </member>
-        <member name="M:iText.IO.Util.IntHashtable.Clone">
-            <exception cref="!:Java.Lang.CloneNotSupportedException"/>
         </member>
         <member name="T:iText.IO.Util.JavaCollectionsUtil">
             <summary>
@@ -6904,7 +6070,6 @@
             </summary>
             <param name="in">   The reader from which characters will be read </param>
             <param name="size"> The size of the pushback buffer </param>
-            <exception cref="!:IllegalArgumentException"> if size is ≤ 0 </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.#ctor(System.IO.TextReader)">
             <summary>
@@ -6923,7 +6088,6 @@
             <returns>     The character read, or -1 if the end of the stream has been
                         reached
             </returns>
-            <exception cref="T:iText.IO.IOException">  If an I/O error occurs </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.Read(System.Char[],System.Int32,System.Int32)">
             <summary>
@@ -6936,7 +6100,6 @@
             <returns>     The number of characters read, or -1 if the end of the
                         stream has been reached
             </returns>
-            <exception cref="T:iText.IO.IOException">  If an I/O error occurs </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.Unread(System.Int32)">
             <summary>
@@ -6946,8 +6109,6 @@
             </summary>
             <param name="c">  The int value representing a character to be pushed back
             </param>
-            <exception cref="T:iText.IO.IOException">  If the pushback buffer is full,
-                                     or if some other I/O error occurs </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.Unread(System.Char[],System.Int32,System.Int32)">
             <summary>
@@ -6961,8 +6122,6 @@
             <param name="off">   Offset of first character to push back </param>
             <param name="len">   Number of characters to push back
             </param>
-            <exception cref="T:iText.IO.IOException">  If there is insufficient room in the pushback
-                                     buffer, or if some other I/O error occurs </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.Unread(System.Char[])">
             <summary>
@@ -6973,8 +6132,6 @@
             </summary>
             <param name="cbuf">  Character array to push back
             </param>
-            <exception cref="T:iText.IO.IOException">  If there is insufficient room in the pushback
-                                     buffer, or if some other I/O error occurs </exception>
         </member>
         <member name="M:iText.IO.Util.PushbackReader.Dispose(System.Boolean)">
             <summary>
@@ -6983,7 +6140,6 @@
             unread(), ready(), or skip() invocations will throw an IOException.
             Closing a previously closed stream has no effect.
             </summary>
-            <exception cref="T:iText.IO.IOException">  If an I/O error occurs </exception>
         </member>
         <member name="T:iText.IO.Util.ResourceUtil">
             <summary>
@@ -7027,15 +6183,13 @@
             This method is an alternative for the
             <c>InputStream.skip()</c>
             -method that doesn't seem to work properly for big values of
-            <paramref name="size"/>
-            .
+            <paramref name="size"/>.
             </summary>
             <param name="stream">
             the
             <c>InputStream</c>
             </param>
             <param name="size">the number of bytes to skip</param>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Util.StreamUtil.CreateEscapedString(System.Byte[])">
             <summary>
@@ -7073,25 +6227,17 @@
             array to escape.
             </param>
         </member>
-        <member name="M:iText.IO.Util.StreamUtil.TransferBytes(System.IO.Stream,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Util.StreamUtil.TransferBytes(iText.IO.Source.RandomAccessFileOrArray,System.IO.Stream)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
         <member name="M:iText.IO.Util.StreamUtil.InputStreamToArray(System.IO.Stream)">
             <summary>Reads the full content of a stream and returns them in a byte array</summary>
             <param name="stream">the stream to read</param>
             <returns>a byte array containing all of the bytes from the stream</returns>
-            <exception cref="T:System.IO.IOException">if there is a problem reading from the input stream</exception>
         </member>
         <member name="M:iText.IO.Util.StreamUtil.CopyBytes(iText.IO.Source.IRandomAccessSource,System.Int64,System.Int64,System.IO.Stream)">
             <summary>
             Copy bytes from the
             <c>RandomAccessSource</c>
             to
-            <c>OutputStream</c>
-            .
+            <c>OutputStream</c>.
             </summary>
             <param name="source">
             the
@@ -7105,7 +6251,6 @@
             <c>OutputStream</c>
             copy to.
             </param>
-            <exception cref="T:System.IO.IOException">on error.</exception>
         </member>
         <member name="M:iText.IO.Util.StreamUtil.ReadFully(System.IO.Stream,System.Byte[],System.Int32,System.Int32)">
             <summary>
@@ -7116,15 +6261,6 @@
             <param name="b">the buffer into which the data is read.</param>
             <param name="off">an int specifying the offset into the data.</param>
             <param name="len">an int specifying the number of bytes to read.</param>
-            <exception>
-            EOFException
-            if this stream reaches the end before reading all the bytes.
-            </exception>
-            <exception>
-            IOException
-            if an I/O error occurs.
-            </exception>
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="T:iText.IO.Util.StringUtil">
             <summary>
@@ -7151,17 +6287,6 @@
             </summary>
             <param name="name">the name of environment variable.</param>
             <returns>variable value or null if there is no such.</returns>
-        </member>
-        <member name="M:iText.IO.Util.SystemUtil.RunProcessAndWait(System.String,System.String)">
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:System.Exception"/>
-        </member>
-        <member name="M:iText.IO.Util.SystemUtil.PrintProcessOutput(System.Diagnostics.Process)">
-            <exception cref="T:System.IO.IOException"/>
-        </member>
-        <member name="M:iText.IO.Util.SystemUtil.RunProcessAndCollectErrors(System.String,System.String)">
-            <exception cref="T:System.IO.IOException"/>
-            <exception cref="T:System.Exception"/>
         </member>
         <member name="T:iText.IO.Util.TextUtil">
             <summary>This file is a helper class for internal usage only.</summary>
@@ -7621,9 +6746,6 @@
             <summary>This method makes a valid URL from a given filename.</summary>
             <param name="filename">a given filename</param>
             <returns>a valid URL</returns>
-        </member>
-        <member name="M:iText.IO.Util.UrlUtil.OpenStream(System.Uri)">
-            <exception cref="T:System.IO.IOException"/>
         </member>
         <member name="M:iText.IO.Util.UrlUtil.ToNormalizedURI(System.String)">
             <summary>

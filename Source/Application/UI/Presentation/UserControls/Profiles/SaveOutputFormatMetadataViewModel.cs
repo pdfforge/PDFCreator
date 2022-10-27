@@ -4,6 +4,8 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
@@ -18,12 +20,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
     public class SaveOutputFormatMetadataViewModel : ProfileUserControlViewModel<SaveOutputFormatMetadataTranslation>, IMountable
     {
         private readonly IActionManager _actionManager;
+        private readonly IProfileChecker _profileChecker;
+        private readonly ErrorCodeInterpreter _errorCodeInterpreter;
         private readonly OutputFormatHelper _formatHelper = new OutputFormatHelper();
         public bool IsServer { get; private set; }
+        public bool IsFreeEdition { get; private set; }
 
         public ICommand SetMetaDataCommand { get; set; }
         public ICommand SetSaveCommand { get; set; }
         public ICommand SetOutputFormatCommand { get; set; }
+
+        public string ExistingFileBehavior
+        {
+            get
+            {
+                if (_selectedProfileProvider.SelectedProfile.AutoSave.AutoMergeFiles)
+                    return Translation.BehaviorMerge;
+
+                if (_selectedProfileProvider.SelectedProfile.AutoSave.EnsureUniqueFilenames)
+                    return Translation.BehaviorUnique;
+
+                return Translation.BehaviorOverwrite;
+            }
+        }
 
         public SaveOutputFormatMetadataViewModel(ISelectedProfileProvider selectedProfileProvider,
             ITranslationUpdater translationUpdater,
@@ -33,11 +52,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             ICommandBuilderProvider commandBuilderProvider,
             IDispatcher dispatcher,
             EditionHelper editionHelper,
-            IActionManager actionManager
+            IActionManager actionManager,
+            IProfileChecker profileChecker,
+            ErrorCodeInterpreter errorCodeInterpreter
         ) : base(translationUpdater, selectedProfileProvider, dispatcher)
         {
             _actionManager = actionManager;
+            _profileChecker = profileChecker;
+            _errorCodeInterpreter = errorCodeInterpreter;
             IsServer = editionHelper.IsServer;
+            IsFreeEdition = editionHelper.IsFreeEdition;
 
             var updateSettingsPreviewsCommand = new DelegateCommand(o => UpdateSettingsPreviews());
 
@@ -85,8 +109,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             if (CurrentProfile == null)
                 return (false, "");
 
-            if (AutoSaveEnabled && string.IsNullOrWhiteSpace(CurrentProfile.FileNameTemplate))
-                return (true, Translation.MissingFilename);
+            var result = _profileChecker.CheckFileName(CurrentProfile);
+            if (!result)
+            {
+                var errorMessage = _errorCodeInterpreter.GetFirstErrorText(result, false);
+                return (true, errorMessage);
+            }
 
             return (false, _formatHelper.EnsureValidExtension(CurrentProfile.FileNameTemplate, CurrentProfile.OutputFormat));
         }
@@ -117,7 +145,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             }
 
             if (!string.IsNullOrEmpty(CurrentProfile.TargetDirectory))
+            {
+                var result = _profileChecker.CheckTargetDirectory(CurrentProfile);
+                if (!result)
+                {
+                    var errorMessage = _errorCodeInterpreter.GetFirstErrorText(result, false);
+                    return (true, errorMessage);
+                }
                 return (false, CurrentProfile.TargetDirectory);
+            }
 
             if (CurrentProfile.AutoSave.Enabled)
                 return (true, Translation.MissingDirectory);
@@ -128,6 +164,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public bool SkipPrintDialog => CurrentProfile != null && CurrentProfile.SkipPrintDialog;
 
         public bool EnsureUniqueFilenames => CurrentProfile != null && CurrentProfile.AutoSave.EnsureUniqueFilenames;
+
+        public bool AllowTrayNotifications => !IsFreeEdition && !IsServer;
 
         public bool ShowTrayNotification => CurrentProfile != null && CurrentProfile.ShowAllNotifications;
 
@@ -264,6 +302,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(AuthorTemplate));
             RaisePropertyChanged(nameof(SubjectTemplate));
             RaisePropertyChanged(nameof(KeywordTemplate));
+            RaisePropertyChanged(nameof(ExistingFileBehavior));
         }
     }
 }

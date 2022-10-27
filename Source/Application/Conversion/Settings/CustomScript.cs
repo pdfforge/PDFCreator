@@ -68,8 +68,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is CustomScript)) return false;
 			CustomScript v = o as CustomScript;
 			
-			if (!Enabled.Equals(v.Enabled)) return false;
-			if (!ScriptFilename.Equals(v.ScriptFilename)) return false;
+			if (!Object.Equals(Enabled, v.Enabled)) return false;
+			if (!Object.Equals(ScriptFilename, v.ScriptFilename)) return false;
 			return true;
 		}
 		

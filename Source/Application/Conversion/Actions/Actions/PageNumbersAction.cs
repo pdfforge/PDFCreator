@@ -1,12 +1,11 @@
 ﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
+using pdfforge.PDFCreator.Conversion.Settings;
 
-namespace pdfforge.PDFCreator.Conversion.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public class PageNumbersAction : ActionBase<PageNumbers>, IConversionAction
     {
@@ -31,12 +30,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions
             var numberOfPagesToken = job.TokenReplacer.GetToken("NumberOfPages");
             job.TokenReplacer.AddStringToken("NumberOfPages", "<NumberOfPages>"); //Preserve the token to be replaced in the tool.
             job.Profile.PageNumbers.Format = job.TokenReplacer.ReplaceTokens(job.Profile.PageNumbers.Format);
-            if(numberOfPagesToken != null) job.TokenReplacer.AddToken(numberOfPagesToken);
+            if (numberOfPagesToken != null) job.TokenReplacer.AddToken(numberOfPagesToken);
         }
 
         public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
-
             var actionResult = new ActionResult();
 
             if (profile.PageNumbers.Enabled)
@@ -54,7 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions
 
                 if (checkLevel == CheckLevel.RunningJob)
                 {
-                    if (!_fontPathHelper.GetFontPath(profile.PageNumbers.FontFile, out _))
+                    if (!_fontPathHelper.TryGetFontPath(profile.PageNumbers.FontFile, out _))
                         actionResult.Add(ErrorCode.PageNumbers_FontNotFound);
                 }
             }
