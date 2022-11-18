@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
@@ -55,7 +56,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
                 var files = _directory.GetFiles(dir, "*.ini");
                 foreach (var file in files)
                 {
-                    if (string.Equals(PathSafe.GetFileNameWithoutExtension(file), _gpoSettings.SharedSettingsFilename))
+                    if (string.Equals(PathSafe.GetFileNameWithoutExtension(file), _gpoSettings.SharedSettingsFilename, StringComparison.InvariantCultureIgnoreCase))
                         return file;
                 }
                 if (files.Length > 0)

@@ -1,7 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using System;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -40,10 +40,14 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                 RaiseLanguageChanged(settings);
             }
 
+            SetDontRecommendArchitect(settings);
+
             _settings = settings.CopyAndPreserveApplicationSettings();
 
             SettingsChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        protected abstract void SetDontRecommendArchitect(PdfCreatorSettings settings);
     }
 
     public class DefaultSettingsProvider : SettingsProvider
@@ -53,6 +57,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         public override string GetApplicationLanguage()
         {
             return CurrentLanguage;
+        }
+
+        protected override void SetDontRecommendArchitect(PdfCreatorSettings settings)
+        {
+            //keep the value in settings
         }
     }
 }

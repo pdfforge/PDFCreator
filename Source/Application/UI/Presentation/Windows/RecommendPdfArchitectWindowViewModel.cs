@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
 using pdfforge.PDFCreator.Utilities.Web;
+using System;
 using System.ComponentModel;
 using System.Media;
 using System.Windows.Input;
@@ -41,18 +42,57 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             DownloadCommand = new DelegateCommand(ExecuteDownload);
         }
 
+        public override string Title => "PDFCreator";
+
         public ICommand InfoCommand { get; }
 
         public ICommand DownloadCommand { get; }
 
-        public bool DontRecommendArchitect
+        public bool DoNotRecommendArchitect
         {
             get { return _currentApplicationSettings.Settings.DontRecommendArchitect; }
             set
             {
                 _currentApplicationSettings.Settings.DontRecommendArchitect = value;
-                RaisePropertyChanged(nameof(DontRecommendArchitect));
+                RaisePropertyChanged(nameof(DoNotRecommendArchitect));
             }
+        }
+
+        public string RecommendText { get; private set; }
+        public bool OfferDoNotShowAgain { get; private set; }
+
+        protected override void HandleInteractionObjectChanged()
+        {
+            _soundPlayer.Play(SystemSounds.Question);
+
+            var recommendPurpose = Interaction?.RecommendPurpose
+                                   ?? PdfArchitectRecommendPurpose.NoPdfViewer;
+
+            switch (recommendPurpose)
+            {
+                case PdfArchitectRecommendPurpose.UpdateRequired:
+                    RecommendText = Translation.ArchitectVersionDoesNotSupportThisFeature;
+                    RecommendText += Environment.NewLine;
+                    RecommendText += Translation.WeRecommendNewArchitectVersion;
+                    OfferDoNotShowAgain = false;
+                    break;
+
+                case PdfArchitectRecommendPurpose.NotInstalled:
+                    RecommendText += Translation.WeRecommendPdfArchitect;
+                    OfferDoNotShowAgain = true;
+                    break;
+
+                case PdfArchitectRecommendPurpose.NoPdfViewer:
+                default:
+                    RecommendText = Translation.NoApplicationAssociatedWithPdfFiles;
+                    RecommendText += Environment.NewLine;
+                    RecommendText += Translation.WeRecommendPdfArchitect;
+                    OfferDoNotShowAgain = false;
+                    break;
+            }
+
+            RaisePropertyChanged(nameof(RecommendText));
+            RaisePropertyChanged(nameof(OfferDoNotShowAgain));
         }
 
         private void ExecuteInfo(object o)
@@ -82,58 +122,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
             FinishInteraction();
         }
-
-        protected override void HandleInteractionObjectChanged()
-        {
-            _soundPlayer.Play(SystemSounds.Hand);
-            RaisePropertyChanged(nameof(RecommendedText));
-            RaisePropertyChanged(nameof(ErrorText));
-        }
-
-        public string RecommendedText
-        {
-            get
-            {
-                if (Interaction == null)
-                    return "";
-
-                switch (Interaction.RecommendPurpose)
-                {
-                    case PdfArchitectRecommendPurpose.UpdateRequired:
-                        return Translation.RecommendTextUpdateRequired;
-
-                    case PdfArchitectRecommendPurpose.NotInstalled:
-                        return Translation.RecommendTextNotInstall;
-
-                    case PdfArchitectRecommendPurpose.NoPdfViewer:
-                    default:
-                        return Translation.RecommendTextNoPdfViewer;
-                }
-            }
-        }
-
-        public string ErrorText
-        {
-            get
-            {
-                if (Interaction == null)
-                    return "";
-
-                switch (Interaction.RecommendPurpose)
-                {
-                    case PdfArchitectRecommendPurpose.UpdateRequired:
-                        return Translation.ErrorTextUpdateRequired;
-
-                    case PdfArchitectRecommendPurpose.NotInstalled:
-                        return Translation.ErrorTextNotInstalled;
-
-                    case PdfArchitectRecommendPurpose.NoPdfViewer:
-                    default:
-                        return Translation.ErrorTextNoPdfViewer;
-                }
-            }
-        }
-
-        public override string Title => "PDFCreator";
     }
 }
