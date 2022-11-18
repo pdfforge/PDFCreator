@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 
 namespace pdfforge.PDFCreator.ErrorReport
@@ -9,7 +10,7 @@ namespace pdfforge.PDFCreator.ErrorReport
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             if (!TryParseArgs(e.Args, out var errorFile, out var sentryUrl))
-                Environment.Exit(-2); ;
+                Environment.Exit(-2);
 
             ShowReportWindow(errorFile, sentryUrl);
             Environment.Exit(0);
@@ -40,7 +41,9 @@ namespace pdfforge.PDFCreator.ErrorReport
         {
             try
             {
-                var errorHelper = new ErrorHelper("pdfcreator", "PDFCreator", new Version(), sentryUrl);
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+                var errorHelper = new ErrorHelper("pdfcreator", "PDFCreator", version, sentryUrl);
                 var report = errorHelper.LoadReport(errorFile);
 
                 var err = new ErrorReportWindow(report, errorHelper);

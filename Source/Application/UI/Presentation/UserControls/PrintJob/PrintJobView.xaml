@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Profile Settings -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -149,12 +150,9 @@
                     </Hyperlink>
                 </Label>
             </StackPanel>
-
-            <Grid Grid.Row="1" MinHeight="100" MinWidth="100" Background="#55000000" Visibility="{Binding IsUpdatingProfile, Converter={StaticResource CollapsedIfFalseConverter}}">
-                <controls:ProgressRing Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Grid>
         </Grid>
 
+        <!-- Cancel / Merge / Email / Save -->
         <UniformGrid Grid.Row="1"  Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="-5 10 -5 20"
                      MinHeight="33">
 
@@ -257,5 +255,12 @@
                 </contextMenuButton:ContextMenuButton>
             </Grid>
         </UniformGrid>
+
+        <!-- Progress Ring on profile update -->
+        <Grid Grid.Row="0" Grid.RowSpan="2"
+              Visibility="{Binding IsUpdatingProfile, Converter={StaticResource CollapsedIfFalseConverter}}">
+            <Rectangle Fill ="White" Opacity="0.4" />
+            <controls:ProgressRing Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </UserControl>

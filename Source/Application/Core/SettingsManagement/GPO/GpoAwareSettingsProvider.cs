@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
 {
@@ -19,6 +20,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
             }
 
             return CurrentLanguage;
+        }
+
+        protected override void SetDontRecommendArchitect(PdfCreatorSettings settings)
+        {
+            settings.ApplicationSettings.DontRecommendArchitect = true;
         }
     }
 }
