@@ -112,6 +112,8 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
@@ -155,6 +157,7 @@ using SystemWrapper.IO;
 using SystemWrapper.Microsoft.Win32;
 using Translatable;
 using FtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpAccountView;
+using GeneralSettingsView = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.GeneralSettingsView;
 using InputBoxUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl;
 using LicenseUpdateControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseUpdateControl;
 using ManagePrintJobsWindow = pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindow;
@@ -202,7 +205,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IOutputFileMover, AutosaveOutputFileMover>();
 
+            container.Register<ISplitDocumentFilePathHelper, SplitDocumentFilePathHelper>();
             container.Register<ITargetFilePathComposer, TargetFilePathComposer>();
+
             container.Register<IInteractiveProfileChecker, InteractiveProfileChecker>();
             container.Register<IInteractiveFileExistsChecker, InteractiveFileExistsChecker>();
 
@@ -231,6 +236,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IPageNumberCalculator, PageNumberCalculator>();
 
+            container.Register<IMergeBeforeActionsHelper, MergeBeforeActionsHelper>();
             container.Register<IJobRunner, JobRunner>();
             container.Register<IActionExecutor, ActionExecutor>();
             container.Register<IConverterFactory, ConverterFactory>();
@@ -248,6 +254,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IDirectConversion, DirectConversion>();
             container.Register<IDirectConversionHelper, DirectConversionHelper>();
             container.Register<IDirectConversionInfFileHelper, DirectConversionInfFileHelper>();
+            container.Register<IDirectImageConversionHelper, DirectImageConversionHelper>();
             container.RegisterSingleton<IFileConversionAssistant, FileConversionAssistant>();
             container.Register<IPrintFileHelper, PrintFileAssistant>();
             container.Register<IUacAssistant, UacAssistant>();
@@ -438,6 +445,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             RegisterWebLinkLauncher(container);
             RegisterUsageStatistics(container);
             RegisterSettingsViewModel(container);
+            RegisterDirectImageConversion(container);
 
             container.RegisterSingleton(BuildCustomization);
             container.RegisterSingleton<IRssHttpClientFactory, RssHttpClientFactory>();
@@ -479,6 +487,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         {
         }
 
+        protected abstract void RegisterDirectImageConversion(Container container);
+
         protected List<(string, Type)> MainShellViewRegister()
         {
             return new List<(string, Type)>
@@ -491,7 +501,24 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 (RegionNames.TestButtonWorkflowEditorRegion, typeof(WorkflowEditorTestPageUserControl)),
                 (RegionNames.ProfileSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
                 (RegionNames.ApplicationSaveCancelButtonsRegion, typeof(SaveCancelButtonsControl)),
-                (RegionNames.GeneralSettingsTabContentRegion, typeof(GeneralSettingsView))
+                (RegionNames.GeneralSettingsTabContentRegion, typeof(GeneralSettingsView)),
+
+                (RegionNames.GeneralSettingsButtonRegion, typeof(CreatorSettingsButtonsView)),
+
+                (RegionNames.GeneralSettingsRegion, typeof(LanguageSelectionSettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(UpdateIntervalSettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(DefaultPrinterSettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(HomeViewSettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(HotStandbySettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(ExplorerIntegrationSettingsView)),
+                (RegionNames.GeneralSettingsRegion, typeof(UsageStatisticsView)),
+
+                (RegionNames.DebugSettingsTabContentRegion, typeof(LoggingSettingView)),
+                (RegionNames.DebugSettingsTabContentRegion, typeof(TestPageSettingsView)),
+                (RegionNames.DebugSettingsTabContentRegion, typeof(RestoreSettingsView)),
+                (RegionNames.DebugSettingsTabContentRegion, typeof(ExportSettingView)),
+
+                (RegionNames.DirectConversionTabContentRegion, typeof(DirectConvertView))
             };
         }
 
@@ -721,19 +748,19 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(PresenterActionFacade<CoverActionView, CoverActionViewModel>),
                 typeof(PresenterActionFacade<AttachmentActionView, AttachmentActionViewModel>),
                 typeof(PresenterActionFacade<StampActionView, StampActionViewModel>),
-                typeof(PresenterActionFacade<BackgroundActionView,BackgroundActionViewModel>),
                 typeof(PresenterActionFacade<WatermarkActionView, WatermarkActionViewModel>),
+                typeof(PresenterActionFacade<BackgroundActionView,BackgroundActionViewModel>),
                 typeof(PresenterActionFacade<PageNumbersActionView, PageNumbersActionViewModel>),
                 typeof(PresenterActionFacade<EncryptionActionView, EncryptionActionViewModel>),
                 typeof(PresenterActionFacade<SignatureActionView, SignatureActionViewModel>),
 
                 // send action
-                typeof(PresenterActionFacade<OpenViewerActionView, OpenViewerActionViewModel>),
                 typeof(PresenterActionFacade<EmailClientActionView, EMailClientActionViewModel>),
-                typeof(PresenterActionFacade<PrintActionView, PrintActionViewModel>),
-                typeof(PresenterActionFacade<ScriptActionView, ScriptActionViewModel>),
-                typeof(PresenterActionFacade<FTPActionView, FtpActionViewModel>),
                 typeof(PresenterActionFacade<SmtpActionView, SmtpActionViewModel>),
+                typeof(PresenterActionFacade<OpenViewerActionView, OpenViewerActionViewModel>),
+                typeof(PresenterActionFacade<ScriptActionView, ScriptActionViewModel>),
+                typeof(PresenterActionFacade<PrintActionView, PrintActionViewModel>),
+                typeof(PresenterActionFacade<FTPActionView, FtpActionViewModel>),
                 typeof(PresenterActionFacade<HttpActionView, HttpActionViewModel>),
                 typeof(PresenterActionFacade<DropboxActionView, DropboxActionViewModel>)
             };
@@ -899,6 +926,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterTypeForNavigation<TitleReplacementsView>();
             container.RegisterTypeForNavigation<DefaultViewerView>();
             container.RegisterTypeForNavigation<LicenseSettingsView>();
+            container.RegisterTypeForNavigation<DirectImageConversionSettingView>();
         }
     }
 }

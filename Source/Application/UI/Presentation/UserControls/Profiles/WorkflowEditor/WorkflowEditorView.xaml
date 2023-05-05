@@ -20,30 +20,19 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="../../../Styles/Redesign5/Buttons/IconButton.xaml" />
-                <ResourceDictionary  Source="../../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
-                <ResourceDictionary  Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary  Source="../../../Styles/Redesign5/HoverBorder.xaml" />
-                <ResourceDictionary  Source="../../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary  Source="../../../Styles/Redesign5/Icons/TopDownArrow.xaml" />
+                <ResourceDictionary  Source="../../../Styles/Buttons/IconButton.xaml" />
+                <ResourceDictionary  Source="../../../Styles/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary  Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary  Source="../../../Styles/HoverBorder.xaml" />
+                <ResourceDictionary  Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary  Source="../../../Styles/ListBox.xaml" />
+                <ResourceDictionary  Source="../../../Styles/Icons/GrowingTopDownArrow.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <workflowEditor:HiddenWhenFacadeIsFixedOrderConverter x:Key="HiddenWhenFacadeIsFixedOrderConverter" />
 
-            <Style x:Key="CustomListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <DockPanel>
-                                <ContentPresenter />
-                            </DockPanel>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <DataTemplate x:Key="CustomListBoxDataTemplate"  DataType="actionHelper:IPresenterActionFacade">
+            <DataTemplate x:Key="ActionListBoxItemTemplate"  DataType="actionHelper:IPresenterActionFacade">
                 <Grid dd:DragDrop.IsDragSource="{Binding }"
                       Height="{StaticResource SquaredButtonSize}"
                       Margin="0 0 0 10"
@@ -59,7 +48,7 @@
 
                     <!-- Warning -->
                     <Button Grid.Column="0"
-                            Foreground="{StaticResource WarningBrush}"
+                            Foreground="{StaticResource ErrorBrush}"
                             Command="{Binding DataContext.EditActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                             CommandParameter="{Binding }"
                             Style="{StaticResource IconButton}"
@@ -112,19 +101,6 @@
                     </Button>
                 </Grid>
             </DataTemplate>
-
-            <Style x:Key="CustomListBoxStyle" TargetType="{x:Type ListBox}">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                <Setter Property="ItemContainerStyle" Value="{StaticResource CustomListBoxItemStyle}" />
-                <Setter Property="ItemTemplate" Value="{StaticResource CustomListBoxDataTemplate}" />
-                <Setter Property="dd:DragDrop.IsDragSource" Value="True" />
-                <Setter Property="dd:DragDrop.IsDropTarget" Value="True" />
-                <Setter Property="dd:DragDrop.UseDefaultDragAdorner" Value="True" />
-                <Setter Property="dd:DragDrop.DropTargetAdornerBrush" Value="{StaticResource AccentGrey}" />
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -170,52 +146,55 @@
         </DockPanel>
 
         <!-- Preparation Header -->
-        <Label Grid.Row="1" Margin="0 20 0 0"
+        <Label Grid.Row="1"
                Visibility="{Binding HasPreConversion, Converter={StaticResource CollapsedWhenFalseConverter}}"
                Content="{Binding Translation.Preparation}"
-               Style="{StaticResource LightLabel}" />
+               Style="{StaticResource LightLabel}" Height="33" VerticalContentAlignment="Bottom" />
 
         <!-- Preparation Actions -->
-        <DockPanel Grid.Row="2" Margin="0 10 0 0"
+        <DockPanel Grid.Row="2" Margin="0 7 0 0"
                    Visibility="{Binding HasPreConversion, Converter={StaticResource CollapsedWhenFalseConverter}}">
-            <ContentPresenter Content="{StaticResource TopDownArrow}"
+            <ContentPresenter Content="{StaticResource GrowingTopDownArrow}"
                               Margin="0 2 0 5" />
             <ListBox Margin="20 0 0 0"
                      Visibility="{Binding HasPreConversion, Converter={StaticResource CollapsedWhenFalseConverter}}"
                      dd:DragDrop.DropHandler="{Binding PreparationDropTarget}"
                      ItemsSource="{Binding PreparationActions, Mode=TwoWay}"
-                     Style="{StaticResource ResourceKey=CustomListBoxStyle}" />
+                     Style="{StaticResource DragAndDropNoEffectsListBox}"
+                     ItemTemplate="{StaticResource ActionListBoxItemTemplate}" />
         </DockPanel>
 
         <!-- Modify Header-->
-        <Label Grid.Row="3" Margin="0 20 0 0"
+        <Label Grid.Row="3"
                Content="{Binding Translation.Modify}"
-               Style="{StaticResource LightLabel}" />
+               Style="{StaticResource LightLabel}" Height="33" VerticalContentAlignment="Bottom" />
 
         <!-- Modify Actions-->
-        <DockPanel Grid.Row="4" Margin="0 10 0 0">
-            <ContentPresenter Content="{StaticResource TopDownArrow}"
+        <DockPanel Grid.Row="4" Margin="0 7 0 0">
+            <ContentPresenter Content="{StaticResource GrowingTopDownArrow}"
                               Margin="0 2 0 5" />
             <ListBox Margin="20 0 0 0"
                      dd:DragDrop.DragHandler="{Binding ModifyDragSourceHandler}"
                      dd:DragDrop.DropHandler="{Binding ModifyDropTarget}"
                      ItemsSource="{Binding ModifyActions, Mode=TwoWay}"
-                     Style="{StaticResource ResourceKey=CustomListBoxStyle}" />
+                     Style="{StaticResource DragAndDropNoEffectsListBox}"
+                     ItemTemplate="{StaticResource ActionListBoxItemTemplate}" />
         </DockPanel>
 
         <!-- Send Header -->
-        <Label Grid.Row="5" Margin="0 20 0 0"
+        <Label Grid.Row="5"
                Content="{Binding Translation.Send}"
-               Style="{StaticResource LightLabel}" />
+               Style="{StaticResource LightLabel}" Height="33" VerticalContentAlignment="Bottom" />
 
         <!-- Send Actions -->
-        <DockPanel Grid.Row="6" Margin="0 10 0 0">
-            <ContentPresenter Content="{StaticResource TopDownArrow}"
+        <DockPanel Grid.Row="6" Margin="0 7 0 0">
+            <ContentPresenter Content="{StaticResource GrowingTopDownArrow}"
                               Margin="0 2 0 5" />
             <ListBox Margin="20 0 0 0"
                      dd:DragDrop.DropHandler="{Binding SendDropTarget}"
                      ItemsSource="{Binding SendActions, Mode=TwoWay}"
-                     Style="{StaticResource ResourceKey=CustomListBoxStyle}" />
+                     Style="{StaticResource DragAndDropNoEffectsListBox}"
+                     ItemTemplate="{StaticResource ActionListBoxItemTemplate}" />
         </DockPanel>
     </Grid>
 </UserControl>

@@ -8,6 +8,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         SourceFileInfo Duplicate(SourceFileInfo sfi, string duplicateFolder, string profileGuid);
 
         SourceFileInfo Move(SourceFileInfo sfi, string moveFolder, string profileGuid);
+
+        SourceFileInfo DuplicateProperties(SourceFileInfo oldSfi, string profileGuid);
     }
 
     public class SourceFileInfoDuplicator : ISourceFileInfoDuplicator
@@ -43,7 +45,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             return newSfi;
         }
 
-        private static SourceFileInfo DuplicateProperties(SourceFileInfo oldSfi, string profileGuid)
+        public SourceFileInfo DuplicateProperties(SourceFileInfo oldSfi, string profileGuid)
         {
             var newSfi = new SourceFileInfo
             {
@@ -76,7 +78,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         private string GetDestinationPath(string filename, string destinationFolder)
         {
             var destinationFilename = PathSafe.GetFileNameWithoutExtension(filename);
-            var destinationPath = PathSafe.Combine(destinationFolder, destinationFilename);
+            var extension = PathSafe.GetExtension(filename);
+            var destinationPath = PathSafe.Combine(destinationFolder, destinationFilename) + extension;
             return _uniqueFilenameFactory.Build(destinationPath).CreateUniqueFileName();
         }
     }

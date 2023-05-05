@@ -4,70 +4,131 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeProfessionalHintStepViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
 
-    <DockPanel VerticalAlignment="Stretch" LastChildFill="True">
-        <Separator DockPanel.Dock="Top" Background="{DynamicResource PdfforgeDarkGreyColorBrush}" Height="4" HorizontalAlignment="Stretch" />
-        <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
-            <Button
-                DockPanel.Dock="Left"
-                Margin="30 10 10 10"
-                Width="150"
-                Style="{DynamicResource AffirmativeButton}"
-                Command="{Binding ProfessionalHintCommand}"
-                Content="{Binding Translation.MoreInformation, Mode=OneWay}" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../Styles/Icons/Icons.xaml" />
+                <ResourceDictionary Source="../../../Styles/Icons/pdfforgeLogos.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel VerticalAlignment="Stretch" Margin="50 30 50 20">
+        <Label DockPanel.Dock="Top" HorizontalAlignment="Center"
+               Style="{StaticResource LargeLabel}">
+            <TextBlock Text="{Binding ThankYouText, Mode=OneWay}" 
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       TextAlignment="Center" />
+        </Label>
 
-            <Button
-                DockPanel.Dock="Right"
-                Margin="10 10 30 10"
-                Width="150"
-                IsCancel="True"
-                Command="{Binding FinishStepCommand}"
-                Content="{Binding Translation.NoThanksButtonContent, Mode=OneWay}">
-            </Button>
-        </DockPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Border DockPanel.Dock="Top"
+                Margin="0  30 0 0"
+                CornerRadius="2 2 2 2"
+                Background="{StaticResource ContentAreaColorBrush}">
+            <Border.Effect>
+                <DropShadowEffect Color="{Binding Color, Source={StaticResource AccentGrey}}"
+                                  ShadowDepth="0" BlurRadius="10" />
+            </Border.Effect>
+            <Border.Resources>
+                <Style TargetType="iconPacks:PackIconMaterialDesign">
+                    <Setter Property="Width" Value="30" />
+                    <Setter Property="Height" Value="30" />
+                    <Setter Property="Foreground" Value="{StaticResource AboutViewIconColor}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="Width" Value="30" />
+                    <Setter Property="Height" Value="30" />
+                    <Setter Property="Foreground" Value="{StaticResource AboutViewIconColor}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style TargetType="Label" BasedOn="{StaticResource LargeLabel}">
+                    <Setter Property="Margin" Value="10 0 0 0" />
+                </Style>
+                <Style TargetType="TextBlock" >
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+            </Border.Resources>
+            <Grid Margin="30 30 30 60">
+                <Image Margin="0 0 -100 -78"
+                       Height="120"
+                       VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                       Source="Laptop-Top10.png" />                
 
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <StackPanel Margin="5 10 0 10" Width="370">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="14" />
-                            <Setter Property="FontWeight" Value="DemiBold" />
-                            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock FontWeight="Bold" TextAlignment="Center" Text="{Binding Translation.Title, Mode=OneWay}" />
+                <StackPanel>
+                    <ContentPresenter Content="{StaticResource PDFCreatorProfessionalLogo}" 
+                                      HorizontalAlignment="Center"/>
+
+                    <DockPanel Margin="0 30 0 0" FlowDirection="LeftToRight">
+                        <iconPacks:PackIconMaterialDesign Kind="Lock" />
+                        <Label>
+                            <TextBlock Text="{Binding Translation.HigherEncryption}" />
+                        </Label>
+                    </DockPanel>
+
+                    <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                        <iconPacks:PackIconMaterialDesign Kind="FolderSpecial"
+                                                          Width="24" Margin="3 0 3 0" />
+                            <Label>
+                            <TextBlock Text="{Binding Translation.HotFolder}" />
+                        </Label>
+                    </DockPanel>
+
+                    <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                        <ContentControl Content="{StaticResource UserTokenIcon}" />
+                        <Label>
+                            <TextBlock Text="{Binding Translation.UserTokens}" />
+                        </Label>
+                    </DockPanel>
+
+                    <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                        <iconPacks:PackIconMaterialDesign Kind="Message"
+                                                          Margin="3 0 3 0 "
+                                                          Width="24"/>
+                        <Label>
+                            <TextBlock Text="{Binding Translation.TrayNotifications}" />
+                        </Label>
+                    </DockPanel>
+
+                    <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                        <ContentControl Content="{StaticResource ShieldWithHeart}" />
+                        <Label>
+                            <TextBlock Text="{Binding Translation.AdminFriendly}" />
+                        </Label>
+                    </DockPanel>
+
+                    <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
+                        <iconPacks:PackIconMaterialDesign Kind="Group"
+                                                          Margin="3 0 3 0"
+                                                          Width="24" />
+                            <Label>
+                            <TextBlock Text="{Binding Translation.PrioritySupport}" />
+                        </Label>
+                    </DockPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
+        </Border>
 
-            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <StackPanel Margin="5 10 0 10" Width="370">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="14" />
-                            <Setter Property="FontWeight" Value="DemiBold" />
-                            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <TextBlock FontWeight="Bold" TextAlignment="Center" Text="{Binding Translation.HeadlineText, Mode=OneWay}" />
-                    <TextBlock Margin="0,10,0,10" TextAlignment="Center" Text="{Binding ThankYouText, Mode=OneWay}" />
-                    <TextBlock Margin="0,5,0,0" TextAlignment="Center" Text="{Binding Translation.RecommendProfessional, Mode=OneWay}" />
-                </StackPanel>
-            </StackPanel>
-        </Grid>
+        <UniformGrid DockPanel.Dock="Bottom" 
+                     Rows="1" VerticalAlignment="Bottom" >
+            <Button Margin="0 0 10 0"
+                    IsCancel="True"
+                    Command="{Binding FinishStepCommand}"
+                    Content="{Binding Translation.NoThanksButtonContent, Mode=OneWay}" />
+            <Button Margin="10 0 0 0" 
+                    Style="{StaticResource AffirmativeButton}"
+                    Command="{Binding ProfessionalHintCommand}"
+                    Content="{Binding Translation.MoreInformation, Mode=OneWay}" />
+        </UniformGrid>
+
     </DockPanel>
 </UserControl>

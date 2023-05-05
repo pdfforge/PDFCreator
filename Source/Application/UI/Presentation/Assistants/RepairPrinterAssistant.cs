@@ -65,7 +65,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                     title = _translation.Error;
                     message = _translation.GetSetupFileMissingMessage(PathSafe.GetFileName(printerHelperPath));
 
-                    ShowMessage(message, title, MessageOptions.OK, MessageIcon.Error);
+                    ShowMessage(message, title, MessageOptions.Ok, MessageIcon.Error);
                     return false;
                 }
 

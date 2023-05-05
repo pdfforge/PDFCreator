@@ -10,8 +10,8 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.ContextMenuButton"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeHomeViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="Home">
@@ -19,18 +19,20 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/IconButton.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Icons/ComponentIcons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/HoverBorder.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/TextBlock.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/DragDropBorder.xaml" />
-                <ResourceDictionary Source="../../Styles/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/IconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/ComponentIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/HoverBorder.xaml" />
+                <ResourceDictionary Source="../../Styles/HoverExpander.xaml" />
+                <ResourceDictionary Source="../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../Styles/TextBlock.xaml" />
+                <ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/DragDropBorder.xaml" />
+                <ResourceDictionary Source="../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../Styles/ListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrue" TrueValue="Collapsed" FalseValue="Visible" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
@@ -54,7 +56,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Viewbox Grid.Row="0" MaxHeight="90" HorizontalAlignment="Center" Margin="0 20 0 0">
+            <Viewbox Grid.Row="0" MaxHeight="75" HorizontalAlignment="Center" Margin="0 20 0 0">
                 <userControls:ApplicationLogoControl Margin="15" Foreground="Black" />
             </Viewbox>
 
@@ -105,7 +107,7 @@
             <Separator Grid.Row="2" Margin="0 0" Background="{StaticResource AccentGrey}" />
 
             <!-- History Header -->
-            <DockPanel Grid.Row="3" Margin="0 10 0 0" IsEnabled="{Binding HistoryEnabledByGpo}" Style="{StaticResource GpoStyle}">
+            <DockPanel Grid.Row="3" Margin="0 10 0 0" IsEnabled="{Binding HistoryEnabledByGpo}" Style="{StaticResource GpoToolTipStyle}">
                 <Label DockPanel.Dock="Left" Margin="2 0 0 0"
                        Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}"
                        Style="{StaticResource LightLabel}"
@@ -130,11 +132,10 @@
                                     </StackPanel>
                                 </MenuItem.Header>
                             </MenuItem>
-
-                            <MenuItem Header="{Binding Translation.ClearHistory}"
-                                      Command="{Binding ClearHistoryCommand}" />
                             <MenuItem Header="{Binding Translation.RefreshHistory}"
                                       Command="{Binding RefreshHistoryCommand}" />
+                            <MenuItem Header="{Binding Translation.ClearHistory}"
+                                      Command="{Binding ClearHistoryCommand}" />
                         </ContextMenu>
                     </contextMenuButton:ContextMenuButton.ContextMenu>
                 </contextMenuButton:ContextMenuButton>
@@ -146,35 +147,12 @@
                   Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}">
                 <ListBox Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}"
                          ItemsSource="{Binding JobHistory, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                         ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ListBox.Resources>
-                        <Style x:Key="CustomListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <DockPanel>
-                                            <ContentPresenter />
-                                        </DockPanel>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-
-                        <DataTemplate x:Key="CustomListBoxDataTemplate"  DataType="{x:Type jobHistory:HistoricJob}">
-                            <DataTemplate.Resources>
-                                <Style TargetType="Border" BasedOn="{StaticResource HoverBorder}">
-                                    <Style.Triggers>
-                                        <!-- Suppress Hover if expanded -->
-                                        <DataTrigger Binding="{Binding IsExpanded, ElementName=Expander}" Value="True">
-                                            <Setter Property="Border.Background" Value="{StaticResource HoverBorderBackgroundBrush}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataTemplate.Resources>
-
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         Style="{StaticResource NoEffectsListBox}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type jobHistory:HistoricJob}">
                             <DockPanel LastChildFill="True" Margin="0 0 8 10"
-                                   Background="Transparent">
-
+                                       Background="Transparent">
                                 <!-- Remove History Item -->
                                 <Button DockPanel.Dock="Right" Margin="10 0 0 0"
                                     VerticalAlignment="Top"
@@ -185,105 +163,67 @@
                                     <iconPacks:PackIconMaterialDesign Kind="Delete" />
                                 </Button>
 
-                                <!-- History Item -->
-                                <Border DockPanel.Dock="Left">
-                                    <Grid>
-                                        <Expander IsExpanded="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
-                                              Background="Transparent" BorderThickness="0" BorderBrush="Transparent"
-                                              Style="{StaticResource MetroExpander}"
-                                              x:Name="Expander">
-                                            <Expander.Header>
-                                                <DockPanel Margin="5 5 10 0" VerticalAlignment="Center">
-                                                    <Label DockPanel.Dock="Left"
+                                <Expander DockPanel.Dock="Left"
+                                          IsExpanded="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                          Style="{StaticResource HoverExpander}">
+                                    <Expander.Header>
+                                        <DockPanel VerticalAlignment="Center">
+                                            <Label DockPanel.Dock="Left"
                                                    Style="{StaticResource LightLabel}"
                                                    Content ="{Binding Path=HistoricFiles[0].FileName}" />
-                                                    <TextBlock DockPanel.Dock="Right" Margin="10 0 0 0"
+                                            <TextBlock DockPanel.Dock="Right" Margin="10 0 0 0"
                                                        Style="{StaticResource DefaultTextBlock}"
                                                        Text="{Binding CreationTime}"
                                                        HorizontalAlignment="Right"
                                                        VerticalAlignment="Center" />
-                                                </DockPanel>
-                                            </Expander.Header>
+                                        </DockPanel>
+                                    </Expander.Header>
 
-                                            <!-- Expander Content-->
-                                            <Grid Margin="28 0 10 10">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
+                                    <!-- Expander Content-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
 
-                                                <TextBlock Text="{Binding Path=HistoricFiles[0].Directory}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+                                        <TextBlock Text="{Binding Path=HistoricFiles[0].Directory}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
 
-                                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 0 0">
-                                                    <Label Content="{Binding DataContext.Translation.DocumentInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 0 0">
+                                            <Label Content="{Binding DataContext.Translation.DocumentInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                    Style="{StaticResource LightLabel}" />
-                                                    <DockPanel>
-                                                        <TextBlock Text="{Binding DataContext.Translation.TitleLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                                                        <TextBlock Text="{Binding Metadata.Title}" Margin="5 0 0 0" />
-                                                    </DockPanel>
-                                                    <DockPanel>
-                                                        <TextBlock Text="{Binding DataContext.Translation.AuthorLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                                                        <TextBlock Text="{Binding Metadata.Author}" Margin="5 0 0 0" />
-                                                    </DockPanel>
-                                                    <DockPanel>
-                                                        <TextBlock Text="{Binding DataContext.Translation.PagesLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-                                                        <TextBlock Text="{Binding NumberOfPages}" Margin="5 0 0 0" />
-                                                    </DockPanel>
-                                                </StackPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding DataContext.Translation.TitleLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                                                <TextBlock Text="{Binding Metadata.Title}" Margin="5 0 0 0" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding DataContext.Translation.AuthorLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                                                <TextBlock Text="{Binding Metadata.Author}" Margin="5 0 0 0" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding DataContext.Translation.PagesLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                                                <TextBlock Text="{Binding NumberOfPages}" Margin="5 0 0 0" />
+                                            </DockPanel>
+                                        </StackPanel>
 
-                                                <!-- Actions DropDown -->
-                                                <contextMenuButton:ContextMenuButton Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom"
+                                        <!-- Actions DropDown -->
+                                        <contextMenuButton:ContextMenuButton Grid.Row="1" Grid.Column="1"
+                                                    Margin="10 0 0 0"
+                                                    VerticalAlignment="Bottom"
                                                     Content ="{Binding DataContext.Translation.Actions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                     ItemsSource="{Binding DataContext.HistoryQuickActionMenuItems, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                                     Style="{StaticResource DefaultButton}"
                                                     MenuItemsCommandParameter="{Binding}"
-                                                    Margin="10 0 0 0"
                                                     Width="110">
-                                                </contextMenuButton:ContextMenuButton>
-                                            </Grid>
-                                        </Expander>
-
-                                        <!-- Mask Expander Icon -->
-                                        <!-- Border must use same style as Border in History Item to unify hover -->
-                                        <Border IsHitTestVisible="False" Width="23" Height="33"
-                                                Margin="3 0 0 0"
-                                                VerticalAlignment="Top" HorizontalAlignment="Left">
-                                            <ContentControl Foreground="{StaticResource LightLabelForegroundBrush}"
-                                                            VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                <ContentControl.Style>
-                                                    <Style TargetType="ContentControl">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsExpanded, ElementName=Expander}" Value="True">
-                                                                <Setter Property="LayoutTransform">
-                                                                    <Setter.Value>
-                                                                        <RotateTransform Angle="180" CenterX="0.5" CenterY="0.5" />
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </ContentControl.Style>
-                                                <iconPacks:MaterialDesign Kind="ExpandMore" Width="12" />
-                                            </ContentControl>
-                                        </Border>
+                                        </contextMenuButton:ContextMenuButton>
                                     </Grid>
-                                </Border>
+                                </Expander>
                             </DockPanel>
                         </DataTemplate>
-
-                        <Style TargetType="{x:Type ListBox}">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
-                            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-                            <Setter Property="ItemContainerStyle" Value="{StaticResource CustomListBoxItemStyle}" />
-                            <Setter Property="ItemTemplate" Value="{StaticResource CustomListBoxDataTemplate}" />
-                        </Style>
-                    </ListBox.Resources>
+                    </ListBox.ItemTemplate>
                 </ListBox>
 
                 <!-- History is empty -->

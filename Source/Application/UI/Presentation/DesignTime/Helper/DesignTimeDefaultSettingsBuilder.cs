@@ -1,9 +1,8 @@
 ﻿using pdfforge.DataStorage;
 using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.SettingsManagement;
-using System.Collections.ObjectModel;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
 {
@@ -14,12 +13,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
             return new DesignTimeSetting(true, true);
         }
 
-        public ISettings CreateDefaultSettings(ISettings currentSettings)
+        public IEditionSettings CreateDefaultSettings(ISettings currentSettings)
         {
             return new DesignTimeSetting(true, true);
         }
 
-        public ISettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage)
+        public IEditionSettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage)
         {
             return new DesignTimeSetting(true, true);
         }
@@ -35,7 +34,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         }
     }
 
-    public class DesignTimeSetting : ISettings
+    public class DesignTimeSetting : ISettings, IEditionSettings
     {
         private readonly bool _canLoad;
         private readonly bool _canSave;
@@ -64,5 +63,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper
         {
             return Data.CreateDataStorage();
         }
+
+        public ApplicationSettings ApplicationSettings { get; set; }
     }
 }

@@ -16,6 +16,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation.Commands;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
@@ -33,7 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         public ManagePrintJobsViewModel(IJobInfoQueue jobInfoQueue, DragAndDropEventHandler dragAndDrop, IJobInfoManager jobInfoManager,
             IDispatcher dispatcher, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider,
-            IVersionHelper versionHelper)
+            IVersionHelper versionHelper, ICommandLocator commandLocator)
             : base(translationUpdater)
         {
             _jobInfoQueue = jobInfoQueue;
@@ -44,6 +46,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _versionHelper = versionHelper;
             _jobInfoQueue.OnNewJobInfo += OnNewJobInfo;
 
+            ConvertFileCommand = commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
             ListSelectionChangedCommand = new DelegateCommand(ListSelectionChanged);
             DeleteJobCommand = new DelegateCommand(ExecuteDeleteJob);
             MergeJobsCommand = new DelegateCommand(ExecuteMergeJobs, CanExecuteMergeJobs);
@@ -130,6 +133,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         }
 
         public CollectionView JobInfos { get; private set; }
+        public ICommand ConvertFileCommand { get; set; }
         public DelegateCommand ListSelectionChangedCommand { get; }
         public DelegateCommand DeleteJobCommand { get; }
         public DelegateCommand MergeJobsCommand { get; }

@@ -7,9 +7,10 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              xmlns:workflowEditor="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor"
+             xmlns:checkBoxes="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.CheckBoxes"
+             xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
              MinWidth="{x:Static workflowEditor:ProfileWizardSizes.MinWidth}"
              mc:Ignorable="d"
              MinHeight="570"
@@ -19,12 +20,13 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel>
@@ -40,12 +42,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <redesign5:OnOffLabelToggleSwitchCheckBox Grid.Column="0" VerticalAlignment="Center"
+            <checkBoxes:OnOffLabelToggleSwitchCheckBox Grid.Column="0" VerticalAlignment="Center"
                     OnContent="{Binding Translation.AutosaveToggle, Mode=OneWay}"
                     OffContent="{Binding Translation.InteractiveToggle, Mode=OneWay}"
-                    IsChecked="{Binding AutoSaveEnabled, Mode=TwoWay}" />
+                    IsChecked="{Binding AutoSaveEnabled}" />
 
-            <Border Grid.Column="1" Margin="10 0 0 0"
+            <Border Grid.Column="1" Margin="20 0 0 0"
                         HorizontalAlignment="Stretch" Background="{StaticResource ContentAreaColorBrush}" CornerRadius="2">
                 <StackPanel Margin="10">
                     <TextBlock TextWrapping="Wrap">
@@ -80,32 +82,54 @@
 
         <!-- Temporary Save -->
         <CheckBox Margin="0 20 0 0"
-                  Content="{Binding Translation.SaveOnlyTemporary}"
-                  IsChecked="{Binding TemporarySaveFiles}" />
-        <TextBlock TextWrapping="Wrap"
-                   Text="{Binding Translation.TemporarySaveFilesHint}"
-                   Margin="30 0 0 0" />
+                  IsChecked="{Binding TemporarySaveFiles}">
+            <TextBlock TextWrapping="Wrap">
+                <Run Text="{Binding Translation.SaveOnlyTemporary, Mode=OneWay}" />
+                <LineBreak />
+                <Run Text="{Binding Translation.TemporarySaveFilesHint, Mode=OneWay}"/>
+            </TextBlock>
+        </CheckBox>
 
         <!-- Existing File Behaviour -->
         <StackPanel Margin="0 20 0 0"
                     Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfFalseConverter}}">
             <Label Content="{Binding Translation.ExistingFileDescription}" />
-            <RadioButton GroupName="FinalFileState" Margin="0 10 0 0" IsChecked="{Binding ShouldOverwriteFiles, Mode=OneWay}">
+            <RadioButton Margin="0 10 0 0"
+                         GroupName="AutoSaveExistingFileBehaviour" 
+                         IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
+                                    Converter={StaticResource EnumToBooleanConverter},
+                                    ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.Overwrite}}">
                 <TextBlock Text="{Binding Translation.OverWriteFiles}" />
             </RadioButton>
-            <RadioButton GroupName="FinalFileState" Margin="0 10 0 0" IsChecked="{Binding CurrentProfile.AutoSave.AutoMergeFiles}">
-                <TextBlock Text="{Binding Translation.AppendFiles}" />
+            <RadioButton Margin="0 10 0 0"
+                         GroupName="AutoSaveExistingFileBehaviour" 
+                         IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
+                                    Converter={StaticResource EnumToBooleanConverter},
+                                    ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.EnsureUniqueFilenames}}">
+                <TextBlock>
+                    <Run Text="{Binding Translation.EnsureUniqueFilenames, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Text="{Binding Translation.UniqueFilenameHint, Mode=OneWay}"/>
+                </TextBlock>
             </RadioButton>
-            <RadioButton GroupName="FinalFileState" Margin="0 10 0 0" IsChecked="{Binding CurrentProfile.AutoSave.EnsureUniqueFilenames}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Translation.DontOverwriteFiles}" />
-                    <TextBlock TextWrapping="Wrap" Text="{Binding Translation.UniqueFilenameHint}" />
-                </StackPanel>
+            <RadioButton Margin="0 10 0 0"
+                         GroupName="AutoSaveExistingFileBehaviour" 
+                         IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
+                                    Converter={StaticResource EnumToBooleanConverter},
+                                    ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.Merge}}">
+                <TextBlock Text="{Binding Translation.AutoMerge}" />
+            </RadioButton>
+            <RadioButton Margin="0 10 0 0"
+                         GroupName="AutoSaveExistingFileBehaviour" 
+                         IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
+                                    Converter={StaticResource EnumToBooleanConverter},
+                                    ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.MergeBeforeModifyActions}}">
+                <TextBlock Text="{Binding Translation.AutoMergeBeforeModifyActions}" />
             </RadioButton>
         </StackPanel>
 
         <!-- Skip Print Dialog -->
-        <StackPanel Margin="0 10 0 0"
+        <StackPanel Margin="0 20 0 0"
                     Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfTrueConverter}}"
                     Orientation="Horizontal">
             <StackPanel IsEnabled="{Binding CurrentProfile.SaveFileTemporary, Converter={StaticResource BoolNegationConverter}}">

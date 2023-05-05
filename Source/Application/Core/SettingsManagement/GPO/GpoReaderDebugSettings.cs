@@ -26,5 +26,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
         public bool LoadSharedProfiles => true;
         public bool AllowUserDefinedProfiles => true;
         public bool DisableLicenseExpirationReminder => true;
+
+        public string PageSize => "Automatic";
+        public string PageOrientation => "Automatic";
     }
 }

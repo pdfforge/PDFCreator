@@ -12,25 +12,19 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <StackPanel>
-
-        <Label Content="{Binding Translation.DefaultSettingsControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 20"/>
-        <Grid HorizontalAlignment="Left">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
-                <Button Command="{Binding RestoreDefaultSettingsCommand}">
-                    <TextBlock Text="{Binding Translation.DefaultSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-            </StackPanel>
-        </Grid>
+    <StackPanel Style="{StaticResource SettingsRegion}">
+        <Label Content="{Binding Translation.DefaultSettingsControlHeader}" Style="{StaticResource LargeLightLabel}"/>
+        <Button Margin="0 20 0 0" 
+                HorizontalAlignment="Left" 
+                Command="{Binding RestoreDefaultSettingsCommand}"
+                MinWidth="300">
+                <TextBlock Text="{Binding Translation.DefaultSettingsButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </StackPanel>
 </UserControl>

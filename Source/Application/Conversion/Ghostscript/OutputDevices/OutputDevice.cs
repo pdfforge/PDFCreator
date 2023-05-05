@@ -5,10 +5,9 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
 using System.Text;
 using SystemInterface.IO;
-using SystemWrapper.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 {
@@ -22,23 +21,20 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public abstract class OutputDevice
     {
+        public const string PasswordParameter = "-SPDFPassword";
         public ConversionMode ConversionMode { get; }
 
         private readonly ICommandLineUtil _commandLineUtil;
-        private readonly IFormatProvider _numberFormat = CultureInfo.InvariantCulture.NumberFormat;
 
         protected readonly IFile FileWrap;
-        protected readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IOsHelper _osHelper;
 
         /// <summary>
         ///     A list of Distiller dictionary strings. They will be added after all parameters are set.
         /// </summary>
-        protected IList<string> DistillerDictonaries = new List<string>();
-
-        protected OutputDevice(Job job, ConversionMode conversionMode) : this(job, conversionMode, new FileWrap(), new OsHelper(), new CommandLineUtil())
-        { }
+        protected IList<string> DistillerDictionaries = new List<string>();
 
         protected OutputDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
         {
@@ -66,11 +62,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             IList<string> parameters = new List<string>();
 
             var outputFormatHelper = new OutputFormatHelper();
+            var jobTempFolder = PathHelper.GetShortPathName(Job.JobTempFolder);
 
-            parameters.Add("gs");
-            parameters.Add("--permit-file-all=\"" + Job.JobTempFolder + "\\\"");
-            parameters.Add("-I" + ghostscriptVersion.LibPaths);
-            parameters.Add("-sFONTPATH=" + _osHelper.WindowsFontsFolder);
+            Logger.Info("Job folder:           " + Job.JobTempFolder);
+            Logger.Info("Shortened Job folder: " + jobTempFolder);
+
+            parameters.Add("--permit-file-all=" + jobTempFolder + "\\");
+            SetLibPaths(parameters, ghostscriptVersion);
+            SetFontPath(parameters);
 
             parameters.Add("-dNOPAUSE");
             parameters.Add("-dBATCH");
@@ -78,7 +77,9 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             if (!outputFormatHelper.HasValidExtension(Job.OutputFileTemplate, Job.Profile.OutputFormat))
                 outputFormatHelper.EnsureValidExtension(Job.OutputFileTemplate, Job.Profile.OutputFormat);
 
-            AddOutputfileParameter(parameters);
+            AddPasswordParameter(parameters);
+
+            AddOutputFileParameter(parameters);
 
             AddDeviceSpecificParameters(parameters);
 
@@ -91,29 +92,42 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             }
 
             //Dictonary-Parameters must be the last Parameters
-            if (DistillerDictonaries.Count > 0)
+            if (DistillerDictionaries.Count > 0)
             {
                 parameters.Add("-c");
-                foreach (var parameter in DistillerDictonaries)
+                foreach (var parameter in DistillerDictionaries)
                 {
                     parameters.Add(parameter);
                 }
             }
 
-            //Don't add further paramters here, since the distiller-parameters should be the last!
+            //Don't add further parameters here, since the distiller-parameters should be the last!
 
             parameters.Add("-f");
 
             SetSourceFiles(parameters, Job);
 
             // Compose name of the pdfmark file based on the location and name of the inf file
-            var pdfMarkFileName = PathSafe.Combine(Job.JobTempFolder, "metadata.mtd");
+            var pdfMarkFileName = PathSafe.Combine(jobTempFolder, "metadata.mtd");
             CreatePdfMarksFile(pdfMarkFileName);
 
             // Add pdfmark file as input file to set metadata
             parameters.Add(pdfMarkFileName);
 
             return parameters;
+        }
+
+        private void SetLibPaths(ICollection<string> parameters, GhostscriptVersion ghostscriptVersion)
+        {
+            var shortLibPaths = ghostscriptVersion.LibPaths.Select(PathHelper.GetShortPathName);
+            var shortLibPathString = string.Join(";", shortLibPaths);
+            parameters.Add("-I" + shortLibPathString);
+        }
+
+        private void SetFontPath(IList<string> parameters)
+        {
+            var shortFontPath = PathHelper.GetShortPathName(_osHelper.WindowsFontsFolder);
+            parameters.Add("-sFONTPATH=" + shortFontPath);
         }
 
         protected virtual void SetSourceFiles(IList<string> parameters, Job job)
@@ -137,7 +151,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             }
         }
 
-        protected virtual void AddOutputfileParameter(IList<string> parameters)
+        protected virtual void AddPasswordParameter(IList<string> parameters)
+        { }
+
+        protected virtual void AddOutputFileParameter(IList<string> parameters)
         {
             parameters.Add("-sOutputFile=" + PathSafe.Combine(PathHelper.GetShortPathName(Job.JobTempOutputFolder), ComposeOutputFilename()));
         }

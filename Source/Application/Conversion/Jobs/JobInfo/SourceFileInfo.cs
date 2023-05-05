@@ -100,5 +100,15 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         /// Outputfile set via commandline for direct conversion
         /// </summary>
         public string OutputFileParameter { get; set; }
+
+        /// <summary>
+        /// True if split job
+        /// </summary>
+        public bool IsSplitJob { get; set; } = false;
+
+        /// <summary>
+        /// Output file path of the previous job
+        /// </summary>
+        public string SplitJobParentFilePath { get; set; } = "";
     }
 }

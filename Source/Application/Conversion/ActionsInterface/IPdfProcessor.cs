@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.Conversion.ActionsInterface
     {
         void SignEncryptConvertPdfAAndWriteFile(Job job);
 
-        int GetNumberOfPages(string pdfFile);
+        int GetNumberOfPages(string pdfFile, string password = null);
 
         string DeterminePdfVersion(ConversionProfile profile);
 

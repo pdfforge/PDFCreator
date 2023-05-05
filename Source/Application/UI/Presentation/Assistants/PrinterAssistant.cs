@@ -60,7 +60,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             const string caption = "PDFCreator";
             var message = Translation.GetCouldNotInstallPrinterMessage(newPrinterName);
-            await ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+            await ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
 
             return null;
         }
@@ -93,7 +93,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             var message = Translation.GetCouldNotRenamePrinterMessage(oldPrinterName, newPrinterName);
             const string caption = @"PDFCreator";
-            await ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+            await ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
 
             return null;
         }
@@ -104,7 +104,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             {
                 var message = Translation.DontDeleteLastPrinter;
                 const string caption = @"PDFCreator";
-                await ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+                await ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
                 return false;
             }
 

@@ -14,8 +14,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/IconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/IconButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:AreEqualConverter x:Key="CollapsedIfNoInsecureTokensAreContained" Reference="{x:Static tokens:TokenWarningCheckResult.ContainsInsecureTokens}" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:AreEqualConverter x:Key="CollapsedIfEnablingUserTokensNotRequired" Reference="{x:Static tokens:TokenWarningCheckResult.RequiresEnablingUserTokens}" EqualValue="Visible" NotEqualValue="Collapsed" />
@@ -29,14 +29,14 @@
             <Grid Visibility="{Binding TokenWarningCheckResult, Converter={StaticResource CollapsedIfNoInsecureTokensAreContained}}"
                       ToolTip="{Binding Translation.InsecureTokenText}"
                       Background="Transparent">
-                <ContentControl Foreground="{StaticResource InfoIconBrush}" IsHitTestVisible="False">
+                <ContentControl Foreground="{StaticResource InfoBrush}" IsHitTestVisible="False">
                     <iconPacks:PackIconMaterialDesign Kind="Info" Height="14" />
                 </ContentControl>
             </Grid>
             <Grid Visibility="{Binding TokenWarningCheckResult, Converter={StaticResource CollapsedIfEnablingUserTokensNotRequired}}"
                       ToolTip="{Binding Translation.UserTokenNeedsToBeActivated}"
                       Background="Transparent">
-                <ContentControl Foreground="{StaticResource WarningBrush}" IsHitTestVisible="False">
+                <ContentControl Foreground="{StaticResource ErrorBrush}" IsHitTestVisible="False">
                     <iconPacks:PackIconMaterialDesign Kind="Notifications" Height="14" />
                 </ContentControl>
             </Grid>

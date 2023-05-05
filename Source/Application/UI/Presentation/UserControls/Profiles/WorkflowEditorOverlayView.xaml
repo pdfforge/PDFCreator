@@ -19,7 +19,12 @@
              help:HelpProvider.HelpTopic="WorkflowEditor"
              x:Name="OverlayView">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel Margin="20 20 20 20"
@@ -53,9 +58,9 @@
             <DockPanel Visibility="{Binding StatusHintViewModel.HideStatusInOverlay, ElementName=OverlayView, Converter={StaticResource CollapsedWhenTrue}}">
                 <DockPanel FlowDirection="LeftToRight" VerticalAlignment="Center"
                            Visibility="{Binding StatusHintViewModel.HasWarning, ElementName=OverlayView, Converter={StaticResource CollapsedWhenFalse}}">
-                    <iconPacks:PackIconMaterialDesign Kind="Notifications" Foreground="{DynamicResource PdfforgeRedBrush}" />
+                    <iconPacks:PackIconMaterialDesign Kind="Notifications" Foreground="{StaticResource ErrorBrush}" />
                     <TextBlock Text="{Binding StatusHintViewModel.StatusText, ElementName=OverlayView}"
-                               Foreground="{DynamicResource PdfforgeRedBrush}"
+                               Foreground="{StaticResource ErrorBrush}"
                                TextWrapping="Wrap"
                                Margin="7 0 0 0"
                                FontSize="13"

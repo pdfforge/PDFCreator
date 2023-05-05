@@ -115,7 +115,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             {
                 var message = _translation.GetFormattedSetupFileMissing(Path.GetFileName(setupHelperPath));
                 var caption = _translation.Error;
-                ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+                ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
                 return false;
             }
 
@@ -145,7 +145,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 var message = _translation.SufficientPermissions;
                 var caption = _translation.Error;
 
-                ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+                ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
 
                 return false;
             }
@@ -179,7 +179,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             {
                 var message = _translation.GetFormattedSetupFileMissing(Path.GetFileName(applicationPath));
                 var caption = _translation.Error;
-                ShowMessage(message, caption, MessageOptions.OK, MessageIcon.Error);
+                ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
                 return null;
             }
 

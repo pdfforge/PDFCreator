@@ -1,0 +1,111 @@
+How to build the Ghostscript documentation
+==========================================
+
+
+Welcome to the Ghostscript documentation. This documentation relies on Sphinx (https://www.sphinx-doc.org/en/master/) to publish HTML & PDF docs from markdown files written with restructured text / RST (https://en.wikipedia.org/wiki/ReStructuredText).
+
+
+Installing Sphinx & dependencies
+--------------------------------
+
+1. You should follow the instructions on the Sphinx website to install Sphinx on your system.
+
+2. Ensure you have Latex (https://www.latex-project.org/get/) installed
+
+	This ensures that you can build a PDF of the documentation.
+
+3. The Sphinx documentation files also rely on the "readthedocs" theme to be installed, follow the instructions here: https://sphinx-rtd-theme.readthedocs.io/en/stable/installing.html
+
+4. Once you have installed the "readthedocs" theme, depending on your OS, it will also have installed a `docutils` (http://docutils.sourceforge.net/) Python package.
+
+   This should be okay, however if you have issues with building docs for PDF ensure that the `docutils` version works for you.
+
+   To see what version you have do:
+
+   python3 -m pip show docutils
+
+   On Windows the required version was 0.18.1 to build PDF docs (pip install docutils=0.18.1), however on other systems lower versions were fine.
+
+
+
+Editing the documentation
+-------------------------
+
+Within this `src` folder update the associated `.rst` files which are in restructured text format. These files represent the corresponding document pages.
+
+
+Some notes on syntax
+~~~~~~~~~~~~~~~~~~~~
+
+- Use ``for inline code`` or ``computer/technical terminology``
+
+- Use tab indented code for code blocks with, e.g. .. code-block:: bash
+
+- For device names use :title:`deviceName` , e.g. :title:`pdfwrite`
+
+- For headers underline text with ==== for h1 level, ---- for h2, ~~~~ for h3 & """" for h4
+
+
+For full details on RST syntax, see: https://www.sphinx-doc.org/en/master/usage/restructuredtext/
+
+
+
+Building HTML documentation
+---------------------------
+
+From the `doc` location run:
+
+
+sphinx-build -b html src build
+
+
+This then creates the HTML documentation within `doc/build` for your review, you can then run `build/index.html` to check out the results.
+
+
+Building PDF documentation
+--------------------------
+
+Ensure that `pdflatex` is on your PATH, test with:
+
+pdflatex --help
+
+
+Then create the latex build from the `doc` location:
+
+sphinx-build -b latex src build/latex
+
+
+Once done do:
+
+cd build/latex
+make
+
+
+If there any warnings then hit return to pass through them to continue building ( also decide if you need to fix them or not ).
+
+Now you should have Ghostscript.pdf ready within `build/latex`.
+
+Move the Ghostscript.pdf file into the root of "doc" and replace the existing PDF as required.
+
+
+Updating the documentation
+--------------------------
+
+- Make your edits as required in the relevant RST files ( see above: Editing the documentation )
+
+- Test locally by building and running in local browser ( see above "Building HTML documentation" )
+
+- Ensure to update the version of Ghostscript cited in `conf.py` line 52 ( e.g. release = "10.0.0" )
+
+- Ensure that News.htm reflects the latest release and had any further "news"
+
+- Once changes are pushed to golden master then readthedocs.io should pick up the changes, build & deploy the docs!
+
+- Visit ghostscript.readthedocs.io once built and deployed to check
+
+
+
+---
+
+
+For more see: Using Sphinx (https://www.sphinx-doc.org/en/master/usage/index.html)

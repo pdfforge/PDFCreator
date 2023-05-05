@@ -26,5 +26,8 @@
 
         public bool AllowSharedProfilesEditing => false;
         public bool DisableLicenseExpirationReminder => false;
+
+        public string PageSize => null;
+        public string PageOrientation => null;
     }
 }

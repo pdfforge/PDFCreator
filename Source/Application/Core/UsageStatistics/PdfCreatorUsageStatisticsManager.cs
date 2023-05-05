@@ -1,12 +1,11 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
 using pdfforge.UsageStatistics;
 using System;
-using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 
 namespace pdfforge.PDFCreator.Core.UsageStatistics
 {

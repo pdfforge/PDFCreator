@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -48,6 +50,7 @@
     <Compile Include="DirectConversionInfFileHelper.cs" />
     <Compile Include="DirectConversion.cs" />
     <Compile Include="DirectConversionHelper.cs" />
+    <Compile Include="IDirectImageConversionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +202,17 @@
       <ItemGroup>
         <Reference Include="SystemWrapper">
           <HintPath>..\..\..\..\packages\SystemWrapper\lib\netstandard2.0\SystemWrapper.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="zlib.net">
+          <HintPath>..\..\..\..\packages\zlib.net-mutliplatform\lib\net47\zlib.net.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

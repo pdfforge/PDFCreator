@@ -55,7 +55,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationA
             text += Environment.NewLine;
             text += Translation.GetFormattedLicenseEnsureCsScriptsFolder(_scriptFolder);
 
-            var interaction = new MessageInteraction(text, title, MessageOptions.OK, MessageIcon.Error);
+            var interaction = new MessageInteraction(text, title, MessageOptions.Ok, MessageIcon.Error);
             _interactionRequest.Raise(interaction);
         }
     }

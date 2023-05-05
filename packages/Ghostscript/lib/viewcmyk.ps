@@ -56,6 +56,8 @@
     cleartomark
     (Usage: gs -- viewcmyk.ps filename.cmyk width\n) print
     ( e.g.: gs -- viewcmyk.ps my.cmyk 2550\n) print flush
+    (From version 9.50 you must supply permissions for this program to read the input file(s)\n) print flush
+    (either by using -dNOSAFER or by supplying --permit-file-read=<filename>\n) = flush
   } ifelse
 } {
   pop

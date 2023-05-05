@@ -5,14 +5,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
    
     public partial class UsageStatisticsView : UserControl
     {
-        public UsageStatisticsView()
-        {
-            InitializeComponent();
-        }
-
-        public void SetDataContext(UsageStatisticsViewModelBase viewModel)
+        public UsageStatisticsView(UsageStatisticsViewModelBase viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
     }
 }

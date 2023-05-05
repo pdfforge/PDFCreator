@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.Styles.ProfilesComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             mc:Ignorable="d"
+             Name="This">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ColorDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="CustomLabelStyle" TargetType="{x:Type Label}">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.1" />
+                    </Trigger>
+                </Style.Triggers>
+                <Setter Property="Foreground" Value="{StaticResource LabelForegroundBrush}" />
+                <Setter Property="Opacity" Value="0.5" />
+            </Style>
+        </Grid.Resources>
+
+        <!-- Set Width according to PrintJobView!!!! -->
+        <ComboBox Background="{Binding Background, ElementName=This}"
+                  ItemsSource="{Binding ProfilesView, ElementName=This}"
+                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=SelectedProfile, Mode=TwoWay }"
+                  IsSynchronizedWithCurrentItem="True">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="local:ConversionProfileWrapper">
+                    <Grid HorizontalAlignment="Stretch" IsHitTestVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"  Margin="5 0 10 0"
+                                   Text="{Binding Path=Name}"
+                                   HorizontalAlignment="Left"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal">
+                            <Label Margin="5 0" Padding="0"
+                                   IsEnabled="{Binding ConversionProfile.AutoSave.Enabled}"
+                                   Style="{StaticResource CustomLabelStyle}">
+                                <iconPacks:PackIconMaterialDesign Kind="FlashAuto" />
+                            </Label>
+                            <Label Margin="5 0" Padding="0"
+                                   IsEnabled="{Binding HasEnabledSecurity}"
+                                   Style="{StaticResource CustomLabelStyle}">
+                                <iconPacks:PackIconMaterialDesign Kind="Lock" />
+                            </Label>
+                            <Label Margin="5 0" Padding="0"
+                                   IsEnabled="{Binding HasEnabledSendActions}"
+                                   Style="{StaticResource CustomLabelStyle}">
+                                <iconPacks:PackIconMaterialDesign Kind="Share" />
+                            </Label>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </Grid>
+</UserControl>

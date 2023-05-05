@@ -57,7 +57,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
         {
             if (result.Contains(ErrorCode.DefaultViewer_Not_Found))
             {
-                ShowMessage(Translation.ErrorCustomViewNotFoundDesc, Translation.ErrorCustomViewNotFoundTitle, MessageOptions.OK, MessageIcon.Error);
+                ShowMessage(Translation.ErrorCustomViewNotFoundDesc, Translation.ErrorCustomViewNotFoundTitle, MessageOptions.Ok, MessageIcon.Error);
             }
         }
 

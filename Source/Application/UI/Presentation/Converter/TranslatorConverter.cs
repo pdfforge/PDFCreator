@@ -1,9 +1,9 @@
 ﻿using pdfforge.PDFCreator.Core.ServiceLocator;
-using pdfforge.PDFCreator.UI.Presentation.Helper.Gpo;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using pdfforge.PDFCreator.UI.Presentation.Styles.Gpo;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter
 {

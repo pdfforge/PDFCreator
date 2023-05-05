@@ -39,6 +39,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             sfi.ProfileParameter = data.GetValue(section + "ProfileParameter");
             sfi.OutputFileParameter = data.GetValue(section + "OutputFileParameter");
 
+            sfi.IsSplitJob = data.GetValue(section + nameof(SourceFileInfo.IsSplitJob)) == "true";
+            sfi.SplitJobParentFilePath = data.GetValue(section + nameof(SourceFileInfo.SplitJobParentFilePath));
+
             var type = data.GetValue(section + "SourceFileType");
 
             sfi.Type = type.Equals("xps", StringComparison.OrdinalIgnoreCase) ? JobType.XpsJob : JobType.PsJob;
@@ -160,6 +163,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             values["Copies"] = sourceFileInfo.Copies.ToString(CultureInfo.InvariantCulture);
             values["TotalPages"] = sourceFileInfo.TotalPages.ToString(CultureInfo.InvariantCulture);
             values["UserTokenEvaluated"] = sourceFileInfo.UserTokenEvaluated.ToString(CultureInfo.InvariantCulture);
+
+            values[nameof(SourceFileInfo.IsSplitJob)] = sourceFileInfo.IsSplitJob.ToString(CultureInfo.InvariantCulture);
+            values[nameof(SourceFileInfo.SplitJobParentFilePath)] = sourceFileInfo.SplitJobParentFilePath;
 
             foreach (var kvp in values)
             {

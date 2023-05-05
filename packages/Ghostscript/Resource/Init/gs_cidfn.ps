@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2022 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -36,6 +36,17 @@
 
 30 dict begin
 
+/.gcompatstringcopy % <string> <global> .gcompatstringcopy <string>
+{
+   dup 2 index gcheck eq
+   { pop }
+   {
+       currentglobal 3 1 roll setglobal
+       dup length string copy
+       exch setglobal
+   } ifelse
+} bind def
+
 % The key in .cidfonttypes is the CIDFontType value;
 % the value is a procedure that takes a font name and the CIDFont dictionary
 % and replaces the latter with a real font.
@@ -58,7 +69,7 @@ dup 0 {
     end
   } if
   1 index exch .buildfont9
-  .currentresourcefile dup type /filetype eq { //.filename {1 index exch /ResourcePath exch put} if }{ pop} ifelse
+  .currentresourcefile dup type /filetype eq { //.filename {1 index gcheck //.gcompatstringcopy exec 1 index exch /ResourcePath exch put} if }{ pop} ifelse
   exch pop
 } put % Don't bind it here, because gs_fapi.ps redefines .buildfont9
 
@@ -138,10 +149,11 @@ dup 0 {
 
 % ------ CIDFontType 1 (FontType 10) ------ %
 
+
 dup 1 {
   10 //.checkfonttype exec pop
   1 index exch .buildfont10
-  .currentresourcefile dup type /filetype eq { //.filename {1 index exch /ResourcePath exch put} if }{ pop} ifelse
+  .currentresourcefile dup type /filetype eq { //.filename {1 index gcheck //.gcompatstringcopy exec 1 index exch /ResourcePath exch put} if }{ pop} ifelse
   exch pop
 } put % Don't bind it here because gs_fapi.ps redefines .buildfont10
 
@@ -150,11 +162,14 @@ dup 1 {
 dup 2 {
   11 //.checkfonttype exec pop
   1 index exch .buildfont11
-  .currentresourcefile dup type /filetype eq { //.filename {1 index exch /ResourcePath exch put} if }{ pop} ifelse
+  .currentresourcefile dup type /filetype eq { //.filename {1 index gcheck //.gcompatstringcopy exec 1 index exch /ResourcePath exch put} if }{ pop} ifelse
   exch pop
 } put % Don't bind it here because gs_fapi.ps redefines .buildfont11
 
+currentdict /.gcompatstringcopy .undef
+
 pop		% .cidfonttypes
+
 
 % ---------------- Reading CIDFontType 0 files ---------------- %
 

@@ -64,7 +64,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
 
             var title = _translation.Error;
             var text = _translation.InvalidSettings;
-            var interaction = new MessageInteraction(text, title, MessageOptions.OK, MessageIcon.Exclamation, job.Profile.Name, profileCheckResult);
+            var interaction = new MessageInteraction(text, title, MessageOptions.Ok, MessageIcon.Exclamation, job.Profile.Name, profileCheckResult);
             interaction.ShowErrorRegions = false;
             return interaction;
         }

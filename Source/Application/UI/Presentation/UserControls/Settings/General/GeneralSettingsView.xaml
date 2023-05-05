@@ -10,12 +10,5 @@
              xmlns:general="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General"
              d:DataContext="{d:DesignInstance general:GeneralSettingsViewModel}"
              d:DesignHeight="350" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="333*"/>
-            <RowDefinition Height="17*"/>
-        </Grid.RowDefinitions>
-        <ItemsControl
-                regions:RegionManager.RegionName="{x:Static presentation:RegionNames.GeneralSettingsTabContentRegion }" Grid.RowSpan="2" />
-    </Grid>
+    <ItemsControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.GeneralSettingsTabContentRegion }" />
 </UserControl>

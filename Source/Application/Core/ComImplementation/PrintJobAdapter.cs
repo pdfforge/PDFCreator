@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
@@ -217,8 +218,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
         private void DisableIrrelevantProfileSettings(ConversionProfile profile)
         {
             profile.AutoSave.Enabled = false;
-            profile.AutoSave.EnsureUniqueFilenames = false;
-
+            profile.AutoSave.ExistingFileBehaviour = AutoSaveExistingFileBehaviour.Merge;
             profile.OpenViewer.Enabled = false;
         }
 

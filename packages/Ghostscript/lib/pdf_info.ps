@@ -527,6 +527,164 @@ systemdict /.sort known not {
   } ifelse
 } bind def
 
-enum-pdfs
+/NEWPDF where {/NEWPDF get}{false}ifelse
+{
+  /knownoget
+  {
+    2 copy known {
+      get
+      true
+    }{
+      pop pop false
+    } ifelse
+  }bind def
+
+  /PDFContext << >> .PDFInit def
+  {File (r) file PDFContext .PDFStream} stopped not
+  {
+
+    PDFContext .PDFInfo
+    File
+    () = (        ) print print ( has ) print
+    dup /NumPages get dup =print 10 mod 1 eq { ( page.\n) } { ( pages\n) } ifelse = flush
+
+    /DumpXML where {/DumpXML get}{//false}ifelse
+    {
+      (\n*** DumpXML is no longer supported. ***\n\n) print
+    }if
+
+    dup /Title knownoget { (Title: ) print write-doc-string () = flush } if
+    dup /Author knownoget { (Author: ) print write-doc-string () = flush } if
+    dup /Subject knownoget { (Subject: ) print write-doc-string () = flush } if
+    dup /Keywords knownoget { (Keywords: ) print write-doc-string () = flush } if
+    dup /Creator knownoget { (Creator: ) print write-doc-string () = flush } if
+    dup /Producer knownoget { (Producer: ) print write-doc-string () = flush } if
+    dup /CreationDate knownoget { (CreationDate: ) print write-doc-string () = flush } if
+    dup /ModDate knownoget { (ModDate: ) print write-doc-string () = flush } if
+    dup /Trapped knownoget { (Trapped: ) print write-doc-string () = flush } if
+    (\n) print flush
+
+    /EmbeddedFonts 10 dict def
+    /UnEmbeddedFonts 10 dict def
+    /FontNumbers 10 dict def
+
+    /NumPages get 0 1 3 -1 roll 1 sub
+    {
+      dup
+      PDFContext exch .PDFPageInfoExt exch
+      DumpMediaSizes {
+        (Page ) print 1 add =print
+        dup /UserUnit knownoget {( UserUnit: ) print =print} if
+        dup /MediaBox knownoget {( MediaBox: ) print ==only} if
+        dup /CropBox knownoget  {( CropBox: )  print ==only} if
+        dup /BleedBox knownoget {( BleedBox: ) print ==only} if
+        dup /TrimBox knownoget  {( TrimBox: )  print ==only} if
+        dup /ArtBox knownoget   {( ArtBox: )   print ==only} if
+        dup /Rotate knownoget not {0}if ( Rotate = ) print =print
+        dup /Annots knownoget {{(     Page contains Annotations) print} if} if
+        dup /UsesTransparency knownoget {{(     Page uses transparency features) print} if} if
+        dup /Spots knownoget {
+          (\n    Page Spot colors: ) =
+          {(        ) print (') print 256 string cvs print (') =} forall
+        } if
+        (\n) print flush
+        (\n) print flush
+      }
+      {
+        pop
+      } ifelse
+
+      /Fonts knownoget
+      {
+        {
+          dup /ObjectNum known
+          {
+            %% Fonts with an ObjectNumber may have been previously referenced on another page
+            dup /ObjectNum get
+            dup FontNumbers exch known
+            {
+              pop
+              %% found the ObjectNumber in the FontNumbers dictionary so we've seen this one.
+              //false
+            }
+            {
+              %% Not seen before, add the number to the array and process this font
+              FontNumbers exch dup put
+              //true
+            }ifelse
+          }{
+            %% Fonts without an ObjectNumber are defined inline and so must be unique
+            //true
+          } ifelse
+          {
+            % First time we've seen the font
+            dup /Descendants known
+            {
+              dup /BaseFont get
+              EmbeddedFonts exch dup put    % We class the Type 0 font as 'embedded', but it's really the descendant which is embedded or not.
+              dup /Descendants get
+              1 index /BaseFont get
+              2 index /Embedded get
+              {
+                EmbeddedFonts exch dup put
+              }
+              {
+                UnEmbeddedFonts exch dup put
+              }ifelse
+              pop
+            }
+            {
+              dup /BaseFont get
+              1 index /Embedded get
+              {
+                EmbeddedFonts exch dup put
+              }
+              {
+                UnEmbeddedFonts exch dup put
+              } ifelse
+            }ifelse
+            pop
+          }
+          {
+            pop
+          } ifelse
+        }forall
+      } if
+    } for
+
+    /DumpFontsUsed where {/DumpFontsUsed get}{//false}ifelse
+    {
+      [
+      UnEmbeddedFonts {pop} forall
+      /ShowEmbeddedFonts where {/ShowEmbeddedFonts get}{//false}ifelse
+      {
+        EmbeddedFonts {pop} forall
+      } if
+      ]
+      dup length 0 gt {
+        { 100 string cvs exch 100 string cvs exch lt } .sort
+        (\nFont or CIDFont resources used (plain name and ASCIIHEX string representation):) =
+        { 128 string cvs dup print (    ) print (<) print 128 string cvs {16 8 string cvrs print} forall (>) print (\n) print} forall
+      } if
+    }
+    {
+      [
+      DumpFontsNeeded
+      {
+        UnEmbeddedFonts {pop} forall
+      } if
+      ]
+      dup length 0 gt {
+        { 100 string cvs exch 100 string cvs exch lt } .sort
+        (\nFonts Needed that are not embedded \(system fonts required\):) =
+        { (    ) print 128 string cvs dup print (    ) print (<) print {16 8 string cvrs print} forall (>) print (\n) print} forall
+      } if
+    }ifelse
+  } if
+  PDFContext .PDFClose
+}
+{
+  enum-pdfs
+} ifelse
 end
 quit

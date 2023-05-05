@@ -10,11 +10,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Architect
         public string LaunchPdfArchitectButtonContent { get; private set; } = "Launch PDF Architect";
         public string PdfArchitectInstalledText { get; private set; } = "You already have PDF Architect on your computer";
         public string FullFeatured { get; private set; } = "Our full-featured PDF Editor";
-        public string EnjoyFreeFeatures { get; private set; } = "Benefit from our free features:";
+        public string BenefitFromFreeFeatures { get; private set; } = "Benefit from our free features:";
         public string ViewAndPrint { get; private set; } = "View and print any PDF";
         public string CreatePdfFiles { get; private set; } = "Create PDF files";
-        public string SplitAndMerge { get; private set; } = "Split and merge files";
-        public string ProFeatures { get; private set; } = "Other powerful PDF Architect features:";
+        public string MergePdfFiles { get; private set; } = "Merge files";
+        public string SplitPdfFiles { get; private set; } = "Split files";
+        public string OtherPowerfulFeatures { get; private set; } = "Other powerful PDF Architect features:";
         public string EditPdfFiles { get; private set; } = "Edit PDF files";
         public string ConvertPdfFiles { get; private set; } = "Convert PDF files";
         public string ReviewAndAnnotate { get; private set; } = "Review and Annotate";

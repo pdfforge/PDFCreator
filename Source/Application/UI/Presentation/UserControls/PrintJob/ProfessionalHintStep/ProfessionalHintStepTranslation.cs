@@ -6,16 +6,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.Professional
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
-        public string HeadlineText { get; private set; } = "We highly value that you are using PDFCreator!";
-        public string NoThanksButtonContent { get; private set; } = "No, thanks";
-        public string MoreInformation { get; private set; } = "More Information";
-        public string RecommendProfessional { get; private set; } = "For power users like you, we recommend PDFCreator Professional to support the future development and benefit from exclusive features and priority support.";
-        private string[] ThankYou { get; set; } = { "You have already converted {0} file!", "You have already converted {0} files!" };
-        public string Title { get; private set; } = "Try PDFCreator Professional!";
+        private string[] ThankYou { get; set; } = { "After converting {0} file, we have a recommendation for you:", "After converting {0} files, we have a recommendation for you:" };
 
         public string GetThankYouMessage(int numberOfPrintJobs)
         {
             return PluralBuilder.GetFormattedPlural(numberOfPrintJobs, ThankYou);
         }
+
+        public string HigherEncryption { get; private set; } = "Higher encryption (256 Bit AES)";
+        public string HotFolder { get; private set; } = "Includes HotFolder";
+        public string UserTokens { get; private set; } = "Extract settings with user tokens";
+        public string TrayNotifications { get; private set; } = "Automatic saving with tray notification";
+        public string PrioritySupport { get; private set; } = "Priority support";
+        public string AdminFriendly { get; private set; } = "Admin friendly";
+
+        
+        public string NoThanksButtonContent { get; private set; } = "No, thanks";
+        public string MoreInformation { get; private set; } = "More Information";
     }
 }

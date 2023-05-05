@@ -1,14 +1,14 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs;
+﻿using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
-using System.Threading.Tasks;
-using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Core.Services.Translation;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.WorkflowQuery;
+using System.Threading.Tasks;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
@@ -19,8 +19,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private PasswordOverlayTranslation _passwordOverlayTranslation;
         private readonly ITranslationFactory _translationFactory;
         private InteractiveWorkflowTranslation _translation;
-        
-        public int IconSize { get; set; } = 32;
 
         public Error Error { get; set; }
         public DelegateCommand OkCommand { get; }
@@ -29,9 +27,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             : base(translationUpdater)
         {
             _translationFactory = translationFactory;
-            OkCommand = new DelegateCommand(OnOk);
+            OkCommand = new DelegateCommand(OkExecute);
             translationUpdater.RegisterAndSetTranslation(tf => _passwordOverlayTranslation = tf.UpdateOrCreateTranslation(_passwordOverlayTranslation));
-
             translationUpdater.RegisterAndSetTranslation(factory => _translation = factory.UpdateOrCreateTranslation(_translation));
         }
 
@@ -51,16 +48,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         {
             Error = FormatError(error, asWarning);
             RaisePropertyChanged(nameof(Error));
-            
+
             _taskCompletionSource = new TaskCompletionSource<bool>();
             _ = await _taskCompletionSource.Task;
         }
 
-        private void OnOk(object _)
+        private void OkExecute(object _)
         {
             _taskCompletionSource.SetResult(true);
         }
     }
+
     public class Error
     {
         public Error(MessageIcon icon, string title, string preface, string text)
@@ -70,11 +68,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             Preface = preface;
             Text = text;
         }
+
         public MessageIcon Icon { get; set; }
 
         public string Title { get; set; }
         public string Preface { get; set; }
         public string Text { get; set; }
-
     }
 }

@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -22,7 +22,10 @@
 % Note that the "%%Replace " comment below provides the font map file name
 % for compiling initialization files into executable. Most likely it should be
 % consistent with the one specified here.
-/defaultfontmap (Fontmap) def
+/FONTMAP where
+{/FONTMAP get /defaultfontmap exch def}
+{/defaultfontmap (Fontmap) def}
+ifelse
 
 % we have to set .languagelevel to 2 so the parser will accept the names
 % '<<' and '>>', then we use a local definition here.
@@ -428,6 +431,12 @@ FONTPATH
  } bind executeonly def
 
 %END FONTPATH
+
+/FONTMAP where
+{
+  dup /FONTMAP get /FONTMAP exch [ exch //.pathlist exec] put
+  /FONTMAP dup where pop exch get {/PermitFileReading exch .addcontrolpath} forall
+} if
 
 % Try to enumerate native fonts registered with the os
 % and add them to the fontmap. This relies on a custom
@@ -924,10 +933,14 @@ FAKEFONTS not { (%END FAKEFONTS) .skipeof } if
         } if
                         % No aliasing.
                         % This mode is incompatible with high level devices.
+        defaultfontname /None eq { /findfont cvx /invalidfont signalerror } if
         cleartomark mark defaultfontname
       } {
         dup .substitutefont
-        2 copy eq { pop defaultfontname } if
+        2 copy eq {
+          defaultfontname /None eq { /findfont cvx /invalidfont signalerror } if
+          pop defaultfontname
+        } if
         //.checkalias exec
         QUIET not {
           SHORTERRORS {
@@ -1315,7 +1328,7 @@ FAKEFONTS { exch } if pop def   % don't bind, .current/setglobal get redefined
 /.loadinitialfonts
  { NOFONTMAP not
     { /FONTMAP where
-          { pop [ FONTMAP //.pathlist exec]
+          { pop FONTMAP
              { dup VMDEBUG findlibfile
                 { exch pop //.loadFontmap exec }
                 { /undefinedfilename signalerror }

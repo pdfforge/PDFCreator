@@ -96,38 +96,48 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(profile.PdfSettings.Signature.BackgroundImageFile) &&
-                (isJobLevelCheck || !TokenIdentifier.ContainsTokens(profile.PdfSettings.Signature.BackgroundImageFile)))
+            var isImageRequired = (profile.PdfSettings.Signature.DisplaySignature == DisplaySignature.ImageOnly)
+                                  || (profile.PdfSettings.Signature.DisplaySignature == DisplaySignature.ImageAndText);
+
+            if (isImageRequired)
             {
-                var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.PdfSettings.Signature.BackgroundImageFile);
-                switch (pathUtilStatus)
+                if (string.IsNullOrEmpty(profile.PdfSettings.Signature.BackgroundImageFile))
                 {
-                    case PathUtilStatus.InvalidRootedPath:
-                        result.Add(ErrorCode.Signature_ImageFileInvalidRootedPath);
-                        break;
+                    _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
+                    result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
+                }
+                else if (isJobLevelCheck || !TokenIdentifier.ContainsTokens(profile.PdfSettings.Signature.BackgroundImageFile))
+                {
+                    var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.PdfSettings.Signature.BackgroundImageFile);
+                    switch (pathUtilStatus)
+                    {
+                        case PathUtilStatus.InvalidRootedPath:
+                            result.Add(ErrorCode.Signature_ImageFileInvalidRootedPath);
+                            break;
 
-                    case PathUtilStatus.PathTooLongEx:
-                        result.Add(ErrorCode.Signature_ImageFilePathTooLong);
-                        break;
+                        case PathUtilStatus.PathTooLongEx:
+                            result.Add(ErrorCode.Signature_ImageFilePathTooLong);
+                            break;
 
-                    case PathUtilStatus.NotSupportedEx:
-                        result.Add(ErrorCode.Signature_ImageFileUnsupportedType);
-                        break;
+                        case PathUtilStatus.NotSupportedEx:
+                            result.Add(ErrorCode.Signature_ImageFileUnsupportedType);
+                            break;
 
-                    case PathUtilStatus.ArgumentEx:
-                        result.Add(ErrorCode.Signature_ImageFileIllegalCharacters);
-                        break;
+                        case PathUtilStatus.ArgumentEx:
+                            result.Add(ErrorCode.Signature_ImageFileIllegalCharacters);
+                            break;
 
-                    case PathUtilStatus.Success:
-                        {
-                            if (isJobLevelCheck || !profile.PdfSettings.Signature.BackgroundImageFile.StartsWith(@"\\"))
-                                if (!_file.Exists(profile.PdfSettings.Signature.BackgroundImageFile))
-                                {
-                                    _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
-                                    result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
-                                }
-                        }
-                        break;
+                        case PathUtilStatus.Success:
+                            {
+                                if (isJobLevelCheck || !profile.PdfSettings.Signature.BackgroundImageFile.StartsWith(@"\\"))
+                                    if (!_file.Exists(profile.PdfSettings.Signature.BackgroundImageFile))
+                                    {
+                                        _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
+                                        result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
+                                    }
+                            }
+                            break;
+                    }
                 }
             }
 

@@ -6,8 +6,8 @@
       xmlns:usageStatisticsSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings"
       xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
       xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-      xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"      
       d:DataContext="{d:DesignInstance usageStatisticsSettings:DesignTimeUsageStatisticsViewModel, d:IsDesignTimeCreatable=True}"
@@ -16,64 +16,82 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
+                <ResourceDictionary Source="../../../Styles/Hyperlink.xaml" />
+                <ResourceDictionary Source="../../../Styles/HoverExpander.xaml" />
+                <ResourceDictionary Source="../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Grid>
-        <StackPanel>
-            <Label Content="{Binding Translation.UsageStatisticsHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
-            <Grid HorizontalAlignment="Left">
+    <Grid Style="{StaticResource SettingsRegion}">
+        <StackPanel Style="{StaticResource GpoToolTipStyle}">
+            <Label Content="{Binding Translation.UsageStatisticsHeader}"
+                   Style="{StaticResource LargeLightLabel}" />
+            <StackPanel Margin="0 20 0 0">
+                <!--Send usage statistics checkbox-->
+                <CheckBox VerticalAlignment="Top"
+                          Content="{Binding Translation.EnableUsageStatistics}"
+                          IsChecked="{Binding EnableUsageStatistics}"
+                          Background="White"
+                          Width="260"/>
 
-                <StackPanel  Margin="0 0 0 10" Style="{DynamicResource GpoStyle}">
-                    <CheckBox Background="White" Height="33" Content="{Binding Translation.EnableUsageStatistics}" Margin="0 10 0 0" IsChecked="{Binding EnableUsageStatistics}"/>
+                <!--Usage statistics info-->
+                <Border Margin="0 20 0 0" Padding="10 10 10 10"
+                        CornerRadius="2"
+                        Background="White" BorderThickness="0">
+                    <DockPanel>
+                        <iconPacks:PackIconMaterialDesign Margin="0" VerticalAlignment="Top"
+                                                          Width="20" Height="20" 
+                                                          Foreground="{StaticResource InfoBrush}" Kind="Info" />
+                        <TextBlock Margin="10 0 0 0" TextWrapping="Wrap" LineHeight="20">
+                            <Run Text="{Binding UsageStatisticsExplanationText, Mode=OneWay}"/>
+                            <LineBreak/>
+                            <Run Text="{Binding Translation.UsageStatisticsManualLinkText, Mode=OneWay}"/>
+                            <Hyperlink Command="{Binding ShowUserGuideCommand}" CommandParameter="{x:Static help:HelpTopic.AppGeneral}"
+                                       Style="{StaticResource DefaultHyperLink}">
+                                <TextBlock Text="{Binding Translation.UsageStatisticsLink}" />
+                            </Hyperlink>
+                            <LineBreak/>
+                            <Run Text="{Binding Translation.PrivacyPolicy, Mode=OneWay}"/>
+                            <Hyperlink NavigateUri="{Binding PrivacyPolicy}"
+                                       Command="{Binding VisitWebsiteCommand}"
+                                       Style="{StaticResource DefaultHyperLink}">
+                                <TextBlock Text="{Binding Translation.PrivacyPolicyLink}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
 
-                    <StackPanel VerticalAlignment="Top" Grid.Column="1" Margin="0 20 0 10">
-                        <Border Padding="10" Background="White" BorderThickness="0">
-                            <StackPanel Orientation="Horizontal" Width="910">
-                                <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoIconBrush}" VerticalAlignment="Top" Margin="0" Kind="Info" />
-                                <TextBlock TextAlignment="Justify" Width="800" LineHeight="20" TextWrapping="Wrap" Margin="10 0 0 0">
-                                    <Run Text="{Binding UsageStatisticsExplanationText, Mode=OneWay}"/>
-
-                                    <LineBreak/>
-                                    <Run Text="{Binding Translation.UsageStatisticsManualLinkText, Mode=OneWay}"/>
-                                    <Hyperlink Command="{Binding ShowUserGuideCommand}" CommandParameter="{x:Static help:HelpTopic.AppGeneral}">
-                                        <TextBlock Text="{Binding Translation.UsageStatisticsLink}" Style="{DynamicResource HyperLinkTextBlock}"/>
-                                    </Hyperlink>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Translation.PrivacyPolicy, Mode=OneWay}"/>
-                                    <Hyperlink NavigateUri="{Binding PrivacyPolicy}"
-                                               Command="{Binding VisitWebsiteCommand}">
-                                        <TextBlock Text="{Binding Translation.PrivacyPolicyLink}"  Style="{DynamicResource HyperLinkTextBlock}" />
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
+            <!--Show usage statistics expander-->
+            <Expander DockPanel.Dock="Top" Margin="0 20 0 0" 
+                      VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                      IsExpanded="False"
+                      Style="{StaticResource HoverExpander}">
+                <Expander.Header>
+                    <Label Content="{Binding Translation.ShowSampleStatistics}"/>
+                </Expander.Header>
+                <StackPanel>
+                    <StackPanel>
+                        <Label Content="{Binding Translation.JobStatisticsExample}" 
+                               Style="{StaticResource LightLabel}" />
+                        <TextBlock HorizontalAlignment="Left" 
+                                   Text="{Binding  SampleStatisticsJobData}" 
+                                   FontSize="12" FontFamily="Consolas"/>
                     </StackPanel>
-
-                    <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" Margin="0 10 0 20" HorizontalAlignment="Left" IsExpanded="False"
-                              Header="{Binding Translation.ShowSampleStatistics}">
-                        <Border  Background="White" Padding="15" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0">
-                                    <Label  Content="{Binding Translation.JobStatisticsExample}" FontWeight="DemiBold"></Label>
-                                    <TextBlock Margin="4 2" Grid.Column="0" HorizontalAlignment="Left" Text="{Binding  SampleStatisticsJobData}" FontSize="12" FontFamily="Consolas"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="1" Visibility="{Binding ShowServiceSample, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Label Content="{Binding Translation.ServiceStatisticsExample}"  FontWeight="DemiBold"/>
-                                    <TextBlock Margin="4 2" HorizontalAlignment="Left" Text="{Binding  SampleStatisticsData}" FontSize="12" FontFamily="Consolas"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </Expander>
+                    <StackPanel Margin="0 10 0 0" 
+                                Visibility="{Binding ShowServiceSample, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Label Content="{Binding Translation.ServiceStatisticsExample}" 
+                               Style="{StaticResource LightLabel}"/>
+                        <TextBlock HorizontalAlignment="Left" 
+                                   Text="{Binding  SampleStatisticsData}" 
+                                   FontSize="12" FontFamily="Consolas"/>
+                    </StackPanel>
                 </StackPanel>
-            </Grid>
+            </Expander>
         </StackPanel>
         <gpo:GPOLockLayer IsLockedByGpo="{ Binding IsDisabledByGpo }" />
     </Grid>

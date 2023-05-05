@@ -119,6 +119,7 @@
     <Compile Include="Banner\FrequentTipsControl\FrequentTipsTranslation.cs" />
     <Compile Include="Banner\FrequentTipsControl\FrequentTipsControlViewModel.cs" />
     <Compile Include="Banner\FrequentTipsControl\FrequentTip.cs" />
+    <Compile Include="Behaviors\AllowableCharactersTextBoxBehavior.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountEditCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountRemoveCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountAddCommand.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Commands\NavigatePrismRegionCommand.cs" />
     <Compile Include="Commands\PrioritySupportCommand\DisabledPrioritySupportUrlOpenCommand.cs" />
     <Compile Include="Commands\PrioritySupportCommand\IPrioritySupportUrlOpenCommand.cs" />
+    <Compile Include="Commands\ProfileCommands\WaitMainShellClosedCommand.cs" />
     <Compile Include="Commands\QuickActions\QuickActionCommandBase.cs" />
     <Compile Include="Commands\QuickActions\QuickActionOpenExplorerLocationCommand.cs" />
     <Compile Include="Commands\QuickActions\QuickActionPrintWithPdfArchitectCommand.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Commands\RaiseEditSettingsFinishedCommand.cs" />
     <Compile Include="Commands\SaveChangedSettingsCommand.cs" />
     <Compile Include="Commands\AccountCommands\FtpAccountAddCommand.cs" />
+    <Compile Include="Commands\SelectFileViaDialogAndConvertCommand.cs" />
     <Compile Include="Commands\TitleReplacements\TitleReplacementAddCommand.cs" />
     <Compile Include="Commands\TitleReplacements\TitleReplacementEditCommand.cs" />
     <Compile Include="Commands\TitleReplacements\TitleReplacementRemoveCommand.cs" />
@@ -179,7 +182,12 @@
     </Compile>
     <Compile Include="Converter\BoolToShownColorConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\ColumnConverter.cs" />
+    <Compile Include="Converter\ExistingFileBehaviourConverter.cs" />
+    <Compile Include="Converter\ObjectToObjectOrTranslatableConverter.cs" />
     <Compile Include="Converter\ValueEqualsParameterConverter.cs" />
+    <Compile Include="DesignTime\DesignTimeCreatorSettingsButtonsViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeDirectImageConversionSettingsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeDrawSignatureViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeCsScriptActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeErrorViewModel.cs" />
@@ -187,7 +195,9 @@
     <Compile Include="DesignTime\DesignTimeFtpConnectionTester.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionInvoker.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionRequest.cs" />
+    <Compile Include="DesignTime\DesignTimeOsHelper.cs" />
     <Compile Include="DesignTime\DesignTimeOpenFileInteractionHelper.cs" />
+    <Compile Include="DesignTime\DesignTimeDirectConvertViewModel.cs" />
     <Compile Include="DesignTime\DesignTimePasswordOverlayViewModel.cs" />
     <Compile Include="DesignTime\DesignTimePathUtil.cs" />
     <Compile Include="DesignTime\DesignTimePdfEditorHelper.cs" />
@@ -206,6 +216,7 @@
     <Compile Include="DesignTime\DesignTimePageNumbersActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeStampActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeTestFileDummyHelper.cs" />
+    <Compile Include="DesignTime\DesignTimeTitleReplacementsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeTokenViewModelFactory.cs" />
     <Compile Include="DesignTime\DesignTimeUserTokenActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWebLinkLauncher.cs" />
@@ -216,24 +227,24 @@
     <Compile Include="DesignTime\Helper\DesignTimeEditionHelper.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeFontSelectorControlViewModelFactory.cs" />
     <Compile Include="DesignTime\DesignTimeJobStepPasswordViewModelBase.cs" />
+    <Compile Include="Events\MainShellClosedEvent.cs" />
     <Compile Include="Events\ManagePrintJobEvent.cs" />
     <Compile Include="Helper\PdfEditorHelper.cs" />
-    <Compile Include="Styles\Redesign5\ContextMenuButton\ContextMenuButton.xaml.cs">
+    <Compile Include="Styles\ContextMenuButton\ContextMenuButton.xaml.cs">
       <DependentUpon>ContextMenuButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Styles\Redesign5\ContextMenuButton\DataContextProxy.cs" />
+    <Compile Include="Styles\ContextMenuButton\DataContextProxy.cs" />
     <Compile Include="Events\NavigateApplicationSettingsEvent.cs" />
     <Compile Include="Helper\SettingsLoader\PDFCreatorSettingsLoader.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModel.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModelBuilder.cs" />
     <Compile Include="Helper\Font\FontSelectorControlViewModelFactory.cs" />
     <Compile Include="RegionViewName.cs" />
-    <Compile Include="Styles\Redesign5\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml.cs">
+    <Compile Include="Styles\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml.cs">
       <DependentUpon>OnOffLabelToggleSwitchCheckBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Styles\Redesign5\Icons\IconResource.cs" />
-    <Compile Include="Styles\Redesign5\OutputFormatToVisiblityConverter.cs" />
-    <Compile Include="Styles\Redesign5\OutputFormat\GetOutputFormatDescription.cs" />
+    <Compile Include="Styles\Icons\IconResource.cs" />
+    <Compile Include="Styles\OutputFormat\GetOutputFormatDescription.cs" />
     <Compile Include="UserControls\Accounts\AccountCell.xaml.cs">
       <DependentUpon>AccountCell.xaml</DependentUpon>
     </Compile>
@@ -313,9 +324,6 @@
       <DependentUpon>SelectFilesUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BindableTextBox.cs" />
-    <Compile Include="Controls\Buttons\ColoredDropDownButton.xaml.cs">
-      <DependentUpon>ColoredDropDownButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Buttons\CustomColoredButton.xaml.cs">
       <DependentUpon>CustomColoredButton.xaml</DependentUpon>
     </Compile>
@@ -387,7 +395,6 @@
     <Compile Include="Converter\EqualsNullConverter.cs" />
     <Compile Include="Converter\OneWayEnumToBooleanConverter.cs" />
     <Compile Include="Converter\EnumToBooleanConverter.cs" />
-    <Compile Include="Converter\IconConverter.cs" />
     <Compile Include="Converter\OutputFormatToTextConverter.cs" />
     <Compile Include="Converter\StringIsNullOrWhiteSpaceConverter.cs" />
     <Compile Include="Converter\TokenReplacerConverter.cs" />
@@ -464,11 +471,11 @@
     <Compile Include="Helper\ParameterPreviewToken.cs" />
     <Compile Include="Helper\ReadableFileSizeFormatter.cs" />
     <Compile Include="Helper\FlashWindow.cs" />
-    <Compile Include="Helper\Gpo\GPOLockLayer.xaml.cs">
+    <Compile Include="Styles\Gpo\GPOLockLayer.xaml.cs">
       <DependentUpon>GPOLockLayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helper\Gpo\GPOLockLayerViewModel.cs" />
-    <Compile Include="Helper\Gpo\GpoTranslation.cs" />
+    <Compile Include="Styles\Gpo\GPOLockLayerViewModel.cs" />
+    <Compile Include="Styles\Gpo\GpoTranslation.cs" />
     <Compile Include="Helper\HightlightColorRegistration.cs" />
     <Compile Include="Helper\MailSignature\MailSignatureHelperFreeVersion.cs" />
     <Compile Include="Helper\MailSignature\MailSignatureHelperLicensed.cs" />
@@ -503,7 +510,6 @@
     <Compile Include="NavigationChecks\SettingsCheckResult.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RegionHelper.cs" />
-    <Compile Include="RegionManager\ManagedRegionManager.cs" />
     <Compile Include="RegionManager\PrismConstants.cs" />
     <Compile Include="Routing\IMainShellStartupAction.cs" />
     <Compile Include="Routing\StartupActionHandler.cs" />
@@ -543,9 +549,6 @@
       <DependentUpon>LicenseExpirationReminderControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\LicenseExpirationReminderViewModel.cs" />
-    <Compile Include="UserControls\Misc\WarningIconControl.xaml.cs">
-      <DependentUpon>WarningIconControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Misc\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
@@ -568,7 +571,6 @@
     </Compile>
     <Compile Include="UserControls\PrintJob\DropboxShareLinkStep\DropboxShareLinkStepViewModel.cs" />
     <Compile Include="UserControls\PrintJob\ChangeJobCheckAndProceedCommandBuilder.cs" />
-    <Compile Include="UserControls\PrintJob\QuickActionStep\DropDownButtonItem.cs" />
     <Compile Include="UserControls\PrintJob\QuickActionStep\QuickActionTranslation.cs" />
     <Compile Include="UserControls\PrintJob\QuickActionStep\QuickActionViewModel.cs" />
     <Compile Include="UserControls\PrintJob\QuickActionStep\QuickActionView.xaml.cs">
@@ -612,7 +614,7 @@
       <DependentUpon>OutputFormatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\TransposerHelper.cs" />
-    <Compile Include="Styles\Redesign5\ProfilesComboBox.xaml.cs">
+    <Compile Include="Styles\ProfilesComboBox.xaml.cs">
       <DependentUpon>ProfilesComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SelectFiles\SelectFileInteraction.cs" />
@@ -690,6 +692,10 @@
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowEditorViewModel.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\WorkflowSettingsChanged.cs" />
     <Compile Include="UserControls\Settings\ApplicationSettingsViewTranslation.cs" />
+    <Compile Include="UserControls\Settings\CreatorSettingsButtonsView.xaml.cs">
+      <DependentUpon>CreatorSettingsButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\ApplicationSettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml.cs">
       <DependentUpon>EventLogSettingView.xaml</DependentUpon>
     </Compile>
@@ -709,8 +715,17 @@
     <Compile Include="UserControls\Settings\DefaultViewerSettings\DefaultViewerViewModel.cs" />
     <Compile Include="UserControls\Settings\DefaultViewerSettings\DefaultViewerTranslation.cs" />
     <Compile Include="DesignTime\DesignTimeDefaultViewerViewModel.cs" />
-    <Compile Include="UserControls\Settings\GeneralSettingsRegionUserControl.xaml.cs">
-      <DependentUpon>GeneralSettingsRegionUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Settings\DirectConversion\DirectConversionTranslation.cs" />
+    <Compile Include="UserControls\Settings\DirectConversion\DirectImageConversionSettingsViewModel.cs" />
+    <Compile Include="UserControls\Settings\DirectConversion\DirectImageConversionSettingView.xaml.cs">
+      <DependentUpon>DirectImageConversionSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\DirectConversion\DirectConvertView.xaml.cs">
+      <DependentUpon>DirectConvertView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\DirectConversion\DirectConvertViewModel.cs" />
+    <Compile Include="UserControls\Settings\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\GeneralSettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\General\HomeViewSettingsView.xaml.cs">
@@ -721,6 +736,9 @@
       <DependentUpon>HotStandbySettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\General\HotStandbySettingsViewModel.cs" />
+    <Compile Include="UserControls\Settings\General\TestGeneralSettingsViewControl.xaml.cs">
+      <DependentUpon>TestGeneralSettingsViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Settings\UsageStatisticsSettings\UsageStatisticsView.xaml.cs">
       <DependentUpon>UsageStatisticsView.xaml</DependentUpon>
     </Compile>
@@ -845,7 +863,6 @@
     </Compile>
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowTranslation.cs" />
     <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowViewModel.cs" />
-    <Compile Include="UserControls\Profiles\TabHelper\MasterIconTabHeader.cs" />
     <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpJobStepPasswordViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSaveViewModel.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataTabTranslation.cs" />
@@ -936,9 +953,6 @@
     </Compile>
     <Compile Include="UserControls\Profiles\ProfilesViewModel.cs" />
     <Compile Include="UserControls\Profiles\OutputFormat\OutputFormatViewModel.cs" />
-    <Compile Include="UserControls\Profiles\TabHelper\IconTabHeader.cs" />
-    <Compile Include="UserControls\Profiles\TabHelper\IconList.cs" />
-    <Compile Include="UserControls\Profiles\TabHelper\ITabViewModel.cs" />
     <Compile Include="UserControls\Profiles\Save\SaveViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeGeneralSettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\ADebugSettingsItemControlModel.cs" />
@@ -993,7 +1007,7 @@
     <Compile Include="UserControls\Settings\ApplicationSettingsView.xaml.cs">
       <DependentUpon>ApplicationSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Settings\SettingsViewModel.cs" />
+    <Compile Include="UserControls\Settings\CreatorSettingsButtonsViewModel.cs" />
     <Compile Include="UserControls\Settings\TitleReplacementSettings\TitleReplacementsView.xaml.cs">
       <DependentUpon>TitleReplacementsView.xaml</DependentUpon>
     </Compile>
@@ -1030,131 +1044,147 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\CheckBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Buttons\IconButton.xaml">
+    <Page Include="Styles\Buttons\IconButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Buttons\ProfileSettingsPreviewButton.xaml">
+    <Page Include="Styles\Buttons\ProfileSettingsPreviewButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Buttons\SquaredIconButton.xaml">
+    <Page Include="Styles\Buttons\SquaredIconButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\Redesign5\Buttons\DefaultButtons.xaml">
+    <Page Include="Styles\Buttons\DefaultButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\CheckBoxes\DefaultCheckBox.xaml">
+    <Page Include="Styles\CheckBoxes\DefaultCheckBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\CheckBoxes\ToggleSwitchCheckBox.xaml">
+    <Page Include="Styles\CheckBoxes\ToggleSwitchCheckBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\ColorDictionary.xaml">
+    <Page Include="Styles\ColorDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\BorderlessTextBox.xaml">
+    <Page Include="Styles\BorderlessTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\ContextMenuButton\ContextMenuButton.xaml">
+    <Page Include="Styles\ContextMenuButton\ContextMenuButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Datagrid.xaml">
+    <Page Include="Styles\Datagrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\DefaultsDictionary.xaml">
+    <Page Include="Styles\DefaultsDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\DragDropBorder.xaml">
+    <Page Include="Styles\DragDropBorder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\Redesign5\Fonts.xaml">
+    <Page Include="Styles\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\HoverBorder.xaml">
+    <Page Include="Styles\HoverBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\AccountIcons.xaml">
+    <Page Include="Styles\HoverExpander.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\ComponentIcons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Redesign5\Icons\PDFArchitectIcons.xaml">
+    <Page Include="Styles\Hyperlink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\pdfforgeLogos.xaml">
+    <Page Include="Styles\Icons\AccountIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\OutputFormat\OutputFormatIconAndDescriptionControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Redesign5\OutputFormat\OutputFormatIcons.xaml">
+    <Page Include="Styles\Icons\ComponentIcons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\MessageIcons.xaml">
+    <Page Include="Styles\Icons\PDFArchitectIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\Icons.xaml">
+    <Page Include="Styles\Icons\pdfforgeLogos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Icons\TopDownArrow.xaml">
+    <Page Include="Styles\Icons\RotatingGears.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Labels.xaml">
+    <Page Include="Styles\ListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\Combobox.xaml">
+    <Page Include="Styles\OutputFormat\OutputFormatIconControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Redesign5\OutputFormat\SelectOutputFormatButton.xaml">
+    <Page Include="Styles\OutputFormat\OutputFormatIcons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\Redesign5\ScrollBar.xaml">
+    <Page Include="Styles\Icons\MessageIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\TextBlock.xaml">
+    <Page Include="Styles\Icons\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SettingsPreviewButton.xaml">
+    <Page Include="Styles\Icons\GrowingTopDownArrow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Labels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Combobox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\CheckBoxes\OnOffLabelToggleSwitchCheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\OutputFormat\SelectOutputFormatButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\RecommendedAreaSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\SettingsRegion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1202,10 +1232,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Buttons\ColoredDropDownButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Buttons\CustomColoredButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1234,7 +1260,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Helper\Gpo\GPOLockLayer.xaml">
+    <Page Include="Styles\Gpo\GPOLockLayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1242,55 +1268,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\CloseButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\ChildWindowOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\ComboBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\DataGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\FlatDropDownButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Fonts.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Expander.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\CustomListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\GPOLayerStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\ToggleButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\PdfCreatorDropDownButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\RadioButtonList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\TextStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1315,10 +1297,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\LicenseExpirationReminderControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Misc\WarningIconControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1370,7 +1348,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Redesign5\ProfilesComboBox.xaml">
+    <Page Include="Styles\ProfilesComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1446,6 +1424,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Settings\CreatorSettingsButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Settings\DebugSettings\EventLogSettingView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1462,7 +1444,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Settings\GeneralSettingsRegionUserControl.xaml">
+    <Page Include="UserControls\Settings\DirectConversion\DirectImageConversionSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Settings\DirectConversion\DirectConvertView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Settings\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1471,6 +1461,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Settings\General\HotStandbySettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Settings\General\TestGeneralSettingsViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1494,63 +1488,11 @@
       <DependentUpon>MainShell.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Styles\IconButton.xaml">
+    <Page Include="Styles\Gpo\GpoStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\NoChromeButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Badged.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\FileTypeIcons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\GpoStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\ListBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\DefaultButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\RedesignedHeaderPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\HeaderPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Colors.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\DragDropBorder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Icons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Logos.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\MainResourceDict.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\MainWindowNavStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1558,11 +1500,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\TabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\PDFCreatorIcons.xaml">
+    <Page Include="Styles\Icons\AboutViewIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1874,6 +1812,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helper\Update\" />
+    <Folder Include="Styles\Redesign5\Images\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\passwordsmatcher.lst" />
@@ -1883,6 +1822,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\BackgroundWaves.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\architect_info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UserControls\PrintJob\ProfessionalHintStep\Laptop-Top10.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>

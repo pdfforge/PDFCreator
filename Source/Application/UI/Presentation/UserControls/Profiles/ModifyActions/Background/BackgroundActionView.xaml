@@ -13,53 +13,63 @@
     d:DataContext="{d:DesignInstance designTime:DesignTimeBackgroundActionViewModel, IsDesignTimeCreatable=True}"
     help:HelpProvider.HelpTopic="Background">
     <UserControl.Resources>
-        <converter:BoolToVisibilityConverter x:Key="VisibleWhenTrueConverter" TrueValue="Visible" FalseValue="Collapsed" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Title}">
-            <StackPanel>
-                <Label Margin="0 0 0 10" Content="{Binding Translation.BackgroundFileLabelContent}"></Label>
-                <DockPanel LastChildFill="True">
-                    <controls:TokenControl DataContext="{Binding BackgroundTokenViewModel}" />
-                </DockPanel>
-                <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Translation.WarningIsPdf20}"
-                       Visibility="{Binding IsPdf20, Converter={StaticResource VisibleWhenTrueConverter}}" />
+    <HeaderedContentControl Header="{Binding Translation.Title}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
+        <StackPanel>
+            <Label Content="{Binding Translation.BackgroundFileLabelContent}" />
 
-                <Grid Margin="0 10 0 0" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition MinWidth="200" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="10" />
-                        <RowDefinition />
-                        <RowDefinition Height="10" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0"
+            <controls:TokenControl Margin="0 10 0 0"
+                                       DataContext="{Binding BackgroundTokenViewModel}" />
+
+            <TextBlock Margin="0 10 0 0"
+                           Visibility="{Binding IsPdf20, Converter={StaticResource CollapsedIfFalse}}"
+                           Text="{Binding Translation.WarningIsPdf20}"
+                           TextWrapping="Wrap" Foreground="{StaticResource ErrorBrush}" />
+
+            <Grid Margin="0 10 0 0" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition MinWidth="200" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="20" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0"
                            Content="{Binding Translation.OpacityLabel}" />
-                    <Slider  Grid.Row="0" Grid.Column="2" Margin="5"
-                             Value="{Binding CurrentProfile.BackgroundPage.Opacity}" Minimum="0" Maximum="100"
-                              VerticalAlignment="Center" LargeChange="10" />
-                    <Label Grid.Row="0" Grid.Column="3">
-                        <TextBlock TextAlignment="Right" Width="30">
+                <Slider  Grid.Row="0" Grid.Column="2"
+                             Value="{Binding CurrentProfile.BackgroundPage.Opacity}"
+                             Minimum="0" Maximum="100" LargeChange="10" />
+                <Label Grid.Row="0" Grid.Column="3">
+                    <TextBlock TextAlignment="Right" Width="30" Margin="10 0 0 0">
                             <Run Text="{Binding CurrentProfile.BackgroundPage.Opacity}" /><Run Text="%" />
-                        </TextBlock>
-                    </Label>
-                    <Label Grid.Row="2" Grid.Column="0"
+                    </TextBlock>
+                </Label>
+
+                <Label Grid.Row="2" Grid.Column="0"
                            Content="{Binding Translation.BackgroundRepetitionLabelContent}" />
-                    <ComboBox Grid.Row="2" Grid.Column="2"  Margin="5"
+                <ComboBox Grid.Row="2" Grid.Column="2"
                               SelectedValue="{Binding CurrentProfile.BackgroundPage.Repetition}"
                               SelectedValuePath="Value"
                               DisplayMemberPath="Translation"
                               ItemsSource="{Binding Translation.BackgroundRepetitionValues}" />
-                    <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="4 0 0 0"
-                              IsChecked="{Binding CurrentProfile.BackgroundPage.FitToPage}" Content="{Binding Translation.FitToPage}" />
-                </Grid>
-            </StackPanel>
-        </HeaderedContentControl>
-    </Grid>
+            </Grid>
+
+            <CheckBox Margin="0 10 0 0"
+                      IsChecked="{Binding CurrentProfile.BackgroundPage.FitToPage}"
+                      Content="{Binding Translation.FitToPage}" />
+        </StackPanel>
+    </HeaderedContentControl>
 </UserControl>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>NLog</id>
-    <version>5.0.5</version>
+    <version>5.1.4</version>
     <title>NLog for .NET Framework and .NET Standard</title>
     <authors>Jarek Kowalski,Kim Christensen,Julian Verdurmen</authors>
     <license type="expression">BSD-3-Clause</license>
@@ -14,7 +14,7 @@ NLog supports traditional logging, structured logging and the combination of bot
 
 Supported platforms:
 
-- .NET 5 and 6
+- .NET 5, 6 and 7
 - .NET Core 1, 2 and 3
 - .NET Standard 1.3+ and 2.0+
 - .NET Framework 3.5 - 4.8
@@ -22,24 +22,22 @@ Supported platforms:
 - Mono 4
 
 For ASP.NET Core, check: https://www.nuget.org/packages/NLog.Web.AspNetCore</description>
-    <releaseNotes>- InternalLogger - LogFile expand filepath variables (#5092) (@RyanGaudion)
-- ReplaceNewLines - Support Replacement with newlines (#5090) (@Orace)
-- ScopeIndent LayoutRenderer (#5086) (@snakefoot)
-- Introduced TriLetter as LevelFormat (Trc, Dbg, Inf, Wrn, Err, Ftl) (#5085) (@snakefoot)
-- LogFactory.Setup - Added support for RegisterLayout and validate NLog types (#5078) (@snakefoot)
-- AutoFlushTargetWrapper - Fix race-condition that makes unit-tests unstable (#5076) (@snakefoot)
-- Include error-message from inner-exception when layout contains unknown layoutrenderer (#5073) (@snakefoot)
-- ObjectReflectionCache - Skip serializing System.Net.IPAddress (#5065) (@snakefoot)
-- ObjectReflectionCache - Skip reflection of delegate-objects (#5060) (@snakefoot)
-- OnException + OnHasProperties - Added Else-option (#5057) (@snakefoot)
-- LogEventBuilder - Added Log(Type wrapperType) for custom Logger wrapper (#5056) (@snakefoot)
+    <releaseNotes>ChangeLog:
+
+- FileTarget - Recover from file-deleted when same archive-folder (#5207) (@snakefoot)
+- NLog.xsd schema with support for variables section (#5201) (@michaelplavnik)
+- JsonLayout - Added IndentJson for pretty format (#5200) (@nih0n)
+- Log4jXmlEvent - Fix dummy-Namespace when using IncludeScopeProperties (#5197) (@snakefoot)
+- ConfigurationItemFactory - Handle concurrent registration with single lock (#5195) (@snakefoot)
+- AsyncTaskTarget - Include task exception on completed event (#5193) (@snakefoot)
+- ScopeContext - Uniform initial small array sizes (#5186) (@snakefoot)
 
 List of major changes in NLog 5.0: https://nlog-project.org/2022/05/16/nlog-5-0-finally-ready.html
 
 Full changelog: https://github.com/NLog/NLog/blob/master/CHANGELOG.md
 
 For all config options and platform support, check https://nlog-project.org/config/</releaseNotes>
-    <copyright>Copyright (c) 2004-2022 NLog Project - https://nlog-project.org/</copyright>
+    <copyright>Copyright (c) 2004-2023 NLog Project - https://nlog-project.org/</copyright>
     <tags>NLog logging log structured tracing logfiles database eventlog console email</tags>
     <repository type="git" url="https://github.com/NLog/NLog.git" />
     <dependencies>

@@ -224,7 +224,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             if (!result)
             {
                 var message = _errorCodeInterpreter.GetFirstErrorText(result, false);
-                var interaction = new MessageInteraction(message, Translation.TestFtpAccount, MessageOptions.OK, MessageIcon.Error);
+                var interaction = new MessageInteraction(message, Translation.TestFtpAccount, MessageOptions.Ok, MessageIcon.Error);
                 _interactionRequest.Raise(interaction);
                 return;
             }
@@ -242,7 +242,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
             var messageInteraction = new MessageInteraction(
                 resultText,
                 Translation.TestFtpAccount,
-                MessageOptions.OK,
+                MessageOptions.Ok,
                 icon);
             _interactionRequest.Raise(messageInteraction);
         }

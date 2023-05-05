@@ -58,7 +58,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 try
                 {
                     DeleteFile(file.Filename);
-
                     var folder = Path.GetDirectoryName(file.Filename);
                     DeleteFolderIfEmptyAndNotSpool(folder);
                 }

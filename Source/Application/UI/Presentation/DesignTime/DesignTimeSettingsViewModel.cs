@@ -1,12 +1,10 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
-using Prism.Events;
+﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
-    public class DesignTimeSettingsViewModel : SettingsViewModel
+    public class DesignTimeSettingsViewModel : ApplicationSettingsViewModel
     {
-        public DesignTimeSettingsViewModel() : base(null, new DesignTimeTranslationUpdater(), new EventAggregator(), new DesignTimeCommandLocator(), new DesignTimeEditionHelper())
+        public DesignTimeSettingsViewModel() : base(null)
         {
         }
     }

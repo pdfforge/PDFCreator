@@ -5,43 +5,68 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:license="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             Width="540"
-             MinWidth="500"
-             MinHeight="250"
+             Width="600"
+             VerticalAlignment="Stretch"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance license:DesignTimeOfflineActivationUserControlViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="AppLicense">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../../Styles/DefaultButton.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Hyperlink.xaml" />
+                <ResourceDictionary Source="../../../Styles/BorderlessTextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>    
+        </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Margin="10">
-        <Label Content="{Binding Translation.LicenseKeyLabelContent}"></Label>
-        <TextBox Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <Label Name="RequestActivationCodeLabel" Content="{Binding Translation.RequestActivationCodeLabelContent}"></Label>
-        <TextBlock VerticalAlignment="Center" Padding="5 0 5 5">
-            <Hyperlink Command="{Binding OpenOfflineActivationUrlCommand}">
-                <TextBlock Text="{Binding OfflineActivationUrl}"  Style="{DynamicResource HyperLinkTextBlock}"/>
-            </Hyperlink>
-        </TextBlock>
-        <TextBox MinHeight="100" Name="OfflineActivationTextBox"
-                 Text="{Binding OfflineActivationString, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                 TextWrapping="Wrap" AcceptsReturn="True" IsEnabled="{Binding LicenseKeyIsValid}" />
-        <Label  Content="{Binding Translation.PasteResponseLabelContent}"></Label>
-        <TextBox MinHeight="215" Name="LicenseServerTextBox" TextWrapping="Wrap" AcceptsReturn="True"
-                 Text="{Binding LicenseServerAnswer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-            <StackPanel.Resources>
-                <Style x:Key="ButtonStyle" TargetType="Button" BasedOn="{StaticResource RegularButton}">
-                    <Setter Property="Height" Value="40" />
-                    <Setter Property="Margin" Value="10" />
-                    <Setter Property="Padding" Value="20 0" />
-                    <Setter Property="MinWidth" Value="150" />
-                    <Setter Property="MaxWidth" Value="200" />
-                </Style>
-            </StackPanel.Resources>
-            <Button Margin="5" Content="{Binding Translation.OkButtonContent}" IsDefault="True" Command="{Binding OkCommand}" Style="{StaticResource ButtonStyle}"/>
-            <Button Margin="5" Command="{Binding CancelCommand}" Content="{Binding Translation.CancelButtonContent}" Style="{StaticResource ButtonStyle}"/>
-        </StackPanel>
-    </StackPanel>
+    <HeaderedContentControl Margin="20 20 20 20"
+                            Style="{StaticResource BorderlessHeaderPanel}"
+                            Header="{Binding Translation.Title}">
+        <DockPanel LastChildFill="True" >
+            <StackPanel DockPanel.Dock="Bottom" 
+                        Margin="0 20 0 0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button Content="{Binding Translation.OkButtonContent}" 
+                        IsDefault="True" Command="{Binding OkCommand}" 
+                        Style="{StaticResource DefaultInlineButton}"/>
+                <Button Command="{Binding CancelCommand}" 
+                        Content="{Binding Translation.CancelButtonContent}"
+                        Style="{StaticResource DefaultInlineButton}"/>
+            </StackPanel>
+            
+            <!-- Last child fill -->
+            <ScrollViewer Margin="0 0 -20 0" VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="0 0 20 0">
+                    <Label Content="{Binding Translation.LicenseKeyLabelContent}" />
+                    <TextBox Margin="0 10 0 0" 
+                             Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Label Margin="0 20 0 0"
+                           Content="{Binding Translation.CopyTheOfflineActivationString}" />
+                    <TextBox Margin="0 10 0 0"
+                             Text="{Binding OfflineActivationString, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                             MinHeight="105"
+                             Style="{StaticResource MultilineBorderlessTextBox}"
+                             IsEnabled="{Binding LicenseKeyIsValid}"
+                             IsReadOnly="True" />
+                    <Label Margin="0 20 0 0"
+                           Content="{Binding Translation.RequestActivationCodeLabelContent}" />
+                    <TextBlock Margin="0 10 0 0">
+                        <Hyperlink Command="{Binding OpenOfflineActivationUrlCommand}"
+                                   Style="{StaticResource DefaultHyperLink}">
+                            <TextBlock Text="{Binding OfflineActivationUrl}" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <Label Margin="0 20 0 0"
+                           Content="{Binding Translation.PasteResponseLabelContent}" />
+                    <TextBox Margin="0 10 0 0"
+                             Text="{Binding LicenseServerAnswer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Style="{StaticResource MultilineBorderlessTextBox}"
+                             Height="105"/>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </HeaderedContentControl>
 </UserControl>

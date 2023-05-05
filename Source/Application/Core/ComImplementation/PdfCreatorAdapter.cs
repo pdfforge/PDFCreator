@@ -67,7 +67,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             PathCheck(path);
 
             if (!_directConversionHelper.CanConvertDirectly(path))
-                throw new COMException("Only .ps and .pdf files can be directly added to the queue.");
+                throw new COMException("Only .ps, .pdf and image files can be directly added to the queue.");
 
             if (!_spoolFolderAccess.CanAccess())
                 throw new COMException("Accessing the spool folder failed.");

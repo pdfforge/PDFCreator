@@ -1,5 +1,8 @@
 ﻿using NLog;
+using NLog.Targets;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using System.IO;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Core.Services.Logging
 {
@@ -58,6 +61,32 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
         private static LogLevel GetLogLevel(LoggingLevel loggingLevel)
         {
             return LogLevel.FromOrdinal((int)loggingLevel);
+        }
+
+        public static bool ClearLogFile()
+        {
+            var config = LogManager.Configuration;
+            var fileTarget = config.AllTargets.OfType<FileTarget>().FirstOrDefault();
+
+            if (fileTarget == null)
+                return false;
+
+            fileTarget.KeepFileOpen = false;
+            LogManager.Configuration = config;
+
+            try
+            {
+                File.WriteAllText(LogFile, "");
+            }
+            catch
+            {
+                return false;
+            }
+
+            fileTarget.KeepFileOpen = true;
+            LogManager.Configuration = config;
+
+            return true;
         }
     }
 }

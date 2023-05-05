@@ -1,0 +1,78 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ColorDictionary.xaml" />
+        <ResourceDictionary Source="HoverBorder.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
+
+    <Style x:Key="HoverExpander" TargetType="{x:Type Expander}">
+        <Setter Property="Padding" Value="0 0 15 15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Expander">
+                    <Border VerticalAlignment="Top">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource HoverBorder}">
+                                <Style.Triggers>
+                                    <!-- Suppress Hover if expanded -->
+                                    <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                                 Value="True">
+                                        <Setter Property="Border.Background" Value="{StaticResource HoverBorderBackgroundBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <ToggleButton IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                      Background="Transparent"
+                                      BorderBrush="{x:Null}"
+                                      BorderThickness="0"
+                                      Padding="0"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Top">
+                            <Grid Margin="10 0 10 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="33" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <ContentControl Grid.Row="0" Grid.Column="0"
+                                                Margin="0 0 10 0"
+                                                Foreground="{StaticResource HighlightBrush}"
+                                                VerticalContentAlignment="Center" VerticalAlignment="Center">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                    <Setter Property="LayoutTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180" CenterX="0.5" CenterY="0.5" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                    <iconPacks:MaterialDesign Kind="ExpandMore" Width="10" />
+                                </ContentControl>
+
+                                <ContentPresenter Grid.Row="0" Grid.Column="1"
+                                                  VerticalAlignment="Center"
+                                                  Content="{TemplateBinding Header}" />
+                                <ContentPresenter Grid.Row="1" Grid.Column="1" Margin="{TemplateBinding Padding}"
+                                                  Visibility="{TemplateBinding IsExpanded, Converter={StaticResource CollapsedIfFalse}}"
+                                                  Content="{TemplateBinding Content}" />
+                            </Grid>
+                        </ToggleButton>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

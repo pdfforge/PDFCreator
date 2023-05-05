@@ -11,6 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
         public ApplicationLogoControl()
         {
             ViewCustomization viewCustomization = null;
+            InitializeComponent();
             if (RestrictedServiceLocator.IsLocationProviderSet)
             {
                 DataContext = RestrictedServiceLocator.Current.GetInstance<ApplicationNameProvider>();
@@ -20,10 +21,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls
                 highlight.RegisterHighlightColorResource(this);
             }
 
-            InitializeComponent();
-
             CustomEditionText.Text = viewCustomization?.MainWindowText;
             TrialText.Text = viewCustomization?.TrialText;
         }
+
+
     }
 }

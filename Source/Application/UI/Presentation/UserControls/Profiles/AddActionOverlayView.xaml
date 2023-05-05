@@ -17,7 +17,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary  Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/ListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -25,22 +26,6 @@
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="Margin" Value="2" />
                 <Setter Property="BorderThickness" Value="0" />
-            </Style>
-            <Style x:Key="CustomListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <DockPanel>
-                                <ContentPresenter Cursor="{x:Static Cursors.Arrow}" />
-                            </DockPanel>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Focusable" Value="False" />
-                <Style.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"  Color="Transparent" />
-                </Style.Resources>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -61,14 +46,7 @@
             <Label Content="{Binding Translation.Preparation}"
                    Margin="3 10 3 20" />
             <ListBox ItemsSource="{Binding PreparationActions}"
-                     ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
-                <ListBox.Style>
-                    <Style TargetType="{x:Type ListBox}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Background" Value="Transparent" />
-                    </Style>
-                </ListBox.Style>
+                     Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="local:IActionViewModel">
                         <Button Content="{Binding Title}"
@@ -98,14 +76,7 @@
             <Label Content="{Binding Translation.Modify}"
                    Margin="3 10 3 20" />
             <ListBox ItemsSource="{Binding ModifyActions}"
-                     ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
-                <ListBox.Style>
-                    <Style TargetType="{x:Type ListBox}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Background" Value="Transparent" />
-                    </Style>
-                </ListBox.Style>
+                     Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="local:IActionViewModel">
                         <Button Content="{Binding Title}"
@@ -134,14 +105,7 @@
             <Label Content="{Binding Translation.Send}"
                    Margin="3 10 3 20" />
             <ListBox ItemsSource="{Binding SendActions}"
-                     ItemContainerStyle="{StaticResource CustomListBoxItemStyle}">
-                <ListBox.Style>
-                    <Style TargetType="{x:Type ListBox}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Background" Value="Transparent" />
-                    </Style>
-                </ListBox.Style>
+                     Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="local:IActionViewModel">
                         <Button Content="{Binding Title}"

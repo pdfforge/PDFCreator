@@ -82,7 +82,11 @@
 % as well as with PostScript interpreters; .gsf fonts are compatible with
 % PostScript interpreters, but not with ATM or similar programs.
 
-% 
+% NOTE: (as of 9.56.0) The use of Postscript operators in the cidfmap file is now deprecated, for
+% compatibility with (and security of) the PDF interpreter implemented in C (rather than Postscript).
+% Thus operations such as "getenv", "cvn" and ".concatstrings" are no longer supported.
+
+%
 %
 % Fonts contributed by:
 %	URW++ Design and Development Incorporated

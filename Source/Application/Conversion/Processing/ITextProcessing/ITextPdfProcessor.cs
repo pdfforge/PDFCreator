@@ -1,8 +1,10 @@
-﻿using iText.Kernel.Pdf;
+﻿using iText.Kernel.Crypto;
+using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Navigation;
 using iText.Kernel.XMP;
 using iText.Pdfa;
 using iText.Signatures;
+using NLog;
 using pdfforge.PDFCreator.Conversion.Ghostscript;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -25,6 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             public string TempFileName;
         }
 
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private readonly ITextStampAdder _stampAdder;
         private readonly ITextPageNumbersAdder _pageNumbersAdder;
         private readonly IFontPathHelper _fontPathHelper;
@@ -38,17 +41,38 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         }
 
         /// <summary>
-        ///     Determines number of pages in PDF file
+        ///     Determines number of pages of an encrypted PDF file
         /// </summary>
         /// <param name="pdfFile">Full path to PDF file</param>
+        /// <param name="password">Password of the encrypted file. <see langword="null" /> if the file is not encrypted</param>
         /// <returns>Number of pages in pdf file</returns>
-        public override int GetNumberOfPages(string pdfFile)
+        public override int GetNumberOfPages(string pdfFile, string password = null)
         {
-            using (var pdfReader = new PdfReader(pdfFile))
-            using (var pdfDocument = new PdfDocument(pdfReader))
+            try
             {
-                var numberOfPages = pdfDocument.GetNumberOfPages();
-                return numberOfPages;
+                using (var pdfReader = GetReader(password, pdfFile))
+                using (var pdfDocument = new PdfDocument(pdfReader))
+                {
+                    var numberOfPages = pdfDocument.GetNumberOfPages();
+                    return numberOfPages;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is not BadPasswordException) 
+                    throw;
+                
+                if (string.IsNullOrEmpty(password))
+                {
+                    _logger.Warn($"The file with path '{pdfFile}' is password protected and no owner password has been provided.");
+                    _logger.Warn("The job will continue with EnsureUniqueFilenames and will not be merged.");
+                }
+                else
+                {
+                    _logger.Warn($"The provided password does not match the password of the encrypted file '{pdfFile}'");
+                    _logger.Warn("The job will continue with EnsureUniqueFilenames and will not be merged.");
+                }
+                return 0;
             }
         }
 
@@ -322,14 +346,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             }
         }
 
-        private PdfReader GetReader(Job job, string sourceFile)
+        private PdfReader GetReader(string password, string sourceFile)
         {
             ReaderProperties readerProperties = new ReaderProperties();
 
-            if (job.Profile.PdfSettings.Security.Enabled)
-            {
-                readerProperties.SetPassword(Encoding.Default.GetBytes(job.Passwords.PdfOwnerPassword));
-            }
+            if (!string.IsNullOrEmpty(password))
+                readerProperties.SetPassword(Encoding.Default.GetBytes(password));
             return new PdfReader(sourceFile, readerProperties);
         }
 
@@ -346,7 +368,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var sourceFile = job.IntermediatePdfFile;
             var targetFile = AddTailToFile(sourceFile, "_processed");
 
-            using (PdfReader pdfReader = GetReader(job, sourceFile))
+            using (PdfReader pdfReader = GetReader(job.Passwords.PdfOwnerPassword, sourceFile))
             using (PdfWriter pdfWriter = new PdfWriter(targetFile))
             {
                 var signer = new PdfSigner(pdfReader, pdfWriter, new StampingProperties().PreserveEncryption().UseAppendMode());

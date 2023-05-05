@@ -6,175 +6,39 @@
              xmlns:regions="http://prismlibrary.com/"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
-             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-             xmlns:settings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings"
+             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
              mc:Ignorable="d"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:helper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper"
-             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance designTime:DesignTimeSettingsViewModel, IsDesignTimeCreatable=True}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <converter:StringMatchToShowColourConverter x:Key="StringToActiveColorConverter" ColourActive="{StaticResource GeneralSettingsButtonInActiveBackground}"
-                                                        ColourInActive="{StaticResource GeneralSettingsButtonActiveBackground}" />
-            <converter:StringMatchToShowColourConverter x:Key="StringToActiveForegroundColorConverter" ColourActive="{StaticResource GeneralSettingsButtonInActiveForeground}"
-                                                        ColourInActive="{StaticResource GeneralSettingsButtonActiveForeground }" />
-            <converter:ValueIsNotEqualToParameterConverter x:Key="ValueIsNotEqualToParameterConverter" />
-            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" FalseValue="Collapsed" TrueValue="Visible" />
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
-
-    <Border BorderBrush="Transparent" BorderThickness="0" Margin="0 0 0 0">
-            <Grid Margin="0 40 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" >
-                <StackPanel.Resources>
-                    <Style TargetType="Grid" x:Key="InnerGrid">
-                        <Style.Setters>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="Width" Value="180"/>
-                            <Setter Property="Height" Value="33"/>
-                        </Style.Setters>
-                    </Style>
-                    <Style TargetType="{x:Type iconPacks:PackIconMaterialDesign}" >
-                        <Style.Setters>
-                            <Setter Property="Height" Value="16"/>
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style.Setters>
-                    </Style>
-
-                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlock}" >
-                        <Style.Setters>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="0 0 0 0"/>
-                        </Style.Setters>
-                    </Style>
-
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
-                        <Setter Property="Margin" Value="0 1 0 1" />
-                        <Setter Property="ToolTipService.InitialShowDelay" Value="1500" />
-                        <Setter Property="Height" Value="33" />
-                        <Setter Property="MinWidth" Value="180" />
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="BorderBrush" Value="Transparent" />
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Command" Value="{Binding NavigateCommand}" />
-                    </Style>
-                </StackPanel.Resources>
-
-                <Button
-                    Background="{ Binding Converter={StaticResource StringToActiveColorConverter}, ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Path=ActivePath }"
-                    Foreground="{ Binding Converter={StaticResource StringToActiveForegroundColorConverter}, ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Path=ActivePath}"
-                    IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Path=ActivePath}"
-                    help:HelpProvider.HelpTopic="AppGeneral"
-                    CommandParameter="{x:Static presentation:RegionViewName.GeneralSettingsRegionView}" HorizontalContentAlignment="Left" ToolTip="{Binding Translation.General}">
-                    <Grid Style="{StaticResource InnerGrid}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Settings"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Translation.General}"
-                                   Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-                    </Grid>
-                </Button>
-
-                <Button Padding="0"
-                        Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
-                        Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
-                        IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Path=ActivePath}"
-                        help:HelpProvider.HelpTopic="AppTitle"
-                        CommandParameter="{x:Static presentation:RegionViewName.TitleReplacementsRegionView}" ToolTip="{Binding Translation.Title}">
-                    <Grid Style="{StaticResource InnerGrid}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Title"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Translation.Title}"
-                                   Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-                    </Grid>
-                </Button>
-
-                <Button
-                    Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
-                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
-                    IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Path=ActivePath}"
-                    help:HelpProvider.HelpTopic="AppDebug"
-                    CommandParameter="{x:Static presentation:RegionViewName.DebugSettingRegionView}" ToolTip="{Binding Translation.Debug}" >
-                    <Grid Style="{StaticResource InnerGrid}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="BugReport" />
-                        <TextBlock Grid.Column="2" Text="{Binding Translation.Debug}"
-                                   Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-                    </Grid>
-                </Button>
-
-                <Button
-                    Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
-                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
-                    IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Path=ActivePath}"
-                    help:HelpProvider.HelpTopic="AppViewer"
-                    CommandParameter="{x:Static presentation:RegionViewName.DefaultViewerRegionView}" ToolTip="{Binding Translation.Viewer}" >
-                    <Grid Style="{StaticResource InnerGrid}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="ViewCarousel" />
-                        <TextBlock Grid.Column="2" Text="{Binding Translation.Viewer}"
-                                   Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-                    </Grid>
-                </Button>
-
-                <Button
-                    Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
-                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
-                    IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Path=ActivePath}"
-                    help:HelpProvider.HelpTopic="AppLicense"
-                    CommandParameter="{x:Static presentation:RegionViewName.LicenseSettingsRegionView}" ToolTip="{Binding Translation.License}"
-                    Visibility="{Binding ShowLicense, Converter={StaticResource CollapsedIfFalseConverter}}">
-                    <Grid Style="{StaticResource InnerGrid}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="110"/>
-                        </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="AccountBox" />
-                        <TextBlock Grid.Column="2" Text="{Binding Translation.License}"
-                                   Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-                    </Grid>
-                </Button>
-            </StackPanel>
-                <ContentControl Grid.Column="1" Margin="50 0 0 0" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ApplicationSettingsTabsRegion}" />
-
-        </Grid>
-        </Border>
-        <gpo:GPOLockLayer IsLockedByGpo="{ Binding ApplicationSettingsIsDisabled }" />
+        <Grid.ColumnDefinitions>
+            <!--Tab buttons-->
+            <ColumnDefinition Width="Auto"/>
+            <!--Margin-->
+            <!--35=40-5 to align with SettingsRegion style-->
+            <ColumnDefinition Width="35"/>
+            <!--Tab content-->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" MaxWidth="800"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ContentControl Grid.Column="0" Margin="0 40 0 0"
+                                regions:RegionManager.RegionName="{x:Static presentation:RegionNames.ApplicationSettingsTabsRegion}" />
+            </Grid>
+        </ScrollViewer>
+        <gpo:GPOLockLayer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
+                          IsLockedByGpo="{Binding ActivePathIsLockedByGpo}" />
+        <!--Add the buttons last to keep them above the GPO layer-->
+        <ContentControl Grid.Column="0" Grid.Row="1" IsTabStop="False" 
+                        regions:RegionManager.RegionName="{x:Static presentation:RegionNames.GeneralSettingsButtonRegion}" />
     </Grid>
 
 </UserControl>

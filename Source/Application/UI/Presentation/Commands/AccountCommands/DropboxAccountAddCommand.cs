@@ -59,7 +59,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             catch (Exception ex)
             {
                 _logger.Error(ex, "An error occured trying to add Dropbox account.");
-                var errorMessageInteraction = new MessageInteraction(Translation.DropboxAccountCreationErrorMessage, Translation.AddDropboxAccount, MessageOptions.OK, MessageIcon.Warning);
+                var errorMessageInteraction = new MessageInteraction(Translation.DropboxAccountCreationErrorMessage, Translation.AddDropboxAccount, MessageOptions.Ok, MessageIcon.Warning);
                 _interactionRequest.Raise(errorMessageInteraction, IsDoneWithErrorCallback);
                 return;
             }

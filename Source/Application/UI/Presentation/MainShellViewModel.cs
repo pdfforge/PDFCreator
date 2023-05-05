@@ -53,6 +53,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private bool _updateInfoWasShown;
         private readonly IStartupRoutine _startupRoutine;
         private readonly IPdfEditorHelper _pdfEditorHelper;
+        private readonly EditionHelper _editionHelper;
+        private readonly IOsHelper _osHelper;
 
         public bool HidePdfArchitectInfo => GpoSettings.HidePdfArchitectInfo || _pdfEditorHelper.UseSodaPdf;
 
@@ -72,13 +74,16 @@ namespace pdfforge.PDFCreator.UI.Presentation
             get => ShowUpdate ? "!" : "";
         }
 
+        public bool OfferManageLicenses { get; set; }
+
         public MainShellViewModel(DragAndDropEventHandler dragAndDrop, ITranslationUpdater translation,
             ApplicationNameProvider applicationName, IInteractionRequest interactionRequest,
             IEventAggregator aggregator, ICommandLocator commandLocator, IDispatcher dispatcher,
             IRegionManager regionManager, IGpoSettings gpoSettings, IUpdateHelper updateHelper, IEventAggregator eventAggregator,
             IStartupActionHandler startupActionHandler, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider,
             IVersionHelper versionHelper, IOnlineVersionHelper onlineVersionHelper,
-            IStartupRoutine startupActions, IPdfEditorHelper pdfEditorHelper)
+            IStartupRoutine startupActions, IPdfEditorHelper pdfEditorHelper,
+            EditionHelper editionHelper, IOsHelper osHelper)
             : base(translation)
         {
             _aggregator = aggregator;
@@ -87,6 +92,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             _startupRoutine = startupActions;
             _pdfEditorHelper = pdfEditorHelper;
+            _editionHelper = editionHelper;
+            _osHelper = osHelper;
             _dispatcher = dispatcher;
             _regionManager = regionManager;
             _updateHelper = updateHelper;
@@ -119,11 +126,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
             aggregator.GetEvent<ExitApplicationEvent>().Subscribe(OnExitApplication);
 
             ReadMoreUsageStatsCommand = commandLocator?.CreateMacroCommand()
-                .AddCommand(new DelegateCommand(_ => SetUsageStatsInfo()))
+                .AddCommand(new DelegateCommand(o => { ShowUsageStatsInfo = false; }))
                 .AddCommand(NavigateCommand)
                 .Build();
 
-            DismissUsageStatsInfoCommand = new DelegateCommand(o => SetUsageStatsInfo());
+            DismissUsageStatsInfoCommand = new DelegateCommand(o => { ShowUsageStatsInfo = false; });
         }
 
         private void OnCloseMainWindow()
@@ -152,12 +159,6 @@ namespace pdfforge.PDFCreator.UI.Presentation
         }
 
         public string UsageStatisticsInfoText => Translation.FormatUsageStatisticsInfoText(ApplicationName.ApplicationNameWithEdition);
-
-        private void SetUsageStatsInfo()
-        {
-            _usageStatisticsProvider.Settings.UsageStatsInfo = false;
-            RaisePropertyChanged(nameof(ShowUsageStatsInfo));
-        }
 
         public bool ShowUsageStatsInfo
         {
@@ -271,6 +272,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _setShowUpdateEventToken = _eventAggregator.GetEvent<SetShowUpdateEvent>().Subscribe(
                 value => ShowUpdate = value
                 );
+
+            OfferManageLicenses = true;
+            if (_editionHelper.IsTerminalServer)
+                OfferManageLicenses = _osHelper.UserIsAdministrator();
+            RaisePropertyChanged(nameof(OfferManageLicenses));
         }
 
         public async Task UnmountViewAsync()

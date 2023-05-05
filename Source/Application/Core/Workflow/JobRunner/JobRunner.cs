@@ -27,6 +27,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IDirectory _directory;
         private readonly IDirectoryHelper _directoryHelper;
         private readonly IActionExecutor _actionExecutor;
+        private readonly IMergeBeforeActionsHelper _mergeBeforeActionsHelper;
         private readonly IJobCleanUp _jobClean;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ITempFolderProvider _tempFolderProvider;
@@ -34,7 +35,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public JobRunner(ITokenReplacerFactory tokenReplacerFactory,
             IConverterFactory converterFactory, IJobCleanUp jobClean, ITempFolderProvider tempFolderProvider, IDirectory directory,
-            IDirectoryHelper directoryHelper, IActionExecutor actionExecutor)
+            IDirectoryHelper directoryHelper, IActionExecutor actionExecutor, IMergeBeforeActionsHelper mergeBeforeActionsHelper)
         {
             _tokenReplacerFactory = tokenReplacerFactory;
             _converterFactory = converterFactory;
@@ -43,6 +44,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _directory = directory;
             _directoryHelper = directoryHelper;
             _actionExecutor = actionExecutor;
+            _mergeBeforeActionsHelper = mergeBeforeActionsHelper;
         }
 
         /// <summary>
@@ -63,6 +65,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 // TODO: Use async/await
                 _actionExecutor.CallPreConversionActions(job);
                 _actionExecutor.ApplyRestrictions(job);
+                _mergeBeforeActionsHelper.HandleMerge(job);
 
                 var converter = _converterFactory.GetConverter(job.JobInfo.JobType);
                 var reportProgress = new EventHandler<ConversionProgressChangedEventArgs>((sender, args) => job.ReportProgress(args.Progress));
@@ -154,6 +157,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             if (job.JobTempFolder == null || !_directory.Exists(job.JobTempFolder))
             {
                 job.JobTempFolder = _tempFolderProvider.CreatePrefixTempFolder("Job");
+
                 _directory.CreateDirectory(job.JobTempFolder);
             }
 
@@ -167,7 +171,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 var tempPath = PathSafe.Combine(_tempFolderProvider.TempFolder,
                     "Job_tempsave_" + PathSafe.GetFileNameWithoutExtension(Path.GetRandomFileName()));
 
-                job.OutputFileTemplate = PathSafe.Combine(tempPath, PathSafe.GetFileNameWithoutExtension(job.OutputFileTemplate));
+                job.OutputFileTemplate = PathSafe.Combine(tempPath, PathSafe.GetFileName(job.OutputFileTemplate));
             }
         }
     }

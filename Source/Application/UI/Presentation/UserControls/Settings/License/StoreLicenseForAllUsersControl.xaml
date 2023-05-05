@@ -5,10 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance designTime:DesignTimeStoreLicenseForAllUsersWindowViewModel, IsDesignTimeCreatable=True}"
-           >
+             d:DataContext="{d:DesignInstance designTime:DesignTimeStoreLicenseForAllUsersWindowViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
-        <ResourceDictionary Source="../../../Styles/DefaultButton.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/Icons/Icons.xaml" />
+                <ResourceDictionary Source="../../../Styles/Icons/pdfforgeLogos.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="20 20 20 20">
         <Grid.RowDefinitions>
@@ -20,7 +24,7 @@
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center" Orientation="Horizontal">
             <ContentControl IsTabStop="False"
-                            Content="{DynamicResource PDFCreatorLogo}"
+                            Content="{StaticResource PDFCreatorLogo}"
                             Height="64"
                             Margin="10"
                             VerticalAlignment="Top" />
@@ -44,9 +48,8 @@
 
             <Button Command="{Binding StoreLicenseInLmCommand}"  Margin="0 0 5 0" MinWidth="110" Height="33" >
                 <StackPanel Orientation="Horizontal">
-                    <ContentControl Visibility="{Binding RequiresUacVisibility}" Focusable="False" Width="15" Margin="0 0 5 0">
-                        <DynamicResource ResourceKey="UacShield" />
-                    </ContentControl>
+                    <ContentControl Visibility="{Binding RequiresUacVisibility}" Focusable="False" Width="15" Margin="0 0 5 0"
+                                    Content="{StaticResource UacShield}" />
                     <TextBlock VerticalAlignment="Center" Text="{Binding Translation.YesButtonText}" />
                 </StackPanel>
             </Button>

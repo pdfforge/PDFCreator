@@ -184,11 +184,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             switch (result.Chosen)
             {
                 case ExistingFileBehaviour.Merge:
-                    job.ExistingFile = ExistingFileBehaviour.Merge;
+                    job.ExistingFileBehavior = ExistingFileBehaviour.Merge;
                     break;
 
                 case ExistingFileBehaviour.Overwrite:
-                    job.ExistingFile = ExistingFileBehaviour.Overwrite;
+                    job.ExistingFileBehavior = ExistingFileBehaviour.Overwrite;
                     break;
 
                 default:

@@ -9,20 +9,20 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
     {
         JobInfo Duplicate(JobInfo jobInfo, string profileGuid = null);
 
-        JobInfo CreateJobInfoForSplitDocument(JobInfo jobInfo, string splitDocument, string profileGUid = null);
+        JobInfo CreateJobInfoForSplitDocument(JobInfo jobInfo, string splitDocument, string splitJobParentFilePath, int totalPages, string profileGUid = null);
     }
 
     public class JobInfoDuplicator : IJobInfoDuplicator
     {
-        private readonly IJobFolderBuilder _jobFolderBuilder;
         private readonly ISourceFileInfoDuplicator _sourceFileInfoDuplicator;
         private readonly IJobInfoManager _jobInfoManager;
+        private readonly ISpoolerProvider _spoolerProvider;
 
-        public JobInfoDuplicator(IJobFolderBuilder jobFolderBuilder, ISourceFileInfoDuplicator sourceFileInfoDuplicator, IJobInfoManager jobInfoManager)
+        public JobInfoDuplicator(ISourceFileInfoDuplicator sourceFileInfoDuplicator, IJobInfoManager jobInfoManager, ISpoolerProvider spoolerProvider)
         {
-            _jobFolderBuilder = jobFolderBuilder;
             _sourceFileInfoDuplicator = sourceFileInfoDuplicator;
             _jobInfoManager = jobInfoManager;
+            _spoolerProvider = spoolerProvider;
         }
 
         public JobInfo Duplicate(JobInfo jobInfo, string profileGuid = null)
@@ -33,7 +33,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             return jobInfoDuplicate;
         }
 
-        public JobInfo CreateJobInfoForSplitDocument(JobInfo jobInfo, string splitDocument, string profileGuid)
+        public JobInfo CreateJobInfoForSplitDocument(JobInfo jobInfo, string splitDocument, string splitJobParentFilePath, int totalPages, string profileGuid)
         {
             if (string.IsNullOrWhiteSpace(splitDocument))
                 return null;
@@ -41,6 +41,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
             var remainingFile = new ParsedFile(splitDocument);
             var newJobInfo = Move(jobInfo, remainingFile, profileGuid);
             newJobInfo.SplitDocument = null;
+            newJobInfo.SourceFiles.First().IsSplitJob = true;
+            newJobInfo.SourceFiles.First().SplitJobParentFilePath = splitJobParentFilePath;
+            newJobInfo.SourceFiles.First().TotalPages = totalPages;
             return newJobInfo;
         }
 
@@ -76,8 +79,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         private (string InfFile, string NewJobFolder) GetInfFileAndJobFolder(JobInfo jobInfo)
         {
             var oldSfiFilename = jobInfo.SourceFiles.First().Filename;
-            var newJobFolder = _jobFolderBuilder.CreateJobFolderInSpool(oldSfiFilename);
-            return (PathSafe.Combine(newJobFolder, "DuplicateInfFile.inf"), newJobFolder);
+            var newJobFolder = _spoolerProvider.SpoolFolder;
+            return (PathSafe.Combine(newJobFolder, oldSfiFilename + ".inf"), newJobFolder);
         }
 
         private void SetInfAndSourceFiles(JobInfo jobInfo, JobInfo newJobInfo, string profileGuid, ParsedFile parsedFile = null)

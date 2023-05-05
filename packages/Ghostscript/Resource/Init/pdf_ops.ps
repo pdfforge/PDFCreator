@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2022 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -716,7 +716,8 @@ end
     //false
   } ifelse
   .currentSMask //null ne or {		% push a group for OP or SMask
-    mark /Subtype /Group /Isolated .currentSMask //null ne .dicttomark
+    % It should only be isolated if there is a softmask and the blend mode is not normal (or compatible)
+    mark /Subtype /Group /Isolated .currentSMask //null ne .currentblendmode /Normal ne and .currentblendmode /Compatible ne and .dicttomark
     2 index aload pop		% pathbbox
     .begintransparencygroup
     % After group pushed, set alphas and blendmode
@@ -1024,6 +1025,17 @@ end readonly def
   1 scale } if
   .currenttextrise 0 ne { 0 .currenttextrise
    translate } if
+} bind executeonly def
+
+/unsettextmatrix {
+  .currenttextrise 0 ne {
+    0 .currenttextrise neg translate
+  } if
+  .currenttexthscaling 1 ne {
+    1 .currenttexthscaling div 1 scale
+  } if
+  matrix currentmatrix
+  matrix .currenttextmatrix matrix invertmatrix concat setmatrix
 } bind executeonly def
 
 /settextstate {

@@ -28,6 +28,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             throw new System.NotImplementedException();
         }
 
+        public ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings)
         {
             return new ActionResult();

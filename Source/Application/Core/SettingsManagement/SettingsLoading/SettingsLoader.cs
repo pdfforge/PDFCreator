@@ -3,6 +3,7 @@ using NLog;
 using pdfforge.DataStorage.Storage;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using System;
@@ -24,8 +25,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
         private readonly ISettingsBackup _settingsBackup;
         private readonly ISharedSettingsLoader _sharedSettingsLoader;
         private readonly IBaseSettingsBuilder _baseSettingsBuilder;
+        private readonly IGpoSettings _gpoSettings;
 
-        public SettingsLoader(ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderHelper actionOrderHelper, ISettingsBackup settingsBackup, ISharedSettingsLoader sharedSettingsLoader, IBaseSettingsBuilder baseSettingsBuilder)
+        public SettingsLoader(ISettingsMover settingsMover, IInstallationPathProvider installationPathProvider, IDefaultSettingsBuilder defaultSettingsBuilder, IMigrationStorageFactory migrationStorageFactory, IActionOrderHelper actionOrderHelper, ISettingsBackup settingsBackup, ISharedSettingsLoader sharedSettingsLoader, IBaseSettingsBuilder baseSettingsBuilder, IGpoSettings gpoSettings)
         {
             _settingsMover = settingsMover;
             _installationPathProvider = installationPathProvider;
@@ -35,6 +37,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             _settingsBackup = settingsBackup;
             _sharedSettingsLoader = sharedSettingsLoader;
             _baseSettingsBuilder = baseSettingsBuilder;
+            _gpoSettings = gpoSettings;
         }
 
         protected abstract void PrepareForLoading();
@@ -51,6 +54,32 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             ProcessBeforeSaving(settings);
             CheckGuids(settings);
             var regStorage = BuildMigrationStorage();
+
+            var sharedIniFile = _sharedSettingsLoader.GetSharedSettingsIniFile();
+            if (!string.IsNullOrEmpty(sharedIniFile))
+            {
+                var tempSettings = (PdfCreatorSettings)_defaultSettingsBuilder.CreateEmptySettings();
+                tempSettings.LoadData(regStorage);
+
+                if (_gpoSettings.LoadSharedAppSettings)
+                {
+                    settings.ApplicationSettings = tempSettings.ApplicationSettings;
+                    settings.CreatorAppSettings = tempSettings.CreatorAppSettings;
+                }
+
+                if (_gpoSettings.LoadSharedProfiles)
+                {
+                    var unshared = settings.ConversionProfiles.Where(profile => !profile.Properties.IsShared);
+                    settings.ConversionProfiles = tempSettings.ConversionProfiles;
+                    foreach (var conversionProfile in unshared)
+                    {
+                        var foundDuplicate = settings.ConversionProfiles.FirstOrDefault(profile => profile.Guid == conversionProfile.Guid);
+                        if (foundDuplicate == null)
+                            settings.ConversionProfiles.Add(conversionProfile);
+                    }
+                }
+            }
+
             settings.SaveData(regStorage);
             LogProfiles(settings);
             ProcessAfterSaving(settings);

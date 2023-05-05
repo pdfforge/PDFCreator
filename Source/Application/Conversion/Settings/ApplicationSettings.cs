@@ -54,6 +54,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public DateTime NextUpdate { get; set; } = DateTime.Now;
 		
 		/// <summary>
+		/// Sets page orientation.
+		/// </summary>
+		public PageOrientation PageOrientation { get; set; } = PageOrientation.Automatic;
+		
+		/// <summary>
+		/// et the page size.
+		/// </summary>
+		public PageSize PageSize { get; set; } = PageSize.Automatic;
+		
+		/// <summary>
 		/// Set the filename of the shared settings file. The default is 'settings.ini'.
 		/// </summary>
 		public string SharedSettingsFilename { get; set; } = "settings";
@@ -103,6 +113,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			LicenseExpirationReminder = DateTime.TryParse(data.GetValue(@"" + path + @"LicenseExpirationReminder"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLicenseExpirationReminder) ? tmpLicenseExpirationReminder : DateTime.Now;
 			LoggingLevel = Enum.TryParse<LoggingLevel>(data.GetValue(@"" + path + @"LoggingLevel"), out var tmpLoggingLevel) ? tmpLoggingLevel : LoggingLevel.Error;
 			NextUpdate = DateTime.TryParse(data.GetValue(@"" + path + @"NextUpdate"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpNextUpdate) ? tmpNextUpdate : DateTime.Now;
+			PageOrientation = Enum.TryParse<PageOrientation>(data.GetValue(@"" + path + @"PageOrientation"), out var tmpPageOrientation) ? tmpPageOrientation : PageOrientation.Automatic;
+			PageSize = Enum.TryParse<PageSize>(data.GetValue(@"" + path + @"PageSize"), out var tmpPageSize) ? tmpPageSize : PageSize.Automatic;
 			try { SharedSettingsFilename = Data.UnescapeString(data.GetValue(@"" + path + @"SharedSettingsFilename")); } catch { SharedSettingsFilename = "settings";}
 			UnitOfMeasurement = Enum.TryParse<UnitOfMeasurement>(data.GetValue(@"" + path + @"UnitOfMeasurement"), out var tmpUnitOfMeasurement) ? tmpUnitOfMeasurement : UnitOfMeasurement.Centimeter;
 			UpdateInterval = Enum.TryParse<UpdateInterval>(data.GetValue(@"" + path + @"UpdateInterval"), out var tmpUpdateInterval) ? tmpUpdateInterval : UpdateInterval.Weekly;
@@ -137,6 +149,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"LicenseExpirationReminder", LicenseExpirationReminder.ToString("yyyy-MM-dd HH:mm:ss"));
 			data.SetValue(@"" + path + @"LoggingLevel", LoggingLevel.ToString());
 			data.SetValue(@"" + path + @"NextUpdate", NextUpdate.ToString("yyyy-MM-dd HH:mm:ss"));
+			data.SetValue(@"" + path + @"PageOrientation", PageOrientation.ToString());
+			data.SetValue(@"" + path + @"PageSize", PageSize.ToString());
 			data.SetValue(@"" + path + @"SharedSettingsFilename", Data.EscapeString(SharedSettingsFilename));
 			data.SetValue(@"" + path + @"UnitOfMeasurement", UnitOfMeasurement.ToString());
 			data.SetValue(@"" + path + @"UpdateInterval", UpdateInterval.ToString());
@@ -171,6 +185,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.LicenseExpirationReminder = LicenseExpirationReminder;
 			copy.LoggingLevel = LoggingLevel;
 			copy.NextUpdate = NextUpdate;
+			copy.PageOrientation = PageOrientation;
+			copy.PageSize = PageSize;
 			copy.SharedSettingsFilename = SharedSettingsFilename;
 			copy.UnitOfMeasurement = UnitOfMeasurement;
 			copy.UpdateInterval = UpdateInterval;
@@ -218,6 +234,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(NextUpdate != source.NextUpdate)
 				NextUpdate = source.NextUpdate;
 				
+			if(PageOrientation != source.PageOrientation)
+				PageOrientation = source.PageOrientation;
+				
+			if(PageSize != source.PageSize)
+				PageSize = source.PageSize;
+				
 			if(SharedSettingsFilename != source.SharedSettingsFilename)
 				SharedSettingsFilename = source.SharedSettingsFilename;
 				
@@ -263,6 +285,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(LicenseExpirationReminder, v.LicenseExpirationReminder)) return false;
 			if (!Object.Equals(LoggingLevel, v.LoggingLevel)) return false;
 			if (!Object.Equals(NextUpdate, v.NextUpdate)) return false;
+			if (!Object.Equals(PageOrientation, v.PageOrientation)) return false;
+			if (!Object.Equals(PageSize, v.PageSize)) return false;
 			if (!Object.Equals(SharedSettingsFilename, v.SharedSettingsFilename)) return false;
 			if (!Object.Equals(UnitOfMeasurement, v.UnitOfMeasurement)) return false;
 			if (!Object.Equals(UpdateInterval, v.UpdateInterval)) return false;

@@ -45,10 +45,10 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 
         protected override bool ShouldApplyUniqueFilename(Job job)
         {
-            if (job.Profile.AutoSave.AutoMergeFiles && !job.Profile.OutputFormat.IsPdf())
+            if (job.Profile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.Merge && !job.Profile.OutputFormat.IsPdf())
                 return true;
 
-            return job.Profile.AutoSave.EnsureUniqueFilenames;
+            return job.Profile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.EnsureUniqueFilenames;
         }
 
         protected override bool ShouldApplyMerger(Job job)
@@ -56,7 +56,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
             if (!job.Profile.OutputFormat.IsPdf())
                 return false;
 
-            return job.Profile.AutoSave.AutoMergeFiles;
+            return job.Profile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.Merge;
         }
 
         protected override bool AppendFile(string tempFile, string outputFile)

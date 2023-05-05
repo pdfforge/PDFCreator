@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -218,7 +218,7 @@ DingbatsEncoding pop
 % Redefine 'run' so it recognizes PDF files.
 systemdict begin
 
-systemdict /NEWPDF known not {/NEWPDF //false def} if
+systemdict /OLDPDF known not {/OLDPDF //false def} if
 
 % PostScript interface to the ghostpdf C-based interpreter
 %
@@ -257,6 +257,9 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 % runpdfend        -
 %     Uses currentdict as an argument to pdfclose, which closes /PDFfile. Also
 %     executes restore and various cleanup activities.
+%
+% pdfavailable     - pdfavailable <bool>
+%     Determines if there is a PDF interpreter available
 %
 % Also Used by gsview 5
 % =====================
@@ -341,10 +344,14 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
   /PageUsesTransparency exch            % << >> <<page dict>> /PageUsesTransparency bool
   3 index 3 1 roll                      % << >> <<page dict>> <<info dict>> << >> /PageUsesTransparency bool
   put                                   % <</PageUsesTransparency bool>> <<page dict>>
-  /NumSpots get                         % <</PageUsesTransparency bool>> int
-  /PageSpotColors exch                  % <</PageUsesTransparency bool>> /PageSpotColors int
-  2 index 3 1 roll                      % <</PageUsesTransparency bool>> <<page dict>> /PageSpotColors int
-  put                                   % <</PageUsesTransparency bool /PageSpotColors int >>
+  currentpagedevice /PageSpotColors known {
+    /NumSpots get                       % <</PageUsesTransparency bool>> int
+    /PageSpotColors exch                % <</PageUsesTransparency bool>> /PageSpotColors int
+    2 index 3 1 roll                    % <</PageUsesTransparency bool>> <<page dict>> /PageSpotColors int
+    put                                 % <</PageUsesTransparency bool /PageSpotColors int >>
+  }{
+    pop
+  } ifelse
   setpagedevice
 }bind def
 
@@ -364,6 +371,7 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
     3 1 roll eq
     or                   % square media or square page, no point in rotating
     {
+      pop pop pop pop
       //false
     }
     {
@@ -403,23 +411,42 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
       exch                                      % swap media width/height for scaling calculation
     }if
 
-    % Stack - box boxwidth boxheight mediawidth mediaheight
-    % Incorporate up any offset from 0,0
-    4 index aload pop pop pop neg exch neg exch
-    2 copy exch
+    % Now use the box and media values to calculate the required x/y scale factors
+    4 copy                              % Stack - box boxwidth boxheight mediawidth mediaheight boxwidth boxheight mediawidth mediaheight
+    3 -1 roll div                       % box boxwidth boxheight mediawidth mediaheight boxwidth mediawidth (mediaheight / boxheight)
+    3 1 roll                            % box boxwidth boxheight mediawidth mediaheight (mediaheight / boxheight) boxwidth mediawidth
+    exch                                % box boxwidth boxheight mediawidth mediaheight (mediaheight / boxheight) mediawidth boxwidth
+    div                                 % box boxwidth boxheight mediawidth mediaheight (mediaheight / boxheight) (mediawidth / boxwidth)
+
+    % Stack - box boxwidth boxheight mediawidth mediaheight Yscale Xscale
+
+    % Centre the output on the media
+    2 copy                              % box boxwidth boxheight mediawidth mediaheight Yscale Xscale Yscale Xscale
+    gt {
+      exch pop                          % box boxwidth boxheight mediawidth mediaheight Xscale
+      dup 4 index mul                   % box boxwidth boxheight mediawidth mediaheight Xscale (boxheight * Xscale)
+      3 -1 roll sub dup
+      0 lt {-1 mul} if                  % box boxwidth boxheight mediawidth Xscale ((boxheight * Xscale) - mediaheight)
+      dup 0 ne {2 div} if               % box boxwidth boxheight mediawidth Xscale (heightdiff / 2)
+      0 exch translate                  % box boxwidth boxheight mediawidth Xscale
+    } {
+      pop                               % box boxwidth boxheight mediawidth mediaheight Yscale
+      dup 5 index mul                   % box boxwidth boxheight mediawidth mediaheight Yscale (boxwidth * Yscale)
+      4 -1 roll sub dup
+      0 lt {-1 mul} if                  % box boxwidth boxheight mediaheight Yscale ((boxwidth * Yscale) - mediawidth)
+      dup 0 ne {2 div} if               % box boxwidth boxheight mediawidth Yscale (widthdiff / 2)
+      0 translate                       % box boxwidth boxheight mediawidth Yscale
+    } ifelse
+
+    % Apply any 'offset' in the Box. Tht is, if the llx and lly are not 0, then we need to
+    % shift the origin of the content so that they become 0,0. We need to take into
+    % account the scaling from above.
+    4 index aload pop pop pop
+    neg 2 index mul exch neg 2 index mul exch
     translate
 
-    % Now use the box and media values to calculate the required x/y scale factors
-    3 -1 roll div                       % box boxwidth mediawidth (mediaheight / boxheight)
-    3 1 roll                            % box (mediaheight / boxheight) boxwidth mediawidth
-    exch                                % box (mediaheight / boxheight) mediawidth boxwidth
-    div                                 % box (mediaheight / boxheight) (mediawidth / boxwidth)
-
-    2 copy                              % box Yscale Xscale Yscale Xscale
-    gt {exch} if                        % select smallest scale factor
-    pop                                 %
-    dup scale                           % and scale page isomorphically
-    pop pop
+    dup scale                           % scale both axes the same
+    pop pop pop                         % remove the leftover boxwidth, boxheight and mediawidth/height
 } bind def
 
 /newpdf_get_media_box { % <pagedict> get_media_box <box> <bool>
@@ -444,32 +471,78 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
     (               Output may be incorrect.\n) newpdf_pdfformaterror
     [ 0 0 currentpagedevice /PageSize get aload pop ] //false
   } ifelse
-%(newpdf_get_media_box end) == flush
+} bind executeonly def
+
+% [llx lly urx ury] newpdf_check_empty_box [llx lly urx ury] true | false
+% rturns true and the original array if its valid, otherwise returns false
+/newpdf_check_empty_box
+{
+  dup type /arraytype eq
+  {
+    dup aload pop
+    dup 3 index eq
+    {
+      //true
+    }
+    {
+      1 index 4 index eq
+    } ifelse
+    {
+      pop pop pop pop
+     (   **** Warning:  File has an empty Box parameter.\n) print
+     (                  Using the MediaBox instead.\n) print
+     (                  Output may be incorrect.\n) print flush
+     pop //false
+    }
+    {
+      pop pop pop pop
+      //true
+    } ifelse
+  }
+  {
+     (   **** Warning:  File has an invalid Box parameter.\n) print
+     (                  Using the MediaBox instead.\n) print
+     (                  Output may be incorrect.\n) print flush
+    pop //false
+  } ifelse
 } bind executeonly def
 
 /newpdf_get_any_box { % <pagedict> get_any_box <box name> <box>
-%(newpdf_get_any_box start) == flush
   //systemdict /UseBleedBox .knownget dup { and } if {
-    dup /BleedBox get {
-      /BleedBox exch
+    dup /BleedBox .knownget {
+        newpdf_check_empty_box
+        {
+          /BleedBox exch
+        } if
     } if
   } if
-  //systemdict /UseTrimBox .knownget dup { and } if {
-    dup /TrimBox get {
-      /TrimBox exch
+  dup type /arraytype ne {
+    //systemdict /UseTrimBox .knownget dup { and } if {
+      dup /TrimBox .knownget {
+        newpdf_check_empty_box
+        {
+            /TrimBox exch
+        } if
+      } if
     } if
   } if
   dup type /arraytype ne {
     //systemdict /UseArtBox .knownget dup { and } if {
-      dup /ArtBox get {
-        /ArtBox exch
+      dup /ArtBox .knownget {
+        newpdf_check_empty_box
+        {
+            /ArtBox exch
+        } if
       } if
     } if
   } if
   dup type /arraytype ne {
     //systemdict /UseCropBox .knownget dup { and } if {
-      dup /CropBox get {
-        /CropBox exch
+      dup /CropBox .knownget {
+        newpdf_check_empty_box
+        {
+          /CropBox exch
+        } if
       } if
     } if
   } if
@@ -484,6 +557,7 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
     %% content when we st up the CTM, but we do need to make sure that we clamp
     %% the BoundingBox, and that means we need to take direcitonality into account...
 
+    aload pop
     6 -1 roll newpdf_get_media_box { % /SomeBox x0 y0 x1 y1 [MediaBox]
       aload pop               % /SomeBox x0 y0 x1 y1 X0 Y0 X1 Y1
 
@@ -556,6 +630,30 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
   dup
   dup newpdf_get_any_box       % Stack: pdfpagedict pdfpagedict /BoxName [box]
 
+  % Check that the box is 'normal' and make it so if not
+  % Also check the array is 4 elements and if it isn't then use the
+  % current PageSize. The normalise arithmetic assumes the array is a 4
+  % element array.
+  dup length 4 ne {
+    % Invalid size of mediabox
+    pop currentpagedevice /PageSize get
+  } {
+    aload 5 1 roll  % array x1 y1 x2 y2
+    exch            % array x1 y1 y2 x2
+    4 -1 roll       % array y1 y2 x2 x1
+    2 copy gt {
+      exch          % array y1 y2 xmin xmax
+    } if
+    4 -2 roll       % array xmin xmax y1 y2
+    2 copy gt {
+      exch          % array xmin xmax ymin ymax
+    } if
+    4 1 roll
+    exch 4 -1 roll
+    5 -1 roll
+    astore
+  } ifelse
+
   //systemdict /PDFFitPage known {
     NewPDF_FitPage
   } {
@@ -575,18 +673,27 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
       }
       {
         2 index /UserUnit get
-        % The PageSize needs to be multiplied too
-        exch aload 5 1 roll % UserUnit box llx lly urx ury
-        2 index sub exch    % UserUnit box llx lly (ury - lly) urx
-        3 index sub         % UserUnit box llx lly boxheight boxwidth
-        5 index mul         % UserUnit box llx lly boxheight (Boxwidth*UserUnit)
-        exch
-        5 index mul         % UserUnit box llx lly (Boxwidth*UserUnit) (boxheight*UserUnit)
-        4 -2 roll
-        5 index mul exch    % UserUnit box (Boxwidth*UserUnit) (boxheight*UserUnit) (lly*UserUnit) llx
-        5 index mul exch    % UserUnit box (Boxwidth*UserUnit) (boxheight*UserUnit) (llx*UserUnit) (lly*UserUnit)
-        4 2 roll            % UserUnit box (llx*UserUnit) (lly*UserUnit) (Boxwidth*UserUnit) (boxheight*UserUnit)
-        6 -1 roll pop       % box (llx*UserUnit) (lly*UserUnit) (Boxwidth*UserUnit) (boxheight*UserUnit)
+        /PassUserUnit /GetDeviceParam .special_op {exch pop} {//false} ifelse {
+          [ /UserUnit 3 -1 roll .pdfputparams pop pop
+          % No media scaling required, calculate PageSize as the width and height of the box
+          aload 5 1 roll      % box llx lly urx ury
+          2 index sub         % box llx lly urx (ury - lly)
+          exch 3 index sub    % box llx lly (ury - lly) (urx - llx)
+          exch
+        }{
+          % The PageSize needs to be multiplied too
+          exch aload 5 1 roll % UserUnit box llx lly urx ury
+          2 index sub exch    % UserUnit box llx lly (ury - lly) urx
+          3 index sub         % UserUnit box llx lly boxheight boxwidth
+          5 index mul         % UserUnit box llx lly boxheight (Boxwidth*UserUnit)
+          exch
+          5 index mul         % UserUnit box llx lly (Boxwidth*UserUnit) (boxheight*UserUnit)
+          4 -2 roll
+          5 index mul exch    % UserUnit box (Boxwidth*UserUnit) (boxheight*UserUnit) (lly*UserUnit) llx
+          5 index mul exch    % UserUnit box (Boxwidth*UserUnit) (boxheight*UserUnit) (llx*UserUnit) (lly*UserUnit)
+          4 2 roll            % UserUnit box (llx*UserUnit) (lly*UserUnit) (Boxwidth*UserUnit) (boxheight*UserUnit)
+          6 -1 roll pop       % box (llx*UserUnit) (lly*UserUnit) (Boxwidth*UserUnit) (boxheight*UserUnit)
+        } ifelse
       } ifelse
     }
     {
@@ -670,8 +777,18 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
     //systemdict /NoUserUnit .knownget not { //false } if not
     {
       2 index /UserUnit known {
-        2 index /UserUnit get
-        dup scale
+        /PassUserUnit /GetDeviceParam .special_op {
+          exch pop not
+        } {
+          true
+        }ifelse
+
+        % If PassUserUnit isn't handled by the device, or it returns 'false'
+        % then scale the content by the UserUnit. Otherwise do not scale.
+        {
+          2 index /UserUnit get
+          dup scale
+        } if
       } if
     } if
   } ifelse
@@ -679,7 +796,7 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
   pop % The box
 
   % If we are using the MediaBox (and only the MediaBox) then we
-  % want to clip to the CropBox, if there s one present
+  % want to clip to the CropBox, if there is one present
 
   /MediaBox eq {
     dup /CropBox known {
@@ -688,7 +805,9 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
     } {
       pop
     } ifelse
-  } if
+  } {
+    pop
+  }ifelse
 
   pop
 } bind executeonly def
@@ -701,171 +820,88 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 % NB device parameters will already have been sent to the device and used to configure it
 % so here we should only handle parameters which control the behaviour of the interpreter.
 %
+/PDFSwitches [ /QUIET /PDFPassword /PDFDEBUG /PDFSTOPONERROR /PDFSTOPONWARNING /NOTRANSPARENCY /FirstPage /LastPage
+               /PDFNOCIDFALLBACK /NO_PDFMARK_OUTLINES /NO_PDFMARK_DESTS /PDFFitPage /Printed /UsePDFX3Profile
+               /UseBleedBox /UseCropBox /UseArtBox /UseTrimBox /ShowAcroForm /ShowAnnots /PreserveAnnots
+               /NoUserUnit /RENDERTTNOTDEF /DOPDFMARKS /PDFINFO /ShowAnnotTypes /PreserveAnnotTypes
+               /CIDFSubstPath /CIDFSubstFont /SUBSTFONT /IgnoreToUnicode /NONATIVEFONTMAP /PreserveMarkedContent ] def
+
 /newpdf_gather_parameters
 {
   10 dict begin
-  /PDFSwitches [ /PDFPassword /PDFDEBUG /PDFSTOPONERROR /PDFSTOPONWARNING /NOTRANSPARENCY /FirstPage /LastPage
-                 /NOCIDFALLBACK /NO_PDFMARK_OUTLINES /NO_PDFMARK_DESTS /PDFFitPage /Printed
-                 /UseBleedBox /UseCropBox /UseArtBox /UseTrimBox /ShowAcroForm /ShowAnnots /PreserveAnnots
-                 /NoUserUnit /RENDERTTNOTDEF /DOPDFMARKS /PDFINFO /SHOWANNOTTYPES /PRESERVEANNOTTYPES] def
 
-  0 1 PDFSwitches length 1 sub {
-    PDFSwitches exch get dup where {
-      exch dup 3 1 roll get def
-    }
-    {
-      pop
-    } ifelse
-  } for
-  currentdict /PDFSwitches undef
+  //PDFSwitches {
+    dup where
+    { exch dup 3 1 roll get def }
+    { pop } ifelse
+  } forall
+
+  % This isn't a command line parameter, we track it internally, but we need to
+  % send it to the interpreter. It is used to 'offset' the page Dest for Link
+  % annotations and Outlines by the numebr of pages processed so far.
+  /PageCount /CumulativePageCount where { /CumulativePageCount get }{currentpagedevice /PageCount get} ifelse def
+
   currentdict end
 } bind executeonly def
 
+currentdict /PDFSwitches undef
+
 /newpdf_pagecount
 {
-  PDFFile //null eq not
+  currentdict /PDFInfo known
   {
-    PDFFile {.PDFInfo} stopped not
+    PDFInfo
+  }
+  {
+    PDFFile //null eq not
     {
-      dup /NumPages known
+      PDFSTOPONERROR
       {
-        /NumPages get
+        PDFFile .PDFInfo //false
       }
       {
-        pop 0
+        PDFFile {.PDFInfo} stopped
       } ifelse
     }
     {
-      pop 0
-    } ifelse
+      //true
+    }ifelse
+
+    {
+      <</NumPages 0>>
+    } if
+  } ifelse
+
+  dup /NumPages known
+  {
+    /NumPages get
   }
   {
-    0
+    pop 0
   } ifelse
 }bind def
 
 /newpdf_runpdfpagerange
 {
   /PageList where {
-    pop PageList
-    (even) anchorsearch {
-      pop length 0 gt {
-        /runpdfpagerange cvx /syntaxerror signalerror
-      } if
-        /PDFPageList pdfpagecount 1 add array def
-        2 2 pdfpagecount {
-          PDFPageList exch 1 put
-        } for
-        QUIET not {
-          (Processing even-numbered pages\n) print (1 through ) print pdfpagecount =only
-          (.) = flush
-        } if
-    } {
-      (odd) anchorsearch {
-        pop length 0 gt {
-          /runpdfpagerange cvx /syntaxerror signalerror
-        } if
-        /PDFPageList pdfpagecount 1 add array def
-        1 2 pdfpagecount {
-          PDFPageList exch 1 put
-        } for
-        QUIET not {
-          (Processing odd-numbered pages\n) print (1 through ) print pdfpagecount =only
-          (.) = flush
-        } if
-      } {
-        %% validate string contents, check for digit comma or minus
-        dup
-        {
-          dup 44 eq not {
-            dup 45 eq not {
-              dup 48 lt 1 index 57 gt or {
-                /runpdfpagerange cvx /syntaxerror signalerror
-              } if
-            } if
-          } if
-          pop
-        }
-        forall
-        /PDFPageList pdfpagecount 1 add array def
-        {
-          (,) search {
-            %% We now have (post) (,) (pre)
-            exch pop %% get rid of the (,), leave the (post) as the string for the next iteration, deal with the section up to the comma
-            (-) search {
-              %% Now we have (end) (-) (start)
-              exch pop %% get rid of the minus (end) (start)
-              0 exch {48 sub exch 10 mul add} forall
-              %% Make sure the start of the range is inside the number of available pages
-              dup pdfpagecount le {
-                exch
-                %% deal with a trailing '-' by replacing it with the number of pages in the file
-                dup length 0 eq {
-                  pop pdfpagecount
-                }{
-                  0 exch {48 sub exch 10 mul add} forall
-                } ifelse
-                1 exch %% start 1 end
-                %% Make sure the end of the range is inside the number of available pages
-                dup pdfpagecount gt {pop pdfpagecount} if
-                {PDFPageList exch 1 put} for
-              } {
-                %% start of range invalid, drop this range.
-                pop pop
-              }ifelse
-            }{
-              %% no minus signs, must be a simple page number
-              0 exch {48 sub exch 10 mul add} forall
-              %% ensure its in the valid range of pages
-              dup pdfpagecount le {
-                 PDFPageList exch 1 put
-              } {
-                pop
-              } ifelse
-            } ifelse
-          }{
-            %% no commas separating pages, just the original string (), deal with its as a section, then exit the loop
-            (-) search {
-              %% Now we have (end) (-) (start)
-              exch pop %% get rid of the minus (end) (start)
-              0 exch {48 sub exch 10 mul add} forall
-              %% Make sure the start of the range is inside the number of available pages
-              dup pdfpagecount le {
-                exch
-                %% deal with a trailing '-' by replacing it with the number of pages in the file
-                dup length 0 eq {
-                  pop pdfpagecount
-                }{
-                  0 exch {48 sub exch 10 mul add} forall
-                } ifelse
-                1 exch %% start 1 end
-                %% Make sure the end of the range is inside the number of available pages
-                dup pdfpagecount gt {pop pdfpagecount} if
-                {PDFPageList exch 1 put} for
-              } {
-                %% start of range invalid, drop this range.
-                pop pop
-              }ifelse
-            }{
-              %% no minus signs, must be a simple page number
-              0 exch {48 sub exch 10 mul add} forall
-              %% ensure its in the valid range of pages
-              dup pdfpagecount le {
-                 PDFPageList exch 1 put
-              } {
-                pop
-              } ifelse
-            } ifelse
-            exit %% done all the sections.
-          } ifelse
-        } loop
-        QUIET not {
-          (Processing pages ) print PageList =only
-          (.) = flush
-        } if
-      } ifelse
-    } ifelse
-    1 pdfpagecount
+    pop
+    % make sure string is NUL terminated as C expects.
+    PageList 1 string dup 0 0 put concatstrings
+    pdfpagecount
+    .PDFparsePageList
+    dup 0 eq {	% No ranges, error
+      (\n   **** Error: Invalid PageList: ) print
+      PageList  print
+      (\n   No pages will be processed.) = flush
+      /runpdfpagerange cvx /syntaxerror signalerror
+    } if
+    array astore	% move integer triples from the stack to the array
+    % newpdf PDFPageList is an array of 3 elements per range: even/odd flag, start, end
+    /PDFPageList exch def
+    QUIET not {
+      (Processing pages ) print PageList =only (.) = flush
+    } if
+    1 pdfpagecount	% dummy parameters for newpdf_dopages
   }{
     /FirstPage where {
       pop FirstPage dup pdfpagecount gt {
@@ -891,22 +927,27 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 /newpdf_runpdf
 {
   runpdfbegin                       % <file> runpdfbegin -
-  PDFInfo /Collection known
+  PDFInfo type /dicttype eq
   {
-    PDFInfo /Collection get
-    pdfclose
-    dup length 1 sub 0 2 3 -1 roll
+    PDFInfo /Collection known
     {
-      1 index exch get (r) file runpdf
-    } for
-    pop
-  }
-  {
-    process_trailer_attrs             % - process_trailer_attrs -
-    runpdfpagerange                   % - runpdfpagerange <int> <int>
-    dopdfpages                        % <int> <int> dopdfpages -
-    runpdfend                         % - runpdfend -
-  } ifelse
+      PDFInfo /Collection get
+      pdfclose
+      dup length 1 sub 0 2 3 -1 roll
+      {
+        1 index exch get (r) file runpdf
+      } for
+      pop
+    }
+    {
+      process_trailer_attrs             % - process_trailer_attrs -
+      runpdfpagerange                   % - runpdfpagerange <int> <int>
+      dopdfpages                        % <int> <int> dopdfpages -
+      runpdfend                         % - runpdfend -
+    } ifelse
+  } {
+    pop pop
+  }ifelse
 } bind def
 
 /newpdf_runpdfbegin
@@ -914,6 +955,8 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
   /pdfdict 10 dict def
   pdfdict begin
 
+  currentpagedevice /PageCount get
+  /CumulativePageCount exch def
   % This is for the benefit of pdf2dsc which assumes it will be present
   /Trailer << >> def
   /PDFSave save def
@@ -935,32 +978,55 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 
   % These are also for the benefit of pdf2dsc, which assumes they
   % are available.
-  /knownoget {2 copy known {get //true}{pop //false}ifelse} bind def
-  /pget {2 copy known {get //true}{pop //false}ifelse}bind def
+  /knownoget {2 copy known {get //true}{pop pop //false}ifelse} bind def
+  /pget {2 copy known {get //true}{pop pop //false}ifelse}bind def
 
   newpdf_gather_parameters
-  {.PDFInit} stopped
+  PDFSTOPONERROR
   {
-    /PDFFile //null def
-    /PDFInfo //null def
-  }
-  {
+    .PDFInit
     /PDFFile exch def
     pdfopen
     /PDFInfo exch def
     pop
+  }
+  {
+    {.PDFInit} stopped
+    {
+      (   **** Error: Failed to initialise PDF interpreter.\n) newpdf_pdfformaterror
+      /PDFFile //null def
+      /PDFInfo //null def
+    }
+    {
+      /PDFFile exch def
+      pdfopen
+      /PDFInfo exch def
+      pop
+    }ifelse
   }ifelse
 } bind def
 
 /newpdf_pdfgetpage
 {
-  PDFFile exch 1 sub {.PDFPageInfo} stopped
+  dup 1 sub
+  PDFSTOPONERROR
   {
-    pop pop
-    (   **** Error: Couldn't get page info.\n) newpdf_pdfformaterror
-    (               Output may be incorrect.\n) newpdf_pdfformaterror
-    //null
-  } if
+    PDFFile exch .PDFPageInfo
+    dup 3 -1 roll
+    /Page# exch put
+  }
+  {
+    PDFFile exch {.PDFPageInfo} stopped
+    {
+      pop pop
+      (   **** Error: Couldn't get page info.\n) newpdf_pdfformaterror
+      (               Output may be incorrect.\n) newpdf_pdfformaterror
+      //null
+    }{
+      dup 3 -1 roll
+      /Page# exch put
+    } ifelse
+  }ifelse
 } bind def
 
 /newpdf_process_trailer_attrs
@@ -969,7 +1035,6 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 
 /newpdf_pdfshowpage_init
 {
-    gsave
 } bind def
 
 /newpdf_pdfshowpage_setpage
@@ -980,50 +1045,87 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 
 /newpdf_pdfshowpage_finish
 {
-  /Page# get PDFFile exch 1 sub {.PDFDrawPage} stopped
+  PDFSTOPONERROR
   {
-    pop pop
-    (   **** Error: Page drawing error occured.\n) newpdf_pdfformaterror
-    (               Output may be incorrect.\n) newpdf_pdfformaterror
-  } if
-  showpage
-  grestore
+    /Page# get PDFFile exch 1 sub .PDFDrawPage
+    showpage
+  }
+  {
+    /Page# get PDFFile exch 1 sub {.PDFDrawPage} stopped
+    {
+      pop pop
+      (   **** Error: Page drawing error occurred.\n) newpdf_pdfformaterror
+      (               Output may be incorrect.\n) newpdf_pdfformaterror
+    } if
+    {showpage} stopped
+    {
+      (   **** Error: Page drawing error occurred.\n) newpdf_pdfformaterror
+      (               Could not draw this page at all, page will be missing in the output.\n) newpdf_pdfformaterror
+    } if
+  }ifelse
 } bind def
 
 /newpdf_pdfshowpage
 {
-  pdfshowpage_init
-  pdfshowpage_setpage
-  pdfshowpage_finish
+  /PDFINFO where {/PDFINFO get}{//false}ifelse
+  {
+    /Page# get PDFFile exch 1 sub {.PDFDrawPage} stopped pop
+  }
+  {
+    pdfshowpage_init
+    pdfshowpage_setpage
+    pdfshowpage_finish
+  }ifelse
 } bind def
 
 /newpdf_runpdfend
 {
+  % Get the accumulated count of pages processed so far
+  % and the number of pages in this file. Do this before
+  % we close the file and restore the state. Save the values
+  % on the stack.
+  pdfpagecount
+  CumulativePageCount
+
   pdfclose
   PDFSave restore
+
   end   % pdfdict
+
+  % add the number of pages in this file to the accumulated count,
+  % and store that in the device for later reuse. This allows us to
+  % add the number of pages already in the output to the 'Dest' of
+  % Outlines and Link annotations.
+  add <</PageCount 3 -1 roll >> setpagedevice
 } bind def
 
 /newpdf_pdfopen
 {
   dup PDFFile //null ne
   {
-    PDFFile {.PDFStream} stopped
+    PDFSTOPONERROR
     {
-      pop pop
-      (   **** Error: Couldn't initialise file.\n) newpdf_pdfformaterror
-      (               Output may be incorrect.\n) newpdf_pdfformaterror
-      <</NumPages 0>>
+      PDFFile .PDFStream
+      PDFFile .PDFInfo
     }
     {
-      PDFFile {.PDFInfo} stopped
+      PDFFile {.PDFStream} stopped
       {
-        pop
-        (   **** Error: Couldn't get page information.\n) newpdf_pdfformaterror
+        pop pop
+        (   **** Error: Couldn't initialise file.\n) newpdf_pdfformaterror
         (               Output may be incorrect.\n) newpdf_pdfformaterror
         <</NumPages 0>>
-      } if
-    } ifelse
+      }
+      {
+        PDFFile {.PDFInfo} stopped
+        {
+          pop
+          (   **** Error: Couldn't get page information.\n) newpdf_pdfformaterror
+          (               Output may be incorrect.\n) newpdf_pdfformaterror
+          <</NumPages 0>>
+        } if
+      } ifelse
+    }ifelse
   }
   {
     pop
@@ -1033,31 +1135,48 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 
 /newpdf_pdfclose
 {
-  PDFFile {.PDFClose} stopped
+  PDFSTOPONERROR
   {
-    pop
-  } if
+    PDFFile .PDFClose
+  }
+  {
+    PDFFile {.PDFClose} stopped
+    {
+      pop
+    } if
+  }ifelse
+} bind def
+
+/pdfavailable
+{
+  .PDFAvailable OLDPDF or
 } bind def
 
 % <int> <int> dopdfpages -
 % First Page and then LastPage
+% If PDFPageList array exists, the parameters are 1 pdfpagecount and are ignored.
 /newpdf_dopdfpages
 {
   //DisablePageHandlerDevice exec
-  1 exch
-  {
-      %% If we have a array of pages to render, use it.
-      /PDFPageList where {
-        pop dup PDFPageList exch get 1 eq
-      }
-      {//true} ifelse
-
+  %% If we have a array of page ranges to render, use it.
+  /PDFPageList where {
+    pop
+    pop pop		% don't use dummy parameters
+    PDFPageList
+    % process the ranges (3 elements per range)
+    0 3 2 index length 1 sub {
+      1 index 1 index get		% even = 2, odd = 1 any = 0
+      2 index 2 index 1 add get		% start of range
+      exch
+      3 index 3 index 2 add get		% end of range
+      exch
+      % stack: start end even/odd
+      0 eq { 1 } { 2 } ifelse
+      2 index 2 index gt { neg } if	% negate increment for reverse range
+      exch
       {
-        QUIET not { (Page ) print dup //== exec flush } if
-        dup pdfgetpage
+        pdfgetpage
         dup //null ne {
-          exch 1 index
-          /Page# 3 -1 roll put
           pdfshowpage
         } {
           PDFSTOPONERROR {
@@ -1068,10 +1187,28 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
             ( not found.\n) newpdf_pdfformaterror
           } ifelse
         } ifelse
-      }{
-        pop
-      }ifelse
-  } for
+      } for
+      pop		% for loop index
+    } for
+    pop		% done with array
+  } {
+    % else, Process the pages given by the FirstPage, LastPage
+    1 exch
+    {
+      pdfgetpage
+      dup //null ne {
+        pdfshowpage
+      } {
+        PDFSTOPONERROR {
+          /dopdfpages cvx /syntaxerror signalerror
+        } {
+          pop pop
+          (   **** Error: page) newpdf_pdfformaterror
+          ( not found.\n) newpdf_pdfformaterror
+        } ifelse
+      } ifelse
+    } for
+  } ifelse
   //EnablePageHandlerDevice exec
 } bind def
 
@@ -1101,6 +1238,9 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
             (%stderr) (w) file dup
             (   **** Warning: File has some garbage before %PDF- .\n)
             writestring flushfile
+            PDFSTOPONWARNING {
+              /run cvx /unregistered signalerror
+            } if
           } {
             pop
           } ifelse
@@ -1120,10 +1260,20 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
             % stack: tempname tempfile
             dup 0 setfileposition
             dup
-              runpdf
+              pdfavailable {
+                runpdf
+              }{
+                closefile
+                (%stderr) (w) file (   **** ERROR: No PDF interpreter available, unable to process PDF files as input.\n)writestring
+              } ifelse
             closefile deletefile
           } {
-              runpdf
+              pdfavailable {
+                runpdf
+              }{
+                closefile
+                (%stderr) (w) file (   **** ERROR: No PDF interpreter available, unable to process PDF files as input.\n)writestring
+              } ifelse
           } ifelse
         } {
           pop pop pop pop cvx .runps % (%!PS) found first
@@ -1139,7 +1289,7 @@ systemdict /NEWPDF known not {/NEWPDF //false def} if
 currentdict /runpdfstring .undef
 
 /runpdfbegin {        % <file> runpdfbegin -
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
   {
     newpdf_runpdfbegin
   }
@@ -1183,7 +1333,7 @@ currentdict /runpdfstring .undef
 
 
 /runpdfpagerange {    % - runpdfpagerange <firstpage#> <lastpage#>
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
   {
     newpdf_runpdfpagerange
   }
@@ -1371,7 +1521,7 @@ currentdict /runpdfstring .undef
 } bind executeonly def
 
 /dopdfpages {   % firstpage# lastpage# dopdfpages -
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
   {
     newpdf_dopdfpages
   }
@@ -1414,7 +1564,7 @@ currentdict /runpdfstring .undef
 } bind executeonly def
 
 /runpdfend {
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
   {
     newpdf_runpdfend
   }
@@ -1520,8 +1670,27 @@ currentdict /EnablePageHandlerDevice undef
 } bind executeonly def
 
 /runpdf {        % <file> runpdf -
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
-  {newpdf_runpdf}
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
+  {
+    dup type /filetype eq
+    {
+      dup
+      PDFSTOPONERROR
+      {
+        newpdf_runpdf
+      }
+      {
+        {newpdf_runpdf} stopped
+        {
+          (   **** Error: PDF interpreter encountered an error processing the file.\n) pdfformaterror
+        } if
+      }ifelse
+      closefile
+    }
+    {
+      (   **** Error: Attempt to process something other than a file object in runpdf.\n) pdfformaterror
+    } ifelse
+  }
   {
     %% Get the PDF filename (it *must* be a file even if it came from stdin it gets
     %% copied to a temporary file) and store it in pdfdict. We will use this for
@@ -2001,7 +2170,7 @@ currentdict /xref-char-dict undef
 
 % Open a PDF file and read the header, trailer, and cross-reference.
 /pdfopen {        % <file> pdfopen <dict>
-  /NEWPDF where {/NEWPDF get} {//true} ifelse
+  /OLDPDF where {/OLDPDF get not} {//true} ifelse
   {
     newpdf_pdfopen
   }
@@ -3567,11 +3736,9 @@ currentdict /PDF2PS_matrix_key undef
   % the pages resources.  It may be high if a spot color is in a resource but
   % is not actually used on the page.
   currentpagedevice /PageSpotColors known {
-    /PageSpotColors 2 index countspotcolors
-    userdict /PageSpotColors 2 index put
-    def
+    /PageSpotColors 2 index countspotcolors def
+    /SeparationColorNames userdict 1 index get def
   } if
-
   % If the user told us to use a named OutputIntent
   systemdict /UseOutputIntent .knownget {
     cvn
@@ -3640,7 +3807,7 @@ currentdict /PDF2PS_matrix_key undef
     % Overprint is /enable, so the device might need the overprint compositor
     % if it does not support spot colors, thus check if overprint is used so
     % overprint simulation can be done with the pdf14 compositor
-    1 index countspotcolors userdict exch /PageSpotColors exch put    % save it in a known place
+    1 index countspotcolors pop
     1 index pageusesoverprint
     1 index /ProcessColorModel get /DeviceCMYK eq {
       PageSpotColors 0 gt    % count of colorants NOT including CMYK
@@ -3949,9 +4116,11 @@ currentdict /PDF2PS_matrix_key undef
         not
         and
         //systemdict /PreserveAnnots .knownget not {//true} if and {
-            mark exch {preserveannot} PDFSTOPONERROR {exec}{stopped {(Error: Ignoring invalid annotation, output may be incorrect.\n) pdfformaterror} if} ifelse {cleartomark} stopped pop
+            mark exch {preserveannot} PDFSTOPONERROR {exec}{stopped {(Error: Ignoring invalid annotation, output may be incorrect.\n) pdfformaterror} if} ifelse {cleartomark} stopped
+            {(Error: Failed to clean up after annotation, output may be incorrect.\n) pdfformaterror}if
           }{
-            mark exch {drawannot} PDFSTOPONERROR {exec}{stopped {(Error: Ignoring invalid annotation, output may be incorrect.\n) pdfformaterror} if} ifelse {cleartomark} stopped pop
+            mark exch {drawannot} PDFSTOPONERROR {exec}{stopped {(Error: Ignoring invalid annotation, output may be incorrect.\n) pdfformaterror} if} ifelse {cleartomark} stopped
+            {(Error: Failed to clean up after annotation, output may be incorrect.\n) pdfformaterror}if
           } ifelse
         } {
           pop
@@ -4497,11 +4666,22 @@ currentdict /PDF2PS_matrix_key undef
 % Note:  This count does not include Cyan, Magenta, Yellow, or Black
 /countspotcolors {        % <pagedict> countspotcolors <count>
   pagespotcolors        % Get dict with all spot colors
-  dup length            % spot color dict length
   % Remove CMYK from the spot color count.
   [ /Cyan /Magenta /Yellow /Black ]
-  { 2 index exch known { 1 sub } if } forall
-  exch pop            % Remove spot color dict
+  {
+    dup 2 index exch known {
+      1 index exch undef
+    } {
+      pop
+    } ifelse
+  } forall
+  dup length dup
+  userdict exch /PageSpotColors exch put % save it in a known place
+  exch
+  userdict /SeparationColorNames 2 index
+  [ exch { pop } forall ]
+  put  % and save the SpotColorNames array in a known place
+  pop		% done with spot color dict
 } bind executeonly def
 
 % ------ ColorSpace substitution support ------ %
@@ -4833,6 +5013,8 @@ currentdict /PDF2PS_matrix_key undef
   } for
   pop
 }bind readonly def
+
+/NestedPatterns <<>> def
 
 end            % pdfdict
 

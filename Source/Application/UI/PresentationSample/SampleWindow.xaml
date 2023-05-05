@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PresentationSample" xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5;assembly=PDFCreator.Presentation"
+        xmlns:local="clr-namespace:PresentationSample"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:checkBoxes="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.CheckBoxes;assembly=PDFCreator.Presentation"
+        xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles;assembly=PDFCreator.Presentation"
         mc:Ignorable="d"
         x:Name="this"
         Title="PDFCreator Presentation Sample"
@@ -12,14 +14,14 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/CheckBoxes/DefaultCheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/CheckBoxes/ToggleSwitchCheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/BorderlessTextBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Combobox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Icons/ComponentIcons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/CheckBoxes/DefaultCheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/CheckBoxes/ToggleSwitchCheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/BorderlessTextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Combobox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Labels.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Icons/ComponentIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -56,10 +58,10 @@
             </UniformGrid>
             <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">OnOffLabelToggleSwitchCheckBox</TextBlock>
             <UniformGrid Columns="4">
-                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" />
-                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" />
-                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
-                <redesign5:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
+                <checkBoxes:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" />
+                <checkBoxes:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" />
+                <checkBoxes:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="False" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
+                <checkBoxes:OnOffLabelToggleSwitchCheckBox Margin="10" IsChecked="True" OnContent="OnContent" OffContent="OffContent" IsEnabled="False" />
             </UniformGrid>
             <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">ToggleSwitchCheckBox</TextBlock>
             <UniformGrid Columns="4">
@@ -102,10 +104,10 @@
             <!-- ProfilesComboBox -->
             <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0">ProfilesComboBox</TextBlock>
             <UniformGrid Columns="2">
-                <redesign5:ProfilesComboBox Margin="10"
+                <styles:ProfilesComboBox Margin="10"
                                             Profiles="{Binding Profiles, ElementName=this, Mode=OneWay}"
                                             SelectedProfile="{Binding Profiles[0], ElementName=this, Mode=OneWay}" />
-                <redesign5:ProfilesComboBox Margin="10"
+                <styles:ProfilesComboBox Margin="10"
                                             Profiles="{Binding Profiles, ElementName=this, Mode=OneWay}"
                                             SelectedProfile="{Binding Profiles[0], ElementName=this, Mode=OneWay}" />
             </UniformGrid>

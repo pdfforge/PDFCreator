@@ -126,11 +126,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             switch (result.Chosen)
             {
                 case ExistingFileBehaviour.Overwrite:
-                    Job.ExistingFile = ExistingFileBehaviour.Overwrite;
+                    Job.ExistingFileBehavior = ExistingFileBehaviour.Overwrite;
                     break;
 
                 case ExistingFileBehaviour.Merge:
-                    Job.ExistingFile = ExistingFileBehaviour.Merge;
+                    Job.ExistingFileBehavior = ExistingFileBehaviour.Merge;
                     break;
 
                 default:
@@ -189,13 +189,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
                 Job.Profile = p;
                 InitCombobox();
+                UpdateAfterEditing(null);
             });
 
             if (commandsLocator != null)
             {
                 EditProfileCommand = commandsLocator.CreateMacroCommand()
-                    .AddCommand(new DelegateCommand(SetProfileForSelection))
+                    .AddCommand(new DelegateCommand(x => eventAggregator.GetEvent<CloseMainWindowEvent>().Publish()))
+                    .AddCommand(new DelegateCommand(StartEditing))
                     .AddCommand<ShowLockLayerCommand>()
+                    .AddCommand<WaitMainShellClosedCommand>()
                     .AddCommand<OpenProfileCommand>()
                     .AddCommand<WaitProfileModificationCommand>()
                     .AddCommand(new DelegateCommand(x => eventAggregator.GetEvent<CloseMainWindowEvent>().Publish()))
@@ -204,9 +207,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
         }
 
-        private void SetProfileForSelection(object o)
+        private void StartEditing(object obj)
         {
             _selectedProfileProvider.SelectedProfile = _profilesProvider.Settings.First(profile => profile.Guid == Job.Profile.Guid);
+
+            ProfilesWrapper = null;
+        }
+
+        private void UpdateAfterEditing(object obj)
+        {
+            _dispatcher.BeginInvoke(() =>
+            {
+                if (SelectedProfile == null)
+                    return;
+
+                ProfilesWrapper = _settingsProvider.Settings?.ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
+
+                SelectedProfileWrapper = ProfilesWrapper?.FirstOrDefault(x => x.ConversionProfile.Guid == SelectedProfile.Guid)
+                                         ?? ProfilesWrapper?.FirstOrDefault();
+
+                Job.CurrentSettings.Accounts = _settingsProvider?.Settings?.ApplicationSettings.Accounts.Copy();
+
+                // Important: RaisePropertyChanged for ProfilesWrapper must be called at the end.
+                // Otherwise, the UI will update the binding source and overwrite the selected profile.
+                RaisePropertyChanged(nameof(ProfilesWrapper));
+            });
         }
 
         private void SetOutputFormatExecute(object parameter)
@@ -470,7 +495,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             if (SelectedProfile == null)
                 return;
 
-            ProfilesWrapper = _settingsProvider.Settings?.Copy().ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
+            ProfilesWrapper = _settingsProvider.Settings?.ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
 
             SelectedProfileWrapper = ProfilesWrapper.FirstOrDefault(x => x.ConversionProfile.Guid == SelectedProfile.Guid)
                                   ?? ProfilesWrapper.FirstOrDefault();

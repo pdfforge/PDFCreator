@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
 
         public MessageIconToIconConverter()
         {
-            _resourceDictionary = new ResourceDictionary { Source = new Uri("PDFCreator.Presentation;component/Styles/Redesign5/Icons/MessageIcons.xaml", UriKind.Relative) };
+            _resourceDictionary = new ResourceDictionary { Source = new Uri("PDFCreator.Presentation;component/Styles/Icons/MessageIcons.xaml", UriKind.Relative) };
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

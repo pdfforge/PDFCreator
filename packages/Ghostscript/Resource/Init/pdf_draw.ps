@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2022 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -366,12 +366,21 @@ drawopdict begin
   /q { q } executeonly def
   /Q { Q } executeonly def
                         % Graphics state setting
-  /cm { //cmmatrix astore
+  /cm {
+        //cmmatrix astore
+        % If inside a BT/ET block, we need to undo the text matrix, then apply
+        % the cm, then re-apply the text matrix :-( Of course the spec says
+        % this isn't even legal.
+        currentdict /TextSaveMatrix .knownget {
+          pop
+          unsettextmatrix
+        } if
         .getpath
         exch concat
         newpath { exec } forall
         % If inside a BT/ET block, we need to update the TextSaveMatrix
         currentdict /TextSaveMatrix .knownget {
+          settextmatrix
           //cmmatrix exch dup concatmatrix pop
         } if
         % And if we ha\ve done a gsave inside a text block, we need to update
@@ -1198,41 +1207,90 @@ currentdict end readonly def
 %% finished running the PaintProc.
 
 /.actual_pdfpaintproc {         % <patdict> <resdict> .pdfpaintproc -
-  PDFDEBUG { //pdfdict /PDFSTEPcount .knownget { 1 le } { //true } ifelse { (%Begin PaintProc) print dup === flush } if } if
-  PDFfile fileposition 3 1 roll
-  q
-  1 index /PaintType oget 1 eq {
-    % For colored patterns, set default fill and stroke colors.
-    0 g 0 G
-  } {
-    % For uncolored patterns, we have to unbind the current
-    % color and color space before running the PaintProc.
-    % Not true since moving the ExtGState parameters into the gstate.
-    %    //null sc1 //null SC1
+  % Check the object number of the pattern, from the pattern dictionary. Somehow
+  % there is a means to get here with no object number set, I have no idea how
+  % but this solves the immediate problem. Hopefully good enough until we drop
+  % this code. Fixes bug #704487 which is recursion caused by a pattern
+  % referenced via resolving a name from a Page as it is not defined in the Form
+  % which uses it.
+  1 index /.gs.pdfobj# known {
+    1 index /.gs.pdfobj# get
+  }
+  {
+    0
   } ifelse
+  3 1 roll
+  NestedPatterns 3 index known 3 index 0 ne and
+  {
+    PDFSTOPONERROR not {
+      (   **** Error:  Attempting to run a Pattern while already executing that Pattern.\n                Ignoring this pattern, output may be incorrect.\n) pdfformaterror
+      pop pop pop
+    }
+    {
+      /PaintProc cvx /circular_reference signalerror
+    } ifelse
+  }
+  {
+    % Store the currnet object number in the dictionary just so we can find it later.
+    NestedPatterns 3 index null put
+    PDFDEBUG { //pdfdict /PDFSTEPcount .knownget { 1 le } { //true } ifelse { (%Begin PaintProc) print dup === flush } if } if
+    PDFfile fileposition 3 1 roll
+    q
+    1 index /PaintType oget 1 eq {
+      % For colored patterns, set default fill and stroke colors.
+      0 g 0 G
+    } {
+      % For uncolored patterns, we have to unbind the current
+      % color and color space before running the PaintProc.
+      % Not true since moving the ExtGState parameters into the gstate.
+      %    //null sc1 //null SC1
+    } ifelse
 
-  % Save old values on opstack, set pdfemptycount to new value.
-  pdfemptycount countdictstack mark
+    % Save old values on opstack, set pdfemptycount to new value.
+    pdfemptycount countdictstack mark
 
-  %% We can't simply 'def' into the dictionary saved by 'q' above, we need to
-  %% call gput to copy it and store inside it. Stupid or what....
-  /pdfemptycount count 3 sub gput 5 3 roll
-  %
-  % Stack: ... <old emptycount> <dictcount> mark <patdict> <resdict>
-  %                                                  |
-  %           New empty count points here -----------+
+    %% We can't simply 'def' into the dictionary saved by 'q' above, we need to
+    %% call gput to copy it and store inside it. Stupid or what....
+    /pdfemptycount count 3 sub gput 5 3 roll
+    %
+    % Stack: ... <old emptycount> <dictcount> mark <patdict> <resdict>
+    %                                                  |
+    %           New empty count points here -----------+
 
-  exch //false resolvestream pdfopdict .pdfruncontext
-  cleartomark
+    exch //false resolvestream pdfopdict .pdfruncontext
+    cleartomark
 
-  //false
-  { countdictstack
-    2 index le { exit } if
-    currentdict /n known not or
-    currentdict /n known currentdict /self known or{
-      Q
-    }{
-      (\n   **** Error: File has unbalanced q/Q operators \(too many Q's\)\n               Output may be incorrect.\n)
+    //false
+    { countdictstack
+      2 index le { exit } if
+      currentdict /n known not or
+      currentdict /n known currentdict /self known or{
+        Q
+      }{
+        (\n   **** Error: File has unbalanced q/Q operators \(too many Q's\)\n               Output may be incorrect.\n)
+        //pdfdict /.Qqwarning_issued .knownget
+        {
+          {
+            pop
+          }
+          {
+            currentglobal //pdfdict gcheck .setglobal
+            //pdfdict /.Qqwarning_issued //true .forceput
+            .setglobal
+            pdfformaterror
+          } executeonly ifelse
+        } executeonly
+        {
+          currentglobal //pdfdict gcheck .setglobal
+          //pdfdict /.Qqwarning_issued //true .forceput
+          .setglobal
+          pdfformaterror
+        } executeonly ifelse
+        end
+      } executeonly ifelse
+    } executeonly loop
+    {
+      (\n   **** Error: File has unbalanced q/Q operators \(too many q's\)\n               Output may be incorrect.\n)
       //pdfdict /.Qqwarning_issued .knownget
       {
         {
@@ -1251,41 +1309,26 @@ currentdict end readonly def
         .setglobal
         pdfformaterror
       } executeonly ifelse
-      end
-    } executeonly ifelse
-  } executeonly loop
-  {
-    (\n   **** Error: File has unbalanced q/Q operators \(too many q's\)\n               Output may be incorrect.\n)
-    //pdfdict /.Qqwarning_issued .knownget
-    {
-      {
-        pop
-      }
-      {
-        currentglobal //pdfdict gcheck .setglobal
-        //pdfdict /.Qqwarning_issued //true .forceput
-        .setglobal
-        pdfformaterror
-      } executeonly ifelse
-    } executeonly
-    {
-      currentglobal //pdfdict gcheck .setglobal
-      //pdfdict /.Qqwarning_issued //true .forceput
-      .setglobal
-      pdfformaterror
-    } executeonly ifelse
-  } executeonly if
-  pop
+    } executeonly if
+    pop
 
-  % restore pdfemptycount
-  /pdfemptycount exch def
+    % restore pdfemptycount
+    /pdfemptycount exch def
 
-  Q
-  PDFDEBUG { //pdfdict /PDFSTEPcount .knownget { 1 le } { //true } ifelse { (%End PaintProc) print dup === flush } if } if
-  PDFfile exch setfileposition
+    Q
+    PDFDEBUG { //pdfdict /PDFSTEPcount .knownget { 1 le } { //true } ifelse { (%End PaintProc) print dup === flush } if } if
+    PDFfile exch setfileposition
+    NestedPatterns exch undef
+  }ifelse
 } bind executeonly odef
 
 /.pdfpaintproc {
+    % Copy the pattern dictionary, we need it to rewind the /File if it is a file
+    % rather than a string, after we've run .actual_pdfpaintproc. If we don't reset
+    % the file position then if we try to run the PaintProc again we will already be
+    % at EOF and nothing will be executed.
+    1 index 3 1 roll
+
     %% Get the /m from pdfopdict (must be present)
     %% and check its a packedarray
     pdfopdict /m get dup type /packedarraytype eq {
@@ -1307,12 +1350,27 @@ currentdict end readonly def
     } ifelse
     %% rearrange the operands, move the boolean to the back
     3 1 roll
-    %% Uncopnditionally use the normal marking ops
+    %% Unconditionally use the normal marking ops
      switch_to_normal_marking_ops
     .actual_pdfpaintproc
     %% If we were in a text block, restore the text marking ops.
     {
       switch_to_text_marking_ops
+    } if
+
+    % If the pattern dictionary has a /File (it should always but let's be safe)
+    % *and* the /File is a file object, not a string, then we need to set the
+    % position of that file (it's a subfiledecode filter) back to 0 so we can
+    % run the PaintProc again, should we need to.
+    % cf bug #704388
+    /File .knownget {
+      dup type /filetype eq
+      {
+        0 setfileposition
+      }
+      {
+        pop
+      } ifelse
     } if
 }bind executeonly odef
 
@@ -1352,6 +1410,25 @@ currentdict end readonly def
   ] cvx put
   dup /BBox 2 copy knownoget { normrect FixPatternBBox put } { pop pop } ifelse
   dup /.pattern_uses_transparency  1 index patternusestransparency put
+
+  % Regardless of whether we are using transparency, if we are doing Overprint
+  % simulation we still need to have the pattern code push the pdf14 compositor.
+  % We consider we are doing overprint simulation if:
+  %   The current page device has /Overprint set to /simulate
+  %   The current page device does NOT contain PageSpotColors (spot-capable devices can overprint)
+  %   The current page device has a /PageUsesOverprint key (set by the interpreter) and it is set to true
+  % If all these conditions are true then we set /.pattern_uses_transparency, otherwise we leave it
+  % untouched as set above.
+  %
+  currentpagedevice dup
+  /Overprint .knownget {/simulate eq}{false} ifelse
+  1 index /PageSpotColors known not and
+  exch /PageUsesOverprint .knownget not { //false } if
+  and
+  {
+    dup /.pattern_uses_transparency //true put
+  } if
+
   PDFDEBUG { //pdfdict /PDFSTEPcount .knownget { 1 le } { //true } ifelse { (%Pattern: ) print dup === flush } if } if
 } bind executeonly def
 

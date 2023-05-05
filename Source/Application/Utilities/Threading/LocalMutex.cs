@@ -60,7 +60,9 @@ namespace pdfforge.PDFCreator.Utilities.Threading
             }
             finally
             {
-                mutex.ReleaseMutex();
+                if (_wasAcquired)
+                    mutex.ReleaseMutex();
+
                 _mutexThread = null;
             }
         }

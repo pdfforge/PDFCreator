@@ -2,13 +2,13 @@
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
-using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using IJobInfoQueue = pdfforge.PDFCreator.Core.JobInfoQueue.IJobInfoQueue;
 using NewJobInfoEventArgs = pdfforge.PDFCreator.Core.JobInfoQueue.NewJobInfoEventArgs;
 
@@ -181,7 +181,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             if (!string.IsNullOrWhiteSpace(jobInfo.SplitDocument))
             {
-                var newJobInfo = _jobInfoDuplicator.CreateJobInfoForSplitDocument(jobInfo, jobInfo.SplitDocument, job.Profile.Guid);
+                var newJobInfo = _jobInfoDuplicator.CreateJobInfoForSplitDocument(jobInfo,
+                    jobInfo.SplitDocument,
+                    job.OutputFileTemplate,
+                    job.NumberOfPages - job.JobInfo.SourceFiles.First().TotalPages,
+                    job.Profile.Guid);
                 _jobInfoQueue.Add(newJobInfo);
             }
 

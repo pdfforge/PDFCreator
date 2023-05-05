@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
         /// <summary>
         ///     The file handling behaviour that should be used when saving the file (merge, overwrite)
         /// </summary>
-        public ExistingFileBehaviour ExistingFile { get; set; }
+        public ExistingFileBehaviour ExistingFileBehavior { get; set; }
 
         /// <summary>
         ///     All currently available accounts (Dropbox, FTP, ...)
@@ -187,7 +187,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.Jobs
 
         public IList<ConversionProfile> Profiles { get; }
         public IList<PrinterMapping> PrinterMappings { get; }
-        public Accounts Accounts { get; }
+        public Accounts Accounts { get; set; }
 
         public static CurrentJobSettings Empty()
         {

@@ -1054,15 +1054,6 @@ currentdict /.fontstatusaux .undef
    //.definefontmap exec
  } bind def
 
-% Make sure the old definitions are still in systemdict so that
-% they will get bound properly.
-% NOTE: Mystery code...  I can't just delete this, but don't understand why.
-% Instead we will undef these three operators in gs_init.ps after all the initialization is done.
- systemdict begin
-  /.origdefinefont /definefont load def
-  /.origundefinefont /undefinefont load def
-  /.origfindfont /findfont load def
-end
 /definefont {
   { /Font defineresource } stopped {
       /definefont cvx $error /errorname get signalerror

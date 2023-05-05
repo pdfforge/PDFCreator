@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    internal class NavigateApplicationSettingsTabCommand : ICommand
+    public class NavigateApplicationSettingsTabCommand : ICommand
     {
         private readonly IRegionManager _regionManager;
         private readonly IEventAggregator _aggregator;

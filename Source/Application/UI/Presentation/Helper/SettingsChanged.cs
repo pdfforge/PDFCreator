@@ -8,6 +8,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {
     public interface ISettingsChanged
     {
+        void TakeSettingsSnapshot();
+
         bool HaveChanged();
     }
 
@@ -27,6 +29,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             _languageProvider = languageProvider;
             _gpoSettings = gpoSettings;
             settingsManager.SettingsSaved += SettingsManager_SettingsSaved;
+            TakeSettingsSnapshot();
+        }
+
+        public void TakeSettingsSnapshot()
+        {
             _currentSettingsSnapshot = _settingsProvider.Settings.Copy();
         }
 

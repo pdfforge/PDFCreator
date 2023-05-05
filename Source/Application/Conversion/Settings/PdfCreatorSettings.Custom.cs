@@ -5,7 +5,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
-    partial class PdfCreatorSettings
+    partial class PdfCreatorSettings : IEditionSettings
     {
         public PdfCreatorSettings CopyAndPreserveApplicationSettings()
         {

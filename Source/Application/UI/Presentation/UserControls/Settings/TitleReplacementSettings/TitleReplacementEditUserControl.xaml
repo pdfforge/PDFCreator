@@ -7,6 +7,7 @@
     xmlns:titleReplacementSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings"
     xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
     d:DesignHeight="250" d:DesignWidth="600"
     d:DataContext="{d:DesignInstance titleReplacementSettings:DesignTimeTitleReplacementEditUserControlViewModel, d:IsDesignTimeCreatable=True}"
@@ -14,9 +15,10 @@
     <UserControl.Resources>
 <ResourceDictionary>
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml"/>
-
-        <ResourceDictionary>
+        <ResourceDictionary Source="../../../Styles/Labels.xaml"/>
+        <ResourceDictionary Source="../../../Styles/Hyperlink.xaml"/>
+        <ResourceDictionary  Source="../../../Styles/Buttons/IconButton.xaml" />
+                <ResourceDictionary>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible"
                                                  FalseValue="Hidden" />
             <converter:BoolNegationConverter x:Key="InvertBoolConverter"/>
@@ -36,11 +38,17 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"  DockPanel.Dock="Bottom" Visibility="{Binding IsInvalid, Converter={StaticResource BoolToVisibilityConverter}}">
-            <TextBlock Margin="10"  Foreground="Red">
+            <Button
+                    Foreground="{StaticResource ErrorBrush}"
+                    Style="{StaticResource IconButton}">
+                <iconPacks:PackIconMaterialDesign Kind="Notifications" Height="12" />
+            </Button>
+            <TextBlock Margin="0 10 10 10"   Foreground="{StaticResource ErrorBrush}">
                 <TextBlock.Inlines>
                     <Run Text="{Binding Translation.InvalidRegex, Mode=OneWay }"/>
-                    <Hyperlink Command="{Binding ShowUserGuideCommand}">
-                        <TextBlock Text="{Binding Translation.UserGuide}" Style="{DynamicResource HyperLinkTextBlock}"/>
+                    <Hyperlink Command="{Binding ShowUserGuideCommand}"
+                               Style="{StaticResource DefaultHyperLink}">
+                        <TextBlock Text="{Binding Translation.UserGuide}" />
                     </Hyperlink>
                 </TextBlock.Inlines>
                 </TextBlock>
@@ -76,7 +84,7 @@
                 <Label Style="{StaticResource RegularLabel}" Content="{Binding Translation.SearchForText}" />
                 <TextBox Text="{Binding SearchForInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 0 0" />
                 <StackPanel Margin="0 20 0 0"
-                    Visibility="{Binding IsReplaceByRegex, Converter={StaticResource BoolToVisibilityConverter}}">
+                            Visibility="{Binding IsReplaceByRegex, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Label Content="{Binding Translation.ReplaceWithText}" />
                     <TextBox Text="{Binding ReplaceWithInput, UpdateSourceTrigger=PropertyChanged}" Margin="0 10 0 0" />
                 </StackPanel>

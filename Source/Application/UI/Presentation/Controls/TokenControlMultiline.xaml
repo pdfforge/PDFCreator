@@ -4,8 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
-             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.ContextMenuButton"
              xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DesignWidth="200"
              d:DesignHeight="200"
@@ -13,9 +13,9 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../Styles/Redesign5/BorderlessTextBox.xaml" />
-                <ResourceDictionary Source="../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../Styles/BorderlessTextBox.xaml" />
+                <ResourceDictionary Source="../Styles/ColorDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,13 +32,9 @@
         </Grid.ColumnDefinitions>
 
         <controls1:BindableTextBox Grid.Row="0" Grid.Column="0"
-                                   Style="{StaticResource ResizableBorderlessTextBox}"
+                                   Style="{StaticResource MultilineBorderlessTextBox}"
                                    BindableSelectionStart="{Binding CurrentCursorPos}"
-                                   VerticalAlignment="Stretch"
                                    Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
-                                   VerticalScrollBarVisibility="Auto"
-                                   TextWrapping="Wrap"
-                                   AcceptsReturn="True"
                                    x:Name="TokenTextBox" />
 
         <contextMenuButton:ContextMenuButton Grid.Row="0" Grid.Column="1" Grid.ZIndex="1"
@@ -57,7 +53,7 @@
                              TextWithToken="{Binding Text, ElementName=TokenTextBox, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                 Style="{StaticResource ResizableBorderlessTextBox}"
+                 Style="{StaticResource MultilineBorderlessTextBox}"
                  IsReadOnly="True"
                  Foreground="{StaticResource LightLabelForegroundBrush}"
                  Background="{x:Null}" SelectionBrush="Transparent" CaretBrush="Transparent"

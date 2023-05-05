@@ -14,6 +14,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
         void ApplySharedSettings(PdfCreatorSettings currentSettings);
 
         IEnumerable<PrinterMapping> GetSharedPrinterMappings();
+
+        string GetSharedSettingsIniFile();
     }
 
     public class SharedSettingsLoader : ISharedSettingsLoader
@@ -48,7 +50,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
             ApplyProfiles(currentSettings, sharedSettings);
         }
 
-        private string GetSharedSettingsIniFile()
+        public string GetSharedSettingsIniFile()
         {
             try
             {
@@ -152,6 +154,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
         public IEnumerable<PrinterMapping> GetSharedPrinterMappings()
         {
             return new List<PrinterMapping>();
+        }
+
+        public string GetSharedSettingsIniFile()
+        {
+            return null;
         }
     }
 }

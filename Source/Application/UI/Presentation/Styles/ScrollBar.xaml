@@ -1,0 +1,63 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.scrollbars.xaml" />
+        <ResourceDictionary Source="ColorDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Storyboard x:Key="MetroScrollBarThumbMouseOverStoryboard">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="MouseOverRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0.6" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Key="MetroScrollBarThumbPressedStoryboard">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="PressedRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0.8" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Style x:Key="MetroScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Background" Value="{DynamicResource ThumbBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="ThumbVisual">
+                        <Rectangle x:Name="Background" Fill="{TemplateBinding Control.Background}"
+                       SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                       StrokeThickness="{TemplateBinding Control.BorderThickness}" />
+                        <Rectangle x:Name="MouseOverRectangle" Fill="{DynamicResource ScrollBarMouseOverBrush}" Opacity="0"
+                       SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                       StrokeThickness="{TemplateBinding Control.BorderThickness}" />
+                        <Rectangle x:Name="PressedRectangle" Fill="{StaticResource ScrollBarMouseDownBrush}" Opacity="0"
+                       SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                       StrokeThickness="{TemplateBinding Control.BorderThickness}" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" Storyboard="{StaticResource MetroScrollBarThumbMouseOverStoryboard}" />
+                                <VisualState x:Name="Pressed" Storyboard="{StaticResource MetroScrollBarThumbPressedStoryboard}" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsEnabled" Value="false">
+                            <Setter TargetName="ThumbVisual" Property="UIElement.Opacity" Value="0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DefaultScrollBar" TargetType="ScrollBar" BasedOn="{StaticResource MetroScrollBar}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource AccentBlue}" />
+            <SolidColorBrush x:Key="ThumbBrush" Color="{StaticResource PdfforgeGreyColor}" />
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

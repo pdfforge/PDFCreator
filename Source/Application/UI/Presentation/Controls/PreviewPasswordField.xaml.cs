@@ -217,8 +217,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Controls
 
         private void Icon_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            SolidColorBrush brush = (SolidColorBrush)FindResource("NavigationLightGreyBrush");
-            EyeGrid.Background = brush;
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 OnPreviewMouseDown(this, null);

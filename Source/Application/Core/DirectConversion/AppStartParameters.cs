@@ -1,4 +1,6 @@
-﻿namespace pdfforge.PDFCreator.Core.DirectConversion
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
+
+namespace pdfforge.PDFCreator.Core.DirectConversion
 {
     public class AppStartParameters
     {
@@ -15,5 +17,7 @@
         public bool Merge { get; set; }
 
         public bool Silent { get; set; }
+        public PageSize PageSize { get; set; } = PageSize.Automatic;
+        public PageOrientation PageOrientation { get; set; } = PageOrientation.Automatic;
     }
 }

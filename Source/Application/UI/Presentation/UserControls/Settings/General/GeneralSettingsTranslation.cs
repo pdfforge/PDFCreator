@@ -46,9 +46,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string EnableTips { get; private set; } = "Show tips";
 
         private string UsageStatisticsExplanationText { get;  set; } = "Help us improve {0} " +
-                                                                             "by sending anonymous application usage statistics. \n" +
-                                                                             "This data will only be used by us for analysis purposes not be shared with any third party. \n" +
-                                                                             "The application's performance will not be affected by collecting the usage statistics. \n" +
+                                                                             "by sending anonymous application usage statistics. " +
+                                                                             "The application's performance will not be affected by collecting the usage statistics. " +
+                                                                             "This data will only be used by us for analysis purposes and will not be shared with any third party. " +
                                                                              "Expand the sample data below to see what data are sent.";
       
         public string UsageStatisticsManualLinkText { get; private set; } = "If you want to know more you can take a look at our manual:";

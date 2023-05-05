@@ -7,10 +7,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 {
     public class PdfIntermediateDevice : PdfDevice
     {
-        public PdfIntermediateDevice(Job job) : base(job, ConversionMode.IntermediateConversion)
-        {
-        }
-
         public PdfIntermediateDevice(Job job, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
             : base(job, ConversionMode.IntermediateConversion, file, osHelper, commandLineUtil)
         {
@@ -23,7 +19,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add("-dPDFSETTINGS=/default");
             parameters.Add("-dEmbedAllFonts=true");
 
-            SetPageOrientation(parameters, DistillerDictonaries);
+            SetPageOrientation(parameters, DistillerDictionaries);
 
             //Do not set ColorConversionStrategy to leave colors unchanged (by default)
 

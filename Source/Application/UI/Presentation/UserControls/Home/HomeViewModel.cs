@@ -1,9 +1,6 @@
 ﻿using pdfforge.Obsidian;
-using pdfforge.Obsidian.Interaction.DialogInteractions;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Controller;
-using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
@@ -25,29 +22,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 {
     public class HomeViewModel : TranslatableViewModelBase<HomeViewTranslation>, IMountable
     {
-        private readonly IFileConversionAssistant _fileConversionAssistant;
         private readonly IPrinterHelper _printerHelper;
         private readonly ISettingsProvider _settingsProvider;
         private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
         private readonly IDispatcher _dispatcher;
-        private readonly ICommandLocator _commandLocator;
         private readonly IGpoSettings _gpoSettings;
-        private readonly IInteractionInvoker _interactionInvoker;
         private readonly CollectionViewSource _collectionViewSource;
         private readonly ObservableCollection<HistoricJob> _jobHistoryList;
 
-        public HomeViewModel(IInteractionInvoker interactionInvoker, IFileConversionAssistant fileConversionAssistant, ITranslationUpdater translationUpdater,
-                             IPrinterHelper printerHelper, ISettingsProvider settingsProvider, IJobHistoryActiveRecord jobHistoryActiveRecord, IDispatcher dispatcher,
+        public HomeViewModel(ITranslationUpdater translationUpdater, IPrinterHelper printerHelper, ISettingsProvider settingsProvider, 
+                             IJobHistoryActiveRecord jobHistoryActiveRecord, IDispatcher dispatcher,
                              ICommandLocator commandLocator, IGpoSettings gpoSettings)
             : base(translationUpdater)
         {
-            _interactionInvoker = interactionInvoker;
-            _fileConversionAssistant = fileConversionAssistant;
             _printerHelper = printerHelper;
             _settingsProvider = settingsProvider;
             _jobHistoryActiveRecord = jobHistoryActiveRecord;
             _dispatcher = dispatcher;
-            _commandLocator = commandLocator;
             _gpoSettings = gpoSettings;
 
             _jobHistoryList = new ObservableCollection<HistoricJob>();
@@ -59,7 +50,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             JobHistory = _collectionViewSource.View;
             JobHistory.MoveCurrentTo(null); //unselect first item
 
-            ConvertFileCommand = new DelegateCommand(o => ConvertFileExecute());
+            ConvertFileCommand = commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
 
             ClearHistoryCommand = new DelegateCommand(o => jobHistoryActiveRecord.Delete());
             RefreshHistoryCommand = new DelegateCommand(o => RefreshHistory());
@@ -83,29 +74,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
                 new MenuItem
                 {
                     Header = Translation.OpenPDFArchitect,
-                    Command = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>()
+                    Command = commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>()
                 },
 
                 new MenuItem
                 {
                     Header = Translation.OpenDefaultProgram,
-                    Command = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>()
-},
+                    Command = commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>()
+                },
 
                 new MenuItem
                 {
                     Header = Translation.OpenExplorer,
-                    Command = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>()
+                    Command = commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>()
                 },
                 new MenuItem
                 {
                     Header = Translation.PrintWithPDFArchitect,
-                    Command = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>()
+                    Command = commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>()
                 },
                 new MenuItem
                 {
                     Header = Translation.OpenMailClient,
-                    Command = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>()
+                    Command = commandLocator.GetCommand<QuickActionOpenMailClientCommand>()
                 }
             };
         }
@@ -172,19 +163,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         }
 
         public string CallToActionText => Translation.FormatCallToAction(_printerHelper.GetApplicablePDFCreatorPrinter(_settingsProvider.Settings?.CreatorAppSettings?.PrimaryPrinter ?? ""));
-
-        private void ConvertFileExecute()
-        {
-            var interaction = new OpenFileInteraction();
-
-            _interactionInvoker.Invoke(interaction);
-
-            if (!interaction.Success)
-                return;
-
-            var file = interaction.FileName;
-            _fileConversionAssistant.HandleFileListWithoutTooManyFilesWarning(new List<string> { file }, new AppStartParameters());
-        }
 
         protected override void OnTranslationChanged()
         {

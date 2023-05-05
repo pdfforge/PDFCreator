@@ -12,20 +12,20 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/DefaultButton.xaml" />
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/TextStyle.xaml" />
+                <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Margin="10">
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.SignatureLocationAndSize}">
+    <StackPanel Margin="20">
+        <HeaderedContentControl  Header="{Binding Translation.SignatureLocationAndSize}"
+                                 Style="{StaticResource BorderlessHeaderPanel}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" MinWidth="100" />
                     <ColumnDefinition Width="*"  MinWidth="100" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" MinWidth="100" />
                     <ColumnDefinition Width="*"  MinWidth="100" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -51,7 +51,7 @@
                 </Grid.Resources>
 
                 <Label Grid.Column="0" Grid.Row="0"
-                               Content="{Binding Translation.UnitOfMeasurementLabel}" />
+                       Content="{Binding Translation.UnitOfMeasurementLabel}" />
 
                 <ComboBox Grid.Column="1" Grid.Row="0"
                           VerticalAlignment="Center"

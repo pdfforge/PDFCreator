@@ -73,7 +73,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                     title = _translation.RepairToolNotFound;
                     message = _translation.GetSetupFileMissingMessage(_path.GetFileName(repairToolPath));
 
-                    ShowMessage(message, title, MessageOptions.OK, MessageIcon.Error);
+                    ShowMessage(message, title, MessageOptions.Ok, MessageIcon.Error);
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             var title = _translation.SpoolFolderAccessDenied;
             var message = _translation.GetSpoolFolderUnableToRepairMessage(_tempFolder);
 
-            ShowMessage(message, title, MessageOptions.OK, MessageIcon.Exclamation);
+            ShowMessage(message, title, MessageOptions.Ok, MessageIcon.Exclamation);
         }
 
         private MessageResponse ShowMessage(string message, string title, MessageOptions buttons, MessageIcon icon)

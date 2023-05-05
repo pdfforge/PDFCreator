@@ -13,18 +13,11 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
-
+                <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Hyperlink.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
                 <ResourceDictionary>
                     <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
-                    <Style TargetType="TextBlock" x:Key="HoverStyle">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -46,11 +39,9 @@
                       Content="{Binding OpenWithViewerTranslation}" />
 
         <TextBlock Margin="0 20 0 0">
-            <Hyperlink TextDecorations="" Command="{Binding PdfArchitectInfoCommand}">
-                <TextBlock  Foreground="{StaticResource HyperlinkBrush}"
-                            Style="{StaticResource HoverStyle}"
-                            Text="{Binding MoreInfoOnEditorTranslation}">
-                </TextBlock>
+            <Hyperlink Command="{Binding PdfArchitectInfoCommand}"
+                       Style="{StaticResource DefaultHyperLink}">
+                <TextBlock Text="{Binding MoreInfoOnEditorTranslation}" />
             </Hyperlink>
         </TextBlock>
     </StackPanel>

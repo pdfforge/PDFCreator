@@ -14,9 +14,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string BenefitFromFreeFeatures { get; private set; } = "Benefit from our free features:";
         public string ViewAndPrint { get; private set; } = "View and print any PDF";
         public string CreatePdfFiles { get; private set; } = "Create PDF files";
-        public string SplitAndMerge { get; private set; } = "Split and merge files";
-        public string InfoButtonContent { get; private set; } = "More info";
+        public string SplitPdfFiles { get; private set; } = "Split files";
+        public string InfoButtonContent { get; private set; } = "Read more";
         public string DownloadButtonContent { get; private set; } = "Install";
         public string DontShowAgain { get; private set; } = "Don't show this window again";
+        public string MergePdfFiles { get; private set; } = "Merge files";
     }
 }

@@ -182,7 +182,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
 
             const string title = "PDFCreator";
 
-            ShowMessage(message, title, MessageOptions.OK, MessageIcon.Warning);
+            ShowMessage(message, title, MessageOptions.Ok, MessageIcon.Warning);
         }
 
         private void ShowMessage(string text, string title, MessageOptions buttons, MessageIcon icon)

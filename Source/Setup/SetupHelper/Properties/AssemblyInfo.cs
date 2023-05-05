@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SetupHelper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("pdfforge")]
+[assembly: AssemblyCompany("Avanquest pdfforge GmbH")]
 [assembly: AssemblyProduct("SetupHelper")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2022")]
+[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

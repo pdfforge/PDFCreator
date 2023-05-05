@@ -60,7 +60,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             if (silent)
                 Logger.Error(message);
             else
-                ShowMessage(message, "PDFCreator", MessageOptions.OK, MessageIcon.Warning);
+                ShowMessage(message, "PDFCreator", MessageOptions.Ok, MessageIcon.Warning);
         }
 
         protected override bool ProceedWithRemainingPrintableFilesQuery(IList<PrintCommand> unprintable, bool silent)

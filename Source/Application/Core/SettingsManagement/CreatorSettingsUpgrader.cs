@@ -36,6 +36,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV10ToV11);
             UpgradeMethods.Add(UpgradeV11ToV12);
             UpgradeMethods.Add(UpgradeV12ToV13);
+            UpgradeMethods.Add(UpgradeV13ToV14);
         }
 
         private void UpgradeV0ToV1()
@@ -247,6 +248,30 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                 }
             );
             Data.SetValue(SettingsVersionPath, "13");
+        }
+
+        private void UpgradeV13ToV14()
+        {
+            ForAllProfiles
+            (
+                (s, i) =>
+                {
+                    var existingFileBehaviour = "Overwrite";
+                    if (GetBool(Data.GetValue(s + @"AutoSave\EnsureUniqueFilenames")) == true)
+                        existingFileBehaviour = "EnsureUniqueFilenames";
+                    else if (GetBool(Data.GetValue(s + @"AutoSave\AutoMergeFiles")) == true)
+                        existingFileBehaviour = "Merge";
+                    else if (GetBool(Data.GetValue(s + @"AutoSave\MergeBeforeModifyActions")) == true)
+                        existingFileBehaviour = "MergeBeforeModifyActions";
+
+                    Data.SetValue(s + @"AutoSave\ExistingFileBehaviour", existingFileBehaviour);
+                    
+                    Data.RemoveValue(s + @"AutoSave\EnsureUniqueFilenames");
+                    Data.RemoveValue(s + @"AutoSave\AutoMergeFiles");
+                    Data.RemoveValue(s + @"AutoSave\MergeBeforeModifyActions");
+                }
+            );
+            Data.SetValue(SettingsVersionPath, "14");
         }
 
         protected IList<string> GetActionOrder(string profileOffset)

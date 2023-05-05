@@ -38,15 +38,16 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public void UpdateTokensAndMetadata(Job job)
         {
-            job.NumberOfCopies = GetNumberOfCopies(job);
-            job.NumberOfPages = _pageNumberCalculator.GetNumberOfPages(job);
-
             // Must be done before TokenReplacer is built
             if (job.Profile.UserTokens.Enabled)
             {
                 _psToPdfConverter.ConvertJobInfoSourceFilesToPdf(job);
                 SetSplitDocumentAndSourceFileInfos(job);
             }
+
+            // Update job after extracting split document to get new number of pages
+            job.NumberOfCopies = GetNumberOfCopies(job);
+            job.NumberOfPages = _pageNumberCalculator.GetNumberOfPages(job);
 
             job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(job);
             job.ReplaceTokensInMetadata();
@@ -104,6 +105,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 sfi.UserToken = parsedFile.UserToken;
                 sfi.UserTokenEvaluated = true;
                 job.JobInfo.SplitDocument = parsedFile.SplitDocument;
+
+                if (!string.IsNullOrEmpty(job.JobInfo.SplitDocument))
+                    job.JobInfo.SourceFiles.First().TotalPages = parsedFile.NumberOfPages;
+                else
+                    sfi.TotalPages = parsedFile.NumberOfPages;
             }
 
             CleanUp(oldFiles);

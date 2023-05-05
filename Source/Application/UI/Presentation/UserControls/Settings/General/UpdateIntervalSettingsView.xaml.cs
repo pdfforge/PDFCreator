@@ -7,14 +7,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     /// </summary>
     public partial class UpdateIntervalSettingsView : UserControl
     {
-        public UpdateIntervalSettingsView()
-        {
-            InitializeComponent();
-        }
-
-        public void SetDataContext(UpdateIntervalSettingsViewModel viewModel)
+        public UpdateIntervalSettingsView(UpdateIntervalSettingsViewModel viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
     }
 }

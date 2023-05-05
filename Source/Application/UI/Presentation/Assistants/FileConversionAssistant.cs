@@ -118,10 +118,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         {
             var directConversionFiles = new List<string>();
             var printFiles = new List<string>();
+            var directImageConversionFiles = new List<string>();
+
             foreach (var file in droppedFiles)
             {
-                if (_directConversion.CanConvertDirectly(file))
+                if (_directConversion.IsDirectConversion(file))
                     directConversionFiles.Add(file);
+                else if (_directConversion.IsImageConversion(file))
+                    directImageConversionFiles.Add(file);
                 else
                     printFiles.Add(file);
             }
@@ -137,6 +141,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             if (directConversionFilesList.Count > 0)
                 _directConversion.ConvertDirectly(directConversionFilesList, appStartParameters);
+
+            if (directImageConversionFiles.Count > 0)
+                _directConversion.ConvertImagesDirectly(directImageConversionFiles, appStartParameters);
 
             if (printFiles.Any())
                 PrintPrintableFiles(printFiles, appStartParameters);

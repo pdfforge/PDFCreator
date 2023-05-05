@@ -7,14 +7,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     /// </summary>
     public partial class ExportSettingView : UserControl
     {
-        public ExportSettingView()
-        {
-            InitializeComponent();
-        }
-
-        public void SetDataContext(ExportSettingsViewModel viewModel)
+        public ExportSettingView(ExportSettingsViewModel viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
     }
 }

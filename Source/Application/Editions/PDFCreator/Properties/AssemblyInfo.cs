@@ -9,9 +9,9 @@ using System.Windows;
 [assembly: AssemblyTitle("PDFCreator")]
 [assembly: AssemblyDescription("PDFCreator - Your OpenSource PDF Solution")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("pdfforge")]
+[assembly: AssemblyCompany("Avanquest pdfforge GmbH")]
 [assembly: AssemblyProduct("PDFCreator")]
-[assembly: AssemblyCopyright("Copyright pdfforge GmbH 2022")]
+[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,6 +50,6 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("4.2.0.0")]
 
-[assembly: AssemblyVersion("5.0.2.0")]
-[assembly: AssemblyFileVersion("5.0.2.0")]
-[assembly: AssemblyInformationalVersion("5.0.2.0")]
+[assembly: AssemblyVersion("5.1.0.0")]
+[assembly: AssemblyFileVersion("5.1.0.0")]
+[assembly: AssemblyInformationalVersion("5.1.0.0")]

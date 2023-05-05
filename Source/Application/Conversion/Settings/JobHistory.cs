@@ -33,30 +33,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// </summary>
 		public bool Enabled { get; set; } = true;
 		
-		/// <summary>
-		/// Last DateFrom in search options
-		/// </summary>
-		public DateTime LastDateFrom { get; set; } = DateTime.Now;
-		
-		/// <summary>
-		/// Last DateTo in search options
-		/// </summary>
-		public DateTime LastDateTo { get; set; } = DateTime.Now;
-		
-		/// <summary>
-		/// Last searched text in search options
-		/// </summary>
-		public string LastSearchText { get; set; } = "";
-		
 		
 		public void ReadValues(Data data, string path = "")
 		{
 			Capacity = int.TryParse(data.GetValue(@"" + path + @"Capacity"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpCapacity) ? tmpCapacity : 30;
 			Column = Enum.TryParse<TableColumns>(data.GetValue(@"" + path + @"Column"), out var tmpColumn) ? tmpColumn : TableColumns.Author;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : true;
-			LastDateFrom = DateTime.TryParse(data.GetValue(@"" + path + @"LastDateFrom"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLastDateFrom) ? tmpLastDateFrom : DateTime.Now;
-			LastDateTo = DateTime.TryParse(data.GetValue(@"" + path + @"LastDateTo"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLastDateTo) ? tmpLastDateTo : DateTime.Now;
-			try { LastSearchText = Data.UnescapeString(data.GetValue(@"" + path + @"LastSearchText")); } catch { LastSearchText = "";}
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -64,9 +46,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Capacity", Capacity.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"Column", Column.ToString());
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"LastDateFrom", LastDateFrom.ToString("yyyy-MM-dd HH:mm:ss"));
-			data.SetValue(@"" + path + @"LastDateTo", LastDateTo.ToString("yyyy-MM-dd HH:mm:ss"));
-			data.SetValue(@"" + path + @"LastSearchText", Data.EscapeString(LastSearchText));
 		}
 		
 		public JobHistory Copy()
@@ -76,9 +55,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Capacity = Capacity;
 			copy.Column = Column;
 			copy.Enabled = Enabled;
-			copy.LastDateFrom = LastDateFrom;
-			copy.LastDateTo = LastDateTo;
-			copy.LastSearchText = LastSearchText;
 			return copy;
 		}
 		
@@ -93,15 +69,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(LastDateFrom != source.LastDateFrom)
-				LastDateFrom = source.LastDateFrom;
-				
-			if(LastDateTo != source.LastDateTo)
-				LastDateTo = source.LastDateTo;
-				
-			if(LastSearchText != source.LastSearchText)
-				LastSearchText = source.LastSearchText;
-				
 		}
 		
 		public override bool Equals(object o)
@@ -112,9 +79,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(Capacity, v.Capacity)) return false;
 			if (!Object.Equals(Column, v.Column)) return false;
 			if (!Object.Equals(Enabled, v.Enabled)) return false;
-			if (!Object.Equals(LastDateFrom, v.LastDateFrom)) return false;
-			if (!Object.Equals(LastDateTo, v.LastDateTo)) return false;
-			if (!Object.Equals(LastSearchText, v.LastSearchText)) return false;
 			return true;
 		}
 		

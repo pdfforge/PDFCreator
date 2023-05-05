@@ -62,7 +62,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.Output
 
         protected override bool ShouldApplyMerger(Job job)
         {
-            return job.ExistingFile == ExistingFileBehaviour.Merge;
+            return job.ExistingFileBehavior == ExistingFileBehaviour.Merge;
         }
 
         protected override bool AppendFile(string tempFile, string outputFile)

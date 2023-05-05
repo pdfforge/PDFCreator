@@ -133,8 +133,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The specified SMTP account is not configured.")]
         Smtp_NoAccount = 15105,
 
-        [Translation("No password provided for e-mail over SMTP.")]
+        [Translation("Missing password for e-mail via SMTP.")]
         Smtp_NoPasswordSpecified = 15111,
+
+        [Translation("Automatic saving without password for e-mail via SMTP.")]
+        Smtp_AutoSaveWithoutPassword = 15112,
 
         [Translation("E-mail over SMTP could not be delivered to one or more recipients.")]
         Smtp_EmailNotDelivered = 15106,
@@ -288,6 +291,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Automatic saving without user password.")]
         AutoSave_NoUserPassword = 25101,
+
+        [Translation("Automatic merging with non-pdf output format")]
+        AutoSave_NonPdfAutoMerge = 25102,
 
         [Translation("Error while encrypting the document.")]
         Encryption_Error = 25200,

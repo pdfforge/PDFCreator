@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../ColorDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Viewbox x:Key="TipBulbIcon" Stretch="Uniform" x:Shared="False">
+        <Canvas Width="24.000" Height="24.000">
+            <Canvas>
+                <Canvas>
+                    <Path Data="F1 M 0.000,0.000 L 24.000,0.000 L 24.000,24.000 L 0.000,24.000 L 0.000,0.000 Z" />
+                    <Path Data="F1 M 0.000,0.000 L 24.000,0.000 L 24.000,24.000 L 0.000,24.000 L 0.000,0.000 Z" />
+                </Canvas>
+                <Canvas>
+                    <Canvas>
+                        <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=Control}, Path=Foreground}"
+                              Data="F1 M 13.500,17.000 L 10.500,17.000 C 10.220,17.000 10.000,16.780 10.000,16.500 C 10.000,16.220 10.220,16.000 10.500,16.000 L 13.500,16.000 C 13.780,16.000 14.000,16.220 14.000,16.500 C 14.000,16.780 13.780,17.000 13.500,17.000 Z M 13.500,19.000 C 13.490,19.000 13.480,18.990 13.470,18.990 L 13.470,19.000 L 10.530,19.000 L 10.530,18.990 C 10.520,18.990 10.510,19.000 10.500,19.000 C 10.220,19.000 10.000,18.780 10.000,18.500 C 10.000,18.220 10.220,18.000 10.500,18.000 C 10.510,18.000 10.520,18.010 10.530,18.010 L 10.530,18.000 L 13.470,18.000 L 13.470,18.010 C 13.480,18.010 13.490,18.000 13.500,18.000 C 13.780,18.000 14.000,18.220 14.000,18.500 C 14.000,18.780 13.780,19.000 13.500,19.000 Z M 12.500,14.000 L 11.500,14.000 L 11.500,11.410 L 9.670,9.590 L 10.380,8.880 L 12.000,10.500 L 13.620,8.880 L 14.330,9.590 L 12.500,11.420 L 12.500,14.000 Z M 12.000,3.000 C 11.540,3.000 11.070,3.040 10.600,3.140 C 7.840,3.670 5.640,5.900 5.120,8.660 C 4.640,11.270 5.600,13.670 7.340,15.220 C 7.770,15.600 8.000,16.130 8.000,16.690 L 8.000,19.000 C 8.000,20.100 8.900,21.000 10.000,21.000 L 10.280,21.000 C 10.630,21.600 11.260,22.000 12.000,22.000 C 12.740,22.000 13.380,21.600 13.720,21.000 L 14.000,21.000 C 15.100,21.000 16.000,20.100 16.000,19.000 L 16.000,16.690 C 16.000,16.140 16.220,15.600 16.640,15.230 C 18.090,13.950 19.000,12.080 19.000,10.000 C 19.000,6.130 15.870,3.000 12.000,3.000 Z" />
+                    </Canvas>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+
+    <Viewbox x:Key="UacShield" Stretch="Uniform" x:Shared="False">
+        <Canvas Width="190" Height="228">
+            <Canvas.Resources>
+                <PathGeometry x:Key="UacClipPath"
+                              Figures="m 51.428571 54.147895 c 43.719974 0 65.156829 -39.647027 89.657559 -40.096197 21.2766 -0.390063 40.07161 39.024769 86.77102 39.024769 C 244.11104 141.72411 182.75264 230.63124 141.42857 233.79075 99.62865 223.55104 35.380835 157.29882 51.428571 54.147895 z"
+                              FillRule="NonZero" />
+            </Canvas.Resources>
+
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="4.9050851e-7" Y="-824.62024" />
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-42.397979" Y="817.5986" />
+                    </Canvas.RenderTransform>
+                    <Canvas Clip="{StaticResource UacClipPath}">
+                        <Rectangle Canvas.Left="51" Canvas.Top="126" Width="88" Height="113" Name="rect3766"
+                                   Fill="#FFFFBF3F" />
+                        <Rectangle Canvas.Left="138" Canvas.Top="13" Width="89" Height="113" Name="rect37661"
+                                   Fill="#FFFFBF3F" />
+                        <Rectangle Canvas.Left="45" Canvas.Top="13" Width="93" Height="113" Name="rect376617"
+                                   Fill="#FF0157A1" />
+                        <Rectangle Canvas.Left="138" Canvas.Top="126" Width="85" Height="113" Name="rect3766170"
+                                   Fill="#FF0157A1" />
+                        <Rectangle Canvas.Left="51" Canvas.Top="126" Width="88" Height="113" Name="rect3857"
+                                   Fill="#FFFFBF3F" />
+                        <Rectangle Canvas.Left="138" Canvas.Top="13" Width="89" Height="113" Name="rect3859"
+                                   Fill="#FFFFBF3F" />
+                        <Rectangle Canvas.Left="45" Canvas.Top="13" Width="93" Height="113" Name="rect3861"
+                                   Fill="#FF0157A1" />
+                        <Rectangle Canvas.Left="138" Canvas.Top="126" Width="85" Height="113" Name="rect3863"
+                                   Fill="#FF0157A1" />
+                    </Canvas>
+                    <Path Name="path29969" StrokeThickness="12" Stroke="#FF939393" StrokeMiterLimit="4"
+                          StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry
+                                Figures="m 48.917272 51.120716 c 43.719977 0 65.156828 -39.647027 89.657558 -40.096197 21.2766 -0.390063 40.07161 39.024769 86.77102 39.024769 C 241.59974 138.69694 180.24134 227.60407 138.91727 230.76358 97.117354 220.52387 32.869542 154.27165 48.917272 51.120716 z"
+                                FillRule="NonZero" />
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+
+    <Viewbox x:Key="UserTokenIcon" Stretch="Uniform">
+        <Canvas Width="960" Height="960">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="-96"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=Control}, Path=Foreground}">
+                <Path.Data>
+                    <PathGeometry Figures="m384 721 43-43-101-102 101-101-43-43-144 144 144 145Zm192 0 145-145-144-144-43 43 101 101-102 102 43 43ZM180 936q-25 0-42.5-17.5T120 876V276q0-25 17.5-42.5T180 216h205q5-35 32-57.5t63-22.5q36 0 63 22.5t32 57.5h205q25 0 42.5 17.5T840 276v600q0 25-17.5 42.5T780 936H180Zm300-677q14 0 24.5-10.5T515 224q0-14-10.5-24.5T480 189q-14 0-24.5 10.5T445 224q0 14 10.5 24.5T480 259Z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="ShieldWithHeart" Stretch="Uniform">
+        <Canvas Width="960" Height="960">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="-96"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=Control}, Path=Foreground}">
+                <Path.Data>
+                    <PathGeometry Figures="M480 718q89-81 114.5-113.5t25.5-65.445Q620 507 597.25 484.5T543 462q-19 0-35.5 7.5T480 490q-10.556-13.125-27.268-20.562Q436.019 462 416.667 462 385 462 362.5 484.75T340 539q0 16 4.432 30.293 4.432 14.294 19.5 33.5Q379 622 406.427 649.055 433.853 676.109 480 718Zm0 257q-140-35-230-162.5T160 533V295l320-120 320 120v238q0 152-90 279.5T480 975Z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+</ResourceDictionary>

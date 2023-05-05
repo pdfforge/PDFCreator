@@ -1,23 +1,28 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.ApplicationLogoControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
-             xmlns:helper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:helper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <converter:CaseConverter x:Key="UpperCaseConverter" Case="Upper" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/Icons/pdfforgeLogos.xaml" />
+                <ResourceDictionary Source="../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../Styles/Fonts.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:CaseConverter x:Key="UpperCaseConverter" Case="Upper" />
+        </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top">
-        <ContentControl Margin="0 0 15 0" DockPanel.Dock="Left" Content="{DynamicResource PDFCreatorLogo}"
+        <ContentControl Margin="0 0 15 0" DockPanel.Dock="Left" Content="{StaticResource PDFCreatorLogo}"
                         Height="55" IsTabStop="False" />
         <TextBlock DockPanel.Dock="Top"
                    FontSize="32"
-                   FontFamily="{DynamicResource YorktenRegular}"
-                   Style="{DynamicResource MetroTextBlock}"
+                   FontFamily="{StaticResource YorktenRegular}"
                    Margin="-3">
             <Run Text="{Binding ApplicationName, FallbackValue=PDFCreator, Mode=OneWay}" />
             <Run x:Name="TrialText" FontSize="26" />
@@ -27,12 +32,11 @@
             <Border
                 Background="{DynamicResource {x:Static helper:HighlightColorRegistration.HighlightColorName}}"
                 SnapsToDevicePixels="True">
-                <TextBlock FontFamily="{DynamicResource YorktenRegular}"
+                <TextBlock FontFamily="{StaticResource YorktenRegular}"
                            FontSize="14"
                            FontWeight="Regular"
                            Foreground="White"
                            Padding="3 0 16 0"
-
                            VerticalAlignment="Center"
                            Text="{Binding EditionName, Converter={StaticResource UpperCaseConverter}, FallbackValue=FREE}" />
             </Border>
@@ -40,7 +44,7 @@
                 <Polygon DockPanel.Dock="Right" SnapsToDevicePixels="True" Points="0,0 20,0 0,20"
                          Fill="{DynamicResource {x:Static helper:HighlightColorRegistration.HighlightColorName}}" />
             </Viewbox>
-            <TextBlock Margin="10 0 0 0" x:Name="CustomEditionText" Foreground="White" />
+            <TextBlock Margin="0 3 0 0" x:Name="CustomEditionText" />
         </StackPanel>
     </DockPanel>
 </UserControl>

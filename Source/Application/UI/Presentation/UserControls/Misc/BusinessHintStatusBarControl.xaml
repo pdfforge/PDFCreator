@@ -8,17 +8,11 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance local:BusinessHintStatusBarViewModel}">
     <Grid>
-        <Grid.Resources>
-            <ResourceDictionary>
-                <Style TargetType="{x:Type Hyperlink}">
-                    <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
-                    <Setter Property="Foreground" Value="White"></Setter>
-                </Style>
-            </ResourceDictionary>
-        </Grid.Resources>
         <TextBlock>
             <Hyperlink Command="{Binding UrlOpenCommand}">
-                <TextBlock  Text="{Binding Translation.BusinessHint}" Style="{DynamicResource MetroTextBlock}"></TextBlock>
+                <TextBlock  Text="{Binding Translation.BusinessHint}"
+                            Foreground="White"
+                            TextDecorations="{x:Null}" />
             </Hyperlink>
         </TextBlock>
     </Grid>

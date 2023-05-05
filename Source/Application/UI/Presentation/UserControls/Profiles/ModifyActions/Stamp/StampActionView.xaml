@@ -9,7 +9,15 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeStampActionViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="{x:Static help:HelpTopic.Stamp}">
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.StampControlHeader}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <HeaderedContentControl Header="{Binding Translation.StampControlHeader}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>

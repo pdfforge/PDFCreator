@@ -145,7 +145,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
         {
             var message = Translation.FontFileNotSupported;
 
-            var interaction = new MessageInteraction(message, "PDFCreator", MessageOptions.OK, MessageIcon.Warning);
+            var interaction = new MessageInteraction(message, "PDFCreator", MessageOptions.Ok, MessageIcon.Warning);
             _interactionInvoker.Invoke(interaction);
         }
     }
