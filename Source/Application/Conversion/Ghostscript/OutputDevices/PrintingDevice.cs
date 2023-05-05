@@ -42,7 +42,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
     /// </summary>
     public class PrintingDevice : OutputDevice
     {
-        public const string PasswordParameter = "-sPDFPassword=";
         private readonly IPrinterWrapper _printer;
         private readonly bool _displayUserNameInSpoolJobTitle;
 
@@ -130,10 +129,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             }
         }
 
-        protected override void AddOutputfileParameter(IList<string> parameters)
+        protected override void AddPasswordParameter(IList<string> parameters)
         {
             if (Job.Profile.PdfSettings.Security.Enabled)
-                parameters.Add(PasswordParameter + Job.Passwords.PdfOwnerPassword);
+                parameters.Add($"{PasswordParameter}={Job.Passwords.PdfOwnerPassword}");
+        }
+
+        protected override void AddOutputFileParameter(IList<string> parameters)
+        {
         }
 
         protected override string ComposeOutputFilename()

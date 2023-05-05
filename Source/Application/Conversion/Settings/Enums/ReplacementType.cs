@@ -5,16 +5,18 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
     [Translatable]
     public enum ReplacementType
     {
-        [Translation("Replace")]
-        Replace,
+        // The int values reflect the replacement order
+        [Translation("RegEx")]
+        RegEx = 0,
 
         [Translation("Start")]
-        Start,
+        Start = 1,
 
         [Translation("End")]
-        End,
+        End = 2,
 
-        [Translation("RegEx")]
-        RegEx
+        // Replace actually does a remove but the enum is not renamed to avoid a settings migration
+        [Translation("Remove")]
+        Replace = 3,
     }
 }

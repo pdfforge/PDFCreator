@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeHomeViewModel : HomeViewModel
     {
-        public DesignTimeHomeViewModel() : base(null, null, new DesignTimeTranslationUpdater(),
+        public DesignTimeHomeViewModel() : base(new DesignTimeTranslationUpdater(),
             new DesignTimePrinterHelper(), new DesignTimePrintJobViewModel.DesignTimeSettingsProvider(), new DesignTimeJobHistoryActiveRecord(),
             new DispatcherWrapper(), new DesignTimeCommandLocator(), new GpoSettingsDefaults())
         {

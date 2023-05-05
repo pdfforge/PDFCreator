@@ -7,14 +7,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     /// </summary>
     public partial class ExplorerIntegrationSettingsView : UserControl
     {
-        public ExplorerIntegrationSettingsView()
-        {
-            InitializeComponent();
-        }
-        
-        public void SetDataContext(ExplorerIntegrationSettingsViewModel viewModel)
+        public ExplorerIntegrationSettingsView(ExplorerIntegrationSettingsViewModel viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
     }
 }

@@ -121,7 +121,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         {
             var title = Translation.SendTestMail;
             var message = _errorCodeInterpreter.GetFirstErrorText(result, withNumber: false);
-            var interaction = new MessageInteraction(message, title, MessageOptions.OK, MessageIcon.Error);
+            var interaction = new MessageInteraction(message, title, MessageOptions.Ok, MessageIcon.Error);
 
             InteractionRequest.Raise(interaction);
         }

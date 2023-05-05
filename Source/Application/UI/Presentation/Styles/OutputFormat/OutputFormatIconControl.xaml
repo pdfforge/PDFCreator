@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:enums="clr-namespace:pdfforge.PDFCreator.Conversion.Settings.Enums;assembly=PDFCreator.Settings"
+                    xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../ColorDictionary.xaml" />
+        <ResourceDictionary Source="OutputFormatIcons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <converter:OutputFormatToTextConverter x:Key="OutputFormatToTextConverter" />
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <!-- This style relies to be used in UserControl that implements DataContext.OutputFormat -->
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <Style x:Key="OutputFormatIconControl" TargetType="ContentControl">
+        <Setter Property="Content" Value="{StaticResource PdfFileIcon}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Viewbox Width="{TemplateBinding Width}"
+                             Height="{TemplateBinding Height}">
+                        <ContentControl Content="{TemplateBinding Content}"
+                                        IsTabStop="False" />
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding OutputFormat}"
+                         Value="{x:Static enums:OutputFormat.Png}">
+                <Setter Property="Content" Value="{StaticResource PngFileIcon}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding OutputFormat}"
+                         Value="{x:Static enums:OutputFormat.Tif}">
+                <Setter Property="Content" Value="{StaticResource TiffFileIcon}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding OutputFormat}"
+                         Value="{x:Static enums:OutputFormat.Txt}">
+                <Setter Property="Content" Value="{StaticResource TxtFileIcon}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding OutputFormat}"
+                         Value="{x:Static enums:OutputFormat.Jpeg}">
+                <Setter Property="Content" Value="{StaticResource JpegFileIcon}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <!-- This style relies to be used in UserControl that implements DataContext.OutputFormat -->
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+    <Style x:Key="OutputFormatIconAndDescriptionControl" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <StackPanel>
+                        <ContentControl Height="55"
+                                        Style="{StaticResource OutputFormatIconControl}"
+                                        IsTabStop="False" />
+
+                        <Label Margin="0 15 0 0"
+                               FontWeight="DemiBold"
+                               FontSize="12"
+                               Foreground="{StaticResource DefaultTextColorBrush}"
+                               Content="{Binding DataContext.OutputFormat,
+                                         RelativeSource={RelativeSource AncestorType=UserControl},
+                                         Converter={StaticResource OutputFormatToTextConverter}}"
+                               HorizontalAlignment="Center" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -3,7 +3,6 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
-using System;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {
@@ -29,7 +28,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             return settings;
         }
 
-        public override ISettings CreateDefaultSettings(ISettings currentSettings)
+        public override IEditionSettings CreateDefaultSettings(ISettings currentSettings)
         {
             var pdfCreatorSettings = (PdfCreatorSettings)currentSettings;
             var defaultSettings = (PdfCreatorSettings)CreateDefaultSettings(
@@ -61,52 +60,42 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
         ///     Creates a settings object with default settings and profiles
         /// </summary>
         /// <returns>The initialized settings object</returns>
-        public override ISettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage)
+        public override IEditionSettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage)
         {
-            var settings = CreateEmptySettings();
+            var settings = (PdfCreatorSettings)CreateEmptySettings();
 
-            InstallDefaultApplicationSettings(primaryPrinter, defaultLanguage, (PdfCreatorSettings)settings);
-
-            InstallDefaultProfileSet((PdfCreatorSettings)settings);
+            AddPrimaryPrinter(primaryPrinter, settings);
+            AddDefaultTimeServer(settings);
+            AddDefaultTitleReplacements(settings);
+            AddLanguage(defaultLanguage, settings);
+            AddDefaultProfiles(settings);
+            AddLastUsedProfileGuid(settings);
 
             return settings;
         }
 
-        private void InstallDefaultApplicationSettings(string primaryPrinter, string defaultLanguage, PdfCreatorSettings settings)
+        private void AddDefaultTitleReplacements(PdfCreatorSettings settings)
         {
-            settings.CreatorAppSettings.PrimaryPrinter = primaryPrinter;
-
             settings.ApplicationSettings.TitleReplacement = CreateDefaultTitleReplacements();
+        }
 
-            settings.ApplicationSettings.Language = defaultLanguage;
-
-            InstallDefaultTimeServer(settings);
-
+        private static void AddLastUsedProfileGuid(PdfCreatorSettings settings)
+        {
             if (string.IsNullOrWhiteSpace(settings.CreatorAppSettings.LastUsedProfileGuid))
                 settings.CreatorAppSettings.LastUsedProfileGuid = ProfileGuids.DEFAULT_PROFILE_GUID;
         }
 
-        private void InstallDefaultTimeServer(PdfCreatorSettings settings)
+        private static void AddLanguage(string defaultLanguage, PdfCreatorSettings settings)
         {
-            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
-            {
-                AccountId = Guid.NewGuid().ToString()
-            });
-
-            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
-            {
-                AccountId = Guid.NewGuid().ToString(),
-                Url = "http://timestamp.globalsign.com/scripts/timestamp.dll"
-            });
-
-            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
-            {
-                AccountId = Guid.NewGuid().ToString(),
-                Url = "http://timestamp.digicert.com"
-            });
+            settings.ApplicationSettings.Language = defaultLanguage;
         }
 
-        private void InstallDefaultProfileSet(PdfCreatorSettings settings)
+        private static void AddPrimaryPrinter(string primaryPrinter, PdfCreatorSettings settings)
+        {
+            settings.CreatorAppSettings.PrimaryPrinter = primaryPrinter;
+        }
+
+        private void AddDefaultProfiles(PdfCreatorSettings settings)
         {
             settings.ConversionProfiles.Add(CreateDefaultProfile());
             settings.ConversionProfiles.Add(CreateHighCompressionProfile());
@@ -281,6 +270,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             profile.OpenViewer.OpenWithPdfArchitect = true;
             profile.PdfSettings.Security.EncryptionLevel = EncryptionLevel;
             profile.EmailClientSettings.AddSignature = WithEmailSignature;
+        }
+
+        public override ConversionProfile CreateDefaultProfile()
+        {
+            var defaultProfile = new ConversionProfile();
+            defaultProfile.Name = "<Default Profile>";
+            defaultProfile.Guid = ProfileGuids.DEFAULT_PROFILE_GUID;
+            SetDefaultProperties(defaultProfile, false);
+            return defaultProfile;
         }
     }
 }

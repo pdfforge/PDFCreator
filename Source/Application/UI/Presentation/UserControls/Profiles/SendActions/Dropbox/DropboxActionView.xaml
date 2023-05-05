@@ -14,58 +14,54 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel>
-        <StackPanel.Resources>
-            <Style TargetType="Label" BasedOn="{StaticResource RegularLabel}">
-                <Setter Property="Margin" Value="0 10" />
-            </Style>
-        </StackPanel.Resources>
-
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Dropbox}" />
-
-        <Label Content="{Binding Translation.DropboxAccountSelectContent}" Grid.Row="0" Grid.Column="0"></Label>
-
-        <DockPanel Margin="0 0 0 10">
-            <StackPanel Style="{DynamicResource GpoStyle}"
-                        IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
-                <Button DockPanel.Dock="Right"
+    <HeaderedContentControl Header="{Binding Translation.Dropbox}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
+        <StackPanel>
+            <Label Content="{Binding Translation.DropboxAccountSelectContent}" />
+            <DockPanel Margin="0 10 0 0">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right"
                         Margin="10 0 0 0"
                         Command="{Binding AddDropboxAccountCommand}"
                         Width="33" Padding="5">
-                    <iconPacks:PackIconMaterialDesign Kind="Add" />
-                </Button>
-            </StackPanel>
-            <Grid>
-                <ComboBox Name="DropboxAccountsComboBox"
+                        <iconPacks:PackIconMaterialDesign Kind="Add" />
+                    </Button>
+                </StackPanel>
+                <Grid>
+                    <ComboBox Name="DropboxAccountsComboBox"
                           DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
                           SelectedValue="{Binding CurrentProfile.DropboxSettings.AccountId}"
-                          ItemsSource="{Binding DropboxAccounts}" IsSynchronizedWithCurrentItem="True" />
-                <Label Margin="10 0 0 0" VerticalAlignment="Center"
+                          ItemsSource="{Binding DropboxAccounts}" IsSynchronizedWithCurrentItem="True"
+                          Style="{StaticResource DisabledEmptyComboboxStyle}" />
+
+                    <Label Margin="10 0 0 0" VerticalAlignment="Center"
                        IsHitTestVisible="False"
                        Content="{Binding Translation.SelectOrAddAccount}"
                        Visibility="{Binding ElementName=DropboxAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
-            </Grid>
-        </DockPanel>
+                </Grid>
+            </DockPanel>
 
-        <StackPanel Margin="0 0 0 10">
-            <Label Content="{Binding Translation.DropboxDirectoryLabel}" />
-            <controls:TokenControl DataContext="{Binding SharedFolderTokenViewModel}" />
+            <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.DropboxDirectoryLabel}" />
+            <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding SharedFolderTokenViewModel}" />
+
+            <CheckBox Margin="0 10 0 0"
+                      IsChecked="{Binding CurrentProfile.DropboxSettings.EnsureUniqueFilenames}"
+                      Content="{Binding Translation.EnsureUniqueDropboxFilenamesText}" />
+
+            <CheckBox Margin="0 20 0 0"
+                      IsChecked="{Binding CurrentProfile.DropboxSettings.CreateShareLink}"
+                      Content="{Binding Translation.CreateShareLinkText}" />
         </StackPanel>
-
-        <CheckBox Margin="0 10 0 4" IsChecked="{Binding CurrentProfile.DropboxSettings.EnsureUniqueFilenames}">
-            <TextBlock  TextWrapping="Wrap" Text="{Binding Translation.EnsureUniqueDropboxFilenamesText}" />
-        </CheckBox>
-
-        <CheckBox Margin="0 10 0 0"  
-                  IsChecked="{Binding CurrentProfile.DropboxSettings.CreateShareLink}">
-            <TextBlock Text="{Binding Translation.CreateShareLinkText}" TextWrapping="Wrap" />
-        </CheckBox>
-    </StackPanel>
+    </HeaderedContentControl>
 </UserControl>

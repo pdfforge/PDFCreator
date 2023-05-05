@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2022 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -120,7 +120,9 @@
   % even if HiResBoundingBox occurs first in the EPS file.
   //systemdict /EPSBoundingBoxState get 1 index lt {
     % save the BBoxString for possible FitPage when EndComments is seen
-    exch dup //systemdict /EPSBoundingBoxString 3 -1 roll .forceput
+    exch dup currentglobal //true setglobal exch
+    dup length string copy //systemdict /EPSBoundingBoxString 3 -1 roll .forceput
+    setglobal
     EPSBoundingBoxParse
     {
       //systemdict /EPSCrop known {

@@ -9,58 +9,57 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DataContext="{d:DesignInstance designTime:DesignTimeLicenseSettingsViewModel, d:IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="AppLicense"
              d:DesignWidth="800"
              MaxWidth="1000" HorizontalAlignment="Left">
-
+    
     <UserControl.Resources>
-
-    <ResourceDictionary>
-        <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
+                <ResourceDictionary Source="../../../Styles/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
-        <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
-            <Style TargetType="TextBox" BasedOn="{StaticResource BorderlessTextBox}">
-            <Style.Setters>
-                <Setter Property="Background" Value="White"/>
-            </Style.Setters>
-        </Style>
-</ResourceDictionary>
-
+            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
+            <Style TargetType="TextBox" BasedOn="{StaticResource BrightBorderlessTextBox}"/>
+        </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Margin="0 0 0 0">
-        <Label Content="{Binding Translation.LicenseTabText}" FontSize="16" Style="{StaticResource LightLabel}" Margin="0 0 0 10"/>
+
+
+    <StackPanel Style="{StaticResource SettingsRegion}">
+        <Label Content="{Binding Translation.LicenseTabText}" Style="{StaticResource LargeLightLabel}"/>
         <StackPanel>
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <StackPanel.Resources>
-                        <converter:AreEqualConverter Reference="{x:Static local:LicenseStatusForView.Valid}"
-                                                          EqualValue="True" NotEqualValue="False"
-                                                          x:Key="LicenseStatusIsValidToBoolConverter" />
-                        <converter:AreEqualConverter
-                                Reference="{x:Static local:LicenseStatusForView.ValidForVersionButLicenseExpired}"
-                                EqualValue="True" NotEqualValue="False"
-                                x:Key="LicenseStatusIsValidForVersionButLicenseExpiredToBoolConverter" />
+                        <converter:AreEqualConverter x:Key="LicenseStatusIsValidToBoolConverter"
+                                                     Reference="{x:Static local:LicenseStatusForView.Valid}"
+                                                     EqualValue="True" NotEqualValue="False"/>
+                        <converter:AreEqualConverter x:Key="LicenseStatusIsValidForVersionButLicenseExpiredToBoolConverter" 
+                                                     Reference="{x:Static local:LicenseStatusForView.ValidForVersionButLicenseExpired}"
+                                                     EqualValue="True" NotEqualValue="False"/>
                     </StackPanel.Resources>
-                    <TextBlock FontSize="12" FontWeight="Light" Text="{Binding Translation.LicenseStatus}" VerticalAlignment="Center" />
-                    <TextBlock Margin="5 0" TextWrapping="Wrap" FontSize="12" FontWeight="Light" Text="{Binding LicenseStatusText}" VerticalAlignment="Center" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Translation.LicenseStatus}" FontWeight="Light"   />
+                    <TextBlock Margin="5 0" VerticalAlignment="Center" Text="{Binding LicenseStatusText}" FontWeight="Light" TextWrapping="Wrap"/>
 
-                    <Viewbox DockPanel.Dock="Right" Height="20" Margin="5 0 0 0" Stretch="Uniform" VerticalAlignment="Center">
-                        <Path>
-                            <Path.Style>
-                                <Style TargetType="Path">
+                    <Viewbox DockPanel.Dock="Right" Height="15" Margin="5 0 0 0" Stretch="Uniform" VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterialDesign>
+                            <iconPacks:PackIconMaterialDesign.Style>
+                                <Style TargetType="iconPacks:PackIconMaterialDesign">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding LicenseStatusForView}"
-                                                 Value="{x:Static local:LicenseStatusForView.Valid}">
-                                            <Setter Property="Data" Value="{DynamicResource AcceptIconPath}" />
-                                            <Setter Property="Fill" Value="{DynamicResource RegularButtonGreenBrush}" />
+                                                     Value="{x:Static local:LicenseStatusForView.Valid}">
+                                            <Setter Property="Kind" Value="CheckCircle" />
+                                            <Setter Property="Foreground" Value="{StaticResource LicenseSettingsConfirmColorBrush}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding LicenseStatusForView}"
                                                          Value="{x:Static local:LicenseStatusForView.ValidForVersionButLicenseExpired}">
-                                            <Setter Property="Data" Value="{DynamicResource AcceptIconPath}" />
-                                            <Setter Property="Fill" Value="{DynamicResource WarningYellowBrush}" />
+                                            <Setter Property="Kind" Value="CheckCircle" />
+                                            <Setter Property="Foreground" Value="{StaticResource LicenseSettingsWarningColorBrush}" />
                                         </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -69,14 +68,14 @@
                                                 <Condition Binding="{Binding LicenseStatusForView, Converter={StaticResource LicenseStatusIsValidForVersionButLicenseExpiredToBoolConverter}}"
                                                        Value="False" />
                                             </MultiDataTrigger.Conditions>
-                                            <Setter Property="Data" Value="{DynamicResource WarningIconPath}" />
-                                            <Setter Property="Fill" Value="{DynamicResource PdfforgeRedBrush}" />
+                                            <Setter Property="Kind" Value="Error" />
+                                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
                                         </MultiDataTrigger>
 
                                     </Style.Triggers>
                                 </Style>
-                            </Path.Style>
-                        </Path>
+                            </iconPacks:PackIconMaterialDesign.Style>
+                        </iconPacks:PackIconMaterialDesign>
                     </Viewbox>
                 </StackPanel>
 
@@ -131,7 +130,7 @@
                            Visibility="{Binding OnlineActivationAsyncCommand.IsExecuting, 
                                         Converter={StaticResource HiddenWhenFalseConverter}}">
                     <Viewbox DockPanel.Dock="Left">
-                        <controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}" HorizontalAlignment="Center"  />
+                        <controls:ProgressRing Foreground="{StaticResource LicenseSettingsProgressRingColorBrush}" HorizontalAlignment="Center"  />
                     </Viewbox>
                     <TextBlock VerticalAlignment="Center" Margin="5"
                                IsHitTestVisible="{Binding Translation.ValidatingLicense}" />

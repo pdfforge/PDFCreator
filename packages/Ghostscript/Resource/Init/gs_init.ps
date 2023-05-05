@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -34,7 +34,7 @@
 % Interpreter library version number
 % NOTE: the interpreter code requires that the first non-comment token
 % in this file be an integer, and that it match the compiled-in version!
-9550
+10011
 
 % Check the interpreter revision.
 dup revision ne
@@ -283,9 +283,7 @@ userdict /=string 256 string put
    (\)\n) revisiondate 10 mod revisiondate 10 idiv 10 mod (-)
    revisiondate 100 idiv 10 mod revisiondate 1000 idiv 10 mod (-)
    revisiondate 10000 idiv ( \()
-   revision 10 mod (.)
-   revision 1000 mod 10 idiv (.)
-   revision 1000 idiv ( )
+   .revisionstring ( )
    product
    counttomark
     { (%stdout) (w) file exch 0 .writecvp
@@ -2464,7 +2462,6 @@ currentdict /.locksafeglobal .undef
   /.init_otto_font_file
   /.composefontdict
   /.type1build
-  /.origdefinefont /.origundefinefont /.origfindfont
   /.buildnativefontmap
   /.completefont
   /.definefakefonts

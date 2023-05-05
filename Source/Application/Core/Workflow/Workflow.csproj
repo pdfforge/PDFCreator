@@ -64,6 +64,7 @@
     <Compile Include="JobCleanUp.cs" />
     <Compile Include="JobBuilder.cs" />
     <Compile Include="JobPasswordHelper.cs" />
+    <Compile Include="JobRunner\MergeBeforeActionsHelper.cs" />
     <Compile Include="LastSaveDirectoryHelper.cs" />
     <Compile Include="Output\AutosaveOutputFileMover.cs" />
     <Compile Include="Output\InteractiveOutputFileMover.cs" />
@@ -102,6 +103,10 @@
     <ProjectReference Include="..\..\Conversion\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj">
       <Project>{f7126398-bb4f-49af-ad90-0f23d2eddcfe}</Project>
       <Name>PdfProcessingInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DirectConversion\DirectConversion.csproj">
+      <Project>{2D918F3C-5403-4346-98CF-FB53A5D09951}</Project>
+      <Name>DirectConversion</Name>
     </ProjectReference>
     <ProjectReference Include="..\JobInfoQueue\JobInfoQueue.csproj">
       <Project>{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}</Project>

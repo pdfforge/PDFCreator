@@ -4946,7 +4946,7 @@
         <member name="M:NLog.Config.Factory`2.RegisterDefinition(System.String,System.Type)">
             <inheritdoc/>
         </member>
-        <member name="M:NLog.Config.Factory`2.RegisterDefinition(System.String,System.Type,System.String,System.String)">
+        <member name="M:NLog.Config.Factory`2.RegisterDefinitionNoLock(System.String,System.Type,System.String,System.String)">
             <summary>
             Registers a single type definition.
             </summary>
@@ -4969,10 +4969,8 @@
             Factory specialized for <see cref="T:NLog.LayoutRenderers.LayoutRenderer"/>s. 
             </summary>
         </member>
-        <member name="M:NLog.Config.LayoutRendererFactory.ClearFuncLayouts">
-            <summary>
-            Clear all func layouts
-            </summary>
+        <member name="M:NLog.Config.LayoutRendererFactory.Clear">
+            <inheritdoc/>
         </member>
         <member name="M:NLog.Config.LayoutRendererFactory.RegisterFuncLayout(System.String,NLog.LayoutRenderers.FuncLayoutRenderer)">
             <summary>
@@ -12361,12 +12359,12 @@
             Full list of options is available at <a href="https://docs.microsoft.com/en-us/dotnet/api/system.environment.specialfolder">MSDN</a>.
             The most common ones are:
             <ul>
-            <li><b>ApplicationData</b> - roaming application data for current user.</li>
             <li><b>CommonApplicationData</b> - application data for all users.</li>
-            <li><b>MyDocuments</b> - My Documents</li>
-            <li><b>DesktopDirectory</b> - Desktop directory</li>
-            <li><b>LocalApplicationData</b> - non roaming application data</li>
-            <li><b>Personal</b> - user profile directory</li>
+            <li><b>ApplicationData</b> - roaming application data for current user.</li>
+            <li><b>LocalApplicationData</b> - non roaming application data for current user</li>
+            <li><b>UserProfile</b> - Profile folder for current user</li>
+            <li><b>DesktopDirectory</b> - Desktop-directory for current user</li>
+            <li><b>MyDocuments</b> - My Documents-directory for current user</li>
             <li><b>System</b> - System directory</li>
             </ul>
             </remarks>
@@ -13510,8 +13508,11 @@
         <member name="M:NLog.LayoutRenderers.Wrappers.ObjectPathRendererWrapper.RenderInnerAndTransform(NLog.LogEventInfo,System.Text.StringBuilder,System.Int32)">
             <inheritdoc/>
         </member>
-        <member name="M:NLog.LayoutRenderers.Wrappers.ObjectPathRendererWrapper.TryGetRawValue(NLog.LogEventInfo,System.Object@)">
-            <inheritdoc/>
+        <member name="M:NLog.LayoutRenderers.Wrappers.ObjectPathRendererWrapper.TryGetPropertyValue(System.Object,System.Object@)">
+            <summary>
+            Lookup property-value from source object based on <see cref="P:NLog.LayoutRenderers.Wrappers.ObjectPathRendererWrapper.ObjectPath"/>
+            </summary>
+            <returns>Could resolve property-value?</returns>
         </member>
         <member name="T:NLog.LayoutRenderers.Wrappers.OnExceptionLayoutRendererWrapper">
             <summary>
@@ -14435,6 +14436,12 @@
             </summary>
             <docgen category='Layout Options' order='100' />
         </member>
+        <member name="P:NLog.Layouts.JsonLayout.IndentJson">
+            <summary>
+            Auto indent and create new lines
+            </summary>
+            <docgen category='Layout Options' order='100' />
+        </member>
         <member name="P:NLog.Layouts.JsonLayout.IncludeEventProperties">
             <summary>
             Gets or sets the option to include all properties from the log event (as JSON)
@@ -15269,6 +15276,12 @@
             <docgen category='Layout Options' order='1' />
         </member>
         <member name="P:NLog.Layouts.XmlElement.Value">
+            <summary>
+            Value inside the element
+            </summary>
+            <docgen category='Layout Options' order='10' />
+        </member>
+        <member name="P:NLog.Layouts.XmlElement.Layout">
             <summary>
             Value inside the element
             </summary>
@@ -22017,11 +22030,6 @@
             The row-highlighting condition.
             </summary>
         </member>
-        <member name="M:NLog.Targets.ConsoleRowHighlightingRule.#cctor">
-            <summary>
-            Initializes static members of the ConsoleRowHighlightingRule class.
-            </summary>
-        </member>
         <member name="M:NLog.Targets.ConsoleRowHighlightingRule.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:NLog.Targets.ConsoleRowHighlightingRule" /> class.
@@ -24173,6 +24181,12 @@
             <remarks>Warning: zero is not infinite waiting</remarks>
             <docgen category='SMTP Options' order='100' />
         </member>
+        <member name="P:NLog.Targets.MailTarget.MailHeaders">
+            <summary>
+            Gets the array of email headers that are transmitted with this email message
+            </summary>
+            <docgen category='Message Options' order='100' />
+        </member>
         <member name="M:NLog.Targets.MailTarget.Write(NLog.Common.AsyncLogEventInfo)">
             <inheritdoc/>
         </member>
@@ -24213,19 +24227,11 @@
             <returns></returns>
         </member>
         <member name="M:NLog.Targets.MailTarget.GetSmtpSettingsKey(NLog.LogEventInfo)">
-             <summary>
-             Create key for grouping. Needed for multiple events in one mail message
-             </summary>
-             <param name="logEvent">event for rendering layouts   </param>  
-            <returns>string to group on</returns>
-        </member>
-        <member name="M:NLog.Targets.MailTarget.AppendLayout(System.Text.StringBuilder,NLog.LogEventInfo,NLog.Layouts.Layout)">
             <summary>
-            Append rendered <paramref name="layout"/> to <paramref name="sb"/>
+            Create key for grouping. Needed for multiple events in one mail message
             </summary>
-            <param name="sb">append to this</param>
-            <param name="logEvent">event for rendering <paramref name="layout"/></param>
-            <param name="layout">append if not <c>null</c></param>
+            <param name="logEvent">event for rendering layouts   </param>  
+            <returns>string to group on</returns>
         </member>
         <member name="M:NLog.Targets.MailTarget.CreateMailMessage(NLog.LogEventInfo,System.String)">
             <summary>
@@ -24481,6 +24487,58 @@
             </summary>
             <param name="parameters">Method call parameters.</param>
         </member>
+        <member name="T:NLog.Targets.NetworkLogEventDroppedEventArgs">
+            <summary>
+            Arguments for <see cref="E:NLog.Targets.NetworkTarget.LogEventDropped"/> events.
+            </summary>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedEventArgs.MaxMessageSizeOverflow">
+            <inheritdoc cref="F:NLog.Targets.NetworkLogEventDroppedReason.MaxMessageSizeOverflow"/>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedEventArgs.MaxConnectionsOverflow">
+            <inheritdoc cref="F:NLog.Targets.NetworkLogEventDroppedReason.MaxConnectionsOverflow"/>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedEventArgs.MaxQueueOverflow">
+            <inheritdoc cref="F:NLog.Targets.NetworkLogEventDroppedReason.MaxQueueOverflow"/>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedEventArgs.NetworkErrorDetected">
+            <inheritdoc cref="F:NLog.Targets.NetworkLogEventDroppedReason.NetworkError"/>
+        </member>
+        <member name="M:NLog.Targets.NetworkLogEventDroppedEventArgs.#ctor(NLog.Targets.NetworkLogEventDroppedReason)">
+            <summary>
+            Creates new instance of NetworkTargetLogEventDroppedEventArgs
+            </summary>
+        </member>
+        <member name="P:NLog.Targets.NetworkLogEventDroppedEventArgs.Reason">
+            <summary>
+            The reason why log was dropped
+            </summary>
+        </member>
+        <member name="T:NLog.Targets.NetworkLogEventDroppedReason">
+            <summary>
+            The reason why log event was dropped by <see cref="T:NLog.Targets.NetworkTarget"/>
+            </summary>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedReason.MaxMessageSizeOverflow">
+            <summary>
+            Discarded LogEvent because message is bigger than <see cref="P:NLog.Targets.NetworkTarget.MaxMessageSize"/>
+            </summary>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedReason.MaxQueueOverflow">
+            <summary>
+            Discarded LogEvent because message queue was bigger than <see cref="P:NLog.Targets.NetworkTarget.MaxQueueSize"/>
+            </summary>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedReason.MaxConnectionsOverflow">
+            <summary>
+            Discarded LogEvent because attempted to open more than <see cref="P:NLog.Targets.NetworkTarget.MaxConnections"/> connections
+            </summary>
+        </member>
+        <member name="F:NLog.Targets.NetworkLogEventDroppedReason.NetworkError">
+            <summary>
+            Discarded LogEvent because of network communication error
+            </summary>
+        </member>
         <member name="T:NLog.Targets.NetworkTarget">
             <summary>
             Sends log messages over the network.
@@ -24603,6 +24661,16 @@
             Gets or sets the action that should be taken, when more pending messages than <see cref="P:NLog.Targets.NetworkTarget.MaxQueueSize"/>.
             </summary>
             <docgen category='Connection Options' order='10' />
+        </member>
+        <member name="E:NLog.Targets.NetworkTarget.LogEventDropped">
+            <summary>
+            Occurs when LogEvent has been dropped.
+            </summary>
+            <remarks>
+             - When internal queue is full and <see cref="P:NLog.Targets.NetworkTarget.OnQueueOverflow"/> set to <see cref="F:NLog.Targets.NetworkTargetOverflowAction.Discard"/><br/>
+             - When connection-list is full and <see cref="P:NLog.Targets.NetworkTarget.OnConnectionOverflow"/> set to <see cref="F:NLog.Targets.NetworkTargetConnectionsOverflowAction.Discard"/><br/>
+             - When message is too big and <see cref="P:NLog.Targets.NetworkTarget.OnOverflow"/> set to <see cref="F:NLog.Targets.NetworkTargetOverflowAction.Discard"/><br/>
+            </remarks>
         </member>
         <member name="P:NLog.Targets.NetworkTarget.ConnectionCacheSize">
             <summary>
@@ -26203,12 +26271,12 @@
         </member>
         <member name="E:NLog.Targets.Wrappers.AsyncRequestQueueBase.LogEventDropped">
             <summary>
-            Notifies about log event that was dropped when <see cref="P:NLog.Targets.Wrappers.AsyncRequestQueueBase.OnOverflow"/> set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Discard"/>
+            Occurs when LogEvent has been dropped, because internal queue is full and <see cref="P:NLog.Targets.Wrappers.AsyncRequestQueueBase.OnOverflow"/> set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Discard"/>
             </summary>
         </member>
         <member name="E:NLog.Targets.Wrappers.AsyncRequestQueueBase.LogEventQueueGrow">
             <summary>
-            Notifies when queue size is growing over <see cref="P:NLog.Targets.Wrappers.AsyncRequestQueueBase.RequestLimit"/>
+            Occurs when internal queue size is growing, because internal queue is full and <see cref="P:NLog.Targets.Wrappers.AsyncRequestQueueBase.OnOverflow"/> set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Grow"/>
             </summary>
         </member>
         <member name="M:NLog.Targets.Wrappers.AsyncRequestQueueBase.OnLogEventDropped(NLog.LogEventInfo)">
@@ -26303,14 +26371,12 @@
         </member>
         <member name="E:NLog.Targets.Wrappers.AsyncTargetWrapper.LogEventDropped">
             <summary>
-            Raise event when Target cannot store LogEvent.
-            Event arg contains lost LogEvents
+            Occurs when LogEvent has been dropped, because internal queue is full and <see cref="P:NLog.Targets.Wrappers.AsyncTargetWrapper.OverflowAction"/> set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Discard"/>
             </summary>
         </member>
         <member name="E:NLog.Targets.Wrappers.AsyncTargetWrapper.EventQueueGrow">
             <summary>
-            Raises when event queue grow. 
-            Queue can grow when <see cref="P:NLog.Targets.Wrappers.AsyncTargetWrapper.OverflowAction"/> was set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Grow"/>
+            Occurs when internal queue size is growing, because internal queue is full and <see cref="P:NLog.Targets.Wrappers.AsyncTargetWrapper.OverflowAction"/> set to <see cref="F:NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Grow"/>
             </summary>
         </member>
         <member name="P:NLog.Targets.Wrappers.AsyncTargetWrapper.OverflowAction">

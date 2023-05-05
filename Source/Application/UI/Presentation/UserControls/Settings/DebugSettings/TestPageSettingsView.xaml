@@ -9,34 +9,28 @@
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:CreatorTestPageSettingsViewModel}">
     <UserControl.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CanBeShownConverter" TrueValue="Visible" FalseValue="Collapsed"/>
         </ResourceDictionary>
-
     </UserControl.Resources>
-    <StackPanel Visibility="{Binding CanBeShown, Converter={StaticResource CanBeShownConverter}}">
 
-        <Label Content="{Binding Translation.TestPagesControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 10 0 10"/>
-        <Grid HorizontalAlignment="Left">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel VerticalAlignment="Bottom">
-                <Button Margin="0 10 0 0"
-                            Command="{Binding PrintPdfCreatorTestPageCommand}">
-                    <TextBlock Text="{Binding Translation.PdfCreatorTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-                <Button Margin="0 10 0 0"
-                            Command="{Binding PrintWindowsTestPageCommand}">
-                    <TextBlock Text="{Binding Translation.WindowsTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
-                </Button>
-            </StackPanel>
-        </Grid>
+    <StackPanel Visibility="{Binding CanBeShown, Converter={StaticResource CanBeShownConverter}}"
+                HorizontalAlignment="Left"
+                Style="{StaticResource SettingsRegion}"
+                MinWidth="300">
+        <Label Content="{Binding Translation.TestPagesControlHeader}" Style="{StaticResource LargeLightLabel}"/>
+        <Button Margin="0 20 0 0"
+                Command="{Binding PrintPdfCreatorTestPageCommand}">
+            <TextBlock Text="{Binding Translation.PdfCreatorTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <Button Margin="0 10 0 0"
+                    Command="{Binding PrintWindowsTestPageCommand}">
+            <TextBlock Text="{Binding Translation.WindowsTestpageButtonContent}" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </StackPanel>
+    
 </UserControl>

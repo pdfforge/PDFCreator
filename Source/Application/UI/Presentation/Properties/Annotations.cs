@@ -296,7 +296,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Annotations
     ///   void Test() {
     ///     var ca1 = new NoEquality();
     ///     var ca2 = new NoEquality();
-    ///     if (ca1 != null) { // OK
+    ///     if (ca1 != null) { // Ok
     ///       bool condition = ca1 == ca2; // Warning
     ///     }
     ///   }
@@ -809,7 +809,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Annotations
     /// <example><code>
     /// [ActionName("Foo")]
     /// public ActionResult Login(string returnUrl) {
-    ///   ViewBag.ReturnUrl = Url.Action("Foo"); // OK
+    ///   ViewBag.ReturnUrl = Url.Action("Foo"); // Ok
     ///   return RedirectToAction("Bar"); // Error: Cannot resolve action
     /// }
     /// </code></example>

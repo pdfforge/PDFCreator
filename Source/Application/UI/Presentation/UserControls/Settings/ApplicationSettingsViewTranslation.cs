@@ -14,5 +14,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
         public string Title { get; private set; } = "Title";
         public string Viewer { get; private set; } = "Viewer";
         public string License { get; private set; } = "License";
+        public string DirectImageConversion { get; private set; } = "Direct Convert";
+
     }
 }

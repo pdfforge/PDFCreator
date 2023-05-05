@@ -15,6 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     {
         public bool IsFreeEdition { get; }
         public bool IsServer { get; }
+        public bool IsTerminalServer { get; }
         public bool IsCustom { get; }
         public EncryptionLevel EncryptionLevel { get; }
         public bool AlwaysUsePdfArchitect { get; }
@@ -24,6 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             IsFreeEdition = edition == Edition.Free;
             IsServer = edition == Edition.Server;
             IsCustom = edition == Edition.Custom;
+            IsTerminalServer = edition == Edition.TerminalServer;
             EncryptionLevel = encryptionLevel;
             AlwaysUsePdfArchitect = alwaysUsePdfArchitect;
         }

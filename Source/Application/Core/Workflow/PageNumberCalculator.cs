@@ -38,7 +38,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 return count;
             try
             {
-                count = attachmentPage.Files.Select(_processor.GetNumberOfPages).Sum();
+                count = attachmentPage.Files.Select(f => _processor.GetNumberOfPages(f)).Sum();
             }
             catch
             {
@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             try
             {
-                count = coverPage.Files.Select(_processor.GetNumberOfPages).Sum();
+                count = coverPage.Files.Select(f => _processor.GetNumberOfPages(f)).Sum();
             }
             catch
             {

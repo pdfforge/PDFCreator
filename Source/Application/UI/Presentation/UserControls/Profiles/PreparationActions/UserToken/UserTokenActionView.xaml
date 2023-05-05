@@ -16,28 +16,23 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <userToken:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}">
-        <HeaderedContentControl.Resources>
-            <userToken:SeparatorToExampleStringConverter x:Key="SeparatorToExampleStringConverter" />
-        </HeaderedContentControl.Resources>
-
+    <HeaderedContentControl Style="{StaticResource BorderlessHeaderPanel}">
         <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource LargeLabel}" Content="{Binding Translation.UserTokenTitle}" />
-                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="20 0 0 0" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="10 0 0 0" />
             </StackPanel>
         </HeaderedContentControl.Header>
 
         <StackPanel MaxWidth="500" HorizontalAlignment="Left">
             <TextBlock Margin="0 10 0 0" Text="{Binding Translation.UserTokenIntroduction}" TextWrapping="Wrap" />
-
-            <TextBlock Text="{Binding Translation.UserTokenInDocumentText}" Margin="0 0 0 0" Padding="0" />
 
             <Label Style="{StaticResource LargeLabel}" Margin="0 10 0 0">
                 <TextBox Background="{StaticResource TextBoxDisabledBackgroundBrush}" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap"

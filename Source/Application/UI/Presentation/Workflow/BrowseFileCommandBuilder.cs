@@ -104,7 +104,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
                 catch (PathTooLongException)
                 {
                     _translation = _translationFactory.UpdateOrCreateTranslation(_translation);
-                    var interaction = new MessageInteraction(_translation.PathTooLongText, _translation.PathTooLongTitle, MessageOptions.OK, MessageIcon.Exclamation);
+                    var interaction = new MessageInteraction(_translation.PathTooLongText, _translation.PathTooLongTitle, MessageOptions.Ok, MessageIcon.Exclamation);
                     await _interactionRequest.RaiseAsync(interaction);
                 }
             }

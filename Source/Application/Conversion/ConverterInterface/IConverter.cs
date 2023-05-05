@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.Conversion.ConverterInterface
 {
     public interface IConverter
     {
-        void Init(bool isPdf, bool isProcessingRequired);
+        void Init(bool outputFormatIsPdf, bool isProcessingRequired);
 
         void FirstConversionStep(Job job);
 

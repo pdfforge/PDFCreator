@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.Output;
+using pdfforge.PDFCreator.Utilities;
 using SimpleInjector;
 
 namespace pdfforge.PDFCreator.UI.COM
@@ -24,8 +25,10 @@ namespace pdfforge.PDFCreator.UI.COM
             var jobEventsManager = _container.GetInstance<IJobEventsManager>();
             var outputFileMover = _container.GetInstance<AutosaveOutputFileMover>();
             var notificationService = _container.GetInstance<DisabledNotificationService>();
+            var pathUtil = _container.GetInstance<IPathUtil>();
 
-            return new AutoSaveWorkflow(jobDataUpdater, jobRunner, profileChecker, targetFileNameComposer, outputFileMover, notificationService, jobEventsManager);
+            return new AutoSaveWorkflow(jobDataUpdater, jobRunner, profileChecker, targetFileNameComposer, 
+                outputFileMover, notificationService, jobEventsManager, pathUtil);
         }
     }
 }

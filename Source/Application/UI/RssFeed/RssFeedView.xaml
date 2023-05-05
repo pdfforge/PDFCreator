@@ -13,11 +13,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Icons/pdfforgeLogos.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/Labels.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/HyperLink.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/PDFCreator.Presentation;component/Styles/DefaultsDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
@@ -66,7 +67,7 @@
         <Button Grid.Row="0" HorizontalAlignment="Stretch"
                 Height="33"
                 Command="{Binding ShowRssFeedCommand}"
-                Background="{StaticResource InfoBrush}"
+                Background="{StaticResource WarningBrush}"
                 Style="{StaticResource AffirmativeButton}"
                 HorizontalContentAlignment="Stretch"
                 Padding="0  0 0 0">
@@ -89,13 +90,13 @@
 
         <!-- Welcome -->
         <Border Grid.Row="1" Margin="33 0 0 0" Background="White"
-                BorderBrush="{StaticResource InfoBrush}" BorderThickness="0 0 0 2"
+                BorderBrush="{StaticResource WarningBrush}" BorderThickness="0 0 0 2"
                 Visibility="{Binding ShowWelcome, Converter={StaticResource CollapsedIfFalseConverter}}">
             <DockPanel Margin="15 15 15 15">
                 <DockPanel DockPanel.Dock="Top">
                     <ContentControl DockPanel.Dock="Left"
                                     IsTabStop="False" Focusable="False"
-                                    Content="{DynamicResource PDFCreatorLogo}"
+                                    Content="{StaticResource PDFCreatorLogo}"
                                     Height="40" />
                     <TextBlock DockPanel.Dock="Left"
                                Margin="20 0 0 0"
@@ -173,10 +174,9 @@
                                                              RelativeSource={RelativeSource Mode=FindAncestor,
                                                              AncestorType={x:Type UserControl}}}"
                                                    CommandParameter="{Binding Link}"
-                                                   TextDecorations="{x:Null}">
+                                                   Style="{StaticResource DefaultHyperLink}">
                                             <TextBlock Text="{Binding DataContext.Translation.ReadMore,
-                                                              RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                       Foreground="{StaticResource HyperlinkBrush}" />
+                                                              RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </Hyperlink>
                             </TextBlock>
                         </DockPanel>

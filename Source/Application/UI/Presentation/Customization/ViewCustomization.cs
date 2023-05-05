@@ -1,6 +1,5 @@
 ﻿using pdfforge.PDFCreator.Core.ServiceLocator;
 using System;
-using System.Drawing;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Customization
 {
@@ -10,12 +9,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Customization
         {
         }
 
-        public void ApplyCustomization(string mainWindowText, string printJobWindowCaption, Bitmap customlogo)
+        public void ApplyCustomization(string mainWindowText, string printJobWindowCaption)
         {
             CustomizationEnabled = true;
             MainWindowText = mainWindowText;
             PrintJobWindowCaption = printJobWindowCaption;
-            CustomLogo = customlogo;
         }
 
         public void ApplyTrial(string trialExpireDate)
@@ -37,8 +35,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Customization
         public string MainWindowText { get; private set; } = "";
 
         public string PrintJobWindowCaption { get; private set; } = "PDFCreator";
-
-        public Bitmap CustomLogo { get; private set; }
 
         public bool TrialEnabled { get; private set; } = false;
         public string TrialText { get; private set; } = "";

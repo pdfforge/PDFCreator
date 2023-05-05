@@ -1,8 +1,10 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using System.Linq;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
@@ -14,13 +16,17 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
 
     public abstract class TargetFilePathComposerBase : ITargetFilePathComposer
     {
+        private OutputFormatHelper OutputFormatHelper { get; }
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IPathUtil _pathUtil;
+        private readonly ISplitDocumentFilePathHelper _splitDocumentFilePathHelper;
         private readonly OutputFormatHelper _outputFormatHelper;
 
-        protected TargetFilePathComposerBase(IPathUtil pathUtil)
+        protected TargetFilePathComposerBase(IPathUtil pathUtil, ISplitDocumentFilePathHelper splitDocumentFilePathHelper, OutputFormatHelper outputFormatHelper)
         {
+            OutputFormatHelper = outputFormatHelper;
             _pathUtil = pathUtil;
+            _splitDocumentFilePathHelper = splitDocumentFilePathHelper;
             _outputFormatHelper = new OutputFormatHelper();
         }
 
@@ -32,7 +38,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
                     return job.JobInfo.OutputFileParameter;
 
             var outputFolder = ComposeOutputFolder(job);
-            var outputFileName = ComposeOutputFilename(job);
+            var outputFileName = ComposeOutputFileName(job);
             var filePath = PathSafe.Combine(outputFolder, outputFileName);
 
             //Keep long filename for interactive
@@ -42,7 +48,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
             try
             {
                 filePath = _pathUtil.EllipsisForTooLongPath(filePath);
-                _logger.Debug("FilePath after ellipsis: " + filePath);
+                _logger.Debug("FilePath after ellipsis for too long path: " + filePath);
             }
             catch (ArgumentException)
             {
@@ -62,7 +68,7 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
                 outputFolder = ConsiderLastSaveDirectory(outputFolder, job);
 
             // MyDocuments folder as fallback for interactive
-            if (!job.Profile.AutoSave.Enabled && !job.Profile.SaveFileTemporary)
+            if (!job.Profile.SaveFileTemporary)
                 if (string.IsNullOrWhiteSpace(outputFolder))
                     outputFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -71,18 +77,31 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
 
         protected abstract string ConsiderLastSaveDirectory(string outputFolder, Job job);
 
-        private string ComposeOutputFilename(Job job)
+        private string ComposeOutputFileName(Job job)
         {
-            var outputFilename = ValidName.MakeValidFileName(job.TokenReplacer.ReplaceTokens(job.Profile.FileNameTemplate));
+            var outputFileNameWithReplacedTokens = job.TokenReplacer.ReplaceTokens(job.Profile.FileNameTemplate);
+            var outputFileName = ValidName.MakeValidFileName(outputFileNameWithReplacedTokens);
 
-            //"document" as fallback for interactive
-            if (!job.Profile.AutoSave.Enabled)
-                if (string.IsNullOrWhiteSpace(outputFilename))
-                    outputFilename = "document";
+            outputFileName = OutputFormatHelper.RemoveKnownFileExtension(outputFileName);
 
-            outputFilename += _outputFormatHelper.GetExtension(job.Profile.OutputFormat);
+            if (string.IsNullOrEmpty(outputFileName))
+            {
+                outputFileName = "_";
+                if (job.Profile.AutoSave.Enabled)
+                    _logger.Warn("Filename is empty and will be set to \'_\'");
+            }
 
-            return outputFilename;
+            outputFileName += _outputFormatHelper.GetExtension(job.Profile.OutputFormat);
+
+            if (job.JobInfo.SourceFiles.First().IsSplitJob
+                && job.Profile.AutoSave.Enabled && job.Profile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.Overwrite)
+            {
+                var splitJobParentFileName = PathSafe.GetFileName(job.JobInfo.SourceFiles.First().SplitJobParentFilePath);
+                if (outputFileName.Equals(splitJobParentFileName))
+                    outputFileName = _splitDocumentFilePathHelper.GetSplitDocumentFilePath(outputFileName);
+            }
+
+            return outputFileName;
         }
     }
 }

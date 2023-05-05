@@ -14,21 +14,21 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="CollapsedIfNull" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
-            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.HttpAccount}">
-        <StackPanel Margin="0 0 10 10">
-            <Label Margin="0 0 0 10">
-                <TextBlock Text="{Binding Translation.HttpAccountLabel}" />
-            </Label>
-            <DockPanel LastChildFill="True">
-                <StackPanel Style="{DynamicResource GpoStyle}"
+    <HeaderedContentControl Header="{Binding Translation.HttpAccount}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
+        <StackPanel>
+            <Label Content="{Binding Translation.HttpAccountLabel}" />
+            <DockPanel Margin="0 10 0 0" LastChildFill="True">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
                             IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
                     <Button DockPanel.Dock="Right" Margin="10 0 0 0"
                             IsEnabled="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
@@ -48,11 +48,12 @@
                     <ComboBox Name="HttpAccountsComboBox"
                               DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
                               SelectedValue="{Binding CurrentProfile.HttpSettings.AccountId}"
-                              ItemsSource="{Binding HttpAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                              ItemsSource="{Binding HttpAccountsView}" IsSynchronizedWithCurrentItem="True"
+                              Style="{StaticResource DisabledEmptyComboboxStyle}" />
                     <!-- Overlay fpr empty accounts hint -->
                     <Label IsHitTestVisible="False" Margin="10 0 0 0" VerticalAlignment="Center"
                            Content="{Binding Translation.SelectOrAddAccount}"
-                           Visibility="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                           Visibility="{Binding ElementName=HttpAccountsComboBox, Path=SelectedItem, Converter={StaticResource CollapsedIfNull}, NotifyOnSourceUpdated=True}" />
                 </Grid>
             </DockPanel>
         </StackPanel>

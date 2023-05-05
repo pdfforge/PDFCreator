@@ -7,7 +7,7 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
+             xmlns:checkBoxes="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.CheckBoxes"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="350"
              KeyboardNavigation.TabNavigation="None"
@@ -17,8 +17,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary  Source="../../Styles/Redesign5/Buttons/ProfileSettingsPreviewButton.xaml" />
-                <ResourceDictionary  Source="../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary  Source="../../Styles/Buttons/ProfileSettingsPreviewButton.xaml" />
+                <ResourceDictionary  Source="../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
@@ -35,10 +35,10 @@
                        Style="{StaticResource LargeLabel}" />
 
                 <!-- Interactive (o  ) Automatic -->
-                <redesign5:OnOffLabelToggleSwitchCheckBox
+                <checkBoxes:OnOffLabelToggleSwitchCheckBox
                     Margin="0 10 0 0"
                     Visibility="{Binding IsServer, Converter={StaticResource CollapsedIfTrueConverter}}"
-                    IsChecked="{Binding AutoSaveEnabled}"
+                    IsChecked="{Binding AutoSaveEnabled, Mode=OneWay}"
                     OnContent="{Binding Translation.Autosave}"
                     OffContent="{Binding Translation.Interactive}" />
 
@@ -49,7 +49,7 @@
                            Style="{StaticResource LightLabel}" />
                     <iconPacks:PackIconMaterialDesign Margin="0 0 2 0"
                                                       Visibility="{Binding FilenameHasWarning, Converter={StaticResource CollapsedIfFalseConverter}}"
-                                                      Kind="Notifications" Height="12" Foreground="{StaticResource WarningBrush}"  VerticalAlignment="Center" />
+                                                      Kind="Notifications" Height="12" Foreground="{StaticResource ErrorBrush}"  VerticalAlignment="Center" />
                     <TextBlock Text="{Binding Filename}"
                                TextTrimming="CharacterEllipsis" />
                 </DockPanel>
@@ -61,7 +61,7 @@
                            Style="{StaticResource LightLabel}" />
                     <iconPacks:PackIconMaterialDesign Margin="0 0 2 0"
                                                       Visibility="{Binding DirectoryHasWarning, Converter={StaticResource CollapsedIfFalseConverter}}"
-                                                      Kind="Notifications" Height="12" Foreground="{StaticResource WarningBrush}" />
+                                                      Kind="Notifications" Height="12" Foreground="{StaticResource ErrorBrush}" />
                     <TextBlock Text="{Binding Directory}"
                                TextTrimming="CharacterEllipsis" />
                 </DockPanel>
@@ -85,12 +85,17 @@
                 <!-- Options for Automatic-->
                 <StackPanel  Margin="0 10 0 0"
                              Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfFalseConverter}}">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding Translation.ExistingFileLabel}"
+                    <DockPanel FlowDirection="LeftToRight">
+                        <Label Margin="0 0 5 0"
+                               Content="{Binding Translation.ExistingFileLabel}"
                                Style="{StaticResource LightLabel}" />
-                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"
+                        <!--Negative margin l:-4 to align the bell icon properly-->
+                        <iconPacks:PackIconMaterialDesign Margin="-4 0 2 0"
+                                                          Visibility="{Binding ExistingFileBehaviorHasWarning, Converter={StaticResource CollapsedIfFalseConverter}}"
+                                                          Kind="Notifications" Height="12" Foreground="{StaticResource ErrorBrush}" />
+                        <TextBlock VerticalAlignment="Center"
                                    Text="{Binding ExistingFileBehavior}" />
-                    </StackPanel>
+                    </DockPanel>
                     <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
                         <CheckBox IsChecked="{Binding SkipSendFailures, Mode=OneWay}" />
                         <TextBlock Margin="10 0 0 0" VerticalAlignment="Center"

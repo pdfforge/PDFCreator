@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using pdfforge.DataStorage;
+﻿using pdfforge.DataStorage;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using System;
+using System.Collections.ObjectModel;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings
 {
@@ -9,9 +10,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings
     {
         public abstract ISettings CreateEmptySettings();
 
-        public abstract ISettings CreateDefaultSettings(ISettings currentSettings);
+        public abstract IEditionSettings CreateDefaultSettings(ISettings currentSettings);
 
-        public abstract ISettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage);
+        public abstract IEditionSettings CreateDefaultSettings(string primaryPrinter, string defaultLanguage);
+
+        public abstract ConversionProfile CreateDefaultProfile();
 
         public ObservableCollection<TitleReplacement> CreateDefaultTitleReplacements()
         {
@@ -19,7 +22,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings
             {
                 "Microsoft Word - ",
                 "Microsoft PowerPoint - ",
-                "Microsoft Excel - "
+                "Microsoft Excel - ",
+                "*"
             };
 
             var endReplacements = new[]
@@ -96,19 +100,40 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings
             return titleReplacements;
         }
 
-        public ConversionProfile CreateDefaultProfile()
-        {
-            var defaultProfile = new ConversionProfile();
-            defaultProfile.Name = "<Default Profile>";
-            defaultProfile.Guid = ProfileGuids.DEFAULT_PROFILE_GUID;
-            SetDefaultProperties(defaultProfile, false);
-            return defaultProfile;
-        }
-
         protected virtual void SetDefaultProperties(ConversionProfile profile, bool isDeletable)
         {
             profile.Properties.Renamable = false;
             profile.Properties.Deletable = isDeletable;
+        }
+
+        protected void AddDefaultLanguage(string defaultLanguage, IEditionSettings defaultSettings)
+        {
+            defaultSettings.ApplicationSettings.Language = defaultLanguage;
+        }
+
+        protected void AddDefaultTitleReplacements(IEditionSettings defaultSettings)
+        {
+            defaultSettings.ApplicationSettings.TitleReplacement = CreateDefaultTitleReplacements();
+        }
+
+        protected void AddDefaultTimeServer(IEditionSettings settings)
+        {
+            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
+            {
+                AccountId = Guid.NewGuid().ToString()
+            });
+
+            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
+            {
+                AccountId = Guid.NewGuid().ToString(),
+                Url = "http://timestamp.globalsign.com/scripts/timestamp.dll"
+            });
+
+            settings.ApplicationSettings.Accounts.TimeServerAccounts.Add(new TimeServerAccount
+            {
+                AccountId = Guid.NewGuid().ToString(),
+                Url = "http://timestamp.digicert.com"
+            });
         }
     }
 }

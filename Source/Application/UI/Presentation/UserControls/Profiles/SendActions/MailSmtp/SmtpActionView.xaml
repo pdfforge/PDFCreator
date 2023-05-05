@@ -16,29 +16,25 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="CollapsedIfNull" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
-            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
-            <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.SendEmailViaSmtp}">
+    <HeaderedContentControl Header="{Binding Translation.SendEmailViaSmtp}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
         <StackPanel>
-            <StackPanel.Resources>
-                <Style TargetType="Label" BasedOn="{StaticResource RegularLabel}">
-                    <Setter Property="Margin" Value="0 0 0 10" />
-                </Style>
-            </StackPanel.Resources>
             <TextBlock Text="{Binding Translation.MultipleRecipientsHintText}" TextWrapping="Wrap" TextAlignment="Right" />
-            <Label>
-                <TextBlock Text="{Binding Translation.SelectSmtpAccountLabel}" />
-            </Label>
-            <DockPanel Margin="0 0 0 5">
-                <StackPanel Style="{DynamicResource GpoStyle}"
+            <Label Margin="0 10 0 0"
+                   Content="{Binding Translation.SelectSmtpAccountLabel}" />
+            <DockPanel Margin="0 10 0 0">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
                             IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
                     <Button DockPanel.Dock="Right" Margin="10 0 0 0"
                             IsEnabled="{Binding ElementName=SmtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
@@ -58,11 +54,13 @@
                     <ComboBox Name="SmtpAccountsComboBox"
                               DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
                               SelectedValue="{Binding CurrentProfile.EmailSmtpSettings.AccountId}"
-                              ItemsSource="{Binding SmtpAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                              ItemsSource="{Binding SmtpAccountsView}" IsSynchronizedWithCurrentItem="True"
+                              Style="{StaticResource DisabledEmptyComboboxStyle}" />
+
                     <Label Margin="10 0  0 0" VerticalAlignment="Center"
                            IsHitTestVisible="False"
                            Content="{Binding Translation.SelectOrAddAccount}"
-                           Visibility="{Binding ElementName=SmtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                           Visibility="{Binding ElementName=SmtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource CollapsedIfNull}, NotifyOnSourceUpdated=True}" />
                 </Grid>
             </DockPanel>
 
@@ -71,7 +69,7 @@
                    Content="{Binding Translation.SpecifySenderLabel}" />
             <DockPanel LastChildFill="True" Margin="0 10 0 0">
                 <Button DockPanel.Dock="Right" Margin="10 0 0 0"
-                        Command="{Binding EditDifferingFromCommand}" >
+                        Command="{Binding EditDifferingFromCommand}">
                     <iconPacks:PackIconMaterialDesign Kind="Build" />
                 </Button>
                 <TextBox Text="{Binding SenderPreview, Mode=OneWay}"
@@ -112,12 +110,12 @@
                             Command="{Binding TestSmtpCommand}"
                             Content="{Binding Translation.SendTestMail}" />
                     <controls1:ProgressRing
-                        Foreground="{DynamicResource AccentColorBrush}"
+                        Foreground="{StaticResource AccentGrey}"
                         HorizontalAlignment="Center"
                         Width="24"
                         Height="24"
                         Margin="5 0"
-                        Visibility="{Binding TestSmtpCommand.IsExecuting, Converter={StaticResource CollapsedWhenFalseConverter}}" />
+                        Visibility="{Binding TestSmtpCommand.IsExecuting, Converter={StaticResource CollapsedIfFalse}}" />
                 </Grid>
             </StackPanel>
         </StackPanel>

@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Controls;
@@ -43,10 +44,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         }
 
         public bool HasWarning { get; private set; }
-
-        public bool ShouldOverwriteFiles =>
-            CurrentProfile?.AutoSave == null ||
-            !CurrentProfile.AutoSave.EnsureUniqueFilenames && !CurrentProfile.AutoSave.AutoMergeFiles;
 
         private (bool HasWarning, string StatusText) DetermineActionStatus()
         {
@@ -145,7 +142,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(FileNameViewModel));
             RaisePropertyChanged(nameof(FolderViewModel));
             CurrentProfile.PropertyChanged += StatusChanged;
-            CurrentProfile.AutoSave.PropertyChanged += StatusChanged;
+            // CurrentProfile.AutoSave.PropertyChanged += StatusChanged;
 
             base.MountView();
         }
@@ -157,7 +154,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             FileNameViewModel.UnmountView();
             FolderViewModel.UnmountView();
             CurrentProfile.PropertyChanged -= StatusChanged;
-            CurrentProfile.AutoSave.PropertyChanged -= StatusChanged;
+            //  CurrentProfile.AutoSave.PropertyChanged -= StatusChanged;
         }
 
         private void StatusChanged(object sender, EventArgs e)
@@ -187,7 +184,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public bool ShowAllNotifications
         {
-            get => CurrentProfile!= null && CurrentProfile.ShowAllNotifications && AllowNotifications;
+            get => CurrentProfile != null && CurrentProfile.ShowAllNotifications && AllowNotifications;
             set => CurrentProfile.ShowAllNotifications = value;
         }
 

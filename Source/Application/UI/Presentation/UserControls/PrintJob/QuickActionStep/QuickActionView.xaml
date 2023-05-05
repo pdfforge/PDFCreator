@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:buttons="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls.Buttons"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeQuickActionViewModel, IsDesignTimeCreatable=True}"
@@ -13,9 +13,10 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/OutputFormat/OutputFormatIconAndDescriptionControl.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../Styles/OutputFormat/OutputFormatIconControl.xaml" />
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -56,21 +57,56 @@
             <CheckBox Content="{Binding Translation.DontShowUntilNextUpdate}" IsChecked="{Binding IsActive}" Margin="0 0 0 10" />
 
             <UniformGrid Margin="-5 20 -5 0" Rows="1">
-                <buttons:ColoredDropDownButton Margin="5 0"
-                                               ItemsSource="{Binding QuickActionSendList}"
-                                               Content ="{Binding Translation.Send}"
-                                               Background="{StaticResource DefaultButtonBackgroundBrush}" />
+                <!--Send Action-->
+                <contextMenuButton:ContextMenuButton
+                    Margin="5 0 "
+                    VerticalAlignment="Bottom"
+                    Content ="{Binding DataContext.Translation.Send, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                    Style="{StaticResource DefaultButton}"
+                    MinWidth="110"
+                    MenuItemsCommandParameter="{Binding}"
+                    ShowArrow="True">
+                    <contextMenuButton:ContextMenuButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding Translation.SendEmail}"
+                                      Command="{Binding SendEmailCommand}"
+                                      CommandParameter="{Binding Job}" />
+                            <MenuItem Header="{Binding Translation.PrintFileWithArchitect}"
+                                      Command="{Binding PrintWithArchitectCommand}"
+                                      CommandParameter="{Binding Job}" />
+                        </ContextMenu>
+                    </contextMenuButton:ContextMenuButton.ContextMenu>
+                </contextMenuButton:ContextMenuButton>
 
-                <buttons:ColoredDropDownButton Margin="5 0"
-                    ItemsSource="{Binding QuickActionOpenList}"
-                    Content ="{Binding Translation.Open}"
-                    Background="{StaticResource DefaultButtonBackgroundBrush}" />
+                <!--Open Action-->
+                <contextMenuButton:ContextMenuButton Margin="5 0 "
+                                                         VerticalAlignment="Bottom"
+                                                         Content ="{Binding DataContext.Translation.Open, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                         Style="{StaticResource DefaultButton}"
+                                                         MinWidth="110"
+                                                         MenuItemsCommandParameter="{Binding}"
+                                                         ShowArrow="True">
+                    <contextMenuButton:ContextMenuButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding Translation.OpenPDFArchitect}"
+                                      Command="{Binding OpenWithPdfArchitectCommand}"
+                                      CommandParameter="{Binding Job}" />
+                            <MenuItem Header="{Binding Translation.OpenDefaultProgram}"
+                                      Command="{Binding QuickActionOpenWithDefaultCommand}"
+                                      CommandParameter="{Binding Job}" />
+                            <MenuItem Header="{Binding Translation.OpenExplorer}"
+                                      Command="{Binding OpenExplorerCommand}"
+                                      CommandParameter="{Binding Job}" />
+                        </ContextMenu>
+                    </contextMenuButton:ContextMenuButton.ContextMenu>
+                </contextMenuButton:ContextMenuButton>
 
+                <!--OK Button-->
                 <Button Margin="5 0"
-                    IsDefault="True"
-                    Content="{Binding Translation.OkButton}"
-                    Style="{DynamicResource AffirmativeButton}"
-                    Command ="{Binding FinishCommand}" />
+                        IsDefault="True"
+                        Content="{Binding Translation.OkButton}"
+                        Style="{StaticResource AffirmativeButton}"
+                        Command ="{Binding FinishCommand}" />
             </UniformGrid>
         </StackPanel>
     </DockPanel>

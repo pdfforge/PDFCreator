@@ -47,13 +47,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             if (success)
             {
                 var text = Translation.StoreForAllUsersSuccessful;
-                var interaction = new MessageInteraction(text, Title, MessageOptions.OK, MessageIcon.PDFCreator);
+                var interaction = new MessageInteraction(text, Title, MessageOptions.Ok, MessageIcon.PDFCreator);
                 _interactionRequest.Raise(interaction);
             }
             else
             {
                 var text = Translation.StoreForAllUsersFailed;
-                var interaction = new MessageInteraction(text, Title, MessageOptions.OK, MessageIcon.Error);
+                var interaction = new MessageInteraction(text, Title, MessageOptions.Ok, MessageIcon.Error);
                 _interactionRequest.Raise(interaction);
             }
             FinishInteraction();

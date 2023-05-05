@@ -4,6 +4,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
     public class ManagePrintJobsWindowTranslation : ITranslatable
     {
+
+        public string AddAnotherFile { get; private set; } = "Add another file";
         public string ContinueButtonContent { get; private set; } = "Continue";
         public string DeleteTooltip { get; private set; } = "Delete print job";
         public string MergeAllButtonContent { get; private set; } = "Merge All";

@@ -7,7 +7,8 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
     {
         private readonly ILastSaveDirectoryHelper _lastSaveDirectoryHelper;
 
-        public TargetFilePathComposer(IPathUtil pathUtil, ILastSaveDirectoryHelper lastSaveDirectoryHelper) : base(pathUtil)
+        public TargetFilePathComposer(IPathUtil pathUtil, ILastSaveDirectoryHelper lastSaveDirectoryHelper, ISplitDocumentFilePathHelper splitDocumentFilePathHelper, OutputFormatHelper outputFormatHelper)
+            : base(pathUtil, splitDocumentFilePathHelper, outputFormatHelper)
         {
             _lastSaveDirectoryHelper = lastSaveDirectoryHelper;
         }

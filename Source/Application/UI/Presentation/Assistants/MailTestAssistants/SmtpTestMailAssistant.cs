@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             var smtpAccount = job.Accounts.GetSmtpAccount(job.Profile);
             if (smtpAccount == null) //The account must be checked, since it is executed before the Action.Check...
             {
-                var message = new MessageInteraction(Translation.NoAccount, Translation.SendTestMail, MessageOptions.OK, MessageIcon.Error);
+                var message = new MessageInteraction(Translation.NoAccount, Translation.SendTestMail, MessageOptions.Ok, MessageIcon.Error);
                 InteractionRequest.Raise(message);
                 return false;
             }
@@ -73,7 +73,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         {
             var title = Translation.SendTestMail;
             var message = Translation.TestMailSent + "\n" + GetRecipientsString(job.Profile.EmailSmtpSettings);
-            var interaction = new MessageInteraction(message, title, MessageOptions.OK, MessageIcon.Info);
+            var interaction = new MessageInteraction(message, title, MessageOptions.Ok, MessageIcon.Info);
             InteractionRequest.Raise(interaction);
         }
 

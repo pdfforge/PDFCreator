@@ -11,19 +11,18 @@ using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
+using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Process;
-using Prism.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
 {
-    public class LicenseSettingsViewModel : TranslatableViewModelBase<LicenseSettingsTranslation>, ITabViewModel
+    public class LicenseSettingsViewModel : TranslatableViewModelBase<LicenseSettingsTranslation>, IWhitelisted, IMountable
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         
@@ -120,7 +119,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
         }
 
         public string Title { get; set; } = "License";
-        public IconList Icon { get; set; } = IconList.LicenseSettings;
         public bool HiddenByGPO => _gpoSettings.HideLicenseTab;
         public bool BlockedByGPO => false;
 
@@ -274,7 +272,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             {
                 var failedTitle = Translation.ActivationFailed;
                 var failedMessage = Translation.ActivationFailedMessage + Environment.NewLine + DetermineLicenseStatusText(activation);
-                var failedInteraction = new MessageInteraction(failedMessage, failedTitle, MessageOptions.OK, MessageIcon.Error);
+                var failedInteraction = new MessageInteraction(failedMessage, failedTitle, MessageOptions.Ok, MessageIcon.Error);
                 await _interactionRequest.RaiseAsync(failedInteraction);
             }
             else if (ShareLicenseForAllUsersEnabled)
@@ -291,7 +289,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License
             {
                 var successTitle = Translation.ActivationSuccessful;
                 var successMessage = Translation.ActivationSuccessfulMessage;
-                var successInteraction = new MessageInteraction(successMessage, successTitle, MessageOptions.OK, MessageIcon.PDFForge);
+                var successInteraction = new MessageInteraction(successMessage, successTitle, MessageOptions.Ok, MessageIcon.PDFForge);
                 await _interactionRequest.RaiseAsync(successInteraction);
                 RaiseCloseWindow();
             }

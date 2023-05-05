@@ -5,7 +5,7 @@
         Cancel,
         MoreInfo,
         No,
-        OK,
+        Ok,
         Skip,
         Retry,
         Yes

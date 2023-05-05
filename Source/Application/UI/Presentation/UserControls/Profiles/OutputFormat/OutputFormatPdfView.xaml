@@ -16,8 +16,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/IconButton.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Buttons/IconButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter"
                                                  TrueValue="Visible" FalseValue="Collapsed" />
@@ -54,7 +54,7 @@
             <DockPanel Margin="0 10 0 0" LastChildFill="True">
                 <!-- Warning -->
                 <Button DockPanel.Dock="Right" Margin="5 0 0 0"
-                        Foreground="{StaticResource WarningBrush}"
+                        Foreground="{StaticResource ErrorBrush}"
                         help:HelpProvider.HelpTopic="OutputFormat"
                         Command="ApplicationCommands.Help"
                         Style="{StaticResource IconButton}"

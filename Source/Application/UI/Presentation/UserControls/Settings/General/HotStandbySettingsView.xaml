@@ -11,43 +11,49 @@
 
 
     <UserControl.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Icons.xaml"/>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
+                <ResourceDictionary Source="../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <StackPanel>
+    <DockPanel Style="{StaticResource SettingsRegion}" LastChildFill="True">
+        <Label DockPanel.Dock="Top"
+               Content="{Binding Translation.HotStandbyHeader}" 
+               Style="{StaticResource LargeLightLabel}" />
+        <Grid HorizontalAlignment="Stretch" IsEnabled="{Binding StandbyIsEditable}">
+            <DockPanel LastChildFill="True">
+                <StackPanel VerticalAlignment="Bottom" Margin="0 20 0 0" MinWidth="300" Style="{StaticResource GpoToolTipStyle}">
+                    <Label Content="{Binding Translation.HotStandbyDuration}"/>
 
-        <Label Content="{Binding Translation.HotStandbyHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
-        <Grid HorizontalAlignment="Left"  Style="{DynamicResource GpoStyle}" IsEnabled="{Binding StandbyIsEditable}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
-                <Label Content="{Binding Translation.HotStandbyDuration}"  Margin="0 0 0 10"/>
-
-                <ComboBox IsEnabled="{Binding StandbyIsEditable}"
-                          Background="White"
-                          Width="260" Height="33" HorizontalAlignment="Left"
-                          SelectedValue="{Binding StandbySetting}" SelectedValuePath="Value"
-                          DisplayMemberPath="Translation" ItemsSource="{Binding Translation.HotStandbySettings}" />
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Bottom" Grid.Column="1" Margin="10 0 0 10">
-                <Border Padding="10" Background="White" BorderThickness="0">
-                    <StackPanel Orientation="Horizontal" >
-                        <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoIconBrush}" VerticalAlignment="Top" Margin="0" Kind="Info" />
-                        <TextBlock Width="550" Text="{Binding Translation.HotStandbyExplanation}" Margin="10 3 0 0" LineHeight="20" TextWrapping="Wrap"/>
-                    </StackPanel>
+                    <ComboBox Margin="0 10 0 0"
+                              IsEnabled="{Binding StandbyIsEditable}"
+                              SelectedValue="{Binding StandbySetting}" SelectedValuePath="Value"
+                              DisplayMemberPath="Translation" 
+                              ItemsSource="{Binding Translation.HotStandbySettings}" 
+                              Background="White"
+                              Height="33" />
+                </StackPanel>
+                
+                <!--Info-->
+                <Border Margin="20 0 0 0" Padding="10"
+                        ToolTip="{Binding Translation.HotStandbyExplanation}"
+                        Background="White" BorderThickness="0" MaxHeight="100">
+                    <DockPanel>
+                        <iconPacks:PackIconMaterialDesign Margin="0" 
+                                                          VerticalAlignment="Top" 
+                                                          Width="20" Height="20" 
+                                                          Foreground="{StaticResource InfoBrush}" Kind="Info" />
+                        <TextBlock Margin="10 3 0 0" 
+                                   Text="{Binding Translation.HotStandbyExplanation}" 
+                                   TextWrapping="Wrap" LineHeight="20" />
+                    </DockPanel>
                 </Border>
-            </StackPanel>
+            </DockPanel>
         </Grid>
-    </StackPanel>
+    </DockPanel>
 </UserControl>

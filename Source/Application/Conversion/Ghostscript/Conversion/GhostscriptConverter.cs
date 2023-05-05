@@ -4,8 +4,10 @@ using pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Text;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 {
@@ -15,20 +17,26 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
         private readonly StringBuilder _ghostscriptOutput = new StringBuilder();
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly GhostscriptVersion _ghostscriptVersion;
+        private GhostscriptVersion _ghostscriptVersion;
+        private readonly IFile _file;
+        private readonly IOsHelper _osHelper;
+        private readonly ICommandLineUtil _commandLineUtil;
 
-        public GhostscriptConverter(GhostscriptVersion ghostscriptVersion)
+        public GhostscriptConverter(GhostscriptVersion ghostscriptVersion, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil)
         {
             _ghostscriptVersion = ghostscriptVersion;
+            _file = file;
+            _osHelper = osHelper;
+            _commandLineUtil = commandLineUtil;
         }
 
         public string ConverterOutput => _ghostscriptOutput.ToString();
 
         private int NumberOfPages { get; set; }
 
-        public void Init(bool isPdf, bool isProcessingRequired)
+        public void Init(bool outputFormatIsPdf, bool isProcessingRequired)
         {
-            if (isPdf)
+            if (outputFormatIsPdf)
                 _firstConversionStepMode = ConversionMode.PdfConversion;
             else if (isProcessingRequired)
                 _firstConversionStepMode = ConversionMode.IntermediateConversion;
@@ -50,12 +58,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                     break;
 
                 case ConversionMode.IntermediateConversion:
-                    DoConversion(job, ConversionMode.IntermediateConversion);
+                    DoConversion(job, ConversionMode.IntermediateToTargetConversion);
                     break;
 
                 case ConversionMode.IntermediateToTargetConversion:
-                    DoConversion(job, ConversionMode.IntermediateToTargetConversion);
-                    break;
+                    throw new Exception($"{nameof(ConversionMode.IntermediateToTargetConversion)} is not valid as first step!");
 
                 default:
                 case ConversionMode.ImmediateConversion:
@@ -71,7 +78,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
 
         public void CreateIntermediatePdf(Job job)
         {
-            DoConversion(job, new PdfIntermediateDevice(job));
+            DoConversion(job, new PdfIntermediateDevice(job, _file, _osHelper, _commandLineUtil));
         }
 
         private void DoConversion(Job job, OutputDevice device)
@@ -183,7 +190,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
             OutputDevice device;
             if (conversionMode == ConversionMode.IntermediateConversion)
             {
-                return new PdfIntermediateDevice(job);
+                return new PdfIntermediateDevice(job, _file, _osHelper, _commandLineUtil);
             }
 
             switch (job.Profile.OutputFormat)
@@ -193,23 +200,23 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.Conversion
                 case OutputFormat.PdfA3B:
                 case OutputFormat.PdfX:
                 case OutputFormat.Pdf:
-                    device = new PdfDevice(job, conversionMode);
+                    device = new PdfDevice(job, conversionMode, _file, _osHelper, _commandLineUtil);
                     break;
 
                 case OutputFormat.Png:
-                    device = new PngDevice(job, conversionMode);
+                    device = new PngDevice(job, conversionMode, _file, _osHelper, _commandLineUtil);
                     break;
 
                 case OutputFormat.Jpeg:
-                    device = new JpegDevice(job, conversionMode);
+                    device = new JpegDevice(job, conversionMode, _file, _osHelper, _commandLineUtil);
                     break;
 
                 case OutputFormat.Tif:
-                    device = new TiffDevice(job, conversionMode);
+                    device = new TiffDevice(job, conversionMode, _file, _osHelper, _commandLineUtil);
                     break;
 
                 case OutputFormat.Txt:
-                    device = new TextDevice(job, conversionMode);
+                    device = new TextDevice(job, conversionMode, _file, _osHelper, _commandLineUtil);
                     break;
 
                 default:

@@ -1401,15 +1401,23 @@ currentdict /pdf_rules_dict undef
 } bind executeonly def
 
 /.leafget {		% <key> <pairs> .leafget <obj|null>
-  dup length 2 eq {
-    dup 0 get 2 index eq { 1 oget } { pop //null } ifelse
-    exch pop
-  } {
-    dup length -1 bitshift -2 and 2 copy oget
-                        % Stack: key pairs mid pairs[mid]
-    3 index gt { 0 exch } { 1 index length 1 index sub } ifelse
-    getinterval .leafget
-  } ifelse
+  null                              % <key> [pairs] null
+  0 2 3 index length 1 sub          % <key> [pairs] null 0 2 length([pairs])
+  {                                 % <key> [pairs] null index
+    2 index                         % <key> [pairs] null index [pairs]
+    exch                            % <key> [pairs] null [pairs] index
+    2 getinterval                   % <key> [pairs] null [<key1> <value>]
+    dup 0 get                       % <key> [pairs] null [<key1> <value>] <key1>
+    4 index                         % <key> [pairs] null [<key1> <value>] <key1> <key>
+    eq
+    {                               % <key> [pairs] null [<key1> <value>]
+      exch pop 1 oget exit          % <key> [pairs] <obj>
+    } {
+      pop                           % <key> [pairs] null
+    }ifelse
+  } for
+                                    % <key> [pairs] <obj|null>
+  3 1 roll pop pop                  % <obj|null>
 } bind executeonly def
 
 % The following variants return tree entry whose key is closest but

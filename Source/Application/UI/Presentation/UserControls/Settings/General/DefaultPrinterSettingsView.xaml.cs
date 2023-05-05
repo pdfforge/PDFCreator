@@ -7,14 +7,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
     /// </summary>
     public partial class DefaultPrinterSettingsView : UserControl
     {
-        public DefaultPrinterSettingsView()
-        {
-            InitializeComponent();
-        }
-
-        public void SetDataContext(DefaultPrinterSettingsViewModel viewModel)
+        public DefaultPrinterSettingsView(DefaultPrinterSettingsViewModel viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
     }
 }

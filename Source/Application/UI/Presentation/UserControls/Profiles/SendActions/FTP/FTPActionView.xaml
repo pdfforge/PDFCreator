@@ -15,27 +15,21 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.UploadWithFtp}">
+    <HeaderedContentControl Header="{Binding Translation.UploadWithFtp}"
+                            Style="{StaticResource BorderlessHeaderPanel}">
         <StackPanel>
-            <StackPanel.Resources>
-                <Style TargetType="Label" BasedOn="{StaticResource RegularLabel}">
-                    <Setter Property="Margin" Value="0 10" />
-                </Style>
-            </StackPanel.Resources>
-
-            <Label>
-                <TextBlock Text="{Binding Translation.SelectFtpAccount}" />
-            </Label>
-            <DockPanel>
-                <StackPanel Style="{DynamicResource GpoStyle}"
+            <Label Content="{Binding Translation.SelectFtpAccount}" />
+            <DockPanel Margin="0 10 0 0">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
                             IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
                     <Button DockPanel.Dock="Right" Margin="10 0 0 0"
                             IsEnabled="{Binding ElementName=FtpAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
@@ -55,7 +49,8 @@
                     <ComboBox Name="FtpAccountsComboBox"
                               DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
                               SelectedValue="{Binding CurrentProfile.Ftp.AccountId}"
-                              ItemsSource="{Binding FtpAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                              ItemsSource="{Binding FtpAccountsView}" IsSynchronizedWithCurrentItem="True"
+                              Style="{StaticResource DisabledEmptyComboboxStyle}" />
                     <!-- Overlay for empty accounts hint -->
                     <Label Margin="10 0 0 0" VerticalAlignment="Center"
                            IsHitTestVisible="False"
@@ -64,14 +59,14 @@
                 </Grid>
             </DockPanel>
 
-            <StackPanel Margin="0 5 0 0">
-                <Label Content="{Binding Translation.DirectoryLabel}" />
-                <controls:TokenControl DataContext="{Binding DirectoryTokenViewModel}" />
-            </StackPanel>
+            <Label Margin="0 20 0 0"
+                   Content="{Binding Translation.DirectoryLabel}" />
+            <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding DirectoryTokenViewModel}" />
 
-            <CheckBox Margin="0 10" IsChecked="{Binding CurrentProfile.Ftp.EnsureUniqueFilenames}">
-                <TextBlock Text="{Binding Translation.EnsureUniqueFilenames}" TextWrapping="Wrap" />
-            </CheckBox>
+            <CheckBox Margin="0 10 0 0"
+                      IsChecked="{Binding CurrentProfile.Ftp.EnsureUniqueFilenames}"
+                      Content="{Binding Translation.EnsureUniqueFilenames}" />
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

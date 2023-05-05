@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -691,13 +691,33 @@ currentdict /.pdf_hook_DSC_Creator undef
   pop
   3000 % priority
   {
-    currentglobal //true setglobal
-    2 dict dup .initialize_dsc_parser readonly
-    currentuserparams /ProcessDSCComment get
-    1 array astore	% in case the value is executable
-    //.pdfdsc /exec load 4 array astore cvx readonly
-    << /ProcessDSCComment 3 -1 roll >> setuserparams
-    setglobal
+    % When running gpdl, due to the way gpdl has to do job encapsulation
+    % the scheduled initialisation procedures get run at the start of each
+    % job. Because this patches the existing procedure, it could end up
+    % patching itself, so the procedure got larger/deeper with each job.
+    % Eventually, copying the user params (see /.setuserparams2 in gs_lev2.ps)
+    % would end up overflowing the exec stack.
+    % So, as part of the patching, we push and pop a sacrificial name object
+    % at the start of the executable array and before patching, we check that
+    % first element, and if it is that name, we skip the patching
+    currentuserparams /ProcessDSCComment .knownget
+    {
+      dup type /arraytype eq
+      {
+         0 get /.pdf_hook_DSC_Creator eq
+         { //false } { //true } ifelse
+      } { //true } ifelse
+    } { //true } ifelse
+
+    {
+      currentglobal //true setglobal
+      2 dict dup .initialize_dsc_parser readonly
+      currentuserparams /ProcessDSCComment get
+      1 array astore      % in case the value is executable
+      /.pdf_hook_DSC_Creator /pop load 4 2 roll //.pdfdsc /exec load 6 array astore cvx readonly
+      << /ProcessDSCComment 3 -1 roll >> setuserparams
+      setglobal
+    } if
   } bind .schedule_init
 } if
 
@@ -827,6 +847,8 @@ currentdict /.pdf_hook_DSC_Creator undef
   /PassThroughJPXImages { }
   /PSDocOptions { }
   /PSPageOptions { }
+  /AlwaysOutline { }
+  /NeverOutline { }
 .dicttomark readonly def
 /.distillerdevice
  {

@@ -12,9 +12,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string DebugSettingsTabContentRegion => NameOfProperty();
         public static string ApplicationSaveCancelButtonsRegion => NameOfProperty();
         public static string ProfileSaveCancelButtonsRegion => NameOfProperty();
-        public static string TitleReplacementTabContentRegion => NameOfProperty();
-        public static string DefaultViewerTabContentRegion => NameOfProperty();
-        public static string LicenseSettingsRegion => NameOfProperty();
+        public static string GeneralSettingsButtonRegion => NameOfProperty();
+        public static string GeneralSettingsRegion => NameOfProperty();
         public static string BusinessHintStatusBarRegion => NameOfProperty();
         public static string TestButtonWorkflowEditorRegion => NameOfProperty();
         public static string RssFeedRegion => NameOfProperty();
@@ -22,6 +21,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string ProfileWorkflowEditorOverlayRegion => NameOfProperty();
         public static string SaveOutputFormatMetadataView => nameof(UserControls.Profiles.SaveOutputFormatMetadataView);
         public static string WorkflowEditorView => nameof(UserControls.Profiles.WorkflowEditor.WorkflowEditorView);
+        public static string DirectConversionTabContentRegion => NameOfProperty();
     }
 
     public class PrintJobRegionNames : RegionNameCollection

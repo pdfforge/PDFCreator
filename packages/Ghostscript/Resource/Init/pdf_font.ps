@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2022 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -1622,7 +1622,6 @@ currentdict end readonly def
 % Following Acrobat we ignore everything outside
 % begincodespacerange .. endcmap.
 /read_CMap_stream {  % <info> <wmode> <name> <stream> read_CMap <CMap>
-  dup 0 (begincodespacerange) /SubFileDecode filter flushfile
   //CMap_read_dict begin
   /CIDInit /ProcSet findresource begin
   12 dict begin
@@ -1641,7 +1640,29 @@ currentdict end readonly def
   dup //null eq { pop } { /CIDSystemInfo exch def } ifelse
   /CMapType 1 def
   /.last_CMap_def currentdict def % establish binding
-  mark exch % emulate 'begincodespacerange'
+
+  % The stream may not be seekable, push a ReusableStream to make it seekable.
+  /ReusableStreamDecode filter
+
+  % Try to skip past the 'header' portion of the PDF file to the body
+  % If the CMap doesn't have a begincodespacerange (eg it uses /UseCMap)
+  % then this will leave us at EOF.
+  dup 0 (begincodespacerange) /SubFileDecode filter flushfile
+  % See if we have anything left in the file
+  dup bytesavailable 0 eq
+  {
+    % We discarded all the file contents, so there was no begincodespacerange
+    % Rewind the file to the beginning
+    dup 0 setfileposition
+    % And try again, this time only discarding to the 'begincmap'
+    dup 0 (begincmap) /SubFileDecode filter flushfile
+  }
+  {
+    % Everything worked as expected, because we have consumed the
+    % begincodespacerange from the file, emulate it
+    mark exch
+  } ifelse
+
   0 (endcmap) /SubFileDecode filter cvx /begincmap cvx exch 2 .execn
   currentdict /o.endmapvalue undef
   endcmap

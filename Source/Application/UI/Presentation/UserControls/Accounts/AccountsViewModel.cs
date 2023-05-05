@@ -4,7 +4,6 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.Icons;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using pdfforge.PDFCreator.UI.Presentation.Styles.Icons;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 {

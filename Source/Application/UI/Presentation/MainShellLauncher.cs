@@ -41,6 +41,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             finally
             {
                 _mainWindowThread = null;
+                _eventAggregator.GetEvent<MainShellClosedEvent>().Publish();
             }
         }
 

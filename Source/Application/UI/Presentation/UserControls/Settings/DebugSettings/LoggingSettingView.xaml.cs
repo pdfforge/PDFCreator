@@ -7,14 +7,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     /// </summary>
     public partial class LoggingSettingView : UserControl
     {
-        public LoggingSettingView()
-        {
-            InitializeComponent();
-        }
-
-        public void SetDataContext(LoggingSettingViewModel viewModel)
+        public LoggingSettingView(LoggingSettingViewModel viewModel)
         {
             DataContext = viewModel;
+            InitializeComponent();
         }
+        
     }
 }

@@ -63,11 +63,12 @@ namespace pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface
         }
 
         /// <summary>
-        ///     Determines number of pages in PDF file
+        ///     Determines number of pages of an encrypted PDF file
         /// </summary>
         /// <param name="pdfFile">Full path to PDF file</param>
+        /// <param name="password">Password of the encrypted file. <see langword="null" /> if the file is not encrypted</param>
         /// <returns>Number of pages in pdf file</returns>
-        public abstract int GetNumberOfPages(string pdfFile);
+        public abstract int GetNumberOfPages(string pdfFile, string password = null);
 
         /// <summary>
         ///     Determine PDF-Version according to settings in conversion profile.

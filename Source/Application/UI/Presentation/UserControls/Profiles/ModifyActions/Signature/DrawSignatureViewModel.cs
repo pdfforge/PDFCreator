@@ -75,7 +75,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
                 _logger.Error(e);
                 var messageInteraction = new MessageInteraction("Could not save your signature file. Please try again.",
                     Translation.Title,
-                    MessageOptions.OK,
+                    MessageOptions.Ok,
                     MessageIcon.Error);
                 _interactionRequest.Raise(messageInteraction);
                 return;

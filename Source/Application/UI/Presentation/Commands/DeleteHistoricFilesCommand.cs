@@ -107,7 +107,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             {
                 message += "\r\n" + historicFile.Path;
             }
-            var interaction = new MessageInteraction(message, title, MessageOptions.OK, MessageIcon.Error);
+            var interaction = new MessageInteraction(message, title, MessageOptions.Ok, MessageIcon.Error);
             _interactionRequest.Raise(interaction);
         }
 

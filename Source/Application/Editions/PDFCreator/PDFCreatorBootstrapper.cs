@@ -6,6 +6,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.ITextProcessing;
+using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface.ImagesToPdf;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Controller;
@@ -47,6 +48,11 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override bool HideLicensing => true;
 
         protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit, false);
+
+        protected override void RegisterDirectImageConversion(Container container)
+        {
+            container.Register<IImagesToPdf, ITextImagesToPdf>();
+        }
 
         public override void InitializeServices(Container container)
         {

@@ -97,7 +97,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             }
         }
 
-        public bool EditAccountsIsDisabled => !_gpoSettings.DisableAccountsTab;
+        public bool EditAccountsIsAllowedByGpo => !_gpoSettings.DisableAccountsTab;
 
         private bool _allowConversionInterrupts = true;
 

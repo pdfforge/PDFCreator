@@ -35,6 +35,9 @@
 
 % Usage example:
 %	(jpeg-6/testimg.jpg) viewJPEG
+% From version 9.50 you must supply permissions for this program
+% to read the input file(s) either by using -dNOSAFER or by
+% supplying --permit-file-read=<filename>
 
 /languagelevel where {pop languagelevel 2 lt}{true} ifelse {
   (JPEG needs PostScript Level 2!\n) print flush stop
@@ -157,7 +160,7 @@ end	% JPEGdict
 } bind def
 
 % This lets you do stuff on the command line like:
-% gs -sDEVICE=pdfwrite -o stuff%03d.pdf viewjpeg.ps -c "(image.jpg) << /PageSize 2 index viewJPEGgetsize 2 array astore  >> setpagedevice viewJPEG"
+% gs -sDEVICE=pdfwrite -o stuff%03d.pdf viewjpeg.ps -c "(image.jpg) << /PageSize 2 index viewJPEGgetsize 2 array astore /HWResolution [ 72 72 ] >> setpagedevice viewJPEG"
 % so the output size matches the original image.
 /viewJPEGgetsize {		% <file|string> ==> width height
     save

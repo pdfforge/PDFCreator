@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.Core.Workflow.Output;
 using System;
 using System.IO;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -14,13 +15,15 @@ namespace pdfforge.PDFCreator.Core.Workflow
     {
         private readonly IJobRunner _jobRunner;
         private readonly INotificationService _notificationService;
+        private readonly IPathUtil _pathUtil;
         private readonly AutosaveOutputFileMover _outputFileMover;
         private readonly IProfileChecker _profileChecker;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
 
         public AutoSaveWorkflow(IJobDataUpdater jobDataUpdater, IJobRunner jobRunner, IProfileChecker profileChecker,
             ITargetFilePathComposer targetFilePathComposer, AutosaveOutputFileMover outputFileMover,
-            INotificationService notificationService, IJobEventsManager jobEventsManager)
+            INotificationService notificationService, IJobEventsManager jobEventsManager,
+            IPathUtil pathUtil)
         {
             JobDataUpdater = jobDataUpdater;
             JobEventsManager = jobEventsManager;
@@ -29,6 +32,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _targetFilePathComposer = targetFilePathComposer;
             _outputFileMover = outputFileMover;
             _notificationService = notificationService;
+            _pathUtil = pathUtil;
         }
 
         protected override IJobDataUpdater JobDataUpdater { get; }
@@ -40,8 +44,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
             var currentProfile = job.Profile;
 
             try
-            {
+            { 
                 job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(job);
+                if (!_pathUtil.IsValidRootedPath(job.OutputFileTemplate)) 
+                   throw new ProcessingException("Final OutputFileTemplate is invalid rooted path " + job.OutputFileTemplate, ErrorCode.TargetDirectory_InvalidRootedPath);
 
                 var result = _profileChecker.CheckJob(job);
                 if (!result)

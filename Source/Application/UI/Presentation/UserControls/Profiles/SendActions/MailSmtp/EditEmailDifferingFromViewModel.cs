@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
 
         public bool IsFreeEdition => _editionHelper.IsFreeEdition;
 
-        public string OkBack => _editionHelper.IsFreeEdition ? Translation.Back : Translation.OK;
+        public string OkBack => _editionHelper.IsFreeEdition ? Translation.Back : Translation.Ok;
 
         public TokenViewModel<EditEmailDifferingFromInteraction> OnBehalfOfTokenViewModel { get; private set; }
         public TokenViewModel<EditEmailDifferingFromInteraction> DisplayNameTokenViewModel { get; private set; }

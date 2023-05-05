@@ -101,7 +101,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 if (string.IsNullOrWhiteSpace(smtpAccount.Password))
                 {
                     Logger.Error("No SMTP password for automatic saving.");
-                    actionResult.Add(ErrorCode.Smtp_NoPasswordSpecified);
+                    actionResult.Add(ErrorCode.Smtp_AutoSaveWithoutPassword);
                 }
             }
 

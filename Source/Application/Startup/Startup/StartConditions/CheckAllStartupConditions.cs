@@ -31,7 +31,7 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
                     continue;
 
                 if (result.ShowMessage)
-                    _interactionInvoker.Invoke(new MessageInteraction(result.Message, "PDFCreator", MessageOptions.OK, MessageIcon.Error));
+                    _interactionInvoker.Invoke(new MessageInteraction(result.Message, "PDFCreator", MessageOptions.Ok, MessageIcon.Error));
 
                 if (!string.IsNullOrWhiteSpace(result.Message))
                     _logger.Error(result.Message);

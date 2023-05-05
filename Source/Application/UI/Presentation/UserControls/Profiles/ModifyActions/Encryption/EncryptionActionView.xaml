@@ -1,6 +1,7 @@
 ﻿<UserControl
     x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,48 +16,45 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/Redesign5/Labels.xaml" />
-
-                <ResourceDictionary>
-                    <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="CollapsedWhenFalseConverter" />
-                </ResourceDictionary>
+                <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="CollapsedWhenFalseConverter" />
+            <!-- Set RadionButton Selection Brush -->
+            <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource AccentBlue}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <StackPanel>
-            <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.PasswordTitle}">
-                <DockPanel FlowDirection="LeftToRight">
+        <HeaderedContentControl Header="{Binding Translation.Title}"
+                                Style="{StaticResource BorderlessHeaderPanel}">
+            <StackPanel>
+                <Label Content="{Binding Translation.PasswordTitle}" />
+                <DockPanel Margin="0 10 0 0" FlowDirection="LeftToRight">
                     <Button Command="{Binding SecurityPasswordCommand}"
-                            HorizontalAlignment="Left"
                             Content="{Binding Translation.SecurityPasswordsButton}" />
-                    <CheckBox IsChecked="{Binding RequireUserPassword, Mode=TwoWay}"
-                              Content="{Binding Translation.UserPasswordCheckBox}"
-                              Margin="10 0 0 0" />
+                    <CheckBox Margin="10 0  0 0"
+                              IsChecked="{Binding RequireUserPassword, Mode=TwoWay}"
+                              Content="{Binding Translation.UserPasswordCheckBox}" />
                 </DockPanel>
-            </HeaderedContentControl>
 
-            <StackPanel Margin="0 20 0 0">
-                <StackPanel.Resources>
-                    <!-- Set RadionButton Selection Brush -->
-                    <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource AccentBlue}" />
-                </StackPanel.Resources>
-                <Label Content="{Binding Translation.EncryptionLevelHeader}" />
+                <Label Margin="0 20 0 0"
+                       Content="{Binding Translation.EncryptionLevelHeader}" />
                 <RadioButton Margin="0 10 0 0"
                              IsChecked="{Binding LowEncryptionEnabled}">
                     <DockPanel>
                         <TextBlock Text="{Binding Translation.Rc128BitEncryptionText}" />
-
-                        <StackPanel Orientation="Horizontal"
-                                        Visibility="{Binding LowEncryptionEnabled, Converter={StaticResource CollapsedWhenFalseConverter}}">
-                            <ContentPresenter Content="{DynamicResource InfoIcon}"
-                                                  ToolTip="{Binding Translation.Rc128BitEncryptionHint}"
-                                                  Margin="5 0 0 0" />
-                        </StackPanel>
+                        <iconPacks:PackIconMaterialDesign Margin="5 0 0 0"
+                                                          Visibility="{Binding LowEncryptionEnabled, Converter={StaticResource CollapsedWhenFalseConverter}}"
+                                                          Kind="Info"
+                                                          Height="13"
+                                                          VerticalAlignment="Center"
+                                                          Foreground="{StaticResource InfoBrush}"
+                                                          ToolTip="{Binding Translation.Rc128BitEncryptionHint}" />
                     </DockPanel>
                 </RadioButton>
                 <RadioButton IsChecked="{Binding MediumEncryptionEnabled}"
-                             Margin="0 10 0 0">
+                         Margin="0 10 0 0">
                     <TextBlock Text="{Binding Translation.Aes128BitEncryptionText}" />
                 </RadioButton>
                 <DockPanel Margin="0 10 0 0">
@@ -64,64 +62,42 @@
                                  IsEnabled="{Binding SupportsHighLevelEncryption}">
                         <TextBlock Text="{Binding Translation.Aes256BitEncryptionText}" />
                     </RadioButton>
-                    <userControls:BusinessFeatureBadge Edition="AllLicensed"
-                                                       Margin="10 0 0 0" />
+                    <userControls:BusinessFeatureBadge Margin="10 0 0 0"
+                                                       Edition="AllLicensed" />
                 </DockPanel>
-            </StackPanel>
 
-            <StackPanel Margin="0 20 0 0">
-                <Label Content="{Binding Translation.AllowTheUser}" />
-                <Grid Margin=" 0 5 0 0 ">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <CheckBox Grid.Row="0" Grid.Column="0"
-                              Margin="0 5"
-                              IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToCopyContent}"
+                <Label Margin="0 20 0 0"
+                           Content="{Binding Translation.AllowTheUser}" />
+                <UniformGrid Margin=" -5 5 -5 -5 "
+                             Columns="2">
+                    <UniformGrid.Resources>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Margin" Value="5" />
+                        </Style>
+                    </UniformGrid.Resources>
+                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToCopyContent}"
                               Content="{Binding Translation.CopyContentPermissionCheckBox}" />
-                    <CheckBox Grid.Row="1" Grid.Column="0"
-                              Margin="0 5"
-                              IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowPrinting}"
+                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowPrinting}"
                               Content="{Binding Translation.PrintDocumentPermissionCheckbox}" />
-                    <CheckBox Grid.Row="2" Grid.Column="0"
+                    <CheckBox Margin="30 5 5 5"
                               IsEnabled="{Binding CurrentProfile.PdfSettings.Security.AllowPrinting}"
                               IsChecked="{Binding RestrictLowQualityPrintingEnabled}"
-                              Margin="30 5 0 5"
                               Content="{Binding Translation.LowQualityPrintPermissionCheckBox}" />
-                    <CheckBox Grid.Row="3" Grid.Column="0"
-                              Margin="0 5"
-                              IsEnabled="{Binding ExtendedPermissonsEnabled}"
+                    <CheckBox IsEnabled="{Binding ExtendedPermissonsEnabled}"
                               IsChecked="{Binding AllowScreenReadersEnabled}"
                               Content="{Binding Translation.ScreenReaderPermissionCheckBox}" />
-                    <CheckBox Grid.Row="0" Grid.Column="2"
-                              Margin="0 5"
-                              IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToEditTheDocument}"
+                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToEditTheDocument}"
                               Content="{Binding Translation.EditDocumentPermissionCheckBox}" />
-                    <CheckBox Grid.Row="1" Grid.Column="2"
-                              Margin="0 5"
-                              IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToEditComments}"
+                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToEditComments}"
                               Content="{Binding Translation.EditCommentsPermissionCheckBox}" />
-                    <CheckBox Grid.Row="2" Grid.Column="2"
-                              Margin="0 5"
-                              IsEnabled="{Binding ExtendedPermissonsEnabled}"
+                    <CheckBox IsEnabled="{Binding ExtendedPermissonsEnabled}"
                               IsChecked="{Binding AllowFillFormsEnabled}"
                               Content="{Binding Translation.FillFormsPermissionCheckBox}" />
-                    <CheckBox Grid.Row="3" Grid.Column="2"
-                              Margin="0 5"
-                              IsEnabled="{Binding ExtendedPermissonsEnabled}"
+                    <CheckBox IsEnabled="{Binding ExtendedPermissonsEnabled}"
                               IsChecked="{Binding AllowEditingAssemblyEnabled}"
                               Content="{Binding Translation.EditAssemblyPermissionCheckBox}" />
-                </Grid>
+                </UniformGrid>
             </StackPanel>
-        </StackPanel>
+        </HeaderedContentControl>
     </Grid>
 </UserControl>

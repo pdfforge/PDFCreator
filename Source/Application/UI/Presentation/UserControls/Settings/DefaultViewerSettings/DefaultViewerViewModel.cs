@@ -4,15 +4,16 @@ using System.Windows.Input;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings
 {
-    public class DefaultViewerViewModel : TranslatableViewModelBase<DefaultViewerTranslation>, ITabViewModel
+    public class DefaultViewerViewModel : TranslatableViewModelBase<DefaultViewerTranslation>, IWhitelisted, IMountable
     {
         private readonly ISettingsProvider _settingsProvider;
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
@@ -71,16 +72,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewe
             get { return _defaultViewers; }
         }
 
-        public string Title { get; set; } = "Viewer";
-        public IconList Icon { get; set; } = IconList.DefaultViewerSettings;
-        public bool HiddenByGPO => false;
-        public bool BlockedByGPO => GpoSettings.DisableApplicationSettings;
-
         protected override void OnTranslationChanged()
         {
             base.OnTranslationChanged();
-            RaisePropertyChanged(nameof(Title));
-            RaisePropertyChanged();
         }
 
         public void MountView()

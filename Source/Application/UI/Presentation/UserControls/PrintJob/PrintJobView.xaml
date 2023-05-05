@@ -10,8 +10,8 @@
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
-             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.ContextMenuButton"
+             xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}"
@@ -19,10 +19,11 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/OutputFormat/SelectOutputFormatButton.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/IconButton.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/OutputFormat/SelectOutputFormatButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/IconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
@@ -62,12 +63,12 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <redesign5:ProfilesComboBox Grid.Column="0"
+                    <styles:ProfilesComboBox Grid.Column="0"
                                                 Profiles="{Binding ProfilesWrapper}"
                                                 SelectedProfile="{Binding SelectedProfileWrapper}"
                                                 Background="{StaticResource PrintJobProfileComboboxBackground}" />
                     <Grid Grid.Column="1"
-                          Style="{DynamicResource GpoStyle}"
+                          Style="{StaticResource GpoToolTipStyle}"
                           IsEnabled="{Binding EditButtonEnabledByGpo }">
                         <Button Margin="10 0 0 0"
                                 Command="{Binding EditProfileCommand}"
@@ -95,7 +96,7 @@
                         Visibility="{Binding Path=SaveFileTemporaryIsEnabled, Converter={StaticResource CollapsedIfFalseConverter}}"
                         ToolTip="{Binding Translation.SaveTempOnlyIsEnabled}"
                         Style="{StaticResource IconButton}"
-                        Foreground="{StaticResource InfoIconBrush}">
+                        Foreground="{StaticResource InfoBrush}">
                     <iconPacks:PackIconMaterialDesign Kind="Info" />
                 </Button>
                 <Button Margin="10 0 0 0"

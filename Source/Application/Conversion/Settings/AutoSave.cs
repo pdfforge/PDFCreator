@@ -1,5 +1,6 @@
 using pdfforge.DataStorage.Storage;
 using pdfforge.DataStorage;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using PropertyChanged;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,53 +22,42 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		#pragma warning restore 67
 		
 		
-		/// <summary>
-		/// Existing files will not be overwritten. Existing files automatically get append with the new files.
-		/// </summary>
-		public bool AutoMergeFiles { get; set; } = false;
-		
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// Existing files will not be overwritten. Existing filenames automatically get an appendix.
+		/// Defines the behaviour if a file already exists e.g. overwrite, merge or ensure unique filename
 		/// </summary>
-		public bool EnsureUniqueFilenames { get; set; } = true;
+		public AutoSaveExistingFileBehaviour ExistingFileBehaviour { get; set; } = AutoSaveExistingFileBehaviour.EnsureUniqueFilenames;
 		
 		
 		public void ReadValues(Data data, string path = "")
 		{
-			AutoMergeFiles = bool.TryParse(data.GetValue(@"" + path + @"AutoMergeFiles"), out var tmpAutoMergeFiles) ? tmpAutoMergeFiles : false;
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
-			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : true;
+			ExistingFileBehaviour = Enum.TryParse<AutoSaveExistingFileBehaviour>(data.GetValue(@"" + path + @"ExistingFileBehaviour"), out var tmpExistingFileBehaviour) ? tmpExistingFileBehaviour : AutoSaveExistingFileBehaviour.EnsureUniqueFilenames;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
-			data.SetValue(@"" + path + @"AutoMergeFiles", AutoMergeFiles.ToString());
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
-			data.SetValue(@"" + path + @"EnsureUniqueFilenames", EnsureUniqueFilenames.ToString());
+			data.SetValue(@"" + path + @"ExistingFileBehaviour", ExistingFileBehaviour.ToString());
 		}
 		
 		public AutoSave Copy()
 		{
 			AutoSave copy = new AutoSave();
 			
-			copy.AutoMergeFiles = AutoMergeFiles;
 			copy.Enabled = Enabled;
-			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
+			copy.ExistingFileBehaviour = ExistingFileBehaviour;
 			return copy;
 		}
 		
 		public void ReplaceWith(AutoSave source)
 		{
-			if(AutoMergeFiles != source.AutoMergeFiles)
-				AutoMergeFiles = source.AutoMergeFiles;
-				
 			if(Enabled != source.Enabled)
 				Enabled = source.Enabled;
 				
-			if(EnsureUniqueFilenames != source.EnsureUniqueFilenames)
-				EnsureUniqueFilenames = source.EnsureUniqueFilenames;
+			if(ExistingFileBehaviour != source.ExistingFileBehaviour)
+				ExistingFileBehaviour = source.ExistingFileBehaviour;
 				
 		}
 		
@@ -76,9 +66,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!(o is AutoSave)) return false;
 			AutoSave v = o as AutoSave;
 			
-			if (!Object.Equals(AutoMergeFiles, v.AutoMergeFiles)) return false;
 			if (!Object.Equals(Enabled, v.Enabled)) return false;
-			if (!Object.Equals(EnsureUniqueFilenames, v.EnsureUniqueFilenames)) return false;
+			if (!Object.Equals(ExistingFileBehaviour, v.ExistingFileBehaviour)) return false;
 			return true;
 		}
 		

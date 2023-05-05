@@ -1,10 +1,12 @@
-﻿using NLog;
+﻿using System.Linq;
+using NLog;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Helper;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Core.Printing.Printer;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -16,13 +18,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IJobPrinter _jobPrinter;
         private readonly IAppSettingsProvider _appSettingsProvider;
+        private readonly ISystemPrinterProvider _systemPrinterProvider;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public PrintingAction(IJobPrinter jobPrinter, IAppSettingsProvider appSettingsProvider)
+        public PrintingAction(IJobPrinter jobPrinter, IAppSettingsProvider appSettingsProvider, ISystemPrinterProvider systemPrinterProvider)
             : base(p => p.Printing)
         {
             _jobPrinter = jobPrinter;
             _appSettingsProvider = appSettingsProvider;
+            _systemPrinterProvider = systemPrinterProvider;
         }
 
         /// <summary>
@@ -63,6 +67,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             if (profile.Printing.SelectPrinter != SelectPrinter.SelectedPrinter)
                 return actionResult;
+
+            if (!_systemPrinterProvider.GetInstalledPrinterNames().Contains(profile.Printing.PrinterName))
+                return new ActionResult(ErrorCode.Printing_InvalidSelectedPrinter);
 
             var (hasCyclicDependency, dependencyRoute) = CyclicDependenciesHelper.HasCyclicDependency(profile, _appSettingsProvider.Settings.PrinterMappings, currentCheckSettings.Profiles);
 

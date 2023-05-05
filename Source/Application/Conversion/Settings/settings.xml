@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <datastorage>
   <options>
     <namespace>pdfforge.PDFCreator.Conversion.Settings</namespace>
@@ -147,15 +147,6 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
             <comment>If enabled PDFCreator tracks latest converted files in history</comment>
           </value>
-          <value name="LastDateFrom" type="value" datatype="DateTime" enumname="" defaultvalue="" islist="False">
-            <comment>Last DateFrom in search options</comment>
-          </value>
-          <value name="LastDateTo" type="value" datatype="DateTime" enumname="" defaultvalue="" islist="False">
-            <comment>Last DateTo in search options</comment>
-          </value>
-          <value name="LastSearchText" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
-            <comment>Last searched text in search options</comment>
-          </value>
         </class>
         <classarray name="PrinterMapping" propertyName="PrinterMappings" readonly="False" classtype="Class">
           <comment />
@@ -220,6 +211,12 @@
         <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
           <comment />
         </value>
+        <value name="PageOrientation" type="value" datatype="Enum" enumname="PageOrientation" defaultvalue="PageOrientation.Automatic" islist="False">
+          <comment>Sets page orientation.</comment>
+        </value>
+        <value name="PageSize" type="value" datatype="Enum" enumname="PageSize" defaultvalue="PageSize.Automatic" islist="False">
+          <comment>et the page size.</comment>
+        </value>
         <value name="SharedSettingsFilename" type="value" datatype="String" enumname="" defaultvalue="settings" islist="False">
           <comment>Set the filename of the shared settings file. The default is 'settings.ini'.</comment>
         </value>
@@ -246,13 +243,10 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment />
           </value>
-          <value name="EnsureUniqueFilenames" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-            <comment>Existing files will not be overwritten. Existing filenames automatically get an appendix.</comment>
+          <value name="ExistingFileBehaviour" type="value" datatype="Enum" enumname="AutoSaveExistingFileBehaviour" defaultvalue="AutoSaveExistingFileBehaviour.EnsureUniqueFilenames" islist="False">
+            <comment>Defines the behaviour if a file already exists e.g. overwrite, merge or ensure unique filename</comment>
           </value>
-          <value name="AutoMergeFiles" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-            <comment>Existing files will not be overwritten. Existing files automatically get append with the new files.</comment>
-          </value>
-		</class>
+        </class>
         <class name="BackgroundPage" propertyName="BackgroundPage" readonly="False" classtype="Class">
           <comment>Adds a page background to the resulting document</comment>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -853,7 +847,7 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="13" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="14" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
         </value>
       </class>

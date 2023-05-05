@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == parameter)
+            if (value != null && value.ToString().Equals(parameter))
             {
                 return ColourActive;
             }

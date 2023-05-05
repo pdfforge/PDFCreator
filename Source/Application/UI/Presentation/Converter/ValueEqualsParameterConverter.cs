@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter
 {
-    internal class ValueIsNotEqualToParameterConverter : IValueConverter
+    public class ValueIsNotEqualToParameterConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

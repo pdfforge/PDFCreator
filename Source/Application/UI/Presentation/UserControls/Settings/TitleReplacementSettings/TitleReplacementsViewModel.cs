@@ -7,19 +7,18 @@ using System.Windows.Input;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.ServiceLocator;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands.TitleReplacements;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using Prism.Mvvm;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings
 {
-    public class TitleReplacementsViewModel : TranslatableViewModelBase<TitleReplacementsTranslation>, ITabViewModel
+    public class TitleReplacementsViewModel : TranslatableViewModelBase<TitleReplacementsTranslation>, IWhitelisted, IMountable
     {
         private readonly ICurrentSettings<ObservableCollection<TitleReplacement>> _titleReplacementProvider;
         private readonly ICurrentSettingsProvider _settingsProvider;
@@ -82,18 +81,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
 
         public ObservableCollection<TitleReplacement> TitleReplacements => _titleReplacementProvider?.Settings;
 
-        public string Title { get; set; } = "Title Replacements";
-        public IconList Icon { get; set; } = IconList.TitleReplacementSettings;
-        public bool HiddenByGPO => false;
-        public bool BlockedByGPO => GpoSettings.DisableTitleTab;
-
-        protected override void OnTranslationChanged()
-        {
-            base.OnTranslationChanged();
-            RaisePropertyChanged(nameof(Title));
-            RaisePropertyChanged();
-        }
-
         private void UpdateReplacedText()
         {
             var titleReplacer = new TitleReplacer();
@@ -107,14 +94,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             RaisePropertyChanged(nameof(TitleReplacements));
         }
 
-        public bool TitleIsEnabled
+        public bool TitleReplacementIsDisabledByGpo
         {
             get
             {
                 if (TitleReplacements == null)
-                    return true;
+                    return false;
 
-                return GpoSettings != null ? GpoSettings.DisableTitleTab : true;
+                return GpoSettings?.DisableTitleTab ?? false;
             }
         }
 
@@ -138,14 +125,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             UpdateTitleReplacements();
         }
 
-    }
-
-    public class DesignTimeTitleReplacementsViewModel : TitleReplacementsViewModel
-    {
-        private static readonly ICurrentSettingsProvider CurrentSettingsProvider = new DesignTimeCurrentSettingsProvider();
-
-        public DesignTimeTitleReplacementsViewModel() : base(new DesignTimeTranslationUpdater(), null, CurrentSettingsProvider, new DesignTimeCommandLocator(), null)
-        {
-        }
     }
 }

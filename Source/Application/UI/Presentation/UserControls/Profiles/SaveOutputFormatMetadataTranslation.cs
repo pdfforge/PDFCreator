@@ -20,10 +20,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string SkipSendFailures { get; private set; } = "Skip send failures";
         public string ShowTrayNotification { get; private set; } = "Show tray notification";
 
-        public string ExistingFileLabel { get; private set; } = "Existing file:";
+        public string ExistingFileLabel { get; private set; } = "Behavior for existing file:";
         public string BehaviorMerge { get; private set; } = "Merge";
         public string BehaviorOverwrite { get; private set; } = "Overwrite";
         public string BehaviorUnique { get; private set; } = "Ensure unique filenames";
+        public string BehaviorMergeBeforeModifyActions { get; private set; } = "Merge before the actions";
+
+        public string NonPdfAutoMerge { get; private set; } = "Non-pdf auto-merge";
 
         public string OutputFormat { get; private set; } = "Output Format";
         public string ColorsLabel { get; private set; } = "Colors:";

@@ -18,15 +18,14 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../../Styles/DefaultButton.xaml" />
-                <ResourceDictionary Source="../../../../Styles/PDFCreatorIcons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Icons.xaml" />
-                <ResourceDictionary Source="../../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             <converter:EqualsNullConverter x:Key="CollapsedIfNotNull" EqualValue="Visible" NotEqualValue="Collapsed" />
             <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
-            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
 
             <converter:AreEqualConverter Reference="{x:Static enums:SignaturePage.CustomPage}"
@@ -44,10 +43,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <HeaderedContentControl Template="{DynamicResource BorderlessHeaderPanelTemplate}" Header="{Binding Translation.Title}">
+        <HeaderedContentControl Header="{Binding Translation.Title}"
+                                Style="{StaticResource BorderlessHeaderPanel}">
             <StackPanel>
-                <Label Margin="0 0 0 10" Content="{Binding Translation.CertificateFileLabel}" />
-                <DockPanel>
+                <Label Content="{Binding Translation.CertificateFileLabel}" />
+                <DockPanel Margin="0 10 0 0">
                     <Button DockPanel.Dock="Right" Width="33" Margin="10 0 0 0"
                             Padding="0" Command="{Binding ChooseCertificateFileCommand}">
                         ...
@@ -56,6 +56,7 @@
                              Text="{Binding CertificateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
                 </DockPanel>
+
                 <Button Command="{Binding SignaturePasswordCommand}"
                         Margin="0 10 0 0"
                         HorizontalAlignment="Left"
@@ -64,7 +65,7 @@
 
                 <CheckBox Margin="0 10 0 0"
                           IsChecked="{Binding AskForPasswordLater}"
-                          Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Visibility="{Binding AllowConversionInterrupts, Converter={StaticResource CollapsedIfFalse}}"
                           IsEnabled="{Binding CurrentProfile.AutoSave.Enabled, Converter={StaticResource BoolNegationConverter}}"
                           HorizontalAlignment="Left">
                     <TextBlock TextWrapping="Wrap" Text="{Binding Translation.DontSavePassword}" />
@@ -74,8 +75,8 @@
                 <StackPanel Margin="0 20 0 0">
                     <Label Margin="0 0 0 10" Content="{Binding Translation.SelectTimeServerLabel}" />
                     <DockPanel LastChildFill="True">
-                        <StackPanel Style="{DynamicResource GpoStyle}"
-                                    IsEnabled="{Binding EditAccountsIsDisabled}" Orientation="Horizontal" DockPanel.Dock="Right">
+                        <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                                    IsEnabled="{Binding EditAccountsIsAllowedByGpo}" Orientation="Horizontal" DockPanel.Dock="Right">
                             <Button DockPanel.Dock="Right" Margin="10 0 0 0"
                                     Height="33" Width="33"
                                     IsEnabled="{Binding ElementName=TimeServerAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
@@ -96,7 +97,8 @@
                             <ComboBox Name="TimeServerAccountsComboBox"
                                       DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
                                       SelectedValue="{Binding CurrentProfile.PdfSettings.Signature.TimeServerAccountId}"
-                                      ItemsSource="{Binding TimeServerAccountsView}" IsSynchronizedWithCurrentItem="True" />
+                                      ItemsSource="{Binding TimeServerAccountsView}"
+                                      IsSynchronizedWithCurrentItem="True" />
                             <!-- Overlay hint for empty accouts -->
                             <Label IsHitTestVisible="False" VerticalAlignment="Center" Margin="10 0 0 0"
                                    Content="{Binding Translation.SelectOrAddTimeServerAccount}"
@@ -134,23 +136,23 @@
                     <RadioButton GroupName="DisplayLevelRadioButtons"
                                  Content="{Binding Translation.NoDisplayLabel}"
                                  IsChecked="{Binding DisplaySignature,
-                        Converter={StaticResource EnumToBooleanConverter},
-                        ConverterParameter={x:Static enums:DisplaySignature.NoDisplay}}" />
+                                            Converter={StaticResource EnumToBooleanConverter},
+                                            ConverterParameter={x:Static enums:DisplaySignature.NoDisplay}}" />
                     <RadioButton  GroupName="DisplayLevelRadioButtons"
                                   Content="{Binding Translation.DisplayTextLabel}"
                                   IsChecked="{Binding DisplaySignature,
-                        Converter={StaticResource EnumToBooleanConverter},
-                        ConverterParameter={x:Static enums:DisplaySignature.TextOnly}}" />
+                                            Converter={StaticResource EnumToBooleanConverter},
+                                            ConverterParameter={x:Static enums:DisplaySignature.TextOnly}}" />
                     <RadioButton GroupName="DisplayLevelRadioButtons"
                                  Content="{Binding Translation.DisplayImageLabel}"
                                  IsChecked="{Binding DisplaySignature,
-                        Converter={StaticResource EnumToBooleanConverter},
-                        ConverterParameter={x:Static enums:DisplaySignature.ImageOnly}}" />
+                                            Converter={StaticResource EnumToBooleanConverter},
+                                            ConverterParameter={x:Static enums:DisplaySignature.ImageOnly}}" />
                     <RadioButton GroupName="DisplayLevelRadioButtons"
                                  Content="{Binding Translation.DisplayImageAndTextLabel}"
                                  IsChecked="{Binding DisplaySignature,
-                        Converter={StaticResource EnumToBooleanConverter},
-                        ConverterParameter={x:Static enums:DisplaySignature.ImageAndText}}" />
+                                            Converter={StaticResource EnumToBooleanConverter},
+                                            ConverterParameter={x:Static enums:DisplaySignature.ImageAndText}}" />
                 </UniformGrid>
 
                 <!--Only displayed when DisplaySignature enum is NOT NoDisplay-->
@@ -171,10 +173,10 @@
 
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
-                                Margin="0 10 0 10">
+                                Margin="0 10 0 0">
                         <Border CornerRadius="2" Background="{StaticResource TextBoxDisabledBackgroundBrush}">
                             <TextBlock Margin="5 0" VerticalAlignment="Center"
-                                           Text="{Binding SignaturePositionAndSizeText}" />
+                                       Text="{Binding SignaturePositionAndSizeText}" />
                         </Border>
                         <Button Margin="10 0 0 0"
                                 Width="33" Padding="5"
@@ -187,16 +189,16 @@
                     <!--Text Section displayed when DisplaySignature enum is NOT ImageOnly-->
                     <StackPanel Visibility="{Binding DisplaySignature, Converter={StaticResource CollapsedIfImageOnly}}"
                                 Orientation="Horizontal"
-                                Margin="0 10 0 10">
+                                Margin="0 20 0 0">
                         <controls:FontSelectorControl DataContext="{Binding FontSelectorControlViewModel}" />
-                        <CheckBox VerticalAlignment="Bottom" Margin="10 0 0 6"
+                        <CheckBox VerticalAlignment="Bottom" Margin="10 0 0 0"
                                   Content="{Binding Translation.FitTextToSignatureSize}"
                                   IsChecked="{Binding CurrentProfile.PdfSettings.Signature.FitTextToSignatureSize}" />
                     </StackPanel>
 
                     <!-- Image section displayed when DisplaySignature enum is NOT TextOnly-->
                     <Grid Visibility="{Binding DisplaySignature, Converter={StaticResource CollapsedIfTextOnly}}"
-                          Margin="0 10 0 0"
+                          Margin="0 20 0 0"
                           IsEnabled="{Binding SupportsImage}">
                         <StackPanel>
                             <Label Margin="0 0 0 10" Content="{Binding Translation.SignatureImageFileLabel}" />

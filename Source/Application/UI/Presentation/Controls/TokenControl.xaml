@@ -5,17 +5,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
-             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5.ContextMenuButton"
              xmlns:misc="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Misc"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance controls1:DesignTimeTokenViewModel, IsDesignTimeCreatable=true}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../Styles/Redesign5/BorderlessTextBox.xaml" />
-                <ResourceDictionary Source="../Styles/Redesign5/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../Styles/BorderlessTextBox.xaml" />
+                <ResourceDictionary Source="../Styles/ColorDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
         </ResourceDictionary>
@@ -63,7 +63,7 @@
         <!-- Grid.Row="1" as Margin -->
 
         <TextBox Grid.Row="2" Grid.Column="0"
-                 Style="{StaticResource ResizableBorderlessTextBox}"
+                 Style="{StaticResource MultilineBorderlessTextBox}"
                  Padding="5 0"
                  IsReadOnly="True"
                  Foreground="{StaticResource LightLabelForegroundBrush}"

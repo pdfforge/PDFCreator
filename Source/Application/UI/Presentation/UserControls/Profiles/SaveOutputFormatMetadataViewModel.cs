@@ -30,20 +30,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public ICommand SetSaveCommand { get; set; }
         public ICommand SetOutputFormatCommand { get; set; }
 
-        public string ExistingFileBehavior
-        {
-            get
-            {
-                if (_selectedProfileProvider.SelectedProfile.AutoSave.AutoMergeFiles)
-                    return Translation.BehaviorMerge;
-
-                if (_selectedProfileProvider.SelectedProfile.AutoSave.EnsureUniqueFilenames)
-                    return Translation.BehaviorUnique;
-
-                return Translation.BehaviorOverwrite;
-            }
-        }
-
         public SaveOutputFormatMetadataViewModel(ISelectedProfileProvider selectedProfileProvider,
             ITranslationUpdater translationUpdater,
             IEventAggregator eventAggregator,
@@ -161,9 +147,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             return (false, Translation.LastUsedDirectory);
         }
 
+        public string ExistingFileBehavior
+        {
+            get
+            {
+                var (hasWarning, existingFileBehaviorText) = DetermineExistingFileBehaviorStatus();
+                ExistingFileBehaviorHasWarning = hasWarning;
+                RaisePropertyChanged(nameof(ExistingFileBehaviorHasWarning));
+                return existingFileBehaviorText;
+            }
+        }
+
+        public bool ExistingFileBehaviorHasWarning { get; private set; }
+
+        private (bool HasWarning, string ExistingFileText) DetermineExistingFileBehaviorStatus()
+        {
+            if (CurrentProfile == null || !CurrentProfile.AutoSave.Enabled)
+                return (false, "");
+
+            // AutoSave is enabled
+
+            if (CurrentProfile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.EnsureUniqueFilenames)
+                return (false, Translation.BehaviorUnique);
+
+            if (CurrentProfile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.Merge)
+                return !CurrentProfile.OutputFormat.IsPdf() ? (true, Translation.NonPdfAutoMerge) : (false, Translation.BehaviorMerge);
+
+            if (CurrentProfile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.MergeBeforeModifyActions)
+                return !CurrentProfile.OutputFormat.IsPdf() ? (true, Translation.NonPdfAutoMerge) : (false, Translation.BehaviorMergeBeforeModifyActions);
+
+            return (false, Translation.BehaviorOverwrite);
+        }
+
         public bool SkipPrintDialog => CurrentProfile != null && CurrentProfile.SkipPrintDialog;
 
-        public bool EnsureUniqueFilenames => CurrentProfile != null && CurrentProfile.AutoSave.EnsureUniqueFilenames;
+        public bool EnsureUniqueFilenames => CurrentProfile != null && CurrentProfile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.EnsureUniqueFilenames;
 
         public bool AllowTrayNotifications => !IsFreeEdition && !IsServer;
 

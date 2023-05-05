@@ -47,7 +47,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
                     job.IntermediateFolder = _tempFolderProvider.CreatePrefixTempFolder("intermediate");
 
                 var psFile = sourceFileInfo.Filename;
-                var pdfFile = ConvertPsToPdf(psFile, _tempFolderProvider.TempFolder, job.IntermediateFolder);
+                var jobTempFolder = _tempFolderProvider.CreatePrefixTempFolder("Job");
+                var pdfFile = ConvertPsToPdf(psFile, jobTempFolder, job.IntermediateFolder);
 
                 sourceFileInfo.Filename = pdfFile;
 

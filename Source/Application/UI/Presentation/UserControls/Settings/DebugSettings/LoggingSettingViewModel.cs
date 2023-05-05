@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using NLog;
 using SystemInterface.IO;
 using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -19,6 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
     public class LoggingSettingViewModel : ADebugSettingsItemControlModel
     {
         private readonly IFile _fileWrap;
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         public ICurrentSettings<ApplicationSettings> ApplicationSettings { get; }
         private readonly IInteractionInvoker _invoker;
         private readonly ICommand _quickActionOpenExplorerLocationCommand;
@@ -43,10 +45,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
 
         private void ClearLogFileExecute(object o)
         {
-            if (_fileWrap.Exists(LoggingHelper.LogFile))
-            {
-                _fileWrap.WriteAllText(LoggingHelper.LogFile, "");
-            }
+            var success = LoggingHelper.ClearLogFile();
+
+            if (!success)
+                _logger.Warn("Could not clear the log file!");
         }
 
         private void ShowLogFileExecute(object o)
@@ -60,7 +62,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
                 var caption = Translation.NoLogFile;
                 var message = Translation.NoLogFileAvailable;
 
-                var interaction = new MessageInteraction(message, caption, MessageOptions.OK, MessageIcon.Warning);
+                var interaction = new MessageInteraction(message, caption, MessageOptions.Ok, MessageIcon.Warning);
                 _invoker.Invoke(interaction);
             }
         }

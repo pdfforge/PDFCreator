@@ -59,9 +59,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         {
             switch (Interaction.Buttons)
             {
-                case MessageOptions.OK:
-                case MessageOptions.OKCancel:
-                    Interaction.Response = MessageResponse.OK;
+                case MessageOptions.Ok:
+                case MessageOptions.OkCancel:
+                    Interaction.Response = MessageResponse.Ok;
                     break;
 
                 case MessageOptions.MoreInfoCancel:
@@ -97,7 +97,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         {
             switch (Interaction.Buttons)
             {
-                case MessageOptions.OKCancel:
+                case MessageOptions.OkCancel:
                 case MessageOptions.RetryCancel:
                 case MessageOptions.MoreInfoCancel:
                 case MessageOptions.YesNoCancel:
@@ -120,7 +120,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 
         private bool RightButtonCanExecute(object obj)
         {
-            return Interaction?.Buttons != MessageOptions.OK;
+            return Interaction?.Buttons != MessageOptions.Ok;
         }
 
         protected override void HandleInteractionObjectChanged()
@@ -186,11 +186,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                     RightButtonContent = Translation.Cancel;
                     break;
 
-                case MessageOptions.OK:
+                case MessageOptions.Ok:
                     LeftButtonContent = Translation.Ok;
                     break;
 
-                case MessageOptions.OKCancel:
+                case MessageOptions.OkCancel:
                     LeftButtonContent = Translation.Ok;
                     RightButtonContent = Translation.Cancel;
                     break;

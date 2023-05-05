@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs
@@ -26,10 +27,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
             var title = originalTitle;
 
-            //replace longer strings first to avoid e.g. replacement of .doc before .docx
-            _replacements.Sort((a, b) => string.Compare(b.Search, a.Search, StringComparison.InvariantCultureIgnoreCase));
+            // Descending to replace longer strings first to avoid e.g. replacement of .doc before .docx
+            var sortedReplacements = _replacements
+                .OrderBy(x => x.ReplacementType)
+                .ThenByDescending(y => y.Search);
 
-            foreach (var titleReplacement in _replacements)
+            foreach (var titleReplacement in sortedReplacements)
             {
                 if (titleReplacement.IsValid())
                     title = ReplaceTitle(titleReplacement, title);

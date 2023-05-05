@@ -10,7 +10,11 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
     {
         void ConvertDirectly(IList<string> files, AppStartParameters appStartParameters = null);
 
-        bool CanConvertDirectly(string file);
+        bool IsDirectConversion(string file);
+
+        bool IsImageConversion(string file);
+
+        void ConvertImagesDirectly(IList<string> files, AppStartParameters appStartParameters = null);
     }
 
     public class DirectConversion : IDirectConversion
@@ -21,22 +25,25 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
         private readonly IDirectConversionInfFileHelper _directConversionInfFileHelper;
         private readonly IJobInfoManager _jobInfoManager;
         private readonly IJobInfoQueue _jobInfoQueue;
+        private readonly IDirectImageConversionHelper _directImageConversionHelper;
 
         public DirectConversion(
             IDirectConversionHelper directConversionHelper,
             IDirectConversionInfFileHelper directConversionInfFileHelper,
             IJobInfoManager jobInfoManager,
-            IJobInfoQueue jobInfoQueue)
+            IJobInfoQueue jobInfoQueue,
+            IDirectImageConversionHelper directImageConversionHelper)
         {
             _directConversionHelper = directConversionHelper;
             _directConversionInfFileHelper = directConversionInfFileHelper;
             _jobInfoManager = jobInfoManager;
             _jobInfoQueue = jobInfoQueue;
+            _directImageConversionHelper = directImageConversionHelper;
         }
 
-        public bool CanConvertDirectly(string file)
+        public bool IsDirectConversion(string file)
         {
-            return _directConversionHelper.CanConvertDirectly(file);
+            return _directConversionHelper.IsDirectConversion(file);
         }
 
         public void ConvertDirectly(IList<string> files, AppStartParameters appStartParameters = null)
@@ -50,6 +57,23 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
                     _directConversionInfFileHelper.TransformToInfFile(files.First(), appStartParameters) :
                     _directConversionInfFileHelper.TransformToInfFile(files.First());
             }
+
+            if (string.IsNullOrEmpty(infFile))
+                return;
+
+            Logger.Debug("Adding new job.");
+            var jobInfo = _jobInfoManager.ReadFromInfFile(infFile);
+            _jobInfoQueue.Add(jobInfo);
+        }
+
+        public bool IsImageConversion(string file)
+        {
+            return _directConversionHelper.IsImageConversion(file);
+        }
+
+        public void ConvertImagesDirectly(IList<string> files, AppStartParameters appStartParameters = null)
+        {
+            var infFile = _directImageConversionHelper.TransformToInfFileDirectImageConversion(files, appStartParameters);
 
             if (string.IsNullOrEmpty(infFile))
                 return;

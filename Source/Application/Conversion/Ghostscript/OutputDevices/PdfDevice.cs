@@ -17,28 +17,27 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         private const int DpiMin = 4;
         private const int DpiMax = 2400;
 
-        public PdfDevice(Job job, ConversionMode conversionMode) : base(job, conversionMode)
-        {
-        }
-
         public PdfDevice(Job job, ConversionMode conversionMode, IFile file, IOsHelper osHelper, ICommandLineUtil commandLineUtil) : base(job, conversionMode, file, osHelper, commandLineUtil)
         {
         }
 
         protected override void AddDeviceSpecificParameters(IList<string> parameters)
         {
-            parameters.Add("-dNEWPDF=" + "false"); //Job.Profile.UseGsNewPDF.ToString().ToLower()); //this will be the default for GS >9.55 and can be removed then
+            if (!Job.Profile.UseGsNewPDF) //this will be the default for GS >9.55 and can be removed then
+                parameters.Add("-dNEWPDF=" + "false");
+
             parameters.Add("-sDEVICE=pdfwrite");
             parameters.Add("-dCompatibilityLevel=1.4");
             parameters.Add("-dPDFSETTINGS=/default");
             parameters.Add("-dEmbedAllFonts=true");
+
             if (Job.Profile.PdfSettings.NoFonts)
                 parameters.Add("-dNoOutputFonts");
 
-            SetPageOrientation(parameters, DistillerDictonaries);
+            SetPageOrientation(parameters, DistillerDictionaries);
             SetColorSchemeParameters(parameters);
 
-            GrayAndColorImagesCompressionAndResample(parameters, DistillerDictonaries);
+            GrayAndColorImagesCompressionAndResample(parameters, DistillerDictionaries);
             MonoImagesCompression(parameters);
 
             //ColorSheme must be defined before adding def files of PdfA/X
@@ -90,7 +89,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
             parameters.Add("-sPDFACompatibilityPolicy=1");
 
-            parameters.Add("-sOutputICCProfile=\"" + iccFile + "\"");
+            parameters.Add("-sOutputICCProfile=" + iccFile);
 
             var defFile = PathSafe.Combine(Job.JobTempFolder, "pdfa_def.ps");
             var sb = new StringBuilder(GhostscriptResources.PdfaDefinition);
@@ -119,7 +118,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     FileWrap.WriteAllBytes(iccFile, GhostscriptResources.ISOcoated_v2_grey1c_bas);
                     break;
             }
-            parameters.Add("-sOutputICCProfile=\"" + iccFile + "\"");
+            parameters.Add("-sOutputICCProfile=" + iccFile);
 
             //Set in pdf-X example, but is not documented in the distiller parameters
 
@@ -365,7 +364,13 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             return Job.JobTempFileName + ".pdf";
         }
 
-        protected override void AddOutputfileParameter(IList<string> parameters)
+        protected override void AddPasswordParameter(IList<string> parameters)
+        {
+            if (Job.Profile.PdfSettings.Security.Enabled)
+                parameters.Add($"{PasswordParameter}={Job.Passwords.PdfOwnerPassword}");
+        }
+
+        protected override void AddOutputFileParameter(IList<string> parameters)
         {
             parameters.Add("-sOutputFile=" + PathSafe.Combine(Job.IntermediateFolder, ComposeOutputFilename()));
         }

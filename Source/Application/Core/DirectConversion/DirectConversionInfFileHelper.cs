@@ -21,6 +21,8 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
         string TransformToInfFile(string directConversionFile, AppStartParameters appStartParameters);
 
         string TransformToInfFileWithMerge(IList<string> directConversionFiles, AppStartParameters appStartParameters);
+
+        string CreateInfFile(IList<DirectConversionInfFileHelper.JobFolderFile> jobFolderFiles, string jobFolder, AppStartParameters appStartParameters);
     }
 
     public class DirectConversionInfFileHelper : IDirectConversionInfFileHelper
@@ -35,6 +37,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
         private readonly IPath _path;
         private readonly IJobFolderBuilder _jobFolderBuilder;
 
+        // private readonly EditionHelper _editionHelper;
         public DirectConversionInfFileHelper(
             IDirectConversionHelper directConversionHelper,
             IJobInfoManager jobInfoManager,
@@ -110,7 +113,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             }
         }
 
-        private class JobFolderFile
+        public class JobFolderFile
         {
             public JobFolderFile(string originalFilePath, string fileInJobFolder)
             {
@@ -145,7 +148,7 @@ namespace pdfforge.PDFCreator.Core.DirectConversion
             return psFileInJobFolder;
         }
 
-        private string CreateInfFile(IList<JobFolderFile> jobFolderFiles, string jobFolder, AppStartParameters appStartParameters)
+        public string CreateInfFile(IList<JobFolderFile> jobFolderFiles, string jobFolder, AppStartParameters appStartParameters)
         {
             var firstDirectConversionFile = jobFolderFiles[0].OriginalFilePath;
 

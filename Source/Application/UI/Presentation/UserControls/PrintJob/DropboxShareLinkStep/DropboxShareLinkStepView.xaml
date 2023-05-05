@@ -12,9 +12,10 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/ColorDictionary.xaml" />
-                <ResourceDictionary Source="../../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Hyperlink.xaml" />
+                <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -35,14 +36,9 @@
             </Label>
             <TextBlock Margin="0 10 0 0">
                     <Hyperlink Command="{Binding UrlOpenCommand}"
-                               CommandParameter="{Binding ShareUrl}">
-                        <Hyperlink.Style>
-                            <Style>
-                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
-                            </Style>
-                        </Hyperlink.Style>
+                               CommandParameter="{Binding ShareUrl}"
+                               Style="{StaticResource DefaultHyperLink}">
                         <TextBlock Text="{Binding ShareUrl}"
-                                   Foreground="{StaticResource HyperlinkBrush}"
                                    FontWeight="DemiBold" />
                     </Hyperlink>
             </TextBlock>
@@ -60,7 +56,7 @@
                     ToolTip="{Binding Translation.CopyShareLinkToClipboard}" />
 
             <Button Margin="5 0 0 0"
-                    Content="{Binding Translation.OK}"
+                    Content="{Binding Translation.Ok}"
                     IsDefault="True"
                     Command="{Binding OkCommand}"
                     Style="{StaticResource AffirmativeButton}" />

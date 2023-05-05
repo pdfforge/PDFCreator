@@ -31,7 +31,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public string PasswordRequiredForConnectionTest { get; protected set; } = "In order to test the connection the password needs to be set temporarily";
         public string PassphraseRequired { get; protected set; } = "Key file requires passphrase";
         public string Save { get; protected set; } = "Save";
-        public string OK { get; protected set; } = "Ok";
+        public string Ok { get; protected set; } = "Ok";
         public string ServerLabel { get; protected set; } = "Server:";
         public string UserNameLabel { get; protected set; } = "User Name:";
         public string AddAccount { get; protected set; } = "Add account";

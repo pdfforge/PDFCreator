@@ -304,9 +304,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 
             if (!string.IsNullOrWhiteSpace(printerName))
             {
-                PrinterMappings.Add(
-                    new PrinterMappingWrapper(new PrinterMapping(printerName, ProfileGuids.DEFAULT_PROFILE_GUID),
-                        ConversionProfiles));
+                var newMapping = new PrinterMappingWrapper(new PrinterMapping(printerName, ProfileGuids.DEFAULT_PROFILE_GUID), ConversionProfiles);
+
+                var duplicateMapping = PrinterMappings.FirstOrDefault(p => p.PrinterName == newMapping.PrinterName);
+
+                if (duplicateMapping == null)
+                {
+                    PrinterMappings.Add(newMapping);
+                }
+                else
+                {
+                    duplicateMapping.Profile = newMapping.Profile;
+                    duplicateMapping.PrinterMapping.ProfileGuid = newMapping.PrinterMapping.ProfileGuid;
+                }
             }
 
             UpdatePrinterCollectionViews();

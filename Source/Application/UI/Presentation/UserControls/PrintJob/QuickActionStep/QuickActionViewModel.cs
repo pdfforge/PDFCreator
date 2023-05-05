@@ -10,7 +10,6 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +32,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         private string _fileSize;
         private readonly TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
         private readonly ICommand _saveChangedSettingsCommand;
+        public ICommand OpenWithPdfArchitectCommand { get; set; }
+        public ICommand OpenExplorerCommand { get; set; }
+        public ICommand QuickActionOpenWithDefaultCommand { get; set; }
+        public ICommand SendEmailCommand { get; set; }
+        public ICommand PrintWithArchitectCommand { get; set; }
 
         public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider) : base(translationUpdater)
@@ -43,8 +47,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             _readableFileSizeHelper = readableFileSizeHelper;
             _profilesProvider = profilesProvider;
             _currentSettingsProvider = currentSettingsProvider;
+            OpenWithPdfArchitectCommand = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>();
+            QuickActionOpenWithDefaultCommand = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>();
+            OpenExplorerCommand = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>();
+            SendEmailCommand = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>();
+            PrintWithArchitectCommand = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>();
             FinishCommand = new DelegateCommand(OnFinish);
-            InitList();
         }
 
         private void OnFinish(object obj)
@@ -52,27 +60,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             _saveChangedSettingsCommand.Execute(null);
             StepFinished?.Invoke(this, EventArgs.Empty);
             _taskCompletionSource.SetResult(null);
-        }
-
-        private void InitList()
-        {
-            QuickActionOpenList = new List<DropDownButtonItem>
-            {
-                GetQuickActionItem<QuickActionOpenWithPdfArchitectCommand>(() =>Translation.OpenPDFArchitect),
-                GetQuickActionItem<QuickActionOpenWithDefaultCommand>(() =>Translation.OpenDefaultProgram),
-                GetQuickActionItem<QuickActionOpenExplorerLocationCommand>(() =>Translation.OpenExplorer)
-            };
-
-            QuickActionSendList = new List<DropDownButtonItem>
-            {
-                GetQuickActionItem<QuickActionOpenMailClientCommand>(() => Translation.SendEmail),
-                GetQuickActionItem<QuickActionPrintWithPdfArchitectCommand>(() =>Translation.PrintFileWithArchitect)
-            };
-        }
-
-        private DropDownButtonItem GetQuickActionItem<TCommand>(Func<string> text) where TCommand : class, ICommand
-        {
-            return new DropDownButtonItem(text, () => _job, _commandLocator.GetCommand<TCommand>());
         }
 
         public Task ExecuteWorkflowStep(Job job)
@@ -159,8 +146,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         }
 
         public DelegateCommand FinishCommand { get; }
-
-        public IEnumerable<DropDownButtonItem> QuickActionOpenList { get; private set; }
-        public IEnumerable<DropDownButtonItem> QuickActionSendList { get; private set; }
     }
 }

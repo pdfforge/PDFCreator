@@ -11,45 +11,61 @@
              d:DataContext="{d:DesignInstance general:LanguageSelectionSettingsViewModel}">
 
     <UserControl.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
+                <ResourceDictionary Source="../../../Styles/HyperLink.xaml" />
+                <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </UserControl.Resources>
-    <StackPanel>
 
-        <Label Content="{Binding Translation.LanguageControlHeader}" FontSize="14" Style="{StaticResource LightLabel}"/>
-        <Grid HorizontalAlignment="Left" Style="{DynamicResource GpoStyle}" IsEnabled="{Binding LanguageIsEnabled}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-            <StackPanel Margin="0 0 0 0" VerticalAlignment="Bottom">
-                <Label Content="{Binding Translation.SelectLanguageLabelText, Mode=OneWay}" Margin="0 10 0 10" VerticalAlignment="Center" />
-
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Width="260" DisplayMemberPath="NativeName" Background="White" Height="33"
-                              SelectedValuePath="Iso2" SelectedValue="{Binding CurrentLanguage, Mode=TwoWay}"
-                              ItemsSource="{Binding Languages}" />
-                </StackPanel>
+    <StackPanel Style="{StaticResource SettingsRegion}">
+        <Label Content="{Binding Translation.LanguageControlHeader}" 
+               Style="{StaticResource LargeLightLabel}"/>
+        <DockPanel Grid.Column="0" VerticalAlignment="Bottom" MaxHeight="150" >
+            <!--Select language label and combobox-->
+            <StackPanel DockPanel.Dock="Left"
+                        Margin="0 20 0 0" 
+                        VerticalAlignment="Bottom" 
+                        MinWidth="300"
+                        Style="{StaticResource GpoToolTipStyle}"
+                        IsEnabled="{Binding LanguageIsEnabled}">
+                <Label Content="{Binding Translation.SelectLanguageLabelText, Mode=OneWay}"/>
+                <ComboBox Margin="0 10 0 0"  
+                          VerticalAlignment="Bottom" 
+                          SelectedValuePath="Iso2" SelectedValue="{Binding CurrentLanguage, Mode=TwoWay}"
+                          DisplayMemberPath="NativeName"
+                          ItemsSource="{Binding Languages}"
+                          Height="33"
+                          Background="White"/>
             </StackPanel>
 
-            <Border Grid.Column="1" Background="White" Padding="10">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign Width="20" Height="20" Foreground="{StaticResource InfoBrush}" VerticalAlignment="Top" Margin="0" Kind="LiveHelp" />
-
-                    <TextBlock TextWrapping="Wrap" Margin="5 0 0 0"  Width="400" LineStackingStrategy="BlockLineHeight" LineHeight="20" >
-                        <Run Text="{Binding Translation.TranslatorHintText, Mode=OneWay}"/>
-                        <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
-                                   Command="{Binding VisitWebsiteCommand}">
-                            <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" Style="{DynamicResource HyperLinkTextBlock}"/>
-                        </Hyperlink>
-                    </TextBlock>
-                </StackPanel>
+            <!--Translator hint-->
+            <Border Margin="20 0 0 0" 
+                    Padding="10"
+                    VerticalAlignment="Bottom" HorizontalAlignment="Stretch" 
+                    Background="White">
+                <DockPanel>
+                    <iconPacks:PackIconMaterialDesign Margin="0" Width="20" Height="20" Foreground="{StaticResource WarningBrush}" Kind="LiveHelp" />
+                    <DockPanel Margin="10 0 0 0">
+                        <TextBlock DockPanel.Dock="Top"
+                                   HorizontalAlignment="Stretch"
+                                   Text="{Binding Translation.TranslatorHintText, Mode=OneWay}"
+                                   TextWrapping="Wrap" TextTrimming="WordEllipsis" LineHeight="20"
+                                   MaxHeight="70"/>
+                        <TextBlock DockPanel.Dock="Top">
+                            <Hyperlink Command="{Binding VisitWebsiteCommand}"
+                                       NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
+                                       Style="{StaticResource DefaultHyperLink}">
+                                <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" TextTrimming="CharacterEllipsis" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </DockPanel>
+                </DockPanel>
             </Border>
-        </Grid>
+        </DockPanel>
     </StackPanel>
 </UserControl>

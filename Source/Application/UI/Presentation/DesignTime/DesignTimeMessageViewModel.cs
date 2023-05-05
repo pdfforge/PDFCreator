@@ -17,7 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 
         public DesignTimeMessageViewModel(bool withErrors) : base(new DesignTimeTranslationUpdater(), new DesignTimeSoundPlayer(), new ErrorCodeInterpreter(new TranslationFactory()), null)
         {
-            var messageInteraction = new MessageInteraction("The Message is Love", "The Title", MessageOptions.OK, MessageIcon.PDFForge);
+            var messageInteraction = new MessageInteraction("The Message is Love", "The Title", MessageOptions.Ok, MessageIcon.PDFForge);
 
             if (withErrors)
             {

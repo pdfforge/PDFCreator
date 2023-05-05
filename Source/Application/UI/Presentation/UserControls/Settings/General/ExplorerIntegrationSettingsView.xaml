@@ -11,49 +11,41 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../../Styles/Redesign5/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../Styles/SettingsRegion.xaml" />
+                <ResourceDictionary Source="../../../Styles/Icons/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <StackPanel>
-
-        <Label Content="{Binding Translation.MenuIntegrationControlHeader}" FontSize="14" Style="{StaticResource LightLabel}" Margin="0 30 0 10"/>
-        <Grid HorizontalAlignment="Left">
-            <StackPanel Margin="0 0 0 10" VerticalAlignment="Bottom">
-                <Grid Margin="0 5 0 0" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Button MinWidth="150" MaxWidth="200"  Grid.Column="0" Grid.Row="0" Margin="0 0 5 1"
-                    Command="{Binding AddExplorerIntegrationCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
-                                    Margin="5 0">
-                                <DynamicResource ResourceKey="UacShield" />
-                            </ContentControl>
-                            <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Translation.AddMenuIntegrationText, Mode=OneWay}" />
-
-                        </StackPanel>
-                    </Button>
-                    <Button MinWidth="150" MaxWidth="200" Grid.Column="1" Grid.Row="0" Margin="5 0 5 1" Command="{Binding RemoveExplorerIntegrationCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <ContentControl Visibility="{Binding RequiresUacVisibility}" Width="8"
-                                    Margin="5 0">
-                                <DynamicResource ResourceKey="UacShield" />
-                            </ContentControl>
-                            <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Translation.RemoveMenuIntegrationText, Mode=OneWay}" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </StackPanel>
-        </Grid>
+    <StackPanel Style="{StaticResource SettingsRegion}" Orientation="Vertical">
+        <Label Content="{Binding Translation.MenuIntegrationControlHeader}" Style="{StaticResource LargeLightLabel}"/>
+        <UniformGrid Margin="0 20 0 0"
+                     HorizontalAlignment="Left" 
+                     Rows="1"
+                     MinWidth="300">
+            <Button Margin="0 0 5 0" 
+                    Command="{Binding AddExplorerIntegrationCommand}"
+                    MaxWidth="200">
+                <DockPanel>
+                    <ContentControl Margin="5 0"
+                                    Content="{StaticResource UacShield}"
+                                    Visibility="{Binding RequiresUacVisibility}" 
+                                    Width="8"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Translation.AddMenuIntegrationText, Mode=OneWay}" />
+                </DockPanel>
+            </Button>
+            <Button Margin="5 0 0 0"
+                    Command="{Binding RemoveExplorerIntegrationCommand}"
+                    MaxWidth="200">
+                <DockPanel>
+                    <ContentControl Margin="5 0"
+                                    Content="{StaticResource UacShield}"
+                                    Visibility="{Binding RequiresUacVisibility}" 
+                                    Width="8"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Translation.RemoveMenuIntegrationText, Mode=OneWay}" />
+                </DockPanel>
+            </Button>
+        </UniformGrid>
     </StackPanel>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -28,8 +29,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             IPrinterHelper printerHelper,
             EditionHelper editionHelper,
             ISharedSettingsLoader sharedSettingsLoader,
-            IBaseSettingsBuilder baseSettingsBuilder)
-            : base(settingsMover, installationPathProvider, defaultSettingsBuilder, migrationStorageFactory, actionOrderHelper, settingsBackup, sharedSettingsLoader, baseSettingsBuilder)
+            IBaseSettingsBuilder baseSettingsBuilder,
+            IGpoSettings gpoSettings)
+            : base(settingsMover, installationPathProvider, defaultSettingsBuilder, migrationStorageFactory, actionOrderHelper, settingsBackup, sharedSettingsLoader, baseSettingsBuilder, gpoSettings)
         {
             _printerHelper = printerHelper;
             _editionHelper = editionHelper;

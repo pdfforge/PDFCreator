@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SystemInterface.IO;
 
@@ -7,6 +8,14 @@ namespace pdfforge.PDFCreator.Utilities
 {
     public class OutputFormatHelper
     {
+        public List<OutputFormat> ListOfOutputFormats { get; } = Enum.GetValues(typeof(OutputFormat)).Cast<OutputFormat>().ToList();
+        private List<string> KnownFileExtensions { get; }
+
+        public OutputFormatHelper()
+        {
+            KnownFileExtensions = ListOfOutputFormats.Select(GetValidExtensions).SelectMany(s => s).Distinct().ToList();
+        }
+
         public bool HasValidExtension(string file, OutputFormat outputFormat)
         {
             var extension = PathSafe.GetExtension(file);
@@ -97,6 +106,18 @@ namespace pdfforge.PDFCreator.Utilities
                 }
             }
             throw new NotImplementedException($"OutputFormat '{ext}' is not known to {nameof(OutputFormatHelper)}!");
+        }
+
+        public string RemoveKnownFileExtension(string fileName)
+        {
+            var output = fileName;
+            var end = fileName.LastIndexOf('.');
+            if (end > -1 && KnownFileExtensions.Contains(fileName.Substring(end)))
+            {
+                output = fileName.Substring(0, end);
+            }
+
+            return output;
         }
     }
 }

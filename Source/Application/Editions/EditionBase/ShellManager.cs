@@ -50,6 +50,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         private MainShell MainShell { get; set; }
         private PrintJobShell PrintJobShell { get; set; }
         public bool PrintJobShellIsOpen => PrintJobShell != null;
+        public bool MainShellIsOpen => MainShell != null;
 
         public void ShowMainShell()
         {
@@ -166,7 +167,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             _registeredMainShellViews = true;
             _regionToViewRegister.ForEach(action: x =>
-                _regionManager.RegisterViewWithRegion(x.Item1, x.Item2));
+            {
+                _regionManager.RegisterViewWithRegion(x.Item1, x.Item2);
+            });
         }
     }
 }

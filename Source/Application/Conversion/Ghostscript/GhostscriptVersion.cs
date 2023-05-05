@@ -11,15 +11,15 @@
         /// <param name="version">Ghostscript version string</param>
         /// <param name="exePath">Full path of the gsdll32.dll</param>
         /// <param name="libFolder">Full path of the Lib folder</param>
-        public GhostscriptVersion(string version, string exePath, string libFolder)
+        public GhostscriptVersion(string version, string exePath, string[] libPaths)
         {
             Version = version;
             ExePath = exePath;
-            LibPaths = libFolder;
+            LibPaths = libPaths;
         }
 
         public string Version { get; private set; }
         public string ExePath { get; private set; }
-        public string LibPaths { get; private set; }
+        public string[] LibPaths { get; private set; }
     }
 }

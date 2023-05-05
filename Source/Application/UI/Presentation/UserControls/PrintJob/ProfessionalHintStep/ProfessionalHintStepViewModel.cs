@@ -11,6 +11,7 @@ using Prism.Commands;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Utilities;
 using DelegateCommand = pdfforge.Obsidian.DelegateCommand;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep
@@ -25,7 +26,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.Professional
             _professionalHintHelper = professionalHintHelper;
             FinishStepCommand = new DelegateCommand(o => CancelExecute());
 
-            ProfessionalHintCommand = new CompositeCommand(); //compose "open plus hint url" and "call step finsihed"
+            ProfessionalHintCommand = new CompositeCommand(); //compose "open plus hint url" and "call step finished"
             var urlOpenCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.ProfessionalHintUrl);
             if (urlOpenCommand != null) //required to avoid NullException in DesignTimeViewModel
             {

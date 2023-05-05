@@ -5,9 +5,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
-             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
              xmlns:wrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Wrapper"
+             xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
+             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrinterViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="600" d:DesignWidth="800"
@@ -15,13 +15,13 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/CheckBoxes/DefaultCheckBox.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Datagrid.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/SquaredIconButton.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/DefaultsDictionary.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/HoverBorder.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/CheckBoxes/DefaultCheckBox.xaml" />
+                <ResourceDictionary Source="../../Styles/Datagrid.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/HoverBorder.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -100,9 +100,9 @@
                                               CommandParameter="{Binding}" />
                                         <Border Margin="10 0 0 0"
                                             Style="{StaticResource HoverBorder}">
-                                            <redesign5:ProfilesComboBox>
-                                                <redesign5:ProfilesComboBox.Style>
-                                                    <Style TargetType="{x:Type redesign5:ProfilesComboBox}">
+                                            <styles:ProfilesComboBox>
+                                                <styles:ProfilesComboBox.Style>
+                                                    <Style TargetType="{x:Type styles:ProfilesComboBox}">
                                                         <Setter Property="Background" Value="White" />
                                                         <Setter Property="Profiles" Value="{Binding Path=DataContext.ConversionProfiles, ElementName=This}" />
                                                         <Setter Property="SelectedProfile" Value="{Binding Profile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -112,8 +112,8 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </redesign5:ProfilesComboBox.Style>
-                                            </redesign5:ProfilesComboBox>
+                                                </styles:ProfilesComboBox.Style>
+                                            </styles:ProfilesComboBox>
                                         </Border>
                                     </DockPanel>
                                 </DataTemplate>

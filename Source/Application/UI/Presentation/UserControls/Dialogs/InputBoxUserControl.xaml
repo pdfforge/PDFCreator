@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
@@ -16,24 +17,24 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Icons/MessageIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/MessageIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/Icons.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:StringIsNullOrWhiteSpaceConverter x:Key="HiddenIfNullOrWhiteSpace" TrueValue="Hidden" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Margin="20">
         <DockPanel>
-            <ContentControl DockPanel.Dock="Left" Height="64" Content="{DynamicResource PDFCreatorLogo}" Margin="10 20"
+            <ContentControl DockPanel.Dock="Left" Height="64" Content="{StaticResource PDFCreatorLogo}"
                             VerticalAlignment="Top" Focusable="False" />
 
-            <StackPanel Margin="10 15 0 0">
-                <Label  Target="{Binding ElementName=TextBox}">
-                    <TextBlock Text="{Binding Interaction.QuestionText}"
-                               TextWrapping="Wrap" />
-                </Label>
+            <StackPanel Margin="20 0 0 0">
+                <Label  Target="{Binding ElementName=TextBox}"
+                        Content="{Binding Interaction.QuestionText}" />
                 <TextBox Margin="0 10 0 0"
-                         Name="TextBox"
                          Text="{Binding Interaction.InputText, UpdateSourceTrigger=PropertyChanged}">
                     <b:Interaction.Behaviors>
                         <beh:EventToCommandBehavior Command="{Binding TextChangedCommand}" Event="TextChanged"
@@ -41,21 +42,27 @@
                         <behavior:TextBoxForceCaretToEndBehavior />
                     </b:Interaction.Behaviors>
                 </TextBox>
-                <TextBlock Margin="0 5" Name="ValidationMessageText" MinHeight="35" TextWrapping="Wrap"
-                           Text="{Binding ValidationMessage}" />
+
+                <DockPanel Margin="0 10 0 0" 
+                           FlowDirection="LeftToRight" VerticalAlignment="Center"
+                           Visibility="{Binding ValidationMessage, Converter={StaticResource HiddenIfNullOrWhiteSpace}}">
+                    <iconPacks:PackIconMaterialDesign Kind="Notifications" Foreground="{StaticResource ErrorBrush}" />
+                    <TextBlock Margin="7 0 0 0" 
+                               Text="{Binding ValidationMessage}"
+                               MinHeight="50"
+                               Foreground="{StaticResource ErrorBrush}"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"
+                               FontWeight="DemiBold" />
+                </DockPanel>
             </StackPanel>
         </DockPanel>
 
-        <DockPanel  LastChildFill="False" Margin="0 20 0 0">
-            <DockPanel.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultInlineButton}">
-                    <Setter Property="MaxWidth" Value="180" />
-                </Style>
-            </DockPanel.Resources>
-
-            <Button DockPanel.Dock="Right" IsCancel="True" Command="{Binding CancelDialogCommand}" Content="{Binding Translation.CancelButtonContent}" />
+        <StackPanel Margin="0 10 0 0"
+                    Orientation="Horizontal" HorizontalAlignment="Right">
             <Button DockPanel.Dock="Right" IsDefault="True"
-                    Command="{Binding ConfirmDialogCommand}">
+                    Command="{Binding ConfirmDialogCommand}"
+                    Style="{StaticResource DefaultInlineButton}">
                 <DockPanel HorizontalAlignment="Center">
                     <ContentControl Margin="0 0  10 0"
                                     Visibility="{Binding Interaction.ShowUacShield, Converter={StaticResource CollapsedIfFalseConverter}}"
@@ -65,6 +72,10 @@
                     <AccessText Text="{Binding Translation.OkButtonContent}" />
                 </DockPanel>
             </Button>
-        </DockPanel>
+            <Button IsCancel="True"
+                    Command="{Binding CancelDialogCommand}"
+                    Content="{Binding Translation.CancelButtonContent}"
+                    Style="{StaticResource DefaultInlineButton}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

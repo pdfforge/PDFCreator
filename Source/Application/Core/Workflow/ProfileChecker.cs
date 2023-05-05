@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System.Collections.Generic;
@@ -14,8 +15,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
         ActionResultDict CheckProfileList(CurrentCheckSettings settings);
 
         ActionResult CheckFileNameAndTargetDirectory(ConversionProfile profile);
+
         ActionResult CheckFileName(ConversionProfile profile);
+
         ActionResult CheckTargetDirectory(ConversionProfile profile);
+
+        ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile);
 
         ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
@@ -57,6 +62,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private ActionResult ProfileCheck(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
         {
             var actionResult = CheckFileNameAndTargetDirectory(profile, checkLevel);
+            actionResult.AddRange(CheckOutputFormatForAutoMerge(profile));
 
             foreach (var action in _actions)
             {
@@ -98,6 +104,17 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 case PathUtilStatus.Success:
                     break;
             }
+
+            return new ActionResult();
+        }
+
+        public ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile)
+        {
+            if (!profile.AutoSave.Enabled)
+                return new ActionResult();
+
+            if (profile.AutoSave.ExistingFileBehaviour == AutoSaveExistingFileBehaviour.Merge && !profile.OutputFormat.IsPdf())
+                return new ActionResult(ErrorCode.AutoSave_NonPdfAutoMerge);
 
             return new ActionResult();
         }

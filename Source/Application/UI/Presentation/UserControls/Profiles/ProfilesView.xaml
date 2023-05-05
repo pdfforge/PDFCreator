@@ -7,9 +7,9 @@
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Helper.Gpo"
-             xmlns:redesign5="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Redesign5"
              xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
+             xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
+             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance profiles:DesignTimeProfilesViewModel, IsDesignTimeCreatable=true}"
@@ -19,9 +19,10 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Styles/Redesign5/Buttons/DefaultButtons.xaml" />
-                <ResourceDictionary Source="../../Styles/Redesign5/Labels.xaml" />
-                <ResourceDictionary Source="../../Styles/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
+                <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
@@ -34,7 +35,7 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0"
-                BorderBrush="{DynamicResource AccentGrey}" SnapsToDevicePixels="True" BorderThickness="0 0 0 1" Panel.ZIndex="1">
+                BorderBrush="{StaticResource AccentGrey}" SnapsToDevicePixels="True" BorderThickness="0 0 0 1" Panel.ZIndex="1">
             <Grid Margin="40 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -48,28 +49,28 @@
                        Style="{StaticResource LargeLabel}"
                        Content="{Binding Translation.ProfileLabelText}" />
 
-                <redesign5:ProfilesComboBox Grid.Column="1" Margin="10 0"
+                <styles:ProfilesComboBox Grid.Column="1" Margin="10 0"
                                             Background="{StaticResource BrightButtonBackgroundBrush}"
                                             Profiles="{Binding Profiles, Mode=OneWay}"
                                             SelectedProfile="{Binding SelectedProfile }" />
 
                 <UniformGrid Grid.Column="4" Columns="3" Height="33" Margin="-5 0 -5 0">
                     <Grid IsEnabled="{Binding EditProfileIsGpoEnabled}"
-                          Style="{StaticResource GpoStyle}">
+                          Style="{StaticResource GpoToolTipStyle}">
                         <Button Margin="5 0"
                                 Content="{Binding Translation.RenameButton}"
                                 Command="{Binding ProfileRenameCommand}"
                                 Style="{StaticResource BrightButton}" />
                     </Grid>
                     <Grid IsEnabled="{Binding RemoveProfileButtonIsGpoEnabled}"
-                          Style="{StaticResource GpoStyle}">
+                          Style="{StaticResource GpoToolTipStyle}">
                         <Button Margin="5 0"
                                 Content="{Binding Translation.RemoveButton}"
                                 Command="{Binding ProfileRemoveCommand}"
                                 Style="{StaticResource BrightButton}" />
                     </Grid>
                     <Grid IsEnabled="{Binding AddProfileButtonIsGpoEnabled}"
-                          Style="{StaticResource GpoStyle}">
+                          Style="{StaticResource GpoToolTipStyle}">
                         <Button Margin="5 0"
                                 Content="{Binding Translation.AddButton}"
                                 Command="{Binding ProfileAddCommand}"

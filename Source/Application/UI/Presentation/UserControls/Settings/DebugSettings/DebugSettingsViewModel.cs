@@ -1,34 +1,22 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Core.ServiceLocator;
+using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.TabHelper;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
-using Prism.Mvvm;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings
 {
-    public class DebugSettingsViewModel : TranslatableViewModelBase<DebugSettingsTranslation>, ITabViewModel
+    public class DebugSettingsViewModel : TranslatableViewModelBase<DebugSettingsTranslation>, IWhitelisted, IMountable
     {
         private readonly ICurrentSettings<ApplicationSettings> _applicationSettings;
         private readonly IGpoSettings _gpoSettings;
-        //todo alex, title might need to be removed
-        public string Title => "";
-        public IconList Icon => IconList.DebugSettings;
-        public bool HiddenByGPO => false;
-        public bool BlockedByGPO => DebugIsDisabled;
 
         public DebugSettingsViewModel(ITranslationUpdater translationUpdater, ICurrentSettings<ApplicationSettings> applicationSettings, IGpoSettings gpoSettings)
             : base(translationUpdater)
         {
             _applicationSettings = applicationSettings;
             _gpoSettings = gpoSettings;
-        }
-
-        protected override void OnTranslationChanged()
-        {
-            RaisePropertyChanged(nameof(Title));
-            base.OnTranslationChanged();
         }
 
 

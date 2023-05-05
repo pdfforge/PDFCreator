@@ -411,6 +411,15 @@ lpdict begin
 /prevHFont null def
 
 /lpfirst {	% - lpfirst -
+  % If writing to file we need to emit the definition of 'encoding' or it will
+  % produce non-working PostScript. If we are executing directly then encoding is
+  % already defined. This defines encoding as an array instead of a name, but it will work OK
+  % and avoids changing the /RE procedure.
+  OutFile null eq not {
+    OutFile (/encoding /) writestring
+    OutFile encoding 256 string cvs writestring
+    OutFile ( /Encoding findresource def\n) writestring
+  } if
 % Define some abbreviating procedures.
   /B {save 3 1 roll translate /X 0 def} lpdef
   /BL {save 3 1 roll 90 rotate translate /X 0 def} lpdef
@@ -610,7 +619,16 @@ lpdict begin
 /--duplex { /Duplex {Landscape} def } def
 /--duplex-long-edge { /Duplex false def } def
 /--duplex-short-edge { /Duplex true def } def
-/--encoding { cvn /encoding exch def } def
+/--encoding {
+  cvn /encoding exch def
+  %% If we changed the encoding, then we need to remake the default fonts with the correct encoding
+  /defaultBodyFontPortrait
+    /Courier find-latin-font 10 scalefont def
+  /defaultBodyFontLandscape
+    /Courier find-latin-font 7 scalefont def
+  /defaultBodyFont
+    { Landscape { defaultBodyFontLandscape } { defaultBodyFontPortrait } ifelse } def
+} def
 /--first-page { cvi /PageFirst exch def } def
 /--footing-center { /FootingCenter exch def   /Footers true def } def
 /--footing-left { /FootingLeft exch def   /Footers true def } def
