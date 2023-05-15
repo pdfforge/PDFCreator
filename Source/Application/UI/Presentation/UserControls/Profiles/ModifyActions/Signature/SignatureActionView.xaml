@@ -52,7 +52,7 @@
                             Padding="0" Command="{Binding ChooseCertificateFileCommand}">
                         ...
                     </Button>
-                    <TextBox DockPanel.Dock="Left" Name="CertificationFileTextBox"
+                    <TextBox DockPanel.Dock="Left"
                              Text="{Binding CertificateFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
                 </DockPanel>
@@ -99,7 +99,7 @@
                                       SelectedValue="{Binding CurrentProfile.PdfSettings.Signature.TimeServerAccountId}"
                                       ItemsSource="{Binding TimeServerAccountsView}"
                                       IsSynchronizedWithCurrentItem="True" />
-                            <!-- Overlay hint for empty accouts -->
+                            <!-- Overlay hint for empty accounts -->
                             <Label IsHitTestVisible="False" VerticalAlignment="Center" Margin="10 0 0 0"
                                    Content="{Binding Translation.SelectOrAddTimeServerAccount}"
                                    Visibility="{Binding ElementName=TimeServerAccountsComboBox, Path=SelectedItem, Converter={StaticResource CollapsedIfNotNull}, NotifyOnSourceUpdated=True}" />
@@ -128,11 +128,6 @@
 
                 <Label Content="{Binding Translation.DisplayLevelLabel}" Margin="0 20 0 0"></Label>
                 <UniformGrid Margin="0 10 0 0" Columns="4">
-                    <UniformGrid.Resources>
-                        <!-- Set RadionButton Selection Brush -->
-                        <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource AccentBlue}" />
-                    </UniformGrid.Resources>
-
                     <RadioButton GroupName="DisplayLevelRadioButtons"
                                  Content="{Binding Translation.NoDisplayLabel}"
                                  IsChecked="{Binding DisplaySignature,

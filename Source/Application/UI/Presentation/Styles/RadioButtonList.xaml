@@ -1,20 +1,25 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="RadioButtonListItem" TargetType="{x:Type ListBoxItem}">
+    <Style x:Key="RadioButtonListItem" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <DockPanel LastChildFill="True" Background="{TemplateBinding Background}" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <RadioButton IsChecked="{TemplateBinding IsSelected}" Focusable="False" IsHitTestVisible="False" VerticalAlignment="Center" />
-                        <ContentPresenter
-                            Margin="5 0 0 0"
-                            Content             = "{TemplateBinding ContentControl.Content}"
-                            ContentTemplate     = "{TemplateBinding ContentControl.ContentTemplate}"
-                            ContentStringFormat = "{TemplateBinding ContentControl.ContentStringFormat}"
-                            HorizontalAlignment = "{TemplateBinding Control.HorizontalContentAlignment}"
-                            VerticalAlignment   = "{TemplateBinding Control.VerticalContentAlignment}"
-                            SnapsToDevicePixels = "{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                    <DockPanel HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               LastChildFill="True"
+                               Background="{TemplateBinding Background}">
+                        <RadioButton VerticalAlignment="Center"
+                                     IsChecked="{Binding IsSelected,
+                                     RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
+                        <ContentPresenter Margin ="5 0 0 0"
+                                          IsEnabled="{TemplateBinding IsEnabled}"
+                                          Content = "{TemplateBinding ContentControl.Content}"
+                                          ContentTemplate = "{TemplateBinding ContentControl.ContentTemplate}"
+                                          ContentStringFormat = "{TemplateBinding ContentControl.ContentStringFormat}"
+                                          HorizontalAlignment = "{TemplateBinding Control.HorizontalContentAlignment}"
+                                          VerticalAlignment = "{TemplateBinding Control.VerticalContentAlignment}"
+                                          SnapsToDevicePixels = "{TemplateBinding UIElement.SnapsToDevicePixels}" />
                     </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
