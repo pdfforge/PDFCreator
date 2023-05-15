@@ -21,26 +21,30 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.Visibility>
-        <Binding Path="CurrentProfile.OutputFormat" Converter="{StaticResource CollapsedIfOtherFormatConverter}" />
+        <Binding Path="CurrentProfile.OutputFormat"
+                 Converter="{StaticResource CollapsedIfOtherFormatConverter}" />
     </UserControl.Visibility>
     <StackPanel>
-        <StackPanel.Resources>
-            <!-- Set RadionButton Selection Brush -->
-            <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource AccentBlue}" />
-        </StackPanel.Resources>
-        <Label Margin="0 0 0 0"
-               Width="500" HorizontalAlignment="Left">
+        <Label HorizontalAlignment="Left" Width="500">
             <TextBlock Text="{Binding Translation.TextFormatIntro}" TextWrapping="Wrap" />
         </Label>
         <ListBox Margin="0 20 0 0"
-                 Style="{StaticResource RadioButtonList}"
                  SelectedValue="{Binding CurrentProfile.TextSettings.Format}"
-                 SelectedValuePath="Tag">
-            <!-- Tag represents integer value of the SelectedValue -->
-            <ListBoxItem Tag="0" Content="{Binding Translation.XmlUnicode}" />
-            <ListBoxItem Tag="1" Content="{Binding Translation.XmlUnicodeMuPdf}" Margin="0 20 0 0" />
-            <ListBoxItem Tag="2" Content="{Binding Translation.TextUnicode}" Margin="0 20 0 0" />
-            <ListBoxItem Tag="3" Content="{Binding Translation.TextUtf8}" Margin="0 20 0 0" />
+                 SelectedValuePath="Tag"
+                 Style="{StaticResource RadioButtonList}">
+
+            <!--Tag represents integer value of the SelectedValue-->
+            <ListBoxItem Tag="0"
+                         Content="{Binding Translation.XmlUnicode}" />
+            <ListBoxItem Margin="0 20 0 0"
+                         Tag="1"
+                         Content="{Binding Translation.XmlUnicodeMuPdf}" />
+            <ListBoxItem Margin="0 20 0 0"
+                         Tag="2"
+                         Content="{Binding Translation.TextUnicode}" />
+            <ListBoxItem Margin="0 20 0 0"
+                         Tag="3"
+                         Content="{Binding Translation.TextUtf8}" />
         </ListBox>
     </StackPanel>
 </UserControl>

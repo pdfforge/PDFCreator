@@ -26,6 +26,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         private readonly ISettingsProvider _settingsProvider;
         private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
         private readonly IDispatcher _dispatcher;
+        private readonly ICommandLocator _commandLocator;
         private readonly IGpoSettings _gpoSettings;
         private readonly CollectionViewSource _collectionViewSource;
         private readonly ObservableCollection<HistoricJob> _jobHistoryList;
@@ -39,6 +40,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             _settingsProvider = settingsProvider;
             _jobHistoryActiveRecord = jobHistoryActiveRecord;
             _dispatcher = dispatcher;
+            _commandLocator = commandLocator;
             _gpoSettings = gpoSettings;
 
             _jobHistoryList = new ObservableCollection<HistoricJob>();
@@ -50,7 +52,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
             JobHistory = _collectionViewSource.View;
             JobHistory.MoveCurrentTo(null); //unselect first item
 
-            ConvertFileCommand = commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
+            ConvertFileCommand = _commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
 
             ClearHistoryCommand = new DelegateCommand(o => jobHistoryActiveRecord.Delete());
             RefreshHistoryCommand = new DelegateCommand(o => RefreshHistory());
@@ -58,11 +60,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
 
             RemoveHistoricJobCommand = new DelegateCommand<HistoricJob>(jobHistoryActiveRecord.Remove);
 
-            DeleteHistoricFilesCommand = commandLocator.CreateMacroCommand()
+            DeleteHistoricFilesCommand = _commandLocator.CreateMacroCommand()
                 .AddCommand<DeleteHistoricFilesCommand>()
                 .AddCommand(new AsyncCommand(o => _jobHistoryActiveRecord.Refresh()))
                 .Build();
 
+            SetHistoryViewQuickActions();
+        }
+
+        public void SetHistoryViewQuickActions()
+        {
+            if (Translation == null)
+                return;
+
+            if(_commandLocator == null)
+                return;
+            
             HistoryQuickActionMenuItems = new List<MenuItem>
             {
                 new MenuItem
@@ -74,29 +87,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
                 new MenuItem
                 {
                     Header = Translation.OpenPDFArchitect,
-                    Command = commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>()
+                    Command = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>()
                 },
 
                 new MenuItem
                 {
                     Header = Translation.OpenDefaultProgram,
-                    Command = commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>()
+                    Command = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>()
                 },
 
                 new MenuItem
                 {
                     Header = Translation.OpenExplorer,
-                    Command = commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>()
+                    Command = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>()
                 },
                 new MenuItem
                 {
                     Header = Translation.PrintWithPDFArchitect,
-                    Command = commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>()
+                    Command = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>()
                 },
                 new MenuItem
                 {
                     Header = Translation.OpenMailClient,
-                    Command = commandLocator.GetCommand<QuickActionOpenMailClientCommand>()
+                    Command = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>()
                 }
             };
         }
@@ -167,7 +180,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         protected override void OnTranslationChanged()
         {
             RaisePropertyChanged(nameof(CallToActionText));
-            RaisePropertyChanged(nameof(HistoryQuickActionMenuItems));
+            SetHistoryViewQuickActions();
         }
     }
 }

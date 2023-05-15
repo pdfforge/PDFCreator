@@ -1,9 +1,4 @@
-﻿using System.CodeDom;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Remoting;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using pdfforge.PDFCreator.Conversion.Jobs;
@@ -44,28 +39,63 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
             _regionManager = regionManager;
 
             _eventAggregator.GetEvent<NavigateApplicationSettingsEvent>().Subscribe(targetView => ActivePath = targetView);
-
+          
             NavigateCommand = commandLocator?.CreateMacroCommand()
                 .AddCommand<SkipIfSameNavigationTargetCommand>()
                 .AddCommand<EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand>()
                 .AddCommand<ISaveChangedSettingsCommand>()
                 .AddCommand<NavigateApplicationSettingsTabCommand>()
                 .Build();
+            
         }
-        
+
+
+        protected override void OnTranslationChanged()
+        {
+            base.OnTranslationChanged();
+            RaisePropertyChanged(nameof(IsRegionNameLong));
+        }
+
         public ICommand NavigateCommand { get; set; }
 
-        public bool ShowLicense => !_editionHelper.IsFreeEdition && (_gpoSettings != null && !_gpoSettings.HideLicenseTab);
+        public bool ShowLicense
+        {
+            get
+            {
+                var needsLicense = !(_editionHelper.IsFreeEdition || _editionHelper.IsCustom);
+                var isAllowedByGpo = (_gpoSettings != null && !_gpoSettings.HideLicenseTab);
+
+                return  needsLicense && isAllowedByGpo;
+            }
+        } 
 
         private string _activePath = RegionNames.GeneralSettingsTabContentRegion;
 
-        public string ActivePath
+        public bool IsRegionNameLong
+        {
+            get
+            {
+                if (Translation.General.Length>14
+                    || Translation.Debug.Length > 14
+                    || Translation.Viewer.Length > 14
+                    || Translation.Title.Length > 14
+                    || Translation.DirectImageConversion.Length > 14
+                    || Translation.License.Length > 14
+                    )
+                    return true;
+                return false;
+            }
+
+        }
+
+    public string ActivePath
         {
             set
             {
                 _activePath = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ActivePathIsLockedByGpo));
+                RaisePropertyChanged(nameof(IsRegionNameLong));
             }
             get
             {
@@ -99,6 +129,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
                 var selectedView = _regionManager.Regions[RegionNames.ApplicationSettingsTabsRegion].Views.First();
                 ActivePath = selectedView.GetType().Name;
                 RaisePropertyChanged(nameof(ActivePath));
+                RaisePropertyChanged(nameof(IsRegionNameLong));
             });
         }
 

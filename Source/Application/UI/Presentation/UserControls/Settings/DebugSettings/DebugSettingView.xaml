@@ -9,8 +9,12 @@
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeDebugSettingsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <ItemsControl IsTabStop="False" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.DebugSettingsTabContentRegion}" />
+    <Grid>
+        <ItemsControl IsTabStop="False" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.DebugSettingsTabContentRegion}" />
+        <gpo:GPOLockLayer IsLockedByGpo="{Binding   DebugIsDisabled}" />
+    </Grid>
 </UserControl>

@@ -30,6 +30,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
             // Descending to replace longer strings first to avoid e.g. replacement of .doc before .docx
             var sortedReplacements = _replacements
                 .OrderBy(x => x.ReplacementType)
+                .ThenByDescending(replacement => replacement.Search.Length)
                 .ThenByDescending(y => y.Search);
 
             foreach (var titleReplacement in sortedReplacements)

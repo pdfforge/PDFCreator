@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using SystemInterface.IO;
 using SystemInterface.Microsoft.Win32;
@@ -38,10 +39,14 @@ namespace pdfforge.PDFCreator.Utilities
         private readonly IAssemblyHelper _assemblyHelper;
 
         // Tuple format: Item1: DisplayName in Registry, Item2: name of the exe file that has to exist in the InstallLocation
-        private readonly Tuple<string, string>[] _pdfArchitectCandidates =
+        private readonly Tuple<string, string>[] _currentPdfArchitectVersions =
         {
             new Tuple<string, string>("PDF Architect 9 Business", "architect-business.exe"),
-            new Tuple<string, string>("PDF Architect 9", "architect.exe"),
+            new Tuple<string, string>("PDF Architect 9", "architect.exe")
+        };
+
+        private readonly Tuple<string, string>[] _historicPdfArchitectCandidates =
+        {
             new Tuple<string, string>("PDF Architect 8", "architect.exe"),
             new Tuple<string, string>("PDF Architect 7", "architect.exe"),
             new Tuple<string, string>("PDF Architect 6", "architect.exe"),
@@ -82,7 +87,7 @@ namespace pdfforge.PDFCreator.Utilities
             // PDF Architect might be installed now
             Task.Run(() =>
             {
-                _cachedInstallationPath = DoGetInstallationPath();
+                _cachedInstallationPath = DoGetInstallationPath(_currentPdfArchitectVersions.Concat(_historicPdfArchitectCandidates).ToArray());
                 _wasSearched = true;
             });
         }
@@ -95,20 +100,24 @@ namespace pdfforge.PDFCreator.Utilities
         public string GetInstallationPath()
         {
             if (_wasSearched)
-                return _cachedInstallationPath;
+            {
+                if (string.IsNullOrEmpty(_cachedInstallationPath))
+                    _cachedInstallationPath = DoGetInstallationPath(_currentPdfArchitectVersions);
 
-            _cachedInstallationPath = DoGetInstallationPath();
+                return _cachedInstallationPath;
+            }
+
+            _cachedInstallationPath = DoGetInstallationPath(_currentPdfArchitectVersions.Concat(_historicPdfArchitectCandidates).ToArray());
             _wasSearched = true;
 
             return _cachedInstallationPath;
         }
 
-        private string DoGetInstallationPath()
+        private string DoGetInstallationPath(Tuple<string, string>[] candidates)
         {
-            var pathCandidates = UseSodaPdf ? _sodaPdfCandidates : _pdfArchitectCandidates;
             var publisher = UseSodaPdf ? "Avanquest" : "pdfforge";
 
-            foreach (var pdfArchitectCandidate in pathCandidates)
+            foreach (var pdfArchitectCandidate in candidates)
             {
                 try
                 {

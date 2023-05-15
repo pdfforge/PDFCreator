@@ -39,6 +39,10 @@
         <!--Add the buttons last to keep them above the GPO layer-->
         <ContentControl Grid.Column="0" Grid.Row="1" IsTabStop="False" 
                         regions:RegionManager.RegionName="{x:Static presentation:RegionNames.GeneralSettingsButtonRegion}" />
+
+        <gpo:GPOLockLayer Grid.Column="0" Grid.ColumnSpan="3" 
+                          Grid.Row="0" Grid.RowSpan="2"
+                          IsLockedByGpo="{Binding  ApplicationSettingsIsDisabled}" />
     </Grid>
 
 </UserControl>

@@ -25,6 +25,7 @@
                                                         ColourInActive="{StaticResource GeneralSettingsButtonActiveForeground }" />
             <converter:ValueIsNotEqualToParameterConverter x:Key="ValueIsNotEqualToParameterConverter" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" FalseValue="Collapsed" TrueValue="Visible" />
+            <converter:MenuTabColumnWidthConverter x:Key="IfTrueColumnMaxWidthElseColumnMinWidthConverter" TrueValue="320" FalseValue="180" />
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" >
@@ -32,7 +33,7 @@
             <Style TargetType="Grid" x:Key="InnerGrid">
                 <Style.Setters>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="Width" Value="180"/>
+                    <Setter Property="Width" Value="{Binding IsRegionNameLong, Converter= {StaticResource IfTrueColumnMaxWidthElseColumnMinWidthConverter}}"/>
                     <Setter Property="Height" Value="33"/>
                 </Style.Setters>
             </Style>
@@ -57,6 +58,7 @@
                 <Setter Property="ToolTipService.InitialShowDelay" Value="1500" />
                 <Setter Property="Height" Value="33" />
                 <Setter Property="MinWidth" Value="180" />
+                <Setter Property="Width" Value="{Binding IsRegionNameLong, Converter= {StaticResource IfTrueColumnMaxWidthElseColumnMinWidthConverter}}"/>
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                 <Setter Property="HorizontalAlignment" Value="Left" />
@@ -67,8 +69,7 @@
                 <Setter Property="Command" Value="{Binding NavigateCommand}" />
             </Style>
         </StackPanel.Resources>
-
-
+        <!--General settings tab-->
         <Button Name="GeneralSettingsButton"
                 Background="{ Binding Converter={StaticResource StringToActiveColorConverter}, ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Path=ActivePath }"
                 Foreground="{ Binding Converter={StaticResource StringToActiveForegroundColorConverter}, ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Path=ActivePath}"
@@ -79,14 +80,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Settings"/>
                 <TextBlock Grid.Column="2" Text="{Binding Translation.General}"
                                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.GeneralSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
             </Grid>
         </Button>
-
+        <!--Title replacement tab-->
         <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
                 Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
                 IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Path=ActivePath}"
@@ -96,14 +97,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Title"/>
                 <TextBlock Grid.Column="2" Text="{Binding Translation.Title}"
                                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.TitleReplacementsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
             </Grid>
         </Button>
-
+        <!--Debug settings tab-->
         <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
                 Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
                 IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Path=ActivePath}"
@@ -113,14 +114,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="BugReport" />
                 <TextBlock Grid.Column="2" Text="{Binding Translation.Debug}"
                                    Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DebugSettingRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
             </Grid>
         </Button>
-
+        <!--Default viewer tab-->
         <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
                 Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
                 IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Path=ActivePath}"
@@ -130,7 +131,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="ViewCarousel" />
                 <TextBlock Grid.Column="2" 
@@ -138,7 +139,25 @@
                            Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DefaultViewerRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
             </Grid>
         </Button>
-
+        <!--Direct image conversion tab-->
+        <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
+                Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
+                IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Path=ActivePath}"
+                help:HelpProvider.HelpTopic="AppLicense"
+                CommandParameter="{x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}" ToolTip="{Binding Translation.DirectImageConversion}">
+            <Grid Style="{StaticResource InnerGrid}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Image" />
+                <TextBlock Grid.Column="2" 
+                           Text="{Binding Translation.DirectImageConversion}"
+                           Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
+            </Grid>
+        </Button>
+        <!--License settings tab-->
         <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
                 Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
                 IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Path=ActivePath}"
@@ -149,29 +168,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="AccountBox" />
                 <TextBlock Grid.Column="2" 
                            Text="{Binding Translation.License}"
                            Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.LicenseSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
-            </Grid>
-        </Button>
-        <Button Background="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveColorConverter}, Path=ActivePath }"
-                Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"
-                IsHitTestVisible="{ Binding Converter={StaticResource ValueIsNotEqualToParameterConverter}, ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Path=ActivePath}"
-                help:HelpProvider.HelpTopic="AppLicense"
-                CommandParameter="{x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}" ToolTip="{Binding Translation.DirectImageConversion}">
-            <Grid Style="{StaticResource InnerGrid}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="110"/>
-                </Grid.ColumnDefinitions>
-                <iconPacks:PackIconMaterialDesign Grid.Column="1" Kind="Image" />
-                <TextBlock Grid.Column="2" 
-                           Text="{Binding Translation.DirectImageConversion}"
-                           Foreground="{ Binding ConverterParameter={x:Static presentation:RegionViewName.DirectImageConversionSettingsRegionView}, Converter={StaticResource StringToActiveForegroundColorConverter}, Path=ActivePath}"/>
             </Grid>
         </Button>
     </StackPanel>

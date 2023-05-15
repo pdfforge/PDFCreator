@@ -13,6 +13,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
     xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+    xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
     d:DesignHeight="400" d:DesignWidth="500"
     d:DataContext="{d:DesignInstance designTime:DesignTimeTitleReplacementsViewModel, d:IsDesignTimeCreatable=True}"
     Name="mainUserControl"
@@ -219,5 +220,8 @@
                      IsReadOnly="True"
                      Style="{StaticResource BrightBorderlessTextBox}"/>
         </StackPanel>
+
+        <gpo:GPOLockLayer Grid.Row="0" Grid.RowSpan="5"
+                          IsLockedByGpo="{Binding  TitleReplacementIsDisabledByGpo}" />
     </Grid>
 </UserControl>
