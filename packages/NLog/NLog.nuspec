@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>NLog</id>
-    <version>5.1.4</version>
+    <version>5.2.3</version>
     <title>NLog for .NET Framework and .NET Standard</title>
     <authors>Jarek Kowalski,Kim Christensen,Julian Verdurmen</authors>
     <license type="expression">BSD-3-Clause</license>
@@ -24,13 +24,20 @@ Supported platforms:
 For ASP.NET Core, check: https://www.nuget.org/packages/NLog.Web.AspNetCore</description>
     <releaseNotes>ChangeLog:
 
-- FileTarget - Recover from file-deleted when same archive-folder (#5207) (@snakefoot)
-- NLog.xsd schema with support for variables section (#5201) (@michaelplavnik)
-- JsonLayout - Added IndentJson for pretty format (#5200) (@nih0n)
-- Log4jXmlEvent - Fix dummy-Namespace when using IncludeScopeProperties (#5197) (@snakefoot)
-- ConfigurationItemFactory - Handle concurrent registration with single lock (#5195) (@snakefoot)
-- AsyncTaskTarget - Include task exception on completed event (#5193) (@snakefoot)
-- ScopeContext - Uniform initial small array sizes (#5186) (@snakefoot)
+- AutoFlushTargetWrapper - Explicit flush should also await when FlushOnConditionOnly (#5308) (@snakefoot)
+- Target precalculate should only perform single IsInitialized check (#5301) (@snakefoot)
+- Target precalculate should only consider relevant layouts (#5300) (@snakefoot)
+- Target precalculate should handle duplicate layouts (#5296) (@snakefoot)
+- MessageLayoutRenderer - Skip Flatten when simple AggregateException (#5299) (@snakefoot)
+- ConfigurationItemFactory - Improve obsolete message for obsoleted factory-properties (#5298) (@snakefoot)
+- Report NLog version on initial configuration assignment (#5291) (@snakefoot)
+- PropertyHelper - SetPropertyFromString allow empty string for nullable-value (#5290) (@snakefoot)
+- Check RequiredParameter should also validate nullable types (#5289) (@snakefoot)
+- FileTarget - FilePathLayout with fixed-filename can translate to absolute path (#5287) (@snakefoot)
+- FileTarget - Cleanup FileSystemWatcher correctly when ArchiveFilePatternToWatch changes (#5279) (@lavige777)
+- Refactor ConditionBasedFilter when-filter to use ternary operator (#5281) (@jokoyoski)
+
+NLog v5.2 changes how to load extensions: https://nlog-project.org/2023/05/30/nlog-5-2-trim-warnings.html
 
 List of major changes in NLog 5.0: https://nlog-project.org/2022/05/16/nlog-5-0-finally-ready.html
 

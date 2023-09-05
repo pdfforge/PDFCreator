@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Utilities.IO;
 using System;
@@ -28,6 +29,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IDirectoryHelper _directoryHelper;
         private readonly IActionExecutor _actionExecutor;
         private readonly IMergeBeforeActionsHelper _mergeBeforeActionsHelper;
+        private readonly IFailedJobHandler _failedJobHandler;
         private readonly IJobCleanUp _jobClean;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ITempFolderProvider _tempFolderProvider;
@@ -35,7 +37,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         public JobRunner(ITokenReplacerFactory tokenReplacerFactory,
             IConverterFactory converterFactory, IJobCleanUp jobClean, ITempFolderProvider tempFolderProvider, IDirectory directory,
-            IDirectoryHelper directoryHelper, IActionExecutor actionExecutor, IMergeBeforeActionsHelper mergeBeforeActionsHelper)
+            IDirectoryHelper directoryHelper, IActionExecutor actionExecutor, IMergeBeforeActionsHelper mergeBeforeActionsHelper, IFailedJobHandler failedJobHandler)
         {
             _tokenReplacerFactory = tokenReplacerFactory;
             _converterFactory = converterFactory;
@@ -45,6 +47,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _directoryHelper = directoryHelper;
             _actionExecutor = actionExecutor;
             _mergeBeforeActionsHelper = mergeBeforeActionsHelper;
+            _failedJobHandler = failedJobHandler;
         }
 
         /// <summary>
@@ -119,6 +122,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
                         break;
                 }
 
+                _failedJobHandler.HandleFailedJob(job);
+
                 if (job.CleanUpOnError)
                     CleanUp(job);
 
@@ -165,14 +170,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _directory.CreateDirectory(job.JobTempOutputFolder);
             job.IntermediateFolder = PathSafe.Combine(job.JobTempFolder, "intermediate");
             _directory.CreateDirectory(job.IntermediateFolder);
-
-            if (job.Profile.SaveFileTemporary)
-            {
-                var tempPath = PathSafe.Combine(_tempFolderProvider.TempFolder,
-                    "Job_tempsave_" + PathSafe.GetFileNameWithoutExtension(Path.GetRandomFileName()));
-
-                job.OutputFileTemplate = PathSafe.Combine(tempPath, PathSafe.GetFileName(job.OutputFileTemplate));
-            }
         }
     }
 }

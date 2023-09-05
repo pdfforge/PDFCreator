@@ -5,21 +5,32 @@ namespace pdfforge.PDFCreator.Utilities.Web
 {
     public static class TrackingParameterReader
     {
-        public static TrackingParameters ReadFromRegistry(string parametersRegistryKey)
+        public static TrackingParameters ReadFromRegistry(string pdfcreatorRegistryKey)
         {
-            var parameters = new TrackingParameters("", "", "", "");
+            var campaign = "";
+            var key1 = "";
+            var key2 = "";
+            var keyb = "";
+            var licenseKey = "";
 
             try
             {
-                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(parametersRegistryKey, RegistryKeyPermissionCheck.ReadSubTree))
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(pdfcreatorRegistryKey, RegistryKeyPermissionCheck.ReadSubTree))
                 {
                     if (key != null)
                     {
-                        parameters = new TrackingParameters(
-                            key.GetValue("cmp", "") as string,
-                            key.GetValue("key1", "") as string,
-                            key.GetValue("key2", "") as string,
-                            key.GetValue("keyb", "") as string);
+                        using (var parametersSubKey = key.OpenSubKey("Parameters", RegistryKeyPermissionCheck.ReadSubTree))
+                        {
+                            if (parametersSubKey != null)
+                            {
+                                campaign = parametersSubKey.GetValue("cmp", "") as string;
+                                key1 = parametersSubKey.GetValue("key1", "") as string;
+                                key2 = parametersSubKey.GetValue("key2", "") as string;
+                                keyb = parametersSubKey.GetValue("keyb", "") as string;
+                            }
+                        }
+
+                        licenseKey = key.GetValue(@"License", "") as string;
                     }
                 }
             }
@@ -28,7 +39,7 @@ namespace pdfforge.PDFCreator.Utilities.Web
                 // ignore access problems
             }
 
-            return parameters;
+            return new TrackingParameters(campaign, key1, key2, keyb, licenseKey);
         }
     }
 }

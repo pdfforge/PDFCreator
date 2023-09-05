@@ -137,7 +137,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             ApplySecondText();
         }
 
-        public override string Title => Interaction.Title.ToUpperInvariant();
+        public override string Title => Interaction.Title;
 
         private void SetIcon()
         {

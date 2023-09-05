@@ -44,7 +44,7 @@
                                                     Opacity="0" />
                                 </Viewbox>
                             </Border>
-                            <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}" 
+                            <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}"
                                               Visibility="{TemplateBinding Content, Converter={StaticResource CollapsedIfNullConverter}}"
                                               VerticalAlignment="Center">
                                 <ContentPresenter.Resources>
@@ -57,9 +57,9 @@
                         </DockPanel>
 
                         <!-- Disabled layer -->
-                        <Rectangle Fill="White">
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
+                        <Border Background="White" CornerRadius="2" BorderThickness="2">
+                            <Border.Style>
+                                <Style TargetType="Border">
                                     <Style.Triggers>
                                         <Trigger Property="IsEnabled" Value="True">
                                             <Setter Property="Opacity" Value="0" />
@@ -69,8 +69,8 @@
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Rectangle.Style>
-                        </Rectangle>
+                            </Border.Style>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">

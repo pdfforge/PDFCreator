@@ -80,10 +80,6 @@ msgstr "<<<····>>>"
 msgid "<Default Profile>"
 msgstr "<Standardprofil>"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "<PrintJobName> with replacements:"
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
 msgid "<User:NameDefinedByUser:Default Value>"
 msgstr "<Bruker:NavnDefinertAvBruker:Standardverdi>"
@@ -203,7 +199,6 @@ msgstr "Legg til"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Please select Dropbox Account:"
 msgid "Add Dropbox account"
 msgstr "Vennligst velg Dropbox konto:"
 
@@ -215,7 +210,6 @@ msgstr "Vennligst velg Dropbox konto:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Accounts"
 msgid "Add FTP account"
 msgstr "Konti"
 
@@ -251,7 +245,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Secured Time Server"
 msgid "Add Time Server account"
 msgstr "Sikker tidsserver"
 
@@ -267,7 +260,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Accounts"
 msgid "Add account"
 msgstr "Konti"
 
@@ -304,25 +296,21 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
 #, fuzzy
-#| msgid "Add Printer"
 msgid "Add printer"
 msgstr "Legg til skriver"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 #, fuzzy
-#| msgid "Add Printer"
 msgid "Add printers"
 msgstr "Legg til skriver"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 #, fuzzy
-#| msgid "Title Replacement"
 msgid "Add title replacement"
 msgstr "Tittelerstatning"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 #, fuzzy
-#| msgid "Invalid settings"
 msgid "Add to settings"
 msgstr "Ugyldige innstillinger"
 
@@ -447,7 +435,6 @@ msgstr "En viktig PDFCreator-fil mangler ('{0}'). Gjeninstaller PDFCreator!"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
 #, fuzzy
-#| msgid "Owner password (for editing):"
 msgid "An owner password is required for editing."
 msgstr "Adgangskode for å endre:"
 
@@ -541,7 +528,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
 #, fuzzy
-#| msgid "Attachment file (PDF):"
 msgid "Attachment files (PDF):"
 msgstr "Vedlagt fil (PDF):"
 
@@ -587,7 +573,7 @@ msgid "Auto merge - Append new files to the existing file (only for PDF)"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-msgid "Auto merge - Append new files to the existing file before the modify and send actions are applied (only for PDF)"
+msgid "Auto merge - Append new files to the existing file before the modify actions are applied (only for PDF)"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
@@ -607,49 +593,53 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "Automatic saving without user password."
-msgid "Automatic merging with non-pdf output format"
+msgid "Automatic merging ís not available for non-PDF output formats."
+msgstr "Lagre automatisk uten adgangskode for å åpne."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the FTP server password."
+msgstr "Lagre automatisk uten FTP-servers adgangskode."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the certificate password."
+msgstr "Lagre automatisk uten adgangskode fra nøkkelfil."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the file name template."
+msgstr "Lagre automatisk uten filnavnsutforming."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the owner password."
+msgstr "Lagre automatisk uten adgangskode for å endre."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the password for e-mail via SMTP."
+msgstr "Lagre automatisk uten adgangskode for å åpne."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the password for the HTTP authentication."
+msgstr "Lagre automatisk uten adgangskode for å åpne."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the target directory."
+msgstr "Lagre automatisk uten bestemmelsesmappe."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Automatic saving requires setting the user password."
 msgstr "Lagre automatisk uten adgangskode for å åpne."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
 #, fuzzy
-#| msgid "Automatic saving without certificate password."
 msgid "Automatic saving with tray notification"
 msgstr "Lagre automatisk uten adgangskode fra nøkkelfil."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without FTP server password."
-msgstr "Lagre automatisk uten FTP-servers adgangskode."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without certificate password."
-msgstr "Lagre automatisk uten adgangskode fra nøkkelfil."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without filename template."
-msgstr "Lagre automatisk uten filnavnsutforming."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without owner password."
-msgstr "Lagre automatisk uten adgangskode for å endre."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without password for HTTP authentication."
-msgstr "Lagre automatisk uten adgangskode for å åpne."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid "Automatic saving without password for HTTP authentication."
-msgid "Automatic saving without password for e-mail via SMTP."
-msgstr "Lagre automatisk uten adgangskode for å åpne."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without target directory."
-msgstr "Lagre automatisk uten bestemmelsesmappe."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving without user password."
-msgstr "Lagre automatisk uten adgangskode for å åpne."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -675,22 +665,6 @@ msgstr ""
 msgid "Background File (Only PDF):"
 msgstr "Bakgrunnsfil (PDF):"
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Background file does not exist."
-msgstr "Bakgrunnsfilen finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Background file is no PDF file."
-msgstr "Bakgrunnsfilen er ikke en PDF."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Background path contains illegal characters."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Background path is too long."
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "Basic Authentication"
 msgstr ""
@@ -701,14 +675,12 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
 #, fuzzy
-#| msgid "Viewer opens on page:"
 msgid "Begin on page:"
 msgstr "Visning starter på side:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 #, fuzzy
-#| msgid "Text file"
 msgid "Behavior for existing file:"
 msgstr "Tekstfil"
 
@@ -780,10 +752,6 @@ msgstr ""
 msgid "CS-Script File:"
 msgstr "Sertifikatfil:"
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "CS-script file does not exist in the program data directory 'CS-Scripts' folder."
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
@@ -791,7 +759,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
 #, fuzzy
-#| msgid "Continue"
 msgid "C_ontinue"
 msgstr "Fortsett"
 
@@ -825,7 +792,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -844,22 +810,6 @@ msgstr "Sertifikatfil:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 msgid "Certificate _Password:"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Certificate file does not exist."
-msgstr "Nøkkelfil finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Certificate path contains illegal characters."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Certificate path is invalid absolute path."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Certificate path is too long."
 msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Commands.ChangesNotEffectiveYetTranslation
@@ -884,18 +834,19 @@ msgstr "Søk etter oppdatering:"
 msgid "Check now"
 msgstr "Sjekk nå"
 
-msgid "Chinese (Simplified)"
-msgstr ""
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "Validating license..."
+msgid "Checking the license..."
+msgstr "Validerer lisensen..."
 
 msgid "Chinese (Traditional)"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Choose 'No' to revert the changes."
-msgstr ""
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
-msgid "Choose a directory"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
@@ -927,6 +878,14 @@ msgstr ""
 msgid "Click here for more information on tokens"
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#, fuzzy
+#| msgid "Please enter your license key:"
+msgid "Click here to extend your license."
+msgstr "Angi lisensnøkkel:"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 msgid "Close"
 msgstr ""
@@ -954,7 +913,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-#| msgid "ZIP Compression"
 msgid "Compression:"
 msgstr "ZIP-komprimering"
 
@@ -996,9 +954,16 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-#| msgid "Print PDFCreator Test Page"
 msgid "Convert PDFCreator test page"
 msgstr "Skriv ut PDFCreator testside"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert Test Page and Open Directory"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert a test page with the current profile and open the saving directory"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 msgid "Convert a test page with the current profile. You will be asked to save the settings if required."
@@ -1024,7 +989,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
 #, fuzzy
-#| msgid "Offline activation"
 msgid "Copy the offline activation string:"
 msgstr "Offline aktivering"
 
@@ -1056,21 +1020,23 @@ msgid "Could not login to FTP server."
 msgstr "Kunne ikke logge på FTP-server."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Could not login to FTP server. Please check your Internet connection."
+#, fuzzy
+msgid "Could not login to the FTP server. Please check your internet connection."
 msgstr "Kunne ikke logge på FTP-server. Kontroller internettforbindelsen."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "System could not open output file."
 msgid "Could not open output file with default viewer."
 msgstr "Systemet kunne ikke åpne outputfil."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Could not read from FTP directory to ensure unique filenames."
+#, fuzzy
+msgid "Could not read from FTP server directory to ensure unique file names."
 msgstr "Kunne ikke lese fra FTP-mappe med unike filnavn."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Could not upload file to FTP."
+#, fuzzy
+msgid "Could not upload file to the FTP server."
 msgstr "Kunne ikke laste opp fil til FTP."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -1093,7 +1059,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
 #, fuzzy
-#| msgid "Cover file (PDF):"
 msgid "Cover files (PDF):"
 msgstr "Forside (PDF):"
 
@@ -1113,10 +1078,6 @@ msgstr ""
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
 msgid "Custom Page"
 msgstr "Valgt side"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Custom viewer was not found."
-msgstr ""
 
 msgid "Czech"
 msgstr ""
@@ -1169,7 +1130,6 @@ msgstr "Slett skriver"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainTabs.ErrorTabTranslation
 #, fuzzy
-#| msgid "Delete Printer"
 msgid "Delete all reports"
 msgstr "Slett skriver"
 
@@ -1179,7 +1139,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
 #, fuzzy
-#| msgid "Delete Printer"
 msgid "Delete printer"
 msgstr "Slett skriver"
 
@@ -1193,19 +1152,16 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 #, fuzzy
-#| msgid "Directory:"
 msgid "Direct Convert"
 msgstr "Mappe:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
 #, fuzzy
-#| msgid "Directory:"
 msgid "Direct Image Conversion Settings"
 msgstr "Mappe:"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
-#| msgid "Directory:"
 msgid "Directory"
 msgstr "Mappe:"
 
@@ -1216,6 +1172,7 @@ msgstr "Mappe:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Directory:"
 msgstr "Mappe:"
 
@@ -1269,13 +1226,11 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-#| msgid "User Name:"
 msgid "Display Name:"
 msgstr "Brukernavn:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "User Name:"
 msgid "Display Signature:"
 msgstr "Brukernavn:"
 
@@ -1322,7 +1277,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-#| msgid "Document view:"
 msgid "Document File"
 msgstr "Dokumentvisning:"
 
@@ -1390,7 +1344,6 @@ msgstr "Last ned seneste versjon her:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "Signature"
 msgid "Draw Custom Signature"
 msgstr "Signatur"
 
@@ -1440,10 +1393,6 @@ msgstr "Epost laget automatisk av PDFCreator"
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
 msgid "E-mail automatically created by the free PDFCreator"
 msgstr "E-mail automatisk opprettet av gratis PDFCreator"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "E-mail over SMTP could not be delivered to one or more recipients."
-msgstr "E-mail via SMTP kunne ikke leveres til en eller flere mottakere."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid "Edit"
@@ -1552,9 +1501,14 @@ msgstr "Vis fremdrift under konvertering."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "Error during PDF/A conversion."
 msgid "Error during forwarding action."
 msgstr "Vis fremdrift under konvertering."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Error during saving the activation. Please try it again."
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -1577,10 +1531,12 @@ msgstr "Feil ved tilføyelse av bakgrunn."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "Error while adding watermark to the document."
+msgid "Error while adding the watermark to the document."
 msgstr "Feil ved tilføyelse av bakgrunn."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "Error while authenticating license."
 msgstr "Feil under autentisering av lisens."
 
@@ -1605,7 +1561,8 @@ msgid "Error while running the script action."
 msgstr "Feil under avvikling av script."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while sending e-mail over SMTP."
+#, fuzzy
+msgid "Error while sending e-mail via SMTP."
 msgstr "Feil ved sending av e-mail via SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -1633,7 +1590,8 @@ msgid "Error while uploading and sharing the document to Dropbox."
 msgstr "Feil under opplasting og deling av dokumentet til Dropbox."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while uploading file to FTP server."
+#, fuzzy
+msgid "Error while uploading file to the FTP server."
 msgstr "Feil ved opplasting til FTP-server."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -1641,11 +1599,12 @@ msgid "Error while uploading the document to Dropbox."
 msgstr "Feil ved opplasting til Dropbox."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while uploading to HTTP server."
+msgid "Error while uploading to HTTP server. 401 interaction is not authorized."
 msgstr "Feil ved opplasting til FTP-server."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while uploading to HTTP server. 401 interaction is not authorized."
+#, fuzzy
+msgid "Error while uploading to the HTTP server."
 msgstr "Feil ved opplasting til FTP-server."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
@@ -1718,7 +1677,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Accounts"
 msgid "FTP Account"
 msgstr "Konti"
 
@@ -1734,24 +1692,6 @@ msgstr "FTP-server passord:"
 msgid "FTP Upload"
 msgstr ""
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "FTP server is not specified."
-msgstr "FTP-server er ikke angitt."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "FTP server password is not specified."
-msgstr "FTP server passord er ikke angitt."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid "FTP server user name is not specified."
-msgid "FTP server url has an invalid format."
-msgstr "Brukernavn for FTP-server er ikke angitt."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "FTP server user name is not specified."
-msgstr "Brukernavn for FTP-server er ikke angitt."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid "Factor:"
 msgstr "Faktor:"
@@ -1761,7 +1701,8 @@ msgid "Failed:"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Failure in directory on FTP server."
+#, fuzzy
+msgid "Failure in directory on the FTP server."
 msgstr "Mappefeil på FTP-server."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
@@ -1770,30 +1711,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
 msgid "File already exists"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File for JPEG viewer does not exist."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File for PDF viewer does not exist."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File for PNG viewer does not exist."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File for TIFF viewer does not exist."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File for Text viewer does not exist."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "File path too long"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -1812,13 +1729,8 @@ msgstr ""
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
-#| msgid "OutputFilename.jpg"
 msgid "Filename"
 msgstr "OutputFilnavn.jpg"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Filename template contains illegal characters."
-msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
@@ -1832,6 +1744,9 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Files:"
+msgstr ""
+
+msgid "Finnish"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
@@ -1866,10 +1781,6 @@ msgstr "Vis dobbeltside flytende (ulike til høyre)"
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageView
 msgid "Floating page view (one page)"
 msgstr "Vis flytende (en side)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Folder:"
-msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
 msgid "Font Color:"
@@ -1927,28 +1838,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
 msgid "From top:"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Ftp directory path is invalid ftp path."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "Ftp key file does not exist."
-msgstr "Forsidefilen finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "Ftp key file path contains illegal characters."
-msgstr "Script-filen inneholder ugyldige tegn."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Ftp key file path is invalid path."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Ftp key file path is too long."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.DocumentView
@@ -2026,10 +1915,6 @@ msgstr ""
 msgid "HTTP Server Password:"
 msgstr ""
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "HTTP URL must start with 'http://' or 'https://'."
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
 msgid "HTTP Upload"
 msgstr ""
@@ -2084,7 +1969,6 @@ msgstr "Høy kvalitet (stor fil)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
 #, fuzzy
-#| msgid "High (256 Bit AES)"
 msgid "Higher encryption (256 Bit AES)"
 msgstr "Høy (256 Bit AES)"
 
@@ -2182,6 +2066,11 @@ msgstr ""
 msgid "Incompatible changes"
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Incorrect certificate password."
+msgstr "Nøkkelfilens adgangskode er feil."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Incorrect response from Dropbox Server. Account could not be created. Please try again."
 msgstr ""
@@ -2208,7 +2097,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 #, fuzzy
-#| msgid "Update"
 msgid "Install Update"
 msgstr "Oppdater"
 
@@ -2233,9 +2121,8 @@ msgstr ""
 msgid "Invalid SMTP port."
 msgstr "Ugyldig SMTP epostport."
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestPageTranslation
 #, fuzzy
-#| msgid "Invalid settings"
 msgid "Invalid Settings In Queue"
 msgstr "Ugyldige innstillinger"
 
@@ -2289,9 +2176,6 @@ msgstr "JPEG (grafikkfil)"
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
 msgid "JPEG file"
 msgstr "JPEG fil"
-
-msgid "Japanese"
-msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Job statistics example:"
@@ -2361,18 +2245,6 @@ msgstr "Sist brukte profil"
 msgid "Launch PDF Architect"
 msgstr "Kjør PDF Architect"
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Launched encryption without owner password."
-msgstr "Startet kryptering uten adgangskode for å endre."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Launched encryption without user password."
-msgstr "Startet kryptering uten adgangskode for å åpne."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Launched signing without certification password."
-msgstr "Startet signering uten adgangskode."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
 msgid "Leave one or both passwords empty to get a request during the print job (passwords will not be saved)."
 msgstr ""
@@ -2383,7 +2255,6 @@ msgstr "Utelat adgangskode for å få en anmodning under skrivejobben (adgangsko
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
 #, fuzzy
-#| msgid "Leave password empty to get a request during the print job (password will not be saved)."
 msgid "Leave the owner password empty to get a request during the print job (it will not be saved)."
 msgstr "Utelat adgangskode for å få en anmodning under skrivejobben (adgangskode blir ikke lagret)."
 
@@ -2400,15 +2271,29 @@ msgstr ""
 msgid "License"
 msgstr "Lisens"
 
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "License status:"
+msgid "License Activated"
+msgstr "Status lisens:"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "License Key:"
 msgstr "Lisensnøkkel:"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "License status:"
+msgid "License details"
+msgstr "Status lisens:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "License status:"
 msgstr "Status lisens:"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "Licensee:"
 msgstr "Lisensinnehaver:"
 
@@ -2430,7 +2315,6 @@ msgstr "Status lisens:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 #, fuzzy
-#| msgid "Profiles"
 msgid "Load Profiles"
 msgstr "Profiler"
 
@@ -2452,7 +2336,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-#| msgid "Load settings from file"
 msgid "Load specific profiles from file"
 msgstr "Les inn innstillinger fra fil"
 
@@ -2535,13 +2418,19 @@ msgstr "Administrere lisenser"
 msgid "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles."
 msgstr ""
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+msgid "Manage your license here."
+msgstr "Administrere lisenser"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 msgid "Medium (128 Bit AES)"
 msgstr "Medium (128 Bit AES)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-#| msgid "&Merge"
 msgid "Merge"
 msgstr "&Slå sammen"
 
@@ -2560,7 +2449,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-#| msgid "More Information"
 msgid "Merge before the actions"
 msgstr "Mer informasjon"
 
@@ -2583,6 +2471,11 @@ msgstr "Metadata"
 msgid "Missing Printers"
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Missing certificate password."
+msgstr "Nøkkelfilens adgangskode er feil."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Missing directory"
 msgstr ""
@@ -2596,12 +2489,30 @@ msgid "Missing output file for PDF processing."
 msgstr "Outputfil mangler."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Missing owner password for encryption action."
+msgstr "Adgangskode for å endre:"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Missing password for e-mail via SMTP."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "Missing password for secured time server."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Missing user name for HTTP authentication."
 msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "Missing user name for the secured time server."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "Missing user password for encryption action."
+msgstr "Lagre automatisk uten adgangskode for å åpne."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
@@ -2638,7 +2549,9 @@ msgid "Multi Threading"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
-msgid "MyFile.docx"
+#, fuzzy
+#| msgid "MyFile.docx"
+msgid "MyFile"
 msgstr "MinFil.docx"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2654,7 +2567,9 @@ msgid "Neither document outline nor thumbnail images visible"
 msgstr "Hverken bokmerker eller miniatyrer vises"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UpdateInterval
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "Never"
 msgstr "Aldri"
 
@@ -2711,7 +2626,8 @@ msgid "No background file is specified."
 msgstr "Ingen bakgrunnsfil er angitt."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No certification file is specified."
+#, fuzzy
+msgid "No certificate file is specified."
 msgstr "Ingen nøkkelfil angitt."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -2730,7 +2646,9 @@ msgstr ""
 msgid "No duplex printing"
 msgstr "Ikke duplex"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "No license key available. Please enter a new license key."
 msgstr "Ingen lisensnøkkel tilgengelig. Vennligst oppgi en ny lisensnøkkel."
 
@@ -2801,7 +2719,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
 #, fuzzy
-#| msgid "PNG Settings"
 msgid "Number Settings"
 msgstr "PNG-innstillinger"
 
@@ -2828,7 +2745,6 @@ msgstr "Offline aktivering"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Ok"
 msgstr ""
 
@@ -2839,55 +2755,53 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "Attachment file does not exist."
-msgid "One of the attachment files does not exist."
-msgstr "Vedlegget finnes ikke."
+msgid "One of the attachment file paths contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "Attachment file is no PDF file."
+msgid "One of the attachment file paths is an invalid absolute path."
+msgstr "Bakgrunnsfilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "One of the attachment file paths is too long."
+msgstr "Vedlegget er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
 msgid "One of the attachment files is no PDF file."
 msgstr "Vedlegget er ikke en PDF."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "One of the attachment paths contains illegal characters."
+msgid "One of the attachment files is unavailable."
+msgstr "Vedlegget er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "One of the cover file paths contains illegal characters."
 msgstr "Script-filen inneholder ugyldige tegn."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "One of the attachment paths is an invalid absolute path."
+msgid "One of the cover file paths is an invalid absolute path."
 msgstr "Bakgrunnsfilen finnes ikke."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "One of the attachment paths is too long."
-msgstr ""
+#, fuzzy
+msgid "One of the cover file paths is too long."
+msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "Cover file does not exist."
-msgid "One of the cover files does not exist."
-msgstr "Forsidefilen finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid "The cover file is no PDF file."
 msgid "One of the cover files is no PDF file."
 msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "One of the cover paths contains illegal characters."
-msgstr "Script-filen inneholder ugyldige tegn."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "One of the cover paths is an invalid absolute path."
-msgstr "Bakgrunnsfilen finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "One of the cover paths is too long."
-msgstr ""
+msgid "One of the cover files is unavailable."
+msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Online activation"
@@ -2925,7 +2839,6 @@ msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
-#| msgid "Directory:"
 msgid "Open directory"
 msgstr "Mappe:"
 
@@ -2994,15 +2907,21 @@ msgid "Output Format"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
-msgid "OutputFilename.jpg"
+#, fuzzy
+#| msgid "OutputFilename.jpg"
+msgid "OutputFilename"
 msgstr "OutputFilnavn.jpg"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
-msgid "OutputFilename2.jpg"
+#, fuzzy
+#| msgid "OutputFilename2.jpg"
+msgid "OutputFilename2"
 msgstr "OutputFilnavn2.jpg"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
-msgid "OutputFilename3.jpg"
+#, fuzzy
+#| msgid "OutputFilename3.jpg"
+msgid "OutputFilename3"
 msgstr "OutputFilnavn3.jpg"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
@@ -3015,7 +2934,6 @@ msgstr "Overskriv alle innstillinger"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 #, fuzzy
-#| msgid "Overwrite all settings"
 msgid "Overwrite files"
 msgstr "Overskriv alle innstillinger"
 
@@ -3069,7 +2987,6 @@ msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
-#| msgid "Print PDFCreator Test Page"
 msgid "PDFCreator Server is running"
 msgstr "Skriv ut PDFCreator testside"
 
@@ -3080,7 +2997,6 @@ msgstr "Prøv PDFCreator Plus!"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-#| msgid "Print PDFCreator Test Page"
 msgid "PDFCreator Test Page"
 msgstr "Skriv ut PDFCreator testside"
 
@@ -3135,7 +3051,6 @@ msgstr "PNG fil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "PNG file"
 msgid "PNG files"
 msgstr "PNG fil"
 
@@ -3145,10 +3060,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid "Page Orientation:"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Page number font can't be found."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
@@ -3188,30 +3099,14 @@ msgstr "Smtp Passord:"
 msgid "Paste the response code here:"
 msgstr "Lim inn svarkoden her:"
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Path for JPEG viewer is empty."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Path for PDF viewer is empty."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Path for PNG viewer is empty."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Path for TIFF viewer is empty."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Path for Text viewer is empty."
-msgstr ""
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
 #, fuzzy
 msgid "Places a stamp text on the document."
 msgstr "å editere dokumentet"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+msgid "Please be aware: By utilizing user tokens in the target directory users are able to save files to any directory the service has write permission."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
 msgid ""
@@ -3235,6 +3130,20 @@ msgstr "Angi skrivernavn:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
 msgid "Please enter profile name:"
 msgstr "Angi profilnavn:"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "Please enter your license key:"
+msgid "Please enter your license key to continue using {0}"
+msgstr "Angi lisensnøkkel:"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "Please enter your license key:"
+msgid "Please enter your license key."
+msgstr "Angi lisensnøkkel:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
@@ -3303,7 +3212,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
 #, fuzzy
-#| msgid "Printer"
 msgid "Primary Printer"
 msgstr "Skriver"
 
@@ -3313,7 +3221,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-#| msgid "Print Windows Test Page"
 msgid "Print Windows test page"
 msgstr "Skriv ut Windows testside"
 
@@ -3325,7 +3232,7 @@ msgstr "Skriv ut etter lagring"
 msgid "Print document"
 msgstr "Skriv ut dokument"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestpageTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.PrintPdfCreatorServerTestPageTranslation
 msgid "Print failed because of invalid settings in queue."
 msgstr ""
 
@@ -3378,7 +3285,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
 #, fuzzy
-#| msgid "Profile:"
 msgid "Profile"
 msgstr "Profil:"
 
@@ -3403,6 +3309,16 @@ msgstr "Profil:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Protocol:"
+msgstr ""
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Purchase more activations here."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Purchase your license now if you haven't already!"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
@@ -3465,8 +3381,11 @@ msgid "Recommended Number of Threads:"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Refresh History"
+msgstr ""
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Refresh History (F5)"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.ReplacementType
@@ -3524,7 +3443,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 #, fuzzy
-#| msgid "Remove"
 msgid "Remove ads"
 msgstr "Fjern"
 
@@ -3560,7 +3478,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterTabTranslation
 #, fuzzy
-#| msgid "Rename Printer"
 msgid "Rename printer"
 msgstr "Omdøp skriver"
 
@@ -3568,6 +3485,13 @@ msgstr "Omdøp skriver"
 #, fuzzy
 msgid "Rename queue"
 msgstr "Omdøp skriver"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+msgid "Renew your license here."
+msgstr "Lisensen er gyldig."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Reorder and Merge Print Jobs"
@@ -3613,7 +3537,6 @@ msgstr "Det kreves et passord for å åpne PDF-dokumentet"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 #, fuzzy
-#| msgid "Resolution (DPI):"
 msgid "Resample images to (DPI):"
 msgstr "Oppløsning (DPI):"
 
@@ -3627,7 +3550,6 @@ msgstr "Oppløsning (DPI):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-#| msgid "Resolution (DPI):"
 msgid "Resolution:"
 msgstr "Oppløsning (DPI):"
 
@@ -3666,9 +3588,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Run program"
-msgstr ""
-
-msgid "Russian"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
@@ -3713,7 +3632,12 @@ msgid "Same XML output format as above, but attempt processing similar to MuPDF"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Sample for original print job name:"
+#, fuzzy
+msgid "Sample title after replacements:"
+msgstr "Tittelerstatning"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
+msgid "Sample title:"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3735,7 +3659,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "Save settings to file"
 msgid "Save as file"
 msgstr "Lagre innstillinger i fil"
 
@@ -3745,7 +3668,6 @@ msgstr "Lagre innstillinger i fil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
 #, fuzzy
-#| msgid "Launched encryption without user password."
 msgid "Save settings without passwords"
 msgstr "Startet kryptering uten adgangskode for å åpne."
 
@@ -3759,22 +3681,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid "Saving files temporarily without any enabled send action, will only store files in a temporary folder"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Script file contains illegal characters."
-msgstr "Script-filen inneholder ugyldige tegn."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Script file does not exist."
-msgstr "Scriptfil finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "ScriptFile path is invalid absolute path."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "ScriptFile path is too long."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -3796,14 +3702,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Secured Time Server"
 msgstr "Sikker tidsserver"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Secured Time Server without password."
-msgstr "Sikker tidsserver uten adgangskode."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Secured Time Server without user name."
-msgstr "Sikker tidsserver uten brukernavn."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 msgid "Secures PDFs with a password and selects which authorizations the user receives. Signature and Encryption are always processed last."
@@ -3885,7 +3783,6 @@ msgstr "Velg fil til forside"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
 #, fuzzy
-#| msgid "Select destination"
 msgid "Select page orientation:"
 msgstr "Velg destinasjon"
 
@@ -3928,7 +3825,6 @@ msgstr "Velg fil til forside"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 #, fuzzy
-#| msgid "Select attachment file"
 msgid "Select target directory"
 msgstr "Velg fil som skal legges ved"
 
@@ -4020,7 +3916,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #, fuzzy
-#| msgid "The certificate password is wrong."
 msgid "Set Certificate Password"
 msgstr "Nøkkelfilens adgangskode er feil."
 
@@ -4035,7 +3930,6 @@ msgstr "Satt av administrator"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "The certificate password is wrong."
 msgid "Set certificate password"
 msgstr "Nøkkelfilens adgangskode er feil."
 
@@ -4048,12 +3942,10 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 #, fuzzy
-#| msgid "Set Passwords"
 msgid "Set passwords"
 msgstr "Oppgi passord"
 
 #, fuzzy
-#| msgid "Select destination"
 msgid "Set standby duration:"
 msgstr "Velg destinasjon"
 
@@ -4078,7 +3970,6 @@ msgstr "Innstaller PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 #, fuzzy
-#| msgid "Save settings to file"
 msgid "Settings INI file:"
 msgstr "Lagre innstillinger i fil"
 
@@ -4108,8 +3999,12 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 #, fuzzy
-#| msgid "Show log file"
 msgid "Show license"
+msgstr "Vis loggfil"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+msgid "Show license details"
 msgstr "Vis loggfil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
@@ -4150,7 +4045,6 @@ msgstr "Signatur"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "Signature"
 msgid "Signature Image:"
 msgstr "Signatur"
 
@@ -4201,7 +4095,7 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 msgid ""
-"Some document titles may contain unwanted additions or do not have the right formatting. For example, when printing to PDFCreator, some applications add their name to the document title of the print job.\r\n"
+"Some document titles may contain unwanted additions or do not have the right formatting. For example, when printing to PDFCreator, some applications add their name to the document title of the print job.\n"
 "The list below defines how to handle these additions. The title with the applied title replacements can be accessed via the <PrintJobName> token, which can be used for settings such as output filename, title, etc."
 msgstr ""
 
@@ -4249,7 +4143,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #, fuzzy
-#| msgid "All files"
 msgid "Split files"
 msgstr "Alle filer"
 
@@ -4260,10 +4153,6 @@ msgstr "Stempel"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
 msgid "Stamp Text:"
 msgstr "Stempeltekst:"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Stamp font can't be found."
-msgstr ""
 
 msgid "Standby Duration"
 msgstr ""
@@ -4287,6 +4176,14 @@ msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "Stop PDFCreator Server Service"
+msgstr ""
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store failed print jobs"
+msgstr ""
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store files of failed print jobs in selected directory"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersWindowTranslation
@@ -4355,20 +4252,7 @@ msgstr "TIFF fil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Commands.QueueManagementCommands.QueueManagementTranslation
 msgid "Target Directory:"
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Target directory contains illegal characters."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Target directory is invalid absolute path."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Target directory is too long."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -4379,7 +4263,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-#| msgid "Accounts"
 msgid "Test FTP Account"
 msgstr "Konti"
 
@@ -4389,7 +4272,6 @@ msgstr "Testsider"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "_Text:"
 msgid "Text"
 msgstr "_Tekst:"
 
@@ -4413,6 +4295,10 @@ msgstr ""
 msgid "The Application has to be closed for updating. Close application now?"
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The CS-script file does not exist in the program data directory 'CS-Scripts' folder."
+msgstr ""
+
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "The Dropbox upload will be disabled for this profile."
 msgid_plural "The Dropbox upload will be disabled for this profiles."
@@ -4424,6 +4310,55 @@ msgid "The FTP action will be disabled for this profile."
 msgid_plural "The FTP action will be disabled for this profiles."
 msgstr[0] ""
 msgstr[1] ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP directory is an invalid FTP path."
+msgstr "Brukernavn for FTP-server er ikke angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP key file is unavailable."
+msgstr "Der er ingen loggfil til rådighet."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP key file path contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP key file path is an invalid path."
+msgstr "Bakgrunnsfilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP key file path is too long."
+msgstr "Forsidefilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP server URL has an invalid format."
+msgstr "Brukernavn for FTP-server er ikke angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP server is not specified."
+msgstr "FTP-server er ikke angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP server password is not specified."
+msgstr "FTP server passord er ikke angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The FTP server user name is not specified."
+msgstr "Brukernavn for FTP-server er ikke angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The HTTP URL must start with 'http://' or 'https://'."
+msgstr ""
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "The HTTP action will be disabled for this profile."
@@ -4464,7 +4399,17 @@ msgid_plural "The account is used in the following profiles:"
 msgstr[0] ""
 msgstr[1] ""
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "The activation has expired. Please renew your activation."
+msgid "The activation code has a wrong format."
+msgstr "Aktiveringen er utløpt. Venligst forny din aktivering."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The activation has expired. Please renew your activation."
 msgstr "Aktiveringen er utløpt. Venligst forny din aktivering."
 
@@ -4477,15 +4422,56 @@ msgid "The activation was successful."
 msgstr "Aktiveringen var vellykket."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The background file contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The background file is not a PDF file."
+msgstr "Bakgrunnsfilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The background file is unavailable."
+msgstr "Bakgrunnsfilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The background file path is too long."
+msgstr "Forsidefilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The certificate file is unavailable."
+msgstr "Ingen nøkkelfil angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The certificate file path contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The certificate file path is invalid absolute path."
+msgstr "Bakgrunnsfilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The certificate file path is too long."
+msgstr "Forsidefilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The certificate has no private key."
 msgstr "Sertifikatet har ingen privat nøkkel."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The certificate password is wrong."
-msgstr "Nøkkelfilens adgangskode er feil."
+msgid "The custom viewer was not found."
+msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The default printer is invalid."
+#, fuzzy
+msgid "The default printer is unavailable."
 msgstr "Standardskriver er ugyldig."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -4496,10 +4482,14 @@ msgstr ""
 msgid "The default viewer is determined by Windows. You can set up your own viewer in the Viewer section of the settings in PDFCreator or change your default viewer for Windows."
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The e-mail via SMTP could not be delivered to one or more recipients."
+msgstr "E-mail via SMTP kunne ikke leveres til en eller flere mottakere."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-#| msgid "The license is not valid for this version."
 msgid "The entered password is not valid for this certificate"
 msgstr "Lisensen er ikke gyldig for denne versjonen."
 
@@ -4523,11 +4513,56 @@ msgid "The file does not appear to contain valid PDFCreator settings."
 msgstr "Filen inneholder ikke gyldige innstillinger av PDFCreator."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file for the custom JPEG viewer does not exist."
+msgstr "Forsidefilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file for the custom PDF viewer does not exist."
+msgstr "Forsidefilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file for the custom PNG viewer does not exist."
+msgstr "Forsidefilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file for the custom TIFF viewer does not exist."
+msgstr "Forsidefilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file for the custom TXT viewer does not exist."
+msgstr "Forsidefilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file name template contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file path is not set."
+msgstr "Forsidefilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"The file path is not valid or empty. Please enter a valid path. \n"
+"The file path is not valid or empty. Please enter a valid path.\n"
 "The file path must not contain any of the following characters: \n"
 " \\ / : * ? \\< >"
 msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file path is not valid. Please enter a valid absolute path."
+msgstr "Lisensnøkkelen er ikke gyldig. Vennligst oppgi en ny lisensnøkkel."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The file path is too long."
+msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
 msgid "The folder 'CS-Scripts' in the application directory does not exist."
@@ -4544,7 +4579,7 @@ msgid "The following link has been created for your document:"
 msgstr "De følgende linker har blitt opprettet for ditt dokument:"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The forwarding action causes a circular dependency between the profiles."
+msgid "The forwarding action causes a circular dependency between the profiles that leads to an infinite loop."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -4559,39 +4594,74 @@ msgstr ""
 msgid "The history is empty"
 msgstr ""
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license has exceeded the allowed number of activated machines."
 msgstr "Lisensen har overskredet maksimum tillatt antall aktiverte maskiner."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license has expired but is valid for this version."
 msgstr "Lisensen er utløpt, men er gyldig for denne versjonen."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license has expired. Please renew your license."
 msgstr "Lisensen er utløpt. Vennligst fornye lisensen din."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license is not valid for this version."
 msgstr "Lisensen er ikke gyldig for denne versjonen."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license is valid."
 msgstr "Lisensen er gyldig."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "The license key consists of 30 characters or numbers, i.e. {0}"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "The license key consists of 30 characters or numbers, i.e. {0}"
+msgid "The license key consists of 30 characters or numbers, i.e. \"12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU\"."
 msgstr "Lisensnøkkelen består av 30 tegn eller tall, f.eks. {0}"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license key contains illegal characters. Valid characters are: A-Z, 0-9 and the dash."
 msgstr "Lisensnøkkelen inneholder ugyldige tegn. Gyldige tegn er: A-Z, 0-9 og bindestrek."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "The license is not valid for this version."
+msgid "The license key is not valid for this PDFCreator edition."
+msgstr "Lisensen er ikke gyldig for denne versjonen."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license key is not valid. Please enter a new license key."
 msgstr "Lisensnøkkelen er ikke gyldig. Vennligst oppgi en ny lisensnøkkel."
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+msgid "The license trial period has expired."
+msgstr "Lisensen er gyldig."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The machine or user is blocked. Please contact the support."
 msgstr "Maskinen eller brukeren er sperret. Vennligst kontakt brukerstøtte."
 
@@ -4612,6 +4682,11 @@ msgid ""
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The page number font is unavailable."
+msgstr "Ingen forsidefil er angitt."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The page number format does not include the <PageNumber> token."
 msgstr ""
 
@@ -4622,7 +4697,23 @@ msgid ""
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path is not valid. Please enter a valid absolute path."
+msgid "The path for the custom JPEG viewer is empty."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The path for the custom PDF viewer is empty."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The path for the custom PNG viewer is empty."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The path for the custom TIFF viewer is empty."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The path for the custom TXT viewer is empty."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -4634,8 +4725,18 @@ msgid "The path to the background file has to be an absolute path, e.g. 'C:\\doc
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path to the signature image has to be an absolute path, e.g. 'C:\\Images\\signature.png'"
+#, fuzzy
+msgid "The path to the signature image file contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The path to the signature image file has to be an absolute path, e.g. 'C:\\Images\\signature.png'"
 msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The path to the signature image file is too long."
+msgstr "Forsidefilen finnes ikke."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The path to the watermark file has to be an absolute path, e.g. 'C:\\documents\\watermark.pdf'"
@@ -4671,13 +4772,32 @@ msgstr[1] ""
 msgid "The rgb color mode is not supported for PDF/X"
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The script file is unavailable."
+msgstr "Der er ingen loggfil til rådighet."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The script file path contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The script file path is an invalid absolute path."
+msgstr "Bakgrunnsfilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The script file path is too long."
+msgstr "Forsidefilen er ikke en PDF."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
 msgid "The selected font is not supported. Please select a different font."
 msgstr "Den valgte font understøttes ikke. Velg en annen font."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
 #, fuzzy
-#| msgid "The selected font is not supported. Please select a different font."
 msgid "The selected output format does not support metadata"
 msgstr "Den valgte font understøttes ikke. Velg en annen font."
 
@@ -4690,7 +4810,8 @@ msgid "The selected path is too long. Please select a valid path."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The selected printer is invalid."
+#, fuzzy
+msgid "The selected printer forwards to another PDFCreator printer and causes an infinite loop."
 msgstr "Den valgte skriver er ugyldig."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
@@ -4699,8 +4820,7 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-#| msgid "The selected printer is invalid."
-msgid "The selected printer leads to an infinite loop."
+msgid "The selected printer is unavailable."
 msgstr "Den valgte skriver er ugyldig."
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
@@ -4712,22 +4832,14 @@ msgid "The settings contain printers, that are currently not installed. Do you w
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The signature font can't be found."
-msgstr ""
+#, fuzzy
+msgid "The signature font is unavailable."
+msgstr "Der er ingen loggfil til rådighet."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The signature image file does not exist."
+msgid "The signature image file is unavailable."
 msgstr "Forsidefilen finnes ikke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The signature image file path contains illegal characters."
-msgstr "Script-filen inneholder ugyldige tegn."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The signature image file path is too long."
-msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The signature image file type is not supported."
@@ -4756,13 +4868,33 @@ msgstr "Den spesifiserte Dropboxkontoen  er ikke satt opp."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-#| msgid "The specified FTP account is not configured."
 msgid "The specified account is not configured."
 msgstr "Den spesifiserte Dropboxkontoen  er ikke satt opp."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The specified time server account for signing is not configured."
-msgstr ""
+#, fuzzy
+msgid "The specified time server account is not configured."
+msgstr "Den spesifiserte Dropboxkontoen  er ikke satt opp."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The stamp font is unavailable."
+msgstr "En ny oppdatering er tilgjengelig"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The target directory contains illegal characters."
+msgstr "Script-filen inneholder ugyldige tegn."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The target directory is an invalid absolute path."
+msgstr "Bakgrunnsfilen finnes ikke."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The target directory is too long."
+msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 msgid ""
@@ -4777,12 +4909,12 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The watermark file does not exist."
-msgstr "Forsidefilen finnes ikke."
+msgid "The watermark file is no PDF file."
+msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The watermark file is no PDF file."
+msgid "The watermark file is unavailable."
 msgstr "Forsidefilen er ikke en PDF."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -4794,6 +4926,11 @@ msgstr "Script-filen inneholder ugyldige tegn."
 #, fuzzy
 msgid "The watermark file path is too long."
 msgstr "Forsidefilen er ikke en PDF."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "The watermark file type is not supported."
+msgstr "Forsidefilen finnes ikke."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "There have been errors in the last 24 hours. Please check the event log."
@@ -4811,7 +4948,9 @@ msgstr "Der er ingen loggfil til rådighet."
 msgid "There was a problem during the download. Do you want to download the update from the website instead?"
 msgstr "Det var et problem under nedlasting. Skal oppdateringen lastes ned fra hjemmesiden i stedet?"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "There was a problem with the connection to the license server."
 msgstr "Det var et problem med forbindelsen til lisensserveren."
 
@@ -4852,7 +4991,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 #, fuzzy
-#| msgid "The selected font is not supported. Please select a different font."
 msgid "This feature is not supported by the selected output format."
 msgstr "Den valgte font understøttes ikke. Velg en annen font."
 
@@ -4905,7 +5043,6 @@ msgstr "Tittel"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 #, fuzzy
-#| msgid "Title Replacement"
 msgid "Title Replacements"
 msgstr "Tittelerstatning"
 
@@ -4970,11 +5107,15 @@ msgid "UTF-8 text which approximates the original text layout"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add one of the attachment files. The documents' PDF format version is not compatible."
+msgid "Unable to add one of the attachment files. The PDF format versions are not compatible."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add one of the cover files. The documents' PDF format version is not compatible."
+msgid "Unable to add one of the cover files. The PDF format versions are not compatible."
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "Unable to add the background. The PDF format versions are not compatible."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -4982,21 +5123,12 @@ msgid "Unable to add the background. The background PDF may not be password prot
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add the background. The documents' PDF format version is not compatible."
+msgid "Unable to add the watermark. The PDF format versions are not compatible."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add the watermark. The documents' PDF format version is not compatible."
+msgid "Unable to add the watermark. The watermark PDF file may not be password protected."
 msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unable to add the watermark. The watermark PDF may not be password protected."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "Unable to find the certification file."
-msgstr "Velg sertifikat"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 msgid "Unable to load the RSS feed. Please check your internet connection."
@@ -5018,6 +5150,10 @@ msgstr ""
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Unknown internal error."
 msgstr "Ukjent intern feil."
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Unlock here"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
 #, fuzzy
@@ -5077,13 +5213,11 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-#| msgid "Use Html"
 msgid "Use HTML"
 msgstr "Bruk Html"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #, fuzzy
-#| msgid "More on PDF Architect"
 msgid "Use PDF Architect"
 msgstr "Mere om PDF Architect"
 
@@ -5141,15 +5275,17 @@ msgid "User Tokens need to be activated first"
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "User cancelled retyping FTP password."
-msgstr ""
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "User cancelled retyping HTTP autentication password."
+#, fuzzy
+msgid "User cancelled retyping HTTP authentication password."
 msgstr "Bruker avbrøt inntasting av SMTP e-mail-adgangskode."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "User cancelled retyping SMTP e-mail password."
+msgstr "Bruker avbrøt inntasting av SMTP e-mail-adgangskode."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+msgid "User cancelled retyping the FTP server password."
 msgstr "Bruker avbrøt inntasting av SMTP e-mail-adgangskode."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -5241,11 +5377,6 @@ msgstr ""
 msgid "Watermark File (Only PDF):"
 msgstr "Forside (PDF):"
 
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "Watermark file type is not supported."
-msgstr "Forsidefilen finnes ikke."
-
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "We recommend PDF Architect, our PDF viewer and editor."
 msgstr ""
@@ -5311,6 +5442,12 @@ msgid ""
 "Note: You might be asked to grant admin privileges while fixing the problem."
 msgstr ""
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "You don't have a valid license key?"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "You have invalid settings with unsaved changes."
 msgstr ""
@@ -5321,6 +5458,10 @@ msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "You have no print queues yet. Add your first queue now!"
+msgstr ""
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
+msgid "You have no printers yet. Please add a printer to your queue."
 msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5368,9 +5509,12 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
 #, fuzzy
-#| msgid "The license is valid."
 msgid "Your license has expired."
 msgstr "Lisensen er gyldig."
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Your license was activated successfully, thank you for using {0}."
+msgstr ""
 
 #. pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
 msgid "Your license will expire in {0} day."
@@ -5385,6 +5529,24 @@ msgid ""
 "\n"
 "Please contact: licensing@pdfforge.org"
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#, fuzzy
+msgid "Your trial license expires today."
+msgstr "Lisensen er gyldig."
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+msgid "Your trial license has expired"
+msgstr "Lisensen er gyldig."
+
+#. pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#, fuzzy
+msgid "Your trial license will expire in {0} day."
+msgid_plural "Your trial license will expire in {0} days."
+msgstr[0] "Lisensen er gyldig."
+msgstr[1] "Lisensen er gyldig."
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 msgid "Your version of PDF Architect does not support this feature."
@@ -5440,7 +5602,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
 #, fuzzy
-#| msgid "&Merge"
 msgid "_Merge"
 msgstr "&Slå sammen"
 
@@ -5450,10 +5611,6 @@ msgid "_Merge"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "_OK"
-msgstr "_OK"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
@@ -5461,8 +5618,8 @@ msgstr "_OK"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
 #, fuzzy
-#| msgid "_OK"
 msgid "_Ok"
 msgstr "_OK"
 
@@ -5561,7 +5718,6 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 #, fuzzy
-#| msgid "Set Passwords"
 msgid "replaced passwords"
 msgstr "Oppgi passord"
 
@@ -5599,7 +5755,6 @@ msgstr "å bruke en skjermleser"
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 #, fuzzy
-#| msgid "Settings"
 msgid "{0} Settings"
 msgstr "Innstaller PDFCreator"
 

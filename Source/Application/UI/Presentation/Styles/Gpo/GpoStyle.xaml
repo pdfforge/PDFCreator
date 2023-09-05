@@ -20,6 +20,13 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="ToolTipService.IsEnabled" Value="True" />
             </Trigger>
+            <!--Use Focusable property to trigger tooltip-->
+            <Trigger Property="Focusable" Value="True">
+                <Setter Property="ToolTipService.IsEnabled" Value="False" />
+            </Trigger>
+            <Trigger Property="Focusable" Value="False">
+                <Setter Property="ToolTipService.IsEnabled" Value="True" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>

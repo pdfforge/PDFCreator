@@ -1,6 +1,7 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
@@ -28,7 +29,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                   new DesignTimeBrowseFileCommandBuilder(),
                   new DispatcherWrapper(),
                   new DesignTimeJobDataUpdater(),
-                  null
+                  null,
+                  new CampaignHelper()
                   )
         {
             var jobInfo = new JobInfo()

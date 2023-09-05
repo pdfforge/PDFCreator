@@ -1,4 +1,5 @@
 ﻿using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -14,8 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             new ThreadManager()), new DesignTimeApplicationNameProvider(), new InteractionRequest(),
             new EventAggregator(), new DesignTimeCommandLocator(), null, null, null, null, null, null,
             new DesignTimeCurrentSettings<Conversion.Settings.UsageStatistics>(),
-            new DesignTimeVersionHelper(), null, null, new DesignTimePdfEditorHelper(),
-            new DesignTimeEditionHelper(), new DesignTimeOsHelper())
+            new DesignTimeVersionHelper(), null, null, new DesignTimePdfEditorHelper(), new CampaignHelper())
         {
         }
     }

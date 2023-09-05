@@ -26,6 +26,7 @@
                 <ResourceDictionary Source="../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:StringIsNullOrWhiteSpaceConverter x:Key="CollapsedIfEmptyStringConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
@@ -51,11 +52,32 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!-- Trial remaining days Info -->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                       Visibility="{Binding ShowTrialRemainingDaysInfo,  Converter={StaticResource CollapsedIfFalseConverter}}"
+                       Margin="-30 -30 -30 20"
+                       Background="{StaticResource AccentGrey}">
+                <TextBlock Margin="30 10 30 10"
+                           HorizontalAlignment="Center"
+                           FontWeight="DemiBold"
+                           FontSize="13"
+                           TextWrapping="Wrap">
+                    <Run Text="{Binding Path=TrialRemainingDaysInfoText, Mode=OneWay}"
+                         Foreground="{StaticResource DefaultTextColorBrush}" />
+                    <Hyperlink Command="{Binding OpenUrlCommand}" CommandParameter="{Binding TrialExtendLink}">
+                        <TextBlock Text="{Binding Path=Translation.TrialExtendingLicenseInfo}"
+                                   Foreground="{StaticResource DefaultTextColorBrush}" TextDecorations="Underline" />
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+
             <!-- Select Profile -->
-            <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0 0 0 10">
+            <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Margin="0 0 0 10">
                 <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
                        Content="{Binding Translation.ProfileLabel}" />
                 <Grid Margin="0 10 0 0">
@@ -77,17 +99,19 @@
                 </Grid>
             </DockPanel>
 
-            <StackPanel Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <contextMenuButton:ContextMenuButton Style="{StaticResource SelectOutputFormatContextMenuButton}"
                                                      MenuItemsCommand="{Binding SetOutputFormatCommand}" />
             </StackPanel>
 
-            <StackPanel  Grid.Row="1" Grid.Column="1" Margin="0 10 0 0">
+            <StackPanel  Grid.Row="2" Grid.Column="1" Margin="0 10 0 0">
                 <Label Margin="0 0 0 10" Target="{Binding ElementName=TargetFilenameTextBox}"
                        Content="{Binding Translation.FilenameText}" />
                 <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
             </StackPanel>
-            <DockPanel  Grid.Row="2" Grid.Column="1" Margin="0 15 0 10" VerticalAlignment="Top">
+
+            <DockPanel  Grid.Row="3" Grid.Column="1" 
+                        Margin="0 15 0 10" VerticalAlignment="Top">
                 <Label Margin="0 0 0 10" DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
                        Content="{Binding Translation.DirectoryLabel}" />
                 <!-- SaveTempOnly Hint-->
@@ -112,49 +136,66 @@
                          IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
             </DockPanel>
 
-            <Label Grid.Row="3" Grid.Column="0" Target="{Binding ElementName=TitleTextBox}" Margin="0 30 0 0"
-                       Content="{Binding Translation.TitleLabel}" />
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="0 30 0 0"
-                         Name="TitleTextBox"
-                         Text="{Binding Metadata.Title, Mode=TwoWay}" />
+            <Label Grid.Row="4" Grid.Column="0" 
+                   Margin="0 30 0 0"
+                   Target="{Binding ElementName=TitleTextBox}" 
+                   Content="{Binding Translation.TitleLabel}" />
+            <TextBox Grid.Row="4" Grid.Column="1" 
+                     Margin="0 30 0 0"
+                     Name="TitleTextBox"
+                     Text="{Binding Metadata.Title, Mode=TwoWay}" />
 
-            <Label Grid.Row="4" Grid.Column="0" Target="{Binding ElementName=AuthorTextBox}" Margin="0 10 0 0"
-                       Content="{Binding Translation.AuthorLabel}" />
-            <TextBox Grid.Row="4" Grid.Column="1" Margin="0 10 0 0"
-                         Name="AuthorTextBox"
-                         Text="{Binding Metadata.Author}" />
+            <Label Grid.Row="5" Grid.Column="0" 
+                   Margin="0 10 0 0"
+                   Target="{Binding ElementName=AuthorTextBox}" 
+                   Content="{Binding Translation.AuthorLabel}" />
+            <TextBox Grid.Row="5" Grid.Column="1" 
+                     Margin="0 10 0 0"
+                     Name="AuthorTextBox"
+                     Text="{Binding Metadata.Author}" />
 
-            <Label Grid.Row="5" Grid.Column="0" Target="{Binding ElementName=SubjectTextBox}" Margin="0 10 0 0"
-                       Content="{Binding Translation.SubjectLabel}" />
-            <TextBox Name="SubjectTextBox" Margin="0 10 0 0"
-                         Grid.Row="5" Grid.Column="1"
-                         Text="{Binding Metadata.Subject}" />
+            <Label Grid.Row="6" Grid.Column="0" 
+                   Margin="0 10 0 0"
+                   Target="{Binding ElementName=SubjectTextBox}" 
+                   Content="{Binding Translation.SubjectLabel}" />
+            <TextBox Grid.Row="6" Grid.Column="1"
+                     Margin="0 10 0 0"
+                     Name="SubjectTextBox" 
+                     Text="{Binding Metadata.Subject}" />
 
-            <Label Grid.Row="6" Grid.Column="0" Target="{Binding ElementName=KeywordsTextBox}" Margin="0 10 0 0"
-                           Content="{Binding Translation.KeywordsLabel}" />
-            <TextBox Name="KeywordsTextBox" Margin="0 10 0 0"
-                         Grid.Row="6" Grid.Column="1"
-                         Text="{Binding Metadata.Keywords}" />
+            <Label Grid.Row="7" Grid.Column="0" 
+                   Margin="0 10 0 0"
+                   Target="{Binding ElementName=KeywordsTextBox}" 
+                   Content="{Binding Translation.KeywordsLabel}" />
+            <TextBox Grid.Row="7" Grid.Column="1" 
+                     Margin="0 10 0 0"
+                     Name="KeywordsTextBox" 
+                     Text="{Binding Metadata.Keywords}" />
 
-            <StackPanel Grid.Row="7" Grid.ColumnSpan="2" VerticalAlignment="Center">
-                <ContentControl Margin="0 10 0 0"
+            <StackPanel Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2"
+                        VerticalAlignment="Center">
+                <ContentControl HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
                                 regions:RegionManager.RegionName="{x:Static presentation:PrintJobRegionNames.PrintJobViewBannerRegion}"
-                                MaxHeight="50" HorizontalAlignment="Stretch"
+                                MaxHeight="50"
                                 IsTabStop="False" />
-                <Label Visibility="{Binding HasBanner, Converter={StaticResource CollapsedIfFalseConverter}}" Margin="0 5">
-                    <Hyperlink
-                        Foreground="{StaticResource DefaultTextColorBrush}"
-                        Command="{Binding OpenUrlCommand}" CommandParameter="{x:Static controller:Urls.ProfessionalHintUrl}">
-                        <Hyperlink.Inlines>
-                            <Run Text="{Binding Translation.RemoveAds, Mode=OneWay}" />
-                        </Hyperlink.Inlines>
-                    </Hyperlink>
-                </Label>
+                <Grid Margin="0 5"
+                      Visibility="{Binding ShowTrialRemainingDaysInfo, Converter={StaticResource CollapsedIfTrueConverter}}">
+                    <Label Visibility="{Binding HasBanner, Converter={StaticResource CollapsedIfFalseConverter}}">
+                        <Hyperlink Command="{Binding OpenUrlCommand}"
+                                   CommandParameter="{x:Static controller:Urls.ProfessionalHintUrl}"
+                                   Foreground="{StaticResource DefaultTextColorBrush}">
+                            <Hyperlink.Inlines>
+                                <Run Text="{Binding Translation.RemoveAds, Mode=OneWay}" />
+                            </Hyperlink.Inlines>
+                        </Hyperlink>
+                    </Label>
+                </Grid>
             </StackPanel>
         </Grid>
 
         <!-- Cancel / Merge / Email / Save -->
-        <UniformGrid Grid.Row="1"  Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="-5 10 -5 20"
+        <UniformGrid Grid.Row="1"  Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="-5 0 -5 20"
                      MinHeight="33">
 
             <!-- Cancel -->

@@ -11,7 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string SendEmail { get; private set; } = "Send by e-mail";
         public string PrintFileWithArchitect { get; private set; } = "Print with PDF Architect";
         public string SelectFilename { get; private set; } = "Filename:";
-        public string SelectFolder { get; private set; } = "Folder:";
+        public string Directory { get; private set; } = "Directory:";
         public string OkButton { get; private set; } = "Ok";
         public string Open { get; private set; } = "Open";
         public string Send { get; private set; } = "Send";

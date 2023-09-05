@@ -72,6 +72,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             FileDirectory = System.IO.Path.GetDirectoryName(firstFile);
             FileSize = _readableFileSizeHelper.GetFileSizeString(firstFile);
             RaisePropertyChanged(nameof(IsActive));
+
+            IsSaveFileTemporary = job.Profile.SaveFileTemporary;
+            RaisePropertyChanged(nameof(IsSaveFileTemporary));
+
             return _taskCompletionSource.Task;
         }
 
@@ -106,6 +110,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
                 RaisePropertyChanged(nameof(FileDirectory));
             }
         }
+
+        public bool IsSaveFileTemporary { get; private set; }
 
         public string FileSize
         {

@@ -20,8 +20,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         ActionResult CheckTargetDirectory(ConversionProfile profile);
 
-        ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile);
-
         ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
         ActionResult CheckJob(Job job);
@@ -87,18 +85,23 @@ namespace pdfforge.PDFCreator.Core.Workflow
             switch (pathUtilStatus)
             {
                 case PathUtilStatus.PathWasNullOrEmpty:
-                    return new ActionResult(ErrorCode.FilePath_InvalidRootedPath); //todo: Error Code no Template
+                    _logger.Error("The path in OutputFilenameTemplate is null or empty.");
+                    return new ActionResult(ErrorCode.FilePath_NullOrEmpty);
 
                 case PathUtilStatus.InvalidRootedPath:
+                    _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' is not a valid rooted path.");
                     return new ActionResult(ErrorCode.FilePath_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
+                    _logger.Error("The path in OutputFilenameTemplate is too long.");
                     return new ActionResult(ErrorCode.FilePath_TooLong);
 
                 case PathUtilStatus.NotSupportedEx:
+                    _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' is not a valid rooted path.");
                     return new ActionResult(ErrorCode.FilePath_InvalidRootedPath);
 
                 case PathUtilStatus.ArgumentEx:
+                    _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' contains invalid characters.");
                     return new ActionResult(ErrorCode.FilePath_InvalidCharacters);
 
                 case PathUtilStatus.Success:
@@ -108,7 +111,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             return new ActionResult();
         }
 
-        public ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile)
+        private ActionResult CheckOutputFormatForAutoMerge(ConversionProfile profile)
         {
             if (!profile.AutoSave.Enabled)
                 return new ActionResult();

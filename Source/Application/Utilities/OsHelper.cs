@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -44,21 +45,37 @@ namespace pdfforge.PDFCreator.Utilities
             get { return Is64BitProcess || InternalCheckIsWow64(); }
         }
 
+        private string _windowsVersion;
+
+        /// <summary>
+        ///     Get the Windows edition
+        /// </summary>
         public string GetWindowsVersion()
         {
-            var windowsVersion = Environment.OSVersion.ToString();
-
-            try
+            if (string.IsNullOrEmpty(_windowsVersion))
             {
-                var myKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-                if (myKey != null)
-                    windowsVersion = (string)myKey.GetValue("ProductName") + " (" + windowsVersion + ")";
-            }
-            catch
-            {
+                _windowsVersion = Environment.OSVersion.ToString();
+
+                try
+                {
+                    string osName = null;
+                    var wmi = new ManagementObjectSearcher("select Caption from Win32_OperatingSystem");
+
+                    foreach (var obj in wmi.Get())
+                    {
+                        osName = obj["Caption"] as string;
+                        break;
+                    }
+
+                    if (osName != null)
+                        _windowsVersion = osName + " (" + _windowsVersion + ")";
+                }
+                catch
+                {
+                }
             }
 
-            return windowsVersion;
+            return _windowsVersion;
         }
 
         public bool UserIsAdministrator()

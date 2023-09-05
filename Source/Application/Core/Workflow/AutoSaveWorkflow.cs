@@ -4,10 +4,10 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Output;
+using pdfforge.PDFCreator.Utilities;
 using System;
 using System.IO;
 using System.Linq;
-using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -40,14 +40,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         protected override void DoWorkflowWork(Job job)
         {
-            var documentName = job.JobInfo.Metadata.Title;
             var currentProfile = job.Profile;
 
             try
-            { 
+            {
                 job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(job);
-                if (!_pathUtil.IsValidRootedPath(job.OutputFileTemplate)) 
-                   throw new ProcessingException("Final OutputFileTemplate is invalid rooted path " + job.OutputFileTemplate, ErrorCode.TargetDirectory_InvalidRootedPath);
 
                 var result = _profileChecker.CheckJob(job);
                 if (!result)
@@ -64,13 +61,6 @@ namespace pdfforge.PDFCreator.Core.Workflow
             catch (AggregateProcessingException)
             {
                 FinishSuccessfulWorkflow(job, currentProfile);
-
-                throw;
-            }
-            catch (Exception)
-            {
-                if (currentProfile.ShowAllNotifications || currentProfile.ShowOnlyErrorNotifications)
-                    _notificationService?.ShowErrorNotification(documentName);
 
                 throw;
             }

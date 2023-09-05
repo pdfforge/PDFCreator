@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl"
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputInteractionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -32,8 +32,10 @@
                             VerticalAlignment="Top" Focusable="False" />
 
             <StackPanel Margin="20 0 0 0">
-                <Label  Target="{Binding ElementName=TextBox}"
-                        Content="{Binding Interaction.QuestionText}" />
+                <Label  Target="{Binding ElementName=TextBox}">
+                    <TextBlock Text="{Binding Interaction.QuestionText}" 
+                               TextWrapping="Wrap" />
+                </Label>
                 <TextBox Margin="0 10 0 0"
                          Text="{Binding Interaction.InputText, UpdateSourceTrigger=PropertyChanged}">
                     <b:Interaction.Behaviors>

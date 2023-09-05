@@ -40,6 +40,9 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Banners">
+      <HintPath>..\..\..\..\packages\pdfforge.Banners\lib\net47\Banners.dll</HintPath>
+    </Reference>
     <Reference Include="Obsidian">
       <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
     </Reference>
@@ -69,7 +72,6 @@
     <Compile Include="JobHistory\JobHistoryJsonFileStorage.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Licensing\TerminalServerDetection.cs" />
-    <Compile Include="Licensing\TerminalServerLicenseChecker.cs" />
     <Compile Include="Licensing\UnlicensedLicenseChecker.cs" />
     <Compile Include="Licensing\UnlicensedOfflineActivator.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
@@ -98,6 +100,8 @@
     <Compile Include="Translation\LanguageProviderEnglishOnly.cs" />
     <Compile Include="Translation\ProfileNameByGuidTranslation.cs" />
     <Compile Include="Translation\TranslationHelper.cs" />
+    <Compile Include="Trial\CampaignHelper.cs" />
+    <Compile Include="Trial\ICampaignHelper.cs" />
     <Compile Include="Update\ApplicationVersion.cs" />
     <Compile Include="Update\ReleaseInfo.cs" />
     <Compile Include="Update\UpdateDownloader.cs" />

@@ -4,15 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:debugSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance debugSettings:CreatorTestPageSettingsViewModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
     </UserControl.Resources>
-    <Button Content="{Binding Translation.PdfCreatorTestpage}"
-            Style="{StaticResource BrightButton}"
-            ToolTip="{Binding Translation.PrintTestPageTooltip}" 
-            Command="{Binding PrintPdfCreatorTestPageCommand}"
-            HorizontalAlignment="Left" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="33" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" 
+                Content="{Binding Translation.PrintTestPage}"
+                ToolTip="{Binding Translation.PrintTestPageTooltip}" 
+                Command="{Binding PrintPdfCreatorTestPageCommand}"
+                CommandParameter="false"
+                Style="{StaticResource BrightButton}"/>
+        <contextMenuButton:ContextMenuButton Grid.Column="2"
+                                             Style="{StaticResource BrightButton}"
+                                             ShowArrow="True"
+                                             MinWidth="33"
+                                             MaxWidth="33"
+                                             Padding="0"
+                                             TabIndex="1">
+            <contextMenuButton:ContextMenuButton.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding Translation.PrintTestPageAndOpenFolder}"
+                              ToolTip="{Binding Translation.PrintTestPageAndOpenFolderTooltip}"
+                              Command="{Binding PrintPdfCreatorTestPageCommand}"
+                              CommandParameter="true"/>
+                </ContextMenu>
+            </contextMenuButton:ContextMenuButton.ContextMenu>
+        </contextMenuButton:ContextMenuButton>
+    </Grid>
+    
 </UserControl>

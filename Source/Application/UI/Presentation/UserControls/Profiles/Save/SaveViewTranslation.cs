@@ -18,7 +18,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string SkipPrintDialog { get; private set; } = "Skip print dialog (start with save dialog)";
         public string SkipSendFailures { get; private set; } = "Skip send actions that fail";
         public string WarnSendFailures { get; private set; } = "Warn when a send action is skipped";
-        
+
         public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
         public string NoSendActionEnabledHintInfo { get; private set; } = "Saving files temporarily without any enabled send action, will only store files in a temporary folder";
 
@@ -28,8 +28,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string OverWriteFiles { get; private set; } = "Overwrite files";
         public string EnsureUniqueFilenames { get; private set; } = "Ensure unique filenames - don't overwrite existing files";
         public string AutoMerge { get; private set; } = "Auto merge - Append new files to the existing file (only for PDF)";
-        public string AutoMergeBeforeModifyActions { get; private set; } = "Auto merge - Append new files to the existing file before the modify and send actions are applied (only for PDF)";
-        
+        public string AutoMergeBeforeModifyActions { get; private set; } = "Auto merge - Append new files to the existing file before the modify actions are applied (only for PDF)";
+
         public string UniqueFilenameHint { get; private set; } = "If a file already exists, an incrementing number is added to the filename, e.g. 'file_5.pdf'";
 
         public string ShowQuickActions { get; private set; } = "Show quick actions after the documents were converted";
@@ -38,5 +38,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public string ShowAllNotifications { get; private set; } = "Show tray notification after converting a document";
         public string ShowOnlyErrorNotifications { get; private set; } = "Only show notification for errors";
+        public string EnsureUserTokensNotSelected { get; private set; } = "Please be aware: By utilizing user tokens in the target directory users are able to save files to any directory the service has write permission.";
     }
 }

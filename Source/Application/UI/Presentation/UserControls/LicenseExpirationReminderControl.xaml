@@ -7,7 +7,6 @@
              xmlns:presentation="clr-namespace:pdfforge.PDFCreator.UI.Presentation"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeLicenseExpirationReminderViewModel, IsDesignTimeCreatable=True}"
              d:DesignWidth="800">
@@ -42,10 +41,7 @@
                 <Button Margin="0 0 5 0"
                         Command="{Binding RemindMeLaterCommand}"
                         Content="{Binding Translation.RemindMeLater}" />
-                <Button Margin="5 0 0 0"
-                        Visibility="{Binding RelativeSource={RelativeSource FindAncestor,
-                                     AncestorType={x:Type local:LicenseExpirationReminderControl}},  Path=ShowManageLicenseButton,
-                                     Converter={StaticResource CollapsedIfFalse}}"
+                <Button
                         Command="{Binding ManageLicenseCommand}"
                         CommandParameter="{x:Static presentation:RegionViewName.ApplicationSettingsView}"
                         Content="{Binding Translation.ManageLicense}" />
