@@ -4,13 +4,13 @@ using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands;
+using pdfforge.PDFCreator.UI.Presentation.Helper.TestPage;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 
@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
             await Task.Run(() =>
             {
                 LoggingHelper.ChangeLogLevel(_applicationSettingsProvider.Settings.LoggingLevel);
-                _testPageHelper.CreateTestPage();
+                _testPageHelper.CreateAndPrintTestPage();
             });
 
 

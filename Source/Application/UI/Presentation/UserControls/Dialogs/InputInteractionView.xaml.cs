@@ -1,8 +1,8 @@
 ﻿namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs
 {
-    public partial class InputBoxUserControl
+    public partial class InputInteractionView
     {
-        public InputBoxUserControl(InputBoxWindowViewModel viewModel)
+        public InputInteractionView(InputBoxWindowViewModel viewModel)
         {
             DataContext = viewModel;
             InitializeComponent();

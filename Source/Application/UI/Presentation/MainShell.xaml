@@ -265,8 +265,40 @@
                         </UniformGrid>
                     </DockPanel>
                 </Border>
+                <!-- Trial remaining days Info -->
+                <Border Visibility="{Binding ShowTrialRemainingDaysInfo,  Converter={StaticResource CollapsedIfFalse}}"
+                        Background="{StaticResource AccentGrey}">
+                    <StackPanel Margin="40 10 "
+                                VerticalAlignment="Center">
+                        <TextBlock FontWeight="DemiBold"
+                                   FontSize="14"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <Run Text="{Binding Path=TrialRemainingDaysInfoText, Mode=OneWay}"
+                                 Foreground="{StaticResource DefaultTextColorBrush}" />
+                            <Hyperlink Command="{Binding OpenUrlCommand}" CommandParameter="{Binding TrialExtendLink}">
+                                <Hyperlink.Inlines>
+                                    <Run Text="{Binding Translation.LicenseExtendInfo, Mode=OneWay}"
+                                         Foreground="{StaticResource DefaultTextColorBrush}" />
+                                </Hyperlink.Inlines>
+                            </Hyperlink>
+                        </TextBlock>
+                        <Button Margin="0 -15 10 0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource TransparentButton}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding DismissTrialExpireInfoCommand}">
+                            <iconPacks:PackIconMaterialDesign Kind="Close"
+                                                              Height="13"
+                                                              Width="13"
+                                                              HorizontalAlignment="Right"
+                                                              VerticalAlignment="Center"
+                                                              Foreground="{StaticResource DefaultButtonForegroundBrush}" />
+                        </Button>
+                    </StackPanel>
+                </Border>
                 <!-- License Expiration Info -->
-                <userControls:LicenseExpirationReminderControl ShowManageLicenseButton="{Binding OfferManageLicenses}" Grid.Row="2" />
+                <userControls:LicenseExpirationReminderControl />
             </StackPanel>
         </Border>
 

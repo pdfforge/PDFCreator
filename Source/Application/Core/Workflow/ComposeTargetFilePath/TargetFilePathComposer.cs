@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
+using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
@@ -7,8 +8,10 @@ namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath
     {
         private readonly ILastSaveDirectoryHelper _lastSaveDirectoryHelper;
 
-        public TargetFilePathComposer(IPathUtil pathUtil, ILastSaveDirectoryHelper lastSaveDirectoryHelper, ISplitDocumentFilePathHelper splitDocumentFilePathHelper, OutputFormatHelper outputFormatHelper)
-            : base(pathUtil, splitDocumentFilePathHelper, outputFormatHelper)
+        public TargetFilePathComposer(IPathUtil pathUtil, ILastSaveDirectoryHelper lastSaveDirectoryHelper, 
+            ISplitDocumentFilePathHelper splitDocumentFilePathHelper, OutputFormatHelper outputFormatHelper,
+            ITempFolderProvider tempFolderProvider)
+            : base(pathUtil, splitDocumentFilePathHelper, outputFormatHelper, tempFolderProvider)
         {
             _lastSaveDirectoryHelper = lastSaveDirectoryHelper;
         }

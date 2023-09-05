@@ -2,12 +2,11 @@
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
 
 namespace pdfforge.PDFCreator.UI.Presentation
 {
-    public static class RegionViewName
+    public static partial class RegionViewName
     {
         public static string AboutView => nameof(UserControls.AboutView);
         public static string AccountsView => nameof(UserControls.Accounts.AccountsView);
@@ -21,7 +20,6 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string DebugSettingRegionView => nameof(DebugSettingView);
         public static string TitleReplacementsRegionView => nameof(TitleReplacementsView);
         public static string DefaultViewerRegionView => nameof(DefaultViewerView);
-        public static string LicenseSettingsRegionView => nameof(LicenseSettingsView);
         public static string DirectImageConversionSettingsRegionView => nameof(DirectImageConversionSettingView);
     }
 }

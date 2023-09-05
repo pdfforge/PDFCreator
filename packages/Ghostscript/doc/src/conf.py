@@ -42,7 +42,7 @@ master_doc = "toc"
 
 # General information about the project.
 project = "Ghostscript"
-copyright = "1988-2022, Artifex"
+copyright = "1988-2023, Artifex"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

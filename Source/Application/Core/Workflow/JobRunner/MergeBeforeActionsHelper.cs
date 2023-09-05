@@ -52,7 +52,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             PrependFileToSourceFiles(job.OutputFileTemplate, job);
 
             _logger.Debug($"File with path {job.OutputFileTemplate} has been found. " +
-                          "An auto-merge will be executed before the modify and send actions.");
+                          "An auto-merge will be executed before the modify actions.");
         }
 
         private void PrependFileToSourceFiles(string existingFilePath, Job job)

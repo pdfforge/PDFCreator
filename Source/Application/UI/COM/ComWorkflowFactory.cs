@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.COM
             var notificationService = _container.GetInstance<DisabledNotificationService>();
             var pathUtil = _container.GetInstance<IPathUtil>();
 
-            return new AutoSaveWorkflow(jobDataUpdater, jobRunner, profileChecker, targetFileNameComposer, 
+            return new AutoSaveWorkflow(jobDataUpdater, jobRunner, profileChecker, targetFileNameComposer,
                 outputFileMover, notificationService, jobEventsManager, pathUtil);
         }
     }

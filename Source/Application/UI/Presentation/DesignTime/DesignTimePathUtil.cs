@@ -11,12 +11,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         public int MAX_PATH { get; }
         public string ELLIPSIS { get; }
 
-        public string EllipsisForFilename(string filePath, int maxLength)
+        public string CheckAndShortenTooLongPath(string filePath, int maxLength)
         {
             return "";
         }
 
-        public string EllipsisForTooLongPath(string filePath)
+        public string CheckAndShortenTooLongPath(string filePath)
         {
             return "";
         }

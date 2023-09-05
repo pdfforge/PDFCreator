@@ -4,6 +4,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 {
     public class MainShellTranslation : ITranslatable
     {
+        private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
         public string Home { get; private set; } = "Home";
         public string Profiles { get; private set; } = "Profiles";
         public string Printer { get; private set; } = "Printer";
@@ -35,6 +36,17 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public string GetWelcomeText(string editionNameWithVersion)
         {
             return string.Format(WelcomeTextHeadlineText, editionNameWithVersion);
+        }
+        
+        protected string[] TrialExpiringInfo { get; private set; } = { "Your trial license will expire in {0} day.", "Your trial license will expire in {0} days." };
+
+        protected string TrialExpiredInfo { get; private set; } = "Your trial license expires today.";
+
+        public string LicenseExtendInfo { get; private set; } = "Click here to extend your license.";
+
+        public string GetTrialRemainingDaysInfoText(int trialRemainingDays)
+        {
+            return trialRemainingDays == 0 ? TrialExpiredInfo : PluralBuilder.GetFormattedPlural(trialRemainingDays, TrialExpiringInfo);
         }
     }
 }

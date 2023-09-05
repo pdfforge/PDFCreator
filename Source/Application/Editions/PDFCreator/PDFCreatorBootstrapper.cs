@@ -1,6 +1,4 @@
-﻿using pdfforge.Banners;
-using pdfforge.Banners.Helper;
-using pdfforge.LicenseValidator.Interface;
+﻿using pdfforge.LicenseValidator.Interface;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
@@ -15,11 +13,9 @@ using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
-using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Startup.StartConditions;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Editions.EditionBase;
-using pdfforge.PDFCreator.Editions.PDFCreator.Wrapper;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
@@ -28,15 +24,11 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
-using pdfforge.PDFCreator.Utilities;
-using pdfforge.PDFCreator.Utilities.Web;
-using pdfforge.UsageStatistics;
 using Prism.Regions;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using IBannerManager = pdfforge.PDFCreator.UI.Presentation.Banner.IBannerManager;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 
 namespace pdfforge.PDFCreator.Editions.PDFCreator
@@ -46,6 +38,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override string EditionName => "Free";
         protected override Color EditionHighlightColor => Color.FromRgb(215, 40, 40);
         protected override bool HideLicensing => true;
+        protected override string BannerProductName => "pdfcreator";
 
         protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit, false);
 
@@ -129,45 +122,8 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             return new DefaultSettingsProvider();
         }
 
-        protected override void RegisterBannerManager(Container container)
-        {
-            var cacheDirectory = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\pdfforge\PDFCreator\banners");
-            var bannerUrl = Urls.BannerIndexUrl;
-            var cacheDuration = TimeSpan.FromHours(1);
-
-            var useStaging = Environment.CommandLine.IndexOf("/Banners=staging", StringComparison.InvariantCultureIgnoreCase) >= 0;
-
-            if (useStaging)
-            {
-                cacheDirectory += "-staging";
-                bannerUrl = Urls.BannerIndexUrlStaging;
-                cacheDuration = TimeSpan.Zero;
-            }
-
-            container.Register<IBannerManager>(() =>
-            {
-                var trackingParameters = container.GetInstance<TrackingParameters>();
-                var usageStatisticsOptions = container.GetInstance<UsageStatisticsOptions>();
-                var languageProvider = container.GetInstance<IApplicationLanguageProvider>();
-                var versionHelper = container.GetInstance<IVersionHelper>();
-
-                var bannerOptions = new BannerOptions(
-                    "pdfcreator",
-                    versionHelper.FormatWithThreeDigits(),
-                    languageProvider.GetApplicationLanguage(),
-                    bannerUrl,
-                    cacheDirectory,
-                    cacheDuration,
-                    trackingParameters.ToParamList());
-
-                // we can create a new instance here as we don't use overlays
-                var windowHandleProvider = new WindowHandleProvider();
-
-                var bannerManager = BannerManagerFactory.BuildOnlineBannerManager(bannerOptions, usageStatisticsOptions, windowHandleProvider, new List<DefaultBanner>());
-
-                return new BannerManagerWrapper(bannerManager);
-            });
-        }
+        protected override void RegisterObsidianLicenseInteractions()
+        { }
 
         protected override void RegisterPdfProcessor(Container container)
         {

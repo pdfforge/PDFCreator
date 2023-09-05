@@ -37,14 +37,14 @@ namespace pdfforge.PDFCreator.UI.COM
     [ClassInterface(ClassInterfaceType.None)]
     [Guid("66A9CAB1-404A-4918-8DE2-29C26B9B271E")]
     [ProgId("PDFCreator.JobQueue")]
-    public class Queue : IQueue
+    public class JobQueue : IQueue
     {
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly IPrintJobAdapterFactory _printJobAdapterFactory;
         private readonly QueueAdapter _queueAdapter;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public Queue()
+        public JobQueue()
         {
             try
             {

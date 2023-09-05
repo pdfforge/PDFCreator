@@ -16,13 +16,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         public string SearchModelText { get; private set; } = "Search mode:";
         public string ReplaceWithText { get; private set; } = "Replace with:";
         public string OkButtonContent { get; private set; } = "Ok";
-        public string SampleTitleText { get; private set; } = "Sample for original print job name:";
-        public string PreviewTitleText { get; private set; } = "<PrintJobName> with replacements:";
+        public string SampleTitleText { get; private set; } = "Sample title:";
+        public string PreviewTitleText { get; private set; } = "Sample title after replacements:";
         public string AddTitleReplacement { get; private set; } = "Add title replacement";
         public string TitleReplacementControlHeader { get; private set; } = "Title Replacements";
 
         public string TitleReplacementDescription { get; private set; } =
-            "Some document titles may contain unwanted additions or do not have the right formatting. For example, when printing to PDFCreator, some applications add their name to the document title of the print job.\r\n"
+            "Some document titles may contain unwanted additions or do not have the right formatting. For example, when printing to PDFCreator, some applications add their name to the document title of the print job.\n"
             + "The list below defines how to handle these additions. The title with the applied title replacements can be accessed via the <PrintJobName> token, which can be used for settings such as output filename, title, etc.";
 
 

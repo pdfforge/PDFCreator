@@ -94,17 +94,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
             RaisePropertyChanged(nameof(TitleReplacements));
         }
 
-        public bool TitleReplacementIsDisabledByGpo
-        {
-            get
-            {
-                if (TitleReplacements == null)
-                    return false;
-
-                return GpoSettings?.DisableTitleTab ?? false;
-            }
-        }
-
         public void MountView()
         {
             _settingsProvider.SettingsChanged += OnSettingsChanged;

@@ -75,7 +75,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             if (hasCyclicDependency)
             {
-                _logger.Error("The forward to further profile action forwards causes a circular dependency " +
+                _logger.Error("The forward to further profile action causes a circular dependency " +
                               "between profiles with the Guids:\r\n" +
                               string.Join(" -> ", dependencyRoute));
                 actionResult.Add(ErrorCode.Printing_CyclicDependencyError);

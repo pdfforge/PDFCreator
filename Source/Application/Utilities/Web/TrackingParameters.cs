@@ -1,6 +1,6 @@
-﻿using System;
+﻿using pdfforge.Banners;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace pdfforge.PDFCreator.Utilities.Web
 {
@@ -9,14 +9,16 @@ namespace pdfforge.PDFCreator.Utilities.Web
         private string Campaign { get; }
         private string Key1 { get; }
         private string Key2 { get; }
-        private string Keywords { get; }
+        private string Keyb { get; }
+        private string LicenseKey { get; }
 
-        public TrackingParameters(string campaign, string key1, string key2, string keywords)
+        public TrackingParameters(string campaign, string key1, string key2, string keyb, string licenseKey)
         {
             Campaign = campaign;
             Key1 = key1;
             Key2 = key2;
-            Keywords = keywords;
+            Keyb = keyb;
+            LicenseKey = licenseKey;
         }
 
         public IDictionary<string, string> ToParamList()
@@ -32,8 +34,11 @@ namespace pdfforge.PDFCreator.Utilities.Web
             if (!string.IsNullOrWhiteSpace(Key2))
                 parameters["key2"] = Key2;
 
-            if (!string.IsNullOrWhiteSpace(Keywords))
-                parameters["keyb"] = Keywords;
+            if (!string.IsNullOrWhiteSpace(Keyb))
+                parameters["keyb"] = Keyb;
+
+            if (!string.IsNullOrWhiteSpace(LicenseKey))
+                parameters["license_key"] = LicenseKey;
 
             return parameters;
         }
@@ -41,36 +46,36 @@ namespace pdfforge.PDFCreator.Utilities.Web
         public string CleanUpParamsAndAppendToUrl(string url)
         {
             var uri = new Uri(url);
-            var cleanUrl = uri.GetLeftPart(UriPartial.Path).TrimEnd('/');
-            var splitQuery = uri.Query.TrimStart('?').Split('&');
-            var presentParams = new Dictionary<string, string>();
-
-            foreach (var item in splitQuery)
-            {
-                var splitItem = item.Split('=');
-                var itemKey = splitItem.First();
-                var itemValue = splitItem.Length > 1 ? splitItem.Skip(1).First() : string.Empty;
-
-                if (!string.IsNullOrWhiteSpace(itemKey) && !string.IsNullOrWhiteSpace(itemValue) && !presentParams.ContainsKey(itemKey))
-                    presentParams.Add(itemKey, itemValue);
-            }
-
+            var cleanUri = uri.GetLeftPart(UriPartial.Path).TrimEnd('/');
+            var uriParams = uri.Query.TrimStart('?').Split('&');
+            var presentParams = GetPresentParams(uriParams);
             var trackingParamsDictionary = ToParamList();
-
-            trackingParamsDictionary.Keys.Except(presentParams.Keys).ToList()
-                 .ForEach(k => presentParams.Add(k, trackingParamsDictionary[k]));
-
-            var cleanedParamString = "";
+            url = cleanUri;
             if (presentParams.Count > 0)
-                cleanedParamString = "?" + ToParamString(presentParams);
+                url = UrlHelper.AddUrlParameters(cleanUri, presentParams);
 
-            return cleanUrl + cleanedParamString + uri.Fragment;
+            url = UrlHelper.AddUrlParameters(url, trackingParamsDictionary);
+            return url + uri.Fragment;
         }
 
-        private string ToParamString(Dictionary<string, string> dict)
+        private static IDictionary<string, string> GetPresentParams(IEnumerable<string> uriParams)
         {
-            var paramList = dict.Select(p => Uri.EscapeDataString(p.Key) + "=" + Uri.EscapeDataString(p.Value));
-            return string.Join("&", paramList);
+            var presentParams = new Dictionary<string, string>();
+            foreach (var urlParam in uriParams)
+            {
+                var paramSplit = urlParam.Split('=');
+                if (paramSplit.Length != 2)
+                    continue;
+
+                // Avoid escaping data string multiple times
+                var key = Uri.UnescapeDataString(paramSplit[0]);
+                var value = Uri.UnescapeDataString(paramSplit[1]);
+
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value) && !presentParams.ContainsKey(key))
+                    presentParams.Add(key, value);
+            }
+
+            return presentParams;
         }
     }
 }

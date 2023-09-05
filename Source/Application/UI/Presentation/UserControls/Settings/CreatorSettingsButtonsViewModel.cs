@@ -94,32 +94,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
             {
                 _activePath = value;
                 RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ActivePathIsLockedByGpo));
                 RaisePropertyChanged(nameof(IsRegionNameLong));
             }
             get
             {
                 return _activePath;
             }
-        }
-
-        public bool ActivePathIsLockedByGpo
-        {
-            get
-            {
-                if (_gpoSettings == null)
-                    return false;
-
-                if (_gpoSettings.DisableApplicationSettings)
-                    return true;
-
-                if (ActivePath.Equals(RegionViewName.TitleReplacementsRegionView))
-                    return _gpoSettings.DisableTitleTab;
-                if (ActivePath.Equals(RegionViewName.DebugSettingRegionView))
-                    return _gpoSettings.DisableDebugTab;
-
-                return false;
-            } 
         }
 
         public async Task MountViewAsync()
@@ -134,8 +114,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
         }
 
 
-        public async Task UnmountViewAsync()
+        public Task UnmountViewAsync()
         {
+            return Task.CompletedTask;
         }
     }
 }

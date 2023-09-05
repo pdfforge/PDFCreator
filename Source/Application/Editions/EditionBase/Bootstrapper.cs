@@ -1,4 +1,6 @@
-﻿using pdfforge.CustomScriptAction;
+﻿using pdfforge.Banners;
+using pdfforge.Banners.Helper;
+using pdfforge.CustomScriptAction;
 using pdfforge.DataStorage;
 using pdfforge.Mail;
 using pdfforge.Obsidian;
@@ -34,11 +36,11 @@ using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.Printing.Printing;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Cache;
-using pdfforge.PDFCreator.Core.Services.Download;
 using pdfforge.PDFCreator.Core.Services.JobEvents;
 using pdfforge.PDFCreator.Core.Services.JobHistory;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
@@ -52,6 +54,7 @@ using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.Core.UsageStatistics;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
+using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
 using pdfforge.PDFCreator.Setup.Shared.Helper;
@@ -69,6 +72,7 @@ using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Font;
+using pdfforge.PDFCreator.UI.Presentation.Helper.TestPage;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Tokens;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.NavigationChecks;
@@ -78,6 +82,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Architect;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Home;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay;
@@ -114,7 +119,6 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings;
@@ -132,7 +136,6 @@ using pdfforge.PDFCreator.UI.Views.Windows;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.IO;
 using pdfforge.PDFCreator.Utilities.Pdf;
-using pdfforge.PDFCreator.Utilities.Process;
 using pdfforge.PDFCreator.Utilities.Registry;
 using pdfforge.PDFCreator.Utilities.Threading;
 using pdfforge.PDFCreator.Utilities.UserGuide;
@@ -150,20 +153,27 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using SystemInterface;
+using SystemInterface.Diagnostics;
 using SystemInterface.IO;
-using SystemInterface.Microsoft.Win32;
 using SystemWrapper;
+using SystemWrapper.Diagnostics;
 using SystemWrapper.IO;
-using SystemWrapper.Microsoft.Win32;
 using Translatable;
 using FtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpAccountView;
 using GeneralSettingsView = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.GeneralSettingsView;
-using InputBoxUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxUserControl;
-using LicenseUpdateControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseUpdateControl;
+using HashUtil = pdfforge.PDFCreator.Utilities.HashUtil;
+using IDownloader = pdfforge.PDFCreator.Core.Services.Download.IDownloader;
+using IHashUtil = pdfforge.PDFCreator.Utilities.IHashUtil;
+using IProcessStarter = pdfforge.PDFCreator.Utilities.Process.IProcessStarter;
+using IRegistry = SystemInterface.Microsoft.Win32.IRegistry;
+using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 using ManagePrintJobsWindow = pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindow;
 using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
+using ProcessStarter = pdfforge.PDFCreator.Utilities.Process.ProcessStarter;
+using RegistryWrap = SystemWrapper.Microsoft.Win32.RegistryWrap;
 using SmtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpAccountView;
-using StoreLicenseForAllUsersControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.StoreLicenseForAllUsersControl;
+using WebClientDownloader = pdfforge.PDFCreator.Core.Services.Download.WebClientDownloader;
+using WebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.WebLinkLauncher;
 using WorkflowEditorTestPageUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.WorkflowEditorTestPageUserControl;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
@@ -177,6 +187,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         protected abstract string EditionName { get; }
         protected abstract Color EditionHighlightColor { get; }
         protected abstract bool HideLicensing { get; }
+        protected abstract string BannerProductName { get; }
 
         protected abstract EditionHelper EditionHelper { get; }
 
@@ -258,16 +269,18 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IFileConversionAssistant, FileConversionAssistant>();
             container.Register<IPrintFileHelper, PrintFileAssistant>();
             container.Register<IUacAssistant, UacAssistant>();
+            container.Register<ITestPageCreator, TestPageCreator>();
             container.Register<ITestPageHelper, TestPageHelper>();
             container.RegisterSingleton<IPdfArchitectCheck, PdfArchitectCheck>();
             container.Register<IGhostscriptDiscovery, GhostscriptDiscovery>();
             container.Register<ProfileRemoveCommand>();
             container.Register<ProfileRenameCommand>();
-            container.Register<IPrintTestPageAsyncCommand, PrintTestpageAsyncCommand>();
+            container.Register<IPrintTestPageAsyncCommand, PrintTestPageAsyncCommand>();
 
             container.RegisterSingleton<IRegistry, RegistryWrap>();
             container.RegisterSingleton<IFile, FileWrap>();
             container.RegisterSingleton<IDirectory, DirectoryWrap>();
+            container.RegisterSingleton<IProcess, ProcessWrap>();
             container.RegisterSingleton<IPath, PathWrap>();
             container.RegisterSingleton<IPathUtil, PathUtil>();
             container.RegisterSingleton<IEnvironment, EnvironmentWrap>();
@@ -382,6 +395,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ITokenViewModelFactory, TokenViewModelFactory>();
             container.Register<IFontSelectorControlViewModelFactory, FontSelectorControlControlViewModelFactory>();
 
+            container.Register<IFailedJobHandler, BaseFailedJobHandler>();
+
             container.RegisterSingleton<IRegionHelper, RegionHelper>();
             container.Register<ISaveChangedSettingsCommand, SaveChangedSettingsCommand>();
             container.RegisterInitializer<FtpAccountViewModel>(model => model.AllowConversionInterrupts = true);
@@ -411,6 +426,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IDeleteTempFolderCommand, DeleteTempFolderCommand>();
 
             container.Register<ILicenseExpirationReminder, LicenseExpirationReminder>();
+            container.RegisterSingleton<ICampaignHelper, CampaignHelper>();
 
             container.Register<ICommandBuilderProvider, CommandBuilderProvider>();
             container.Register<ISelectFilesUserControlViewModelFactory, SelectFilesUserControlViewModelFactory>();
@@ -441,7 +457,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             RegisterProfessionalHintHelper(container);
             RegisterNotificationService(container);
             RegisterAllTypedSettingsProvider(container);
-            RegisterBannerManager(container);
+            RegisterBannerManagerWrapper(container, BannerProductName);
             RegisterWebLinkLauncher(container);
             RegisterUsageStatistics(container);
             RegisterSettingsViewModel(container);
@@ -480,6 +496,46 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Collection.Register<IJobEventsHandler>(new[]
             {
                 typeof(UsageStatisticsEventsHandler)
+            });
+        }
+
+        protected virtual void RegisterBannerManagerWrapper(Container container, string productName)
+        {
+            var cacheDirectory = Environment.ExpandEnvironmentVariables(@"%LocalAppData%\pdfforge\PDFCreator\banners");
+            var bannerUrl = Urls.BannerIndexUrl;
+            var cacheDuration = TimeSpan.FromHours(1);
+
+            var useStaging = Environment.CommandLine.IndexOf("/Banners=staging", StringComparison.InvariantCultureIgnoreCase) >= 0;
+
+            if (useStaging)
+            {
+                cacheDirectory += "-staging";
+                bannerUrl = Urls.BannerIndexUrlStaging;
+                cacheDuration = TimeSpan.Zero;
+            }
+
+            container.Register<IBannerManagerWrapper>(() =>
+            {
+                var trackingParameters = container.GetInstance<TrackingParameters>();
+                var usageStatisticsOptions = container.GetInstance<UsageStatisticsOptions>();
+                var languageProvider = container.GetInstance<IApplicationLanguageProvider>();
+                var versionHelper = container.GetInstance<IVersionHelper>();
+
+                var bannerOptions = new BannerOptions(
+                    productName,
+                    versionHelper.FormatWithThreeDigits(),
+                    languageProvider.GetApplicationLanguage(),
+                    bannerUrl,
+                    cacheDirectory,
+                    cacheDuration,
+                    trackingParameters.ToParamList());
+
+                // We can create a new instance here as we don't use overlays
+                var windowHandleProvider = new WindowHandleProvider();
+
+                var bannerManager = BannerManagerFactory.BuildOnlineBannerManager(bannerOptions, usageStatisticsOptions, windowHandleProvider, new List<DefaultBanner>());
+
+                return new BannerManagerWrapper(bannerManager, container.GetInstance<ICampaignHelper>(), container.GetInstance<EditionHelper>());
             });
         }
 
@@ -545,8 +601,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         private void RegisterWebLinkLauncher(Container container)
         {
             var installationPathProvider = InstallationPathProviders.PDFCreatorProvider;
-            var key = PathSafe.Combine(installationPathProvider.ApplicationRegistryPath, "Parameters");
-            container.Register(() => TrackingParameterReader.ReadFromRegistry(key));
+            container.Register(() => TrackingParameterReader.ReadFromRegistry(installationPathProvider.ApplicationRegistryPath));
             container.Register<IWebLinkLauncher, WebLinkLauncher>();
         }
 
@@ -693,7 +748,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             var conditions = GetStartupConditions(defaultConditions);
             container.Collection.Register<IStartupCondition>(conditions);
-
             container.Register<ICheckAllStartupConditions, CheckAllStartupConditions>();
         }
 
@@ -824,11 +878,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         protected abstract SettingsProvider CreateSettingsProvider();
 
-        protected virtual void RegisterBannerManager(Container container)
-        {
-            container.Register<IBannerManager, BannerManagerDefault>();
-        }
-
         private void RegisterSettingsHelper(Container container)
         {
             container.RegisterSingleton<ISettingsManager, PDFCreatorSettingsManager>();
@@ -844,7 +893,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         {
             ViewRegistry.RegisterInteraction(typeof(UpdateOverviewInteraction), typeof(UpdateHintView));
             ViewRegistry.RegisterInteraction(typeof(PrintJobInteraction), typeof(PrintJobShell));
-            ViewRegistry.RegisterInteraction(typeof(InputInteraction), typeof(InputBoxUserControl));
+            ViewRegistry.RegisterInteraction(typeof(InputInteraction), typeof(InputInteractionView));
             ViewRegistry.RegisterInteraction(typeof(MessageInteraction), typeof(MessageView));
             ViewRegistry.RegisterInteraction(typeof(ManagePrintJobsInteraction), typeof(ManagePrintJobsWindow));
             ViewRegistry.RegisterInteraction(typeof(EncryptionPasswordInteraction), typeof(EncryptionPasswordsOverlay));
@@ -853,9 +902,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(RecommendPdfArchitectInteraction), typeof(RecommendPdfArchitectView), new WindowOptions { ResizeMode = ResizeMode.NoResize });
             ViewRegistry.RegisterInteraction(typeof(PasswordOverlayInteraction), typeof(PasswordOverlay));
             ViewRegistry.RegisterInteraction(typeof(SignaturePasswordInteraction), typeof(SignaturePasswordOverlayView));
-            ViewRegistry.RegisterInteraction(typeof(OfflineActivationInteraction), typeof(OfflineActivationUserControl));
-            ViewRegistry.RegisterInteraction(typeof(LicenseInteraction), typeof(LicenseUpdateControl));
-            ViewRegistry.RegisterInteraction(typeof(StoreLicenseForAllUsersInteraction), typeof(StoreLicenseForAllUsersControl));
             ViewRegistry.RegisterInteraction(typeof(FtpAccountInteraction), typeof(FtpAccountView));
             ViewRegistry.RegisterInteraction(typeof(SmtpAccountInteraction), typeof(SmtpAccountView));
             ViewRegistry.RegisterInteraction(typeof(HttpAccountInteraction), typeof(HttpAccountView));
@@ -870,7 +916,11 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(DrawSignatureInteraction), typeof(DrawSignatureView));
             ViewRegistry.RegisterInteraction(typeof(OverwriteOrAppendInteraction), typeof(OverwriteOrAppendOverlay));
             ViewRegistry.RegisterInteraction(typeof(LoadSpecificProfileInteraction), typeof(LoadSpecificProfileView));
+
+            RegisterObsidianLicenseInteractions();
         }
+
+        protected abstract void RegisterObsidianLicenseInteractions();
 
         protected virtual Type[] GetStartupActions()
         {
@@ -925,7 +975,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterTypeForNavigation<DebugSettingView>();
             container.RegisterTypeForNavigation<TitleReplacementsView>();
             container.RegisterTypeForNavigation<DefaultViewerView>();
-            container.RegisterTypeForNavigation<LicenseSettingsView>();
             container.RegisterTypeForNavigation<DirectImageConversionSettingView>();
         }
     }

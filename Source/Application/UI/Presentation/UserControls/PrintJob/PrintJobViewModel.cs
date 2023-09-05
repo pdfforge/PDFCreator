@@ -6,9 +6,11 @@ using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
@@ -36,10 +38,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class PrintJobViewModel : TranslatableViewModelBase<PrintJobViewTranslation>, IWorkflowViewModel, IMountable
     {
-        private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
-        public IGpoSettings GpoSettings { get; }
+        private readonly TaskCompletionSource<object> _taskCompletionSource = new();
+        private IGpoSettings GpoSettings { get; }
         private readonly ISettingsProvider _settingsProvider;
-        private readonly ICommandLocator _commandLocator;
         private readonly ISelectedProfileProvider _selectedProfileProvider;
         private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
@@ -52,6 +53,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private string _lastConfirmedFilePath = "";
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
         private readonly IJobInfoQueue _jobInfoQueue;
+
+        public ICampaignHelper CampaignHelper { get; private set; }
+
+        public string TrialExtendLink => CampaignHelper.GetTrialExtendLink(Urls.LicenseExtendUrl);
 
         public bool SaveFileTemporaryIsEnabled => SelectedProfile?.SaveFileTemporary ?? false;
 
@@ -70,24 +75,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             IBrowseFileCommandBuilder browseFileCommandBuilder,
             IDispatcher dispatcher,
             IJobDataUpdater jobDataUpdater,
-            IInteractionRequest interactionRequest)
+            IInteractionRequest interactionRequest,
+            ICampaignHelper campaignHelper)
             : base(translationUpdater)
         {
             GpoSettings = gpoSettings;
             _settingsProvider = settingsProvider;
-            _commandLocator = commandLocator;
+            var commandLocator1 = commandLocator;
             _eventAggregator = eventAggregator;
             _selectedProfileProvider = selectedProfileProvider;
             _profilesProvider = profilesProvider;
             _targetFilePathComposer = targetFilePathComposer;
             _jobInfoManager = jobInfoManager;
-
             _changeJobCheckAndProceedCommandBuilder = changeJobCheckAndProceedCommandBuilder;
             _dispatcher = dispatcher;
             _jobDataUpdater = jobDataUpdater;
             _interactionRequest = interactionRequest;
             _changeJobCheckAndProceedCommandBuilder.Init(() => Job, CallFinishInteraction, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
 
+            CampaignHelper = campaignHelper;
             SetOutputFormatCommand = new DelegateCommand(SetOutputFormatExecute);
 
             browseFileCommandBuilder.Init(() => Job, UpdateUiForJobOutputFileTemplate, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
@@ -95,7 +101,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             var browseFileCommand = browseFileCommandBuilder.BuildCommand(new List<ICommand> { existingFileBehaviourQueryCommand });
 
             BrowseFileCommand = browseFileCommand;
-            SetupEditProfileCommand(_commandLocator, eventAggregator);
+            SetupEditProfileCommand(commandLocator1, eventAggregator);
 
             SetupSaveCommands(translationUpdater);
 
@@ -107,11 +113,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             CancelAllCommand = new DelegateCommand(CancelAllExecute, o => jobInfoQueue.Count > 1);
 
             DisableSaveTempOnlyCommand = new DelegateCommand(DisableSaveFileTemporaryExecute);
-            OpenUrlCommand = _commandLocator.GetCommand<UrlOpenCommand>();
+            OpenUrlCommand = commandLocator1.GetCommand<UrlOpenCommand>();
 
             jobInfoQueue.OnNewJobInfo += (sender, args) => UpdateNumberOfPrintJobsHint(jobInfoQueue.Count);
             _jobInfoQueue = jobInfoQueue;
             UpdateNumberOfPrintJobsHint(jobInfoQueue.Count);
+            OnTranslationChanged();
         }
 
         private async Task ExistingFileBehaviourQuery(object obj)
@@ -458,7 +465,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public string OutputFolder
         {
-            get => Job == null ? "" : PathSafe.GetDirectoryName(Job.OutputFileTemplate);
+            get
+            {
+                if (Job == null)
+                    return "";
+
+                if (Job.Profile.SaveFileTemporary)
+                    return "";
+
+                return PathSafe.GetDirectoryName(Job.OutputFileTemplate);
+            }
             set
             {
                 Job.OutputFileTemplate = PathSafe.Combine(value, OutputFilename);
@@ -471,7 +487,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             get => Job == null ? "" : PathSafe.GetFileName(Job.OutputFileTemplate);
             set
             {
-                Job.OutputFileTemplate = PathSafe.Combine(OutputFolder, value);
+                if (Job.Profile.SaveFileTemporary)
+                    Job.OutputFileTemplate = PathSafe.Combine(Job.OutputFileTemplate, value);
+                else
+                    Job.OutputFileTemplate = PathSafe.Combine(OutputFolder, value);
                 RaisePropertyChanged();
             }
         }
@@ -489,6 +508,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 RaisePropertyChanged();
             }
         }
+
+        public string TrialRemainingDaysInfoText => Translation.GetTrialRemainingDaysInfoText(CampaignHelper.TrialRemainingDays);
+
+        public bool ShowTrialRemainingDaysInfo => CampaignHelper.IsTrial;
 
         private void InitCombobox()
         {
@@ -510,11 +533,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             InitCombobox();
 
             _eventAggregator.GetEvent<ManagePrintJobEvent>().Subscribe(ManagePrintJobEvent);
+            _eventAggregator.GetEvent<TrialStatusChangedEvent>().Subscribe(OnTrialStatusChanged);
+        }
+
+        private void OnTrialStatusChanged()
+        {
+            RaisePropertyChanged(nameof(ShowTrialRemainingDaysInfo));
+            RaisePropertyChanged(nameof(HasBanner));
         }
 
         public void UnmountView()
         {
             _eventAggregator.GetEvent<ManagePrintJobEvent>().Unsubscribe(ManagePrintJobEvent);
+            _eventAggregator.GetEvent<TrialStatusChangedEvent>().Unsubscribe(OnTrialStatusChanged);
+        }
+
+        protected override void OnTranslationChanged()
+        {
+            if (CampaignHelper != null)
+                RaisePropertyChanged(TrialRemainingDaysInfoText);
         }
     }
 }

@@ -59,5 +59,8 @@
 
         public const string BannerIndexUrl = "https://go.pdfforge.org/pdfcreator/banners/v1";
         public const string BannerIndexUrlStaging = "https://go.pdfforge.org/pdfcreator/banners-staging/v1";
+
+        /*Trials*/
+        public const string LicenseExtendUrl = "https://go.pdfforge.org/pdfcreator/extend-trial";
     }
 }

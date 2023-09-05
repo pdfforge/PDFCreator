@@ -104,7 +104,7 @@
     <Compile Include="Assistants\Update\UpdateChangeParser.cs" />
     <Compile Include="Assistants\Update\UpdateEventArgs.cs" />
     <Compile Include="Assistants\Update\UpdateLauncher.cs" />
-    <Compile Include="Banner\BannerManager.cs" />
+    <Compile Include="Banner\BannerManagerWrapper.cs" />
     <Compile Include="Banner\BannerSlots.cs" />
     <Compile Include="Banner\BannerView.xaml.cs">
       <DependentUpon>BannerView.xaml</DependentUpon>
@@ -193,6 +193,7 @@
     <Compile Include="DesignTime\DesignTimeFtpConnectionTester.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionInvoker.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionRequest.cs" />
+    <Compile Include="DesignTime\DesignTimeLicenseChecker.cs" />
     <Compile Include="DesignTime\DesignTimeOsHelper.cs" />
     <Compile Include="DesignTime\DesignTimeOpenFileInteractionHelper.cs" />
     <Compile Include="DesignTime\DesignTimeDirectConvertViewModel.cs" />
@@ -225,9 +226,14 @@
     <Compile Include="DesignTime\Helper\DesignTimeEditionHelper.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeFontSelectorControlViewModelFactory.cs" />
     <Compile Include="DesignTime\DesignTimeJobStepPasswordViewModelBase.cs" />
+    <Compile Include="Events\RefreshHistoryRequestedEvent.cs" />
     <Compile Include="Events\MainShellClosedEvent.cs" />
     <Compile Include="Events\ManagePrintJobEvent.cs" />
+    <Compile Include="Events\TrialStatusChangedEvent.cs" />
     <Compile Include="Helper\PdfEditorHelper.cs" />
+    <Compile Include="Helper\TestPage\TestPageHelper.cs" />
+    <Compile Include="Helper\TestPage\TestPageHelperBase.cs" />
+    <Compile Include="RegionViewName.License.cs" />
     <Compile Include="Styles\ContextMenuButton\ContextMenuButton.xaml.cs">
       <DependentUpon>ContextMenuButton.xaml</DependentUpon>
     </Compile>
@@ -411,7 +417,6 @@
     <Compile Include="DesignTime\DesignTimeEMailClientActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateHelper.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateHintViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeLicenseSettingsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeMessageViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeRecommendPdfArchitectWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSignatureActionViewModel.cs" />
@@ -438,7 +443,6 @@
     <Compile Include="DesignTime\DesignTimePrintJobViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSettingsProvider.cs" />
     <Compile Include="DesignTime\DesignTimeSmtpActionViewModel.cs" />
-    <Compile Include="DesignTime\DesignTimeStoreLicenseForAllUsersWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateDownloadWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUpdateIntervalSettingsViewModel.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeApplicationNameProvider.cs" />
@@ -538,8 +542,8 @@
       <DependentUpon>ApplicationLogoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DesignTime\DesignTimeLicenseExpirationReminderViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\InputBoxUserControl.xaml.cs">
-      <DependentUpon>InputBoxUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\Dialogs\InputInteractionView.xaml.cs">
+      <DependentUpon>InputInteractionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\InputBoxWindowTranslation.cs" />
     <Compile Include="UserControls\Dialogs\InputBoxWindowViewModel.cs" />
@@ -698,7 +702,7 @@
       <DependentUpon>EventLogSettingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\DebugSettings\EventLogSettingsViewModel.cs" />
-    <Compile Include="Commands\PrintTestpageAsyncCommand.cs" />
+    <Compile Include="Commands\PrintTestPageAsyncCommand.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\LoadSpecificProfileTranslation.cs" />
     <Compile Include="UserControls\Settings\DebugSettings\LoadSpecificProfileView.xaml.cs">
       <DependentUpon>LoadSpecificProfileView.xaml</DependentUpon>
@@ -769,9 +773,6 @@
       <DependentUpon>PrintActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\Print\PrintActionViewModel.cs" />
-    <Compile Include="UserControls\Settings\License\LicenseUpdateControl.xaml.cs">
-      <DependentUpon>LicenseUpdateControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PrintJobShellViewModel.cs" />
     <Compile Include="UserControls\Overlay\Password\PasswordOverlayInteraction.cs" />
     <Compile Include="UserControls\Overlay\Password\PasswordOverlayViewModel.cs" />
@@ -855,22 +856,12 @@
     <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpPasswordStepView.xaml.cs">
       <DependentUpon>SmtpPasswordStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Settings\License\OfflineActivationViewModelTranslation.cs" />
-    <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersControl.xaml.cs">
-      <DependentUpon>StoreLicenseForAllUsersControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowTranslation.cs" />
-    <Compile Include="UserControls\Settings\License\StoreLicenseForAllUsersWindowViewModel.cs" />
     <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpJobStepPasswordViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeSaveViewModel.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataTabTranslation.cs" />
     <Compile Include="UserControls\Profiles\Metadata\MetadataViewModel.cs" />
     <Compile Include="UserControls\Profiles\Save\SaveView.xaml.cs" />
     <Compile Include="UserControls\Profiles\Save\SaveViewTranslation.cs" />
-    <Compile Include="UserControls\Settings\License\OfflineActivationUserControl.xaml.cs">
-      <DependentUpon>OfflineActivationUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Settings\License\OfflineActivationUserControlViewModel.cs" />
     <Compile Include="UserControls\Settings\Shared\SaveCancelButtonsControl.xaml.cs">
       <DependentUpon>SaveCancelButtonsControl.xaml</DependentUpon>
     </Compile>
@@ -997,11 +988,6 @@
       <DependentUpon>UpdateIntervalSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\General\UpdateIntervalSettingsViewModel.cs" />
-    <Compile Include="UserControls\Settings\License\LicenseSettingsView.xaml.cs">
-      <DependentUpon>LicenseSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Settings\License\LicenseSettingsViewModel.cs" />
-    <Compile Include="UserControls\Settings\License\LicenseSettingsTranslation.cs" />
     <Compile Include="UserControls\Settings\ApplicationSettingsView.xaml.cs">
       <DependentUpon>ApplicationSettingsView.xaml</DependentUpon>
     </Compile>
@@ -1290,7 +1276,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Dialogs\InputBoxUserControl.xaml">
+    <Page Include="UserControls\Dialogs\InputInteractionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1466,10 +1452,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Settings\License\LicenseUpdateControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PrintJobShell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1642,18 +1624,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Settings\License\LicenseSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Settings\License\OfflineActivationUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\Settings\License\StoreLicenseForAllUsersControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\Settings\ApplicationSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1825,7 +1795,10 @@
     <Resource Include="Resources\architect_info.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="UserControls\PrintJob\ProfessionalHintStep\Laptop-Top10.png" />
+    <Resource Include="Styles\Images\trial_expired_women_bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Styles\Images\laptop_pdfc_topten.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>
@@ -2001,8 +1974,30 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="Banners">
+          <HintPath>..\..\..\..\packages\pdfforge.Banners\lib\net47\Banners.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="UsageStatistics">
           <HintPath>..\..\..\..\packages\pdfforge.UsageStatistics\lib\netstandard2.0\UsageStatistics.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Pidgin">
+          <HintPath>..\..\..\..\packages\Pidgin\lib\net451\Pidgin.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -2039,8 +2034,77 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="ICSharpCode.SharpZipLib">
+          <HintPath>..\..\..\..\packages\SharpZipLib\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="SimpleInjector">
           <HintPath>..\..\..\..\packages\SimpleInjector\lib\net45\SimpleInjector.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Buffers">
+          <HintPath>..\..\..\..\packages\System.Buffers\lib\net461\System.Buffers.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Collections.Immutable">
+          <HintPath>..\..\..\..\packages\System.Collections.Immutable\lib\net461\System.Collections.Immutable.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Memory">
+          <HintPath>..\..\..\..\packages\System.Memory\lib\net461\System.Memory.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Numerics">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Numerics.Vectors">
+          <HintPath>..\..\..\..\packages\System.Numerics.Vectors\lib\net46\System.Numerics.Vectors.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.Runtime.CompilerServices.Unsafe">
+          <HintPath>..\..\..\..\packages\System.Runtime.CompilerServices.Unsafe\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

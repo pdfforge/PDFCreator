@@ -7,7 +7,6 @@
       xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
       xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"      
       d:DataContext="{d:DesignInstance usageStatisticsSettings:DesignTimeUsageStatisticsViewModel, d:IsDesignTimeCreatable=True}"
@@ -23,50 +22,57 @@
                 <ResourceDictionary Source="../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="NegatedBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Grid Style="{StaticResource SettingsRegion}">
-        <StackPanel Style="{StaticResource GpoToolTipStyle}">
-            <Label Content="{Binding Translation.UsageStatisticsHeader}"
-                   Style="{StaticResource LargeLightLabel}" />
-            <StackPanel Margin="0 20 0 0">
-                <!--Send usage statistics checkbox-->
-                <CheckBox VerticalAlignment="Top"
+    <StackPanel Style="{StaticResource SettingsRegion}" >
+        <Label Content="{Binding Translation.UsageStatisticsHeader}"
+               Style="{StaticResource LargeLightLabel}" />
+
+        <!--Send usage statistics checkbox-->
+        <!--Collapsed when disabled by GPO-->
+        <CheckBox Margin="0 20 0 0 "
+                          VerticalAlignment="Top"
                           Content="{Binding Translation.EnableUsageStatistics}"
                           IsChecked="{Binding EnableUsageStatistics}"
-                          Background="White"
-                          Width="260"/>
+                          Visibility="{Binding IsDisabledByGpo, Converter={StaticResource NegatedBoolToVisibilityConverter}}"
+                          Background="White"/>
 
-                <!--Usage statistics info-->
-                <Border Margin="0 20 0 0" Padding="10 10 10 10"
-                        CornerRadius="2"
-                        Background="White" BorderThickness="0">
-                    <DockPanel>
-                        <iconPacks:PackIconMaterialDesign Margin="0" VerticalAlignment="Top"
-                                                          Width="20" Height="20" 
-                                                          Foreground="{StaticResource InfoBrush}" Kind="Info" />
-                        <TextBlock Margin="10 0 0 0" TextWrapping="Wrap" LineHeight="20">
-                            <Run Text="{Binding UsageStatisticsExplanationText, Mode=OneWay}"/>
-                            <LineBreak/>
-                            <Run Text="{Binding Translation.UsageStatisticsManualLinkText, Mode=OneWay}"/>
-                            <Hyperlink Command="{Binding ShowUserGuideCommand}" CommandParameter="{x:Static help:HelpTopic.AppGeneral}"
-                                       Style="{StaticResource DefaultHyperLink}">
-                                <TextBlock Text="{Binding Translation.UsageStatisticsLink}" />
-                            </Hyperlink>
-                            <LineBreak/>
-                            <Run Text="{Binding Translation.PrivacyPolicy, Mode=OneWay}"/>
-                            <Hyperlink NavigateUri="{Binding PrivacyPolicy}"
-                                       Command="{Binding VisitWebsiteCommand}"
-                                       Style="{StaticResource DefaultHyperLink}">
-                                <TextBlock Text="{Binding Translation.PrivacyPolicyLink}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </DockPanel>
-                </Border>
-            </StackPanel>
+        <!--Usage statistics info-->
+        <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                    Focusable="{Binding EnableUsageStatistics}">
+            <Border Margin="0 20 0 0" Padding="10 10 10 10"
+                    CornerRadius="2"
+                    Background="White" BorderThickness="0">
+                <DockPanel>
+                    <iconPacks:PackIconMaterialDesign Margin="0" VerticalAlignment="Top"
+                                                      Width="20" Height="20" 
+                                                      Foreground="{StaticResource InfoBrush}" Kind="Info" />
+                    <TextBlock Margin="10 0 0 0" TextWrapping="Wrap" LineHeight="20">
+                        <Run Text="{Binding UsageStatisticsExplanationText, Mode=OneWay}"/>
+                        <LineBreak/>
+                        <Run Text="{Binding Translation.UsageStatisticsManualLinkText, Mode=OneWay}"/>
+                        <Hyperlink Command="{Binding ShowUserGuideCommand}" CommandParameter="{x:Static help:HelpTopic.AppGeneral}"
+                                   Style="{StaticResource DefaultHyperLink}">
+                            <TextBlock Text="{Binding Translation.UsageStatisticsLink}" />
+                        </Hyperlink>
+                        <LineBreak/>
+                        <Run Text="{Binding Translation.PrivacyPolicy, Mode=OneWay}"/>
+                        <Hyperlink NavigateUri="{Binding PrivacyPolicy}"
+                                   Command="{Binding VisitWebsiteCommand}"
+                                   Style="{StaticResource DefaultHyperLink}">
+                            <TextBlock Text="{Binding Translation.PrivacyPolicyLink}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </DockPanel>
+            </Border>
+        </StackPanel>
+            
 
-            <!--Show usage statistics expander-->
+        <!--Show usage statistics expander-->
+        <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                    Focusable="{Binding EnableUsageStatistics}">
             <Expander DockPanel.Dock="Top" Margin="0 20 0 0" 
                       VerticalAlignment="Bottom" HorizontalAlignment="Left"
                       IsExpanded="False"
@@ -93,6 +99,6 @@
                 </StackPanel>
             </Expander>
         </StackPanel>
-        <gpo:GPOLockLayer IsLockedByGpo="{ Binding IsDisabledByGpo }" />
-    </Grid>
+        
+    </StackPanel>
 </UserControl>

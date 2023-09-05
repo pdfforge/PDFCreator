@@ -2,9 +2,11 @@
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Controller.Routing;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands;
@@ -19,6 +21,7 @@ using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
 using Prism.Regions;
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,8 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private readonly ICurrentSettings<Conversion.Settings.UsageStatistics> _usageStatisticsProvider;
         private readonly IVersionHelper _versionHelper;
         private readonly IOnlineVersionHelper _onlineVersionHelper;
-        private readonly SemaphoreSlim _interactionSemaphore = new SemaphoreSlim(1);
-
+        private readonly SemaphoreSlim _interactionSemaphore = new(1);
         public ICommand DismissUsageStatsInfoCommand { get; }
         public ICommand ReadMoreUsageStatsCommand { get; }
 
@@ -53,8 +55,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private bool _updateInfoWasShown;
         private readonly IStartupRoutine _startupRoutine;
         private readonly IPdfEditorHelper _pdfEditorHelper;
-        private readonly EditionHelper _editionHelper;
-        private readonly IOsHelper _osHelper;
+        private readonly ICampaignHelper _campaignHelper;
+
+        public ICommand DismissTrialExpireInfoCommand { get; }
 
         public bool HidePdfArchitectInfo => GpoSettings.HidePdfArchitectInfo || _pdfEditorHelper.UseSodaPdf;
 
@@ -69,12 +72,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             }
         }
 
-        public string UpdateBadge
-        {
-            get => ShowUpdate ? "!" : "";
-        }
-
-        public bool OfferManageLicenses { get; set; }
+        public string UpdateBadge => ShowUpdate ? "!" : "";
 
         public MainShellViewModel(DragAndDropEventHandler dragAndDrop, ITranslationUpdater translation,
             ApplicationNameProvider applicationName, IInteractionRequest interactionRequest,
@@ -83,7 +81,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             IStartupActionHandler startupActionHandler, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider,
             IVersionHelper versionHelper, IOnlineVersionHelper onlineVersionHelper,
             IStartupRoutine startupActions, IPdfEditorHelper pdfEditorHelper,
-            EditionHelper editionHelper, IOsHelper osHelper)
+            ICampaignHelper campaignHelper)
             : base(translation)
         {
             _aggregator = aggregator;
@@ -92,8 +90,6 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             _startupRoutine = startupActions;
             _pdfEditorHelper = pdfEditorHelper;
-            _editionHelper = editionHelper;
-            _osHelper = osHelper;
             _dispatcher = dispatcher;
             _regionManager = regionManager;
             _updateHelper = updateHelper;
@@ -103,15 +99,16 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _versionHelper = versionHelper;
             _onlineVersionHelper = onlineVersionHelper;
             GpoSettings = gpoSettings;
+            _campaignHelper = campaignHelper;
 
-            NavigateCommand = commandLocator?.CreateMacroCommand()
+            NavigateCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<SkipIfSameNavigationTargetCommand>()
                 .AddCommand<EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand>()
                 .AddCommand<ISaveChangedSettingsCommand>()
                 .AddCommand<NavigateToMainTabCommand>()
                 .Build();
 
-            CloseCommand = commandLocator?.CreateMacroCommand()
+            CloseCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand>()
                 .AddCommand<ISaveChangedSettingsCommand>()
                 .AddCommand<IDeleteTempFolderCommand>()
@@ -125,12 +122,16 @@ namespace pdfforge.PDFCreator.UI.Presentation
             aggregator.GetEvent<ForceMainShellNavigation>().Subscribe(OnForcedNavigation);
             aggregator.GetEvent<ExitApplicationEvent>().Subscribe(OnExitApplication);
 
-            ReadMoreUsageStatsCommand = commandLocator?.CreateMacroCommand()
-                .AddCommand(new DelegateCommand(o => { ShowUsageStatsInfo = false; }))
+            ReadMoreUsageStatsCommand = commandLocator.CreateMacroCommand()
+                .AddCommand(new DelegateCommand(_ => { ShowUsageStatsInfo = false; }))
                 .AddCommand(NavigateCommand)
                 .Build();
 
-            DismissUsageStatsInfoCommand = new DelegateCommand(o => { ShowUsageStatsInfo = false; });
+            DismissUsageStatsInfoCommand = new DelegateCommand(_ => { ShowUsageStatsInfo = false; });
+
+            DismissTrialExpireInfoCommand = new DelegateCommand(_ => { ShowTrialRemainingDaysInfo = false; });
+
+            OpenUrlCommand = commandLocator.GetCommand<UrlOpenCommand>();
         }
 
         private void OnCloseMainWindow()
@@ -141,6 +142,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public void Init(Action close)
         {
             _closeViewAction = close;
+            RaisePropertyChanged(nameof(ShowTrialRemainingDaysInfo));
         }
 
         private void OnExitApplication()
@@ -156,19 +158,38 @@ namespace pdfforge.PDFCreator.UI.Presentation
         {
             base.OnTranslationChanged();
             RaisePropertyChanged(nameof(UsageStatisticsInfoText));
+            RaisePropertyChanged(nameof(TrialRemainingDaysInfoText));
         }
 
         public string UsageStatisticsInfoText => Translation.FormatUsageStatisticsInfoText(ApplicationName.ApplicationNameWithEdition);
 
         public bool ShowUsageStatsInfo
         {
-            get { return !GpoSettings.DisableUsageStatistics && _usageStatisticsProvider.Settings.UsageStatsInfo; }
+            get => !GpoSettings.DisableUsageStatistics && _usageStatisticsProvider.Settings.UsageStatsInfo;
             set
             {
                 _usageStatisticsProvider.Settings.UsageStatsInfo = value;
-                RaisePropertyChanged(nameof(ShowUsageStatsInfo));
+                RaisePropertyChanged();
             }
         }
+
+        public string TrialRemainingDaysInfoText => Translation.GetTrialRemainingDaysInfoText(_campaignHelper.TrialRemainingDays);
+
+        public bool ShowTrialHint { get; set; } = true;
+
+        public bool ShowTrialRemainingDaysInfo
+        {
+            get => _campaignHelper.IsTrial && ShowTrialHint;
+            set
+            {
+                ShowTrialHint = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string TrialExtendLink => _campaignHelper.GetTrialExtendLink(Urls.LicenseExtendUrl);
+
+        public ICommand OpenUrlCommand { get; }
 
         private void SetupActivePathInMainShell(IStartupRoutine startupRoutine)
         {
@@ -213,9 +234,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public ICommand DragDropCommand { get; }
 
-        public ICommand NavigateCommand { get; set; }
+        public ICommand NavigateCommand { get; }
 
-        public IMacroCommand CloseCommand { get; set; }
+        public IMacroCommand CloseCommand { get; }
 
         private string _activePath = RegionViewName.HomeView;
 
@@ -226,10 +247,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
                 _activePath = value;
                 RaisePropertyChanged();
             }
-            get
-            {
-                return _activePath;
-            }
+            get => _activePath;
         }
 
         public void PublishMainShellDone()
@@ -245,6 +263,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private SubscriptionToken _showUpdateInteractionEventToken;
         private SubscriptionToken _setShowUpdateEventToken;
         private Action _closeViewAction;
+        private SubscriptionToken _showTrialRemainingDaysEventToken;
 
         public async Task MountViewAsync()
         {
@@ -273,10 +292,19 @@ namespace pdfforge.PDFCreator.UI.Presentation
                 value => ShowUpdate = value
                 );
 
-            OfferManageLicenses = true;
-            if (_editionHelper.IsTerminalServer)
-                OfferManageLicenses = _osHelper.UserIsAdministrator();
-            RaisePropertyChanged(nameof(OfferManageLicenses));
+            _showTrialRemainingDaysEventToken = _eventAggregator.GetEvent<TrialStatusChangedEvent>().Subscribe(
+                () => RaisePropertyChanged(nameof(ShowTrialRemainingDaysInfo))
+                );
+
+            _campaignHelper.PropertyChanged += CampaignHelperOnPropertyChanged;
+            _eventAggregator.GetEvent<TrialStatusChangedEvent>().Subscribe(
+                () => RaisePropertyChanged(nameof(TrialRemainingDaysInfoText)));
+        }
+
+        private void CampaignHelperOnPropertyChanged(object o, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ICampaignHelper.ExtendLicenseUrl))
+                RaisePropertyChanged(nameof(TrialExtendLink));
         }
 
         public async Task UnmountViewAsync()
@@ -286,6 +314,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _eventAggregator.GetEvent<SetShowUpdateEvent>().Unsubscribe(_setShowUpdateEventToken);
 
             _aggregator.GetEvent<CloseMainWindowEvent>().Unsubscribe(OnCloseMainWindow);
+            _eventAggregator.GetEvent<TrialStatusChangedEvent>().Unsubscribe(_showTrialRemainingDaysEventToken);
+
+            _campaignHelper.PropertyChanged -= CampaignHelperOnPropertyChanged;
+            _eventAggregator.GetEvent<TrialStatusChangedEvent>().Unsubscribe(
+                () => RaisePropertyChanged(nameof(TrialRemainingDaysInfoText)));
         }
 
         #region nothing to see here, move along!

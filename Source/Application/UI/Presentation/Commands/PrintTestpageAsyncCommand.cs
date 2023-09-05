@@ -1,18 +1,18 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Logging;
+using pdfforge.PDFCreator.UI.Presentation.Helper.TestPage;
 using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class PrintTestpageAsyncCommand : AsyncCommandBase, IPrintTestPageAsyncCommand
+    public class PrintTestPageAsyncCommand : AsyncCommandBase, IPrintTestPageAsyncCommand
     {
         private readonly ITestPageHelper _testPageHelper;
         private readonly ICurrentSettings<ApplicationSettings> _appSettings;
         private readonly ISelectedProfileProvider _selectedProfileProvider;
 
-        public PrintTestpageAsyncCommand(ITestPageHelper testPageHelper, ICurrentSettings<ApplicationSettings> appSettings, ISelectedProfileProvider selectedProfileProvider)
+        public PrintTestPageAsyncCommand(ITestPageHelper testPageHelper, ICurrentSettings<ApplicationSettings> appSettings, ISelectedProfileProvider selectedProfileProvider)
         {
             _testPageHelper = testPageHelper;
             _appSettings = appSettings;
@@ -26,9 +26,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 LoggingHelper.ChangeLogLevel(_appSettings.Settings.LoggingLevel);
-                _testPageHelper.CreateTestPage(_selectedProfileProvider.SelectedProfile.Name);
+
+                var openDir = bool.Parse(parameter as string ?? string.Empty);
+                _testPageHelper.CreateAndPrintTestPage(_selectedProfileProvider.SelectedProfile, openDir);
             });
         }
     }

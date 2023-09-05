@@ -77,7 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new StringToken("ComputerName", Environment.MachineName));
             tr.AddToken(new NumberToken("Counter", 1234));
             tr.AddToken(new DateToken("DateTime", DateTime.Now));
-            tr.AddToken(new StringToken("InputFilename", _translation.MyFileDocx));
+            tr.AddToken(new StringToken("InputFilename", _translation.InputFilename));
             tr.AddToken(new StringToken("InputDirectory", @"C:\Temp"));
             tr.AddToken(new NumberToken("JobID", 1));
             tr.AddToken(new NumberToken("PageNumber", 1));
@@ -86,9 +86,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new ListToken("OutputFilenames",
                 new[]
                 {
-                    _translation.OutputFilename
-                    , _translation.OutputFilename2
-                    , _translation.OutputFilename3
+                    _translation.OutputFilename,
+                    _translation.OutputFilename2,
+                    _translation.OutputFilename3
                 }));
             tr.AddToken(new StringToken("OutputFilePath", @"C:\Temp"));
             tr.AddToken(new StringToken("PrinterName", "PDFCreator"));

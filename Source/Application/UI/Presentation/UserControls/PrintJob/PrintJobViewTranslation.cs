@@ -4,6 +4,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class PrintJobViewTranslation : ITranslatable
     {
+        private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
         public string AuthorLabel { get; private set; } = "_Author:";
 
         [Context("PrintJobWindowButton")]
@@ -39,5 +40,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string DirectoryLabel { get; private set; } = "_Directory:";
         public string SaveTempOnlyIsEnabled { get; private set; } = "You have selected to save files only temporarily. If you want to set the target directory click here.";
         public string RemoveAds { get; private set; } = "Remove ads";
+
+        public string TrialExtendingLicenseInfo { get; private set; } = "Click here to extend your license.";
+
+        protected string[] TrialExpiringInfo { get; private set; } = { "Your trial license will expire in {0} day.", "Your trial license will expire in {0} days." };
+
+        public string GetTrialRemainingDaysInfoText(int trialRemainingDays)
+        {
+            return PluralBuilder.GetFormattedPlural(trialRemainingDays, TrialExpiringInfo);
+        }
     }
 }

@@ -6,6 +6,7 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeQuickActionViewModel, IsDesignTimeCreatable=True}"
@@ -18,6 +19,7 @@
                 <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
                 <ResourceDictionary Source="../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrue" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel Margin="0 20">
@@ -37,14 +39,16 @@
                          IsReadOnly="True" Background="Transparent"
                          AcceptsReturn="True" />
 
-                <Label Margin="0 20 0 0"
-                       Content="{Binding Translation.SelectFolder}" />
-                <TextBox Margin="0 10 0 0"
-                         TextWrapping="Wrap" Text="{Binding FileDirectory, Mode=OneWay}"
-                         Padding="0"
-                         Height="Auto"
-                         IsReadOnly="True" Background="Transparent"
-                         AcceptsReturn="True" />
+                <StackPanel Margin="0 20 0 0"
+                            Visibility="{Binding IsSaveFileTemporary, Converter={StaticResource CollapsedIfTrue}}">
+                    <Label Content="{Binding Translation.Directory}" />
+                    <TextBox Margin="0 10 0 0"
+                             TextWrapping="Wrap" Text="{Binding FileDirectory, Mode=OneWay}"
+                             Padding="0"
+                             Height="Auto"
+                             IsReadOnly="True" Background="Transparent"
+                             AcceptsReturn="True" />
+                </StackPanel>
 
                 <Label Margin="0 20 0 0"
                        Content="{Binding Translation.TotalFileSize}" />

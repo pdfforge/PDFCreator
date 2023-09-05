@@ -1,21 +1,30 @@
-﻿using pdfforge.PDFCreator.Utilities;
+﻿using pdfforge.PDFCreator.Core.Controller.TestPage;
+using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Diagnostics;
 using System.Text;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Controller
 {
-    public class TestPageCreator
+    public interface ITestPageCreator
+    {
+        string CreateTestPage(string tempFolderPath);
+    }
+
+    public class TestPageCreator : ITestPageCreator
     {
         private readonly ApplicationNameProvider _applicationNameProvider;
         private readonly IVersionHelper _versionHelper;
         private readonly IOsHelper _osHelper;
+        private readonly IFile _file;
 
-        public TestPageCreator(ApplicationNameProvider applicationNameProvider, IVersionHelper versionHelper, IOsHelper osHelper)
+        public TestPageCreator(ApplicationNameProvider applicationNameProvider, IVersionHelper versionHelper, IOsHelper osHelper, IFile file)
         {
             _applicationNameProvider = applicationNameProvider;
             _versionHelper = versionHelper;
             _osHelper = osHelper;
+            _file = file;
         }
 
         public string GetTestFileContent()
@@ -32,11 +41,12 @@ namespace pdfforge.PDFCreator.Core.Controller
             sb.Replace("[INFOCOMPUTER]", Environment.MachineName);
             sb.Replace("[INFOWINDOWS]", _osHelper.GetWindowsVersion());
             sb.Replace("[INFO64BIT]", _osHelper.Is64BitOperatingSystem.ToString());
+            sb.Replace("[USERTOKEN]", "[[[TestUserToken:User Token Value]]]");
 
             return sb.ToString();
         }
 
-        public string GetInfFileContent(string psFilePath)
+        public static string GetInfFileContent(string psFilePath)
         {
             var sb = new StringBuilder();
 
@@ -54,6 +64,29 @@ namespace pdfforge.PDFCreator.Core.Controller
             sb.AppendLine("");
 
             return sb.ToString();
+        }
+
+        public string CreateTestPage(string tempFolderPath)
+        {
+            var psFilePath = WritePsFile(tempFolderPath);
+            var infFilePath = WriteInfFile(tempFolderPath, psFilePath);
+            return infFilePath;
+        }
+
+        private string WritePsFile(string tempFolderPath)
+        {
+            var psFileContent = GetTestFileContent();
+            var psFilePath = PathSafe.Combine(tempFolderPath, "testPage.ps");
+            _file.WriteAllText(psFilePath, psFileContent);
+            return psFilePath;
+        }
+
+        private string WriteInfFile(string tempFolderPath, string psFilePath)
+        {
+            var infFileContent = GetInfFileContent(psFilePath);
+            var infFilePath = PathSafe.Combine(tempFolderPath, "testPage.inf");
+            _file.WriteAllText(infFilePath, infFileContent, Encoding.Unicode);
+            return infFilePath;
         }
     }
 }

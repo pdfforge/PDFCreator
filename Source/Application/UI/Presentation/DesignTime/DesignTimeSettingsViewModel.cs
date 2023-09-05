@@ -1,10 +1,11 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
+﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeSettingsViewModel : ApplicationSettingsViewModel
     {
-        public DesignTimeSettingsViewModel() : base(null)
+        public DesignTimeSettingsViewModel() : base(null, new DesignTimeEventAggregator())
         {
         }
     }

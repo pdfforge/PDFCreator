@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using System.Security.Permissions;
 using System.Text.RegularExpressions;
+using NLog;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Utilities
@@ -13,11 +14,7 @@ namespace pdfforge.PDFCreator.Utilities
         // ReSharper disable once InconsistentNaming
         int MAX_PATH { get; }
 
-        string ELLIPSIS { get; }
-
-        string EllipsisForFilename(string filePath, int maxLength);
-
-        string EllipsisForTooLongPath(string filePath);
+        string CheckAndShortenTooLongPath(string filePath);
 
         bool DirectoryIsEmpty(string path);
 
@@ -32,6 +29,7 @@ namespace pdfforge.PDFCreator.Utilities
 
     public class PathUtil : IPathUtil
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger(); 
         private readonly IDirectory _directory;
         private readonly IPath _path;
 
@@ -43,15 +41,13 @@ namespace pdfforge.PDFCreator.Utilities
 
         public int MAX_PATH => 259;
 
-        public string ELLIPSIS => "__";
-
         /// <summary>
         ///     Adds ellipsis to a path with a length longer than 255.
         /// </summary>
         /// <param name="filePath">full path to file</param>
         /// <param name="maxLength">maximum length of the string. This must be between 10 and MAX_PATH (260)</param>
         /// <returns>file path with ellipsis to ensure length under the max length </returns>
-        public string EllipsisForFilename(string filePath, int maxLength)
+        private string CheckAndShortenTooLongPath(string filePath, int maxLength)
         {
             if (filePath == null)
                 throw new ArgumentNullException(nameof(filePath));
@@ -59,27 +55,26 @@ namespace pdfforge.PDFCreator.Utilities
             if (filePath.EndsWith("\\"))
                 throw new ArgumentException("The path has to be a file", nameof(filePath));
 
-            if (maxLength < 10 || maxLength > MAX_PATH)
-                throw new ArgumentException($"The desired length must be between 10 and {MAX_PATH}", nameof(maxLength));
+            if (maxLength < 3 || maxLength > MAX_PATH)
+                throw new ArgumentOutOfRangeException($"The desired length must be between 10 and {MAX_PATH}", nameof(maxLength));
 
             if (filePath.Length > maxLength)
             {
-                int minUsefulFileLength = 4;
+                int minUsefulFileLength = 2;
 
                 var directory = PathSafe.GetDirectoryName(filePath) ?? "";
                 var file = PathSafe.GetFileNameWithoutExtension(filePath);
                 var extension = PathSafe.GetExtension(filePath);
 
-                var remainingLengthForFile = maxLength - directory.Length - extension.Length - ELLIPSIS.Length - 1; // substract -1 to account for the slash between path and filename
+                var remainingLengthForFile = maxLength - directory.Length - extension.Length - 1; //subtract -1 to account for the slash between path and filename
                 if (remainingLengthForFile < minUsefulFileLength)
                 {
-                    throw new ArgumentException("The path is too long", nameof(filePath)); //!
+                    throw new PathTooLongException($"Path is longer than max length of {maxLength}. It's not possible to shorten the filename to make it fit: {filePath}");
                 }
 
-                var partLength = remainingLengthForFile / 2;
-
-                file = file.Substring(0, partLength) + ELLIPSIS + file.Substring(file.Length - partLength, partLength);
-                filePath = PathSafe.Combine(directory, file + extension);
+                file = file.Substring(0, remainingLengthForFile) + extension;
+                _logger.Warn("Output file path too long. Filename is shortened to " + file);
+                filePath = PathSafe.Combine(directory, file);
             }
 
             return filePath;
@@ -90,9 +85,9 @@ namespace pdfforge.PDFCreator.Utilities
         /// </summary>
         /// <param name="filePath">full path to file</param>
         /// <returns>file path with ellipsis to ensure length under 255 </returns>
-        public string EllipsisForTooLongPath(string filePath)
+        public string CheckAndShortenTooLongPath(string filePath)
         {
-            return EllipsisForFilename(filePath, MAX_PATH);
+            return CheckAndShortenTooLongPath(filePath, MAX_PATH);
         }
 
         /// <summary>
@@ -131,7 +126,7 @@ namespace pdfforge.PDFCreator.Utilities
 
         public PathUtilStatus IsValidRootedPathWithResponse(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrWhiteSpace(path))
                 return PathUtilStatus.PathWasNullOrEmpty;
 
             if (path.Length < 3)
@@ -139,6 +134,9 @@ namespace pdfforge.PDFCreator.Utilities
 
             if (((path.IndexOf(":", StringComparison.Ordinal) != 1) || (path.IndexOf("\\", StringComparison.Ordinal) != 2)) && !path.StartsWith(@"\\"))
                 return PathUtilStatus.InvalidRootedPath;
+
+            if (path.Length > MAX_PATH)
+                return PathUtilStatus.PathTooLongEx;
 
             try
             {

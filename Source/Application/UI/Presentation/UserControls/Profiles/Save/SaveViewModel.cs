@@ -1,7 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.Controls;
@@ -31,6 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public bool IsServer { get; private set; }
         public bool AllowNotifications { get; }
         public bool AllowSkipPrintDialog { get; }
+        public bool ShowUserTokenUsedTargetFolderWarning { get; set; }
 
         public string StatusText
         {
@@ -133,6 +133,20 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(FileNameViewModel));
             RaisePropertyChanged(nameof(FolderViewModel));
             RaisePropertyChanged(nameof(HasNoSendActionForSavingTempOnly));
+            IsUserTokenUsedTargetFolderServer();
+            RaisePropertyChanged(nameof(ShowUserTokenUsedTargetFolderWarning));
+        }
+
+        private void IsUserTokenUsedTargetFolderServer()
+        {
+            ShowUserTokenUsedTargetFolderWarning = false;
+            if (IsServer && !TemporarySaveFiles)
+            {
+                var token = FileNameViewModel.CurrentValue?.TargetDirectory;
+                var isUserTokenUsedTargetFolder = _tokenHelper.TokenWarningCheck(token, CurrentProfile);
+                ShowUserTokenUsedTargetFolderWarning = isUserTokenUsedTargetFolder == TokenWarningCheckResult.RequiresEnablingUserTokens;
+            }
+            RaisePropertyChanged(nameof(ShowUserTokenUsedTargetFolderWarning));
         }
 
         public override void MountView()
@@ -141,20 +155,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             FolderViewModel.MountView();
             RaisePropertyChanged(nameof(FileNameViewModel));
             RaisePropertyChanged(nameof(FolderViewModel));
+            FolderViewModel.TextChanged += FolderViewModelOnTextChanged;
             CurrentProfile.PropertyChanged += StatusChanged;
-            // CurrentProfile.AutoSave.PropertyChanged += StatusChanged;
-
             base.MountView();
+        }
+
+        private void FolderViewModelOnTextChanged(object sender, EventArgs e)
+        {
+            IsUserTokenUsedTargetFolderServer();
         }
 
         public override void UnmountView()
         {
             base.UnmountView();
-
             FileNameViewModel.UnmountView();
             FolderViewModel.UnmountView();
+
+            FolderViewModel.TextChanged -= FolderViewModelOnTextChanged;
+
             CurrentProfile.PropertyChanged -= StatusChanged;
-            //  CurrentProfile.AutoSave.PropertyChanged -= StatusChanged;
         }
 
         private void StatusChanged(object sender, EventArgs e)
@@ -179,6 +198,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 CurrentProfile.SaveFileTemporary = value;
                 RaisePropertyChanged(nameof(HasNoSendActionForSavingTempOnly));
+                IsUserTokenUsedTargetFolderServer();
             }
         }
 
