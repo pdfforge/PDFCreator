@@ -42,5 +42,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         {
             return new ActionResult();
         }
+
+        public bool DoesProfileContainRestrictedActions(ConversionProfile profile)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Ghostscript C Coding Guidelines
@@ -6,14 +6,14 @@
 
 .. include:: header.rst
 
-.. _C-style.htm:
+.. _C-style.html:
 
 
 Ghostscript C Coding Guidelines
 ===================================
 
 
-This document describes Ghostscript's C coding conventions. It is primarily prescriptive, documenting what developers should do when writing new code; the companion :ref:`developer documentation<Develop.htm>` is primarily descriptive, documenting the way things are.
+This document describes Ghostscript's C coding conventions. It is primarily prescriptive, documenting what developers should do when writing new code; the companion :ref:`developer documentation<Develop.html>` is primarily descriptive, documenting the way things are.
 
 We encourage following the general language usage and stylistic rules for any code that will be integrated with Ghostscript, even if the code doesn't use Ghostscript's run-time facilities or have anything to do with PostScript, PDF, or page description languages. Ghostscript itself follows some additional conventions; these are documented separately under :ref:`Ghostscript conventions<Conventions>` below.
 

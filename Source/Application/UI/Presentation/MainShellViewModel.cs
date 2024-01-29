@@ -56,6 +56,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         private readonly IStartupRoutine _startupRoutine;
         private readonly IPdfEditorHelper _pdfEditorHelper;
         private readonly ICampaignHelper _campaignHelper;
+        private readonly ApplicationNameProvider _applicationNameProvider;
 
         public ICommand DismissTrialExpireInfoCommand { get; }
 
@@ -81,7 +82,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
             IStartupActionHandler startupActionHandler, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider,
             IVersionHelper versionHelper, IOnlineVersionHelper onlineVersionHelper,
             IStartupRoutine startupActions, IPdfEditorHelper pdfEditorHelper,
-            ICampaignHelper campaignHelper)
+            ICampaignHelper campaignHelper,
+            ApplicationNameProvider applicationNameProvider)
             : base(translation)
         {
             _aggregator = aggregator;
@@ -100,6 +102,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _onlineVersionHelper = onlineVersionHelper;
             GpoSettings = gpoSettings;
             _campaignHelper = campaignHelper;
+            _applicationNameProvider = applicationNameProvider;
 
             NavigateCommand = commandLocator.CreateMacroCommand()
                 .AddCommand<SkipIfSameNavigationTargetCommand>()
@@ -187,7 +190,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
             }
         }
 
-        public string TrialExtendLink => _campaignHelper.GetTrialExtendLink(Urls.LicenseExtendUrl);
+        private string FallbackUrl => Urls.GetExtendLicenseFallbackUrl(_applicationNameProvider.EditionName);
+
+        public string TrialExtendLink => _campaignHelper.GetTrialExtendLink(FallbackUrl);
 
         public ICommand OpenUrlCommand { get; }
 

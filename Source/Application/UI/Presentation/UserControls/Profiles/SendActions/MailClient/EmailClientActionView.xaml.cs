@@ -1,7 +1,6 @@
-﻿using System.Windows.Controls;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background;
+﻿using pdfforge.PDFCreator.UI.Presentation.Helper;
 using Prism.Regions;
+using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailClient
 {

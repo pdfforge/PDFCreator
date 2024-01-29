@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using System;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants

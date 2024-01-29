@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: PostScript Files Distributed with Ghostscript
 
 .. include:: header.rst
 
-.. _Psfiles.htm:
+.. _Psfiles.html:
 
 
 PostScript Files Distributed with Ghostscript
@@ -188,7 +188,7 @@ Unless otherwise stated, these files are found in the ``Resource/Init`` subdirec
    Sets a number of alternate defaults to make Ghostscript behave more like Adobe CPSI. Useful for running the CET conformance test suite.
 
 ``gs_diskn.ps``
-   This file implements the ``%disk IODevice`` (``diskn.dev`` feature). See the :ref:`language documentation<Language.htm>` for information on the use of the ``%disk#`` devices. These PostScript modifications primarily perform the searching of all ``Searchable`` file systems in a defined ``SearchOrder`` when a file reference does not contain an explicit ``%device%`` specifier (such as ``%os%`` or ``%disk0%``). This is required to emulate undocumented behaviour of Adobe PostScript printers that have a disk and was experimentally determined.
+   This file implements the ``%disk IODevice`` (``diskn.dev`` feature). See the :ref:`language documentation<Language.html>` for information on the use of the ``%disk#`` devices. These PostScript modifications primarily perform the searching of all ``Searchable`` file systems in a defined ``SearchOrder`` when a file reference does not contain an explicit ``%device%`` specifier (such as ``%os%`` or ``%disk0%``). This is required to emulate undocumented behaviour of Adobe PostScript printers that have a disk and was experimentally determined.
 
 ``gs_kanji.ps``
    This file provides support for the Wadalab free Kanji font. It is not included automatically in any configuration. This file is stored in the ``lib`` subdirectory.

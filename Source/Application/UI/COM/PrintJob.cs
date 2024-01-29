@@ -28,6 +28,8 @@ namespace pdfforge.PDFCreator.UI.COM
 
         void SetProfileByGuid(string profileGuid);
 
+        void SetProfileByGuidOrName(string profileGuid);
+
         OutputFiles GetOutputFiles { get; }
 
         void ConvertTo(string fullFileName);
@@ -85,6 +87,15 @@ namespace pdfforge.PDFCreator.UI.COM
         public void SetProfileByGuid(string profileGuid)
         {
             _printJobAdapter.SetProfileByGuid(profileGuid);
+        }
+
+        /// <summary>
+        /// Sets the profile by guid or name to use for COM conversion
+        /// </summary>
+        /// <param name="profileGuid"></param>
+        public void SetProfileByGuidOrName(string profileGuid)
+        {
+            _printJobAdapter.SetProfileByGuidOrName(profileGuid);
         }
 
         /// <summary>

@@ -9,7 +9,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
         public string DefaultSettingsControlHeader { get; private set; } = "Default Settings";
         public string ExportSettingsControlHeader { get; private set; } = "Export Settings";
         public string LoadSettingsButtonContent { get; private set; } = "Load settings from file";
-        public string LoadSingleProfileFromFile { get; private set; } = "Load specific profiles from file";
+        public string LoadSpecificProfilesFromFile { get; private set; } = "Load specific profiles from file";
+        public string LoadSpecificQueuesFromFile { get; private set; } = "Load specific queues from file";
         public string LogFileClearedText { get; private set; } = "Log file cleared";
         public string LoggingControlHeader { get; private set; } = "Logging";
         public string LoggingLevelLabelText { get; private set; } = "Logging Level:";

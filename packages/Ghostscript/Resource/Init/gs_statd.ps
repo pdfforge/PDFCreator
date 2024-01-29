@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -9,8 +9,8 @@
 % of the license contained in the file LICENSE in this distribution.
 %
 % Refer to licensing information at http://www.artifex.com or contact
-% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
-% CA 94945, U.S.A., +1(415)492-9861, for further information.
+% Artifex Software, Inc.,  39 Mesa Street, Suite 108A, San Francisco,
+% CA 94129, USA, for further information.
 %
 
 % This file provides statusdict, serverdict, and assorted LaserWriter
@@ -42,7 +42,7 @@ statusdict begin
 
 % Keep the table of named paper sizes as procedures. Reuse them later
 % as compatibility operators.
-/.pagetypeprocs 70 dict begin
+/.pagetypeprocs 81 dict begin
 
 % Define various paper formats.  The Adobe documentation defines only these:
 % 11x17, a3, a4, a4small, b5, ledger, legal, letter, lettersmall, note.
@@ -116,6 +116,11 @@ statusdict begin
  /archC {1296 1728 //.setpagesize stopped { pop pop /archC $error /errorname get signalerror } if } bind def
  /archB {864 1296 //.setpagesize stopped { pop pop /archB $error /errorname get signalerror } if } bind def
  /archA {648 864 //.setpagesize stopped { pop pop /archA $error /errorname get signalerror } if } bind def
+ /archa /archA load def
+ /archb /archB load def
+ /archc /archC load def
+ /archd /archD load def
+ /arche /archE load def
         % Other paper sizes
  /flsa {612 936 //.setpagesize stopped { pop pop /flsa $error /errorname get signalerror } if } bind def  % U.S. foolscap
  /flse {612 936 //.setpagesize stopped { pop pop /flse $error /errorname get signalerror } if } bind def  % European foolscap
@@ -132,6 +137,12 @@ statusdict begin
  /ANSI_D {1585 2448 //.setpagesize stopped { pop pop /ANSI_D $error /errorname get signalerror } if } bind def
  /ANSI_E {2448 3168 //.setpagesize stopped { pop pop /ANSI_E $error /errorname get signalerror } if } bind def
  /ANSI_F {2016 2880 //.setpagesize stopped { pop pop /ANSI_F $error /errorname get signalerror } if } bind def
+ /ansi_a /ANSI_A load def
+ /ansi_b /ANSI_B load def
+ /ansi_c /ANSI_C load def
+ /ansi_d /ANSI_D load def
+ /ansi_e /ANSI_E load def
+ /ansi_f /ANSI_F load def
 %END SIZES
 currentdict end
 userdict begin dup { def } forall end  % reuse!

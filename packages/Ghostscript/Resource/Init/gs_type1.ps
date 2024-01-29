@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2022 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -9,8 +9,8 @@
 % of the license contained in the file LICENSE in this distribution.
 %
 % Refer to licensing information at http://www.artifex.com or contact
-% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
-% CA 94945, U.S.A., +1(415)492-9861, for further information.
+% Artifex Software, Inc.,  39 Mesa Street, Suite 108A, San Francisco,
+% CA 94129, USA, for further information.
 %
 
 % Type 1 font support code.
@@ -75,9 +75,10 @@
          % 16 bytes is arbitrary, but should be large enough to hold any "uniXXXX" style name
          //ReverseAdobeGlyphList //AdobeGlyphList 3 -1 roll
                                                              % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict)
-         dup
-         {                                                   % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) gname cstring
-           exch dup                                          % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname gname
+         [ 1 index {pop} forall ]                            % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) [ glyph names ]
+         {                                                   % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) gname
+           1 index 1 index get                               % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname
+           exch dup
            4 index exch .knownget
            { //true}
            {                                                 % scratch(string) RAGL(dict) AGL(dict) CharStrings(dict) cstring gname
@@ -86,7 +87,7 @@
              {
                % if we couldn't derive the code point from the AGL, we might derive it
                % from a formatted "uniXXXX" name.
-               dup <00000000000000000000000000000000> cvs dup flush (uni) anchorsearch
+               dup (0000000000000000) cvs dup (uni) anchorsearch
                {
                  % as luck would have it, we can just replace the "uni" with "16#"
                  % to get something we can convert to a number

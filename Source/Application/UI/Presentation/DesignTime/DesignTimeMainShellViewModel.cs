@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             new ThreadManager()), new DesignTimeApplicationNameProvider(), new InteractionRequest(),
             new EventAggregator(), new DesignTimeCommandLocator(), null, null, null, null, null, null,
             new DesignTimeCurrentSettings<Conversion.Settings.UsageStatistics>(),
-            new DesignTimeVersionHelper(), null, null, new DesignTimePdfEditorHelper(), new CampaignHelper())
+            new DesignTimeVersionHelper(), null, null, new DesignTimePdfEditorHelper(), new CampaignHelper(), new DesignTimeApplicationNameProvider())
         {
         }
     }

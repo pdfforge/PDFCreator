@@ -12,6 +12,8 @@ using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.Interface;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Mail;
+using pdfforge.PDFCreator.Conversion.Actions.AttachToOutlookItem;
 using pdfforge.PDFCreator.Conversion.Actions.Queries;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.ConverterInterface;
@@ -106,6 +108,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActio
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Dropbox;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.EmailWeb;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.FTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.HTTP;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailClient;
@@ -233,6 +236,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ISmtpTest, SmtpTestMailAssistant>();
             container.Register<IClientTestMailAssistant, ClientTestMailAssistant>();
             container.Register<IMailHelper, MailHelper>();
+            container.Register<IAttachToOutlookItem, AttachToOutlookItem>();
+            container.Register<IAttachToOutlookItemAssistant, AttachToOutlookItemAssistant>();
             container.Register<ITestFileDummyHelper, TestFileDummyHelper>();
             container.RegisterSingleton<ITempDirectoryHelper, TempDirectoryHelper>();
 
@@ -399,15 +404,18 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.RegisterSingleton<IRegionHelper, RegionHelper>();
             container.Register<ISaveChangedSettingsCommand, SaveChangedSettingsCommand>();
+            container.RegisterSingleton<IGraphManager, GraphManager>();
             container.RegisterInitializer<FtpAccountViewModel>(model => model.AllowConversionInterrupts = true);
             container.RegisterInitializer<HttpAccountViewModel>(model => model.AllowConversionInterrupts = true);
             container.RegisterInitializer<SmtpAccountViewModel>(model => model.AllowConversionInterrupts = true);
             container.RegisterInitializer<PrintActionViewModel>(model => model.PrinterDialogOptionEnabled = true);
+
             container.RegisterSingleton<IWorkflowEditorSubViewProvider>(() => new WorkflowEditorSubViewProvider(nameof(SaveView), nameof(MetadataView), nameof(OutputFormatView)));
             container.RegisterSingleton<IGpoSettings>(GetGpoSettings);
             container.Register<UsageStatisticsViewModelBase, PdfCreatorUsageStatisticsViewModel>();
             container.Register<RestoreSettingsViewModelBase, RestoreSettingsViewModel>();
             container.Register<TestPageSettingsViewModelBase, CreatorTestPageSettingsViewModel>();
+            container.Register<LoadSpecificProfileViewModelBase, LoadSpecificProfileViewModel>();
             container.RegisterSingleton<IPositionToUnitConverterFactory, PositionToUnitConverterFactory>();
             container.RegisterSingleton<ISignaturePositionAndSizeHelper, SignaturePositionAndSizeHelper>();
             container.RegisterSingleton<ZxcvbnProvider>();
@@ -574,7 +582,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 (RegionNames.DebugSettingsTabContentRegion, typeof(RestoreSettingsView)),
                 (RegionNames.DebugSettingsTabContentRegion, typeof(ExportSettingView)),
 
-                (RegionNames.DirectConversionTabContentRegion, typeof(DirectConvertView))
+                (RegionNames.DirectConversionTabContentRegion, typeof(DirectConvertView)),
+                (RegionNames.PrinterSaveButtonRegion, typeof(SaveButtonControl))
             };
         }
 
@@ -779,7 +788,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(OpenFileAction),
                 typeof(ScriptAction),
                 typeof(PrintingAction),
-                typeof(EMailClientAction),
+                typeof(MailClientAction),
+                typeof(MailWebAction),
                 typeof(SmtpMailAction),
                 typeof(DropboxAction),
                 typeof(FtpAction),
@@ -810,6 +820,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
                 // send action
                 typeof(PresenterActionFacade<EmailClientActionView, EMailClientActionViewModel>),
+                typeof(PresenterActionFacade<EmailWebActionView, MailWebActionViewModel>),
                 typeof(PresenterActionFacade<SmtpActionView, SmtpActionViewModel>),
                 typeof(PresenterActionFacade<OpenViewerActionView, OpenViewerActionViewModel>),
                 typeof(PresenterActionFacade<ScriptActionView, ScriptActionViewModel>),
@@ -828,7 +839,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             }
 
             container.Register<ISmtpMailAction, SmtpMailAction>();
-            container.Register<IEMailClientAction, EMailClientAction>();
+            container.Register<IEMailClientAction, MailClientAction>();
             container.Register<IOpenFileAction, OpenFileAction>();
             container.Register<IHttpAction, HttpAction>();
 

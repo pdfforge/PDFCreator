@@ -23,6 +23,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
         ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
         ActionResult CheckJob(Job job);
+
+        bool DoesProfileContainRestrictedActions(ConversionProfile profile);
     }
 
     public class ProfileChecker : IProfileChecker
@@ -55,6 +57,16 @@ namespace pdfforge.PDFCreator.Core.Workflow
         public ActionResult CheckTargetDirectory(ConversionProfile profile)
         {
             return CheckTargetDirectory(profile, CheckLevel.EditingProfile);
+        }
+
+        public bool DoesProfileContainRestrictedActions(ConversionProfile profile)
+        {
+            foreach (var action in _actions)
+            {
+                if (action.IsEnabled(profile) && action.IsRestricted(profile))
+                    return true;
+            }
+            return false;
         }
 
         private ActionResult ProfileCheck(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)

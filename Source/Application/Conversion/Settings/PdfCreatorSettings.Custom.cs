@@ -43,13 +43,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
         /// <param name="nameOrGuid">Profilename or Guid</param>
         /// <returns>The first Conversionprofile with the given name or first with Guid. Returns null, if no profile with given name/guid exists.</returns>
 
-        public ConversionProfile GetProfileByNameOrGuid(string nameOrGuid)
+        public ConversionProfile GetProfileByGuidOrName(string nameOrGuid)
         {
             //Ignore empty names 
             if (string.IsNullOrWhiteSpace(nameOrGuid))
                 return null;
 
-            var profile = GetProfileByName(nameOrGuid) ?? GetProfileByGuid(nameOrGuid);
+            var profile = GetProfileByGuid(nameOrGuid) ?? GetProfileByName(nameOrGuid);
             return profile;
         }
 

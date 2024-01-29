@@ -13,6 +13,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 
             return DropboxAccounts.FirstOrDefault(x => x.AccountId == dropboxAccountId);
         }
+        public MicrosoftAccount GetMicrosoftAccount(ConversionProfile profile)
+        {
+            var accountId = profile.EmailWebSettings.AccountId;
+
+            if (string.IsNullOrWhiteSpace(accountId))
+                // TODO: This is a workaround for PC-4290. Remove it after we support multiple accounts. 
+                return MicrosoftAccounts.FirstOrDefault();// return null;
+
+            return MicrosoftAccounts.FirstOrDefault(x => x.AccountId == accountId);
+        }
 
         public HttpAccount GetHttpAccount(ConversionProfile profile)
         {

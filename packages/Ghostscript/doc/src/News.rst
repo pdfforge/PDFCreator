@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: News
@@ -6,13 +6,13 @@
 
 .. include:: header.rst
 
-.. _News.htm:
+.. _News.html:
 
 News
 ============================================
 
 .. raw:: html
-   :file: ../News.htm
+   :file: ../News.html
 
 
 

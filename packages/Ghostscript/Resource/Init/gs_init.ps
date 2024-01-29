@@ -9,8 +9,8 @@
 % of the license contained in the file LICENSE in this distribution.
 %
 % Refer to licensing information at http://www.artifex.com or contact
-% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
-% CA 94945, U.S.A., +1(415)492-9861, for further information.
+% Artifex Software, Inc.,  39 Mesa Street, Suite 108A, San Francisco,
+% CA 94129, USA, for further information.
 %
 
 % Initialization file for the interpreter.
@@ -34,7 +34,7 @@
 % Interpreter library version number
 % NOTE: the interpreter code requires that the first non-comment token
 % in this file be an integer, and that it match the compiled-in version!
-10012
+10021
 
 % Check the interpreter revision.
 dup revision ne
@@ -892,16 +892,13 @@ currentdict /.makeinternaldict .undef
 /write= {
         1 index exch write=only (\n) writestring
 } bind def
-/=only	{ (%stdout) (w) file exch write=only } bind def
+/=only	{ (%stdout) (w) file exch write=only } bind odef
 /=	{ =only (\n) print } bind def
 /=print	/=only load def
 % Temporarily define == as = for the sake of runlibfile0.
 /== /= load def
 
 % The following procedures are documented.
-/copydevice {		% <device> copydevice <newdevice>
-  //false .copydevice2
-} odef
 /finddevice {		% <devicename> finddevice <device>
   /devicedict .systemvar exch get
   dup 1 get //null eq {
@@ -909,13 +906,10 @@ currentdict /.makeinternaldict .undef
                 % Create a default instance now.
                 % Stack: [proto null]
     .currentglobal //true .setglobal exch
-    dup dup 0 get copydevice 1 exch put
+    dup dup 0 get //false .copydevice2 1 exch put
     exch .setglobal
   } if 1 get
-} bind def
-/findprotodevice {	% <devicename> findprotodevice <protodevice>
-  /devicedict .systemvar exch get 0 get
-} bind def
+} bind executeonly odef
 
 % Run a resource file.  This allows us to distinguish resource objects
 % from objects coming from input files.
@@ -1012,12 +1006,13 @@ currentdict /runlibfile0 .undef
       (; OffendingCommand: ) print =only ( ]%%) =
     }
     { (Unrecoverable error: ) print =only flush
-      ( in ) print = flush
+      ( in ) print =only flush
       count 2 gt
        { (Operand stack:\n  ) print
          count 1 sub -1 2 { (  ) print index =only flush } for
-         () = flush
+         () =only
        } if
+       (\n) =only flush
     }
    ifelse
    -1 0 1 //ErrorNames length 1 sub
@@ -1089,7 +1084,7 @@ currentdict /.unstoppederrorhandler .undef
            }
            {
              exch print exch		% print heading. stack <==flag> <stack>
-             1 index not { () = } if
+             1 index not { () =only } if
              { 1 index { (\n    ) } { (   ) } ifelse print
                dup type /dicttype eq
                {
@@ -1128,7 +1123,7 @@ currentdict /.unstoppederrorhandler .undef
        errorname /VMerror eq
         { (VM status:) print mark vmstatus
           counttomark { ( ) print counttomark -1 roll dup =only } repeat
-          cleartomark () =
+          cleartomark () =only
         } if
 
        .languagelevel 2 ge
@@ -1139,8 +1134,8 @@ currentdict /.unstoppederrorhandler .undef
        .oserrno dup 0 ne
         { (Last OS error: ) print
           errorname /VMerror ne
-           { dup .oserrorstring { = pop } { = } ifelse }
-           { = }
+           { dup .oserrorstring { =only pop } { =only } ifelse }
+           { =only }
           ifelse
         }
         { pop
@@ -2219,6 +2214,7 @@ readonly def
   /.setdotlength             % Bug687720.ps
   /.sort /.setdebug /.mementolistnewblocks /getenv
   /unread
+  /makeimagedevice
   ]
   {systemdict exch .forceundef} forall
 
@@ -2407,6 +2403,15 @@ currentdict /.locksafeglobal .undef
 
 %% ---------------- SAFER stuff END -------------------%%
 
+/UndefinePostScriptFilters {
+  [
+   /BCPEncode /TBCPEncode /PNGPredictorEncode /PNGPredictorDecode /PixelDifferenceDecode /PixelDifferenceEncode
+   /zlibEncode /zlibDecode /PWGDecode /eexecEncode /ArcfourEncode /PSStringEncode /BCPDecode
+   /OLDPDF where {/OLDPDF get not {/SHA256Encode /MD5Encode /AESDecode /JPXDecode /JBIG2Decode /ArcfourDecode /.EOFDecode} if} if
+  ]
+  {filterdict exch undef} forall
+} .bind executeonly def
+
 /UndefinePostScriptOperators {
   % This list is of operators which no longer appear to be used, and which we do not believe
   % to have any real use. For now we will undefine the operstors so they cannot easily be used
@@ -2444,10 +2449,10 @@ currentdict /.locksafeglobal .undef
   /.getshowoperator /.getnativefonts /.beginform /.endform /.get_form_id /.repeatform /.reusablestream /.rsdparams
   /.buildfunction /.sethpglpathmode /.currenthpglpathmode
   /.currenthalftone /.sethalftone5 /.image1 /.imagemask1 /.image3 /.image4
-  /.getiodevice /.getdevparms /.putdevparams /.bbox_transform /.matchmedia /.matchpagesize /.defaultpapersize
+  /.getiodevice /.getdevparms /.putdevparams
+  /.matchmedia /.matchpagesize /.defaultpapersize
   /.oserrno /.setoserrno /.oserrorstring /.getCPSImode
   /.getscanconverter /.setscanconverter /.type1encrypt /.type1decrypt/.languagelevel /.setlanguagelevel /.eqproc /.fillpage
-  /.saslprep
   /.shfill /.argindex /.bytestring /.namestring /.stringbreak /.stringmatch /.globalvmarray /.globalvmdict /.globalvmpackedarray /.globalvmstring
   /.localvmarray /.localvmdict /.localvmpackedarray /.localvmstring /.systemvmarray /.systemvmdict /.systemvmpackedarray /.systemvmstring /.systemvmfile /.systemvmlibfile
   /.systemvmSFD /.settrapparams /.currentsystemparams /.currentuserparams /.getsystemparam /.getuserparam /.setsystemparams /.setuserparams
@@ -2478,6 +2483,9 @@ currentdict /.locksafeglobal .undef
   /odef
   /.packtomark
   /.putdeviceprops
+  /putdeviceprops
+  /getdeviceprops
+  /finddevice
   /.growdict /.growdictlength
   /.userdict /.uservar
   /.getdefaulthalftone
@@ -2545,6 +2553,7 @@ currentdict /.locksafeglobal .undef
   ]
   {statusdict exch .forceundef} forall
 
+  //systemdict /UndefinePostScriptFilters .forceundef
   //systemdict /UndefinePostScriptOperators .forceundef
 } .bind executeonly def % must be bound and hidden for .forceundef
 
@@ -2565,6 +2574,7 @@ currentdict /.locksafeglobal .undef
   SAFER {
     //systemdict /SAFERUndefinePostScriptOperators get exec
   } if
+  //systemdict /UndefinePostScriptFilters get exec
   //systemdict /UndefinePostScriptOperators get exec
   //systemdict /.forcecopynew .forceundef	% remove temptation
   //systemdict /.forceput .forceundef		% ditto
@@ -2652,6 +2662,7 @@ FontDirectory readonly pop
 % If we are using DELAYBIND we have to defer the undefinition
 % until .bindnow.
 DELAYBIND not {
+  //systemdict /UndefinePostScriptFilters get exec
   //systemdict /UndefinePostScriptOperators get exec
 } if
 end

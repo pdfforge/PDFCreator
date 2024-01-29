@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Python
@@ -10,7 +10,7 @@
 Introduction
 =================
 
-The Python API is provided by the file :ref:`gsapi.py<python gsapi>` - this is the binding to the :ref:`Ghostscript C library<API.htm exported functions>`.
+The Python API is provided by the file :ref:`gsapi.py<python gsapi>` - this is the binding to the :ref:`Ghostscript C library<API.html exported functions>`.
 
 In the :title:`GhostPDL` repository sample Python examples can be found in ``/demos/python/examples.py``.
 
@@ -21,7 +21,7 @@ Platform & setup
 
 Ghostscript should be built as a shared library for your platform.
 
-See :ref:`Building Ghostscript<Make.htm>`.
+See :ref:`Building Ghostscript<Make.html>`.
 
 
 
@@ -128,7 +128,7 @@ This method returns the revision numbers and strings of the Ghostscript interpre
    print(version_info)
 
 
-**C code reference**: :ref:`gsapi_revision<API.htm gsapi_revision>`
+**C code reference**: :ref:`gsapi_revision<API.html gsapi_revision>`
 
 
 
@@ -155,7 +155,7 @@ Returns a new instance of Ghostscript to be used with other :ref:`gsapi_*()<pyth
    instance = gsapi.gsapi_new_instance(1)
 
 
-**C code reference**: :ref:`gsapi_new_instance<API.htm gsapi_new_instance>`
+**C code reference**: :ref:`gsapi_new_instance<API.html gsapi_new_instance>`
 
 
 .. _python gsapi_delete_instance:
@@ -178,7 +178,7 @@ Destroy an instance of Ghostscript. Before you call this, Ghostscript should ens
    gsapi.gsapi_delete_instance(instance)
 
 
-**C code reference**: :ref:`gsapi_delete_instance<API.htm gsapi_delete_instance>`
+**C code reference**: :ref:`gsapi_delete_instance<API.html gsapi_delete_instance>`
 
 .. _python gsapi_set_stdio:
 
@@ -225,7 +225,7 @@ Should return the number of bytes of text that they handled; for convenience ``N
    print('gsapi_set_stdio() ok.')
 
 
-**C code reference**: :ref:`gsapi_set_stdio<API.htm gsapi_set_stdio>`
+**C code reference**: :ref:`gsapi_set_stdio<API.html gsapi_set_stdio>`
 
 .. _python gsapi_set_poll:
 
@@ -254,7 +254,7 @@ Set the callback function for polling.
    print('gsapi_set_poll() ok.')
 
 
-**C code reference**: :ref:`gsapi_set_poll<API.htm gsapi_set_poll>`
+**C code reference**: :ref:`gsapi_set_poll<API.html gsapi_set_poll>`
 
 .. _python gsapi_set_display_callback:
 
@@ -280,7 +280,7 @@ Sets the display callback.
    print('gsapi_set_display_callback() ok.')
 
 
-**C code reference**: :ref:`gsapi_set_display_callback<API.htm gsapi_set_display_callback>`
+**C code reference**: :ref:`gsapi_set_display_callback<API.html gsapi_set_display_callback>`
 
 .. _python gsapi_set_arg_encoding:
 
@@ -324,7 +324,7 @@ This must be called after :ref:`gsapi_new_instance<python gsapi_new_instance>` a
 
 
 
-**C code reference**: :ref:`gsapi_set_arg_encoding<API.htm gsapi_set_arg_encoding>`
+**C code reference**: :ref:`gsapi_set_arg_encoding<API.html gsapi_set_arg_encoding>`
 
 
 .. _python gsapi_set_default_device_list:
@@ -352,7 +352,7 @@ Set the string containing the list of default device names, for example "display
 
 
 
-**C code reference**: :ref:`gsapi_set_default_device_list<API.htm gsapi_set_default_device_list>`
+**C code reference**: :ref:`gsapi_set_default_device_list<API.html gsapi_set_default_device_list>`
 
 
 .. _python gsapi_get_default_device_list:
@@ -377,7 +377,7 @@ Returns a string containing the list of default device names. This must be calle
    print(device_list)
 
 
-**C code reference**: :ref:`gsapi_get_default_device_list<API.htm gsapi_get_default_device_list>`
+**C code reference**: :ref:`gsapi_get_default_device_list<API.html gsapi_get_default_device_list>`
 
 
 .. _python gsapi_init_with_args:
@@ -407,7 +407,7 @@ To initialise the interpreter, pass your ``instance`` of Ghostscript and your ar
              '-o', out_filename, '-f', in_filename]
    gsapi.gsapi_init_with_args(instance, params)
 
-**C code reference**: :ref:`gsapi_init_with_args<API.htm gsapi_init_with_args>`
+**C code reference**: :ref:`gsapi_init_with_args<API.html gsapi_init_with_args>`
 
 .. _python gsapi_run_asterisk:
 
@@ -431,7 +431,7 @@ For full details on these return codes please see :ref:`The C API return codes<A
    The ``user_errors`` argument is normally set to zero to indicate that errors should be handled through the normal mechanisms within the interpreted code. If set to a negative value, the functions will return an error code directly to the caller, bypassing the interpreted language. The interpreted language's error handler is bypassed, regardless of ``user_errors`` parameter, for the ``gs_error_interrupt`` generated when the polling callback returns a negative value. A positive ``user_errors`` is treated the same as zero.
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 .. _python gsapi_run_string_begin:
 
@@ -455,7 +455,7 @@ Starts a ``run_string_`` operation.
 
    exitcode = gsapi.gsapi_run_string_begin(instance, 0)
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 
 .. _python gsapi_run_string_continue:
@@ -495,7 +495,7 @@ Processes file byte data (``str_``) to feed as chunks into Ghostscript. This met
    For the return code, we don't raise an exception for ``gs_error_NeedInput``.
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 
 .. _python gsapi_run_string_with_length:
@@ -533,7 +533,7 @@ Processes file byte data (``str_``) to feed into Ghostscript when the length is 
    If using this method then ensure that the file byte data will fit into a single (<64k) buffer.
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 
 .. _python gsapi_run_string:
@@ -567,7 +567,7 @@ Processes file byte data (``str_``) to feed into Ghostscript.
    This method can only work on a standard, null terminated C string.
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 
 .. _python gsapi_run_string_end:
@@ -596,7 +596,7 @@ Ends a ``run_string_`` operation.
    exitcode = gsapi.gsapi_run_string_end(instance, 0)
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 .. _python gsapi_run_file:
 
@@ -631,7 +631,7 @@ Runs a file through Ghostscript.
    This will process the supplied input file with any previously supplied argument parameters.
 
 
-**C code reference**: :ref:`gsapi_run_*<API.htm gsapi_run_asterisk>`
+**C code reference**: :ref:`gsapi_run_*<API.html gsapi_run_asterisk>`
 
 
 .. _python gsapi_exit:
@@ -658,7 +658,7 @@ Exit the interpreter. This must be called on shutdown if :ref:`gsapi_init_with_a
 
 
 
-**C code reference**: :ref:`gsapi_exit<API.htm gsapi_exit>`
+**C code reference**: :ref:`gsapi_exit<API.html gsapi_exit>`
 
 
 .. _python gsapi_set_param:
@@ -749,7 +749,7 @@ We behave much like the underlying ``gsapi_set_param()`` C function, except that
 
 
 
-**C code reference**: :ref:`gsapi_set_param<API.htm gsapi_set_param>`
+**C code reference**: :ref:`gsapi_set_param<API.html gsapi_set_param>`
 
 
 .. _python gsapi_get_param:
@@ -782,7 +782,7 @@ Returns value of specified parameter, or ``None`` if parameter ``type`` is ``gs_
    get_margins = gsapi.gsapi_get_param(instance, "Margins")
 
 
-**C code reference**: :ref:`gsapi_get_param<API.htm gsapi_get_param>`
+**C code reference**: :ref:`gsapi_get_param<API.html gsapi_get_param>`
 
 .. _python gsapi_enumerate_params:
 
@@ -810,7 +810,7 @@ Yields ``(key, value)`` for each ``param``. ``key`` is decoded as ``latin-1``.
        print('%-24s : %s' % (param, val))
 
 
-**C code reference**: :ref:`gsapi_enumerate_params<API.htm gsapi_enumerate_params>`
+**C code reference**: :ref:`gsapi_enumerate_params<API.html gsapi_enumerate_params>`
 
 .. _python gsapi_add_control_path:
 
@@ -851,7 +851,7 @@ Add a (case sensitive) path to one of the lists of :ref:`permitted paths<Use Saf
    gsapi.gsapi_add_control_path(instance, gsapi.GS_PERMIT_FILE_READING, "/docs/secure/")
 
 
-**C code reference**: :ref:`gsapi_add_control_path<API.htm gsapi_add_control_path>`
+**C code reference**: :ref:`gsapi_add_control_path<API.html gsapi_add_control_path>`
 
 
 .. _python gsapi_remove_control_path:
@@ -883,7 +883,7 @@ Remove a (case sensitive) path from one of the lists of :ref:`permitted paths<Us
    gsapi.gsapi_remove_control_path(instance, gsapi.GS_PERMIT_FILE_READING, "/docs/secure/")
 
 
-**C code reference**: :ref:`gsapi_remove_control_path<API.htm gsapi_remove_control_path>`
+**C code reference**: :ref:`gsapi_remove_control_path<API.html gsapi_remove_control_path>`
 
 .. _python gsapi_purge_control_paths:
 
@@ -909,7 +909,7 @@ Clear all the paths from one of the lists of :ref:`permitted paths<Use Safer>` f
    gsapi.gsapi_purge_control_paths(instance, gsapi.GS_PERMIT_FILE_READING)
 
 
-**C code reference**: :ref:`gsapi_purge_control_paths<API.htm gsapi_purge_control_paths>`
+**C code reference**: :ref:`gsapi_purge_control_paths<API.html gsapi_purge_control_paths>`
 
 
 .. _python gsapi_activate_path_control:
@@ -937,7 +937,7 @@ Enable/Disable path control (i.e. whether paths are checked against :ref:`permit
 
 
 
-**C code reference**: :ref:`gsapi_activate_path_control<API.htm gsapi_activate_path_control>`
+**C code reference**: :ref:`gsapi_activate_path_control<API.html gsapi_activate_path_control>`
 
 .. _python gsapi_is_path_control_active:
 
@@ -961,7 +961,7 @@ Query whether path control is activated or not.
    isActive = gsapi.gsapi_is_path_control_active(instance)
 
 
-**C code reference**: :ref:`gsapi_is_path_control_active<API.htm gsapi_is_path_control_active>`
+**C code reference**: :ref:`gsapi_is_path_control_active<API.html gsapi_is_path_control_active>`
 
 
 

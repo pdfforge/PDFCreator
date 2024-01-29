@@ -2,18 +2,22 @@
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands.IniCommands;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings
 {
     public class ExportSettingsViewModel : ADebugSettingsItemControlModel
     {
+        private readonly EditionHelper _editionHelper;
 
         public ExportSettingsViewModel(
             ITranslationUpdater translationUpdater,
             ICommandLocator commandLocator,
-            IGpoSettings gpoSettings) : base(translationUpdater, gpoSettings)
+            IGpoSettings gpoSettings,
+            EditionHelper editionHelper) : base(translationUpdater, gpoSettings)
         {
+            _editionHelper = editionHelper;
             LoadIniSettingsCommand = commandLocator.GetCommand<LoadIniSettingsCommand>();
             LoadSpecificProfilesCommand = commandLocator.GetCommand<LoadSpecificProfilesCommand>();
             SaveIniSettingsCommand = commandLocator.GetCommand<SaveSettingsToIniCommand>();
@@ -32,5 +36,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
                 return !GpoSettings.DisableProfileManagement;
             }
         }
+
+        protected override void OnTranslationChanged()
+        {
+            base.OnTranslationChanged();
+            RaisePropertyChanged(nameof(LoadSpecificProfilesQueues));
+        }
+
+        public string LoadSpecificProfilesQueues => _editionHelper.IsServer ? Translation.LoadSpecificQueuesFromFile : Translation.LoadSpecificProfilesFromFile;
     }
 }

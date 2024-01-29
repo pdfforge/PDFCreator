@@ -42,6 +42,21 @@
               <comment>Token to refresh the login token</comment>
             </value>
           </classarray>
+          <classarray name="MicrosoftAccount" propertyName="MicrosoftAccounts" readonly="False" classtype="Class">
+	          <comment />
+	          <value name="AccessToken" type="password" defaultvalue="">
+		          <comment />
+	          </value>
+	          <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+		          <comment />
+	          </value>
+	          <value name="AccountInfo" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+		          <comment />
+	          </value>
+	          <value name="MicrosoftJson" type="password" defaultvalue="">
+		          <comment>Json Containing all info including refresh token</comment>
+	          </value>
+          </classarray>
           <classarray name="FtpAccount" propertyName="FtpAccounts" readonly="False" classtype="Class">
             <comment />
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -193,10 +208,7 @@
         <value name="ConversionTimeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
           <comment />
         </value>
-        <value name="DontRecommendArchitect" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
-          <comment>Don't recommend Pdf Architect</comment>
-        </value>
-        <value name="EnableTips" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+	      <value name="EnableTips" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
           <comment />
         </value>
         <value name="Language" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -331,6 +343,39 @@
             <comment>Subject line of the e-mail</comment>
           </value>
         </class>
+		<class name="EmailWebSettings" propertyName="EmailWebSettings" readonly="False" classtype="Class">
+		  <comment>Opens the default outlook 365 website with the converted document as attachment</comment>
+		  <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>ID of linked account</comment>
+		  </value>
+		  <value name="AddSignature" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+			  <comment>Add the PDFCreator signature to the mail</comment>
+		  </value>
+		  <value name="AdditionalAttachments" type="value" datatype="String" enumname="" defaultvalue="" islist="True">
+			  <comment>The list of additional attachments for the e-mail</comment>
+		  </value>
+		  <value name="Content" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>Body text of the e-mail</comment>
+		  </value>
+		  <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+			  <comment>Enables the EmailClient action</comment>
+		  </value>
+		  <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Auto" islist="False">
+			  <comment>Set the e-mail body format</comment>
+		  </value>
+		  <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org</comment>
+		  </value>
+		  <value name="RecipientsBcc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>The list of recipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+		  </value>
+		  <value name="RecipientsCc" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org</comment>
+		  </value>
+		  <value name="Subject" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+			  <comment>Subject line of the e-mail</comment>
+		  </value>
+		</class>
         <class name="EmailSmtpSettings" propertyName="EmailSmtpSettings" readonly="False" classtype="Class">
           <comment>Sends a mail without user interaction through SMTP</comment>
           <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -820,9 +865,6 @@
         <value name="TitleTemplate" type="value" datatype="String" enumname="" defaultvalue="&lt;PrintJobName&gt;" islist="False">
           <comment>Template for the Title field. This may contain tokens.</comment>
         </value>
-        <value name="UseGsNewPDF" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
-          <comment>Use the new Ghostscript PDF Interpreter introduced with gs 9.55.0</comment>
-        </value>
         <value name="WarnSendFailures" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
           <comment>Show a warning for failing send actions (only if SkipSendFailures is active)</comment>
         </value>
@@ -847,8 +889,11 @@
         <value name="PrimaryPrinter" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
           <comment />
         </value>
-        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="14" islist="False">
+        <value name="SettingsVersion" type="value" datatype="Int" enumname="" defaultvalue="15" islist="False">
           <comment>Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed</comment>
+        </value>
+        <value name="DontRecommendArchitect" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+	        <comment>Don't recommend PDF Architect</comment>
         </value>
       </class>
       <classarray name="DefaultViewer" propertyName="DefaultViewers" readonly="False" classtype="Class">

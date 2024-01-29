@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSetting
 
     public partial class LoadSpecificProfileView : UserControl
     {
-        public LoadSpecificProfileView(LoadSpecificProfileViewModel model)
+        public LoadSpecificProfileView(LoadSpecificProfileViewModelBase model)
         {
             DataContext = model;
             InitializeComponent();

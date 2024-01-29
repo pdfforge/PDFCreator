@@ -23,9 +23,6 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
         protected override void AddDeviceSpecificParameters(IList<string> parameters)
         {
-            if (!Job.Profile.UseGsNewPDF) //this will be the default for GS >9.55 and can be removed then
-                parameters.Add("-dNEWPDF=" + "false");
-
             parameters.Add("-sDEVICE=pdfwrite");
             parameters.Add("-dCompatibilityLevel=1.4");
             parameters.Add("-dPDFSETTINGS=/default");

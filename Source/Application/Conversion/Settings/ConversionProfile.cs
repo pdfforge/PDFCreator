@@ -61,6 +61,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// </summary>
 		public EmailSmtpSettings EmailSmtpSettings { get; set; } = new EmailSmtpSettings();
 		
+		/// <summary>
+		/// Opens the default outlook 365 website with the converted document as attachment
+		/// </summary>
+		public EmailWebSettings EmailWebSettings { get; set; } = new EmailWebSettings();
+		
 		public ForwardToFurtherProfile ForwardToFurtherProfile { get; set; } = new ForwardToFurtherProfile();
 		
 		/// <summary>
@@ -226,11 +231,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string TitleTemplate { get; set; } = "<PrintJobName>";
 		
 		/// <summary>
-		/// Use the new Ghostscript PDF Interpreter introduced with gs 9.55.0
-		/// </summary>
-		public bool UseGsNewPDF { get; set; } = true;
-		
-		/// <summary>
 		/// Show a warning for failing send actions (only if SkipSendFailures is active)
 		/// </summary>
 		public bool WarnSendFailures { get; set; } = false;
@@ -245,6 +245,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			DropboxSettings.ReadValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.ReadValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.ReadValues(data, path + @"EmailSmtpSettings\");
+			EmailWebSettings.ReadValues(data, path + @"EmailWebSettings\");
 			ForwardToFurtherProfile.ReadValues(data, path + @"ForwardToFurtherProfile\");
 			Ftp.ReadValues(data, path + @"Ftp\");
 			Ghostscript.ReadValues(data, path + @"Ghostscript\");
@@ -287,7 +288,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { SubjectTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"SubjectTemplate")); } catch { SubjectTemplate = "";}
 			try { TargetDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"TargetDirectory")); } catch { TargetDirectory = "";}
 			try { TitleTemplate = Data.UnescapeString(data.GetValue(@"" + path + @"TitleTemplate")); } catch { TitleTemplate = "<PrintJobName>";}
-			UseGsNewPDF = bool.TryParse(data.GetValue(@"" + path + @"UseGsNewPDF"), out var tmpUseGsNewPDF) ? tmpUseGsNewPDF : true;
 			WarnSendFailures = bool.TryParse(data.GetValue(@"" + path + @"WarnSendFailures"), out var tmpWarnSendFailures) ? tmpWarnSendFailures : false;
 		}
 		
@@ -300,6 +300,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			DropboxSettings.StoreValues(data, path + @"DropboxSettings\");
 			EmailClientSettings.StoreValues(data, path + @"EmailClientSettings\");
 			EmailSmtpSettings.StoreValues(data, path + @"EmailSmtpSettings\");
+			EmailWebSettings.StoreValues(data, path + @"EmailWebSettings\");
 			ForwardToFurtherProfile.StoreValues(data, path + @"ForwardToFurtherProfile\");
 			Ftp.StoreValues(data, path + @"Ftp\");
 			Ghostscript.StoreValues(data, path + @"Ghostscript\");
@@ -337,7 +338,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"SubjectTemplate", Data.EscapeString(SubjectTemplate));
 			data.SetValue(@"" + path + @"TargetDirectory", Data.EscapeString(TargetDirectory));
 			data.SetValue(@"" + path + @"TitleTemplate", Data.EscapeString(TitleTemplate));
-			data.SetValue(@"" + path + @"UseGsNewPDF", UseGsNewPDF.ToString());
 			data.SetValue(@"" + path + @"WarnSendFailures", WarnSendFailures.ToString());
 		}
 		public ConversionProfile Copy()
@@ -352,6 +352,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.DropboxSettings = DropboxSettings.Copy();
 			copy.EmailClientSettings = EmailClientSettings.Copy();
 			copy.EmailSmtpSettings = EmailSmtpSettings.Copy();
+			copy.EmailWebSettings = EmailWebSettings.Copy();
 			copy.ForwardToFurtherProfile = ForwardToFurtherProfile.Copy();
 			copy.Ftp = Ftp.Copy();
 			copy.Ghostscript = Ghostscript.Copy();
@@ -386,7 +387,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.SubjectTemplate = SubjectTemplate;
 			copy.TargetDirectory = TargetDirectory;
 			copy.TitleTemplate = TitleTemplate;
-			copy.UseGsNewPDF = UseGsNewPDF;
 			copy.WarnSendFailures = WarnSendFailures;
 			return copy;
 		}
@@ -401,6 +401,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			DropboxSettings.ReplaceWith(source.DropboxSettings);
 			EmailClientSettings.ReplaceWith(source.EmailClientSettings);
 			EmailSmtpSettings.ReplaceWith(source.EmailSmtpSettings);
+			EmailWebSettings.ReplaceWith(source.EmailWebSettings);
 			ForwardToFurtherProfile.ReplaceWith(source.ForwardToFurtherProfile);
 			Ftp.ReplaceWith(source.Ftp);
 			Ghostscript.ReplaceWith(source.Ghostscript);
@@ -472,9 +473,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(TitleTemplate != source.TitleTemplate)
 				TitleTemplate = source.TitleTemplate;
 				
-			if(UseGsNewPDF != source.UseGsNewPDF)
-				UseGsNewPDF = source.UseGsNewPDF;
-				
 			if(WarnSendFailures != source.WarnSendFailures)
 				WarnSendFailures = source.WarnSendFailures;
 				
@@ -493,6 +491,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(DropboxSettings, v.DropboxSettings)) return false;
 			if (!Object.Equals(EmailClientSettings, v.EmailClientSettings)) return false;
 			if (!Object.Equals(EmailSmtpSettings, v.EmailSmtpSettings)) return false;
+			if (!Object.Equals(EmailWebSettings, v.EmailWebSettings)) return false;
 			if (!Object.Equals(ForwardToFurtherProfile, v.ForwardToFurtherProfile)) return false;
 			if (!Object.Equals(Ftp, v.Ftp)) return false;
 			if (!Object.Equals(Ghostscript, v.Ghostscript)) return false;
@@ -527,7 +526,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(SubjectTemplate, v.SubjectTemplate)) return false;
 			if (!Object.Equals(TargetDirectory, v.TargetDirectory)) return false;
 			if (!Object.Equals(TitleTemplate, v.TitleTemplate)) return false;
-			if (!Object.Equals(UseGsNewPDF, v.UseGsNewPDF)) return false;
 			if (!Object.Equals(WarnSendFailures, v.WarnSendFailures)) return false;
 			return true;
 		}

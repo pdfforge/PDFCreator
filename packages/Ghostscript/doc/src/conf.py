@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+import re
 import sys
 import os
+import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -38,18 +40,38 @@ source_suffix = ".rst"
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = "toc"
+master_doc = "index"
 
 # General information about the project.
 project = "Ghostscript"
-copyright = "1988-2023, Artifex"
+thisday = datetime.date.today()
+
+copyright = "1988-" + str(thisday.year) + ", Artifex"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = "10.01.0"
+major = None
+minor = None
+patch = None
+
+_path = os.path.abspath(f'{__file__}/../../../base/version.mak')
+with open(_path) as f:
+    for line in f:
+        if not major:
+            major = re.search('GS_VERSION_MAJOR=([0-9]+$)', line)
+        if not minor:
+            minor = re.search('GS_VERSION_MINOR=([0-9]+$)', line)
+        if not patch:
+            patch = re.search('GS_VERSION_PATCH=([0-9]+$)', line)
+
+    if major and minor and patch:
+        release = major.group(1) + "." + minor.group(1) + "." + patch.group(1)
+        print(f'{__file__}: setting version from {_path}: {release}')
+    else:
+        raise Exception(f'Failed to find `Ghostscript version = ...` in {_path}')
 
 # The short X.Y version
 version = release
@@ -202,7 +224,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ("toc", "Ghostscript.tex", u"Ghostscript Documentation", u"Artifex", "manual")
+    ("index", "Ghostscript.tex", u"Ghostscript Documentation", u"Artifex", "manual")
 ]
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -228,7 +250,7 @@ latex_domain_indices = True
 # Grouping the document tree into PDF files. List of tuples
 # (source start file, target name, title, author).
 
-pdf_documents = [("toc", "Ghostscript", "Ghostscript Manual", "Artifex")]
+pdf_documents = [("index", "Ghostscript", "Ghostscript Manual", "Artifex")]
 
 # A comma-separated list of custom stylesheets. Example:
 #pdf_stylesheets = ["sphinx", "bahnschrift", "a4"]

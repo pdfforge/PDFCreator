@@ -30,33 +30,41 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
         protected override string GetJobSampleData()
         {
             var metric = _usageMetricFactory.CreateMetric<PdfCreatorJobFinishedMetric>();
-            
+
             metric.OperatingSystem = OsHelper.GetWindowsVersion();
-            metric.Duration = TimeSpan.Zero.Milliseconds;
+            metric.QuickActions = true;
+
             metric.OutputFormat = OutputFormat.Pdf.ToString();
             metric.Mode = Mode.Interactive;
-            metric.QuickActions = true;
+            metric.TotalPages = 1;
+            metric.NumberOfCopies = 1;
+            metric.Duration = TimeSpan.Zero.Milliseconds;
+            metric.Status = "Success";
+
+            metric.CustomScript = true;
+            metric.UserToken = true;
+            metric.ForwardToFurtherProfile = true;
+
+            metric.Cover = true;
+            metric.Attachment = true;
+            metric.Stamp = true;
+            metric.Watermark = true;
+            metric.Background = true;
+            metric.PageNumbers = true;
+            metric.Encryption = true;
+            metric.Signature = true;
+            metric.DisplaySignatureInDocument = true;
+
+            metric.Mailclient = true;
+            metric.Smtp = true;
             metric.OpenViewer = true;
             metric.OpenWithPdfArchitect = true;
-            metric.Status = "Success";
-            metric.Attachment = true;
-            metric.Background = true;
-            metric.Dropbox = true;
-            metric.Cover = true;
-            metric.NumberOfCopies = 1;
             metric.Script = true;
-            metric.CustomScript = true;
-            metric.TotalPages = 1;
-            metric.Mailclient = true;
             metric.Print = true;
-            metric.Signature = true;
-            metric.Encryption = true;
-            metric.UserToken = true;
             metric.Ftp = true;
             metric.Http = true;
-            metric.Smtp = true;
-            metric.Stamp = true;
-        
+            metric.Dropbox = true;
+            
             return ConvertToJson(metric);
         }
 

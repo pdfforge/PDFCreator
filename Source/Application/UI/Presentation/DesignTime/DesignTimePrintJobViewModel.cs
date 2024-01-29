@@ -30,8 +30,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                   new DispatcherWrapper(),
                   new DesignTimeJobDataUpdater(),
                   null,
-                  new CampaignHelper()
-                  )
+                  new CampaignHelper(),
+                  new DesignTimeProfileChecker(),
+                  null,
+                  new DesignTimeApplicationNameProvider())
         {
             var jobInfo = new JobInfo()
             {

@@ -45,7 +45,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             InfoActionCommand = new DelegateCommand(ShowActionInfo);
             HideInfoActionCommand = new DelegateCommand(HideActionInfo);
             AddActionCommand = commandLocator.GetCommand<AddActionCommand>() as IAsyncCommand;
-            TriggerAddActionCommand = new AsyncCommand(TriggerAddAction);
+            TriggerAddActionCommand = new AsyncCommand(TriggerAddActionExecute, TriggerAddActionCanExecute);
 
             GenerateCollectionViewsOfActions();
 
@@ -93,7 +93,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(ShowInfoText));
         }
 
-        private async Task TriggerAddAction(object obj)
+        private static bool TriggerAddActionCanExecute(object parameter)
+        {
+            var actionFacade = (IPresenterActionFacade)parameter;
+            return !actionFacade.IsRestricted && !actionFacade.IsEnabled;
+        }
+
+        private async Task TriggerAddActionExecute(object obj)
         {
             FinishInteraction();
             await AddActionCommand?.ExecuteAsync(obj);

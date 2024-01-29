@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Dapplo.Windows.Common</id>
+    <version>1.0.28</version>
+    <authors>Dapplo</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>icon.png</icon>
+    <projectUrl>http://www.dapplo.net/blocks/Dapplo.Windows/</projectUrl>
+    <description>Dapplo.Windows.Common is a library which contains common files for Dapplo.Windows projects</description>
+    <copyright>Copyright © Dapplo</copyright>
+    <tags>windows native Common</tags>
+    <repository type="git" url="https://github.com/dapplo/Dapplo.Windows" commit="55d2ca3705b75403fbf6d00cf9dd2b8b7a8a3d12" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2" />
+      <group targetFramework=".NETCoreApp3.1" />
+      <group targetFramework="net6.0-windows7.0" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App" />
+      </group>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App" />
+      </group>
+      <group targetFramework=".NETFramework4.7.2" />
+      <group targetFramework=".NETStandard2.0" />
+    </frameworkReferences>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework=".NETFramework4.7.2" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

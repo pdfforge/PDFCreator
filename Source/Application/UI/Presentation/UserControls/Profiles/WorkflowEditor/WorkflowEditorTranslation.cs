@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEdit
     public class WorkflowEditorTranslation : ITranslatable
     {
         public string Modify { get; set; } = "Modify";
-        public string Send { get; set; } = "Send";
+        public string Send { get; set; } = "Send/Open";
 
         public string Actions { get; private set; } = "Actions";
         public string AddAction { get; private set; } = "Add action";

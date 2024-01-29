@@ -7,6 +7,7 @@
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeQuickActionViewModel, IsDesignTimeCreatable=True}"
@@ -69,27 +70,23 @@
                     Style="{StaticResource DefaultButton}"
                     MinWidth="110"
                     MenuItemsCommandParameter="{Binding}"
-                    ShowArrow="True">
-                    <contextMenuButton:ContextMenuButton.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{Binding Translation.SendEmail}"
-                                      Command="{Binding SendEmailCommand}"
-                                      CommandParameter="{Binding Job}" />
-                            <MenuItem Header="{Binding Translation.PrintFileWithArchitect}"
-                                      Command="{Binding PrintWithArchitectCommand}"
-                                      CommandParameter="{Binding Job}" />
-                        </ContextMenu>
-                    </contextMenuButton:ContextMenuButton.ContextMenu>
+                    ShowArrow="True"
+                    ItemsSource="{Binding SendMenuItems}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding UpdateSendContextMenuButtonItemsCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </contextMenuButton:ContextMenuButton>
 
                 <!--Open Action-->
                 <contextMenuButton:ContextMenuButton Margin="5 0 "
-                                                         VerticalAlignment="Bottom"
-                                                         Content ="{Binding DataContext.Translation.Open, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                         Style="{StaticResource DefaultButton}"
-                                                         MinWidth="110"
-                                                         MenuItemsCommandParameter="{Binding}"
-                                                         ShowArrow="True">
+                                                     VerticalAlignment="Bottom"
+                                                     Content ="{Binding DataContext.Translation.Open, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                     Style="{StaticResource DefaultButton}"
+                                                     MinWidth="110"
+                                                     MenuItemsCommandParameter="{Binding}"
+                                                     ShowArrow="True">
                     <contextMenuButton:ContextMenuButton.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{Binding Translation.OpenPDFArchitect}"

@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Information for Ghostscript Developers
 
 .. include:: header.rst
 
-.. _Develop.htm:
+.. _Develop.html:
 .. _Ghostscript Developers:
 
 
@@ -15,7 +15,7 @@ Information for Ghostscript Developers
 
 Introduction
 ------------------------------------
-This document provides a wealth of information about Ghostscript's internals, primarily for developers actively working on Ghostscript.  It is primarily **descriptive**, documenting the way things are; the companion :ref:`C style guide<C-style.htm>` is primarily **prescriptive**, documenting what developers should do when writing new code.
+This document provides a wealth of information about Ghostscript's internals, primarily for developers actively working on Ghostscript.  It is primarily **descriptive**, documenting the way things are; the companion :ref:`C style guide<C-style.html>` is primarily **prescriptive**, documenting what developers should do when writing new code.
 
 
 Architecture
@@ -122,13 +122,13 @@ At the largest design scale, Ghostscript consists of 4 layers. Layer N is allowe
 
 #. The PDF interpreter is actually a client of the PostScript interpreter: it is written entirely in PostScript.
 
-The most important interface in Ghostscript is the API between the graphics library and the device drivers: new printers (and, to a lesser extent, window systems, displays, plotters, film recorders, and graphics file formats) come on the scene frequently, and it must be possible to produce output for them with a minimum of effort and distruption. This API is the only one that is extensively documented (see :ref:`Drivers<Drivers.htm>`) and kept stringently backward-compatible through successive releases.
+The most important interface in Ghostscript is the API between the graphics library and the device drivers: new printers (and, to a lesser extent, window systems, displays, plotters, film recorders, and graphics file formats) come on the scene frequently, and it must be possible to produce output for them with a minimum of effort and distruption. This API is the only one that is extensively documented (see :ref:`Drivers<Drivers.html>`) and kept stringently backward-compatible through successive releases.
 
 
 Object-oriented constructs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ghostscript makes heavy use of object-oriented constructs, including analogues of classes, instances, subclassing, and class-associated procedures. Since Ghostscript is written in C, not C++, implementing these constructs requires following coding conventions. The :ref:`"Objects"<CStyle_Objects>` section of the :ref:`C style guide<C-style.htm>` explains these.
+Ghostscript makes heavy use of object-oriented constructs, including analogues of classes, instances, subclassing, and class-associated procedures. Since Ghostscript is written in C, not C++, implementing these constructs requires following coding conventions. The :ref:`"Objects"<CStyle_Objects>` section of the :ref:`C style guide<C-style.html>` explains these.
 
 The memory manager API provides run-time type information about each class, but this information does not include anything about subclassing. See under :ref:`Structure descriptors<Develop_Structure_Descriptors>` below.
 
@@ -484,7 +484,7 @@ See :ref:`Visual Trace instructions<Lib_VisualTrace>` for extensive documentatio
 Device drivers
 ~~~~~~~~~~~~~~~~~~~~
 
-See :ref:`Drivers<Drivers.htm>` for extensive documentation on the interface between the core code and drivers.
+See :ref:`Drivers<Drivers.html>` for extensive documentation on the interface between the core code and drivers.
 
 The driver API includes high-level (path / image / text), mid-level (polygon), and low-level (rectangle / raster) operations. Most devices implement only the low-level operations, and let generic code break down the high-level operations. However, some devices produce high-level output, and therefore must implement the high-level operations.
 
@@ -953,7 +953,7 @@ For more information about makefiles:
 
 - For a detailed list of makefiles, and a discussion of makefile issues related to portability, see the Makefiles_ section below.
 - For more detailed information about editing configuration information in makefiles, see :ref:`Makefiles Overview<Make_MakeFilesOverview>`.
-- For a complete example of adding a new driver to a makefile, see :ref:`Drivers<Drivers.htm>`.
+- For a complete example of adding a new driver to a makefile, see :ref:`Drivers<Drivers.html>`.
 - For a few more notes on makefile coding conventions, see :ref:`C-Style Makefiles<CStyle_Makefiles>`.
 
 
@@ -1039,7 +1039,7 @@ Ghostscript comes with many utilities for doing things like viewing bitmap files
 Utilities in PostScript
 """"""""""""""""""""""""""""""
 
-These are all documented in doc/Psfiles.htm, q.v.
+These are all documented in doc/Psfiles.html, q.v.
 
 Utility scripts
 """"""""""""""""""""""""""""""
@@ -1546,12 +1546,12 @@ DLL files:
 Troubleshooting
 -------------------------
 
-The Ghostscript code has many tracing and debugging features that can be enabled at run time using the -Z command line switch, if the executable was compiled with ``DEBUG`` defined. One particularly useful combination is ``-Z@\?``, which fills free memory blocks with a pattern and also turns on run-time memory consistency checking. For more information, see doc/Use.htm#Debugging; you can also search for occurrences of ``if_debug`` or ``gs_debug_c`` in the source code. Note that many of these features are in the graphics library and do not require a PostScript interpreter.
+The Ghostscript code has many tracing and debugging features that can be enabled at run time using the -Z command line switch, if the executable was compiled with ``DEBUG`` defined. One particularly useful combination is ``-Z@\?``, which fills free memory blocks with a pattern and also turns on run-time memory consistency checking. For more information, see doc/Use.html#Debugging; you can also search for occurrences of ``if_debug`` or ``gs_debug_c`` in the source code. Note that many of these features are in the graphics library and do not require a PostScript interpreter.
 
 The code also contains many run-time procedures whose only purpose is to be called from the debugger to print out various data structures, including all the procedures in psi/idebug.c (for the PostScript interpreter) and the ``debug_dump_`` procedures in base/gsmisc.c.
 
 Files:
-   doc/Use.htm#Debugging, base/gdebug.h, base/gsmdebug.h, psi/idebug.h, psi/idebug.c.
+   doc/Use.html#Debugging, base/gdebug.h, base/gsmdebug.h, psi/idebug.h, psi/idebug.c.
 
 
 Profiling

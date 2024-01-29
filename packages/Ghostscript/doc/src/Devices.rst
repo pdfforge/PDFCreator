@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Details of Ghostscript Output Devices
@@ -6,19 +6,19 @@
 
 .. include:: header.rst
 
-.. _Devices.htm:
+.. _Devices.html:
 
 
 Details of Ghostscript Output Devices
 =============================================
 
 
-For other information, see the :ref:`Ghostscript overview<Ghostscript Introduction>`. You may also be interested in :ref:`how to build Ghostscript<Make.htm>` and :ref:`install<Install.htm>` it, as well as the description of the :ref:`driver interface<Drivers.htm>`.
+For other information, see the :ref:`Ghostscript overview<Ghostscript Introduction>`. You may also be interested in :ref:`how to build Ghostscript<Make.html>` and :ref:`install<Install.html>` it, as well as the description of the :ref:`driver interface<Drivers.html>`.
 
-Documentation for some older, superceded devices has been moved to :ref:`unsupported devices<UnsupportedDevices.htm>`. In general such devices are deprecated and will be removed in future versions of Ghostscript. In general all older printer drivers can be replaced by the :title:`ijs` interface and one of the available 3rd party raster driver collections. We recommend moving to the :title:`ijs` device for all such printing.
+Documentation for some older, superceded devices has been moved to :ref:`unsupported devices<UnsupportedDevices.html>`. In general such devices are deprecated and will be removed in future versions of Ghostscript. In general all older printer drivers can be replaced by the :title:`ijs` interface and one of the available 3rd party raster driver collections. We recommend moving to the :title:`ijs` device for all such printing.
 
 
-Documentation for device subclassing can be found on the :ref:`Device Subclassing<DeviceSubclassing.htm>` page.
+Documentation for device subclassing can be found on the :ref:`Device Subclassing<DeviceSubclassing.html>` page.
 
 
 .. _Devices_Notes on measurements:
@@ -91,7 +91,7 @@ These options control the use of subsample antialiasing. Their use is highly rec
 Because this feature relies upon rendering the input it is incompatible, and will generate an error on attempted use, with any of the vector output devices.
 
 
-It is also conventional to call Ghostscript with the ``-dSAFER -dBATCH -dNOPAUSE`` trio of options when rasterizing to a file. These suppress interactive prompts and enable some security checks on the file to be run. Please see the :ref:`Using Ghostscript<Use.htm>` section for further details.
+It is also conventional to call Ghostscript with the ``-dSAFER -dBATCH -dNOPAUSE`` trio of options when rasterizing to a file. These suppress interactive prompts and enable some security checks on the file to be run. Please see the :ref:`Using Ghostscript<Use.html>` section for further details.
 
 
 
@@ -678,7 +678,7 @@ High level devices
 ---------------------------------------------------------------------------------
 
 
-Please refer to :ref:`High Level Devices<VectorDevices.htm>` for documentation on the device options for these devices.
+Please refer to :ref:`High Level Devices<VectorDevices.html>` for documentation on the device options for these devices.
 
 
 
@@ -1014,7 +1014,7 @@ The ``setup.ps`` file is responsible for the device selection, therefore you sho
 
 .. code-block:: postscript
 
-   mark
+   <<
      /NoCancel      true                       % don't show the cancel dialog
      /BitsPerPixel  4                          % force 4 bits/pixel
      /UserSettings
@@ -1022,8 +1022,8 @@ The ``setup.ps`` file is responsible for the device selection, therefore you sho
          /DocumentName  (Ghostscript document) % name for the Windows spooler
          /MaxResolution 360                    % maximum document resolution
        >>
-     (mswinpr2) finddevice                     % select the Windows device driver
-     putdeviceprops
+     /OutputDevice /mswinpr2                   % select the Windows device driver
+   >> setpagedevice
   setdevice
 
 

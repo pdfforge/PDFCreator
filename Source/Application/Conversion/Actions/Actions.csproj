@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -55,13 +57,16 @@
     <Compile Include="ActionOrderHelper.cs" />
     <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\DefaultViewerCheck.cs" />
+    <Compile Include="Actions\MailWebAction.cs" />
+    <Compile Include="Actions\Mail\ClientWrapper.cs" />
+    <Compile Include="Actions\Mail\GraphManger.cs" />
     <Compile Include="Actions\OpenFileAction.cs" />
     <Compile Include="Actions\Dropbox\DropboxAction.cs" />
     <Compile Include="Actions\Dropbox\DropboxAppData.cs" />
     <Compile Include="Actions\Dropbox\DropboxFileMetaData.cs" />
     <Compile Include="Actions\Dropbox\DropboxUserInfo.cs" />
     <Compile Include="Actions\Dropbox\WinInetHelper.cs" />
-    <Compile Include="Actions\EMailClientAction.cs" />
+    <Compile Include="Actions\MailClientAction.cs" />
     <Compile Include="Actions\AttachmentAction.cs" />
     <Compile Include="Actions\EncryptionAction.cs" />
     <Compile Include="Actions\ForwardToFurtherProfileAction.cs" />
@@ -86,6 +91,17 @@
     <Compile Include="Actions\PageNumbersAction.cs" />
     <Compile Include="Actions\WatermarkAction.cs" />
     <Compile Include="Actions\CoverAction.cs" />
+    <Compile Include="Actions\WebMail\GraphMailAttachmentItem.cs" />
+    <Compile Include="Actions\WebMail\GraphMailBody.cs" />
+    <Compile Include="Actions\WebMail\CreateMessageResponse.cs" />
+    <Compile Include="Actions\WebMail\CreateUploadSessionRequest.cs" />
+    <Compile Include="Actions\WebMail\CreateUploadSessionResponse.cs" />
+    <Compile Include="Actions\WebMail\GraphMailEmailAddress.cs" />
+    <Compile Include="Actions\WebMail\GraphMailRecipient.cs" />
+    <Compile Include="Actions\WebMail\GraphMailMessage.cs" />
+    <Compile Include="AttachToOutlookItem\AttachToOutlookItem.cs" />
+    <Compile Include="AttachToOutlookItem\DisposableCom.cs" />
+    <Compile Include="AttachToOutlookItem\OleAuth32Api.cs" />
     <Compile Include="Queries\IRecommendArchitectAssistant.cs" />
     <Compile Include="Actions\ScriptAction\IScriptActionHelper.cs" />
     <Compile Include="Actions\PrintingAction.cs" />
@@ -148,6 +164,23 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.Drawing">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="WindowsBase">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Dapplo.Windows.Common">
+          <HintPath>..\..\..\..\packages\Dapplo.Windows.Common\lib\net472\Dapplo.Windows.Common.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="FluentFTP">
           <HintPath>..\..\..\..\packages\FluentFTP\lib\net45\FluentFTP.dll</HintPath>
           <Private>True</Private>
@@ -170,11 +203,61 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="System.IdentityModel">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="System.Windows.Forms">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Identity.Client">
+          <HintPath>..\..\..\..\packages\Microsoft.Identity.Client\lib\net461\Microsoft.Identity.Client.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Microsoft.IdentityModel.Abstractions">
+          <HintPath>..\..\..\..\packages\Microsoft.IdentityModel.Abstractions\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Microsoft.Office.Interop.Outlook">
+          <HintPath>..\..\..\..\packages\Microsoft.Office.Interop.Outlook\lib\net20\Microsoft.Office.Interop.Outlook.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="mscorlib">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="Microsoft.Win32.Registry">
           <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>..\..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -223,9 +306,6 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
-        <Reference Include="System.Drawing">
-          <Paket>True</Paket>
-        </Reference>
         <Reference Include="System.Drawing.Common">
           <HintPath>..\..\..\..\packages\System.Drawing.Common\lib\net461\System.Drawing.Common.dll</HintPath>
           <Private>True</Private>
@@ -261,9 +341,6 @@
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="WindowsBase">
           <Paket>True</Paket>
         </Reference>
         <Reference Include="System.Security.Permissions">

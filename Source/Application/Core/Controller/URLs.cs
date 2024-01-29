@@ -60,7 +60,28 @@
         public const string BannerIndexUrl = "https://go.pdfforge.org/pdfcreator/banners/v1";
         public const string BannerIndexUrlStaging = "https://go.pdfforge.org/pdfcreator/banners-staging/v1";
 
-        /*Trials*/
-        public const string LicenseExtendUrl = "https://go.pdfforge.org/pdfcreator/extend-trial";
+        /*Extend Trial Links*/
+        private const string PdfCreatorProfessionalExtend = "https://go.pdfforge.org/pdfcreator-professional/extend-trial";
+        private const string PdfCreatorTerminalServerExtend = "https://go.pdfforge.org/pdfcreator-terminal-server/extend-trial";
+        private const string PdfCreatorServerExtend = "https://go.pdfforge.org/pdfcreator-server/extend-trial";
+        private const string CustomerPortalManageLicense = "https://go.pdfforge.org/pdfcreator/manage-single-license";
+
+        public static string GetExtendLicenseFallbackUrl(string edition)
+        {
+            switch (edition.ToLowerInvariant().Replace(" ", "-").Trim())
+            {
+                case "professional":
+                    return PdfCreatorProfessionalExtend;
+
+                case "terminal-server":
+                    return PdfCreatorTerminalServerExtend;
+
+                case "server":
+                    return PdfCreatorServerExtend;
+
+                default:
+                    return CustomerPortalManageLicense;
+            }
+        }
     }
 }

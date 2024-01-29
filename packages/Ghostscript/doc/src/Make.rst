@@ -1,13 +1,13 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: How to Build Ghostscript from Source Code
 
 .. include:: header.rst
 
-.. _Make.htm:
+.. _Make.html:
 
-How to Build Ghostscript from Source Code
+Building from Source
 =========================================
 
 
@@ -28,7 +28,7 @@ This document describes how to build a Ghostscript executable from source code. 
 #. Invoke "make" to build the software.
 
 
-The remainder of this document describes each of these steps in detail. Note that some of this process is platform-dependent. After building Ghostscript you must then install it; for that, see the :ref:`installation instructions<Install.htm>`.
+The remainder of this document describes each of these steps in detail. Note that some of this process is platform-dependent. After building Ghostscript you must then install it; for that, see the :ref:`installation instructions<Install.html>`.
 
 Long term users of Ghostscript may notice the instructions for a number of older systems have been removed from this document. There is no value judgment implied in this, but recognition that the build system has changed considerably in recent years, and several of these legacy systems are no longer easily available to the development team. We will always consider contributions to continue support for legacy systems.
 
@@ -293,6 +293,8 @@ If your system doesn't support the ``configure`` script or you don't wish to use
 Platform-specific makefiles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The table below lists a number of platform independent ``makefiles`` in each of the core Ghostscript source directories.
+
 .. list-table::
       :widths: 50 50
       :header-rows: 1
@@ -309,7 +311,7 @@ Platform-specific makefiles
         - Unix with ANSI C compilers other than ``gcc``.
 
 
-A number of platform indepdent ``makefiles`` in each of the core Ghostscript source directories. Since these files can change from one Ghostscript version to another, sometimes substantially, and since they all include documentation for the various options, here we don't duplicate most of that documentation: we recommend strongly that you review the entire ``makefile`` specific for your operating system and compiler before building Ghostscript.
+Since these files can change from one Ghostscript version to another, sometimes substantially, and since they all include documentation for the various options, here we don't duplicate most of that documentation: we recommend strongly that you review the entire ``makefile`` specific for your operating system and compiler before building Ghostscript.
 
 
 .. _PreparingMakefiles:
@@ -464,7 +466,7 @@ Invoking "make"
    On Unix platforms, builds with the ``-pg`` compiler switch, creating an executable for time profiling.
 
 ``make install``
-   After building, installs the Ghostscript executables, support files, and documentation, but does not install fonts. See the :ref:`installation documentation<Install.htm>`.
+   After building, installs the Ghostscript executables, support files, and documentation, but does not install fonts. See the :ref:`installation documentation<Install.html>`.
 
 ``make (debug)clean``
    Deletes all the files created by the build process (relocatables, executables, and miscellaneous temporary files). If you've built an executable and want to save it, move it first to another place, because "make clean" deletes it.
@@ -568,7 +570,7 @@ All Ghostscript builds in PC (DOS and MS Windows) environments are 32- or 64-bit
 
 Ghostscript requires at least MS Windows 95 (although we no longer actively test nor support Win95, we have not deliberately done anything to break compatibility with it). We recommend at least MS Windows NT 4.0.
 
-For building, Ghostscript requires at least Visual Studio .NET 2003, and we recommend at least Visual Studio 2005 (required for 64 bit Windows support).
+For building, Ghostscript requires at least Visual Studio .NET 2003, and we recommend at least Visual Studio 2019. It can probably be made to work with earlier versions, though at least VS2005 will be required for 64 bit Windows support.
 
 
 .. note::
@@ -592,7 +594,7 @@ To build the required DLLs, load ``/windows/ghostpdl.sln`` into Visual Studio, a
 Further details
 """"""""""""""""""
 
-The Ghostscript source distribution ships with ``project`` and ``solution`` files for Visual Studio 2005 and later. These can be found in the ``windows`` directory. The ``project(s)`` are ``nmake projects`` which means that rather than Visual Studio controlling the build directly, it delegates the build process to the ``nmake``.
+The Ghostscript source distribution ships with ``project`` and ``solution`` files for Visual Studio 2015 and later. These can be found in the ``windows`` directory. The ``project(s)`` are ``nmake projects`` which means that rather than Visual Studio controlling the build directly, it delegates the build process to the ``nmake``.
 
 Beyond lacking support for parallel builds (``nmake`` cannot support parallel builds), there should be little visible difference between a conventional VS project and an ``nmake project`` to the user of the VS graphical interface. The only exception to that is if you have to make changes to build options beyond those available in the defined build configurations. In that case, you need to find the ``Nmake`` tab in the project ``Property Pages`` and modify the appropriate entry: ``Build Command Line``, ``Rebuild All Command Line`` and/or ``Clean Command Line``.
 

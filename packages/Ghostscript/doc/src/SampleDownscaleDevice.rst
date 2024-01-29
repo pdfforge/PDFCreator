@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Sample CMYK 32-bit Device that Supports Post Rendering Processing
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _SampleDownscaleDevice.htm:
+.. _SampleDownscaleDevice.html:
 
 
 Sample CMYK 32-bit Device that Supports Post Rendering Processing

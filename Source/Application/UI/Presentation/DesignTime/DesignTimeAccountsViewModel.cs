@@ -1,5 +1,4 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts;
@@ -10,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeAccountsViewModel : AccountsViewModel
     {
         public DesignTimeAccountsViewModel() :
-            base(new CurrentSettingsProvider(new DefaultSettingsProvider()), null, new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), new DispatcherWrapper(), null)
+            base(new CurrentSettingsProvider(new DefaultSettingsProvider()), null, new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), new DispatcherWrapper(), null, new DesignTimeEditionHelper())
         {
             AllAccounts.Add(new SmtpAccount { UserName = "UserName", Server = "SMTP.Server.org" });
             AllAccounts.Add(new DropboxAccount { AccountInfo = "Dropbox Account for UserName" });

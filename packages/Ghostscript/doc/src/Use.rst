@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Using Ghostscript
@@ -6,10 +6,10 @@
 
 .. include:: header.rst
 
-.. _Use.htm:
+.. _Use.html:
 
 
-Using Ghostscript
+Using
 ===================================
 
 
@@ -28,23 +28,29 @@ The command line to invoke Ghostscript is essentially the same on all systems, a
 
 Here are some basic examples. The details of how these work are described below.
 
-To view a file:
+To view a file
+~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
    gs -dSAFER -dBATCH document.pdf
 
 
-You'll be prompted to press return between pages.
+.. note::
 
-To convert a figure to an image file:
+      You'll be prompted to press return between pages.
+
+To convert a figure to an image file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
    gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -dGraphicsAlphaBits=4 \
       -sOutputFile=tiger.png tiger.eps
 
-To render the same image at 300 dpi:
+
+To render the same image at 300 dpi
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -52,7 +58,8 @@ To render the same image at 300 dpi:
                    -sOutputFile=tiger_300.png tiger.eps
 
 
-To render a figure in grayscale:
+To render a figure in grayscale
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 .. code-block:: bash
@@ -61,7 +68,8 @@ To render a figure in grayscale:
    gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pnggray -sOutputFile=figure.png figure.pdf
 
 
-To rasterize a whole document:
+To rasterize a whole document
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -69,8 +77,8 @@ To rasterize a whole document:
                    -dTextAlphaBits=4 -sOutputFile='paper-%00d.pgm' paper.ps
 
 
-There are also a number of utility scripts for common to convert a PostScript document to PDF:
-
+Convert a PostScript document to PDF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -80,13 +88,16 @@ There are also a number of utility scripts for common to convert a PostScript do
 The output is saved as ``file.pdf``.
 
 
-There are other utility scripts besides ``ps2pdf``, including ``pdf2ps``, ``ps2epsi``, ``pdf2dsc``, ``ps2ascii``, ``ps2ps`` and ``ps2ps2``. These just call Ghostscript with the appropriate (if complicated) set of options. You can use the 'ps2' set with eps files.
 
-Ghostscript is capable of interpreting PostScript, encapsulated PostScript (EPS), DOS EPS (EPSF), and Adobe Portable Document Format (PDF). The interpreter reads and executes the files in sequence, using the method described under "`File searching`_" to find them.
+.. note::
 
-The interpreter runs in interactive mode by default. After processing the files given on the command line (if any) it reads further lines of PostScript language commands from the primary input stream, normally the keyboard, interpreting each line separately. To quit the interpreter, type "``quit``". The ``-dBATCH -dNOPAUSE`` options in the examples above disable the interactive prompting. The interpreter also quits gracefully if it encounters end-of-file or control-C.
+   There are other utility scripts besides ``ps2pdf``, including ``pdf2ps``, ``ps2epsi``, ``pdf2dsc``, ``ps2ascii``, ``ps2ps`` and ``ps2ps2``. These just call Ghostscript with the appropriate (if complicated) set of options. You can use the 'ps2' set with eps files.
 
-The interpreter recognizes many options. An option may appear anywhere in the command line, and applies to all files named after it on the line. Many of them include "=" followed by a parameter. The most important are described in detail here. Please see the reference sections on `Command line options`_ and `Devices <Devices.htm>`_ for a more complete listing.
+   Ghostscript is capable of interpreting PostScript, encapsulated PostScript (EPS), DOS EPS (EPSF), and Adobe Portable Document Format (PDF). The interpreter reads and executes the files in sequence, using the method described under "`File searching`_" to find them.
+
+   The interpreter runs in interactive mode by default. After processing the files given on the command line (if any) it reads further lines of PostScript language commands from the primary input stream, normally the keyboard, interpreting each line separately. To quit the interpreter, type "``quit``". The ``-dBATCH -dNOPAUSE`` options in the examples above disable the interactive prompting. The interpreter also quits gracefully if it encounters end-of-file or *control-C*.
+
+   The interpreter recognizes many options. An option may appear anywhere in the command line, and applies to all files named after it on the line. Many of them include "=" followed by a parameter. The most important are described in detail here. Please see the reference sections on `Command line options`_ and `Devices <Devices.html>`_ for a more complete listing.
 
 
 
@@ -149,10 +160,9 @@ Selecting an output device
 ------------------------------------------
 
 
-
 Ghostscript has a notion of 'output devices' which handle saving or displaying the results in a particular format. Ghostscript comes with a diverse variety of such devices supporting vector and raster file output, screen display, driving various printers and communicating with other applications.
 
-The command line option ``'-sDEVICE=device'`` selects which output device Ghostscript should use. If this option isn't given the default device (usually a display device) is used. Ghostscript's built-in help message (``gs -h``) lists the available output devices. For complete description of the devices distributed with Ghostscript and their options, please see the `Devices <Devices.htm>`_  section of the documentation.
+The command line option ``'-sDEVICE=device'`` selects which output device Ghostscript should use. If this option isn't given the default device (usually a display device) is used. Ghostscript's built-in help message (``gs -h``) lists the available output devices. For complete description of the devices distributed with Ghostscript and their options, please see the `Devices <Devices.html>`_  section of the documentation.
 
 Note that this switch must precede the name of the first input file, and only its first use has any effect. For example, for printer output in a configuration that includes an Epson printer driver, instead of just ``'gs myfile.ps'`` you might use:
 
@@ -223,7 +233,7 @@ Be aware that filenames beginning with the character % have a special meaning in
    gs -sOutputFile=%os%%abc
 
 
-Please see `Ghostscript and the PostScript Language <Language.htm>`_ and the PostScript Language Reference Manual for more details on ``%`` and filedevices.
+Please see `Ghostscript and the PostScript Language <Language.html>`_ and the PostScript Language Reference Manual for more details on ``%`` and filedevices.
 
 
 .. note::
@@ -513,7 +523,7 @@ Ignore ``UserUnit`` parameter. This may be useful for backward compatibility wit
 ``-dRENDERTTNOTDEF``
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-If a glyph is not present in a font the normal behaviour is to use the /.notdef glyph instead. On TrueType fonts, this is often a hollow sqaure. Under some conditions Acrobat does not do this, instead leaving a gap equivalent to the width of the missing glyph, or the width of the /.notdef glyph if no /Widths array is present. Ghostscript now attempts to mimic this undocumented feature using a user parameter ``RenderTTNotdef``. The PDF interpreter sets this user parameter to the value of ``RENDERTTNOTDEF`` in systemdict, when rendering PDF files. To restore rendering of /.notdef glyphs from TrueType fonts in PDF files, set this parameter to true.
+If a glyph is not present in a font the normal behaviour is to use the /.notdef glyph instead. On TrueType fonts, this is often a hollow square. Under some conditions Acrobat does not do this, instead leaving a gap equivalent to the width of the missing glyph, or the width of the /.notdef glyph if no /Widths array is present. Ghostscript now attempts to mimic this undocumented feature using a user parameter ``RenderTTNotdef``. The PDF interpreter sets this user parameter to the value of ``RENDERTTNOTDEF`` in systemdict, when rendering PDF files. To restore rendering of /.notdef glyphs from TrueType fonts in PDF files, set this parameter to true.
 
 
 These command line options are no longer specific to PDF, but have some specific differences with PDF files:
@@ -611,7 +621,7 @@ In general with PostScript and PDF interpreters, the handling of overprinting an
 
 With devices which use a subtractive process color model, both PostScript and PDF allow the drawing of objects using colorants (inks) for one or more planes without affecting the data for the remaining colorants. Thus the inks for one object may overprint the inks for another object. In some cases this produces a transparency like effect. (The effects of overprinting should not be confused with the PDF 1.4 blending operations which are supported for all output devices.) Overprinting is not allowed for devices with an additive process color model. With files that use overprinting, the appearance of the resulting image can differ between devices which produce RGB output versus devices which produce CMYK output. Ghostscript automatically overprints (if needed) when the output device uses a subtractive process color model. For example, if the file is using overprinting, differences can be seen in the appearance of the output from the :ref:`tiff24nc and tiff32nc devices<Devices_TIFF>` which use an RGB and a CMYK process color models.
 
-Most of the Ghostscript :ref:`output devices<Devices.htm>` do not have file formats which support spot colors. Instead spot colors are converted using the tint transform function contained within the color space definition.. However there are several devices which have support for spot colors. The PSD format (Adobe Photoshop) produced by the :ref:`psdcmyk device<Devices_PSD>` contains both the raster data plus an equivalent CMYK color for each spot color. This allows Photoshop to simulate the appearance of the spot colors. The :ref:`display device (MS Windows, OS/2, gtk+)<Devices_Display_Device>` can be used with different color models: Gray, RGB, CMYK only, or CMYK plus spot colors (separation). The display device, when using its CMYK plus spot color (separation) mode, also uses an equivalent CMYK color to simulate the appearance of the spot color. The :ref:`tiffsep device<Devices_TIFF>` creates output files for each separation (CMYK and any spot colors present). It also creates a composite CMYK file using an equivalent CMYK color to simulate the appearance of spot colors. The :ref:`xcfcmyk device<Devices_XCF>` creates output files with spot colors placed in separate alpha channels. (The XCF file format does not currently directly support spot colors.)
+Most of the Ghostscript :ref:`output devices<Devices.html>` do not have file formats which support spot colors. Instead spot colors are converted using the tint transform function contained within the color space definition.. However there are several devices which have support for spot colors. The PSD format (Adobe Photoshop) produced by the :ref:`psdcmyk device<Devices_PSD>` contains both the raster data plus an equivalent CMYK color for each spot color. This allows Photoshop to simulate the appearance of the spot colors. The :ref:`display device (MS Windows, OS/2, gtk+)<Devices_Display_Device>` can be used with different color models: Gray, RGB, CMYK only, or CMYK plus spot colors (separation). The display device, when using its CMYK plus spot color (separation) mode, also uses an equivalent CMYK color to simulate the appearance of the spot color. The :ref:`tiffsep device<Devices_TIFF>` creates output files for each separation (CMYK and any spot colors present). It also creates a composite CMYK file using an equivalent CMYK color to simulate the appearance of spot colors. The :ref:`xcfcmyk device<Devices_XCF>` creates output files with spot colors placed in separate alpha channels. (The XCF file format does not currently directly support spot colors.)
 
 Overprinting with spot colors is not allowed if the tint transform function is being used to convert spot colors. Thus if spot colors are used with overprinting, then the appearance of the result can differ between output devices. One result would be obtained with a CMYK only device and another would be obtained with a CMYK plus spot color device. In a worst case situation where a file has overprinting with both process (CMYK) and spot colors, it is possible to get three different appearances for the same input file using the :ref:`tiff24nc<Devices_TIFF>` (RGB), :ref:`tiff32nc<Devices_TIFF>` (CMYK), and :ref:`tiffsep<Devices_TIFF>` (CMYK plus spot colors) devices.
 
@@ -716,7 +726,7 @@ Font lookup
 Ghostscript has a slightly different way to find the file containing a font with a given name. This rule uses not only the search path defined by ``-I``, ``GS_LIB``, and ``GS_LIB_DEFAULT`` as :ref:`described above<How Ghostscript finds files>`, but also the directory that is the value of the ``FontResourceDir`` system parameter, and an additional list of directories that is the value of the ``GS_FONTPATH`` environment variable (or the value provided with the ``-sFONTPATH= switch``, if present).
 
 
-At startup time, Ghostscript reads in the ``Fontmap`` files in every directory on the search path (or in the list provided with the ``-sFONTMAP=`` switch, if present): these files are catalogs of fonts and the files that contain them. (See the :ref:`documentation of fonts<Fonts.htm>` for details.) Then, when Ghostscript needs to find a font that isn't already loaded into memory, it goes through a series of steps.
+At startup time, Ghostscript reads in the ``Fontmap`` files in every directory on the search path (or in the list provided with the ``-sFONTMAP=`` switch, if present): these files are catalogs of fonts and the files that contain them. (See the :ref:`documentation of fonts<Fonts.html>` for details.) Then, when Ghostscript needs to find a font that isn't already loaded into memory, it goes through a series of steps.
 
 #. First, it looks up the font name in the combined Fontmaps. If there is an entry for the desired font name, and the file named in the entry can be found in some directory on the general search path (defined by ``-I``, ``GS_LIB``, and ``GS_LIB_DEFAULT``), and the file is loaded successfully, and loading it defines a font of the desired name, that is the end of the process.
 
@@ -1711,7 +1721,7 @@ Rendering parameters
 
 **-dUseCIEColor**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   Set ``UseCIEColor`` in the page device dictionary, remapping device-dependent color values through a Postscript defined CIE color space. Document ``DeviceGray``, ``DeviceRGB`` and ``DeviceCMYK`` source colors will be substituted respectively by Postscript CIEA, CIEABC and CIEDEFG color spaces. See the document :ref:`Ghostscript Color Management<GhostscriptColorManagement.htm>` for details on how this option will interact with Ghostscript's ICC-based color workflow. If accurate colors are desired, it is recommended that an ICC workflow be used.
+   Set ``UseCIEColor`` in the page device dictionary, remapping device-dependent color values through a Postscript defined CIE color space. Document ``DeviceGray``, ``DeviceRGB`` and ``DeviceCMYK`` source colors will be substituted respectively by Postscript CIEA, CIEABC and CIEDEFG color spaces. See the document :ref:`Ghostscript Color Management<GhostscriptColorManagement.html>` for details on how this option will interact with Ghostscript's ICC-based color workflow. If accurate colors are desired, it is recommended that an ICC workflow be used.
 
 **-dNOCIE**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1805,6 +1815,10 @@ Because the PostScript and PCL interpreters cannot determine when a document ter
    The page size from the PostScript file ``setpagedevice`` operator, or one of the older ``statusdict`` page size operators (such as ``letter`` or ``a4``) will be rotated, scaled and centered on the "best fit" page size from those availiable in the ``InputAttributes`` list. The ``-dPSFitPage`` is most easily used to fit pages when used with the ``-dFIXEDMEDIA`` option.
 
    This option is also set by the ``-dFitPage`` option.
+
+**-dReopenPerPage**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Normally, when using a single fixed filename (e.g. `output.tif`) the Ghostscript device will not release the file handle when a page is complete, but instead will retain it for the next page. The file handle is only released when the device is closed. However, if ``-dReopenPerPage=true``, then the file handle will be released at the end of the page and a new file (with the same name) will be created for the next page, thereby creating a new file handle.
 
 **-dORIENT1=true**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1998,7 +2012,7 @@ Pages that are saved instead of printed are retained until the list of saved pag
 
 Pages can be printed in reverse or normal order, or selected pages, including all even or all odd, and multiple collated copies can be produced. Since pages are saved until the flush command, pages can be printed multiple times, in any order.
 
-Refer to the :ref:`Using Saved Pages<SavedPages.htm>` document for details.
+Refer to the :ref:`Using Saved Pages<SavedPages.html>` document for details.
 
 
 

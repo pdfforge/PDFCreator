@@ -56,7 +56,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             // Check for a profile via Parameter
             if (profile == null)
-                profile = settings.GetProfileByNameOrGuid(jobInfo.ProfileParameter);
+                profile = settings.GetProfileByGuidOrName(jobInfo.ProfileParameter);
 
             // Check for a printer via Driver
             if (profile == null)

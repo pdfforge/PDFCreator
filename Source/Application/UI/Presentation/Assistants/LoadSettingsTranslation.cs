@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         public string MissingPrinters { get; private set; } = "Missing Printers";
         public string UnusedPrinters { get; private set; } = "Unused Printers";
-        public string AskAddMissingPrinters { get; private set; } = "The settings contain printers, that are currently not installed. Do you want to add these printers now?";
+        public string AskAddMissingPrinters { get; private set; } = "The imported settings contain printers, that are currently not installed. Do you want to add these printers now?";
         public string AskDeleteUnusedPrinters { get; private set; } = "The settings contain printers, that are currently installed but not used. Do you want to delete these printers now?";
 
         private string SettingsFileName { get; set; } = "{0} Settings";

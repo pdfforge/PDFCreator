@@ -1,5 +1,4 @@
-﻿using pdfforge.PDFCreator.Conversion.Actions;
-using pdfforge.PDFCreator.Conversion.ActionsInterface;
+﻿using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services;
@@ -16,6 +15,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         string Title { get; }
         bool IsEnabled { get; set; }
+        bool IsRestricted { get; }
+        AddActionToolTip AddActionToolTip { get; }
         string InfoText { get; }
 
         IProfileSetting GetCurrentSettingCopy();
@@ -69,6 +70,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public string Title => Translation.Title;
         public string InfoText => Translation.InfoText;
+        public bool IsRestricted => Action.IsRestricted(CurrentProfile);
+
+        public AddActionToolTip AddActionToolTip
+        {
+            get
+            {
+                if (IsEnabled)
+                    return new AddActionToolTip(Translation.EnabledHint, true);
+                if (IsRestricted)
+                    return new AddActionToolTip(Translation.RestrictedHint, true);
+                return new AddActionToolTip(string.Empty, false);
+            }
+        }
 
         protected Conversion.Settings.Accounts Accounts => _currentSettingsProvider.CheckSettings.Accounts;
 

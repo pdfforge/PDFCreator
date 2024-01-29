@@ -10,10 +10,16 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Identity.Client;
+using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using NLog;
+using Logger = NLog.Logger;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep
 {
@@ -22,6 +28,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         private readonly ICommandLocator _commandLocator;
         private readonly IReadableFileSizeFormatter _readableFileSizeHelper;
         private readonly ICurrentSettingsProvider _currentSettingsProvider;
+        private readonly IAttachToOutlookItemAssistant _attachToOutlookItemAssistant;
 
         private ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
         private OutputFormat _outputFormat = OutputFormat.Pdf;
@@ -32,14 +39,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         private string _fileSize;
         private readonly TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
         private readonly ICommand _saveChangedSettingsCommand;
-        public ICommand OpenWithPdfArchitectCommand { get; set; }
-        public ICommand OpenExplorerCommand { get; set; }
-        public ICommand QuickActionOpenWithDefaultCommand { get; set; }
-        public ICommand SendEmailCommand { get; set; }
-        public ICommand PrintWithArchitectCommand { get; set; }
+
+        public ObservableCollection<MenuItem> SendMenuItems { get; set; }
+
+        public ICommand OpenWithPdfArchitectCommand { get; }
+        public ICommand OpenExplorerCommand { get; }
+        public ICommand QuickActionOpenWithDefaultCommand { get; }
+        public IAsyncCommand UpdateSendContextMenuButtonItemsCommand { get; }
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
-            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider) : base(translationUpdater)
+            ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider,
+            IAttachToOutlookItemAssistant attachToOutlookItemAssistant) : base(translationUpdater)
         {
             _saveChangedSettingsCommand = commandLocator.GetCommand<ISaveChangedSettingsCommand>();
 
@@ -47,11 +58,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             _readableFileSizeHelper = readableFileSizeHelper;
             _profilesProvider = profilesProvider;
             _currentSettingsProvider = currentSettingsProvider;
+            _attachToOutlookItemAssistant = attachToOutlookItemAssistant;
             OpenWithPdfArchitectCommand = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>();
             QuickActionOpenWithDefaultCommand = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>();
             OpenExplorerCommand = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>();
-            SendEmailCommand = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>();
-            PrintWithArchitectCommand = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>();
+            UpdateSendContextMenuButtonItemsCommand = new AsyncCommand(UpdateSendContextMenuButtonItemsExecute);
             FinishCommand = new DelegateCommand(OnFinish);
         }
 
@@ -75,6 +86,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
 
             IsSaveFileTemporary = job.Profile.SaveFileTemporary;
             RaisePropertyChanged(nameof(IsSaveFileTemporary));
+
+            _numberOfFixedSendMenuItems = InitSendContextMenuButtonItems();
 
             return _taskCompletionSource.Task;
         }
@@ -130,6 +143,64 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             {
                 _fileName = value;
                 RaisePropertyChanged(nameof(FileName));
+            }
+        }
+
+        private int _numberOfFixedSendMenuItems = 2;
+
+        private int InitSendContextMenuButtonItems()
+        {
+            SendMenuItems = new ObservableCollection<MenuItem>();
+            var printWithArchitectMenuItem = new MenuItem
+            {
+                Header = Translation.PrintFileWithArchitect,
+                Command = _commandLocator.GetCommand<QuickActionPrintWithPdfArchitectCommand>(),
+                CommandParameter = Job
+            };
+            SendMenuItems.Add(printWithArchitectMenuItem);
+
+            var sendEmailMenuItem = new MenuItem
+            {
+                Header = Translation.SendEmail,
+                Command = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>(),
+                CommandParameter = Job
+            };
+            SendMenuItems.Add(sendEmailMenuItem);
+            
+            RaisePropertyChanged(nameof(SendMenuItems));
+            return SendMenuItems.Count;
+        }
+
+
+        private async Task UpdateSendContextMenuButtonItemsExecute(object obj)
+        {
+            for (int i = SendMenuItems.Count; i > _numberOfFixedSendMenuItems; i--)
+                SendMenuItems.RemoveAt(i - 1);
+
+            List<string> activeCaptions = new List<string>();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    activeCaptions.AddRange(_attachToOutlookItemAssistant.GetOutlookItemCaptions());
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn("Issues with Outlook");
+                    activeCaptions = new List<string>();
+                }
+            });
+
+            foreach (var caption in activeCaptions)
+            {
+                var attachToOutlookItem = new MenuItem
+                {
+                    Header = Translation.AttachTo + " " + caption,
+                    Command = new DelegateCommand(o =>
+                        _attachToOutlookItemAssistant.ExportToOutlookItem(caption, Job.OutputFiles))
+                };
+                SendMenuItems.Add(attachToOutlookItem);
             }
         }
 

@@ -22,6 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public static string SaveOutputFormatMetadataView => nameof(UserControls.Profiles.SaveOutputFormatMetadataView);
         public static string WorkflowEditorView => nameof(UserControls.Profiles.WorkflowEditor.WorkflowEditorView);
         public static string DirectConversionTabContentRegion => NameOfProperty();
+        public static string PrinterSaveButtonRegion => NameOfProperty();
     }
 
     public class PrintJobRegionNames : RegionNameCollection

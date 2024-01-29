@@ -100,9 +100,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		/// Set the filename of the shared settings file. The default is 'settings.ini'.
 		/// </summary>
 		public string SharedSettingsFilename { get; set; } = "settings";
-
-
-        public void ReadValues(Data data, string path = "")
+		
+		
+		public void ReadValues(Data data, string path = "")
 		{
 			ApplicationSettings.ReadValues(data, path + @"ApplicationSettings\");
 			CreatorAppSettings.ReadValues(data, path + @"CreatorAppSettings\");
@@ -122,7 +122,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			HidePdfArchitectInfo = bool.TryParse(data.GetValue(@"" + path + @"HidePdfArchitectInfo"), out var tmpHidePdfArchitectInfo) ? tmpHidePdfArchitectInfo : false;
 			LoadSharedAppSettings = bool.TryParse(data.GetValue(@"" + path + @"LoadSharedAppSettings"), out var tmpLoadSharedAppSettings) ? tmpLoadSharedAppSettings : true;
 			LoadSharedProfiles = bool.TryParse(data.GetValue(@"" + path + @"LoadSharedProfiles"), out var tmpLoadSharedProfiles) ? tmpLoadSharedProfiles : true;
-            try { SharedSettingsFilename = Data.UnescapeString(data.GetValue(@"" + path + @"SharedSettingsFilename")); } catch { SharedSettingsFilename = "settings";}
+			try { SharedSettingsFilename = Data.UnescapeString(data.GetValue(@"" + path + @"SharedSettingsFilename")); } catch { SharedSettingsFilename = "settings";}
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -146,7 +146,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			data.SetValue(@"" + path + @"LoadSharedAppSettings", LoadSharedAppSettings.ToString());
 			data.SetValue(@"" + path + @"LoadSharedProfiles", LoadSharedProfiles.ToString());
 			data.SetValue(@"" + path + @"SharedSettingsFilename", Data.EscapeString(SharedSettingsFilename));
-        }
+		}
 		
 		public GpoSettings Copy()
 		{
@@ -171,7 +171,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			copy.LoadSharedAppSettings = LoadSharedAppSettings;
 			copy.LoadSharedProfiles = LoadSharedProfiles;
 			copy.SharedSettingsFilename = SharedSettingsFilename;
-            return copy;
+			return copy;
 		}
 		
 		public void ReplaceWith(GpoSettings source)
@@ -228,8 +228,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 				
 			if(SharedSettingsFilename != source.SharedSettingsFilename)
 				SharedSettingsFilename = source.SharedSettingsFilename;
-
-        }
+				
+		}
 		
 		public override bool Equals(object o)
 		{
@@ -255,7 +255,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!Object.Equals(LoadSharedAppSettings, v.LoadSharedAppSettings)) return false;
 			if (!Object.Equals(LoadSharedProfiles, v.LoadSharedProfiles)) return false;
 			if (!Object.Equals(SharedSettingsFilename, v.SharedSettingsFilename)) return false;
-            return true;
+			return true;
 		}
 		
 		public override int GetHashCode()

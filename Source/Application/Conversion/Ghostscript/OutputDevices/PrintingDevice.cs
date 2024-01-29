@@ -1,10 +1,12 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
@@ -52,22 +54,18 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             _printer = printer;
         }
 
-        protected override void AddDeviceSpecificParameters(IList<string> parameters)
+        private string GetOutputFileParameter(ConversionProfile profile)
         {
-            parameters.Add("-dPrinted");
-
-            if (Job.Profile.Printing.FitToPage)
-                parameters.Add("-dFitPage");
-
             var printerName = "";
-            switch (Job.Profile.Printing.SelectPrinter)
+            switch (profile.Printing.SelectPrinter)
             {
                 case SelectPrinter.DefaultPrinter:
                     //printer.PrinterName returns default printer
                     if (!_printer.IsValid)
                     {
-                        Logger.Error("The default printer (" + Job.Profile.Printing.PrinterName + ") is invalid!");
-                        throw new Exception("100");
+                        var message = "The default printer (" + profile.Printing.PrinterName + ") is invalid!";
+                        Logger.Error(message);
+                        throw new ProcessingException(message, ErrorCode.Printing_InvalidDefaultPrinter);
                     }
                     printerName = _printer.PrinterName;
                     break;
@@ -77,51 +75,65 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     //Hint: setting PrinterName, does not change the systems default
                     if (!_printer.IsValid)
                     {
-                        Logger.Error("The selected printer (" + Job.Profile.Printing.PrinterName + ") is invalid!");
-                        throw new Exception("101");
+                        var message = "The selected printer(" + profile.Printing.PrinterName + ") is invalid!";
+                        Logger.Error(message);
+                        throw new ProcessingException(message, ErrorCode.Printing_InvalidSelectedPrinter);
                     }
                     printerName = _printer.PrinterName;
                     break;
 
                 case SelectPrinter.ShowDialog:
                 default:
-                    //add nothing to trigger the Windows-Printing-Dialog
+                    //leave printerName empty to get (only) %printer% for the parameter below which triggers the Ghostscript-Printing-Dialog
                     break;
             }
+            
+            return $"/OutputFile (%printer%{EncodeGhostscriptParametersOctal(printerName)})";
+        }
+
+        protected override void AddDeviceSpecificParameters(IList<string> parameters)
+        {
+            parameters.Add("-dPrinted");
+
+            if (Job.Profile.Printing.FitToPage)
+                parameters.Add("-dFitPage");
 
             parameters.Add("-c");
 
-            var printerParameter = "";
-            if (!string.IsNullOrEmpty(printerName))
-                printerParameter = $"/OutputFile ({EncodeGhostscriptParametersOctal("%printer%" + printerName)})";
+            var outputFile = GetOutputFileParameter(Job.Profile);
 
             var spoolJobTitle = _displayUserNameInSpoolJobTitle ? (Job.JobInfo.Metadata.PrintJobAuthor + "|") : "";
             spoolJobTitle += PathSafe.GetFileName(Job.OutputFiles[0]);
+            var userSettings = $"/UserSettings << /DocumentName ({EncodeGhostscriptParametersOctal(spoolJobTitle)}) >>";
+            
+            parameters.Add($"<< {outputFile} {userSettings} /OutputDevice /mswinpr2 /NoCancel true >> setpagedevice ");
 
-            parameters.Add($"mark {printerParameter} /UserSettings << /DocumentName ({EncodeGhostscriptParametersOctal(spoolJobTitle)}) >> (mswinpr2) finddevice putdeviceprops setdevice");
-            parameters.Add("-c");
-            parameters.Add("<< /NoCancel true >> setpagedevice ");
+            AddDuplexParameter(parameters);
+        }
+
+        private void AddDuplexParameter(IList<string> parameters)
+        {
+            if (Job.Profile.Printing.Duplex == DuplexPrint.Disable)
+                return;
 
             //No duplex settings for PrinterDialog
             if (Job.Profile.Printing.SelectPrinter == SelectPrinter.ShowDialog)
                 return;
 
+            if (!_printer.CanDuplex)
+            {
+                Logger.Warn($"The printer \"{_printer.PrinterName}\" does not support duplex.");
+                return;
+            }
+
             switch (Job.Profile.Printing.Duplex)
             {
                 case DuplexPrint.LongEdge: //Book
-                    if (_printer.CanDuplex)
-                    {
-                        parameters.Add("<< /Duplex true /Tumble false >> setpagedevice ");
-                    }
+                    parameters.Add("<< /Duplex true /Tumble false >> setpagedevice ");
                     break;
-
                 case DuplexPrint.ShortEdge: //Calendar
-                    if (_printer.CanDuplex)
-                    {
-                        parameters.Add("<< /Duplex true /Tumble true >> setpagedevice ");
-                    }
+                    parameters.Add("<< /Duplex true /Tumble true >> setpagedevice ");
                     break;
-
                 case DuplexPrint.Disable:
                 default:
                     //Nothing
