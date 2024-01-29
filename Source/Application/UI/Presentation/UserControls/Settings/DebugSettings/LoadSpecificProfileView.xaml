@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings"
-             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              mc:Ignorable="d" 
              Height="500"
              Width="500"
-             d:DataContext="{d:DesignInstance local:DesignTimeLoadSpecificProfileViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeLoadSpecificProfileViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800" x:Name="MainControl">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -16,15 +16,13 @@
                 <ResourceDictionary Source="../../../Styles/Labels.xaml" />
                 <ResourceDictionary Source="../../../Styles/DefaultsDictionary.xaml" />
                 <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            <converter:BoolToShownColorConverter x:Key="BlueIfTrueConverter" ColorActive="{StaticResource AccentButtonBackgroundBrush}" ColorInActive="{StaticResource DefaultButtonBackgroundBrush}"/>
-            <converter:BoolToShownColorConverter x:Key="WhiteIfTrueConverter" ColorActive="{StaticResource AccentButtonForegroundBrush}" ColorInActive="{StaticResource DefaultButtonForegroundBrush}"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel LastChildFill="True" Margin="30">
-
-        <Label DockPanel.Dock="Top" FontSize="14" Content="{Binding Translation.Description}" Margin="0 0 0 20"/>
-        <StackPanel DockPanel.Dock="Top">
+    <DockPanel LastChildFill="True" Margin="20">
+        <Label DockPanel.Dock="Top"
+               Content="{Binding Description}"/>
+        <StackPanel DockPanel.Dock="Top" Margin="0 20 0 0">
             <Label Content="{Binding Translation.LoadFileLabel}" />
             <DockPanel Margin="0 10 0 0">
                 <Button DockPanel.Dock="Right" Width="33" Margin="10 0 0 0"
@@ -32,20 +30,19 @@
                     ...
                 </Button>
                 <TextBox IsReadOnly="True" DockPanel.Dock="Left" 
-                             Text="{Binding IniFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding IniFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
             </DockPanel>
         </StackPanel>
 
-        <Button DockPanel.Dock="Bottom" Margin="0 20 0 0" Padding="5" 
+        <Button DockPanel.Dock="Bottom" Margin="0 20 0 0"
+                HorizontalAlignment="Right"
                 Command="{Binding AddToSettingsCommand}" 
                 Content="{Binding Translation.AddButton}"
-                IsEnabled="{Binding HasSelectedProfile}"
-                Background="{Binding HasSelectedProfile, Converter={StaticResource BlueIfTrueConverter}}"
-                Foreground="{Binding HasSelectedProfile, Converter={StaticResource WhiteIfTrueConverter}}"/>
+                Style="{StaticResource AccentButton}" />
 
         <!--Last Child-->
-        <ListView ItemsSource="{Binding Profiles}" BorderThickness="0" Margin="0 20 0 0">
+        <ListView ItemsSource="{Binding ProfileSelections}" BorderThickness="0" Margin="0 20 0 0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="Transparent"/>
@@ -61,7 +58,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate DataType="local:ProfileSelection">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding IsChecked}" Command="{Binding DataContext.SelectedProfileChangedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}"/>
+                        <CheckBox IsChecked="{Binding IsSelected}" Command="{Binding DataContext.SelectedProfileChangedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}"/>
                         <TextBlock Text="{Binding Profile.Name}" Margin="10 10 0 10"/>
                     </StackPanel>
                 </DataTemplate>

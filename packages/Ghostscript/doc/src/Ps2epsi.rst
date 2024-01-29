@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Convert PostScript to Encapsulated PostScript Interchange Format
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _Ps2epsi.htm:
+.. _Ps2epsi.html:
 
 
 Convert PostScript to Encapsulated PostScript Interchange Format

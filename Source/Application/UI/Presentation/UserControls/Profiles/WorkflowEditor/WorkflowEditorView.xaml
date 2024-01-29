@@ -27,6 +27,7 @@
                 <ResourceDictionary  Source="../../../Styles/Labels.xaml" />
                 <ResourceDictionary  Source="../../../Styles/ListBox.xaml" />
                 <ResourceDictionary  Source="../../../Styles/Icons/GrowingTopDownArrow.xaml" />
+                <ResourceDictionary  Source="../../../Styles/Buttons/ProfileSettingsPreviewButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="HiddenWhenFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
@@ -58,8 +59,10 @@
                     </Button>
 
                     <!-- Action Title + Status -->
-                    <Border Grid.Column="1" Margin="5 0 0 0"
-                            Style="{StaticResource HoverBorder}"
+                    <Button Grid.Column="1" Margin="5 0 0 0"
+                            Command="{Binding DataContext.EditActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding }"
+                            Style="{StaticResource ActionDetailsPreviewButton}"
                             ToolTip="{Binding ActionViewModel.StatusText}">
                         <DockPanel Margin="10 0 10 0">
                             <TextBlock VerticalAlignment="Center"
@@ -71,7 +74,7 @@
                                        Text="{Binding ActionViewModel.StatusText, Mode=OneWay}"
                                        TextTrimming="CharacterEllipsis" />
                         </DockPanel>
-                    </Border>
+                    </Button>
 
                     <!-- Edit -->
                     <Button Grid.Column="2"
@@ -95,7 +98,7 @@
                     <Button Grid.Column="4"
                             Margin="10 0 0 0"
                             Style="{StaticResource SquaredIconButton}"
-                            Cursor="{x:Static Cursors.ScrollNS}"
+                            Cursor="{x:Static Cursors.Hand}"
                             Visibility="{Binding Converter={StaticResource HiddenWhenFacadeIsFixedOrderConverter}}">
                         <iconPacks:PackIconMaterialDesign Kind="DragHandle" />
                     </Button>

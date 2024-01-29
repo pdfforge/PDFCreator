@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.MailClient
 {
-    public class EMailClientActionViewModel : ActionViewModelBase<EMailClientAction, MailTranslation>
+    public class EMailClientActionViewModel : ActionViewModelBase<MailClientAction, MailTranslation>
     {
         private readonly IClientTestMailAssistant _clientTestMailAssistant;
         private readonly IInteractionRequest _interactionRequest;

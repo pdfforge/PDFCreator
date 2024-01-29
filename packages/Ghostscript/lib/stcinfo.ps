@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2021 Artifex Software, Inc.
+% Copyright (C) 2001-2023 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -9,8 +9,8 @@
 % of the license contained in the file LICENSE in this distribution.
 %
 % Refer to licensing information at http://www.artifex.com or contact
-% Artifex Software, Inc.,  1305 Grant Avenue - Suite 200, Novato,
-% CA 94945, U.S.A., +1(415)492-9861, for further information.
+% Artifex Software, Inc.,  39 Mesa Street, Suite 108A, San Francisco,
+% CA 94129, USA, for further information.
 %
 
 % stcinfo.ps
@@ -26,7 +26,7 @@ statusdict begin product end
 dup (Ghostscript) eq 1 index (Artifex Ghostscript) eq or
 exch (AFPL Ghostscript) eq or{
 
-  currentdevice getdeviceprops .dicttomark
+  currentpagedevice
   dup /Name get (stcolor) eq /STCi_onstc exch def
   /STCinfo where {/STCinfo get exch pop} if
   /STCinfo exch def
@@ -635,7 +635,7 @@ exch (AFPL Ghostscript) eq or{
    /ColorAdjustMatrix STCiget null ne STCi_onstc and {
        mark
        /ColorAdjustMatrix null
-       currentdevice putdeviceprops pop
+       .dicttomark setpagedevice
    } if
 %
 % "Show" the text
@@ -783,7 +783,7 @@ exch (AFPL Ghostscript) eq or{
    /ColorAdjustMatrix STCiget null ne STCi_onstc and {
      STCi_win 0 get STCi_win 2 get add 2 div
      [STCi_win 0 get STCi_win 1 get 3 index STCi_win 3 get ] colortri
-     mark /ColorAdjustMatrix dup STCiget currentdevice putdeviceprops pop
+     mark /ColorAdjustMatrix dup STCiget .dicttomark setpagedevice
      [1 index STCi_win 1 get STCi_win 2 get STCi_win 3 get ] colortri
      pop
    }{

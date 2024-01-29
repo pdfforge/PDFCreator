@@ -1,4 +1,5 @@
 ﻿using NLog;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Mail;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
@@ -144,7 +145,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             var smtp = new SmtpClient(smtpAccount.Server, smtpAccount.Port)
             {
-                EnableSsl = smtpAccount.Ssl
+                EnableSsl = smtpAccount.Ssl,
             };
 
             Logger.Debug("Created new SmtpClient:"
@@ -220,9 +221,14 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 Logger.Error(ex, "The message could not be delivered to one or more of the recipients ");
                 return new ActionResult(ErrorCode.Smtp_EmailNotDelivered);
             }
+            catch (SmtpException ex) when (ex.InnerException is WebException)
+            {
+                Logger.Error(ex, $"Sending the the mail failed with the reason {ex.StatusCode}.\r\n" + ex.Message);
+                return new ActionResult(ErrorCode.Smtp_ConnectionError);
+            }
             catch (SmtpException ex)
             {
-                Logger.Warn("Could not authorize to host.\r\n" + ex.Message);
+                Logger.Error(ex, $"Sending the the mail failed with the reason {ex.StatusCode}.\r\n" + ex.Message);
                 return new ActionResult(ErrorCode.PasswordAction_Login_Error);
             }
             catch (Exception ex)

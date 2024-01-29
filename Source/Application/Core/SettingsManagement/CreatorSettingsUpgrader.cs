@@ -37,6 +37,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             UpgradeMethods.Add(UpgradeV11ToV12);
             UpgradeMethods.Add(UpgradeV12ToV13);
             UpgradeMethods.Add(UpgradeV13ToV14);
+            UpgradeMethods.Add(UpgradeV14ToV15);
         }
 
         private void UpgradeV0ToV1()
@@ -265,13 +266,19 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
                         existingFileBehaviour = "MergeBeforeModifyActions";
 
                     Data.SetValue(s + @"AutoSave\ExistingFileBehaviour", existingFileBehaviour);
-                    
+
                     Data.RemoveValue(s + @"AutoSave\EnsureUniqueFilenames");
                     Data.RemoveValue(s + @"AutoSave\AutoMergeFiles");
                     Data.RemoveValue(s + @"AutoSave\MergeBeforeModifyActions");
                 }
             );
             Data.SetValue(SettingsVersionPath, "14");
+        }
+
+        private void UpgradeV14ToV15()
+        {
+            MoveValue(@"PdfCreatorSettings\DontRecommendArchitect", @"CreatorAppSettings\DontRecommendArchitect");
+            Data.SetValue(SettingsVersionPath, "15");
         }
 
         protected IList<string> GetActionOrder(string profileOffset)

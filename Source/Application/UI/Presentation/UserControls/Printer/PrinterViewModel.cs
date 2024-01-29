@@ -17,11 +17,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using NLog;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
     public class PrinterViewModel : TranslatableViewModelBase<PrinterTabTranslation>, IMountable
     {
+        private Logger _logger = LogManager.GetCurrentClassLogger();
+        
         private readonly ConversionProfileWrapper _dummyLastUsedProfile = new ConversionProfileWrapper
         (
             new ConversionProfile()
@@ -79,6 +82,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
         public void UnmountView()
         {
             _settingsProvider.SettingsChanged -= SettingsProviderOnSettingsChanged;
+            _printerMappings.ObservableCollection.CollectionChanged -= PrinterMappings_OnCollectionChanged;
+            _printerMappingView.CurrentChanged -= PrinterMappingView_OnCurrentChanged;
         }
 
         private void SettingsProviderOnSettingsChanged(object sender, EventArgs eventArgs)
@@ -197,6 +202,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 
         private void SetSettingsAndRaiseNotifications(ObservableCollection<ConversionProfile> profiles)
         {
+            _logger.Debug("SetSettingsAndRaiseNotifications");
+
             ConversionProfiles = profiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
 
             RaisePropertyChanged(nameof(ApplicationSettings));
@@ -239,12 +246,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 
         private void UpdatePrinterList()
         {
+            _logger.Debug("UpdatePrinterList");
+
             if (_pdfCreatorPrinters == null)
                 _pdfCreatorPrinters = new List<string>();
 
             _pdfCreatorPrinters.Clear();
             foreach (var printer in _printerProvider.GetPDFCreatorPrinters())
             {
+                _logger.Debug("Installed Printer: " + printer);
                 _pdfCreatorPrinters.Add(printer);
             }
 
@@ -261,8 +271,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 
         private void ApplyPrinterMappings()
         {
+            _logger.Debug("ApplyPrinterMappings");
+
             if (_printerMappingProvider?.Settings != null)
             {
+                _logger.Debug("Printer mappings from registry:");
+                foreach (var pm in _printerMappingProvider.Settings)
+                {
+                    _logger.Debug("Printer Mapping: " + pm.PrinterName + " - " + pm.ProfileGuid);
+                }
+
                 var mappingWrappers = new List<PrinterMappingWrapper>();
 
                 foreach (var printerMapping in _printerMappingProvider.Settings)
@@ -270,12 +288,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
                     var mappingWrapper = new PrinterMappingWrapper(printerMapping, PrinterMappingProfiles);
                     if (mappingWrapper.Profile == null)
                     {
+                        _logger.Debug("Could not find profile for " + mappingWrapper.PrinterName + ". Default Profile is set");
                         mappingWrapper.Profile = _defaultProfile;
                     }
                     mappingWrappers.Add(mappingWrapper);
                 }
 
                 _printerMappings = new Helper.SynchronizedCollection<PrinterMappingWrapper>(mappingWrappers);
+
+                _logger.Debug("List Printer Mappings:");
+                foreach (var pm in PrinterMappings)
+                {
+                    _logger.Debug("Printer Mapping: " + pm.PrinterName + " - " + pm.Profile.Name);
+                }
 
                 _printerMappings.ObservableCollection.CollectionChanged += PrinterMappings_OnCollectionChanged;
                 _printerMappingView = CollectionViewSource.GetDefaultView(_printerMappings.ObservableCollection);

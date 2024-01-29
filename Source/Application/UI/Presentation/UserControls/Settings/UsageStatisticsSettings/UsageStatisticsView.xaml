@@ -26,22 +26,21 @@
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <StackPanel Style="{StaticResource SettingsRegion}" >
+    <!--Collapsed when disabled by GPO-->
+    <StackPanel Visibility="{Binding IsDisabledByGpo, Converter={StaticResource NegatedBoolToVisibilityConverter}}"
+                Style="{StaticResource SettingsRegion}" >
         <Label Content="{Binding Translation.UsageStatisticsHeader}"
                Style="{StaticResource LargeLightLabel}" />
 
         <!--Send usage statistics checkbox-->
-        <!--Collapsed when disabled by GPO-->
         <CheckBox Margin="0 20 0 0 "
                           VerticalAlignment="Top"
                           Content="{Binding Translation.EnableUsageStatistics}"
                           IsChecked="{Binding EnableUsageStatistics}"
-                          Visibility="{Binding IsDisabledByGpo, Converter={StaticResource NegatedBoolToVisibilityConverter}}"
                           Background="White"/>
 
         <!--Usage statistics info-->
-        <StackPanel Style="{StaticResource GpoToolTipStyle}"
-                    Focusable="{Binding EnableUsageStatistics}">
+        <StackPanel Style="{StaticResource GpoToolTipStyle}">
             <Border Margin="0 20 0 0" Padding="10 10 10 10"
                     CornerRadius="2"
                     Background="White" BorderThickness="0">
@@ -71,8 +70,7 @@
             
 
         <!--Show usage statistics expander-->
-        <StackPanel Style="{StaticResource GpoToolTipStyle}"
-                    Focusable="{Binding EnableUsageStatistics}">
+        <StackPanel Style="{StaticResource GpoToolTipStyle}">
             <Expander DockPanel.Dock="Top" Margin="0 20 0 0" 
                       VerticalAlignment="Bottom" HorizontalAlignment="Left"
                       IsExpanded="False"

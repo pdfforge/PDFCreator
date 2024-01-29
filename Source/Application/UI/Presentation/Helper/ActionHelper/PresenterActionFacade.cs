@@ -20,6 +20,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper
 
         bool IsEnabled { get; }
 
+        bool IsRestricted { get; }
+
+        AddActionToolTip AddActionToolTip { get; }
+
         IProfileSetting GetCurrentSettingCopy();
 
         void ReplaceCurrentSetting(IProfileSetting profileSetting);
@@ -52,6 +56,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper
         public string InfoText => ActionViewModel.InfoText;
 
         public bool IsEnabled => ActionViewModel.IsEnabled;
+        public bool IsRestricted => ActionViewModel.IsRestricted;
+        public AddActionToolTip AddActionToolTip => ActionViewModel.AddActionToolTip;
 
         public void ReplaceCurrentSetting(IProfileSetting profileSetting)
         {

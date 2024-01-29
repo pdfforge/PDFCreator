@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Java
@@ -26,7 +26,7 @@ Platform & setup
 
 Ghostscript should be built as a shared library for your platform.
 
-See :ref:`Building Ghostscript<Make.htm>`.
+See :ref:`Building Ghostscript<Make.html>`.
 
 
 
@@ -323,7 +323,7 @@ There are two main classes within the ``gsjava.jar`` library to consider:
 GSAPI & GSInstance
 ---------------------
 
-:title:`GSAPI` is the main Ghostscript API class which bridges into the :ref:`Ghostscript C library<API.htm exported functions>`.
+:title:`GSAPI` is the main Ghostscript API class which bridges into the :ref:`Ghostscript C library<API.html exported functions>`.
 
 :title:`GSInstance` is a wrapper class for :title:`GSAPI` which encapsulates an instance of Ghostscript and allows for simpler API calls.
 

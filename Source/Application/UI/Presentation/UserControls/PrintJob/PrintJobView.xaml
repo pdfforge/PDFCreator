@@ -53,6 +53,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -76,7 +77,7 @@
             </Grid>
 
             <!-- Select Profile -->
-            <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+            <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                        Margin="0 0 0 10">
                 <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
                        Content="{Binding Translation.ProfileLabel}" />
@@ -110,7 +111,7 @@
                 <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
             </StackPanel>
 
-            <DockPanel  Grid.Row="3" Grid.Column="1" 
+            <DockPanel  Grid.Row="3" Grid.Column="1"
                         Margin="0 15 0 10" VerticalAlignment="Top">
                 <Label Margin="0 0 0 10" DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
                        Content="{Binding Translation.DirectoryLabel}" />
@@ -136,43 +137,63 @@
                          IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
             </DockPanel>
 
-            <Label Grid.Row="4" Grid.Column="0" 
+            <Label Grid.Row="4" Grid.Column="0"
                    Margin="0 30 0 0"
-                   Target="{Binding ElementName=TitleTextBox}" 
+                   Target="{Binding ElementName=TitleTextBox}"
                    Content="{Binding Translation.TitleLabel}" />
-            <TextBox Grid.Row="4" Grid.Column="1" 
+            <TextBox Grid.Row="4" Grid.Column="1"
                      Margin="0 30 0 0"
                      Name="TitleTextBox"
                      Text="{Binding Metadata.Title, Mode=TwoWay}" />
 
-            <Label Grid.Row="5" Grid.Column="0" 
+            <Label Grid.Row="5" Grid.Column="0"
                    Margin="0 10 0 0"
-                   Target="{Binding ElementName=AuthorTextBox}" 
+                   Target="{Binding ElementName=AuthorTextBox}"
                    Content="{Binding Translation.AuthorLabel}" />
-            <TextBox Grid.Row="5" Grid.Column="1" 
+            <TextBox Grid.Row="5" Grid.Column="1"
                      Margin="0 10 0 0"
                      Name="AuthorTextBox"
                      Text="{Binding Metadata.Author}" />
 
-            <Label Grid.Row="6" Grid.Column="0" 
+            <Label Grid.Row="6" Grid.Column="0"
                    Margin="0 10 0 0"
-                   Target="{Binding ElementName=SubjectTextBox}" 
+                   Target="{Binding ElementName=SubjectTextBox}"
                    Content="{Binding Translation.SubjectLabel}" />
             <TextBox Grid.Row="6" Grid.Column="1"
                      Margin="0 10 0 0"
-                     Name="SubjectTextBox" 
+                     Name="SubjectTextBox"
                      Text="{Binding Metadata.Subject}" />
 
-            <Label Grid.Row="7" Grid.Column="0" 
+            <Label Grid.Row="7" Grid.Column="0"
                    Margin="0 10 0 0"
-                   Target="{Binding ElementName=KeywordsTextBox}" 
+                   Target="{Binding ElementName=KeywordsTextBox}"
                    Content="{Binding Translation.KeywordsLabel}" />
-            <TextBox Grid.Row="7" Grid.Column="1" 
+            <TextBox Grid.Row="7" Grid.Column="1"
                      Margin="0 10 0 0"
-                     Name="KeywordsTextBox" 
+                     Name="KeywordsTextBox"
                      Text="{Binding Metadata.Keywords}" />
 
-            <StackPanel Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2"
+            <!--Warning for restricted actions-->
+            <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
+                    Margin="0 20 0 5"
+                    BorderThickness="0"
+                    Visibility="{Binding AreActionsRestricted, Converter={StaticResource CollapsedIfFalseConverter}}">
+                <DockPanel>
+                    <iconPacks:PackIconMaterialDesign Kind="Notifications"
+                                                      Margin="0 0 10 0"
+                                                      VerticalAlignment="Center"
+                                                      Height="14"
+                                                      Foreground="{StaticResource ErrorBrush}" />
+                    <TextBlock Text="{Binding Translation.RestrictedActionWarning}"
+                               TextWrapping="WrapWithOverflow"
+                               FontSize="12"
+                               FontWeight="DemiBold"
+                               Foreground="{StaticResource ErrorBrush}" />
+                </DockPanel>
+            </Border>
+
+            <!--Banner Region-->
+            <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
                         VerticalAlignment="Center">
                 <ContentControl HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
@@ -260,9 +281,29 @@
             </Grid>
 
             <!-- E-Mail -->
-            <Button Margin="5 0" Command="{Binding EmailCommand}">
-                <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Email}" MaxWidth="90" />
-            </Button>
+            <Grid Margin="5 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Command="{Binding EmailCommand}">
+                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Email}" />
+                </Button>
+                <contextMenuButton:ContextMenuButton Grid.Column="1" Margin="2 0 0 0"
+                                                     Style="{StaticResource DefaultButton}"
+                                                     ShowArrow="True"
+                                                     MinWidth="21"
+                                                     MaxWidth="21"
+                                                     Padding="0">
+                    <contextMenuButton:ContextMenuButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding Translation.SendEmailWithoutSaving}"
+                                      Command="{Binding SendEmailWithoutSavingCommand}" />
+                        </ContextMenu>
+                    </contextMenuButton:ContextMenuButton.ContextMenu>
+                </contextMenuButton:ContextMenuButton>
+            </Grid>
 
             <!-- Save -->
             <Grid Margin="5 0">

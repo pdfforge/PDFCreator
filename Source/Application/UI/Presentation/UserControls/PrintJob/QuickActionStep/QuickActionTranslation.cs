@@ -15,6 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string OkButton { get; private set; } = "Ok";
         public string Open { get; private set; } = "Open";
         public string Send { get; private set; } = "Send";
+        public string AttachTo { get; private set; } = "Attach to:";
         public string TotalFileSize { get; private set; } = "Total file size:";
 
         public string DontShowUntilNextUpdate { get; private set; } = "Don't show Quick Actions until the next update";

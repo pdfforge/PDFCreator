@@ -154,6 +154,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("At least one of the attachment files for the SMTP action is unavailable.")]
         Smtp_InvalidAttachmentFiles = 15110,
 
+        [Translation("Could not reach the SMTP server. Check the hostname and port configuration.")]
+        Smtp_ConnectionError = 15113,
+
         [Translation("Error while sending e-mail via SMTP.")]
         Smtp_GenericError = 15999,
 
@@ -535,5 +538,23 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Error while adding page numbers to the document.")]
         PageNumbers_GenericError = 48999,
+
+        [Translation("Error while uploading the document to Outlook.")]
+        Outlook_Web_Upload_Error = 49400,
+
+        [Translation("Error no Outlook Web Access account configured.")]
+        Outlook_Web_Account_Missing = 49401,
+
+        [Translation("Could not create draft on account.")]
+        Outlook_Web_Mail_Create = 49403,
+
+        [Translation("Too many attachment. The limit to attachments is 100.")]
+        Outlook_Web_Attachment_Limit_Count = 49404,
+
+        [Translation("Too big. Outlook only allows for 150mb of attachments.")]
+        Outlook_Web_Attachment_Limit_Size = 49405,
+
+        [Translation("General error during Outlook Web Access action.")]
+        Outlook_Web_General_Error = 49999,
     }
 }

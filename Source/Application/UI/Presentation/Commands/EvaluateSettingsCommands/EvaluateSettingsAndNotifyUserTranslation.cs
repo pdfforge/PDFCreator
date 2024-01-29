@@ -15,6 +15,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
         public string ChooseNoToRevert { get; private set; } = "Choose 'No' to revert the changes.";
         public string DefaultViewer { get; private set; } = "Default Viewer";
         public string Error { get; private set; } = "Error";
-        public string NoPrinterMapping { get; private set; } = "No queue is mapped to a printer.\nPlease add a new queue or select a printer for an existing queue.";
     }
 }

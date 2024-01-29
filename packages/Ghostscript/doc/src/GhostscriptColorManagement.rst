@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Ghostscript Color Management
 
 .. include:: header.rst
 
-.. _GhostscriptColorManagement.htm:
+.. _GhostscriptColorManagement.html:
 
 
 Ghostscript Color Management
@@ -20,9 +20,9 @@ Michael J. Vrhel, Ph.D.
 
 Artifex Software
 
-1305 Grant Avenue, Suite 200
+39 Mesa Street, Suite 108A
 
-Novato, CA 94945, USA
+San Francisco, CA 94129, USA
 
 
 Abstract

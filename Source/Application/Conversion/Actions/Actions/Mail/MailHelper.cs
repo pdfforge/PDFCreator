@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace pdfforge.PDFCreator.Conversion.Actions.Actions
+namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
 {
     public interface IMailHelper
     {

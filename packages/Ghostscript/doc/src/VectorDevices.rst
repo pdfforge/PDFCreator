@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: High Level Devices
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _VectorDevices.htm:
+.. _VectorDevices.html:
 
 
 High Level Devices
@@ -1224,7 +1224,7 @@ To create a PDF/X-3 document from a Postscript or a PDF file, you should :
 
 - Specify the ``-dPDFX`` option. It provides the document conformity and forces ``-dCompatibilityLevel=1.3``.
 
-- Specify ``-sColorConversionStrategy=Gray``, ``-sColorConversionStrategy=CMYK`` or ``-sColorConversionStrategy=UseDeviceIndependentColor`` (RGB is not allowed). If you plan to create a device-independent color PDF file then you should set the ``ProcessColorModel`` using ``-sProcessColorModel=DeviceGray`` or ``-sProcessColorModel=DeviceCMYK``.
+- Specify ``-sColorConversionStrategy=Gray``, ``-sColorConversionStrategy=CMYK`` or ``-sColorConversionStrategy=UseDeviceIndependentColor`` (RGB is not allowed).
 
 - Specify a PDF/X definition file before running the input document. It provides additional information to be included into the output document. A sample PDF/X definition file may be found in ``gs/lib/PDFX_def.ps``. You will need to modify the content of this file; in particular you must alter the ``/ICCProfile`` so that it points to a valid ICC profile for your ``OutputCondition``. The string '(...)' defining the ICCProfile must be a fully qualified device and path specification appropriate for your Operating System.
 
@@ -1285,7 +1285,7 @@ To create a PDF/A document, please follow the instructions for `Creating a PDF/X
 
 - Specify the ``-dPDFA`` option to specify ``PDF/A-1``, ``-dPDFA=2`` for ``PDF/A-2`` or ``-dPDFA=3`` for ``PDF/A-3``.
 
-- Specify ``-sColorConversionStrategy=RGB``, ``-sColorConversionStrategy=CMYK`` or ``-sColorConversionStrategy=UseDeviceIndependentColor``. If you plan to create a device-independent color PDF file then you should set the ``ProcessColorModel`` using ``-sProcessColorModel=DeviceRGB`` or ``-sProcessColorModel=DeviceCMYK``.
+- Specify ``-sColorConversionStrategy=RGB``, ``-sColorConversionStrategy=CMYK`` or ``-sColorConversionStrategy=UseDeviceIndependentColor``.
 
 - Specify a PDF/A definition file before running the input document. It provides additional information to be included in the output document. A sample PDF/A definition file may be found in ``gs/lib/PDFA_def.ps``. You will need to modify the content of this file; in particular you must alter the ``/ICCProfile`` so that it points to a valid ICC profile for your ``OutputIntent``. The string '(...)' defining the ICCProfile must be a fully qualified device and path specification appropriate for your Operating System.
 

@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: The Ghostscript Library
@@ -7,10 +7,10 @@
 
 .. include:: header.rst
 
-.. _Lib.htm:
+.. _Lib.html:
 
 
-The Ghostscript Library
+The Core Library
 ===================================
 
 

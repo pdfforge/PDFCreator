@@ -112,14 +112,14 @@
                          IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
                                     Converter={StaticResource EnumToBooleanConverter},
                                     ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.Overwrite}}">
-                <TextBlock Text="{Binding Translation.OverWriteFiles}" />
+                <TextBlock Text="{Binding Translation.OverWriteFiles}" TextWrapping="Wrap" />
             </RadioButton>
             <RadioButton Margin="0 10 0 0"
                          GroupName="AutoSaveExistingFileBehaviour"
                          IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
                                     Converter={StaticResource EnumToBooleanConverter},
                                     ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.EnsureUniqueFilenames}}">
-                <TextBlock>
+                <TextBlock TextWrapping="Wrap">
                     <Run Text="{Binding Translation.EnsureUniqueFilenames, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="{Binding Translation.UniqueFilenameHint, Mode=OneWay}" />
@@ -130,14 +130,14 @@
                          IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
                                     Converter={StaticResource EnumToBooleanConverter},
                                     ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.Merge}}">
-                <TextBlock Text="{Binding Translation.AutoMerge}" />
+                <TextBlock Text="{Binding Translation.AutoMerge}" TextWrapping="Wrap" />
             </RadioButton>
             <RadioButton Margin="0 10 0 0"
                          GroupName="AutoSaveExistingFileBehaviour"
                          IsChecked="{Binding CurrentProfile.AutoSave.ExistingFileBehaviour,
                                     Converter={StaticResource EnumToBooleanConverter},
                                     ConverterParameter={x:Static enums:AutoSaveExistingFileBehaviour.MergeBeforeModifyActions}}">
-                <TextBlock Text="{Binding Translation.AutoMergeBeforeModifyActions}" />
+                <TextBlock Text="{Binding Translation.AutoMergeBeforeModifyActions}" TextWrapping="Wrap" />
             </RadioButton>
         </StackPanel>
 

@@ -73,6 +73,28 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             Job.Profile = profile.Copy();
         }
 
+        public void SetProfileByGuidOrName(string profileGuid)
+        {
+            Logger.Trace("COM: Setting the job profile: {0}", profileGuid);
+            var profile = _settingsProvider.Settings.GetProfileByGuidOrName(profileGuid);
+
+            if (profile == null)
+                throw new COMException($"A profile with the GUID or Name '{profileGuid}' does not exist!");
+
+            Job.Profile = profile.Copy();
+        }
+
+        public void GetProfileByGuidOrName(string profileGuid)
+        {
+            Logger.Trace("COM: Setting the job profile: {0}", profileGuid);
+            var profile = _settingsProvider.Settings.GetProfileByGuidOrName(profileGuid);
+
+            if (profile == null)
+                throw new COMException($"A profile with the GUID or Name '{profileGuid}' does not exist!");
+
+            Job.Profile = profile.Copy();
+        }
+
         public void ConvertTo(string fullFileName)
         {
             if (!_pathUtil.IsValidRootedPath(fullFileName))

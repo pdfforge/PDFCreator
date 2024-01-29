@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: API
 
 .. include:: header.rst
 
-.. _API.htm:
+.. _API.html:
 
 
 API
@@ -20,11 +20,11 @@ What is the Ghostscript Interpreter API?
 ------------------------------------------
 
 
-The Ghostscript interpreter can be built as a dynamic link library (DLL) on Microsoft Windows, as a shared object on the Linux, Unix and MacOS X platforms. With some changes, it could be built as a static library. This document describes the Application Programming Interface (API) for the Ghostscript interpreter library. This should not be confused with the :ref:`Ghostscript library<Lib.htm>` which provides a graphics library but not the interpreter.
+The Ghostscript interpreter can be built as a dynamic link library (DLL) on Microsoft Windows, as a shared object on the Linux, Unix and MacOS X platforms. With some changes, it could be built as a static library. This document describes the Application Programming Interface (API) for the Ghostscript interpreter library. This should not be confused with the :ref:`Ghostscript library<Lib.html>` which provides a graphics library but not the interpreter.
 
 This supercedes the old DLL interface.
 
-To provide the interface described in the :ref:`usage documentation<Use.htm>`, a smaller independent executable loads the DLL/shared object. This executable must provide all the interaction with the windowing system, including image windows and, if necessary, a text window.
+To provide the interface described in the :ref:`usage documentation<Use.html>`, a smaller independent executable loads the DLL/shared object. This executable must provide all the interaction with the windowing system, including image windows and, if necessary, a text window.
 
 The Ghostscript interpreter library's name and characteristics differ for each platform:
 
@@ -39,7 +39,7 @@ The source file dxmainc.c can also serve as an example of how to use the shared 
 At this stage, Ghostscript does not support multiple instances of the interpreter within a single process.
 
 
-.. _API.htm exported functions:
+.. _API.html exported functions:
 .. _gsapi_asterisk:
 
 Exported functions
@@ -87,7 +87,7 @@ The functions exported by the DLL/shared object are described in the header file
 
 
 
-.. _API.htm gsapi_revision:
+.. _API.html gsapi_revision:
 .. _gsapi_revision:
 
 
@@ -116,7 +116,7 @@ This function returns the revision numbers and strings of the Ghostscript interp
    }
 
 
-.. _API.htm gsapi_new_instance:
+.. _API.html gsapi_new_instance:
 .. _gsapi_new_instance:
 
 gsapi_new_instance()
@@ -129,7 +129,7 @@ While the core Ghostscript devices are believed to be thread safe now, a handful
 
 The first parameter, is a pointer to an opaque pointer (``void **``). The opaque pointer (``void *``) must be initialised to NULL before the call to ``gsapi_new_instance()``. See `Example 1`_.
 
-.. _API.htm gsapi_delete_instance:
+.. _API.html gsapi_delete_instance:
 .. _gsapi_delete_instance:
 
 gsapi_delete_instance()
@@ -137,7 +137,7 @@ gsapi_delete_instance()
 
 Destroy an instance of Ghostscript. Before you call this, Ghostscript must have finished. If Ghostscript has been initialised, you must call ``gsapi_exit`` before ``gsapi_delete_instance``.
 
-.. _API.htm gsapi_set_stdio_with_handle:
+.. _API.html gsapi_set_stdio_with_handle:
 .. _gsapi_set_stdio_with_handle:
 
 gsapi_set_stdio_with_handle()
@@ -147,7 +147,7 @@ Set the callback functions for stdio, together with the handle to use in the cal
 
 NOTE: These callbacks do not affect output device I/O when using "%stdout" as the output file. In that case, device output will still be directed to the process "stdout" file descriptor, not to the stdio callback.
 
-.. _API.htm gsapi_set_stdio:
+.. _API.html gsapi_set_stdio:
 .. _gsapi_set_stdio:
 
 gsapi_set_stdio()
@@ -156,7 +156,7 @@ gsapi_set_stdio()
 Set the callback functions for stdio. The handle used in the callbacks will be taken from the value passed to `gsapi_new_instance`_. Otherwise the behaviour of this function matches `gsapi_set_stdio_with_handle`_.
 
 
-.. _API.htm gsapi_set_poll_with_handle:
+.. _API.html gsapi_set_poll_with_handle:
 .. _gsapi_set_poll_with_handle:
 
 gsapi_set_poll_with_handle()
@@ -169,7 +169,7 @@ The polling function should return zero if all is well, and return negative if i
 The polling function is called very frequently during interpretation and rendering so it must be fast. If the function is slow, then using a counter to return 0 immediately some number of times can be used to reduce the performance impact.
 
 
-.. _API.htm gsapi_set_poll:
+.. _API.html gsapi_set_poll:
 .. _gsapi_set_poll:
 
 gsapi_set_poll()
@@ -178,7 +178,7 @@ gsapi_set_poll()
 Set the callback function for polling. The handle passed to the callback function will be taken from the handle passed to `gsapi_new_instance`_. Otherwise the behaviour of this function matches `gsapi_set_poll_with_handle`_.
 
 
-.. _API.htm gsapi_set_display_callback:
+.. _API.html gsapi_set_display_callback:
 .. _gsapi_set_display_callback:
 
 gsapi_set_display_callback()
@@ -188,7 +188,7 @@ gsapi_set_display_callback()
 This call is deprecated; please use `gsapi_register_callout`_ to register a `callout`_ handler for the `display`_ device in preference. Set the callback structure for the display device. The handle passed in the callback functions is taken from the ``DisplayHandle`` parameter (or ``NULL`` if there is no such parameter). If the `display`_ device is used, this must be called after ``gsapi_new_instance()`` and before ``gsapi_init_with_args()``. See ``gdevdsp.h`` for more details.
 
 
-.. _API.htm gsapi_register_callout:
+.. _API.html gsapi_register_callout:
 .. _gsapi_register_callout:
 
 gsapi_register_callout()
@@ -198,7 +198,7 @@ This call registers a `callout`_ handler.
 
 
 
-.. _API.htm gsapi_deregister_callout:
+.. _API.html gsapi_deregister_callout:
 .. _gsapi_deregister_callout:
 
 gsapi_deregister_callout()
@@ -207,7 +207,7 @@ gsapi_deregister_callout()
 This call deregisters a `callout`_ handler previously registered with `gsapi_register_callout`_. All three arguments must match exactly for the callout handler to be deregistered.
 
 
-.. _API.htm gsapi_set_arg_encoding:
+.. _API.html gsapi_set_arg_encoding:
 .. _gsapi_set_arg_encoding:
 
 gsapi_set_arg_encoding()
@@ -216,7 +216,7 @@ gsapi_set_arg_encoding()
 Set the encoding used for the interpretation of all subsequent args supplied via the gsapi interface on this instance. By default we expect args to be in encoding 0 (the 'local' encoding for this OS). On Windows this means "the currently selected codepage". On Linux this typically means utf8. This means that omitting to call this function will leave Ghostscript running exactly as it always has. Please note that use of the 'local' encoding is now deprecated and should be avoided in new code. This must be called after ``gsapi_new_instance()`` and before ``gsapi_init_with_args()``.
 
 
-.. _API.htm gsapi_set_default_device_list:
+.. _API.html gsapi_set_default_device_list:
 .. _gsapi_set_default_device_list:
 
 gsapi_set_default_device_list()
@@ -225,7 +225,7 @@ gsapi_set_default_device_list()
 Set the string containing the list of default device names, for example "display x11alpha x11 bbox". Allows the calling application to influence which device(s) gs will try, in order, in it's selection of the default device. This must be called after ``gsapi_new_instance()`` and before ``gsapi_init_with_args()``.
 
 
-.. _API.htm gsapi_get_default_device_list:
+.. _API.html gsapi_get_default_device_list:
 .. _gsapi_get_default_device_list:
 
 
@@ -234,7 +234,7 @@ gsapi_get_default_device_list()
 
 Returns a pointer to the current default device string. This must be called after ``gsapi_new_instance()`` and before ``gsapi_init_with_args()``.
 
-.. _API.htm gsapi_init_with_args:
+.. _API.html gsapi_init_with_args:
 .. _gsapi_init_with_args:
 
 
@@ -244,7 +244,7 @@ gsapi_init_with_args()
 Initialise the interpreter. This calls ``gs_main_init_with_args()`` in ``imainarg.c`` . See below for `return codes`_. The arguments are the same as the "C" main function: ``argv[0]`` is ignored and the user supplied arguments are ``argv[1]`` to ``argv[argc-1]``.
 
 
-.. _API.htm gsapi_run_asterisk:
+.. _API.html gsapi_run_asterisk:
 .. _gsapi_run_asterisk:
 
 
@@ -258,7 +258,7 @@ The address passed in ``pexit_code`` will be used to return the exit code for th
 There is a 64 KB length limit on any buffer submitted to a ``gsapi_run_*`` function for processing. If you have more than 65535 bytes of input then you must split it into smaller pieces and submit each in a separate ``gsapi_run_string_continue()`` call.
 
 
-.. _API.htm gsapi_exit:
+.. _API.html gsapi_exit:
 .. _gsapi_exit:
 
 
@@ -268,7 +268,7 @@ gsapi_exit()
 Exit the interpreter. This must be called on shutdown if ``gsapi_init_with_args()`` has been called, and just before ``gsapi_delete_instance()``.
 
 
-.. _API.htm gsapi_set_param:
+.. _API.html gsapi_set_param:
 .. _gsapi_set_param:
 
 
@@ -341,7 +341,7 @@ Combining a type value by ORRing it with the ``gs_spt_more_to_come`` flag will c
 This enables a series of set operations to be performed 'atomically'. This can be useful for performance, in that any reconfigurations to the device (such as page size changes or memory reallocations) will only happen when all the parameters are sent, rather than potentially each time each one is sent.
 
 
-.. _API.htm gsapi_get_param:
+.. _API.html gsapi_get_param:
 .. _API_gsapi_get_param:
 .. _gsapi_get_param:
 
@@ -358,7 +358,7 @@ This call retrieves parameters/values that have made it to the device. Thus, any
 Attempting to read a parameter that is not set will return ``gs_error_undefined (-21)``. Note that calling ``gsapi_set_param`` followed by ``gsapi_get_param`` may not find the value, if the device did not recognise the key as being one of its configuration keys.
 
 
-.. _API.htm gsapi_enumerate_params:
+.. _API.html gsapi_enumerate_params:
 .. _gsapi_enumerate_params:
 
 
@@ -374,7 +374,7 @@ Note that only one enumeration can happen at a time. Starting a second enumerati
 The enumeration only returns parameters/values that have made it to the device. Thus, any values set using the ``gs_spt_more_to_come`` without a following call without that flag will not be retrieved. Similarly, attempting to enumerate parameters before ``gsapi_init_with_args`` has been called will not list any, even if ``gsapi_set_param`` has been used.
 
 
-.. _API.htm gsapi_add_control_path:
+.. _API.html gsapi_add_control_path:
 .. _gsapi_add_control_path:
 
 gsapi_add_control_path()
@@ -382,7 +382,7 @@ gsapi_add_control_path()
 
 Add a (case sensitive) path to one of the lists of permitted paths for file access. See :ref:`dSAFER<Use Safer>` for more information about permitted paths.
 
-.. _API.htm gsapi_remove_control_path:
+.. _API.html gsapi_remove_control_path:
 .. _gsapi_remove_control_path:
 
 gsapi_remove_control_path()
@@ -391,7 +391,7 @@ gsapi_remove_control_path()
 Remove a (case sensitive) path from one of the lists of permitted paths for file access. See :ref:`dSAFER<Use Safer>` for more information about permitted paths.
 
 
-.. _API.htm gsapi_purge_control_paths:
+.. _API.html gsapi_purge_control_paths:
 .. _gsapi_purge_control_paths:
 
 gsapi_purge_control_paths()
@@ -401,7 +401,7 @@ gsapi_purge_control_paths()
 Clear all the paths from one of the lists of permitted paths for file access. See :ref:`dSAFER<Use Safer>` for more information about permitted paths.
 
 
-.. _API.htm gsapi_activate_path_control:
+.. _API.html gsapi_activate_path_control:
 .. _gsapi_activate_path_control:
 
 gsapi_activate_path_control()
@@ -411,7 +411,7 @@ gsapi_activate_path_control()
 Enable/Disable path control (i.e. whether paths are checked against permitted paths before access is granted). See :ref:`dSAFER<Use Safer>` for more information about permitted paths.
 
 
-.. _API.htm gsapi_is_path_control_active:
+.. _API.html gsapi_is_path_control_active:
 .. _gsapi_is_path_control_active:
 
 gsapi_is_path_control_active()
@@ -421,7 +421,7 @@ gsapi_is_path_control_active()
 Query whether path control is activated or not. See :ref:`dSAFER<Use Safer>` for more information about permitted paths.
 
 
-.. _API.htm gsapi_add_fs:
+.. _API.html gsapi_add_fs:
 
 gsapi_add_fs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -431,7 +431,7 @@ Adds a new 'Filing System' to the interpreter. This enables callers to implement
 Details of the ``gsapi_fs_t`` are given :ref:`below <gsapi_fs_t>`.
 
 
-.. _API.htm gsapi_remove_fs:
+.. _API.html gsapi_remove_fs:
 
 gsapi_remove_fs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -441,7 +441,7 @@ Remove a previously registered 'Filing System' from the interpreter. Both the fu
 
 
 
-.. _API.htm gsapi_fs_t:
+.. _API.html gsapi_fs_t:
 
 gsapi_fs_t
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -18,6 +18,7 @@ Table of Contents
    VectorDevices.rst
    Drivers.rst
    Language.rst
+   GPDL.rst
    Lib.rst
    Develop.rst
    C-style.rst

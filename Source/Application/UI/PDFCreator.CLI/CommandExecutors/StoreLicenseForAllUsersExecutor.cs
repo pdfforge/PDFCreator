@@ -1,9 +1,9 @@
 ﻿using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.CLI.Commands;
 using System;
 using System.Security;
 using System.Threading.Tasks;
-using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using SystemInterface.Microsoft.Win32;
 using SystemWrapper.Microsoft.Win32;
 
@@ -44,15 +44,15 @@ namespace pdfforge.PDFCreator.UI.CLI.CommandExecutors
 
             try
             {
-                _registry.SetValue(regPath, "License", _command.LicenseKey);
-                _registry.SetValue(regPath, "LSA", _command.LicenseServerCode);
+                var regKey = _registry.LocalMachine.OpenSubKey(_installationPathProvider.ApplicationRegistryPath, true);
+                regKey.SetValue("License", _command.LicenseKey);
+                regKey.SetValue("LSA", _command.LicenseServerCode);
+                regKey.DeleteValue("LicenseCheckDeferredAt", false);
             }
-            catch (SecurityException)
+            catch (Exception e)
             {
-                return Task.FromResult(CommandResult.Error(2, "Insufficient access rights to write to " + regPath));
-            }
-            catch (Exception)
-            {
+                if (e is UnauthorizedAccessException || e is SecurityException)
+                    return Task.FromResult(CommandResult.Error(2, "Insufficient access rights to write to " + regPath));
                 return Task.FromResult(CommandResult.Error(2, "An unexpected error has occurred"));
             }
 

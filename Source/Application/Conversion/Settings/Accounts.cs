@@ -22,6 +22,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public ObservableCollection<DropboxAccount> DropboxAccounts { get; set; } = new ObservableCollection<DropboxAccount>();
 		public ObservableCollection<FtpAccount> FtpAccounts { get; set; } = new ObservableCollection<FtpAccount>();
 		public ObservableCollection<HttpAccount> HttpAccounts { get; set; } = new ObservableCollection<HttpAccount>();
+		public ObservableCollection<MicrosoftAccount> MicrosoftAccounts { get; set; } = new ObservableCollection<MicrosoftAccount>();
 		public ObservableCollection<SmtpAccount> SmtpAccounts { get; set; } = new ObservableCollection<SmtpAccount>();
 		public ObservableCollection<TimeServerAccount> TimeServerAccounts { get; set; } = new ObservableCollection<TimeServerAccount>();
 		
@@ -60,6 +61,18 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 					HttpAccount tmp = new HttpAccount();
 					tmp.ReadValues(data, @"" + path + @"HttpAccounts\" + i + @"\");
 					HttpAccounts.Add(tmp);
+				}
+			} catch {}
+			
+			
+			try
+			{
+				int numClasses = int.Parse(data.GetValue(@"" + path + @"MicrosoftAccounts\numClasses"));
+				for (int i = 0; i < numClasses; i++)
+				{
+					MicrosoftAccount tmp = new MicrosoftAccount();
+					tmp.ReadValues(data, @"" + path + @"MicrosoftAccounts\" + i + @"\");
+					MicrosoftAccounts.Add(tmp);
 				}
 			} catch {}
 			
@@ -116,6 +129,14 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"HttpAccounts\numClasses", HttpAccounts.Count.ToString());
 			
 			
+			for (int i = 0; i < MicrosoftAccounts.Count; i++)
+			{
+				MicrosoftAccount tmp = MicrosoftAccounts[i];
+				tmp.StoreValues(data, @"" + path + @"MicrosoftAccounts\" + i + @"\");
+			}
+			data.SetValue(@"" + path + @"MicrosoftAccounts\numClasses", MicrosoftAccounts.Count.ToString());
+			
+			
 			for (int i = 0; i < SmtpAccounts.Count; i++)
 			{
 				SmtpAccount tmp = SmtpAccounts[i];
@@ -159,6 +180,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			}
 			
 			
+			copy.MicrosoftAccounts = new ObservableCollection<MicrosoftAccount>();
+			for (int i = 0; i < MicrosoftAccounts.Count; i++)
+			{
+				copy.MicrosoftAccounts.Add(MicrosoftAccounts[i].Copy());
+			}
+			
+			
 			copy.SmtpAccounts = new ObservableCollection<SmtpAccount>();
 			for (int i = 0; i < SmtpAccounts.Count; i++)
 			{
@@ -196,6 +224,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			for (int i = 0; i < source.HttpAccounts.Count; i++)
 			{
 				HttpAccounts.Add(source.HttpAccounts[i].Copy());
+			}
+			
+			
+			MicrosoftAccounts.Clear();
+			for (int i = 0; i < source.MicrosoftAccounts.Count; i++)
+			{
+				MicrosoftAccounts.Add(source.MicrosoftAccounts[i].Copy());
 			}
 			
 			
@@ -244,6 +279,15 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			for (int i = 0; i < HttpAccounts.Count; i++)
 			{
 				if (!HttpAccounts[i].Equals(v.HttpAccounts[i])) return false;
+			}
+			
+			
+			if (MicrosoftAccounts?.Count != v.MicrosoftAccounts?.Count) return false;
+			if (Object.ReferenceEquals(MicrosoftAccounts, v.MicrosoftAccounts)) return true;
+			
+			for (int i = 0; i < MicrosoftAccounts.Count; i++)
+			{
+				if (!MicrosoftAccounts[i].Equals(v.MicrosoftAccounts[i])) return false;
 			}
 			
 			

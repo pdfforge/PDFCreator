@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Guide to Ghostscript Source Code
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _Source.htm:
+.. _Source.html:
 
 
 Guide to Ghostscript Source Code
@@ -78,7 +78,7 @@ The main loop of the PostScript interpreter is the interp procedure in ``interp.
 PDF interpreter
 --------------------
 
-The PDF interpreter is written entirely in PostScript. Its main loop is the ``.pdfrun`` procedure in ``pdf_base.ps``. When the PDF interpreter is configured into the build, it redefines the "run" operator to test whether the file is a PDF file. This redefinition is near the beginning of ``pdf_main.ps``.
+The PDF interpreter is written entirely in ``C`` meaning it's faster than the old interpreter, uses less memory, is more robust and more secure because it can't execute PostScript. Furthermore it is easier to maintain than previous versions.
 
 
 
@@ -93,7 +93,7 @@ Files named ``s*.c`` and ``s*.h`` are a flexible stream package, including the L
 Device drivers
 ~~~~~~~~~~~~~~~~~~
 
-The interface between the graphics library and device drivers is the only really well documented one in all of Ghostscript: see the :ref:`documentation on drivers<Drivers.htm>`.
+The interface between the graphics library and device drivers is the only really well documented one in all of Ghostscript: see the :ref:`documentation on drivers<Drivers.html>`.
 
 In addition to many real device and file format drivers listed in ``devs.mak`` and ``contrib.mak``, a number of drivers are used for internal purposes. You can search ``lib.mak`` for files named ``gdev*.c`` to find almost all of them.
 

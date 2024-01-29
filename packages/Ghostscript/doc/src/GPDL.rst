@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: The GhostPDL Interpreter Framework
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _GPDL.htm:
+.. _GPDL.html:
 
 
 The GhostPDL Interpreter Framework
@@ -34,7 +34,7 @@ Jobs must be separated by UEL (Universal End of Language) code sequences (or PJL
 The API
 ---------------------------------------------
 
-The API for GPDL (found in ``plapi.h``) is deliberately designed to be nearly identical to that for Ghostscript itself (found in ``iapi.h``). Details of Ghostscript's API can be found :ref:`here<API.htm>`, and we refer you to that. Only differences from that API will be documented here. In particular the differences in the handling of switches within the ``gsapi_init_with_args`` are documented here.
+The API for GPDL (found in ``plapi.h``) is deliberately designed to be nearly identical to that for Ghostscript itself (found in ``iapi.h``). Details of Ghostscript's API can be found :ref:`here<API.html>`, and we refer you to that. Only differences from that API will be documented here. In particular the differences in the handling of switches within the ``gsapi_init_with_args`` are documented here.
 
 Our intent is that existing users of the Ghostscript API should be able to drop a GPDL DLL in as a replacement with little to no code changes.
 
@@ -63,7 +63,7 @@ The current implementation buffers the data in memory. Alternative implementatio
 The GPDL executable
 ------------------------------------
 
-The GPDL executable is a small executable that loads the DLL/shared object, and implements, pretty much, the interface described in the :ref:`usage documentation<Use.htm>` for Ghostscript, but capable of reading any of the configured languages. This executable provides all the interaction with the windowing system, including image windows.
+The GPDL executable is a small executable that loads the DLL/shared object, and implements, pretty much, the interface described in the :ref:`usage documentation<Use.html>` for Ghostscript, but capable of reading any of the configured languages. This executable provides all the interaction with the windowing system, including image windows.
 
 Areas where the GPDL executable differs from the Ghostscript executable are described :ref:`below<Differences in switches from Ghostscript>`. These are primarily to do with (slightly) esoteric requirements when running Postscript in an interactive environment. Whereas Ghostscript is a generic Postscript interpreter, GPDL is unashamedly targeted as a print processor.
 

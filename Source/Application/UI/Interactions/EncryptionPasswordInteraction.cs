@@ -13,14 +13,11 @@ namespace pdfforge.PDFCreator.UI.Interactions
         }
 
         public bool Skip { get; set; }
-
         public bool AskOwnerPassword { get; set; }
-
         public bool AskUserPassword { get; set; }
-
         public string OwnerPassword { get; set; }
         public string UserPassword { get; set; }
-
+        public bool IsAutoSaveMode { get; set; }
         public PasswordResult Response { get; set; } = PasswordResult.Cancel;
     }
 }

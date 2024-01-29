@@ -73,6 +73,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             {
                 CurrentProfile.AutoSave.Enabled = value || IsServer;
                 RaisePropertyChanged(nameof(AutoSaveEnabled));
+                RaisePropertyChanged(nameof(StatusText));
             }
         }
 

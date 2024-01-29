@@ -1,25 +1,20 @@
-﻿using pdfforge.DataStorage;
+﻿using System.Threading.Tasks;
+using pdfforge.DataStorage;
 using pdfforge.Obsidian;
+using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
-using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
-using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {
     public class CreatorIniSettingsAssistant : IniSettingsAssistantBase
     {
         private readonly IIniSettingsLoader _iniSettingsLoader;
-        private readonly IPrinterProvider _printerProvider;
-        private readonly IUacAssistant _uacAssistant;
         private readonly IActionOrderHelper _actionOrderHelper;
         private readonly ISettingsManager _settingsManager;
         private readonly ISettingsProvider _settingsProvider;
@@ -27,50 +22,35 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         public CreatorIniSettingsAssistant
             (
             IInteractionInvoker interactionInvoker,
+            IInteractionRequest interactionRequest,
             ITranslationUpdater translationUpdater,
             ISettingsManager settingsManager,
             IDataStorageFactory dataStorageFactory,
             IIniSettingsLoader iniSettingsLoader,
             IPrinterProvider printerProvider,
             IUacAssistant uacAssistant,
-            IActionOrderHelper actionOrderHelper,
-            EditionHelper editionHelper)
-            : base(interactionInvoker, dataStorageFactory, translationUpdater, editionHelper)
+            IActionOrderHelper actionOrderHelper)
+            : base(printerProvider, uacAssistant, interactionInvoker, interactionRequest, dataStorageFactory, translationUpdater)
         {
             _settingsManager = settingsManager;
             _settingsProvider = settingsManager.GetSettingsProvider();
             _iniSettingsLoader = iniSettingsLoader;
-            _printerProvider = printerProvider;
-            _uacAssistant = uacAssistant;
             _actionOrderHelper = actionOrderHelper;
         }
 
-        public override bool LoadIniSettings()
+        protected override string ProductName => "PDFCreator";
+
+        protected override async Task<bool> DoLoadIniSettings(string fileName)
         {
-            var fileName = QueryLoadFileName();
-            if (string.IsNullOrWhiteSpace(fileName))
-                return false;
-
-            var overwriteSettings = QueryOverwriteSettings();
-            if (!overwriteSettings)
-                return false;
-
             if (_iniSettingsLoader.LoadIniSettings(fileName) is PdfCreatorSettings settings)
             {
                 if (!_settingsProvider.CheckValidSettings(settings))
                 {
-                    DisplayInvalidSettingsWarning();
+                    await DisplayInvalidSettingsWarning();
                     return false;
                 }
 
-                var missingPrinters = FindMissingPrinters(settings.ApplicationSettings.PrinterMappings);
-
-                var unusedPrinters = GetUnusedPrinters(settings.ApplicationSettings.PrinterMappings);
-                if (unusedPrinters.Any())
-                    QueryAndDeleteUnusedPrinters(unusedPrinters);
-
-                if (missingPrinters.Any())
-                    QueryAndAddMissingPrinters(missingPrinters);
+                await SyncPrinterMappingWithInstalledPrintersQuery(settings.ApplicationSettings.PrinterMappings);
 
                 _actionOrderHelper.CleanUpAndEnsureValidOrder(settings.ConversionProfiles);
 
@@ -88,58 +68,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
         protected override ISettings GetSettingsCopy()
         {
             return _settingsProvider.Settings.Copy();
-        }
-
-        private List<string> GetUnusedPrinters(IEnumerable<PrinterMapping> loadedPrinterMappings)
-        {
-            var list = loadedPrinterMappings.Select(mapping => mapping.PrinterName).ToList();
-            var installedPrinters = _printerProvider.GetPDFCreatorPrinters();
-            var unusedPrinters = new List<string>();
-
-            foreach (var printer in installedPrinters)
-            {
-                if (!list.Contains(printer))
-                    unusedPrinters.Add(printer);
-            }
-
-            return unusedPrinters;
-        }
-
-        protected void QueryAndDeleteUnusedPrinters(List<string> unusedPrinters)
-        {
-            var text = Translation.AskDeleteUnusedPrinters + "\n\n" + string.Join("\n", unusedPrinters);
-
-            var interaction = new MessageInteraction(text, Translation.UnusedPrinters, MessageOptions.YesNo, MessageIcon.Question);
-            InteractionInvoker.Invoke(interaction);
-
-            if (interaction.Response == MessageResponse.Yes)
-            {
-                _uacAssistant.DeletePrinter(unusedPrinters.ToArray());
-            }
-        }
-
-        private List<string> FindMissingPrinters(IEnumerable<PrinterMapping> printerMappings)
-        {
-            var installedPrinters = _printerProvider.GetPDFCreatorPrinters();
-
-            return printerMappings
-                .Select(pm => pm.PrinterName)
-                .Where(p => !installedPrinters.Contains(p))
-                .Distinct()
-                .ToList();
-        }
-
-        protected void QueryAndAddMissingPrinters(List<string> missingPrinters)
-        {
-            var text = Translation.AskAddMissingPrinters + "\n\n" + string.Join("\n", missingPrinters);
-
-            var interaction = new MessageInteraction(text, Translation.MissingPrinters, MessageOptions.YesNo, MessageIcon.Question);
-            InteractionInvoker.Invoke(interaction);
-
-            if (interaction.Response == MessageResponse.Yes)
-            {
-                _uacAssistant.AddPrinters(missingPrinters.ToArray());
-            }
         }
     }
 }

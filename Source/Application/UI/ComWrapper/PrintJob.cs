@@ -36,6 +36,11 @@ namespace pdfforge.PDFCreator.UI.ComWrapper
 			_printJob.SetProfileByGuid(profileGuid);
 		}
 		
+		public void SetProfileByGuidOrName(string profileGuid)
+		{
+			_printJob.SetProfileByGuidOrName(profileGuid);
+		}
+		
 		public void ConvertTo(string fullFileName)
 		{
 			_printJob.ConvertTo(fullFileName);

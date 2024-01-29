@@ -35,11 +35,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public int ConversionTimeout { get; set; } = 60;
 		
-		/// <summary>
-		/// Don't recommend Pdf Architect
-		/// </summary>
-		public bool DontRecommendArchitect { get; set; } = false;
-		
 		public bool EnableTips { get; set; } = true;
 		
 		public string Language { get; set; } = "";
@@ -107,7 +102,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			UsageStatistics.ReadValues(data, path + @"UsageStatistics\");
 			ConversionTimeout = int.TryParse(data.GetValue(@"" + path + @"ConversionTimeout"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpConversionTimeout) ? tmpConversionTimeout : 60;
-			DontRecommendArchitect = bool.TryParse(data.GetValue(@"" + path + @"DontRecommendArchitect"), out var tmpDontRecommendArchitect) ? tmpDontRecommendArchitect : false;
 			EnableTips = bool.TryParse(data.GetValue(@"" + path + @"EnableTips"), out var tmpEnableTips) ? tmpEnableTips : true;
 			try { Language = Data.UnescapeString(data.GetValue(@"" + path + @"Language")); } catch { Language = "";}
 			LicenseExpirationReminder = DateTime.TryParse(data.GetValue(@"" + path + @"LicenseExpirationReminder"), System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var tmpLicenseExpirationReminder) ? tmpLicenseExpirationReminder : DateTime.Now;
@@ -143,7 +137,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			UsageStatistics.StoreValues(data, path + @"UsageStatistics\");
 			data.SetValue(@"" + path + @"ConversionTimeout", ConversionTimeout.ToString(System.Globalization.CultureInfo.InvariantCulture));
-			data.SetValue(@"" + path + @"DontRecommendArchitect", DontRecommendArchitect.ToString());
 			data.SetValue(@"" + path + @"EnableTips", EnableTips.ToString());
 			data.SetValue(@"" + path + @"Language", Data.EscapeString(Language));
 			data.SetValue(@"" + path + @"LicenseExpirationReminder", LicenseExpirationReminder.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -179,7 +172,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			copy.UsageStatistics = UsageStatistics.Copy();
 			copy.ConversionTimeout = ConversionTimeout;
-			copy.DontRecommendArchitect = DontRecommendArchitect;
 			copy.EnableTips = EnableTips;
 			copy.Language = Language;
 			copy.LicenseExpirationReminder = LicenseExpirationReminder;
@@ -215,9 +207,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			UsageStatistics.ReplaceWith(source.UsageStatistics);
 			if(ConversionTimeout != source.ConversionTimeout)
 				ConversionTimeout = source.ConversionTimeout;
-				
-			if(DontRecommendArchitect != source.DontRecommendArchitect)
-				DontRecommendArchitect = source.DontRecommendArchitect;
 				
 			if(EnableTips != source.EnableTips)
 				EnableTips = source.EnableTips;
@@ -279,7 +268,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			
 			if (!Object.Equals(UsageStatistics, v.UsageStatistics)) return false;
 			if (!Object.Equals(ConversionTimeout, v.ConversionTimeout)) return false;
-			if (!Object.Equals(DontRecommendArchitect, v.DontRecommendArchitect)) return false;
 			if (!Object.Equals(EnableTips, v.EnableTips)) return false;
 			if (!Object.Equals(Language, v.Language)) return false;
 			if (!Object.Equals(LicenseExpirationReminder, v.LicenseExpirationReminder)) return false;

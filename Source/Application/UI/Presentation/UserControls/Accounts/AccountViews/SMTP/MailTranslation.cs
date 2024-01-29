@@ -10,6 +10,24 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public override string InfoText { get; set; } = "Sends the document as an e-mail without user interaction by using SMTP.";
     }
 
+    public class OutlookWebTranslation : AccountsTranslation, IActionTranslation
+    {
+        public string MultipleRecipientsHintText { get; set; } = "Hint: Multiple recipients can be separated by commas";
+
+        public string BlankToField { get; set; } = "Blank 'To' field";
+        public string RecipientsToText { get; set; } = "To:";
+        public string RecipientsCcText { get; set; } = "CC:";
+        public string RecipientsBccText { get; set; } = "BCC:";
+        public string AdditionalAttachmentsText { get; set; } = "Additional E-mail Attachments:";
+        public string EditMailText { get; set; } = "Edit E-mail text";
+
+        public string MailAttachmentTitle { get; set; } = "Select E-mail Attachment File";
+
+        public string Email { get; set; } = "E-mail";
+        public virtual string Title { get; set; } = "E-mail (OWA)";
+        public virtual string InfoText { get; set; } = "Creates a draft in Outlook Web Access (OWA) with the converted documents attached and opens the browser to edit and send it.";
+    }
+
     public class MailTranslation : AccountsTranslation, IActionTranslation
     {
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
@@ -72,7 +90,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 
         public string CheckMailClient { get; set; } = "Check e-mail client";
         public string Email { get; set; } = "E-mail";
-        public virtual string Title { get; set; } = "E-mail";
+        public virtual string Title { get; set; } = "E-mail (Desktop)";
         public virtual string InfoText { get; set; } = "Opens the default e-mail client with the converted document as attachment.";
 
         public string SpecifySender { get; set; } = "Specify Sender";

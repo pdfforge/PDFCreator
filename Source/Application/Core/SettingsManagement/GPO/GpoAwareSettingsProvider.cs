@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
 
         protected override void SetDontRecommendArchitect(PdfCreatorSettings settings)
         {
-            settings.ApplicationSettings.DontRecommendArchitect = true;
+            settings.CreatorAppSettings.DontRecommendArchitect = true;
         }
     }
 }

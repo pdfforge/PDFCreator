@@ -76,6 +76,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assistants\AttachToOutlookItemAssistant\AttachToOutlookItemAssistant.cs" />
+    <Compile Include="Assistants\AttachToOutlookItemAssistant\AttachToOutlookItemTranslation.cs" />
     <Compile Include="Assistants\IniSettingsAssistantBase.cs" />
     <Compile Include="Assistants\ApplicationTranslation.cs" />
     <Compile Include="Assistants\FileConversionAssistant.cs" />
@@ -117,6 +119,8 @@
     <Compile Include="Banner\FrequentTipsControl\FrequentTipsControlViewModel.cs" />
     <Compile Include="Banner\FrequentTipsControl\FrequentTip.cs" />
     <Compile Include="Behaviors\AllowableCharactersTextBoxBehavior.cs" />
+    <Compile Include="Commands\AccountCommands\MicrosoftAccountAddCommand.cs" />
+    <Compile Include="Commands\AccountCommands\MicrosoftAccountRemoveCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountEditCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountRemoveCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountAddCommand.cs" />
@@ -177,23 +181,26 @@
     <Compile Include="Controls\FontSelectorControl.xaml.cs">
       <DependentUpon>FontSelectorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converter\BoolToShownColorConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\ColumnConverter.cs" />
     <Compile Include="Converter\ExistingFileBehaviourConverter.cs" />
     <Compile Include="Converter\MenuTabColumnWidthConverter.cs" />
     <Compile Include="Converter\ObjectToObjectOrTranslatableConverter.cs" />
     <Compile Include="Converter\ValueEqualsParameterConverter.cs" />
+    <Compile Include="DesignTime\DesignTimeAttachToOutlookItem.cs" />
+    <Compile Include="DesignTime\DesignTimeAttachToOutlookItemAssistant.cs" />
     <Compile Include="DesignTime\DesignTimeCreatorSettingsButtonsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeDirectImageConversionSettingsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeDrawSignatureViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeCsScriptActionViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeEMailWebActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeErrorViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpConnectionFactory.cs" />
     <Compile Include="DesignTime\DesignTimeFtpConnectionTester.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionInvoker.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionRequest.cs" />
     <Compile Include="DesignTime\DesignTimeLicenseChecker.cs" />
+    <Compile Include="DesignTime\DesignTimeLoadSpecificProfileViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeOsHelper.cs" />
     <Compile Include="DesignTime\DesignTimeOpenFileInteractionHelper.cs" />
     <Compile Include="DesignTime\DesignTimeDirectConvertViewModel.cs" />
@@ -257,6 +264,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DropboxResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Accounts\AccountViews\Graph\OutlookWebAccountTranslation.cs" />
     <Compile Include="UserControls\ActionLocator.cs" />
     <Compile Include="UserControls\Overlay\OverwriteOrAppendInteraction.cs" />
     <Compile Include="UserControls\Overlay\OverwriteOrAppendOverlay.xaml.cs">
@@ -270,6 +278,7 @@
     <Compile Include="UserControls\PrintJob\SecurePasswordsStep\SecurityPasswordsStepTranslation.cs" />
     <Compile Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepTranslation.cs" />
     <Compile Include="UserControls\PrintJob\SmtpPasswordStep\SmtpPasswordStepTranslation.cs" />
+    <Compile Include="UserControls\Profiles\AddActionToolTip.cs" />
     <Compile Include="UserControls\Profiles\ModifyActions\Encryption\EncryptionPasswordsOverlay.xaml.cs">
       <DependentUpon>EncryptionPasswordsOverlay.xaml</DependentUpon>
     </Compile>
@@ -362,7 +371,6 @@
     <Compile Include="DesignTime\Helper\DesignTimeUpdateLauncher.cs" />
     <Compile Include="Events\SetProfileTabHelpTopicEvent.cs" />
     <Compile Include="Helper\ActionHelper\PresenterActionFacade.cs" />
-    <Compile Include="Helper\CreatorIniSettingsAssistantHelper.cs" />
     <Compile Include="CurrentSettings.cs" />
     <Compile Include="CurrentSettingsProvider.cs" />
     <Compile Include="DesignTime\DesignTimeCurrentSettings.cs" />
@@ -518,7 +526,6 @@
     <Compile Include="Routing\StartupNavigationAction.cs" />
     <Compile Include="Routing\StartupSelectTabAction.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
-    <Compile Include="Startup\DownloadUpdateStartupAction.cs" />
     <Compile Include="Styles\Behavior\TextBoxForceCaretToEndBehavior.cs" />
     <Compile Include="Styles\TextBoxBehavior.cs" />
     <Compile Include="UserControls\Accounts\AccountViews\FTP\FtpAccountViewModel.cs" />
@@ -670,6 +677,10 @@
       <DependentUpon>ScriptActionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\RunProgram\ScriptActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\EmailWeb\MailWebActionView.xaml.cs">
+      <DependentUpon>MailWebActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\SendActions\EmailWeb\MailWebActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditorOverlayViewTranslation.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ActionAddedToWorkflowEvent.cs" />
     <Compile Include="UserControls\Profiles\WorkflowEditor\ActionRemovedFromWorkflowEvent.cs" />
@@ -740,6 +751,9 @@
     <Compile Include="UserControls\Settings\General\HotStandbySettingsViewModel.cs" />
     <Compile Include="UserControls\Settings\General\TestGeneralSettingsViewControl.xaml.cs">
       <DependentUpon>TestGeneralSettingsViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Settings\Shared\SaveButtonControl.xaml.cs">
+      <DependentUpon>SaveButtonControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Settings\UsageStatisticsSettings\UsageStatisticsView.xaml.cs">
       <DependentUpon>UsageStatisticsView.xaml</DependentUpon>
@@ -1400,6 +1414,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Profiles\SendActions\EmailWeb\MailWebActionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Profiles\WorkflowEditorOverlayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1628,6 +1646,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Settings\Shared\SaveButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Settings\Shared\SaveCancelButtonsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1779,6 +1801,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Commands\Graph\" />
     <Folder Include="Helper\Update\" />
     <Folder Include="Styles\Redesign5\Images\" />
   </ItemGroup>
@@ -1882,6 +1905,31 @@
       <ItemGroup>
         <Reference Include="MahApps.Metro.SimpleChildWindow">
           <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="System.IdentityModel">
+          <Paket>True</Paket>
+        </Reference>
+        <Reference Include="Microsoft.Identity.Client">
+          <HintPath>..\..\..\..\packages\Microsoft.Identity.Client\lib\net461\Microsoft.Identity.Client.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="Microsoft.IdentityModel.Abstractions">
+          <HintPath>..\..\..\..\packages\Microsoft.IdentityModel.Abstractions\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

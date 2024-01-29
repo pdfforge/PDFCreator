@@ -3,7 +3,9 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.UI.Presentation.Styles.Icons;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using pdfforge.PDFCreator.UI.Presentation.Styles.Icons;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 {
@@ -27,6 +28,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         private Conversion.Settings.Accounts Accounts => _accountsProvider?.Settings;
         private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountsProvider;
         private readonly ICommandLocator _commandLocator;
+        private readonly EditionHelper _editionHelper;
 
         public Visibility ShowAddAccountsHint
         {
@@ -37,6 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
                 {
                     numberOfAccounts += Accounts.SmtpAccounts.Count;
                     numberOfAccounts += Accounts.DropboxAccounts.Count;
+                    numberOfAccounts += Accounts.MicrosoftAccounts.Count;
                     numberOfAccounts += Accounts.FtpAccounts.Count;
                     numberOfAccounts += Accounts.HttpAccounts.Count;
                     numberOfAccounts += Accounts.TimeServerAccounts.Count;
@@ -52,7 +55,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             ICommandLocator commandLocator,
             ITranslationUpdater translationUpdater,
             IDispatcher dispatcher,
-            IGpoSettings gpoSettings)
+            IGpoSettings gpoSettings,
+            EditionHelper editionHelper)
             : base(translationUpdater)
         {
             _currentSettingsProvider = currentSettingsProvider;
@@ -60,6 +64,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             _gpoSettings = gpoSettings;
             _accountsProvider = accountProvider;
             _commandLocator = commandLocator;
+            _editionHelper = editionHelper;
             ConflateAllAccounts();
 
             FtpAccountAddCommand = _commandLocator.GetCommand<FtpAccountAddCommand>();
@@ -77,46 +82,71 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             DropboxAccountAddCommand = _commandLocator.GetCommand<DropboxAccountAddCommand>();
             DropboxAccountRemoveCommand = _commandLocator.GetCommand<DropboxAccountRemoveCommand>();
 
+            MicrosoftAccountAddCommand = _commandLocator.GetCommand<MicrosoftAccountAddCommand>();
+            MicrosoftAccountRemoveCommand = _commandLocator.GetCommand<MicrosoftAccountRemoveCommand>();
+
             TimeServerAccountAddCommand = _commandLocator.GetCommand<TimeServerAccountAddCommand>();
             TimeServerAccountEditCommand = _commandLocator.GetCommand<TimeServerAccountEditCommand>();
             TimeServerAccountRemoveCommand = _commandLocator.GetCommand<TimeServerAccountRemoveCommand>();
 
-            AddAccountMenuItems = new List<MenuItem>()
-            {
-                new MenuItem
-                {
-                    Header = Translation.AddSmtpAccount,
-                    Command = SmtpAccountAddCommand,
-                    Icon = new PackIconMaterialDesign{Kind=PackIconMaterialDesignKind.Mail, Width=25}
-                },
-                new MenuItem
-                {
-                    Header = Translation.AddDropboxAccount,
-                    Command = DropboxAccountAddCommand,
-                    Icon = IconResource.TryFindResource("DropboxIcon")
-                },
-                new MenuItem
-                {
-                    Header = Translation.AddFtpAccount,
-                    Command = FtpAccountAddCommand,
-                    Icon = IconResource.TryFindResource("FtpIcon")
-                },
-                new MenuItem
-                {
-                    Header = Translation.AddHttpAccount,
-                    Command = HttpAccountAddCommand,
-                    Icon = new PackIconMaterialDesign{Kind=PackIconMaterialDesignKind.Http, Width=23}
-                },
-                new MenuItem
-                {
-                    Header = Translation.AddTimeServerAccount,
-                    Command = TimeServerAccountAddCommand,
-                    Icon = IconResource.TryFindResource("TimeServerIcon")
-                },
-            };
+            UpdateMenuItemList();
         }
 
-        public List<MenuItem> AddAccountMenuItems { get; private set; }
+        public void UpdateMenuItemList()
+        {
+            AddAccountMenuItems.Clear();
+
+            AddAccountMenuItems.Add(new MenuItem
+            {
+                Header = Translation.AddSmtpAccount,
+                Command = SmtpAccountAddCommand,
+                Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Mail, Width = 25 }
+            });
+            if (!_editionHelper.IsServer)
+            {
+                if (_accountsProvider?.Settings?.MicrosoftAccounts?.Count == 0)
+                {
+                    AddAccountMenuItems.Add(new MenuItem
+                    {
+                        Header = Translation.AddMicrosoftAccount,
+                        Command = MicrosoftAccountAddCommand,
+                        Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Mail, Width = 25 }
+                    });
+                }
+            }
+
+            AddAccountMenuItems.Add(new MenuItem
+            {
+                Header = Translation.AddDropboxAccount,
+                Command = DropboxAccountAddCommand,
+                Icon = IconResource.TryFindResource("DropboxIcon")
+            });
+
+            AddAccountMenuItems.Add(new MenuItem
+            {
+                Header = Translation.AddFtpAccount,
+                Command = FtpAccountAddCommand,
+                Icon = IconResource.TryFindResource("FtpIcon")
+            });
+
+            AddAccountMenuItems.Add(new MenuItem
+            {
+                Header = Translation.AddHttpAccount,
+                Command = HttpAccountAddCommand,
+                Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Http, Width = 23 }
+            });
+
+            AddAccountMenuItems.Add(new MenuItem
+            {
+                Header = Translation.AddTimeServerAccount,
+                Command = TimeServerAccountAddCommand,
+                Icon = IconResource.TryFindResource("TimeServerIcon")
+            });
+
+            RaisePropertyChanged(nameof(AddAccountMenuItems));
+        }
+
+        public List<MenuItem> AddAccountMenuItems { get; private set; } = new List<MenuItem>();
 
         public void MountView()
         {
@@ -140,6 +170,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         {
             base.OnTranslationChanged();
             RaisePropertyChanged(nameof(AddAccountMenuItems));
+            if (_editionHelper != null)
+                UpdateMenuItemList();
         }
 
         private void CurrentSettingsProviderOnSettingsChanged(object sender, EventArgs eventArgs)
@@ -164,6 +196,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 
             Accounts.DropboxAccounts.CollectionChanged += RaiseAddAccountsBelowVisibilityChanged;
             AllAccounts.Add(new CollectionContainer { Collection = Accounts.DropboxAccounts });
+
+            Accounts.MicrosoftAccounts.CollectionChanged += RaiseAddAccountsBelowVisibilityChanged;
+            AllAccounts.Add(new CollectionContainer { Collection = Accounts.MicrosoftAccounts });
 
             Accounts.FtpAccounts.CollectionChanged += RaiseAddAccountsBelowVisibilityChanged;
             AllAccounts.Add(new CollectionContainer { Collection = Accounts.FtpAccounts });
@@ -191,11 +226,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         private void RaiseAddAccountsBelowVisibilityChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             RaisePropertyChanged(nameof(ShowAddAccountsHint));
+            UpdateMenuItemList();
         }
 
         public ICommand FtpAccountAddCommand { get; }
         public ICommand FtpAccountEditCommand { get; }
         public ICommand FtpAccountRemoveCommand { get; }
+        public ICommand MicrosoftAccountAddCommand { get; }
+        public ICommand MicrosoftAccountRemoveCommand { get; }
 
         public ICommand SmtpAccountAddCommand { get; }
         public ICommand SmtpAccountEditCommand { get; }

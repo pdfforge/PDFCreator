@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services.Trial;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using Prism.Mvvm;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Banner

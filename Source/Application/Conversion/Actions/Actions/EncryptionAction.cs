@@ -27,9 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
         public override bool IsRestricted(ConversionProfile profile)
         {
-            if (!profile.OutputFormat.IsPdf())
-                return true;
-            return profile.OutputFormat == OutputFormat.PdfX;
+            return profile.OutputFormat != OutputFormat.Pdf;
         }
 
         protected override void ApplyActionSpecificRestrictions(Job job)

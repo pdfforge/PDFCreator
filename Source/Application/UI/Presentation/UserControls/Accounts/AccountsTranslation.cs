@@ -17,9 +17,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public string UnsuccessfulConnectionTest { get; protected set; } = "Couldn't establish a connection with the provided credentials";
         public string AddSmtpAccount { get; protected set; } = "Add SMTP account";
         public string SmtpAccount { get; protected set; } = "SMTP Account";
+        public string OutlookAccount { get; protected set; } = "Outlook Account";
         public string HttpAccount { get; protected set; } = "HTTP Account";
         public string AddHttpAccount { get; protected set; } = "Add HTTP account";
         public string AddDropboxAccount { get; protected set; } = "Add Dropbox account";
+        public string AddMicrosoftAccount { get; protected set; } = "Add Outlook Web Access account";
         public string DropboxAccount { get; protected set; } = "Dropbox Account";
         public string AddTimeServerAccount { get; protected set; } = "Add Time Server account";
         public string TimeServerAccount { get; protected set; } = "Time Server Account";
@@ -59,6 +61,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             return PluralBuilder.GetFormattedPlural(numberOfProfiles, AccountIsUsed);
         }
 
-        public string RestrictedHint { get; set; } = "This feature is not supported by the selected output format.";
+        public string RestrictedHint { get; set; } = "This feature is not supported by the selected output format";
+        public string EnabledHint { get; set; } = "This feature is already enabled for the selected profile";
     }
 }

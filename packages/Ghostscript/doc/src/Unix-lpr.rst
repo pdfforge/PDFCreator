@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Setting Up a Unix lpr Filter for Ghostscript
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _Unix-lpr.htm:
+.. _Unix-lpr.html:
 
 
 

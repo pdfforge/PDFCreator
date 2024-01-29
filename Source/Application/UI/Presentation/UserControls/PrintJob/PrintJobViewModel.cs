@@ -1,12 +1,12 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.Controller;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
@@ -50,13 +51,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private readonly IDispatcher _dispatcher;
         private readonly IJobDataUpdater _jobDataUpdater;
         private readonly IInteractionRequest _interactionRequest;
+        private readonly IProfileChecker _profileChecker;
+        private readonly ApplicationNameProvider _applicationNameProvider;
         private string _lastConfirmedFilePath = "";
         private readonly OutputFormatHelper _outputFormatHelper = new OutputFormatHelper();
         private readonly IJobInfoQueue _jobInfoQueue;
 
         public ICampaignHelper CampaignHelper { get; private set; }
 
-        public string TrialExtendLink => CampaignHelper.GetTrialExtendLink(Urls.LicenseExtendUrl);
+        public string TrialExtendLink => CampaignHelper.GetTrialExtendLink(ExtendLicenseFallbackUrl);
+
+        private string ExtendLicenseFallbackUrl => Urls.GetExtendLicenseFallbackUrl(_applicationNameProvider.EditionName);
 
         public bool SaveFileTemporaryIsEnabled => SelectedProfile?.SaveFileTemporary ?? false;
 
@@ -76,7 +81,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             IDispatcher dispatcher,
             IJobDataUpdater jobDataUpdater,
             IInteractionRequest interactionRequest,
-            ICampaignHelper campaignHelper)
+            ICampaignHelper campaignHelper,
+            IProfileChecker profileChecker,
+            ITempFolderProvider tempFolderProvider,
+            ApplicationNameProvider applicationNameProvider)
             : base(translationUpdater)
         {
             GpoSettings = gpoSettings;
@@ -91,7 +99,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _dispatcher = dispatcher;
             _jobDataUpdater = jobDataUpdater;
             _interactionRequest = interactionRequest;
+            _applicationNameProvider = applicationNameProvider;
+            _profileChecker = profileChecker;
             _changeJobCheckAndProceedCommandBuilder.Init(() => Job, CallFinishInteraction, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
+            
 
             CampaignHelper = campaignHelper;
             SetOutputFormatCommand = new DelegateCommand(SetOutputFormatExecute);
@@ -106,6 +117,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             SetupSaveCommands(translationUpdater);
 
             EmailCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(EnableEmailSettings);
+            SendEmailWithoutSavingCommand = _changeJobCheckAndProceedCommandBuilder.BuildCommand(SendEmailWithoutSavingExecute);
 
             MergeCommand = new DelegateCommand(MergeExecute);
             MergeAllCommand = new AsyncCommand(MergeAllExecuteAsync, o => jobInfoQueue.Count > 1);
@@ -155,7 +167,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void EnableEmailSettings(object o)
         {
+            Job.Profile.EmailClientSettings.Enabled = true;
+            Job.Profile.OpenViewer.Enabled = false;
+            if (!Job.Profile.ActionOrder.Contains(nameof(EmailClientSettings)))
+                Job.Profile.ActionOrder.Insert(0, nameof(EmailClientSettings));
+        }
+
+        private void SendEmailWithoutSavingExecute(object o)
+        {
+            //Set FilenameTemplate and SaveFileTemporary to consider it in following ComposeTargetFilePath
             Job.Profile.SaveFileTemporary = true;
+            Job.Profile.FileNameTemplate = OutputFilename;
+            Job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(Job);
+            
             Job.Profile.EmailClientSettings.Enabled = true;
             Job.Profile.OpenViewer.Enabled = false;
             if (!Job.Profile.ActionOrder.Contains(nameof(EmailClientSettings)))
@@ -165,6 +189,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private void DisableSaveFileTemporaryExecute(object obj)
         {
             SelectedProfile.SaveFileTemporary = false;
+            OutputFolder = Job.Profile.TargetDirectory;
             RaisePropertyChanged(nameof(SaveFileTemporaryIsEnabled));
         }
 
@@ -418,6 +443,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public IAsyncCommand SaveToDesktopCommand { get; private set; }
 
         public ICommand EmailCommand { get; }
+        public ICommand SendEmailWithoutSavingCommand { get; }
 
         public IMacroCommand BrowseFileCommand { get; }
         public ICommand MergeCommand { get; }
@@ -442,15 +468,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                     return;
 
                 _dispatcher.InvokeAsync(async () => await SetSelectedProfileAsync(value.ConversionProfile));
-
                 _selectedProfileWrapper = value;
+                AreActionsRestricted = _profileChecker.DoesProfileContainRestrictedActions(value.ConversionProfile);
                 RaisePropertyChanged(nameof(SelectedProfileWrapper));
             }
         }
 
         public ObservableCollection<ConversionProfileWrapper> ProfilesWrapper { get; set; }
-
-        public IEnumerable<OutputFormat> OutputFormats => System.Enum.GetValues(typeof(OutputFormat)) as OutputFormat[];
 
         public OutputFormat OutputFormat
         {
@@ -459,6 +483,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             {
                 Job.Profile.OutputFormat = value;
                 OutputFilename = EnsureValidExtensionInFilename(OutputFilename, OutputFormat);
+                AreActionsRestricted = _profileChecker.DoesProfileContainRestrictedActions(Job.Profile);
                 RaisePropertyChanged();
             }
         }
@@ -512,6 +537,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string TrialRemainingDaysInfoText => Translation.GetTrialRemainingDaysInfoText(CampaignHelper.TrialRemainingDays);
 
         public bool ShowTrialRemainingDaysInfo => CampaignHelper.IsTrial;
+
+        private bool _areActionsRestricted;
+
+        public bool AreActionsRestricted
+        {
+            get => _areActionsRestricted;
+            set
+            {
+                _areActionsRestricted = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private void InitCombobox()
         {

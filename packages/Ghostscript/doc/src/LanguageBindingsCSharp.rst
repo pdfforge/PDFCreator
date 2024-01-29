@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: C#
@@ -24,7 +24,7 @@ Platform & setup
 
 Ghostscript should be built as a shared library for your platform.
 
-See :ref:`Building Ghostscript<Make.htm>`.
+See :ref:`Building Ghostscript<Make.html>`.
 
 
 GhostAPI

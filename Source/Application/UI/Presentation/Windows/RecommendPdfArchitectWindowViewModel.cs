@@ -25,11 +25,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private readonly IFile _file;
         private readonly ICurrentSettings<ApplicationSettings> _currentApplicationSettings;
         private readonly ISoundPlayer _soundPlayer;
+        private readonly ICurrentSettings<CreatorAppSettings> _creatorAppSettings;
 
         // ReSharper disable once MemberCanBeProtected.Global
         public RecommendPdfArchitectWindowViewModel(ISoundPlayer soundPlayer, IWebLinkLauncher webLinkLauncher,
             ITranslationUpdater translationUpdater, IPdfArchitectCheck pdfArchitectCheck, IProcessStarter processStarter,
-            IFile file, ICurrentSettings<ApplicationSettings> currentApplicationSettings)
+            IFile file, ICurrentSettings<ApplicationSettings> currentApplicationSettings, ICurrentSettings<CreatorAppSettings> creatorAppSettings)
             : base(translationUpdater)
         {
             _soundPlayer = soundPlayer;
@@ -40,6 +41,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _currentApplicationSettings = currentApplicationSettings;
             InfoCommand = new DelegateCommand(ExecuteInfo);
             DownloadCommand = new DelegateCommand(ExecuteDownload);
+            _creatorAppSettings = creatorAppSettings;
         }
 
         public override string Title => "PDFCreator";
@@ -50,10 +52,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         public bool DoNotRecommendArchitect
         {
-            get { return _currentApplicationSettings.Settings.DontRecommendArchitect; }
+            get { return _creatorAppSettings.Settings.DontRecommendArchitect; }
             set
             {
-                _currentApplicationSettings.Settings.DontRecommendArchitect = value;
+                _creatorAppSettings.Settings.DontRecommendArchitect = value;
                 RaisePropertyChanged(nameof(DoNotRecommendArchitect));
             }
         }

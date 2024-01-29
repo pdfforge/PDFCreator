@@ -33,7 +33,12 @@
     </metro:MetroWindow.WindowButtonCommands>
 
     <metro:MetroWindow.Resources>
-        <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/MainResourceDict.xaml" />
+                <ResourceDictionary Source="Styles/Icons/pdfforgeLogos.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </metro:MetroWindow.Resources>
 
     <b:Interaction.Triggers>
@@ -57,7 +62,9 @@
 
         <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
             <StatusBar DockPanel.Dock="Bottom">
-                <StatusBarItem Margin="30 0">&#169; pdfforge</StatusBarItem>
+                <StatusBarItem Margin="10 0" Height="24">
+                    <StaticResource ResourceKey="pdfforge-white" />
+                </StatusBarItem>
             </StatusBar>
 
             <metro:TransitioningContentControl Transition="Left" Margin="30 10"

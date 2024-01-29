@@ -1,15 +1,13 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Ghostscript Introduction
 
 
-
-
 .. include:: header.rst
 
 .. _Ghostscript Introduction:
-.. _Readme.htm:
+.. _Readme.html:
 
 
 Introduction
@@ -17,7 +15,7 @@ Introduction
 
 
 This document is a roadmap to the Ghostscript documentation.
-After looking through it, if you want to install Ghostscript and not only use it, we recommend you read :ref:`How to install Ghostscript<Install.htm>`, and :ref:`How to compile Ghostscript<Make.htm>` from source code (which is necessary before installing it on Unix and VMS systems).
+After looking through it, if you want to install Ghostscript and not only use it, we recommend you read :ref:`How to install Ghostscript<Install.html>`, and :ref:`How to compile Ghostscript<Make.html>` from source code (which is necessary before installing it on Unix and VMS systems).
 
 
 .. _WhatIsGhostscript:
@@ -38,7 +36,7 @@ Ghostscript is an interpreter for PostScript® and Portable Document Format (PDF
 
 Ghostscript consists of a PostScript interpreter layer, and a graphics library. The graphics library is shared with all the other products in the Ghostscript family, so all of these technologies are sometimes referred to as Ghostscript, rather than the more correct GhostPDL.
 
-Binaries for Ghostscript and (see below) GhostPDF (included in the Ghostscript binaries) for various systems can be downloaded from `here`_. The source can be found in both the Ghostscript and GhostPDL downloads from the same site.
+Binaries for Ghostscript and (see below) GhostPDF (included in the Ghostscript binaries) for various systems can be downloaded from `ghostscript.com/download`_. The source can be found in both the Ghostscript and GhostPDL downloads from the same site.
 
 
 
@@ -72,7 +70,7 @@ In addition to our existing PDL modules (PS, PDF, PCL, PXL, and XPS) we have now
 
 GhostPDL is available both under the `GNU Affero GPL license`_ and for `commercial licensing`_ from `Artifex`_.
 
-The source code for GhostPDL can be found `here`_.
+The source code for GhostPDL can be found from `ghostscript.com/download`_.
 
 
 
@@ -85,7 +83,7 @@ GhostPCL is an interpreter for PCL™ and PXL files. This consists of an PCL/PXL
 
 GhostPCL is available both under the `GNU Affero GPL license`_ and for `commercial licensing`_ from `Artifex`_.
 
-Binaries for GhostPCL for various systems can be downloaded from `here`_. The source can be found in the GhostPCL/GhostPDL downloads from the same site.
+Binaries for GhostPCL for various systems can be downloaded from `ghostscript.com/download`_. The source can be found in the GhostPCL/GhostPDL downloads from the same site.
 
 
 
@@ -97,19 +95,36 @@ GhostXPS is an interpreter for XPS (XML Paper Specfication) files. This consists
 
 GhostXPS is available both under the `GNU Affero GPL license`_ and for `commercial licensing`_ from `Artifex`_.
 
-Binaries for GhostXPS for various systems can be downloaded from `here`_. The source can be found in the GhostXPS/GhostPDL downloads from the same site.
+Binaries for GhostXPS for various systems can be downloaded from `ghostscript.com/download`_. The source can be found in the GhostXPS/GhostPDL downloads from the same site.
 
+
+
+Ghostscript Enterprise
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:title:`Ghostscript Enterprise` is a commercial version of :title:`GhostPDL` which can also read and process a range of common office documents, including :title:`Word`, :title:`PowerPoint` and :title:`Excel`. Find out more in the :ref:`Ghostscript Enterprise section<Ghostscript_Enterprise>`.
 
 .. _URWFontInformation:
 
-URW Font Information
+
+URW++ Font Information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The set of truetype fonts in the urwfonts directory are necessary for the PCL/XL interpreter to function properly but they ARE NOT FREE SOFTWARE and are NOT distributed under the GNU GPL/AGPL. They can instead be redistributed under the `AFPL`_ license which bars commercial use.
+We rely on two sets of fonts for our products, both from URW++.
 
-If your copy of GhostPDL includes these fonts, you should have received a copy of the Aladdin Free Public License, usually in a file called COPYING.AFPL. If not, please contact Artifex Software, Inc. 1305 Grant Avenue - Suite 200, Novato, CA 94945 USA, or visit `Artifex`_
+Firstly, there is a PostScript Language Level 2 font set (also required
+for PDF), in Type 1 font format. These are included with Ghostscript and
+GhostPDL, and are distributed under the GNU GPLv2, with an exemption to
+allowing embedding in PDF and PostScript files.
 
 
+Secondly, there is the PCL5 set, in TrueType format. These are required
+for GhostPCL and GhostPDL (since the latter includes PCL5 support).
+
+These PCL fonts are NOT FREE SOFTWARE and are NOT distributed under any
+GNU GPL/AGPL variant. They are, instead, distributed under the `AFPL license`_
+which prohibits commercial use. A copy of this license in included in
+the GhostPDL source distribution.
 
 
 Document roadmap by theme
@@ -118,9 +133,9 @@ Document roadmap by theme
 What should I read if I'm a new user?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- :ref:`How to use Ghostscript<Use.htm>`. This includes both a quickstart introduction to the command line version and more extensive reference material.
-- detailed information about :ref:`specific devices<Devices.htm>` that Ghostscript can use for output.
-- more detailed information about how to use Ghostscript under Unix with ``lpr`` :ref:`as a filter<Unix-lpr.htm>` for printing.
+- :ref:`How to use Ghostscript<Use.html>`. This includes both a quickstart introduction to the command line version and more extensive reference material.
+- detailed information about :ref:`specific devices<Devices.html>` that Ghostscript can use for output.
+- more detailed information about how to use Ghostscript under Unix with ``lpr`` :ref:`as a filter<Unix-lpr.html>` for printing.
 - for information about known problems or to report a new one, please visit `bugs.ghostscript.com`_ but remember that free versions of Ghostscript come with with NO WARRANTY and NO SUPPORT.
 
 
@@ -133,9 +148,9 @@ GPL Ghostscript, Artifex Ghostscript and AFPL Ghostscript are different releases
 
 If you run into any questions, or if you are going to be using Ghostscript extensively, you should at least skim, and probably eventually read:
 
-- about the :ref:`fonts distributed with Ghostscript<Fonts.htm>`, including how to add or replace fonts.
-- a description of :ref:`the Ghostscript language<Language.htm>`, and its differences from the documented PostScript language.
-- about the :ref:`postscript files distributed with Ghostscript<Psfiles.htm>` (other than fonts).
+- about the :ref:`fonts distributed with Ghostscript<Fonts.html>`, including how to add or replace fonts.
+- a description of :ref:`the Ghostscript language<Language.html>`, and its differences from the documented PostScript language.
+- about the :ref:`postscript files distributed with Ghostscript<Psfiles.html>` (other than fonts).
 
 
 Before building Ghostscript
@@ -143,7 +158,7 @@ Before building Ghostscript
 
 If you are going to compile Ghostscript from source, rather than just use an executable you got from somewhere, you may want to read:
 
-- :ref:`How to build Ghostscript<Make.htm>` and :ref:`install it<Install.htm>`.
+- :ref:`How to build Ghostscript<Make.html>` and :ref:`install it<Install.html>`.
 
 
 What should I read if I'm *not* a new user?
@@ -151,7 +166,7 @@ What should I read if I'm *not* a new user?
 
 If you have already used Ghostscript, when you receive a new release you should begin by reading this file, then:
 
-- :ref:`News<News.htm>`, for incompatible changes and new features in the current release.
+- :ref:`News<News.html>`, for incompatible changes and new features in the current release.
 
 
 What if I'm a developer?
@@ -159,12 +174,12 @@ What if I'm a developer?
 
 If you are going to do any development on or with Ghostscript at all, you should at least look at:
 
-- the :ref:`roadmap documentation<Develop.htm>` for Ghostscript's source files and architecture.
+- the :ref:`roadmap documentation<Develop.html>` for Ghostscript's source files and architecture.
 
 If you are going to write a new driver for Ghostscript, you should read:
 
-- the :ref:`guide to the Ghostscript source code<Source.htm>`.
-- the interface between Ghostscript and :ref:`device drivers<Drivers.htm>`.
+- the :ref:`guide to the Ghostscript source code<Source.html>`.
+- the interface between Ghostscript and :ref:`device drivers<Drivers.html>`.
 
 If you are considering distributing GPL Ghostscript in conjunction with a commercial product, you should read the `license`_ carefully, and you should also read:
 
@@ -172,7 +187,7 @@ If you are considering distributing GPL Ghostscript in conjunction with a commer
 
 If you intend to use Ghostscript in the form of a dynamic link library (DLL) under OS/2 or Microsoft Windows or in the form of shared object under Linux, read:
 
-- documentation on :ref:`Ghostscript Interpreter API<API.htm>`.
+- documentation on :ref:`Ghostscript Interpreter API<API.html>`.
 
 If you want to use Ghostscript as part of another program, as a callable PostScript language interpreter, and not as a DLL or as a self-contained executable application, you should begin by reading:
 
@@ -180,7 +195,7 @@ If you want to use Ghostscript as part of another program, as a callable PostScr
 
 or if you are going to use only the Ghostscript graphics library:
 
-- about the structure of the :ref:`Ghostscript library<Lib.htm>` and its interfaces.
+- about the structure of the :ref:`Ghostscript library<Lib.html>` and its interfaces.
 
 What if I'm writing documentation?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,13 +228,15 @@ Much other material about Ghostscript is available on the World Wide Web, both a
 
 .. External links
 
-.. _www.ghostscript.com: http://www.ghostscript.com/
-.. _here: http://www.ghostscript.com/download
+.. _www.ghostscript.com: http://www.ghostscript.com/?utm_source=rtd-ghostscript&utm_medium=rtd&utm_content=inline-link
+.. _ghostscript.com/download: http://www.ghostscript.com/download/?utm_source=rtd-ghostscript&utm_medium=rtd&utm_content=inline-link
 .. _AGPL:
-.. _GNU Affero GPL license: http://www.gnu.org/licenses/agpl-3.0.html
+.. _GNU Affero GPL license: http://www.gnu.org/licenses/agpl-3.0.htmll
+.. _AFPL license:
 .. _AFPL: https://en.wikipedia.org/wiki/Aladdin_Free_Public_License
-.. _commercial licensing: https://artifex.com/licensing/commercial/
-.. _Artifex: https://artifex.com
+
+.. _commercial licensing: https://artifex.com/licensing/commercial?utm_source=rtd-ghostscript&utm_medium=rtd&utm_content=inline-link
+.. _Artifex: https://artifex.com/?utm_source=rtd-ghostscript&utm_medium=rtd&utm_content=inline-link
 .. _bugs.ghostscript.com: https://bugs.ghostscript.com
 .. _license:
 .. _GPL Ghostscript releases: https://github.com/ArtifexSoftware/ghostpdl/blob/master/doc/COPYING

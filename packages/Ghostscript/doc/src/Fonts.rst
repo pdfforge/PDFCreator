@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Fonts and Font Facilities Supplied with Ghostscript
 
 .. include:: header.rst
 
-.. _Fonts.htm:
+.. _Fonts.html:
 
 
 Fonts and Font Facilities Supplied with Ghostscript
@@ -192,7 +192,7 @@ The XUID is a Level 2 PostScript feature that serves the same function as the ``
 
 
 
-.. Note this was originally on the Use.htm page
+.. Note this was originally on the Use.html page
 
 .. _Fonts FAPI:
 

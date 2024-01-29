@@ -131,6 +131,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
             var interaction = new EncryptionPasswordInteraction(false, true, askUserPassword);
             interaction.OwnerPassword = CurrentProfile.PdfSettings.Security.OwnerPassword;
             interaction.UserPassword = CurrentProfile.PdfSettings.Security.UserPassword;
+            interaction.IsAutoSaveMode = CurrentProfile.AutoSave.Enabled;
+
 
             _interactionRequest.Raise(interaction, EncryptionPasswordsCallback);
         }

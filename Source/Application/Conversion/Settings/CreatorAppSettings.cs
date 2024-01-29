@@ -21,6 +21,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool AskSwitchDefaultPrinter { get; set; } = true;
 		
 		/// <summary>
+		/// Don't recommend PDF Architect
+		/// </summary>
+		public bool DontRecommendArchitect { get; set; } = false;
+		
+		/// <summary>
 		/// Set the number of minutes PDFCreator will remain in standby after running. Set to 0 to disable.
 		/// </summary>
 		public int HotStandbyMinutes { get; set; } = 120;
@@ -39,23 +44,25 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		/// <summary>
 		/// Version of the settings classes. This is used for internal purposes, i.e. to match properties when they were renamed
 		/// </summary>
-		public int SettingsVersion { get; set; } = 14;
+		public int SettingsVersion { get; set; } = 15;
 		
 		
 		public void ReadValues(Data data, string path = "")
 		{
 			AskSwitchDefaultPrinter = bool.TryParse(data.GetValue(@"" + path + @"AskSwitchDefaultPrinter"), out var tmpAskSwitchDefaultPrinter) ? tmpAskSwitchDefaultPrinter : true;
+			DontRecommendArchitect = bool.TryParse(data.GetValue(@"" + path + @"DontRecommendArchitect"), out var tmpDontRecommendArchitect) ? tmpDontRecommendArchitect : false;
 			HotStandbyMinutes = int.TryParse(data.GetValue(@"" + path + @"HotStandbyMinutes"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpHotStandbyMinutes) ? tmpHotStandbyMinutes : 120;
 			try { LastLoginVersion = Data.UnescapeString(data.GetValue(@"" + path + @"LastLoginVersion")); } catch { LastLoginVersion = "";}
 			try { LastSaveDirectory = Data.UnescapeString(data.GetValue(@"" + path + @"LastSaveDirectory")); } catch { LastSaveDirectory = "";}
 			try { LastUsedProfileGuid = Data.UnescapeString(data.GetValue(@"" + path + @"LastUsedProfileGuid")); } catch { LastUsedProfileGuid = "DefaultGuid";}
 			try { PrimaryPrinter = Data.UnescapeString(data.GetValue(@"" + path + @"PrimaryPrinter")); } catch { PrimaryPrinter = "PDFCreator";}
-			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 14;
+			SettingsVersion = int.TryParse(data.GetValue(@"" + path + @"SettingsVersion"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var tmpSettingsVersion) ? tmpSettingsVersion : 15;
 		}
 		
 		public void StoreValues(Data data, string path)
 		{
 			data.SetValue(@"" + path + @"AskSwitchDefaultPrinter", AskSwitchDefaultPrinter.ToString());
+			data.SetValue(@"" + path + @"DontRecommendArchitect", DontRecommendArchitect.ToString());
 			data.SetValue(@"" + path + @"HotStandbyMinutes", HotStandbyMinutes.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			data.SetValue(@"" + path + @"LastLoginVersion", Data.EscapeString(LastLoginVersion));
 			data.SetValue(@"" + path + @"LastSaveDirectory", Data.EscapeString(LastSaveDirectory));
@@ -69,6 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CreatorAppSettings copy = new CreatorAppSettings();
 			
 			copy.AskSwitchDefaultPrinter = AskSwitchDefaultPrinter;
+			copy.DontRecommendArchitect = DontRecommendArchitect;
 			copy.HotStandbyMinutes = HotStandbyMinutes;
 			copy.LastLoginVersion = LastLoginVersion;
 			copy.LastSaveDirectory = LastSaveDirectory;
@@ -82,6 +90,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		{
 			if(AskSwitchDefaultPrinter != source.AskSwitchDefaultPrinter)
 				AskSwitchDefaultPrinter = source.AskSwitchDefaultPrinter;
+				
+			if(DontRecommendArchitect != source.DontRecommendArchitect)
+				DontRecommendArchitect = source.DontRecommendArchitect;
 				
 			if(HotStandbyMinutes != source.HotStandbyMinutes)
 				HotStandbyMinutes = source.HotStandbyMinutes;
@@ -109,6 +120,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			CreatorAppSettings v = o as CreatorAppSettings;
 			
 			if (!Object.Equals(AskSwitchDefaultPrinter, v.AskSwitchDefaultPrinter)) return false;
+			if (!Object.Equals(DontRecommendArchitect, v.DontRecommendArchitect)) return false;
 			if (!Object.Equals(HotStandbyMinutes, v.HotStandbyMinutes)) return false;
 			if (!Object.Equals(LastLoginVersion, v.LastLoginVersion)) return false;
 			if (!Object.Equals(LastSaveDirectory, v.LastSaveDirectory)) return false;

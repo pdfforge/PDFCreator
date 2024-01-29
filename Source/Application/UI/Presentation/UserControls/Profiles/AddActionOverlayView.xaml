@@ -7,7 +7,6 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
-             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance designTime:DesignTimeAddActionOverlayViewModel, IsDesignTimeCreatable=true}"
@@ -21,11 +20,10 @@
                 <ResourceDictionary Source="../../Styles/ListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
-            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <Style x:Key="AddActionButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="Margin" Value="2" />
-                <Setter Property="BorderThickness" Value="0" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -48,12 +46,14 @@
             <ListBox ItemsSource="{Binding PreparationActions}"
                      Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:IActionViewModel">
+                    <DataTemplate>
                         <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
-                                IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"
-                                Style="{StaticResource AddActionButtonStyle}">
+                                Style="{StaticResource AddActionButtonStyle}"
+                                ToolTipService.ShowOnDisabled="True"
+                                ToolTipService.IsEnabled="{Binding AddActionToolTip.IsEnabled}"
+                                ToolTipService.ToolTip="{Binding AddActionToolTip.Text}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseEnter">
                                     <b:InvokeCommandAction Command="{Binding DataContext.InfoActionCommand,
@@ -78,12 +78,14 @@
             <ListBox ItemsSource="{Binding ModifyActions}"
                      Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:IActionViewModel">
+                    <DataTemplate>
                         <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
-                                IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"
-                                Style="{StaticResource AddActionButtonStyle}">
+                                Style="{StaticResource AddActionButtonStyle}"
+                                ToolTipService.ShowOnDisabled="True"
+                                ToolTipService.IsEnabled="{Binding AddActionToolTip.IsEnabled}"
+                                ToolTipService.ToolTip="{Binding AddActionToolTip.Text}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseEnter">
                                     <b:InvokeCommandAction Command="{Binding DataContext.InfoActionCommand,
@@ -107,12 +109,14 @@
             <ListBox ItemsSource="{Binding SendActions}"
                      Style="{StaticResource NoEffectsListBox}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:IActionViewModel">
+                    <DataTemplate>
                         <Button Content="{Binding Title}"
                                 Command="{Binding DataContext.TriggerAddActionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding}"
-                                IsEnabled="{Binding Path=IsEnabled, Converter={StaticResource BoolNegationConverter}}"
-                                Style="{StaticResource AddActionButtonStyle}">
+                                Style="{StaticResource AddActionButtonStyle}"
+                                ToolTipService.ShowOnDisabled="True"
+                                ToolTipService.IsEnabled="{Binding AddActionToolTip.IsEnabled}"
+                                ToolTipService.ToolTip="{Binding AddActionToolTip.Text}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseEnter">
                                     <b:InvokeCommandAction Command="{Binding DataContext.InfoActionCommand,
@@ -134,7 +138,7 @@
         <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Margin="10 20 10 0" Grid.Row="1" MinHeight="60" MaxWidth="600">
             <TextBlock TextWrapping="Wrap"
                        Text="{Binding InfoText}"
-                       Visibility="{Binding ShowInfoText, Converter={StaticResource BoolToVisibilityConverter} }" />
+                       Visibility="{Binding ShowInfoText, Converter={StaticResource CollapsedIfFalseConverter} }" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,0 +1,1922 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dapplo.Windows.Common</name>
+    </assembly>
+    <members>
+        <member name="T:Dapplo.Windows.Common.Enums.AdjacentTo">
+            <summary>
+            Where is the rectangle Adjacent to?
+            </summary>
+        </member>
+        <member name="F:Dapplo.Windows.Common.Enums.AdjacentTo.None">
+            <summary>
+            It's not connected
+            </summary>
+        </member>
+        <member name="F:Dapplo.Windows.Common.Enums.AdjacentTo.Left">
+            <summary>
+            It's connected on the left side.
+            </summary>
+        </member>
+        <member name="F:Dapplo.Windows.Common.Enums.AdjacentTo.Right">
+            <summary>
+            It's connected on the right side.
+            </summary>
+        </member>
+        <member name="F:Dapplo.Windows.Common.Enums.AdjacentTo.Top">
+            <summary>
+            It's connected on the top side.
+            </summary>
+        </member>
+        <member name="F:Dapplo.Windows.Common.Enums.AdjacentTo.Bottom">
+            <summary>
+            It's connected on the bottom side.
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Enums.HResult">
+            <summary>
+                The HRESULT represents Windows error codes
+                See <a href="https://en.wikipedia.org/wiki/HRESULT">wikipedia</a>
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Enums.Win32Error">
+            <summary>
+                A Win32 error code.
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.EnumExtensions">
+            <summary>
+            Some enum extensions used throughout the code
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.EnumExtensions.GetAttributeOfType``1(System.Enum)">
+            <summary>
+            Get an attribute of a certain type, placed upon an enum value
+            </summary>
+            <typeparam name="T">Type of attribute</typeparam>
+            <param name="enumVal">Enum</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.EnumExtensions.GetEnumDescription(System.Enum)">
+            <summary>
+            Get the description of an enum
+            </summary>
+            <param name="enumVal">Enum</param>
+            <returns>string</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.HResultExtensions">
+            <summary>
+                Extensions to handle the HResult
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.HResultExtensions.Failed(Dapplo.Windows.Common.Enums.HResult)">
+            <summary>
+                Test if the HResult represents a fail
+            </summary>
+            <param name="hResult">HResult</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.HResultExtensions.Succeeded(Dapplo.Windows.Common.Enums.HResult)">
+            <summary>
+                Test if the HResult represents a success
+            </summary>
+            <param name="hResult">HResult</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.HResultExtensions.ThrowOnFailure(Dapplo.Windows.Common.Enums.HResult)">
+            <summary>
+                Throw an exception on Failure
+            </summary>
+            <param name="hResult">HResult</param>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativePointExtensions">
+            <summary>
+                Helper method for the NativePoint struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointExtensions.ChangeX(Dapplo.Windows.Common.Structs.NativePoint,System.Int32)">
+            <summary>
+            Create a new NativePoint, from the supplied one, using the specified X coordinate
+            </summary>
+            <param name="point">NativePoint</param>
+            <param name="x">int</param>
+            <returns>NativePoint</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointExtensions.ChangeY(Dapplo.Windows.Common.Structs.NativePoint,System.Int32)">
+            <summary>
+            Create a new NativePoint, from the supplied one, using the specified Y coordinate
+            </summary>
+            <param name="point">NativePoint</param>
+            <param name="y">int</param>
+            <returns>NativePoint</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointExtensions.Offset(Dapplo.Windows.Common.Structs.NativePoint,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+            Create a new NativePoint, from the supplied one, using the specified offset
+            </summary>
+            <param name="point">NativePoint</param>
+            <param name="offset">NativePoint</param>
+            <returns>NativePoint</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointExtensions.Offset(Dapplo.Windows.Common.Structs.NativePoint,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Create a new NativePoint, from the supplied one, using the specified offset
+            </summary>
+            <param name="point">NativePoint</param>
+            <param name="offsetX">int</param>
+            <param name="offsetY">int</param>
+            <returns>NativePoint</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions">
+            <summary>
+                Helper method for the NativePointFloat struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions.ChangeX(Dapplo.Windows.Common.Structs.NativePointFloat,System.Single)">
+            <summary>
+            Create a new NativePointFloat, from the supplied one, using the specified X coordinate
+            </summary>
+            <param name="point">NativePointFloat</param>
+            <param name="x">float</param>
+            <returns>NativePointFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions.ChangeY(Dapplo.Windows.Common.Structs.NativePointFloat,System.Single)">
+            <summary>
+            Create a new NativePointFloat, from the supplied one, using the specified Y coordinate
+            </summary>
+            <param name="point">NativePointFloat</param>
+            <param name="y">float</param>
+            <returns>NativePointFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions.Offset(Dapplo.Windows.Common.Structs.NativePointFloat,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+            Create a new NativePointFloat, from the supplied one, using the specified offset
+            </summary>
+            <param name="point">NativePointFloat</param>
+            <param name="offsetX">float</param>
+            <param name="offsetY">float</param>
+            <returns>NativePointFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions.Offset(Dapplo.Windows.Common.Structs.NativePointFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Create a new NativePointFloat, from the supplied one, using the specified offset
+            </summary>
+            <param name="point">NativePointFloat</param>
+            <param name="offset">NativePointFloat</param>
+            <returns>NativePointFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativePointFloatExtensions.Round(Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Create a NativePoint, using rounded values, from the specified NativePointFloat
+            </summary>
+            <param name="point">NativePointFloat</param>
+            <returns>NativePoint</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativeRectExtensions">
+            <summary>
+                Helper method for the NativeRect struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.ChangeX(Dapplo.Windows.Common.Structs.NativeRect,System.Int32)">
+            <summary>
+            Create a new NativeRect, from the supplied one, using the specified X coordinate
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="x">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.ChangeY(Dapplo.Windows.Common.Structs.NativeRect,System.Int32)">
+            <summary>
+            Create a new NativeRect, from the supplied one, using the specified Y coordinate
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="y">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.ChangeWidth(Dapplo.Windows.Common.Structs.NativeRect,System.Int32)">
+            <summary>
+            Create a new NativeRect, from the supplied one, using the specified width
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="width">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.ChangeHeight(Dapplo.Windows.Common.Structs.NativeRect,System.Int32)">
+            <summary>
+            Create a new NativeRect, from the supplied one, using the specified height
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="height">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+                Test if this NativeRect contains the specified NativePoint
+            </summary>
+            <param name="rect"></param>
+            <param name="point">NativePoint</param>
+            <returns>true if it contains</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRect,System.Int32,System.Int32)">
+            <summary>
+                Test if this NativeRect contains the specified coordinates
+            </summary>
+            <param name="rect"></param>
+            <param name="x">int</param>
+            <param name="y">int</param>
+            <returns>true if it contains</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                True if small NativeRect is entirely contained within the larger NativeRect
+            </summary>
+            <param name="largerRectangle">NativeRect, the larger rectangle</param>
+            <param name="smallerRectangle">NativeRect, the smaller rectangle</param>
+            <returns>True if small NativeRect is entirely contained within the larger NativeRect, false otherwise</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.HasOverlap(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Check that two rectangles overlap with each other
+            </summary>
+            <param name="rect1">The first rectangle</param>
+            <param name="rect2">The second rectangle</param>
+            <returns>The rectangles overlap</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.IsAdjacent(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                True if either rectangle is adjacent to the other rectangle
+            </summary>
+            <param name="rect1">The first rectangle</param>
+            <param name="rect2">The second rectangle</param>
+            <returns>At least one rectangle is adjacent to the other rectangle</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.IsBetween(System.Int32,System.Int32,System.Int32)">
+            <summary>
+                Simple helper to specify if value is inside min and max
+            </summary>
+            <param name="value">double to check</param>
+            <param name="min">lowest allowed value</param>
+            <param name="max">highest allowed value</param>
+            <returns>bool true if the value is between</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.IsDockedToLeftOf(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Test if a NativeRect is docked to the left of another NativeRect
+            </summary>
+            <param name="rect1">NativeRect to test if it's docked</param>
+            <param name="rect2">NativeRect rect to be docked to</param>
+            <returns>bool with true if they are docked</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.IsDockedToRightOf(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Test if a NativeRect is docked to the right of another NativeRect
+            </summary>
+            <param name="rect1">NativeRect to test if it's docked</param>
+            <param name="rect2">NativeRect rect to be docked to</param>
+            <returns>bool with true if they are docked</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Union(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+            Creates a new NativeRect which is the union of rect1 and rect2
+            </summary>
+            <param name="rect1">NativeRect</param>
+            <param name="rect2">NativeRect</param>
+            <returns>NativeRect which is the union of rect1 and rect2</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Intersect2(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+            Creates a new NativeRect which is the intersection of rect1 and rect2
+            </summary>
+            <param name="rect1">NativeRect</param>
+            <param name="rect2">NativeRect</param>
+            <returns>NativeRect which is the intersection of rect1 and rect2</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Intersect(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+            Creates a new NativeRect which is the intersection of rect1 and rect2
+            </summary>
+            <param name="rect1">NativeRect</param>
+            <param name="rect2">NativeRect</param>
+            <returns>NativeRect which is the intersection of rect1 and rect2</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Inflate(Dapplo.Windows.Common.Structs.NativeRect,System.Int32,System.Int32)">
+            <summary>
+            Creates a new NativeRect which is rect but inflated with the specified width and height
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="width">int</param>
+            <param name="height">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Inflate(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Creates a new NativeRect which is rect but inflated with the specified size
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="size">NativeSize</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.IntersectsWith(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+            Test if the current rectangle intersects with the specified.
+            </summary>
+            <param name="rect1">NativeRect</param>
+            <param name="rect2">NativeRect</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Offset(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+            Create a new NativeRect by offsetting the specified one
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="offset">NativePoint</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Offset(Dapplo.Windows.Common.Structs.NativeRect,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Create a new NativeRect by offsetting the specified one
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="offsetX">int</param>
+            <param name="offsetY">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.MoveTo(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+            Create a new NativeRect from the specified one, but on a different location
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="location">NativePoint</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.MoveTo(Dapplo.Windows.Common.Structs.NativeRect,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Create a new NativeRect from the specified one, but on a different location
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="x">int</param>
+            <param name="y">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Resize(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Create a new NativeRect from the specified one, but with a different size
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="size">NativeSize</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Resize(Dapplo.Windows.Common.Structs.NativeRect,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Create a new NativeRect from the specified one, but with a different size
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="width">int</param>
+            <param name="height">int</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Transform(Dapplo.Windows.Common.Structs.NativeRect,System.Windows.Media.Matrix)">
+            <summary>
+            Transform the specified NativeRect
+            </summary>
+            <param name="rect">NativeRect</param>
+            <param name="matrix">Matrix</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectExtensions.Normalize(Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+            Normalize the NativeRect by making a negative width and or height absolute
+            </summary>
+            <param name="rect">NativeRect</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions">
+            <summary>
+                Helper methods for the NativeRectFloat struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.ChangeX(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single)">
+            <summary>
+            Create a new NativeRectFloat, from the supplied one, using the specified X coordinate
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="x">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.ChangeY(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single)">
+            <summary>
+            Create a new NativeRectFloat, from the supplied one, using the specified Y coordinate
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="y">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.ChangeWidth(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single)">
+            <summary>
+            Create a new NativeRectFloat, from the supplied one, using the specified width
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="width">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.ChangeHeight(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single)">
+            <summary>
+            Create a new NativeRectFloat, from the supplied one, using the specified height
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="height">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+                Test if this NativeRectFloat contains the specified NativePointFloat
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="point">NativePointFloat</param>
+            <returns>true if it contains</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single,System.Single)">
+            <summary>
+                Test if this NativeRectFloat contains the specified coordinates
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="x">float</param>
+            <param name="y">float</param>
+            <returns>true if it contains</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Contains(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                True if small NativeRectFloat is entirely contained within the larger NativeRectFloat
+            </summary>
+            <param name="largerRectangle">NativeRectFloat, the larger rectangle</param>
+            <param name="smallerRectangle">NativeRectFloat, the smaller rectangle</param>
+            <returns>True if small rectangle is entirely contained within the larger rectangle, false otherwise</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.HasOverlap(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Check that two rectangles overlap with each other
+            </summary>
+            <param name="rect1">The first rectangle</param>
+            <param name="rect2">The second rectangle</param>
+            <returns>The rectangles overlap</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.IsAdjacent(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                True if either rectangle is adjacent to the other rectangle
+            </summary>
+            <param name="rect1">The first rectangle</param>
+            <param name="rect2">The second rectangle</param>
+            <returns>At least one rectangle is adjacent to the other rectangle</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.IsBetween(System.Single,System.Single,System.Single)">
+            <summary>
+                Simple helper to specify if value is inside min and max
+            </summary>
+            <param name="value">double to check</param>
+            <param name="min">lowest allowed value</param>
+            <param name="max">highest allowed value</param>
+            <returns>bool true if the value is between</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.IsDockedToLeftOf(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Test if a NativeRectFloat is docked to the left of another NativeRectFloat
+            </summary>
+            <param name="rect1">NativeRectFloat to test if it's docked</param>
+            <param name="rect2">NativeRectFloat rect to be docked to</param>
+            <returns>bool with true if they are docked</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.IsDockedToRightOf(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Test if a NativeRectFloat is docked to the right of another NativeRectFloat
+            </summary>
+            <param name="rect1">NativeRectFloat to test if it's docked</param>
+            <param name="rect2">NativeRectFloat rect to be docked to</param>
+            <returns>bool with true if they are docked</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Union(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+            Creates a new NativeRectFloat which is the union of rect1 and rect2
+            </summary>
+            <param name="rect1">NativeRectFloat</param>
+            <param name="rect2">NativeRectFloat</param>
+            <returns>NativeRectFloat which is the union of rect1 and rect2</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Intersect(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+            Creates a new NativeRectFloat which is the intersection of rect1 and rect2
+            </summary>
+            <param name="rect1">NativeRectFloat</param>
+            <param name="rect2">NativeRectFloat</param>
+            <returns>NativeRectFloat which is the intersection of rect1 and rect2</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Inflate(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Int32,System.Int32)">
+            <summary>
+            Creates a new NativeRectFloat which is rect but inflated with the specified width and height
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="width">int</param>
+            <param name="height">int</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Inflate(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Single,System.Single)">
+            <summary>
+            Creates a new NativeRectFloat which is rect but inflated with the specified width and height
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="width">float</param>
+            <param name="height">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Inflate(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Creates a new NativeRect which is rect but inflated with the specified size
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="size">NativeSizeFloat</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.IntersectsWith(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+            Test if the current NativeRectFloat intersects with the specified.
+            </summary>
+            <param name="rect1">NativeRectFloat</param>
+            <param name="rect2">NativeRectFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Offset(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Create a new NativeRect by offsetting the specified one
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="offset">NativePointFloat</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Offset(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+            Create a new NativeRectFloat by offsetting the specified one
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="offsetX">float</param>
+            <param name="offsetY">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.MoveTo(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Create a new NativeRectFloat from the specified one, but on a different location
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="location">NativePointFloat</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.MoveTo(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+            Create a new NativeRectFloat from the specified one, but on a different location
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="x">int</param>
+            <param name="y">int</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Resize(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Create a new NativeRectFloat from the specified one, but with a different size
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="size">NativeSizeFloat</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Resize(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+            Create a new NativeRectFloat from the specified one, but with a different size
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="width">float</param>
+            <param name="height">float</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Round(Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+            Create a NativeRect, using rounded values, from the specified NativeRectFloat
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Transform(Dapplo.Windows.Common.Structs.NativeRectFloat,System.Windows.Media.Matrix)">
+            <summary>
+            Transform the specified NativeRectFloat
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <param name="matrix">Matrix</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeRectFloatExtensions.Normalize(Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+            Normalize the NativeRectFloat by making a negative width and or height absolute
+            </summary>
+            <param name="rect">NativeRectFloat</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativeSizeExtensions">
+            <summary>
+                Helper method for the NativeSizeExtensions struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeSizeExtensions.ChangeWidth(Dapplo.Windows.Common.Structs.NativeSize,System.Int32)">
+            <summary>
+            Create a new NativeSize, from the supplied one, using the specified width
+            </summary>
+            <param name="size">NativeSize</param>
+            <param name="width">int</param>
+            <returns>NativeSize</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeSizeExtensions.ChangeHeight(Dapplo.Windows.Common.Structs.NativeSize,System.Int32)">
+            <summary>
+            Create a new NativeSize, from the supplied one, using the specified height
+            </summary>
+            <param name="size">NativeSize</param>
+            <param name="height">int</param>
+            <returns>NativeSize</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Extensions.NativeSizeFloatExtensions">
+            <summary>
+                Helper method for the NativeSizeFloatExtensions struct
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeSizeFloatExtensions.ChangeWidth(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Single)">
+            <summary>
+            Create a new NativeSizeFloat, from the supplied one, using the specified width
+            </summary>
+            <param name="size">NativeSizeFloat</param>
+            <param name="width">float</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeSizeFloatExtensions.ChangeHeight(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Single)">
+            <summary>
+            Create a new NativeSizeFloat, from the supplied one, using the specified height
+            </summary>
+            <param name="size">NativeSizeFloat</param>
+            <param name="height">float</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Extensions.NativeSizeFloatExtensions.Round(Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Create a NativeSize, using rounded values, from the specified NativeSizeFloat
+            </summary>
+            <param name="size">NativeSizeFloat</param>
+            <returns>NativeSize</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativePoint">
+            <summary>
+                NativePoint represents the native POINT structure for calling native methods.
+                It has conversions from and to System.Drawing.Point or System.Windows.Point
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePoint.X">
+            <summary>
+                The X coordinate
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePoint.Y">
+            <summary>
+                The Y coordinate
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.#ctor(System.Int32,System.Int32)">
+            <summary>
+                Constructor with x and y coordinates
+            </summary>
+            <param name="x">int</param>
+            <param name="y">int</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Implicit(Dapplo.Windows.Common.Structs.NativePoint)~System.Windows.Point">
+            <summary>
+                Implicit cast from NativePoint to Point
+            </summary>
+            <param name="point">NativePoint</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Implicit(Dapplo.Windows.Common.Structs.NativePoint)~System.Drawing.Point">
+            <summary>
+                Implicit cast from NativePoint to System.Drawing.Point
+            </summary>
+            <param name="point">NativePoint</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Implicit(System.Drawing.Point)~Dapplo.Windows.Common.Structs.NativePoint">
+            <summary>
+                Implicit cast from System.Drawing.Point to NativePoint
+            </summary>
+            <param name="point">System.Drawing.Point</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Implicit(System.Drawing.PointF)~Dapplo.Windows.Common.Structs.NativePoint">
+            <summary>
+                Implicit cast from System.Drawing.PointF to NativePoint
+            </summary>
+            <param name="point">System.Drawing.PointF</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Implicit(Dapplo.Windows.Common.Structs.NativePointFloat)~Dapplo.Windows.Common.Structs.NativePoint">
+            <summary>
+            Implicit cast from NativePointFloat to NativePoint
+            </summary>
+            <param name="nativePointFloat">NativePointFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Equality(Dapplo.Windows.Common.Structs.NativePoint,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+            Equal
+            </summary>
+            <param name="point1">NativePoint</param>
+            <param name="point2">NativePoint</param>
+            <returns>rue if equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.op_Inequality(Dapplo.Windows.Common.Structs.NativePoint,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+            Not equal
+            </summary>
+            <param name="point1">NativePoint</param>
+            <param name="point2">NativePoint</param>
+            <returns>false if the values are equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.Equals(Dapplo.Windows.Common.Structs.NativePoint)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePoint.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            Decontructor for tuples
+            </summary>
+            <param name="x">int</param>
+            <param name="y">int</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePoint.Empty">
+            <summary>
+                Empty NativePoint
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativePointFloat">
+            <summary>
+                NativePoint represents the native POINT structure for calling native methods.
+                It has conversions from and to System.Drawing.Point or System.Windows.Point
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePointFloat.X">
+            <summary>
+                The X coordinate
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePointFloat.Y">
+            <summary>
+                The Y coordinate
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.#ctor(System.Single,System.Single)">
+            <summary>
+                Constructor with x and y coordinates
+            </summary>
+            <param name="x">float</param>
+            <param name="y">float</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativePointFloat)~System.Windows.Point">
+            <summary>
+                Implicit cast from NativePoint to Point
+            </summary>
+            <param name="point">NativePointFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(System.Windows.Point)~Dapplo.Windows.Common.Structs.NativePointFloat">
+            <summary>
+                Implicit cast from Point to NativePointFloat
+            </summary>
+            <param name="point">Point</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativePointFloat)~System.Drawing.Point">
+            <summary>
+                Implicit cast from NativePoint to System.Drawing.Point
+            </summary>
+            <param name="point">NativePointFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativePointFloat)~System.Drawing.PointF">
+            <summary>
+                Implicit cast from NativePoint to System.Drawing.PointF
+            </summary>
+            <param name="point">NativePointFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativePoint)~Dapplo.Windows.Common.Structs.NativePointFloat">
+            <summary>
+                Implicit cast from NativePoint to NativePointFloat
+            </summary>
+            <param name="point">NativePoint</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(System.Drawing.Point)~Dapplo.Windows.Common.Structs.NativePointFloat">
+            <summary>
+                Implicit cast from System.Drawing.Point to NativePointFloat
+            </summary>
+            <param name="point">System.Drawing.Point</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Implicit(System.Drawing.PointF)~Dapplo.Windows.Common.Structs.NativePointFloat">
+            <summary>
+                Implicit cast from System.Drawing.PointF to NativePointFloat
+            </summary>
+            <param name="point">System.Drawing.PointF</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.Equals(Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Equals
+            </summary>
+            <param name="other">NativePointFloat</param>
+            <returns>bool true if the values are equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Equality(Dapplo.Windows.Common.Structs.NativePointFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Equal
+            </summary>
+            <param name="lhs">NativePointFloat left hand side</param>
+            <param name="rhs">NativePointFloat right hand side</param>
+            <returns>bool true if the values are equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.op_Inequality(Dapplo.Windows.Common.Structs.NativePointFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+            Not equal
+            </summary>
+            <param name="lhs">NativePointFloat left hand side</param>
+            <param name="rhs">NativePointFloat right hand side</param>
+            <returns>bool true if the values are not equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativePointFloat.Deconstruct(System.Single@,System.Single@)">
+            <summary>
+            De-constructor for tuples
+            </summary>
+            <param name="x">float</param>
+            <param name="y">float</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativePointFloat.Empty">
+            <summary>
+                Empty NativePointFloat
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativeRect">
+            <summary>
+                NativeRect represents the native RECT structure for calling native methods.
+                See <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd162897.aspx">RECT struct</a>
+                It has conversions from and to System.Drawing.Rectangle or System.Windows.Rect
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+                Constructor from left, right, top, bottom
+            </summary>
+            <param name="left">int</param>
+            <param name="top">int</param>
+            <param name="width">int</param>
+            <param name="height">int</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.#ctor(Dapplo.Windows.Common.Structs.NativePoint,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+                Constructor from location and size
+            </summary>
+            <param name="location">NativePoint</param>
+            <param name="size">NativeSize</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.#ctor(Dapplo.Windows.Common.Structs.NativePoint,Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+                Constructor from topLeft and bottomRight
+            </summary>
+            <param name="topLeft">NativePoint</param>
+            <param name="bottomRight">NativePoint</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.#ctor(System.Int32,System.Int32,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+                Constructor from left, right and size
+            </summary>
+            <param name="left">int</param>
+            <param name="top">int</param>
+            <param name="size">NativeSize</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.X">
+            <summary>
+                X value
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Y">
+            <summary>
+                X location of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Left">
+            <summary>
+                Left value of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Top">
+            <summary>
+                Top of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Right">
+            <summary>
+                Right of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Bottom">
+            <summary>
+                Bottom of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Height">
+            <summary>
+                Height of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Width">
+            <summary>
+                Width of the NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Location">
+            <summary>
+                Location of this NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Size">
+            <summary>
+                Size for this NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.BottomLeft">
+            <summary>
+                Coordinates of the bottom left
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.TopLeft">
+            <summary>
+                Coordinates of the top left
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.BottomRight">
+            <summary>
+                Coordinates of the bottom right
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.TopRight">
+            <summary>
+                Coordinates of the top right
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(Dapplo.Windows.Common.Structs.NativeRect)~System.Windows.Rect">
+            <summary>
+                Cast NativeRect to Rect
+            </summary>
+            <param name="rectangle">NativeRect</param>
+            <returns>Rect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(Dapplo.Windows.Common.Structs.NativeRect)~System.Windows.Int32Rect">
+            <summary>
+                Cast NativeRect to Int32Rect
+            </summary>
+            <param name="rectangle">NativeRect</param>
+            <returns>Int32Rect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(System.Windows.Int32Rect)~Dapplo.Windows.Common.Structs.NativeRect">
+            <summary>
+                Cast Int32Rect to NativeRect
+            </summary>
+            <param name="rectangle">Int32Rect</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(Dapplo.Windows.Common.Structs.NativeRect)~System.Drawing.RectangleF">
+            <summary>
+                Cast NativeRect to RectangleF
+            </summary>
+            <param name="rectangle">NativeRect</param>
+            <returns>RectangleF</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(Dapplo.Windows.Common.Structs.NativeRect)~System.Drawing.Rectangle">
+            <summary>
+                Cast NativeRect to Rectangle
+            </summary>
+            <param name="rectangle">NativeRect</param>
+            <returns>Rectangle</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Implicit(System.Drawing.Rectangle)~Dapplo.Windows.Common.Structs.NativeRect">
+            <summary>
+                Cast Rectangle to NativeRect
+            </summary>
+            <param name="rectangle">Rectangle</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Equality(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Equals for NativeRect
+            </summary>
+            <param name="rectangle1">NativeRect</param>
+            <param name="rectangle2">NativeRect</param>
+            <returns>bool true if they are equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.op_Inequality(Dapplo.Windows.Common.Structs.NativeRect,Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Not is operator
+            </summary>
+            <param name="rectangle1"></param>
+            <param name="rectangle2"></param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.Equals(Dapplo.Windows.Common.Structs.NativeRect)">
+            <summary>
+                Equals
+            </summary>
+            <param name="other">NativeRect</param>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.IsEmpty">
+            <summary>
+                Checks if this NativeRect is empty
+            </summary>
+            <returns>true when empty</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRect.Deconstruct(Dapplo.Windows.Common.Structs.NativePoint@,Dapplo.Windows.Common.Structs.NativeSize@)">
+            <summary>
+            Decontructor for tuples
+            </summary>
+            <param name="location">NativePoint</param>
+            <param name="size">NativeSize</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.Empty">
+            <summary>
+                Empty NativeRect
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRect.SizeOf">
+            <summary>
+                SizeOf for this struct
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativeRectFloat">
+             <summary>
+                 NativeRect represents the native RECTF structure for calling native methods.
+                 See <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms534497(v=vs.85).aspx">RectF class</a>
+                 It has conversions from and to System.Drawing.RectangleF or System.Windows.Rect
+            
+             </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+                Constructor from left, top, width, height
+            </summary>
+            <param name="left">float</param>
+            <param name="top">float</param>
+            <param name="width">float</param>
+            <param name="height">float</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.#ctor(System.Single,System.Single,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+                Constructor from x,y, (width,height)
+            </summary>
+            <param name="x">int</param>
+            <param name="y">int</param>
+            <param name="nativeSizeFloat">NativeSizeFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.#ctor(Dapplo.Windows.Common.Structs.NativePointFloat,Dapplo.Windows.Common.Structs.NativePointFloat)">
+            <summary>
+                Constructor from top-left, bottom right
+            </summary>
+            <param name="topLeft">NativePointFloat</param>
+            <param name="bottomRight">NativePointFloat</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.#ctor(Dapplo.Windows.Common.Structs.NativePointFloat,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+                Constructor from location, size
+            </summary>
+            <param name="location">NativePoint</param>
+            <param name="nativeSizeFloat">NativeSizeFloat</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.X">
+            <summary>
+                X value
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Y">
+            <summary>
+                X location of the rectangle
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Left">
+            <summary>
+                Left value of the rectangle
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Top">
+            <summary>
+                Top of the rectangle
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Right">
+            <summary>
+                Right of the rectangle
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Bottom">
+            <summary>
+                Bottom of the rectangle
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Height">
+            <summary>
+                Heigh of the NativeRectFloat
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Width">
+            <summary>
+                Width of the NativeRectFloat
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.BottomLeft">
+            <summary>
+                Coordinates of the bottom left
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.TopLeft">
+            <summary>
+                Coordinates of the top left
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.BottomRight">
+            <summary>
+                Coordinates of the bottom right
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.TopRight">
+            <summary>
+                Coordinates of the top right
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Location">
+            <summary>
+                Location for this NativeRectFloat
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Size">
+            <summary>
+                Size for this NativeRectFloat
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRect)~Dapplo.Windows.Common.Structs.NativeRectFloat">
+            <summary>
+                Cast NativeRect to NativeRectFloat
+            </summary>
+            <param name="rectangle">NativeRect</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(System.Windows.Rect)~Dapplo.Windows.Common.Structs.NativeRectFloat">
+            <summary>
+                Cast Rect to NativeRectFloat
+            </summary>
+            <param name="rectangle">Rect</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(System.Windows.Int32Rect)~Dapplo.Windows.Common.Structs.NativeRectFloat">
+            <summary>
+                Cast Int32Rect to NativeRectFloat
+            </summary>
+            <param name="rectangle">Int32Rect</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRectFloat)~System.Windows.Rect">
+            <summary>
+                Cast NativeRectFloat to Rect
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>Rect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRectFloat)~System.Windows.Int32Rect">
+            <summary>
+                Cast NativeRectFloat to Int32Rect
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>Int32Rect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(System.Drawing.RectangleF)~Dapplo.Windows.Common.Structs.NativeRectFloat">
+            <summary>
+                Cast RectangleF to NativeRectFloat
+            </summary>
+            <param name="rectangle">RectangleF</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(System.Drawing.Rectangle)~Dapplo.Windows.Common.Structs.NativeRectFloat">
+            <summary>
+                Cast Rectangle to NativeRectFloat
+            </summary>
+            <param name="rectangle">Rectangle</param>
+            <returns>NativeRectFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRectFloat)~Dapplo.Windows.Common.Structs.NativeRect">
+            <summary>
+                Cast NativeRectFloat to NativeRect
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>NativeRect</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRectFloat)~System.Drawing.RectangleF">
+            <summary>
+                Cast NativeRectFloat to RectangleF
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>RectangleF</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeRectFloat)~System.Drawing.Rectangle">
+            <summary>
+                Cast NativeRectFloat to Rectangle
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>Rectangle</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Equality(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Equals for NativeRectFloat
+            </summary>
+            <param name="rectangle1">NativeRectFloat</param>
+            <param name="rectangle2">NativeRectFloat</param>
+            <returns>bool true if they are equal</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.op_Inequality(Dapplo.Windows.Common.Structs.NativeRectFloat,Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Not is operator
+            </summary>
+            <param name="rectangle1">NativeRectFloat</param>
+            <param name="rectangle2">NativeRectFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.Equals(Dapplo.Windows.Common.Structs.NativeRectFloat)">
+            <summary>
+                Equals
+            </summary>
+            <param name="rectangle">NativeRectFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.IsEmpty">
+            <summary>
+                Checks if this NativeRectFloat is empty
+            </summary>
+            <returns>true when empty</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.Contains(Dapplo.Windows.Common.Structs.NativePoint)">
+            <summary>
+                Test if this NativeRectFloat contains the specified NativePoint
+            </summary>
+            <param name="point">NativePoint</param>
+            <returns>true if it contains</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeRectFloat.Deconstruct(Dapplo.Windows.Common.Structs.NativePointFloat@,Dapplo.Windows.Common.Structs.NativeSizeFloat@)">
+            <summary>
+            Decontructor for tuples
+            </summary>
+            <param name="location">NativePointFloat</param>
+            <param name="size">NativeSizeFloat</param>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeRectFloat.Empty">
+            <summary>
+                Empty NativeRectFloat
+            </summary>
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativeSize">
+            <summary>
+                This structure should be used everywhere where native methods need a size struct.
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSize.Width">
+            <summary>
+                The Width of the size struct
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSize.Height">
+            <summary>
+                The Width of the size struct
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSize.Empty">
+            <summary>
+                Returns an empty size
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.#ctor(System.Windows.Size)">
+            <summary>
+                Constructor from System.Windows.Size
+            </summary>
+            <param name="size">System.Windows.Size</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Implicit(System.Windows.Size)~Dapplo.Windows.Common.Structs.NativeSize">
+            <summary>
+                Implicit cast from System.Windows.Size to NativeSize
+            </summary>
+            <param name="size">System.Windows.Size</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Implicit(Dapplo.Windows.Common.Structs.NativeSize)~System.Windows.Size">
+            <summary>
+                Implicit cast from NativeSize to Size
+            </summary>
+            <param name="size">NativeSize</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.#ctor(System.Drawing.Size)">
+            <summary>
+                Constructor from S.D.Size
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.#ctor(System.Int32,System.Int32)">
+            <summary>
+                Size contructor
+            </summary>
+            <param name="width">int</param>
+            <param name="height">int</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Implicit(Dapplo.Windows.Common.Structs.NativeSize)~System.Drawing.Size">
+            <summary>
+                Implicit cast from NativeSize to System.Drawing.Size
+            </summary>
+            <param name="size">NativeSize</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Implicit(System.Drawing.Size)~Dapplo.Windows.Common.Structs.NativeSize">
+            <summary>
+                Implicit cast from System.Drawing.Size to NativeSize
+            </summary>
+            <param name="size">System.Drawing.Size</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Equality(Dapplo.Windows.Common.Structs.NativeSize,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Inequality(Dapplo.Windows.Common.Structs.NativeSize,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Not Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Equality(Dapplo.Windows.Common.Structs.NativeSize,System.Drawing.Size)">
+            <summary>
+            Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">System.Drawing.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Inequality(Dapplo.Windows.Common.Structs.NativeSize,System.Drawing.Size)">
+            <summary>
+            Not Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">System.Drawing.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Equality(System.Drawing.Size,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Equals operator overloading
+            </summary>
+            <param name="size1">System.Drawing.Size</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Inequality(System.Drawing.Size,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Not Equals operator overloading
+            </summary>
+            <param name="size1">System.Drawing.Size</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Equality(Dapplo.Windows.Common.Structs.NativeSize,System.Windows.Size)">
+            <summary>
+            Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Inequality(Dapplo.Windows.Common.Structs.NativeSize,System.Windows.Size)">
+            <summary>
+            Not Equals operator overloading
+            </summary>
+            <param name="size1">NativeSize</param>
+            <param name="size2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Equality(System.Windows.Size,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Equals operator overloading
+            </summary>
+            <param name="size1">System.Windows.Size</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.op_Inequality(System.Windows.Size,Dapplo.Windows.Common.Structs.NativeSize)">
+            <summary>
+            Not Equals operator overloading
+            </summary>
+            <param name="size1">System.Windows.Size</param>
+            <param name="size2">NativeSize</param>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSize.IsEmpty">
+            <summary>
+                Checks if the width * height are 0
+            </summary>
+            <returns>true if the size is empty</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.CompareTo(Dapplo.Windows.Common.Structs.NativeSize)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.Equals(Dapplo.Windows.Common.Structs.NativeSize)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.Deconstruct(System.Int32@,System.Int32@)">
+            <summary>
+            Decontructor for tuples
+            </summary>
+            <param name="width">int</param>
+            <param name="height">int</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSize.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.Structs.NativeSizeFloat">
+            <summary>
+                This structure should be used everywhere where native methods need a size-f struct.
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSizeFloat.Width">
+            <summary>
+                The Width of the size struct
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSizeFloat.Height">
+            <summary>
+                The Width of the size struct
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSizeFloat.Empty">
+            <summary>
+                Returns an empty size
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.#ctor(System.Drawing.Size)">
+            <summary>
+                Constructor from S.D.Size
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.#ctor(System.Single,System.Single)">
+            <summary>
+                Size contructor
+            </summary>
+            <param name="width">float</param>
+            <param name="height">float</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.#ctor(System.Double,System.Double)">
+            <summary>
+                Size contructor
+            </summary>
+            <param name="width">double</param>
+            <param name="height">double</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.#ctor(System.Windows.Size)">
+            <summary>
+                Constructor from S.W.Size
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeSizeFloat)~System.Windows.Size">
+            <summary>
+                Implicit cast from NativeSizeFloat to System.Windows.Size
+            </summary>
+            <param name="size">NativeSize</param>
+            <returns>System.Windows.Size</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(System.Windows.Size)~Dapplo.Windows.Common.Structs.NativeSizeFloat">
+            <summary>
+                Implicit cast from Size to NativeSizeFloat
+            </summary>
+            <param name="size">System.Windows.Size</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Equality(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Windows.Size)">
+            <summary>
+            Equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Inequality(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Windows.Size)">
+            <summary>
+            Not equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Equality(System.Windows.Size,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Equals operator
+            </summary>
+            <param name="float1">System.Windows.Size</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Inequality(System.Windows.Size,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Not equals operator
+            </summary>
+            <param name="float1">System.Windows.Size</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeSizeFloat)~System.Drawing.Size">
+            <summary>
+                Implicit cast from NativeSize to System.Drawing.Size
+            </summary>
+            <param name="size">NativeSizeFloat</param>
+            <returns>System.Drawing.Size</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeSizeFloat)~System.Drawing.SizeF">
+            <summary>
+                Implicit cast from NativeSize to System.Drawing.SizeF
+            </summary>
+            <param name="size">NativeSizeFloat</param>
+            <returns>System.Drawing.SizeF</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(System.Drawing.Size)~Dapplo.Windows.Common.Structs.NativeSizeFloat">
+            <summary>
+                Implicit cast from System.Drawing.Size to NativeSizeFloat
+            </summary>
+            <param name="size">System.Drawing.Size</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(Dapplo.Windows.Common.Structs.NativeSize)~Dapplo.Windows.Common.Structs.NativeSizeFloat">
+            <summary>
+                Implicit cast from NativeSize to NativeSizeFloat
+            </summary>
+            <param name="size">NativeSize</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Implicit(System.Drawing.SizeF)~Dapplo.Windows.Common.Structs.NativeSizeFloat">
+            <summary>
+                Implicit cast from System.Drawing.SizeF to NativeSizeFloat
+            </summary>
+            <param name="size">System.Drawing.Size</param>
+            <returns>NativeSizeFloat</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Equality(Dapplo.Windows.Common.Structs.NativeSizeFloat,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Inequality(Dapplo.Windows.Common.Structs.NativeSizeFloat,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Not equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Equality(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Drawing.Size)">
+            <summary>
+            Equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Inequality(Dapplo.Windows.Common.Structs.NativeSizeFloat,System.Drawing.Size)">
+            <summary>
+            Not equals operator
+            </summary>
+            <param name="float1">NativeSizeFloat</param>
+            <param name="float2">System.Windows.Size</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Equality(System.Drawing.Size,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Equals operator
+            </summary>
+            <param name="float1">System.Windows.Size</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.op_Inequality(System.Drawing.Size,Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <summary>
+            Not equals operator
+            </summary>
+            <param name="float1">System.Windows.Size</param>
+            <param name="float2">NativeSizeFloat</param>
+            <returns>bool</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.Structs.NativeSizeFloat.IsEmpty">
+            <summary>
+                Checks if the width * height are 0
+            </summary>
+            <returns>true if the size is empty</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.Equals(Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.CompareTo(Dapplo.Windows.Common.Structs.NativeSizeFloat)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.Deconstruct(System.Single@,System.Single@)">
+            <summary>
+            Decontructor for tuples
+            </summary>
+            <param name="width">float</param>
+            <param name="height">float</param>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Structs.NativeSizeFloat.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.TypeConverters.NativePointTypeConverter">
+            <summary>
+            This implements a TypeConverter for the NativePoint structur
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativePointTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativePointTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativePointTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativePointTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.TypeConverters.NativeRectFloatTypeConverter">
+            <summary>
+            This implements a TypeConverter for the NativeRect structur
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectFloatTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectFloatTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectFloatTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectFloatTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.TypeConverters.NativeRectTypeConverter">
+            <summary>
+            This implements a TypeConverter for the NativeRect structur
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeRectTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.TypeConverters.NativeSizeFloatTypeConverter">
+            <summary>
+            This implements a TypeConverter for the NativeSizeFloat structur
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeFloatTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeFloatTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeFloatTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeFloatTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.TypeConverters.NativeSizeTypeConverter">
+            <summary>
+            This implements a TypeConverter for the NativeSize structur
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.Common.TypeConverters.NativeSizeTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.Common.Win32">
+            <summary>
+            Helper class for Win32 errors
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Win32.FormatMessage(System.UInt32,System.IntPtr,System.UInt32,System.UInt32,System.Char*,System.Int32,System.IntPtr)">
+            <summary>
+            Formats a message string.
+            The function requires a message definition as input.
+            The message definition can come from a buffer passed into the function.
+            It can come from a message table resource in an already-loaded module.
+            Or the caller can ask the function to search the system's message table resource(s) for the message definition.
+            The function finds the message definition in a message table resource based on a message identifier and a language identifier.
+            The function copies the formatted message text to an output buffer, processing any embedded insert sequences if requested.
+            </summary>
+            <param name="dwFlags"></param>
+            <param name="lpSource"></param>
+            <param name="dwMessageId"></param>
+            <param name="dwLanguageId"></param>
+            <param name="lpBuffer"></param>
+            <param name="nSize"></param>
+            <param name="arguments"></param>
+            <returns>If the function succeeds, the return value is the number of TCHARs stored in the output buffer, excluding the terminating null character.</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Win32.GetHResult(Dapplo.Windows.Common.Enums.Win32Error)">
+            <summary>
+                Get the error code from the Win32Error
+            </summary>
+            <param name="errorCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Win32.GetLastErrorCode">
+            <summary>
+                Get the last Win32 error as an exception
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.Win32.GetMessage(Dapplo.Windows.Common.Enums.Win32Error,System.UInt32)">
+            <summary>
+                Get the message for a Win32 error
+            </summary>
+            <param name="errorCode">Win32Error</param>
+            <param name="languageId">
+                uint with language ID, see
+                <a href="https://msdn.microsoft.com/en-us/library/dd318693.aspx">here</a>
+            </param>
+            <returns>string with the message</returns>
+        </member>
+        <member name="T:Dapplo.Windows.Common.WindowsVersion">
+            <summary>
+                Extension methods to test the windows version
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.WinVersion">
+            <summary>
+            Get the current windows version
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows10">
+            <summary>
+                Test if the current OS is Windows 10
+            </summary>
+            <returns>true if we are running on Windows 10</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows11OrLater">
+            <summary>
+                Test if the current OS is Windows 11 or later
+            </summary>
+            <returns>true if we are running on Windows 11 or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows10OrLater">
+            <summary>
+                Test if the current OS is Windows 10 or later
+            </summary>
+            <returns>true if we are running on Windows 10 or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows7OrLater">
+            <summary>
+                Test if the current OS is Windows 7 or later
+            </summary>
+            <returns>true if we are running on Windows 7 or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows8">
+            <summary>
+                Test if the current OS is Windows 8.0
+            </summary>
+            <returns>true if we are running on Windows 8.0</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows81">
+            <summary>
+                Test if the current OS is Windows 8(.1)
+            </summary>
+            <returns>true if we are running on Windows 8(.1)</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows8X">
+            <summary>
+                Test if the current OS is Windows 8.0 or 8.1
+            </summary>
+            <returns>true if we are running on Windows 8.1 or 8.0</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows81OrLater">
+            <summary>
+                Test if the current OS is Windows 8.1 or later
+            </summary>
+            <returns>true if we are running on Windows 8.1 or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindows8OrLater">
+            <summary>
+                Test if the current OS is Windows 8 or later
+            </summary>
+            <returns>true if we are running on Windows 8 or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindowsVista">
+            <summary>
+                Test if the current OS is Windows Vista
+            </summary>
+            <returns>true if we are running on Windows Vista or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindowsVistaOrLater">
+            <summary>
+                Test if the current OS is Windows Vista or later
+            </summary>
+            <returns>true if we are running on Windows Vista or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindowsBeforeVista">
+            <summary>
+                Test if the current OS is from before Windows Vista (e.g. Windows XP)
+            </summary>
+            <returns>true if we are running on Windows from before Vista</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindowsXp">
+            <summary>
+                Test if the current OS is Windows XP
+            </summary>
+            <returns>true if we are running on Windows XP or later</returns>
+        </member>
+        <member name="P:Dapplo.Windows.Common.WindowsVersion.IsWindowsXpOrLater">
+            <summary>
+                Test if the current OS is Windows XP or later
+            </summary>
+            <returns>true if we are running on Windows XP or later</returns>
+        </member>
+        <member name="M:Dapplo.Windows.Common.WindowsVersion.IsWindows10BuildOrLater(System.Int32)">
+            <summary>
+                Test if the current Windows version is 10 and the build number or later
+                See the build numbers <a href="https://en.wikipedia.org/wiki/Windows_10_version_history">here</a>
+            </summary>
+            <param name="minimalBuildNumber">int</param>
+            <returns>bool</returns>
+        </member>
+    </members>
+</doc>

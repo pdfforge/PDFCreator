@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Unsupported devices
@@ -6,11 +6,11 @@
 
 .. include:: header.rst
 
-.. _UnsupportedDevices.htm:
+.. _UnsupportedDevices.html:
 
 
 
-Unsupported devices
+Unsupported Devices
 ===================================
 
 
@@ -18,9 +18,9 @@ Unsupported devices
 
 These devices are no longer supported and/or superceeded by newer methods. The documentation is kept here for reference. Be advised that these devices will be removed in future versions of Ghostscript.
 
-Supported devices are descripted in :ref:`Details of Ghostscript output devices<Devices.htm>`.
+Supported devices are descripted in :ref:`Details of Ghostscript output devices<Devices.html>`.
 
-For other information, see the :ref:`Ghostscript overview<Readme.htm>`. You may also be interested in :ref:`how to build Ghostscript<Make.htm>` and :ref:`install it<Install.htm>`, as well as the description of the :ref:`driver interface<Drivers.htm>`.
+For other information, see the :ref:`Ghostscript overview<Readme.html>`. You may also be interested in :ref:`how to build Ghostscript<Make.html>` and :ref:`install it<Install.html>`, as well as the description of the :ref:`driver interface<Drivers.html>`.
 
 
 
@@ -315,7 +315,7 @@ All these drivers have 8-bit (monochrome), 16-bit and 24-bit (colour) and for th
 Default paper size
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the preprocessor symbol A4 is defined, the default paper size is ISO A4; otherwise it is U.S. letter size (see about :ref:`paper sizes<Known paper sizes>` in the usage documentation). You can :ref:`specify other paper sizes<Use_PaperSize>` on the command line, including A3 for the PaintJet XL and PaintJet XL300, as also explained in the :ref:`usage documentation<Use.htm>`.
+If the preprocessor symbol A4 is defined, the default paper size is ISO A4; otherwise it is U.S. letter size (see about :ref:`paper sizes<Known paper sizes>` in the usage documentation). You can :ref:`specify other paper sizes<Use_PaperSize>` on the command line, including A3 for the PaintJet XL and PaintJet XL300, as also explained in the :ref:`usage documentation<Use.html>`.
 
 DeskJet physical limits
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -557,7 +557,7 @@ General tips
 
 For all the printers above, the choice of paper is critically important to the final results. The printer manuals suggest type of paper, but in general, smoother, less fibrous types give better results. In particular, the special ink-jet paper can make a big difference: colours are brighter, but most importantly, there is almost no colour bleed, even with adjacent areas of very heavy inking. Similarly the special coated transparencies also work well (and ordinary transparencies do not work at all!).
 
-The Unix procedure :ref:`unix-lpr.sh<Unix-lpr.htm>` provides one example of setting up a multi-option colour PostScript lpr queue on Unix systems, and includes the ability to choose a range of different colour options and printer accounting and error logging.
+The Unix procedure :ref:`unix-lpr.sh<Unix-lpr.html>` provides one example of setting up a multi-option colour PostScript lpr queue on Unix systems, and includes the ability to choose a range of different colour options and printer accounting and error logging.
 
 Caveat emptor! It is not always easy for me to test all of these drivers, as the only colour printer I have here is the DeskJet 500C. I rely on others to test drivers for the additional machines and report their findings back to me.
 
@@ -1307,7 +1307,7 @@ I refuse to add code to :title:`stcolor` that tries to guess the proper margins 
 
 .. code-block:: postscript
 
-   mark % prepare stack for "putdeviceprops"
+   mark % prepare stack for "setpagedevice"
 
 insert these lines, which define page size and margins in points:
 
@@ -2980,7 +2980,7 @@ That's short, and if one removes ``upWeaveYPasses`` and ``upOutputPins`` it beco
 
 
 - ``upModel`` is a string serving as a comment (and nothing else).
-- ``DEVICE``, ``NOPAUSE``, ``SAFER`` are well-known Ghostscript parameters described in the :ref:`usage documentation<Use.htm>`.
+- ``DEVICE``, ``NOPAUSE``, ``SAFER`` are well-known Ghostscript parameters described in the :ref:`usage documentation<Use.html>`.
 - ``upColorModel`` is one of the major :title:`uniprint` parameters: it selects the color mapping and in turn the PostScript color model. It supports the devices ``/DeviceGray``, ``/DeviceRGBW``, ``/DeviceRGB``, ``/DeviceCMYK``, and ``/DeviceCMYKgenerate``.
 - ``upRendering`` selects the (color) rendering, supporting the values ``/ErrorDiffusion`` and ``/FSCMYK32``. ``/ErrorDiffusion`` is similar to ``fsmono``, ``fsrgb`` and ``fsx4`` of :title:`stcolor`, while ``/FSCMYK32`` is (almost) identical to ``fscmyk`` and ``hscmyk``, but is restricted to 32-bit data and should be used in conjunction with ``/DeviceCMYKgenerate``.
 - ``upOutputFormat`` selects the output method, supporting the values ``/SunRaster``, ``/Epson``, ``/EscP2``, ``/EscP2XY``, and ``/Pcl``.

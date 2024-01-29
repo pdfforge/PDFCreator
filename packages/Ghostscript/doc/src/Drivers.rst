@@ -1,11 +1,11 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: The Interface between Ghostscript and Device Drivers
 
 .. include:: header.rst
 
-.. _Drivers.htm:
+.. _Drivers.html:
 .. _Drivers:
 
 
@@ -171,7 +171,7 @@ For sophisticated developers only
 
 If for any reason you need to change the definition of the basic device structure, or to add procedures, you must change the following places:
 
-- This document and the :ref:`news document<News.htm>` (if you want to keep the documentation up to date).
+- This document and the :ref:`news document<News.html>` (if you want to keep the documentation up to date).
 
 - The definition of ``gx_device_common`` and the procedures in ``gxdevcli.h``.
 

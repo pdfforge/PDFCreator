@@ -92,7 +92,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             {
                 //No PDF Architect installed, but can be opened
                 if (hasOpen)
-                    if (_settingsProvider.Settings.ApplicationSettings.DontRecommendArchitect)
+                    if (_settingsProvider.Settings.CreatorAppSettings.DontRecommendArchitect)
                         return DoOpenWithSystemDefaultApplication(filePath);
                     else
                         return DoRecommendArchitect(PdfArchitectRecommendPurpose.NotInstalled);

@@ -1,4 +1,4 @@
-.. Copyright (C) 2001-2022 Artifex Software, Inc.
+.. Copyright (C) 2001-2023 Artifex Software, Inc.
 .. All Rights Reserved.
 
 .. title:: Device Subclassing
@@ -6,7 +6,7 @@
 
 .. include:: header.rst
 
-.. _DeviceSubclassing.htm:
+.. _DeviceSubclassing.html:
 
 
 Device Subclassing

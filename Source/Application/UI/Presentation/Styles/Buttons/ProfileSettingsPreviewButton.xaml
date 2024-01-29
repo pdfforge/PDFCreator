@@ -51,4 +51,42 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ActionDetailsPreviewButton" TargetType="{x:Type Button}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="2">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderThickness" Value="0 0 0 0" />
+                                <Setter Property="Background" Value="White" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource DefaultButtonBackgroundBrush}" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource DefaultButtonBackgroundBrush}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=MenuItem}}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource DefaultButtonBackgroundBrush}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource DefaultButtonBackgroundBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <ContentPresenter DockPanel.Dock="Top"
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding Content}"
+                                              IsHitTestVisible="False" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
