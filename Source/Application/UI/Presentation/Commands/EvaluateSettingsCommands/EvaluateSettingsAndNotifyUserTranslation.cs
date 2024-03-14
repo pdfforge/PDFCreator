@@ -15,5 +15,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
         public string ChooseNoToRevert { get; private set; } = "Choose 'No' to revert the changes.";
         public string DefaultViewer { get; private set; } = "Default Viewer";
         public string Error { get; private set; } = "Error";
+
+        public string SettingsAreLoadingTitle { get; private set; } = "Settings are Loading";
+
+        public string ApplicationLoadingSettings { get; private set; } = "The application is still in the process of loading settings.";
+        public string CloseAnyway { get; private set; } = "Do you want to close the application anyway?";
+
     }
 }

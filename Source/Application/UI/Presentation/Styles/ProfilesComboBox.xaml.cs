@@ -1,10 +1,15 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
+using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using NaturalSort.Extension;
+using Prism.Events;
+using pdfforge.PDFCreator.UI.Presentation.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Styles
 {
@@ -28,6 +33,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Styles
 
         public static readonly DependencyProperty ProfilesViewProperty =
             DependencyProperty.Register(nameof(ProfilesView), typeof(ICollectionView), typeof(ProfilesComboBox));
+        
+        public IEventAggregator EventAggregator
+        {
+            get => (IEventAggregator)GetValue(EventAggregatorProperty);
+            set => SetValue(EventAggregatorProperty, value);
+        }
+
+        public static readonly DependencyProperty EventAggregatorProperty =
+            DependencyProperty.Register(nameof(EventAggregator), typeof(IEventAggregator), typeof(ProfilesComboBox));
 
         private static void Profiles_PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -35,7 +49,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Styles
                 return;
 
             var collectionViewSource = new CollectionViewSource { Source = profiles };
-            collectionViewSource.SortDescriptions.Add(new SortDescription(nameof(ConversionProfile.Name), ListSortDirection.Ascending));
 
             d.SetValue(ProfilesViewProperty, collectionViewSource.View);
         }
@@ -67,6 +80,28 @@ namespace pdfforge.PDFCreator.UI.Presentation.Styles
         public ProfilesComboBox()
         {
             InitializeComponent();
+        }
+
+        private readonly NaturalSortComparer _naturalSortComparer = new NaturalSortComparer(StringComparison.CurrentCulture);
+
+        private SubscriptionToken _profileRenamedSubscriptionToken;
+
+        private void ProfilesComboBox_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var profilesCollectionViewSource = (ListCollectionView)ProfilesView;
+
+            Comparison<ConversionProfileWrapper> conversionProfileComparison = (pmX, pmY)
+                => _naturalSortComparer.Compare(pmX.Name, pmY.Name);
+
+            var conversionProfileComparer = Comparer<ConversionProfileWrapper>.Create(conversionProfileComparison);
+            profilesCollectionViewSource.CustomSort = conversionProfileComparer;
+
+            _profileRenamedSubscriptionToken = EventAggregator?.GetEvent<ProfileRenamedEvent>().Subscribe(profilesCollectionViewSource.Refresh);
+        }
+
+        private void ProfilesComboBox_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _profileRenamedSubscriptionToken?.Dispose();
         }
     }
 }

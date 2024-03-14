@@ -15,7 +15,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string DirectoryLabel { get; private set; } = "Target Directory:";
         public string LeaveDirectoryEmpty { get; private set; } = "Hint: Leave the target directory blank, to use the recently used target directory.";
 
-        public string SkipPrintDialog { get; private set; } = "Skip print dialog (start with save dialog)";
+        public string SkipPrintDialog { get; private set; } = "Skip job dialog (start with save dialog)";
         public string SkipSendFailures { get; private set; } = "Skip send actions that fail";
         public string WarnSendFailures { get; private set; } = "Warn when a send action is skipped";
 

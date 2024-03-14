@@ -7,7 +7,7 @@ namespace pdfforge.PDFCreator.UI.Interactions
     public class MessageInteraction : IInteraction
     {
         public MessageInteraction(string text, string title, MessageOptions buttons, MessageIcon icon,
-            ActionResultDict actionResultDict = null, string secondText = null)
+            ActionResultDict actionResultDict = null, string secondText = null, string thirdText = null)
         {
             Text = text;
             Title = title;
@@ -16,14 +16,16 @@ namespace pdfforge.PDFCreator.UI.Interactions
             ActionResultDict = actionResultDict;
             SecondText = secondText;
             ShowErrorRegions = true;
+            ThirdText = thirdText;
         }
 
         public MessageInteraction(string text, string title, MessageOptions buttons, MessageIcon icon,
-            string resultKey, ActionResult actionResult, string secondText = null)
+            string resultKey, ActionResult actionResult, string secondText = null, string thirdText = null)
             : this(text, title, buttons, icon)
         {
             ActionResultDict = new ActionResultDict { { resultKey, actionResult } };
             SecondText = secondText;
+            ThirdText = thirdText;
         }
 
         public string Text { get; set; }
@@ -35,5 +37,6 @@ namespace pdfforge.PDFCreator.UI.Interactions
         public string SecondText { get; set; }
 
         public MessageResponse Response { get; set; } = MessageResponse.Cancel;
+        public string ThirdText { get; set; }
     }
 }

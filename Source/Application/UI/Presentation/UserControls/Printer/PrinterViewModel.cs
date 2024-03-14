@@ -1,4 +1,5 @@
-﻿using pdfforge.Obsidian;
+﻿using System;
+using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Printing.Printer;
@@ -9,89 +10,171 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Wrapper;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using NaturalSort.Extension;
 using NLog;
+using pdfforge.Obsidian.Trigger;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
-    public class PrinterViewModel : TranslatableViewModelBase<PrinterTabTranslation>, IMountable
+    public class PrinterViewModel : TranslatableViewModelBase<PrinterViewTranslation>, IMountable
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
-        
-        private readonly ConversionProfileWrapper _dummyLastUsedProfile = new ConversionProfileWrapper
-        (
-            new ConversionProfile()
-            {
-                Name = "<Last used profile>",
-                Guid = ProfileGuids.LAST_USED_PROFILE_GUID
-            });
+
+        private ConversionProfileWrapper _defaultProfile;
 
         private readonly IPrinterAssistant _printerAssistant;
         private readonly IPrinterHelper _printerHelper;
         private readonly IGpoSettings _gpoSettings;
-
-        private readonly IPrinterProvider _printerProvider;
+        private readonly IInteractionRequest _interactionRequest;
         private readonly ISettingsProvider _settingsProvider;
+
+        private ListCollectionView _printerMappingView;
+
         private readonly ICurrentSettings<ObservableCollection<PrinterMapping>> _printerMappingProvider;
-        private ConversionProfileWrapper _defaultProfile;
+        private readonly ICurrentSettings<ObservableCollection<ConversionProfile>> _profilesProvider;
 
-        private ICollection<string> _pdfCreatorPrinters;
-        protected Helper.SynchronizedCollection<PrinterMappingWrapper> _printerMappings;
-        private ICollectionView _printerMappingView;
+        public ObservableCollection<ConversionProfileWrapper> ConversionProfiles { get; private set; }
+        public ObservableCollection<PrinterMappingWrapper> PrinterMappings { get; set; }
 
-        protected readonly ICurrentSettings<ObservableCollection<ConversionProfile>> ProfilesProvider;
+        public ICommand AddPrinterCommand { get; private set; }
+        public DelegateCommand RenamePrinterCommand { get; }
+        public DelegateCommand EditProfileCommand { get; }
+        public DelegateCommand DeletePrinterCommand { get; }
+        public DelegateCommand SetPrimaryPrinterCommand { get; }
+
+        private readonly NaturalSortComparer _naturalSortComparer = new NaturalSortComparer(StringComparison.CurrentCulture);
 
         public PrinterViewModel(
-            IPrinterProvider printerProvider,
             ISettingsProvider settingsProvider,
             ICurrentSettings<ObservableCollection<PrinterMapping>> printerMappingProvider,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider,
             IPrinterAssistant printerAssistant,
             ITranslationUpdater translationUpdater,
             IPrinterHelper printerHelper,
-            IGpoSettings gpoSettings)
+            IGpoSettings gpoSettings,
+            IInteractionRequest interactionRequest)
             : base(translationUpdater)
         {
             _printerHelper = printerHelper;
             _gpoSettings = gpoSettings;
+            _interactionRequest = interactionRequest;
             _printerAssistant = printerAssistant;
-            _printerProvider = printerProvider;
             _settingsProvider = settingsProvider;
             _printerMappingProvider = printerMappingProvider;
-            ProfilesProvider = profilesProvider;
+            _profilesProvider = profilesProvider;
 
-            AddPrinterCommand = new DelegateCommand(AddPrintercommandExecute);
-            RenamePrinterCommand = new DelegateCommand(RenamePrinterCommandExecute, ModifyPrinterCommandCanExecute);
-            DeletePrinterCommand = new DelegateCommand(DeletePrinterCommandExecute, ModifyPrinterCommandCanExecute);
-            SetPrimaryPrinterCommand = new DelegateCommand(SetPrimaryPrinter);
+            AddPrinterCommand = new DelegateCommand(AddPrinterExecute);
+            RenamePrinterCommand = new DelegateCommand(RenamePrinterExecute);
+            EditProfileCommand = new DelegateCommand(EditProfileExecute);
+            DeletePrinterCommand = new DelegateCommand(DeletePrinterCommandExecute);
+            SetPrimaryPrinterCommand = new DelegateCommand(SetPrimaryPrinterExecute);
+        }
+
+        private async void EditProfileExecute(object obj)
+        {
+            if (obj is not PrinterMappingWrapper printerMappingWrapper)
+                return;
+            
+            await EditProfile(printerMappingWrapper);
+        }
+
+        public async Task EditProfile(PrinterMappingWrapper printerMappingWrapper)
+        {
+            var interaction = new EditPrinterProfileUserInteraction(printerMappingWrapper, ConversionProfiles);
+            
+            await _interactionRequest.RaiseAsync(interaction);
+
+            if (interaction.Success)
+                printerMappingWrapper.Profile = interaction.ResultProfile;
         }
 
         public void MountView()
         {
-            SetSettingsAndRaiseNotifications(ProfilesProvider.Settings);
-            _settingsProvider.SettingsChanged += SettingsProviderOnSettingsChanged;
+            SetupConversionProfiles();
+
+            var printerMappings = SetupPrinterMappings();
+
+            PrinterMappings = printerMappings.ObservableCollection
+                .OrderBy(x => x.PrinterName, StringComparison.OrdinalIgnoreCase.WithNaturalSort()).ToObservableCollection();
+            RaisePropertyChanged(nameof(PrinterMappings));
+            PrinterMappings.CollectionChanged += PrinterMappings_OnCollectionChanged;
+
+            _printerMappingView = (ListCollectionView)CollectionViewSource.GetDefaultView(PrinterMappings);
+
+            Comparison<PrinterMappingWrapper> printerMappingWrapperComparison = (pmX, pmY)
+                => _naturalSortComparer.Compare(pmX.PrinterName, pmY.PrinterName);
+            var printerMappingWrapperComparer = Comparer<PrinterMappingWrapper>.Create(printerMappingWrapperComparison);
+            _printerMappingView.CustomSort = printerMappingWrapperComparer;
+
+            if (string.IsNullOrEmpty(_settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter) ||
+                PrinterMappings.All(o => o.PrinterName != _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter))
+            {
+                _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter = _printerHelper.GetApplicablePDFCreatorPrinter("PDFCreator",
+                    "PDFCreator");
+            }
+
+            PrimaryPrinter = _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter;
         }
 
         public void UnmountView()
         {
-            _settingsProvider.SettingsChanged -= SettingsProviderOnSettingsChanged;
-            _printerMappings.ObservableCollection.CollectionChanged -= PrinterMappings_OnCollectionChanged;
-            _printerMappingView.CurrentChanged -= PrinterMappingView_OnCurrentChanged;
+            PrinterMappings.CollectionChanged -= PrinterMappings_OnCollectionChanged;
         }
 
-        private void SettingsProviderOnSettingsChanged(object sender, EventArgs eventArgs)
+        private void SetupConversionProfiles()
         {
-            SetSettingsAndRaiseNotifications(ProfilesProvider.Settings);
+            var conversionProfiles =
+                _profilesProvider.Settings.Select(x => new ConversionProfileWrapper(x))
+                   .OrderBy(pm => pm.Name, StringComparison.OrdinalIgnoreCase.WithNaturalSort())
+                   .ToObservableCollection();
+
+            var dummyLastUsedProfile = new ConversionProfileWrapper
+            (
+                new ConversionProfile()
+                {
+                    Name = "<" + Translation.LastUsedProfileMapping + ">",
+                    Guid = ProfileGuids.LAST_USED_PROFILE_GUID
+                });
+
+            conversionProfiles.Insert(0, dummyLastUsedProfile);
+
+            ConversionProfiles = conversionProfiles;
+            RaisePropertyChanged(nameof(ConversionProfiles));
+
+            _defaultProfile = ConversionProfiles
+                .FirstOrDefault(x => x.ConversionProfile.IsDefault);
         }
 
-        private void SetPrimaryPrinter(object parameter)
+        private Helper.SynchronizedCollection<PrinterMappingWrapper> SetupPrinterMappings()
+        {
+            if (_printerMappingProvider?.Settings == null)
+                return null;
+
+            var mappingWrappers = new List<PrinterMappingWrapper>();
+
+            foreach (var printerMapping in _printerMappingProvider.Settings)
+            {
+                var profileWrapper = ConversionProfiles.FirstOrDefault(p => p.ConversionProfile.Guid == printerMapping.ProfileGuid);
+                if (profileWrapper == null)
+                {
+                    _logger.Debug("Could not find profile for " + printerMapping.PrinterName + ". Default Profile is set");
+                    printerMapping.ProfileGuid = _defaultProfile.ConversionProfile.Guid;
+                }
+                var mappingWrapper = new PrinterMappingWrapper(printerMapping, ConversionProfiles);
+                mappingWrappers.Add(mappingWrapper);
+            }
+
+            return new Helper.SynchronizedCollection<PrinterMappingWrapper>(mappingWrappers);
+        }
+
+        private void SetPrimaryPrinterExecute(object parameter)
         {
             var selectedPrinter = parameter as PrinterMappingWrapper;
 
@@ -101,119 +184,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
             PrimaryPrinter = selectedPrinter.PrinterName;
         }
 
-        private ObservableCollection<ConversionProfileWrapper> _conversionProfiles;
-
-        public ObservableCollection<ConversionProfileWrapper> ConversionProfiles
-        {
-            get
-            {
-                if (_conversionProfiles == null)
-                {
-                    _conversionProfiles = _settingsProvider.Settings?.Copy().ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
-                    _conversionProfiles?.Insert(0, _dummyLastUsedProfile);
-                }
-
-                return _conversionProfiles;
-            }
-            set
-            {
-                if (value == null)
-                    return;
-
-                _conversionProfiles = value;
-                _conversionProfiles?.Insert(0, _dummyLastUsedProfile);
-
-                var buffer = new Dictionary<string, string>();
-                if (PrinterMappings != null)
-                {
-                    foreach (var printerMappingWrapper in PrinterMappings)
-                    {
-                        buffer.Add(printerMappingWrapper.PrinterName, printerMappingWrapper.Profile.ConversionProfile.Guid);
-                    }
-                }
-
-                RaisePropertyChanged(nameof(ConversionProfiles));
-
-                if (PrinterMappings != null)
-                {
-                    foreach (var printerMappingWrapper in PrinterMappings)
-                    {
-                        printerMappingWrapper.Profile = _conversionProfiles.FirstOrDefault(x => x.ConversionProfile.Guid == buffer[printerMappingWrapper.PrinterName]);
-                    }
-                }
-
-                _defaultProfile = ConversionProfiles.FirstOrDefault(x => x.ConversionProfile.Guid == ProfileGuids.DEFAULT_PROFILE_GUID);
-                if (_defaultProfile == null)
-                    _defaultProfile = _dummyLastUsedProfile;
-            }
-        }
-
-        public IEnumerable<ConversionProfileWrapper> PrinterMappingProfiles
-        {
-            get
-            {
-                var profiles = ConversionProfiles.ToList();
-                _dummyLastUsedProfile.ConversionProfile.Name = "<" + Translation.LastUsedProfileMapping + ">";
-                profiles.Insert(0, _dummyLastUsedProfile);
-                return profiles;
-            }
-        }
-
-        public ICollection<string> PdfCreatorPrinters
-        {
-            get { return _pdfCreatorPrinters; }
-            set
-            {
-                _pdfCreatorPrinters = value;
-                RaisePropertyChanged(nameof(PdfCreatorPrinters));
-            }
-        }
-
-        public ObservableCollection<PrinterMappingWrapper> PrinterMappings
-        {
-            get { return _printerMappings?.ObservableCollection; }
-        }
-
-        public ICommand AddPrinterCommand { get; private set; }
-        public ICommand RenamePrinterCommand { get; }
-        public ICommand DeletePrinterCommand { get; }
-        public DelegateCommand SetPrimaryPrinterCommand { get; }
-
         public string PrimaryPrinter
         {
             get
             {
-                if (string.IsNullOrEmpty(_settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter) ||
-                    PrinterMappings.All(o => o.PrinterName != _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter))
-                {
-                    _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter = _printerHelper.GetApplicablePDFCreatorPrinter("PDFCreator",
-                        "PDFCreator");
-                }
-
                 return _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter;
             }
             set
             {
                 _settingsProvider.Settings.CreatorAppSettings.PrimaryPrinter = value;
-                UpdatePrimaryPrinter(value);
+                foreach (var printerMappingWrapper in PrinterMappings)
+                {
+                    printerMappingWrapper.PrimaryPrinter = value;
+                }
                 RaisePropertyChanged(nameof(PrimaryPrinter));
             }
-        }
-
-        private void SetSettingsAndRaiseNotifications(ObservableCollection<ConversionProfile> profiles)
-        {
-            _logger.Debug("SetSettingsAndRaiseNotifications");
-
-            ConversionProfiles = profiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
-
-            RaisePropertyChanged(nameof(ApplicationSettings));
-
-            UpdatePrinterList();
-            ApplyPrinterMappings();
-            UpdatePrinterCollectionViews();
-
-            UpdatePrimaryPrinter(PrimaryPrinter);
-            RaisePropertyChanged(nameof(PrimaryPrinter));
         }
 
         private void PrinterMappings_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -226,198 +211,65 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
                 if (printerMappingWrapper.Profile == null)
                     printerMappingWrapper.Profile = _defaultProfile;
             }
-
-            RaisePrinterCommandsCanExecuteChanged();
         }
 
-        private void PrinterMappingView_OnCurrentChanged(object sender, EventArgs eventArgs)
+        private async void AddPrinterExecute(object o)
         {
-            RaisePrinterCommandsCanExecuteChanged();
-        }
+            var printerName = await _printerAssistant.AddPrinter();
 
-        private void RaisePrinterCommandsCanExecuteChanged()
-        {
-            var delegateCommand = RenamePrinterCommand as DelegateCommand;
-            delegateCommand?.RaiseCanExecuteChanged();
-
-            var command = DeletePrinterCommand as DelegateCommand;
-            command?.RaiseCanExecuteChanged();
-        }
-
-        private void UpdatePrinterList()
-        {
-            _logger.Debug("UpdatePrinterList");
-
-            if (_pdfCreatorPrinters == null)
-                _pdfCreatorPrinters = new List<string>();
-
-            _pdfCreatorPrinters.Clear();
-            foreach (var printer in _printerProvider.GetPDFCreatorPrinters())
-            {
-                _logger.Debug("Installed Printer: " + printer);
-                _pdfCreatorPrinters.Add(printer);
-            }
-
-            RaisePropertyChanged(nameof(PdfCreatorPrinters));
-        }
-
-        public void UpdatePrimaryPrinter(string printerName)
-        {
-            foreach (var printerMappingWrapper in _printerMappings.ObservableCollection)
-            {
-                printerMappingWrapper.PrimaryPrinter = printerName;
-            }
-        }
-
-        private void ApplyPrinterMappings()
-        {
-            _logger.Debug("ApplyPrinterMappings");
-
-            if (_printerMappingProvider?.Settings != null)
-            {
-                _logger.Debug("Printer mappings from registry:");
-                foreach (var pm in _printerMappingProvider.Settings)
-                {
-                    _logger.Debug("Printer Mapping: " + pm.PrinterName + " - " + pm.ProfileGuid);
-                }
-
-                var mappingWrappers = new List<PrinterMappingWrapper>();
-
-                foreach (var printerMapping in _printerMappingProvider.Settings)
-                {
-                    var mappingWrapper = new PrinterMappingWrapper(printerMapping, PrinterMappingProfiles);
-                    if (mappingWrapper.Profile == null)
-                    {
-                        _logger.Debug("Could not find profile for " + mappingWrapper.PrinterName + ". Default Profile is set");
-                        mappingWrapper.Profile = _defaultProfile;
-                    }
-                    mappingWrappers.Add(mappingWrapper);
-                }
-
-                _printerMappings = new Helper.SynchronizedCollection<PrinterMappingWrapper>(mappingWrappers);
-
-                _logger.Debug("List Printer Mappings:");
-                foreach (var pm in PrinterMappings)
-                {
-                    _logger.Debug("Printer Mapping: " + pm.PrinterName + " - " + pm.Profile.Name);
-                }
-
-                _printerMappings.ObservableCollection.CollectionChanged += PrinterMappings_OnCollectionChanged;
-                _printerMappingView = CollectionViewSource.GetDefaultView(_printerMappings.ObservableCollection);
-                _printerMappingView.CurrentChanged += PrinterMappingView_OnCurrentChanged;
-            }
-
-            RaisePropertyChanged(nameof(PrinterMappings));
-        }
-
-        private bool ModifyPrinterCommandCanExecute(object o)
-        {
-            var currentMapping = _printerMappingView?.CurrentItem as PrinterMappingWrapper;
-
-            if (currentMapping == null)
-                return false;
-
-            return PdfCreatorPrinters.Contains(currentMapping.PrinterName);
-        }
-
-        private async void AddPrintercommandExecute(object o)
-        {
-            string printerName = await _printerAssistant.AddPrinter();
-
-            if (string.IsNullOrEmpty(printerName))
+            if (string.IsNullOrWhiteSpace(printerName))
                 return;
 
-            if (!string.IsNullOrWhiteSpace(printerName))
-            {
-                var newMapping = new PrinterMappingWrapper(new PrinterMapping(printerName, ProfileGuids.DEFAULT_PROFILE_GUID), ConversionProfiles);
+            if (PrinterMappings.Any(p => p.PrinterName == printerName))
+                return;
 
-                var duplicateMapping = PrinterMappings.FirstOrDefault(p => p.PrinterName == newMapping.PrinterName);
-
-                if (duplicateMapping == null)
-                {
-                    PrinterMappings.Add(newMapping);
-                }
-                else
-                {
-                    duplicateMapping.Profile = newMapping.Profile;
-                    duplicateMapping.PrinterMapping.ProfileGuid = newMapping.PrinterMapping.ProfileGuid;
-                }
-            }
-
-            UpdatePrinterCollectionViews();
+            var newMapping = new PrinterMappingWrapper(new PrinterMapping(printerName, _defaultProfile.ConversionProfile.Guid), ConversionProfiles);
+            PrinterMappings.Add(newMapping);
         }
 
-        private async void RenamePrinterCommandExecute(object obj)
+        private async void RenamePrinterExecute(object obj)
         {
-            var currentMapping = _printerMappingView.CurrentItem as PrinterMappingWrapper;
+            if (_printerMappingView.CurrentItem is not PrinterMappingWrapper currentMapping)
+                return;
 
-            if (currentMapping == null)
+            var newPrinterName = await _printerAssistant.RenamePrinter(currentMapping.PrinterName);
+
+            if (string.IsNullOrWhiteSpace(newPrinterName))
+                return;
+
+            if(currentMapping.PrinterName == newPrinterName)
                 return;
 
             var wasPrimaryPrinter = currentMapping.IsPrimaryPrinter;
+            currentMapping.PrinterName = newPrinterName;
+            if (wasPrimaryPrinter)
+                PrimaryPrinter = newPrinterName;
 
-            string newPrinterName = await _printerAssistant.RenamePrinter(currentMapping.PrinterName);
-
-            if (newPrinterName != null)
-            {
-                PdfCreatorPrinters = _printerProvider.GetPDFCreatorPrinters();
-                currentMapping.PrinterName = newPrinterName;
-                if (wasPrimaryPrinter)
-                    PrimaryPrinter = newPrinterName;
-            }
-
-            RaisePropertyChanged(nameof(PdfCreatorPrinters));
-            RaisePropertyChanged(nameof(PrimaryPrinter));
+            _printerMappingView.Refresh();
         }
 
         private async void DeletePrinterCommandExecute(object obj)
         {
-            var currentMapping = _printerMappingView.CurrentItem as PrinterMappingWrapper;
-
-            if (currentMapping == null)
+            if (_printerMappingView.CurrentItem is not PrinterMappingWrapper currentMapping)
                 return;
 
-            var success = await _printerAssistant.DeletePrinter(currentMapping.PrinterName, PdfCreatorPrinters.Count);
+            if (!await _printerAssistant.DeletePrinter(currentMapping.PrinterName, PrinterMappings.Count))
+                return;
 
-            if (success)
-            {
-                PrinterMappings.Remove(currentMapping);
-                RaisePropertyChanged(nameof(PrinterMappings));
-                PdfCreatorPrinters = _printerProvider.GetPDFCreatorPrinters();
-                RaisePropertyChanged(nameof(PdfCreatorPrinters));
-
+            var wasPrimaryPrinter = currentMapping.IsPrimaryPrinter;
+            PrinterMappings.Remove(currentMapping);
+            if(wasPrimaryPrinter)
                 PrimaryPrinter = _printerHelper.GetApplicablePDFCreatorPrinter(PrimaryPrinter);
-            }
         }
 
         public bool PrinterIsDisabled
         {
             get
             {
-                if (ProfilesProvider.Settings == null)
+                if (_profilesProvider.Settings == null)
                     return false;
 
                 return _gpoSettings != null && _gpoSettings.DisablePrinterTab;
-            }
-        }
-
-        private void UpdatePrinterCollectionViews()
-        {
-            UpdatePrinterList();
-            CollectionViewSource.GetDefaultView(_printerMappingProvider.Settings).Refresh();
-            CollectionViewSource.GetDefaultView(PdfCreatorPrinters).Refresh();
-        }
-
-        protected override void OnTranslationChanged()
-        {
-            base.OnTranslationChanged();
-
-            if (PrinterMappings != null)
-            {
-                foreach (var mappingWrapper in PrinterMappings)
-                {
-                    mappingWrapper.Profile = PrinterMappingProfiles?.FirstOrDefault(x => x.ConversionProfile.Guid == mappingWrapper.Profile.ConversionProfile.Guid);
-                }
             }
         }
     }

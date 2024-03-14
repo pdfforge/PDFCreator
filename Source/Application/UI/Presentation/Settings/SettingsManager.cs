@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Core.Services.Logging;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.Utilities.Threading;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Settings
@@ -17,16 +18,21 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
         private readonly IInstallationPathProvider _installationPathProvider;
         private readonly IThreadManager _threadManager;
         private readonly IGpoSettings _gpoSettings;
+        private readonly IPrinterMappingsHelper _printerMappingsHelper;
         private bool _registrySettingsHaveChanged;
         private ManagementEventWatcher _registryWatcher;
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public PDFCreatorSettingsManager(ISettingsProvider settingsProvider, ISettingsLoader loader, IInstallationPathProvider installationPathProvider, IThreadManager threadManager, IGpoSettings gpoSettings) : base(settingsProvider, loader, installationPathProvider)
+        public PDFCreatorSettingsManager(ISettingsProvider settingsProvider, ISettingsLoader loader, 
+            IInstallationPathProvider installationPathProvider, IThreadManager threadManager, 
+            IGpoSettings gpoSettings, IPrinterMappingsHelper printerMappingsHelper) 
+            : base(settingsProvider, loader, installationPathProvider)
         {
             _installationPathProvider = installationPathProvider;
             _threadManager = threadManager;
             _gpoSettings = gpoSettings;
+            _printerMappingsHelper = printerMappingsHelper;
 
             threadManager.StandbyStarted += OnStandbyStarted;
 
@@ -60,6 +66,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Settings
             _registryWatcher?.Stop();
 
             if (_registrySettingsHaveChanged || _registryWatcher == null) LoadAllSettings();
+
+            _printerMappingsHelper.CheckPrinterMappings(SettingsProvider.Settings);
         }
 
         private ManagementEventWatcher BuildRegistryWatcher()

@@ -57,9 +57,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton
 
                 if (Content != null)
                 {
-                    var content = new ContentControl
+                    var content = new ContentPresenter()
                     {
                         Content = Content,
+                        RecognizesAccessKey = true,
                         Margin = new Thickness(0, 0, 3, 0),
                         HorizontalAlignment = HorizontalAlignment.Center,
                     };

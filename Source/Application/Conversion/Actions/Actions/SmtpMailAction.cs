@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -103,6 +104,36 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 {
                     Logger.Error("No SMTP password for automatic saving.");
                     actionResult.Add(ErrorCode.Smtp_AutoSaveWithoutPassword);
+                }
+            }
+
+            if (checkLevel == CheckLevel.EditingProfile && !profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.OnBehalfOf))
+                    actionResult.Add(ErrorCode.Smtp_OnBehalfOf_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.DisplayName))
+                    actionResult.Add(ErrorCode.Smtp_DisplayName_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.ReplyTo))
+                    actionResult.Add(ErrorCode.Smtp_ReplyTo_RequiresUserToken);
+
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.Recipients))
+                    actionResult.Add(ErrorCode.Smtp_Recipients_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.RecipientsCc))
+                    actionResult.Add(ErrorCode.Smtp_RecipientsCc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.RecipientsBcc))
+                    actionResult.Add(ErrorCode.Smtp_RecipientsBcc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.Subject))
+                    actionResult.Add(ErrorCode.Smtp_Subject_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailSmtpSettings.Content))
+                    actionResult.Add(ErrorCode.Smtp_Content_RequiresUserToken);
+
+                foreach (var path in profile.EmailSmtpSettings.AdditionalAttachments)
+                {
+                    if (TokenIdentifier.ContainsUserToken(path))
+                    {
+                        actionResult.Add(ErrorCode.Smtp_AdditionalAttachment_RequiresUserToken);
+                        break;
+                    }
                 }
             }
 

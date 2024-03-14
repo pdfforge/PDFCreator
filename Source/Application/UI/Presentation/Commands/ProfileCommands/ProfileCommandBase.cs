@@ -26,13 +26,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
             translationUpdater.RegisterAndSetTranslation(this);
         }
 
-        protected InputValidation ProfilenameIsValid(string profileName)
+        protected InputValidation ProfileNameIsValid(string profileName)
         {
             var invalidProfileMessage = Translation.InvalidProfileName;
 
             if (string.IsNullOrWhiteSpace(profileName))
                 return new InputValidation(false, invalidProfileMessage);
-
+            
             var profileNameDoesNotExist = CurrentSettingsProvider.GetProfileByName(profileName) == null;
 
             return new InputValidation(profileNameDoesNotExist,

@@ -16,6 +16,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using Prism.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
@@ -26,7 +27,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         private readonly IWorkflowEditorSubViewProvider _viewProvider;
         private readonly IDispatcher _dispatcher;
         private IGpoSettings GpoSettings { get; }
-
+        public IEventAggregator EventAggregator { get; }
         public ProfilesViewModel(
             ISelectedProfileProvider selectedProfileProvider,
             ITranslationUpdater translationUpdater,
@@ -36,7 +37,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             IRegionManager regionManager,
             IWorkflowEditorSubViewProvider viewProvider,
             ICommandBuilderProvider commandBuilderProvider,
-            IDispatcher dispatcher)
+            IDispatcher dispatcher, 
+            IEventAggregator eventAggregator)
             : base(translationUpdater)
         {
             _profileProvider = profileProvider;
@@ -46,7 +48,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
             GpoSettings = gpoSettings;
             SelectedProfileProvider = selectedProfileProvider;
-
+            EventAggregator = eventAggregator;
             ProfileRenameCommand = commandLocator.GetCommand<ProfileRenameCommand>();
             ProfileRemoveCommand = commandLocator.GetCommand<ProfileRemoveCommand>();
 
@@ -107,8 +109,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                     profile.MountView();
                     _profiles.Add(profile);
                 }
-            }
-
+            } 
             RaiseChanges();
         }
 

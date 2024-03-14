@@ -15,6 +15,6 @@ namespace pdfforge.PDFCreator.Conversion.Settings
             return firstIndex < secondIndex;
         }
 
-        public bool SupportsMetadata => OutputFormat.IsPdf();
+        public bool FormatSupportsMetadata => OutputFormat.IsPdf();
     }
 }

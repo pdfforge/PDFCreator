@@ -18,78 +18,85 @@
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:MessageIconToIconConverter x:Key="MessageIconToIconConverter" />
+            <converter:StringIsNullOrWhiteSpaceConverter x:Key="CollapsedIfEmptyString" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" />
     </UserControl.CommandBindings>
-    <Grid HorizontalAlignment="Left" Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="100" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" FlowDirection="LeftToRight" Orientation="Vertical"
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid HorizontalAlignment="Left" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="100" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" FlowDirection="LeftToRight" Orientation="Vertical"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Margin ="20 10 20 10">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <ContentControl Name="IconBox"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <ContentControl Name="IconBox"
                             Focusable="False"
                             VerticalAlignment="Center"
                             Width="{Binding IconSize}"
                             Height="{Binding IconSize}"
                             Content="{Binding Interaction.Icon, Converter={StaticResource MessageIconToIconConverter}}" />
-                <TextBlock Name="MessageText" Margin="10 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"
-                       MinWidth="100" MaxWidth="425" Text="{Binding Interaction.Text}" />
-            </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock Name="MessageText" Margin="10 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"
+                                   MinWidth="100" MaxWidth="425" Text="{Binding Interaction.Text}" />
+                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"
+                                   Visibility="{Binding Interaction.ThirdText, Converter={StaticResource CollapsedIfEmptyString}}"
+                                   MinWidth="100" MaxWidth="425" Text="{Binding Interaction.ThirdText}" />
+                    </StackPanel>
+                </StackPanel>
 
-            <ListView Visibility="{Binding ErrorListVisibility}"
+                <ListView Visibility="{Binding ErrorListVisibility}"
                           Margin="0 10"
                           ItemsSource="{Binding ErrorList}"
                           MaxHeight="700"
                           MaxWidth="700"
                           BorderThickness="0"
                           Focusable="False">
-                <ListView.Resources>
-                    <!-- Disable hover for ListViewItems -->
-                    <SolidColorBrush x:Key="AccentColorBrush3" Color="Transparent" />
+                    <ListView.Resources>
+                        <!-- Disable hover for ListViewItems -->
+                        <SolidColorBrush x:Key="AccentColorBrush3" Color="Transparent" />
 
-                    <Style BasedOn="{StaticResource MetroGridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}">
-                        <Setter Property="IsHitTestVisible" Value="False" />
-                    </Style>
-                </ListView.Resources>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="400">
-                            <GridViewColumn.CellTemplate>
+                        <Style BasedOn="{StaticResource MetroGridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="400">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Error}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
                                 <DataTemplate>
-                                    <TextBlock TextWrapping="Wrap" Text="{Binding Error}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" Visibility="{Binding DataContext.Interaction.ShowErrorRegions, ElementName=This, Converter={StaticResource CollapsedIfFalseConverter}}" />
                                 </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
 
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Visibility="{Binding DataContext.Interaction.ShowErrorRegions, ElementName=This, Converter={StaticResource CollapsedIfFalseConverter}}" />
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-            </ListView>
-
-            <StackPanel Visibility="{Binding SecondTextVisibility}">
-                <TextBlock Margin="0 10 0 5" TextWrapping="Wrap"
+                <StackPanel Visibility="{Binding SecondTextVisibility}">
+                    <TextBlock Margin="0 10 0 5" TextWrapping="Wrap"
                            Text="{Binding Interaction.SecondText}" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-        <DockPanel Grid.Row="1"
+            <DockPanel Grid.Row="1"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
-            <Button
+                <Button
                 Command="{Binding RightButtonCommand}"
                 Content="{Binding RightButtonContent}"
                 Visibility="{Binding RightButtonCommand.IsExecutable, Converter={StaticResource CollapsedIfFalseConverter}}"
@@ -97,7 +104,7 @@
                 Margin="0 10 10 10"
                 Padding="10"
                 MinWidth="60" />
-            <Button
+                <Button
                 Command="{Binding MiddleButtonCommand}"
                 Content="{Binding MiddleButtonContent}"
                 Visibility="{Binding MiddleButtonCommand.IsExecutable, Converter={StaticResource CollapsedIfFalseConverter}}"
@@ -105,22 +112,23 @@
                 Margin="0 10 10 10"
                 Padding="10"
                 MinWidth="60" />
-            <Button
+                <Button
                 Command="{Binding LeftButtonCommand}"
                 DockPanel.Dock="Right"
                 Margin="10 10 10 10"
                 IsDefault="True"
                 Padding="10"
                 MinWidth="60">
-                <DockPanel HorizontalAlignment="Center">
-                    <ContentControl Margin="0 0  10 0"
+                    <DockPanel HorizontalAlignment="Center">
+                        <ContentControl Margin="0 0  10 0"
                                     Visibility="{Binding ShowUacShield, Converter={StaticResource CollapsedIfFalseConverter}}"
                                     Content="{StaticResource UacShield}"
                                     IsHitTestVisible="False"
                                     Width="8" />
-                    <AccessText Text="{Binding LeftButtonContent}" />
-                </DockPanel>
-            </Button>
-        </DockPanel>
-    </Grid>
+                        <AccessText Text="{Binding LeftButtonContent}" />
+                    </DockPanel>
+                </Button>
+            </DockPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

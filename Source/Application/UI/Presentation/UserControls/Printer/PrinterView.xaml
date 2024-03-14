@@ -10,6 +10,7 @@
              xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
              xmlns:wrapper="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Wrapper"
+             xmlns:profiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrinterViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="600" d:DesignWidth="800"
@@ -70,13 +71,27 @@
                             </DataGridTemplateColumn.HeaderTemplate>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
-                                    <Border Style="{StaticResource HoverBorder}">
-                                        <DockPanel Margin="10 0">
-                                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   Text="{Binding PrinterName}"
-                                                   Style="{StaticResource DefaultTextBlock}" />
-                                        </DockPanel>
-                                    </Border>
+                                    <DockPanel LastChildFill="True">
+
+                                    <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
+                                        <Button Margin="8 0 0 0" DockPanel.Dock="Right"
+                                                Command="{Binding DataContext.RenamePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}"
+                                                Style="{StaticResource SquaredIconButton}">
+                                            <iconPacks:PackIconMaterialDesign Kind="Create" />
+                                        </Button>
+
+                                        <Border Style="{StaticResource HoverBorder}">
+                                            <Button Command="{Binding DataContext.RenamePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}" Background="Transparent" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                                                    <DockPanel IsHitTestVisible="False" LastChildFill="True">
+                                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"  IsHitTestVisible="False"
+                                                                   Text= "{Binding PrinterName}"
+                                                                   Style="{StaticResource DefaultTextBlock}" />
+                                                    </DockPanel>
+                                            </Button>
+                                        </Border>
+                                    </DockPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -85,57 +100,89 @@
                         <DataGridTemplateColumn Width="3*">
                             <DataGridTemplateColumn.HeaderTemplate>
                                 <DataTemplate>
-                                    <Label Margin="10 0 0 0"
-                                       Content="{Binding DataContext.Translation.PrimaryColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                       HorizontalAlignment="Left"
-                                       Style="{StaticResource LightLabel}" />
+                                    <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
+                                    <Label Margin="18 0 0 0"
+                                           Content="{Binding DataContext.Translation.PrimaryColumnHeader, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           HorizontalAlignment="Left"
+                                           Style="{StaticResource LightLabel}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.HeaderTemplate>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
-                                    <DockPanel FlowDirection="LeftToRight">
+                                    <DockPanel>
+                                        <DockPanel.Resources>
+                                            <Style x:Key="CustomLabelStyle" TargetType="{x:Type Label}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Opacity" Value="0.1" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Foreground" Value="{StaticResource LabelForegroundBrush}" />
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </Style>
+                                        </DockPanel.Resources>
+
+                                        <Button Margin="8 0 0 0" DockPanel.Dock="Right"
+                                                Command="{Binding DataContext.EditProfileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource SquaredIconButton}">
+                                            <iconPacks:PackIconMaterialDesign Kind="Build" />
+                                        </Button>
                                         <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
-                                        <CheckBox Height="33" HorizontalAlignment="Center"
-                                              Margin="8 0 0 0"
+                                        <CheckBox Height="33" HorizontalAlignment="Center" DockPanel.Dock="Left"
+                                              Margin="20 0 0 0"
                                               Background="White"
                                               IsChecked="{Binding IsPrimaryPrinter, Mode=OneWay}"
                                               Command="{Binding DataContext.SetPrimaryPrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                                               CommandParameter="{Binding}" />
-                                        <Border Margin="10 0 0 0"
-                                            Style="{StaticResource HoverBorder}">
-                                            <styles:ProfilesComboBox>
-                                                <styles:ProfilesComboBox.Style>
-                                                    <Style TargetType="{x:Type styles:ProfilesComboBox}">
-                                                        <Setter Property="Background" Value="White" />
-                                                        <Setter Property="Profiles" Value="{Binding Path=DataContext.ConversionProfiles, ElementName=This}" />
-                                                        <Setter Property="SelectedProfile" Value="{Binding Profile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=DataGridRow}}" Value="True">
-                                                                <Setter Property="Background" Value="{StaticResource ComboBoxMouseOverBrush}" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </styles:ProfilesComboBox.Style>
-                                            </styles:ProfilesComboBox>
+
+                                        <Border Margin="20 0 0 0" Style="{StaticResource HoverBorder}">
+                                            <Button Command="{Binding DataContext.EditProfileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}" 
+                                                    Background="Transparent" 
+                                                    HorizontalContentAlignment="Stretch">
+                                                <Button.Content>
+
+                                                    <DockPanel IsHitTestVisible="false" HorizontalAlignment="Stretch">
+
+                                                        <Label Margin="5 0" Padding="0" DockPanel.Dock="Right"
+                                                               IsEnabled="{Binding Profile.ConversionProfile.AutoSave.Enabled}"
+                                                               Style="{StaticResource CustomLabelStyle}">
+                                                            <iconPacks:PackIconMaterialDesign Kind="FlashAuto" />
+                                                        </Label>
+
+                                                        <Label Margin="5 0" Padding="0" DockPanel.Dock="Right"
+                                                               IsEnabled="{Binding Profile.HasEnabledSecurity}"
+                                                               Style="{StaticResource CustomLabelStyle}">
+                                                            <iconPacks:PackIconMaterialDesign Kind="Lock" />
+                                                        </Label>
+
+                                                        <Label Margin="5 0" Padding="0" DockPanel.Dock="Right"
+                                                               IsEnabled="{Binding Profile.HasEnabledSendActions}"
+                                                               Style="{StaticResource CustomLabelStyle}">
+                                                            <iconPacks:PackIconMaterialDesign Kind="Share" />
+                                                        </Label>
+
+                                                        <TextBlock Margin="5 0 10 0" DockPanel.Dock="Left"
+                                                                   Text="{Binding Path=Profile.ConversionProfile.Name}"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   VerticalAlignment="Center" />
+                                                    </DockPanel>
+                                                </Button.Content>
+                                            </Button>
                                         </Border>
+                                        <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
                                     </DockPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
-                        <!-- Rename and Delete Buttons column -->
+                        <!-- Delete Buttons column -->
                         <DataGridTemplateColumn Width="Auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type wrapper:PrinterMappingWrapper}">
                                     <DockPanel>
-                                        <!--The margin is 8 rather than 10 because there is a margin of (approximately) 2 units being set by something mysterious-->
-                                        <Button Margin="8 0 0 0"
-                                            Command="{Binding DataContext.RenamePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}"
-                                            Style="{StaticResource SquaredIconButton}">
-                                            <iconPacks:PackIconMaterialDesign Kind="Build" />
-                                        </Button>
-                                        <Button Margin="10 0 0 0"
+                                        <Button Margin="20 0 0 0"
                                         Command="{Binding DataContext.DeletePrinterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                                         CommandParameter="{Binding ElementName=PrinterList, Path=SelectedItem.PrinterName}"
                                         Style="{StaticResource SquaredIconButton}">

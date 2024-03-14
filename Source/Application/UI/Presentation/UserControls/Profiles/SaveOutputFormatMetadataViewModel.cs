@@ -281,6 +281,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         #region Metadata
 
+        public bool MetadataHasWarning => !_profileChecker.CheckMetadata(CurrentProfile);
         public string TitleTemplate => CurrentProfile == null ? "" : CurrentProfile.TitleTemplate;
         public string AuthorTemplate => CurrentProfile == null ? "" : CurrentProfile.AuthorTemplate;
         public string SubjectTemplate => CurrentProfile == null ? "" : CurrentProfile.SubjectTemplate;
@@ -316,10 +317,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
             RaisePropertyChanged(nameof(ResolutionCompressionLabel));
             RaisePropertyChanged(nameof(ResolutionCompression));
 
+            RaisePropertyChanged(nameof(MetadataHasWarning));
             RaisePropertyChanged(nameof(TitleTemplate));
             RaisePropertyChanged(nameof(AuthorTemplate));
             RaisePropertyChanged(nameof(SubjectTemplate));
             RaisePropertyChanged(nameof(KeywordTemplate));
+            
             RaisePropertyChanged(nameof(ExistingFileBehavior));
         }
     }

@@ -150,6 +150,8 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -162,6 +164,7 @@ using SystemWrapper;
 using SystemWrapper.Diagnostics;
 using SystemWrapper.IO;
 using Translatable;
+using Container = SimpleInjector.Container;
 using FtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpAccountView;
 using GeneralSettingsView = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.GeneralSettingsView;
 using HashUtil = pdfforge.PDFCreator.Utilities.HashUtil;
@@ -309,7 +312,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IJobInfoQueue, JobInfoQueue>(Lifestyle.Singleton);
             container.Register<IThreadManager, ThreadManager>(Lifestyle.Singleton);
             container.Register<IPipeServerManager, PipeServerManager>(Lifestyle.Singleton);
-            container.RegisterSingleton<ITranslationUpdater, TranslationUpdater>();
             container.RegisterSingleton<IPipeMessageHandler, NewPipeJobHandler>();
 
             container.RegisterSingleton<IVersionHelper>(() => new VersionHelper(GetType().Assembly));
@@ -321,8 +323,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ISpoolFolderAccess, SpoolFolderAccess>();
             container.Register<IShellExecuteHelper, ShellExecuteHelper>();
             container.RegisterSingleton<IPrinterPortReader, PrinterPortReader>();
+            container.RegisterSingleton<IPrinterMappingsHelper, PrinterMappingsHelper>();
             RegisterPrinterHelper(container);
-
+            
             container.Register<IFileAssoc, FileAssoc>();
             container.RegisterSingleton<IHashUtil, HashUtil>();
             container.RegisterSingleton<ISignaturePasswordCheck, SignaturePasswordCheckCached>();
@@ -446,6 +449,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ICustomScriptHandler, CustomScriptHandler>();
             container.RegisterSingleton<ICustomScriptLoader, CsScriptLoader>();
 
+            RegisterTranslationUpdater(container);
             RegisterSettingsLoader(container);
             RegisterCurrentSettingsProvider(container);
             RegisterFolderProvider(container);
@@ -505,6 +509,21 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             {
                 typeof(UsageStatisticsEventsHandler)
             });
+        }
+
+        private void RegisterTranslationUpdater(Container container)
+        {
+            var testDoubleTextLength = Debugger.IsAttached 
+                                       && Environment.GetEnvironmentVariable("PDFCREATOR_TESTDOUBLETEXTLENGTH", EnvironmentVariableTarget.User) == "true";
+
+            if (testDoubleTextLength)
+            {
+                container.RegisterSingleton<ITranslationUpdater, DoublingTranslationUpdater>();
+            }
+            else
+            {
+                container.RegisterSingleton<ITranslationUpdater, TranslationUpdater>();
+            }
         }
 
         protected virtual void RegisterBannerManagerWrapper(Container container, string productName)
@@ -927,6 +946,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(DrawSignatureInteraction), typeof(DrawSignatureView));
             ViewRegistry.RegisterInteraction(typeof(OverwriteOrAppendInteraction), typeof(OverwriteOrAppendOverlay));
             ViewRegistry.RegisterInteraction(typeof(LoadSpecificProfileInteraction), typeof(LoadSpecificProfileView));
+            ViewRegistry.RegisterInteraction(typeof(EditPrinterProfileUserInteraction), typeof(EditPrinterProfileUserUserControl));
 
             RegisterObsidianLicenseInteractions();
         }

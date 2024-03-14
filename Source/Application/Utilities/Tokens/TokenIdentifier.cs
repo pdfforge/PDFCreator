@@ -11,5 +11,13 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
 
             return Regex.IsMatch(parameter, @"<.+?>");
         }
+
+        public static bool ContainsUserToken(string parameter)
+        {
+            if (string.IsNullOrWhiteSpace(parameter))
+                return false;
+
+            return Regex.IsMatch(parameter, @"<User:.*>", RegexOptions.IgnoreCase);
+        }
     }
 }

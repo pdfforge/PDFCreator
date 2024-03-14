@@ -94,7 +94,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             catch (Exception ex)
             {
                 _logger.Error(ex, "Exception while running the script file \"" + scriptFile);
-                return new ActionResult(ErrorCode.Script_GenericError);
+                return new ActionResult(ErrorCode.RunProgram_GenericError);
             }
         }
 
@@ -170,27 +170,29 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
             if (string.IsNullOrWhiteSpace(profile.Scripting.ScriptFile))
-                return new ActionResult(ErrorCode.Script_NoScriptFileSpecified);
+                return new ActionResult(ErrorCode.RunProgram_NoScriptFileSpecified);
+
+            if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.Scripting.ScriptFile))
+                return new ActionResult(ErrorCode.RunProgram_ScriptFile_RequiresUserTokens);
 
             //Skip further check for tokens
-            if (!isJobLevelCheck
-                && TokenIdentifier.ContainsTokens(profile.Scripting.ScriptFile))
+            if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(profile.Scripting.ScriptFile))
                 return new ActionResult();
 
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.Scripting.ScriptFile);
             switch (pathUtilStatus)
             {
                 case PathUtilStatus.InvalidRootedPath:
-                    return new ActionResult(ErrorCode.Script_InvalidRootedPath);
+                    return new ActionResult(ErrorCode.RunProgram_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
-                    return new ActionResult(ErrorCode.Script_PathTooLong);
+                    return new ActionResult(ErrorCode.RunProgram_PathTooLong);
 
                 case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.Script_InvalidRootedPath);
+                    return new ActionResult(ErrorCode.RunProgram_InvalidRootedPath);
 
                 case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.Script_IllegalCharacters);
+                    return new ActionResult(ErrorCode.RunProgram_IllegalCharacters);
             }
 
             //Skip check for network path
@@ -200,7 +202,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             if (!_file.Exists(profile.Scripting.ScriptFile))
             {
                 _logger.Error("The script file \"" + profile.Scripting.ScriptFile + "\" does not exist.");
-                return new ActionResult(ErrorCode.Script_FileDoesNotExist);
+                return new ActionResult(ErrorCode.RunProgram_FileDoesNotExist);
             }
 
             return new ActionResult();

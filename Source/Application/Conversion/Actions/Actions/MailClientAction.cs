@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
 using System.Collections.Generic;
+using pdfforge.PDFCreator.Utilities.Tokens;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
@@ -135,7 +136,28 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             if (_emailClientFactory.CreateEmailClient() == null)
                 result.Add(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
 
-            if (checkLevel == CheckLevel.RunningJob)
+            if (checkLevel == CheckLevel.EditingProfile && !profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.Recipients))
+                    result.Add(ErrorCode.MailClient_Recipients_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.RecipientsCc))
+                    result.Add(ErrorCode.MailClient_RecipientsCc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.RecipientsBcc))
+                    result.Add(ErrorCode.MailClient_RecipientsBcc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.Subject))
+                    result.Add(ErrorCode.MailClient_Subject_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.Content))
+                    result.Add(ErrorCode.MailClient_Content_RequiresUserToken);
+                foreach (var path in profile.EmailClientSettings.AdditionalAttachments)
+                {
+                    if (TokenIdentifier.ContainsUserToken(path))
+                    {
+                        result.Add(ErrorCode.MailClient_AdditionalAttachment_RequiresUserToken);
+                        break;
+                    }
+                }
+            }
+            else if (checkLevel == CheckLevel.RunningJob)
             {
                 foreach (var attachmentFile in profile.EmailClientSettings.AdditionalAttachments)
                 {

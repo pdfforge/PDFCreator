@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands
             var title = Translation.AddNewProfile;
             var questionText = Translation.EnterProfileName;
 
-            var inputInteraction = new InputInteraction(title, questionText, ProfilenameIsValid);
+            var inputInteraction = new InputInteraction(title, questionText, ProfileNameIsValid);
 
             inputInteraction.InputText = Translation.NewProfile;
 

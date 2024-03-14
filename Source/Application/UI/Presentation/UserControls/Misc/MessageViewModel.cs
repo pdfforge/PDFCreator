@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Core.Services.Translation;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using pdfforge.Obsidian.Trigger;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 {

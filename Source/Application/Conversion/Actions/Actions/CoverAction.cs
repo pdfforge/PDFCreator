@@ -42,13 +42,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             ActionResult totalResult = new ActionResult();
             foreach (var file in profile.CoverPage.Files.DefaultIfEmpty())
             {
-                totalResult.Add(CheckFile(file, checkLevel));
+                var result = CheckFile(file, checkLevel, profile.UserTokens.Enabled);
+                foreach(var errorCode in result)
+                    if (!totalResult.Contains(errorCode))
+                        totalResult.Add(errorCode);
             }
 
             return totalResult;
         }
 
-        private ActionResult CheckFile(string file, CheckLevel checkLevel)
+        private ActionResult CheckFile(string file, CheckLevel checkLevel, bool userTokenEnabled)
         {
             var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
@@ -57,6 +60,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 _logger.Error("No cover file is specified.");
                 return new ActionResult(ErrorCode.Cover_NoFileSpecified);
             }
+
+            if (!isJobLevelCheck && !userTokenEnabled && TokenIdentifier.ContainsUserToken(file))
+                return new ActionResult(ErrorCode.Cover_RequiresUserTokens);
 
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(file))
                 return new ActionResult();

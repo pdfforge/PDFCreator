@@ -85,7 +85,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Translation
             }
         }
 
-        private void UpdateTranslation<T>(ITranslationFactory translationFactory, ITranslatableViewModel<T> viewModel) where T : ITranslatable, new()
+        protected virtual void UpdateTranslation<T>(ITranslationFactory translationFactory, ITranslatableViewModel<T> viewModel) where T : ITranslatable, new()
         {
             viewModel.Translation = translationFactory.UpdateOrCreateTranslation(viewModel.Translation);
         }

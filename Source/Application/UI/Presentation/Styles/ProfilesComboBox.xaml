@@ -6,7 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles"
              mc:Ignorable="d"
-             Name="This">
+             Name="This"
+             Loaded="ProfilesComboBox_OnLoaded"
+             Unloaded="ProfilesComboBox_OnUnloaded">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -32,7 +34,8 @@
         <ComboBox Background="{Binding Background, ElementName=This}"
                   ItemsSource="{Binding ProfilesView, ElementName=This}"
                   SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=SelectedProfile, Mode=TwoWay }"
-                  IsSynchronizedWithCurrentItem="True">
+                  IsSynchronizedWithCurrentItem="True"
+                  KeyboardNavigation.TabNavigation="Once">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="local:ConversionProfileWrapper">
                     <Grid HorizontalAlignment="Stretch" IsHitTestVisible="False">

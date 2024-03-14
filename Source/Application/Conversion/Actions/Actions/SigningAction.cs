@@ -42,6 +42,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             job.Profile.PdfSettings.Signature.SignReason = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignReason);
             job.Profile.PdfSettings.Signature.SignContact = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignContact);
             job.Profile.PdfSettings.Signature.SignLocation = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.SignLocation);
+
+            job.Profile.PdfSettings.Signature.BackgroundImageFile = job.TokenReplacer.ReplaceTokens(job.Profile.PdfSettings.Signature.BackgroundImageFile);
         }
 
         public override ActionResult Check(ConversionProfile profile, CurrentCheckSettings settings, CheckLevel checkLevel)
@@ -96,6 +98,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 }
             }
 
+            if (checkLevel == CheckLevel.EditingProfile && !profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(signature.SignReason))
+                    result.Add(ErrorCode.Signature_Reason_RequiresUserTokens);
+                if (TokenIdentifier.ContainsUserToken(signature.SignContact))
+                    result.Add(ErrorCode.Signature_Contact_RequiresUserTokens);
+                if (TokenIdentifier.ContainsUserToken(signature.SignLocation))
+                    result.Add(ErrorCode.Signature_Location_RequiresUserTokens);
+            }
+
             var isImageRequired = (profile.PdfSettings.Signature.DisplaySignature == DisplaySignature.ImageOnly)
                                   || (profile.PdfSettings.Signature.DisplaySignature == DisplaySignature.ImageAndText);
 
@@ -103,12 +115,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             {
                 if (string.IsNullOrEmpty(profile.PdfSettings.Signature.BackgroundImageFile))
                 {
-                    _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
-                    result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
+                    result.Add(ErrorCode.Signature_ImageFileNotSpecified);
                 }
-                else if (isJobLevelCheck || !TokenIdentifier.ContainsTokens(profile.PdfSettings.Signature.BackgroundImageFile))
+                else if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(signature.BackgroundImageFile))
                 {
-                    var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.PdfSettings.Signature.BackgroundImageFile);
+                    result.Add(ErrorCode.Signature_ImageFile_RequiresUserTokens);
+                }
+                else if (isJobLevelCheck || !TokenIdentifier.ContainsTokens(signature.BackgroundImageFile))
+                {
+                    var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(signature.BackgroundImageFile);
                     switch (pathUtilStatus)
                     {
                         case PathUtilStatus.InvalidRootedPath:
@@ -129,10 +144,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                         case PathUtilStatus.Success:
                             {
-                                if (isJobLevelCheck || !profile.PdfSettings.Signature.BackgroundImageFile.StartsWith(@"\\"))
-                                    if (!_file.Exists(profile.PdfSettings.Signature.BackgroundImageFile))
+                                if (isJobLevelCheck || !signature.BackgroundImageFile.StartsWith(@"\\"))
+                                    if (!_file.Exists(signature.BackgroundImageFile))
                                     {
-                                        _logger.Error("The signature image file \"" + profile.PdfSettings.Signature.BackgroundImageFile + "\" does not exist.");
+                                        _logger.Error("The signature image file \"" + signature.BackgroundImageFile + "\" does not exist.");
                                         result.Add(ErrorCode.Signature_ImageFileDoesNotExist);
                                     }
                             }
@@ -155,10 +170,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             if (string.IsNullOrEmpty(certificateFile))
             {
                 _logger.Error("Error in signing. Missing certification file.");
-                return (new ActionResult(ErrorCode.ProfileCheck_NoCertificationFile), false);
+                return (new ActionResult(ErrorCode.Signature_NoCertificationFile), false);
             }
 
             var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
+
+            if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(certificateFile))
+                return (new ActionResult(ErrorCode.Signature_CertificateFile_RequiresUserTokens), false);
 
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(certificateFile))
                 return (new ActionResult(), false);
@@ -167,16 +185,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             switch (pathUtilStatus)
             {
                 case PathUtilStatus.InvalidRootedPath:
-                    return (new ActionResult(ErrorCode.CertificateFile_InvalidRootedPath), false);
+                    return (new ActionResult(ErrorCode.Signature_CertificateFile_InvalidRootedPath), false);
 
                 case PathUtilStatus.PathTooLongEx:
-                    return (new ActionResult(ErrorCode.CertificateFile_TooLong), false);
+                    return (new ActionResult(ErrorCode.Signature_CertificateFile_TooLong), false);
 
                 case PathUtilStatus.NotSupportedEx:
-                    return (new ActionResult(ErrorCode.CertificateFile_InvalidRootedPath), false);
+                    return (new ActionResult(ErrorCode.Signature_CertificateFile_InvalidRootedPath), false);
 
                 case PathUtilStatus.ArgumentEx:
-                    return (new ActionResult(ErrorCode.CertificateFile_IllegalCharacters), false);
+                    return (new ActionResult(ErrorCode.Signature_CertificateFile_IllegalCharacters), false);
             }
 
             if (!isJobLevelCheck && certificateFile.StartsWith(@"\\"))
@@ -186,7 +204,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             {
                 _logger.Error("Error in signing. The certification file '" + certificateFile +
                               "' doesn't exist.");
-                return (new ActionResult(ErrorCode.CertificateFile_CertificateFileDoesNotExist), false);
+                return (new ActionResult(ErrorCode.Signature_CertificateFileDoesNotExist), false);
             }
 
             return (new ActionResult(), true);

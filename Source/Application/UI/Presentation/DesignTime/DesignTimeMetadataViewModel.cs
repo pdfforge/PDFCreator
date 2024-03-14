@@ -10,8 +10,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             base(new DesignTimeTranslationUpdater(),
                 new DesignTimeTokenViewModelFactory(),
                 new DesignTimeCurrentSettingsProvider(),
-                new DispatcherWrapper())
-        {
-        }
+                new DispatcherWrapper(),
+                new DesignTimeProfileChecker(),
+                new DesignTimeErrorCodeInterpreter())
+        { }
     }
 }

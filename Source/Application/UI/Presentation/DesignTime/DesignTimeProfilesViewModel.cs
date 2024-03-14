@@ -1,12 +1,13 @@
-﻿using pdfforge.PDFCreator.Conversion.Settings;
+﻿using System.Collections.ObjectModel;
+using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement;
-using pdfforge.PDFCreator.UI.Presentation.DesignTime;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor;
-using System.Collections.ObjectModel;
+using Prism.Events;
 
-namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
+namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimeProfilesViewModel : ProfilesViewModel
     {
@@ -19,7 +20,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
                 new Prism.Regions.RegionManager(),
                 new WorkflowEditorSubViewProvider("save", "metadata", "outputformat"),
                 new DesignTimeCommandBuilderProvider(),
-                new DesignTimeDispatcher())
+                new DesignTimeDispatcher(), 
+                new EventAggregator())
         {
         }
     }

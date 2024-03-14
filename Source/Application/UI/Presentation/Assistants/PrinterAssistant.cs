@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                     return null;
             }
 
-            if (_uacAssistant.AddPrinter(newPrinterName))
+            if (await _uacAssistant.AddPrinter(newPrinterName))
                 if (CheckInstalledPrinter(newPrinterName))
                     return newPrinterName;
 

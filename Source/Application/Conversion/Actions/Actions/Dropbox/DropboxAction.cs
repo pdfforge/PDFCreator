@@ -101,6 +101,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
             if (string.IsNullOrEmpty(accessToken))
                 return new ActionResult(ErrorCode.Dropbox_AccessTokenNotSpecified);
 
+            if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.DropboxSettings.SharedFolder))
+                return new ActionResult(ErrorCode.Dropbox_SharedFolder_RequiresUserTokens);
+
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(profile.DropboxSettings.SharedFolder))
                 return new ActionResult();
 

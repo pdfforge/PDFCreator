@@ -3,22 +3,25 @@ using NLog.Config;
 using NLog.Filters;
 using NLog.Targets;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace pdfforge.PDFCreator.Core.Services.Logging
 {
     public class EventLogLogger : ILogger
     {
-        public static string TraceLogLayout =
+        private const string TraceLogLayout =
             "[${level}] ${processid}-${threadid} (${threadname}) ${callsite}: ${message} ${exception:innerFormat=type,message:maxInnerExceptionLevel=1:format=tostring}";
 
-        public static string ShortLogLayout =
+        private const string ShortLogLayout =
             "[${level}] ${callsite}: ${message} ${exception:innerFormat=type,message:maxInnerExceptionLevel=1:format=tostring}";
+        private const string BaseRule = "BaseRule";
+        private const string LogCollectorRule = "LogCollectorRule";
 
         private readonly string _logSourceName;
         private readonly string _logName;
         private readonly PerThreadLogCollector _logCollector;
         private readonly List<LoggingRule> _loggingRules = new List<LoggingRule>();
-
+        
         private EventLogTarget BuildEventLog(string name, string layout)
         {
             var eventLogTarget = new EventLogTarget();
@@ -62,12 +65,25 @@ namespace pdfforge.PDFCreator.Core.Services.Logging
 
             foreach (var threadName in _logCollector.AcceptedThreadNames)
             {
-                var condition = "equals('${threadname}','" + threadName + "')";
-                baseRule.Filters.Add(new ConditionBasedFilter { Action = FilterResult.Ignore, Condition = condition });
-                logCollectorRule.Filters.Add(new ConditionBasedFilter { Action = FilterResult.Log, Condition = condition });
+                baseRule.Filters.Add(new WhenMethodFilter(_ => ShouldIgnoreLogEvent(BaseRule, threadName)));
+                logCollectorRule.Filters.Add(new WhenMethodFilter(_ => ShouldIgnoreLogEvent(LogCollectorRule, threadName)));
             }
 
             yield return logCollectorRule;
+        }
+
+        private static FilterResult ShouldIgnoreLogEvent(string ruleName, string acceptedThreadName)
+        {
+            var currentThreadName = Thread.CurrentThread.Name;
+
+            if (currentThreadName == acceptedThreadName)
+            {
+                if(string.Equals(ruleName, BaseRule))
+                    return FilterResult.Ignore;
+                if(string.Equals(ruleName, LogCollectorRule))
+                    return FilterResult.Log;
+            }
+            return FilterResult.Log;
         }
 
         private void ApplyLoggingRules(IEnumerable<LoggingRule> loggingRules)

@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using NaturalSort.Extension;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles;
 
 namespace pdfforge.PDFCreator.UI.Presentation
 {
@@ -104,6 +106,13 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public void StoreCurrentSettings()
         {
+            Settings.ConversionProfiles = Settings.ConversionProfiles
+                .OrderBy(p => p.Name, StringComparison.OrdinalIgnoreCase.WithNaturalSort())
+                .ToObservableCollection();
+            Settings.ApplicationSettings.PrinterMappings = Settings.ApplicationSettings.PrinterMappings
+                .OrderBy(p => p.PrinterName, StringComparison.OrdinalIgnoreCase.WithNaturalSort())
+                .ToObservableCollection();
+
             OverrideDefaultViewerList(Settings.DefaultViewers, _settingsProvider.Settings.DefaultViewers);
 
             _settingsProvider.UpdateSettings(Settings);

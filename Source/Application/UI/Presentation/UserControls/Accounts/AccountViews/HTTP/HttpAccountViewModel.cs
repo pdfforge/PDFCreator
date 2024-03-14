@@ -101,7 +101,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 
         protected override bool SaveCanExecute()
         {
-            var result = _httpAction.CheckAccount(_httpAccount, !AskForPasswordLater, CheckLevel.EditingProfile);
+            var userTokenEnabled = true; //Ignore the UserTokenRequiredCheck
+            var result = _httpAction.CheckAccount(_httpAccount, !AskForPasswordLater, true, CheckLevel.EditingProfile);
             return result.IsSuccess;
         }
 
