@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
         public string MissingDirectory { get; protected set; } = "Missing directory";
         public string ShowQuickActions { get; private set; } = "Show quick actions";
-        public string SkipPrintDialog { get; private set; } = "Skip print dialog";
+        public string SkipPrintDialog { get; private set; } = "Skip job dialog";
         public string SkipSendFailures { get; private set; } = "Skip send failures";
         public string ShowTrayNotification { get; private set; } = "Show tray notification";
 

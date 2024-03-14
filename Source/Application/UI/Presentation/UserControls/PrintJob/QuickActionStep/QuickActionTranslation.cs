@@ -19,5 +19,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string TotalFileSize { get; private set; } = "Total file size:";
 
         public string DontShowUntilNextUpdate { get; private set; } = "Don't show Quick Actions until the next update";
+        public string CopyToClipboard { get; private set; } = "Copy the full path to clipboard";
     }
 }

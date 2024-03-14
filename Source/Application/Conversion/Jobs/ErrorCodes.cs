@@ -19,14 +19,32 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("At least one of the attachment files for the mail client action is unavailable.")]
         MailClient_InvalidAttachmentFiles = 11102,
 
+        [Translation("User tokens in mail client recipient require the user token action to be enabled.")]
+        MailClient_Recipients_RequiresUserToken = 11103,
+
+        [Translation("User tokens in mail client recipient cc require the user token action to be enabled.")]
+        MailClient_RecipientsCc_RequiresUserToken = 11104,
+
+        [Translation("User tokens in mail client recipient bcc require the user token action to be enabled.")]
+        MailClient_RecipientsBcc_RequiresUserToken = 11105,
+
+        [Translation("User tokens in mail client subject require the user token action to be enabled.")]
+        MailClient_Subject_RequiresUserToken = 11106,
+
+        [Translation("User tokens in mail client content require the user token action to be enabled.")]
+        MailClient_Content_RequiresUserToken = 11107,
+
+        [Translation("User tokens in the additional mail client attachment files require the user token action to be enabled.")]
+        MailClient_AdditionalAttachment_RequiresUserToken = 11108,
+
         [Translation("Unknown error in e-mail client action.")]
         MailClient_GenericError = 11999,
 
         [Translation("No certificate file is specified.")]
-        ProfileCheck_NoCertificationFile = 12100,
+        Signature_NoCertificationFile = 12100,
 
         [Translation("The certificate file is unavailable.")]
-        CertificateFile_CertificateFileDoesNotExist = 12101,
+        Signature_CertificateFileDoesNotExist = 12101,
 
         [Translation("Automatic saving requires setting the certificate password.")]
         Signature_AutoSaveWithoutCertificatePassword = 12102,
@@ -82,6 +100,21 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The signature font is unavailable.")]
         Signature_FontNotFound = 12214,
 
+        [Translation("User tokens in signature reason path require the user token action to be enabled.")]
+        Signature_Reason_RequiresUserTokens = 12215,
+
+        [Translation("User tokens in signature contact path require the user token action to be enabled.")]
+        Signature_Contact_RequiresUserTokens = 12216,
+
+        [Translation("User tokens in signature location require the user token action to be enabled.")]
+        Signature_Location_RequiresUserTokens = 12217,
+
+        [Translation("No signature image file is specified.")]
+        Signature_ImageFileNotSpecified = 12218,
+
+        [Translation("User tokens in signature image file path require the user token action to be enabled.")]
+        Signature_ImageFile_RequiresUserTokens = 12219,
+
         [Translation("Error while signing the document.")]
         Signature_GenericError = 12999,
 
@@ -97,23 +130,26 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while printing the file.")]
         Printing_GenericError = 13999,
 
-        [Translation("No script file is specified.")]
-        Script_NoScriptFileSpecified = 14100,
+        [Translation("No program file is specified.")]
+        RunProgram_NoScriptFileSpecified = 14100,
 
-        [Translation("The script file is unavailable.")]
-        Script_FileDoesNotExist = 14101,
+        [Translation("The program file is unavailable.")]
+        RunProgram_FileDoesNotExist = 14101,
 
-        [Translation("The script file path contains illegal characters.")]
-        Script_IllegalCharacters = 14102,
+        [Translation("The program file path contains illegal characters.")]
+        RunProgram_IllegalCharacters = 14102,
 
-        [Translation("The script file path is an invalid absolute path.")]
-        Script_InvalidRootedPath = 14103,
+        [Translation("The program file path is an invalid absolute path.")]
+        RunProgram_InvalidRootedPath = 14103,
 
-        [Translation("The script file path is too long.")]
-        Script_PathTooLong = 14104,
+        [Translation("The program file path is too long.")]
+        RunProgram_PathTooLong = 14104,
+
+        [Translation("User tokens in program file path require the user token action to be enabled.")]
+        RunProgram_ScriptFile_RequiresUserTokens = 14105,
 
         [Translation("Error while running the script action.")]
-        Script_GenericError = 14999,
+        RunProgram_GenericError = 14999,
 
         [Translation("No SMTP e-mail address is specified.")]
         Smtp_NoEmailAddress = 15100,
@@ -157,6 +193,33 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Could not reach the SMTP server. Check the hostname and port configuration.")]
         Smtp_ConnectionError = 15113,
 
+        [Translation("User tokens in SMTP 'on behalf of' require the user token action to be enabled.")]
+        Smtp_OnBehalfOf_RequiresUserToken = 15114,
+
+        [Translation("User tokens in SMTP display name require the user token action to be enabled.")]
+        Smtp_DisplayName_RequiresUserToken = 15115,
+
+        [Translation("User tokens in SMTP recipient require the user token action to be enabled.")]
+        Smtp_ReplyTo_RequiresUserToken = 15116,
+
+        [Translation("User tokens in SMTP recipient require the user token action to be enabled.")]
+        Smtp_Recipients_RequiresUserToken = 15117,
+
+        [Translation("User tokens in SMTP recipient cc require the user token action to be enabled.")]
+        Smtp_RecipientsCc_RequiresUserToken = 15118,
+
+        [Translation("User tokens in SMTP recipient bcc require the user token action to be enabled.")]
+        Smtp_RecipientsBcc_RequiresUserToken = 15119,
+
+        [Translation("User tokens in SMTP subject require the user token action to be enabled.")]
+        Smtp_Subject_RequiresUserToken = 15120,
+
+        [Translation("User tokens in SMTP content require the user token action to be enabled.")]
+        Smtp_Content_RequiresUserToken = 15121,
+
+        [Translation("User tokens in the additional SMTP attachment files require the user token action to be enabled.")]
+        Smtp_AdditionalAttachment_RequiresUserToken = 15122,
+
         [Translation("Error while sending e-mail via SMTP.")]
         Smtp_GenericError = 15999,
 
@@ -174,6 +237,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Unable to add the background. The background PDF may not be password protected.")]
         Background_BadPasswordError = 17104,
+
+        [Translation("User tokens in background file path require the user token action to be enabled.")]
+        Background_RequiresUserTokens = 17105,
 
         [Translation("Error while adding background to the document.")]
         Background_GenericError = 17999,
@@ -226,11 +292,17 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("These characters are not allowed as Dropbox directory name: < > : ? * \" |")]
         Dropbox_InvalidDirectoryName = 19003,
 
+        [Translation("User tokens in Dropbox directory require the user token action to be enabled.")]
+        Dropbox_SharedFolder_RequiresUserTokens = 19004,
+
         [Translation("Automatic saving requires setting the file name template.")]
         AutoSave_NoFilenameTemplate = 21101,
 
         [Translation("The file name template contains illegal characters.")]
         FilenameTemplate_IllegalCharacters = 21102,
+
+        [Translation("User tokens in file name template require the user token action to be enabled.")]
+        FilenameTemplate_RequiresUserTokens = 21103,
 
         [Translation("No cover file is specified.")]
         Cover_NoFileSpecified = 22100,
@@ -252,6 +324,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Unable to add one of the cover files. The PDF format versions are not compatible.")]
         Cover_ConformanceError = 22106,
+
+        [Translation("User tokens in the cover file paths require the user token action to be enabled.")]
+        Cover_RequiresUserTokens = 22107,
 
         [Translation("Error while adding cover to the document.")]
         Cover_GenericError = 22999,
@@ -277,6 +352,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("One of the attachment file paths contains illegal characters.")]
         Attachment_IllegalCharacters = 23106,
 
+        [Translation("User tokens in the attachment file paths require the user token action to be enabled.")]
+        Attachment_RequiresUserTokens = 23107,
+
         [Translation("Error while adding attachment to the document.")]
         Attachment_GenericError = 23999,
 
@@ -285,6 +363,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("The stamp font is unavailable.")]
         Stamp_FontNotFound = 24101,
+
+        [Translation("User tokens in stamp text require the user token action to be enabled.")]
+        Stamp_RequiresUserTokens = 24102,
 
         [Translation("Error while stamping the document. Make sure that the selected font contains all glyphs used in the stamping text.")]
         Stamp_GenericError = 24999,
@@ -364,6 +445,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while uploading to HTTP server. 401 interaction is not authorized.")]
         HTTP_UnAuthorized_Request_Error = 32107,
 
+        [Translation("User tokens in HTTP account URL require the user token action to be enabled.")]
+        HTTP_AccountUrl_RequiresUserToken = 32108,
+
         [Translation("Error while uploading to the HTTP server.")]
         HTTP_Generic_Error = 32999,
 
@@ -383,6 +467,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The target directory contains illegal characters.")]
         TargetDirectory_IllegalCharacters = 34004,
 
+        [Translation("User tokens in target directory require the user token action to be enabled.")]
+        TargetDirectory_RequiresUserTokens = 34005,
+
         [Translation("The path to the background file has to be an absolute path, e.g. 'C:\\documents\\background.pdf'")]
         Background_InvalidRootedPath = 36001,
 
@@ -393,31 +480,37 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         Background_IllegalCharacters = 36003,
 
         [Translation("The certificate file path is invalid absolute path.")]
-        CertificateFile_InvalidRootedPath = 38001,
+        Signature_CertificateFile_InvalidRootedPath = 38001,
 
         [Translation("The certificate file path is too long.")]
-        CertificateFile_TooLong = 38002,
+        Signature_CertificateFile_TooLong = 38002,
 
         [Translation("The certificate file path contains illegal characters.")]
-        CertificateFile_IllegalCharacters = 38003,
+        Signature_CertificateFile_IllegalCharacters = 38003,
+
+        [Translation("User tokens in certificate file path require the user token action to be enabled.")]
+        Signature_CertificateFile_RequiresUserTokens = 38004,
 
         [Translation("The FTP directory is an invalid FTP path.")]
-        FtpDirectory_InvalidFtpPath = 40001,
+        Ftp_Directory_InvalidFtpPath = 40001,
 
         [Translation("The FTP key file path is an invalid path.")]
-        FtpKeyFilePath_InvalidKeyFilePath = 40002,
+        Ftp_KeyFilePath_InvalidKeyFilePath = 40002,
 
         [Translation("The path to the FTP key file has to be an absolute path.")]
-        FtpKeyFilePath_InvalidRootedPath = 40003,
+        Ftp_KeyFilePath_InvalidRootedPath = 40003,
 
         [Translation("The FTP key file path is too long.")]
-        FtpKeyFilePath_PathTooLong = 40004,
+        Ftp_KeyFilePath_PathTooLong = 40004,
 
         [Translation("The FTP key file path contains illegal characters.")]
-        FtpKeyFilePath_IllegalCharacters = 40005,
+        Ftp_KeyFilePath_IllegalCharacters = 40005,
 
         [Translation("The FTP key file is unavailable.")]
-        FtpKeyFilePath_FileDoesNotExist = 40006,
+        Ftp_KeyFilePath_FileDoesNotExist = 40006,
+
+        [Translation("User tokens in FTP directory require the user token action to be enabled.")]
+        Ftp_Directory_RequiresUserToken = 40007,
 
         [Translation("The custom viewer was not found.")]
         DefaultViewer_Not_Found = 41000,
@@ -524,6 +617,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The watermark file type is not supported.")]
         Watermark_UnsupportedType = 47009,
 
+        [Translation("User tokens in watermark file path require the user token action to be enabled.")]
+        Watermark_RequiresUserTokens = 47010,
+
         [Translation("Error while adding the watermark to the document.")]
         Watermark_GenericError = 47999,
 
@@ -535,6 +631,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("The page number font is unavailable.")]
         PageNumbers_FontNotFound = 48002,
+
+        [Translation("User tokens in page number format require the user token action to be enabled.")] 
+        PageNumbers_RequiresUserTokens = 48003,
 
         [Translation("Error while adding page numbers to the document.")]
         PageNumbers_GenericError = 48999,
@@ -554,7 +653,40 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Too big. Outlook only allows for 150mb of attachments.")]
         Outlook_Web_Attachment_Limit_Size = 49405,
 
+        [Translation("User tokens in Outlook Web Access recipient require the user token action to be enabled.")]
+        Outlook_Web_Recipients_RequiresUserToken = 49406,
+
+        [Translation("User tokens in Outlook Web Access recipient cc require the user token action to be enabled.")]
+        Outlook_Web_RecipientsCc_RequiresUserToken = 49407,
+
+        [Translation("User tokens in Outlook Web Access recipient bcc require the user token action to be enabled.")]
+        Outlook_Web_RecipientsBcc_RequiresUserToken = 49408,
+
+        [Translation("User tokens in Outlook Web Access subject require the user token action to be enabled.")]
+        Outlook_Web_Subject_RequiresUserToken = 49410,
+
+        [Translation("User tokens in Outlook Web Access content require the user token action to be enabled.")]
+        Outlook_Web_Content_RequiresUserToken = 49411,
+
+        [Translation("User tokens in the additional Outlook Web Access attachment files require the user token action to be enabled.")]
+        Outlook_Web_AdditionalAttachment_RequiresUserToken = 49412,
+
+        [Translation("At least one of the additional Outlook Web Access attachment files is unavailable.")]
+        Outlook_Web_InvalidAttachmentFiles = 49413,
+
         [Translation("General error during Outlook Web Access action.")]
         Outlook_Web_General_Error = 49999,
+
+        [Translation("User tokens in metadata title require the user token action to be enabled.")]
+        Metadata_Title_RequiresUserToken = 50000,
+
+        [Translation("User tokens in metadata author require the user token action to be enabled.")]
+        Metadata_Author_RequiresUserToken = 50001,
+
+        [Translation("User tokens in metadata subject require the user token action to be enabled.")]
+        Metadata_Subject_RequiresUserToken = 50002,
+
+        [Translation("User tokens in metadata keywords require the user token action to be enabled.")]
+        Metadata_Keywords_RequiresUserToken = 50003,
     }
 }

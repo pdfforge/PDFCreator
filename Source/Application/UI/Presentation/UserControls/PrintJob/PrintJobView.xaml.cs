@@ -7,6 +7,7 @@ using Prism.Events;
 using Prism.Regions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
@@ -60,6 +61,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             }
 
             ViewModel.HasBanner = bannerControl != null;
+        }
+
+        private void PrintJobView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            AccessKeyHelper.SetAccessKeys(sender);
         }
     }
 }

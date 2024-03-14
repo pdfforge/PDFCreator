@@ -44,6 +44,8 @@
                 <ResourceDictionary Source="Styles/Icons/pdfforgeLogos.xaml" />
                 <ResourceDictionary Source="Styles/Icons/PDFArchitectIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
         </ResourceDictionary>
     </metro:MetroWindow.Resources>
 
@@ -62,7 +64,9 @@
             <trigger:OverlayAction />
         </trigger:InteractionRequestTrigger>
     </b:Interaction.Triggers>
-    <Grid AllowDrop="True" Background="Transparent">
+    <Grid>
+        <Grid AllowDrop="True" Background="Transparent"  
+              IsEnabled="{Binding MainShellLocked, Converter={StaticResource BoolNegationConverter}}">
         <!-- The background has to be set to make drag&drop work anywhere in the grid -->
         <Grid.Resources>
             <converter:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
@@ -314,5 +318,9 @@
                 <ContentControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.BusinessHintStatusBarRegion}" />
             </StatusBarItem>
         </StatusBar>
+        </Grid>
+        <controls:ProgressRing 
+            Visibility="{Binding MainShellLocked, Converter={StaticResource CollapsedIfFalseConverter}}" 
+            Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </metro:MetroWindow>

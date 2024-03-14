@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.IO;
 using System.Net;
@@ -17,7 +18,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
     public interface IHttpAction
     {
-        ActionResult CheckAccount(HttpAccount httpAccount, bool autoSave, CheckLevel checkLevel);
+        ActionResult CheckAccount(HttpAccount httpAccount, bool autoSave, bool userTokesEnabled, CheckLevel checkLevel);
     }
 
     public class HttpAction : RetypePasswordActionBase<HttpSettings>, IPostConversionAction, IHttpAction
@@ -51,10 +52,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             var httpAccount = settings.Accounts.GetHttpAccount(profile);
 
-            return CheckAccount(httpAccount, profile.AutoSave.Enabled, checkLevel);
+            return CheckAccount(httpAccount, profile.AutoSave.Enabled, profile.UserTokens.Enabled, checkLevel);
         }
 
-        public ActionResult CheckAccount(HttpAccount httpAccount, bool isAutoSave, CheckLevel checkLevel)
+        public ActionResult CheckAccount(HttpAccount httpAccount, bool isAutoSave, bool userTokesEnabled, CheckLevel checkLevel)
         {
             var actionResult = new ActionResult();
 
@@ -71,7 +72,13 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             {
                 actionResult.Add(ErrorCode.HTTP_MissingOrInvalidUrl);
             }
-            else if (startsWithToken)
+            
+            if (checkLevel == CheckLevel.EditingProfile && !userTokesEnabled && TokenIdentifier.ContainsUserToken(httpAccount.Url))
+            {
+                actionResult.Add(ErrorCode.HTTP_AccountUrl_RequiresUserToken);
+            }
+            
+            if (startsWithToken)
             {
             }
             else if (containsToken)

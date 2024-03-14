@@ -48,6 +48,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
+            if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.BackgroundPage.File))
+                return new ActionResult(ErrorCode.Background_RequiresUserTokens);
+
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(profile.BackgroundPage.File))
                 return new ActionResult();
 

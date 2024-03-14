@@ -77,16 +77,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
                 switch (pathUtilStatus)
                 {
                     case PathUtilStatus.InvalidRootedPath:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
+                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_InvalidRootedPath);
 
                     case PathUtilStatus.PathTooLongEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_PathTooLong);
+                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_PathTooLong);
 
                     case PathUtilStatus.NotSupportedEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_InvalidRootedPath);
+                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_InvalidRootedPath);
 
                     case PathUtilStatus.ArgumentEx:
-                        return new ActionResult(ErrorCode.FtpKeyFilePath_IllegalCharacters);
+                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_IllegalCharacters);
                 }
 
                 if (ignoreMissingPassword && ftpAccount.PrivateKeyFile.StartsWith(@"\\"))
@@ -95,7 +95,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
                 if (!_file.Exists(ftpAccount.PrivateKeyFile))
                 {
                     _logger.Error("The private key file \"" + ftpAccount.PrivateKeyFile + "\" does not exist.");
-                    return new ActionResult(ErrorCode.FtpKeyFilePath_FileDoesNotExist);
+                    return new ActionResult(ErrorCode.Ftp_KeyFilePath_FileDoesNotExist);
                 }
 
                 if (string.IsNullOrEmpty(ftpAccount.Password) && KeyFilePasswordIsRequired(ftpAccount))

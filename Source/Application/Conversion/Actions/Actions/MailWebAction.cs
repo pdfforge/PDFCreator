@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using SystemInterface.IO;
+using pdfforge.PDFCreator.Utilities.Tokens;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -271,9 +272,30 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             if (settings.Accounts.MicrosoftAccounts.Count == 0)
             {
-                return new ActionResult(ErrorCode.Outlook_Web_Account_Missing);
+                result.Add(ErrorCode.Outlook_Web_Account_Missing);
             }
 
+            if (checkLevel == CheckLevel.EditingProfile && !profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(profile.EmailWebSettings.Recipients))
+                    result.Add(ErrorCode.Outlook_Web_Recipients_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailWebSettings.RecipientsCc))
+                    result.Add(ErrorCode.Outlook_Web_RecipientsCc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailWebSettings.RecipientsBcc))
+                    result.Add(ErrorCode.Outlook_Web_RecipientsBcc_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailWebSettings.Subject))
+                    result.Add(ErrorCode.Outlook_Web_Subject_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.EmailWebSettings.Content))
+                    result.Add(ErrorCode.Outlook_Web_Content_RequiresUserToken);
+                foreach (var path in profile.EmailWebSettings.AdditionalAttachments)
+                {
+                    if (TokenIdentifier.ContainsUserToken(path))
+                    {
+                        result.Add(ErrorCode.Outlook_Web_AdditionalAttachment_RequiresUserToken);
+                        break;
+                    }
+                }
+            }
             if (checkLevel == CheckLevel.RunningJob)
             {
                 foreach (var attachmentFile in profile.EmailWebSettings.AdditionalAttachments)
@@ -281,7 +303,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     if (!_file.Exists(attachmentFile))
                     {
                         Logger.Error("Can't find web mail attachment " + attachmentFile + ".");
-                        result.Add(ErrorCode.MailClient_InvalidAttachmentFiles);
+                        result.Add(ErrorCode.Outlook_Web_InvalidAttachmentFiles);
                         break;
                     }
                 }

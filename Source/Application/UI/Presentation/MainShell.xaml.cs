@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
             e.Cancel = true;
             _skipSettingsCheck = false;
-            var result = await ViewModel.CloseCommand.ExecuteAsync(null);
+            var result = await ViewModel.CloseCommand.ExecuteAsync(ViewModel.SettingsLoading);
 
             if (result == ResponseStatus.Success)
             {

@@ -166,7 +166,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
             if (interaction.Response == MessageResponse.Yes)
             {
-                _uacAssistant.AddPrinters(missingPrinters.ToArray());
+                await _uacAssistant.AddPrinters(missingPrinters.ToArray());
             }
 
             //Remove orphaned printers cause user declined or if printer could not be installed  

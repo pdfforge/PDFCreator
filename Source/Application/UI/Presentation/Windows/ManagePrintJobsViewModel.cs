@@ -191,6 +191,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         private void AddJobInfo(JobInfo jobInfo)
         {
+            if (_jobInfos.Contains(jobInfo))
+                return;
+
             _synchronizedJobs.SuspendUpdates();
 
             var nextJob = _jobInfos.FirstOrDefault(j => j.PrintDateTime > jobInfo.PrintDateTime);

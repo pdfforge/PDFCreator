@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Utilities.Tokens;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -49,6 +50,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     _logger.Error("The page number format does not contain the <PageNumber> format.");
                     actionResult.Add(ErrorCode.PageNumbers_NoPageNumberInFormat);
                 }
+
+                if (checkLevel == CheckLevel.EditingProfile) 
+                    if(!profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.PageNumbers.Format))
+                        actionResult.Add(ErrorCode.PageNumbers_RequiresUserTokens);
 
                 if (checkLevel == CheckLevel.RunningJob)
                 {

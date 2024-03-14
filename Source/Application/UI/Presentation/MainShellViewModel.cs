@@ -60,6 +60,9 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         public ICommand DismissTrialExpireInfoCommand { get; }
 
+        public bool MainShellLocked { get; set; } = false;
+        public bool SettingsLoading { get; set; } = false;
+
         public bool HidePdfArchitectInfo => GpoSettings.HidePdfArchitectInfo || _pdfEditorHelper.UseSodaPdf;
 
         public bool ShowUpdate
@@ -112,6 +115,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
                 .Build();
 
             CloseCommand = commandLocator.CreateMacroCommand()
+                .AddCommand<SettingsLoadingNotifyUserCommand>()
                 .AddCommand<EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand>()
                 .AddCommand<ISaveChangedSettingsCommand>()
                 .AddCommand<IDeleteTempFolderCommand>()
@@ -153,7 +157,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _dispatcher.BeginInvoke(
                 () =>
                 {
-                    CloseCommand.Execute(null);
+                    CloseCommand.Execute(SettingsLoading);
                 });
         }
 
@@ -267,8 +271,11 @@ namespace pdfforge.PDFCreator.UI.Presentation
 
         private SubscriptionToken _showUpdateInteractionEventToken;
         private SubscriptionToken _setShowUpdateEventToken;
-        private Action _closeViewAction;
         private SubscriptionToken _showTrialRemainingDaysEventToken;
+        private SubscriptionToken _settingsLoadingSubscriptionToken;
+
+        private Action _closeViewAction;
+        
 
         public async Task MountViewAsync()
         {
@@ -304,6 +311,14 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _campaignHelper.PropertyChanged += CampaignHelperOnPropertyChanged;
             _eventAggregator.GetEvent<TrialStatusChangedEvent>().Subscribe(
                 () => RaisePropertyChanged(nameof(TrialRemainingDaysInfoText)));
+
+            _settingsLoadingSubscriptionToken = _eventAggregator.GetEvent<SettingsLoadingEvent>().Subscribe(
+                settingsLoading =>
+                {
+                    SettingsLoading = settingsLoading;
+                    MainShellLocked = settingsLoading;
+                    RaisePropertyChanged(nameof(MainShellLocked));
+                });
         }
 
         private void CampaignHelperOnPropertyChanged(object o, PropertyChangedEventArgs e)
@@ -324,6 +339,8 @@ namespace pdfforge.PDFCreator.UI.Presentation
             _campaignHelper.PropertyChanged -= CampaignHelperOnPropertyChanged;
             _eventAggregator.GetEvent<TrialStatusChangedEvent>().Unsubscribe(
                 () => RaisePropertyChanged(nameof(TrialRemainingDaysInfoText)));
+
+            _settingsLoadingSubscriptionToken.Dispose();
         }
 
         #region nothing to see here, move along!

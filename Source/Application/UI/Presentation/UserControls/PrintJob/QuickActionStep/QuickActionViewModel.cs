@@ -16,10 +16,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Identity.Client;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using NLog;
 using Logger = NLog.Logger;
+using pdfforge.PDFCreator.Core.Controller;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep
 {
@@ -46,8 +46,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public ICommand OpenExplorerCommand { get; }
         public ICommand QuickActionOpenWithDefaultCommand { get; }
         public IAsyncCommand UpdateSendContextMenuButtonItemsCommand { get; }
+        public ICommand SendEmailCommand { get; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        private string _fullPath;
+        public ICommand CopyToClipboardCommand { get; set; }
         public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider,
             IAttachToOutlookItemAssistant attachToOutlookItemAssistant) : base(translationUpdater)
@@ -62,7 +64,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             OpenWithPdfArchitectCommand = _commandLocator.GetCommand<QuickActionOpenWithPdfArchitectCommand>();
             QuickActionOpenWithDefaultCommand = _commandLocator.GetCommand<QuickActionOpenWithDefaultCommand>();
             OpenExplorerCommand = _commandLocator.GetCommand<QuickActionOpenExplorerLocationCommand>();
+            SendEmailCommand = _commandLocator.GetCommand<QuickActionOpenMailClientCommand>();
             UpdateSendContextMenuButtonItemsCommand = new AsyncCommand(UpdateSendContextMenuButtonItemsExecute);
+            CopyToClipboardCommand = _commandLocator.GetCommand<CopyToClipboardCommand>();
             FinishCommand = new DelegateCommand(OnFinish);
         }
 
@@ -82,6 +86,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             FileName = System.IO.Path.GetFileName(firstFile);
             FileDirectory = System.IO.Path.GetDirectoryName(firstFile);
             FileSize = _readableFileSizeHelper.GetFileSizeString(firstFile);
+            FullPath = System.IO.Path.GetFullPath(firstFile);
             RaisePropertyChanged(nameof(IsActive));
 
             IsSaveFileTemporary = job.Profile.SaveFileTemporary;
@@ -145,6 +150,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
                 RaisePropertyChanged(nameof(FileName));
             }
         }
+        public string FullPath
+        {
+            get { return _fullPath; }
+            set
+            {
+                _fullPath = value;
+                RaisePropertyChanged(nameof(FullPath));
+            }
+        }
 
         private int _numberOfFixedSendMenuItems = 2;
 
@@ -166,12 +180,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
                 CommandParameter = Job
             };
             SendMenuItems.Add(sendEmailMenuItem);
-            
+             
             RaisePropertyChanged(nameof(SendMenuItems));
             return SendMenuItems.Count;
         }
 
-
+       
         private async Task UpdateSendContextMenuButtonItemsExecute(object obj)
         {
             for (int i = SendMenuItems.Count; i > _numberOfFixedSendMenuItems; i--)

@@ -271,16 +271,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             return false;
         }
 
-        private bool ContainsUserToken(string textWithToken)
-        {
-            if (Contains_IgnoreCase(textWithToken, "<User:"))
-                return true;
-            return false;
-        }
-
         public TokenWarningCheckResult TokenWarningCheck(string textWithTokens, ConversionProfile profile)
         {
-            if (!profile.UserTokens.Enabled && ContainsUserToken(textWithTokens))
+            if (!profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(textWithTokens))
                 return TokenWarningCheckResult.RequiresEnablingUserTokens;
 
             if (ContainsInsecureTokens(textWithTokens))

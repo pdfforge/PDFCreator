@@ -77,7 +77,7 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         public ITranslationSource BuildTranslationSource(Language language)
         {
             var catalogBuilder = new GettextCatalogBuilder(LanguageLoader.TranslationFolder);
-            var catalog = (Catalog)catalogBuilder.GetCatalog("messages", language.Iso2);
+            var catalog = (Catalog)catalogBuilder.GetCatalog("messages", language.Iso2, language.CultureInfo);
             return new GettextTranslationSource(catalog);
         }
 

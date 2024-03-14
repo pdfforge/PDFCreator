@@ -32,7 +32,9 @@
 
                       Icon="../Resources/pdfcreator_icon.png"
 
-                      BorderThickness="1">
+                      BorderThickness="1"
+
+                      Loaded="ManagePrintJobsWindow_OnLoaded">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -137,7 +139,8 @@
                         <Button DockPanel.Dock="Right"
                                 Margin="10 0 0 0"
                                 Style="{StaticResource SquaredIconButton}"
-                                Cursor="{x:Static Cursors.ScrollNS}">
+                                Cursor="{x:Static Cursors.ScrollNS}"
+                                IsTabStop="False">
                             <iconPacks:PackIconMaterialDesign Kind="DragHandle" />
                         </Button>
 
@@ -230,16 +233,16 @@
                 <ScrollViewer DockPanel.Dock="Top" Margin="0 10 0 0" 
                               HorizontalScrollBarVisibility="Auto" 
                               VerticalScrollBarVisibility="Auto"
-                              CanContentScroll="False">
+                              CanContentScroll="False"
+                              IsTabStop="False" >
                     <ItemsControl ItemsSource="{Binding SelectedPrintJob.SourceFiles}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="jobInfo:SourceFileInfo">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding DocumentTitle}"
                                                 Style="{StaticResource SmallTextStyle}" />
-
                                     <TextBlock Margin=" 10 0 0 0"
-                                                Style="{StaticResource SmallTextStyle}">
+                                               Style="{StaticResource SmallTextStyle}">
                                         <Run Text="{Binding ElementName=ThisWindow, Path=DataContext.Translation.PrintJobPages, Mode=OneWay}"></Run>
                                         <Run Text="{Binding TotalPages, Mode=OneWay}" />
                                     </TextBlock>
@@ -265,7 +268,8 @@
             <Button Content="{Binding Translation.MergeAllButtonContent}"
                     Margin="5 0"
                     Command="{Binding MergeAllJobsCommand}"
-                    CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}" />
+                    CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}"
+                    IsEnabled="True"/>
             <contextMenuButton:ContextMenuButton
                 Margin="5 0"
                 Style="{StaticResource DefaultButton}"

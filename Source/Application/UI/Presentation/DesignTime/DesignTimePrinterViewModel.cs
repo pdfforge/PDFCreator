@@ -13,27 +13,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     public class DesignTimePrinterViewModel : PrinterViewModel
     {
-        private static readonly ICurrentSettingsProvider CurrentSettings = new DesignTimeCurrentSettingsProvider();
-
         public DesignTimePrinterViewModel() : base(
-            new DesignTimePrinterProvider(),
             new DefaultSettingsProvider(),
             new DesignTimeCurrentSettings<ObservableCollection<PrinterMapping>>(),
             new DesignTimeCurrentSettings<ObservableCollection<ConversionProfile>>(),
             null,
             new DesignTimeTranslationUpdater(),
             new DesignTimePrinterHelper(),
-            new GpoSettingsDefaults()
+            new GpoSettingsDefaults(),
+            new DesignTimeInteractionRequest()
             )
 
         {
-            var profiles = ProfilesProvider.Settings.Select(x => new ConversionProfileWrapper(x));
-            if (PrinterMappings == null)
-                _printerMappings = new Presentation.Helper.SynchronizedCollection<PrinterMappingWrapper>(new List<PrinterMappingWrapper>());
+            PrinterMappings = new Presentation.Helper.SynchronizedCollection<PrinterMappingWrapper>(new List<PrinterMappingWrapper>()).ObservableCollection;
+            var profiles = new List<ConversionProfileWrapper>() { new ConversionProfileWrapper(new ConversionProfile())};
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator", ""), profiles));
             PrinterMappings.Add(new PrinterMappingWrapper(new PrinterMapping("PDFCreator2", ""), profiles));
-            PdfCreatorPrinters = new List<string> { string.Empty };
-            PrimaryPrinter = PdfCreatorPrinters.First();
+            PrimaryPrinter = PrinterMappings.First().PrinterName;
         }
     }
 }

@@ -2,7 +2,7 @@ using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Printer
 {
-    public class PrinterTabTranslation : ITranslatable
+    public class PrinterViewTranslation : ITranslatable
     {
         public string AddPrinterButtonText { get; private set; } = "Add printer";
         public string DeletePrinterButtonText { get; private set; } = "Delete printer";

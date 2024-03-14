@@ -19,6 +19,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
         ActionResult CheckFileName(ConversionProfile profile);
 
         ActionResult CheckTargetDirectory(ConversionProfile profile);
+        
+        ActionResult CheckMetadata(ConversionProfile profile);
 
         ActionResult CheckProfile(ConversionProfile profile, CurrentCheckSettings settings);
 
@@ -45,6 +47,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             actionResult.AddRange(CheckTargetDirectory(profile, checkLevel));
             actionResult.AddRange(CheckFileNameTemplate(profile, checkLevel));
+            actionResult.AddRange(CheckMetadata(profile, checkLevel));
 
             return actionResult;
         }
@@ -57,6 +60,30 @@ namespace pdfforge.PDFCreator.Core.Workflow
         public ActionResult CheckTargetDirectory(ConversionProfile profile)
         {
             return CheckTargetDirectory(profile, CheckLevel.EditingProfile);
+        }
+
+        public ActionResult CheckMetadata(ConversionProfile profile)
+        {
+            return CheckMetadata(profile, CheckLevel.EditingProfile);
+        }
+
+        private ActionResult CheckMetadata(ConversionProfile profile, CheckLevel checkLevel)
+        {
+            var result = new ActionResult();
+
+            if (checkLevel == CheckLevel.EditingProfile && !profile.UserTokens.Enabled)
+            {
+                if(TokenIdentifier.ContainsUserToken(profile.TitleTemplate))
+                    result.Add(ErrorCode.Metadata_Title_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.AuthorTemplate))
+                    result.Add(ErrorCode.Metadata_Author_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.SubjectTemplate))
+                    result.Add(ErrorCode.Metadata_Subject_RequiresUserToken);
+                if (TokenIdentifier.ContainsUserToken(profile.KeywordTemplate))
+                    result.Add(ErrorCode.Metadata_Keywords_RequiresUserToken);
+            }
+
+            return result;
         }
 
         public bool DoesProfileContainRestrictedActions(ConversionProfile profile)
@@ -148,6 +175,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
             if (profile.AutoSave.Enabled && string.IsNullOrWhiteSpace(profile.TargetDirectory))
                 return new ActionResult(ErrorCode.TargetDirectory_NotSetForAutoSave);
 
+            if (!profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(profile.TargetDirectory))
+                    return new ActionResult(ErrorCode.TargetDirectory_RequiresUserTokens);
+            }
+
             if (TokenIdentifier.ContainsTokens(profile.TargetDirectory))
                 return new ActionResult();
 
@@ -183,6 +216,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
                     _logger.Error("Automatic saving without filename template.");
                     return new ActionResult(ErrorCode.AutoSave_NoFilenameTemplate);
                 }
+            }
+
+            if (!profile.UserTokens.Enabled)
+            {
+                if (TokenIdentifier.ContainsUserToken(profile.FileNameTemplate)) 
+                    return new ActionResult(ErrorCode.FilenameTemplate_RequiresUserTokens);
             }
 
             if (TokenIdentifier.ContainsTokens(profile.FileNameTemplate))

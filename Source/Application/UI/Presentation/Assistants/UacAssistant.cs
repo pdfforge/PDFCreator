@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
@@ -21,9 +22,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 
         bool RemoveExplorerIntegration();
 
-        bool AddPrinter(string printerName, bool singlePort = true);
+        Task<bool> AddPrinter(string printerName, bool singlePort = true);
 
-        bool AddPrinters(string[] printerNames, bool singlePort = true);
+        Task<bool> AddPrinters(string[] printerNames, bool singlePort = true);
 
         bool RenamePrinter(string oldPrinterName, string newPrinterName);
 
@@ -63,12 +64,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return CallSetupHelper("/FileExtensions=Remove");
         }
 
-        public bool AddPrinter(string printerName, bool singlePort = true)
+        public async Task<bool> AddPrinter(string printerName, bool singlePort = true)
         {
-            return AddPrinters(new[] { printerName }, singlePort);
+            return await AddPrinters(new[] { printerName }, singlePort);
         }
 
-        public bool AddPrinters(string[] printerNames, bool singlePort = true)
+        public async Task<bool> AddPrinters(string[] printerNames, bool singlePort = true)
         {
             const string command = "addPrinter";
             var escapedPrinterList = printerNames
@@ -79,7 +80,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             if (singlePort)
                 args += " /SinglePort";
 
-            return CallPrinterHelper(args);
+            return await CallPrinterHelperAsync(args);
         }
 
         public bool RenamePrinter(string oldPrinterName, string newPrinterName)
@@ -153,6 +154,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
             return result == ShellExecuteResult.Success;
         }
 
+        private async Task<bool> CallProgramAsAdminAsync(string path, string arguments)
+        {
+            var result = await _shellExecuteHelper.RunAsAdminAsync(path, arguments);
+
+            if (result == ShellExecuteResult.RunAsWasDenied)
+            {
+                var message = _translation.SufficientPermissions;
+                var caption = _translation.Error;
+
+                ShowMessage(message, caption, MessageOptions.Ok, MessageIcon.Error);
+
+                return false;
+            }
+
+            return result == ShellExecuteResult.Success;
+        }
+
         /// <summary>
         ///     Call the PrinterHelper.exe to add, rename or delete printers
         /// </summary>
@@ -165,6 +183,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants
                 return false;
 
             return CallProgramAsAdmin(applicationPath, arguments);
+        }
+
+        private async Task<bool> CallPrinterHelperAsync(string arguments)
+        {
+            var applicationPath = GetApplicationPath("PrinterHelper.exe");
+            if (applicationPath == null)
+                return false;
+
+            return await CallProgramAsAdminAsync(applicationPath, arguments);
         }
 
         private string GetApplicationPath(string applicationName)

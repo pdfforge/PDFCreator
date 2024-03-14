@@ -17,6 +17,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     {
         private readonly IPrinterHelper _printerHelper;
         private readonly EditionHelper _editionHelper;
+        private readonly IPrinterMappingsHelper _printerMappingsHelper;
         private readonly ITranslationHelper _translationHelper;
 
         public PDFCreatorSettingsLoader(ISettingsMover settingsMover,
@@ -30,11 +31,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             EditionHelper editionHelper,
             ISharedSettingsLoader sharedSettingsLoader,
             IBaseSettingsBuilder baseSettingsBuilder,
-            IGpoSettings gpoSettings)
+            IGpoSettings gpoSettings,
+            IPrinterMappingsHelper printerMappingsHelper)
             : base(settingsMover, installationPathProvider, defaultSettingsBuilder, migrationStorageFactory, actionOrderHelper, settingsBackup, sharedSettingsLoader, baseSettingsBuilder, gpoSettings)
         {
             _printerHelper = printerHelper;
             _editionHelper = editionHelper;
+            _printerMappingsHelper = printerMappingsHelper;
             _translationHelper = translationHelper;
         }
 
@@ -51,7 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
         {
             _translationHelper.TranslateProfileList(settings.ConversionProfiles);
             CheckLanguage(settings);
-            CheckPrinterMappings(settings);
+            _printerMappingsHelper.CheckPrinterMappings(settings);
             CheckUpdateInterval(settings);
         }
 
@@ -77,37 +80,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
                     language = _translationHelper.FindBestLanguage(setupLanguage);
 
                 settings.ApplicationSettings.Language = language.Iso2;
-            }
-        }
-
-        private void CheckPrinterMappings(PdfCreatorSettings settings)
-        {
-            var printers = _printerHelper.GetPDFCreatorPrinters();
-
-            // if there are no printers, something is broken and we need to fix that first
-            if (!printers.Any())
-                return;
-
-            //Assign DefaultProfile for all installed printers without mapped profile.
-            foreach (var printer in printers)
-            {
-                if (settings.ApplicationSettings.PrinterMappings.All(o => o.PrinterName != printer))
-                    settings.ApplicationSettings.PrinterMappings.Add(new PrinterMapping(printer,
-                        ProfileGuids.DEFAULT_PROFILE_GUID));
-            }
-            //Remove uninstalled printers from mapping
-            foreach (var mapping in settings.ApplicationSettings.PrinterMappings.ToArray())
-            {
-                if (printers.All(o => o != mapping.PrinterName))
-                    settings.ApplicationSettings.PrinterMappings.Remove(mapping);
-            }
-            //Check primary printer
-            if (
-                settings.ApplicationSettings.PrinterMappings.All(
-                    o => o.PrinterName != settings.CreatorAppSettings.PrimaryPrinter))
-            {
-                settings.CreatorAppSettings.PrimaryPrinter =
-                    _printerHelper.GetApplicablePDFCreatorPrinter("PDFCreator", "PDFCreator") ?? "";
             }
         }
     }

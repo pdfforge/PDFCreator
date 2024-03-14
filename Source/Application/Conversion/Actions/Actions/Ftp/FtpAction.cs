@@ -54,11 +54,17 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
             var checkAccountResult = _ftpConnectionTester.CheckAccount(ftpAccount, ignoreMissingPassword);
             actionResult.Add(checkAccountResult);
 
+            if (!isRunningJob && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.Ftp.Directory))
+            {
+                actionResult.Add(ErrorCode.Ftp_Directory_RequiresUserToken);
+                return actionResult;
+            }
+
             if (!isRunningJob && TokenIdentifier.ContainsTokens(profile.Ftp.Directory))
                 return actionResult;
-
+            
             if (!ValidName.IsValidFtpPath(profile.Ftp.Directory))
-                actionResult.Add(ErrorCode.FtpDirectory_InvalidFtpPath);
+                actionResult.Add(ErrorCode.Ftp_Directory_InvalidFtpPath);
 
             return actionResult;
         }

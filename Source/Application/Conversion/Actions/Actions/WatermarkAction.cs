@@ -48,6 +48,9 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             var isJobLevelCheck = checkLevel == CheckLevel.RunningJob;
 
+            if (!isJobLevelCheck && !profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.Watermark.File))
+                return new ActionResult(ErrorCode.Watermark_RequiresUserTokens);
+
             if (!isJobLevelCheck && TokenIdentifier.ContainsTokens(profile.Watermark.File))
                 return new ActionResult();
 

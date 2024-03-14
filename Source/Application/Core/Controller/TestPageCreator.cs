@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.Core.Controller
             sb.Replace("[CURRENTYEAR]", DateTime.Now.Year.ToString());
             sb.Replace("[INFOTITLE]", "PDFCreator " + _versionHelper.ApplicationVersion);
             sb.Replace("[INFODATE]", DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
-            sb.Replace("[INFOAUTHORS]", "pdfforge");
+            sb.Replace("[INFOAUTHORS]", "Avanquest pdfforge");
             sb.Replace("[INFOHOMEPAGE]", Urls.PdfforgeWebsiteUrl);
             sb.Replace("[INFOPDFCREATOR]", "PDFCreator " + _versionHelper.ApplicationVersion);
 

@@ -170,7 +170,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
                 var errorMessage = $"Error while downloading file:{filename}";
                 _logger.Info(e, errorMessage);
 
-                // Error while getting proper file, try for outdated file in cache
+                if(forceDownload)
+                    throw new Exception(errorMessage, e);
+
                 returnVal = GetOutDatedCachedFile(filename);
 
                 if (string.IsNullOrEmpty(returnVal))
@@ -179,7 +181,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
 
             return returnVal;
         }
-
         private string GetOutDatedCachedFile(string filename)
         {
             try

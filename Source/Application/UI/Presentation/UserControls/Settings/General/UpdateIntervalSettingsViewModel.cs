@@ -88,8 +88,17 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
                 }
                 else
                 {
-                    var interaction = new MessageInteraction(Translation.NoUpdateMessage, Translation.UpdateCheckTitle, MessageOptions.Ok, MessageIcon.PDFCreator);                    
-                    _interactionRequest.Raise(interaction);
+                    if (string.IsNullOrEmpty(_onlineVersionHelper.GetOnlineVersion().DownloadUrl))
+                    {
+                        var errorMessage = Translation.GetFormattedErrorMessageWithEditionName(_applicationNameProvider.ApplicationNameWithEdition);
+                        var interaction = new MessageInteraction(errorMessage, Translation.UpdateCheckTitle, MessageOptions.Ok, MessageIcon.Exclamation);
+                        _interactionRequest.Raise(interaction);
+                    }
+                    else
+                    {
+                        var interaction = new MessageInteraction(Translation.NoUpdateMessage, Translation.UpdateCheckTitle, MessageOptions.Ok, MessageIcon.PDFCreator);
+                        _interactionRequest.Raise(interaction);
+                    }
                 }
             }
             catch

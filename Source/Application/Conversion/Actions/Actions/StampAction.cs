@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
+using pdfforge.PDFCreator.Utilities.Tokens;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 {
@@ -45,10 +46,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     _logger.Error("No stamp text is specified.");
                     actionResult.Add(ErrorCode.Stamp_NoText);
                 }
+                else if (checkLevel == CheckLevel.EditingProfile)
+                {
+                    if (!profile.UserTokens.Enabled && TokenIdentifier.ContainsUserToken(profile.Stamping.StampText))
+                        actionResult.Add(ErrorCode.Stamp_RequiresUserTokens);
+                }
 
                 if (checkLevel == CheckLevel.RunningJob)
                 {
-                    if(!_fontPathHelper.TryGetFontPath(profile.Stamping.FontFile, out _))
+                    if (!_fontPathHelper.TryGetFontPath(profile.Stamping.FontFile, out _))
                         actionResult.Add(ErrorCode.Stamp_FontNotFound);
                 }
             }
