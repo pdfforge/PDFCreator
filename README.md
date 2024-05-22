@@ -9,7 +9,7 @@ In this repository, we provide access to the source code of the application.
 ## Setup your environment
 
 To get PDFCreator running on your system, you need to set up the appropriate printer driver.  
-To do this, please [install PDFCreator Free](https://download.pdfforge.org/download/pdfcreator) via the setup from our website.  
+PDFCreator Free can be installed via chocolatey, winget or [the setup on our website](https://download.pdfforge.org/download/pdfcreator).
 
 The repository contains all other required packages in the "packages" folder,
 so you are directly able to compile the solution and start the PDFCreator project.
