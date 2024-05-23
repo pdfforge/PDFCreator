@@ -34,7 +34,7 @@
 % Interpreter library version number
 % NOTE: the interpreter code requires that the first non-comment token
 % in this file be an integer, and that it match the compiled-in version!
-10021
+10030
 
 % Check the interpreter revision.
 dup revision ne
@@ -111,7 +111,19 @@ PDFSTEP { /PDFDEBUG //true def } if
 currentdict /PDFSTOPONERROR known /PDFSTOPONERROR exch def
 currentdict /PDFSTOPONWARNING known {/PDFSTOPONWARNING //true def /PDFSTOPONERROR //true def}{/PDFSTOPONWARNING //false def} ifelse
 currentdict /PDFNOCIDFALLBACK known /PDFNOCIDFALLBACK exch def
+
+% Versions of bind for use during startup:
+% bind - normal "bind", honors DELAYBIND
+% .bind - normal "bind", but ignores DELAYBIND
+% .internalbind - as "bind" but forces the executeonly attribute
+% .forcebind - as ".bind" but forces the executeonly attribute
+%
+% In general, for security and consistency startup code should use
+% .internalbind or .forcebind, and only use bind/.bind when we
+% cannot enforce executeonly on a given proc
 /.bind /bind load def
+/.internalbind {bind executeonly} .bind 1 index exch .makeoperator def
+/.forcebind {.bind executeonly} .bind 1 index exch .makeoperator def
 
   /VMDEBUG
     INITDEBUG {{print mark
@@ -132,7 +144,7 @@ currentdict /PDFNOCIDFALLBACK known /PDFNOCIDFALLBACK exch def
           {{pop
           }}
          ifelse
-  .bind def
+  .forcebind def
 
 % This was a debugging switch removed in 9.22, no other software
 % should have had any regard for it, and even if testing its value
@@ -253,14 +265,14 @@ currentdict /DEVICE known not
 % We can't use readline, because that imposes a line length limit.
 /.skipeof	% <string> .skipeof -
  { currentfile exch 1 exch .subfiledecode flushfile
- } .bind def
+ } .forcebind def
 
 % Define procedures to assist users who don't read the documentation.
 userdict begin
 /help
  { (Enter PostScript commands.  '(filename) run' runs a file, 'quit' exits.\n)
    print flush
- } .bind def
+ } .forcebind def
 end
 
 % Define =string, which is used by some PostScript programs even though
@@ -288,7 +300,7 @@ userdict /=string 256 string put
    counttomark
     { (%stdout) (w) file exch 0 .writecvp
     } repeat pop
- } .bind def
+ } .forcebind def
 
 QUIET not { //printgreeting exec flush } if
 currentdict /printgreeting .undef
@@ -296,25 +308,25 @@ currentdict /printgreeting .undef
 % Define a special version of def for making operator procedures.
 /obind {	% <name> <proc> obind <name> <oper>
   1 index exch .makeoperator
-} .bind def
+} .forcebind def
 /odef {		% <name> <proc> odef -
   1 index exch .makeoperator def
-} .bind def
+} .forcebind def
 
 % Define procedures for accessing variables in systemdict and userdict
 % regardless of the contents of the dictionary stack.
 /.systemvar {		% <name> .systemvar <value>
   //systemdict exch get
-} .bind executeonly odef
+} .forcebind odef
 /.systemexec {
   .systemvar exec
-} .bind executeonly odef
+} .forcebind odef
 /.userdict {		% - .userdict <dict>
   /userdict .systemvar
-} .bind executeonly odef
+} .forcebind odef
 /.uservar {		% <name> .uservar <value>
   .userdict exch get
-} .bind executeonly odef
+} .forcebind odef
 
 % If we're delaying binding, remember everything that needs to be bound later.
 DELAYBIND
@@ -329,8 +341,10 @@ DELAYBIND
    } if
    .currentglobal //false .setglobal
    systemdict /.delaybind 2000 array .forceput
+   systemdict /.delayinternalbind 2000 array .forceput
    .setglobal
    userdict /.delaycount 0 put
+   userdict /.delayinternalcount 0 put
         % When we've done the delayed bind, we want to stop saving.
         % Detect this by the disappearance of .delaybind.
    /bind
@@ -341,7 +355,17 @@ DELAYBIND
        { pop /.bind cvx exec
        }
       ifelse
-    } .bind odef
+    } .forcebind odef
+
+   /.internalbind
+    { /.delayinternalbind .systemvar dup length 0 ne
+       { .delayinternalcount 2 index put
+         .userdict /.delayinternalcount .delayinternalcount 1 add put
+       }
+       { pop /.forcebind cvx exec
+       }
+      ifelse
+    } .forcebind odef
 } executeonly if
 
 .currentglobal //true .setglobal
@@ -383,7 +407,7 @@ DELAYBIND
     } executeonly forall
     pop
   } executeonly ifelse
-} .bind executeonly def
+} .forcebind def
 
 /.applyundefinternalnames
 {
@@ -395,7 +419,7 @@ DELAYBIND
     } executeonly forall
     pop
   } executeonly forall
-} .bind executeonly def
+} .forcebind def
 
 %**************** BACKWARD COMPATIBILITY ****************
 /hwsizedict mark /HWSize //null .dicttomark readonly def
@@ -403,11 +427,11 @@ DELAYBIND
   0 3 1 roll 3 index //hwsizedict .getdeviceparams
   exch pop exch pop aload pop 3 2 roll
   0 exch //null exch .getbitsrect exch pop
-} bind odef
+} .internalbind odef
 currentdict /hwsizedict .undef
 /getdeviceprops
  { //null .getdeviceparams
- } bind odef
+ } .internalbind odef
 
 % NOTE: Note sure why/if this needs to be a separate operator.  Consider rolling this
 % implementation into /putdeviceprops ?
@@ -419,14 +443,14 @@ currentdict /hwsizedict .undef
       /.putdeviceprops .systemvar exch signalerror
     }
    if
- } bind executeonly odef
-/.writecvs { 0 .writecvp } bind odef
+ } .internalbind odef
+/.writecvs { 0 .writecvp } .internalbind odef
 
 %**************** DEPRECATED PROCEDURES ****************
 %**************** DO NOT USE THESE IN NEW CODE ****************
 % Keeping these because they have been around a long time and we don't want to break old code that's out in the wild
-/max { .max } bind def		% use .max instead
-/min { .min } bind def		% use .min instead
+/max { .max } .internalbind def		% use .max instead
+/min { .min } .internalbind def		% use .min instead
 %**************** END OF BACKWARD COMPATIBILITY SECTION ****************
 
 % Utility for removing all entries from a dictionary
@@ -439,7 +463,7 @@ currentdict /hwsizedict .undef
     1 index exch undef
   } loop
   pop
-} bind def
+} .internalbind def
 
 % Define predefined procedures substituting for operators,
 % in alphabetical order.
@@ -461,7 +485,7 @@ userdict /#copies 1 put
 %
 /initgraphics
   { initgraphics systemdict /DeviceGray_array get setcolorspace }
-.bind executeonly odef
+.forcebind odef
 
 /currentmatrix {
         dup type /arraytype ne
@@ -486,7 +510,7 @@ userdict /#copies 1 put
       pop
     } ifelse
   } if
-} .bind executeonly odef
+} .forcebind odef
 
 % Guard similarly against EndPage not popping its operand.
 /.endpage {		% <reason> .endpage <print_bool>
@@ -504,7 +528,7 @@ userdict /#copies 1 put
   } {
     2 ne
   } ifelse
-} .bind executeonly odef
+} .forcebind odef
 
 % Define .currentnumcopies so it consults the NumCopies device parameter.
 /.numcopiesdict mark
@@ -516,7 +540,7 @@ userdict /#copies 1 put
     { exch pop exch pop }
     { cleartomark #copies }
    ifelse
-} .bind executeonly odef
+} .forcebind odef
 
 /setcolorscreen where { pop		% not in all Level 1 configurations
    /currentcolorscreen
@@ -572,7 +596,7 @@ userdict /.echo.mode //true put
    $error /errorname //null put
    $error /errorinfo //null put
    0 .setoserrno
- } bind executeonly def
+ } .internalbind def
 
 % To satisfy the Genoa FTS, executive must be a procedure, not an operator.
 % Define the procedure used by .runfile, .runstdin and .runstring
@@ -581,11 +605,11 @@ userdict /.echo.mode //true put
 /.execute {		% <obj> .execute <stopped>
   stopped $error /newerror get and
    { /handleerror .systemvar exec flush //true } { //false } ifelse
-} bind def
+} .internalbind def
 % Define an execute analogue of runlibfile0.
 /execute0 {		% <obj> execute0 -
   //.execute exec { /execute0 cvx 1 .quit } if
-} bind def
+} .internalbind def
 /executive
         { { prompt
              { (%statementedit) (r) .systemvmfile } stopped
@@ -596,7 +620,7 @@ userdict /.echo.mode //true put
             if
             cvx { .runexec } //.execute exec pop
           } loop
-        } bind def
+        } .internalbind def
 currentdict /.execute .undef
 
 /filter
@@ -607,7 +631,7 @@ currentdict /.execute .undef
         } odef
 % Internal uses of stopped that aren't going to do a stop if an error occurs
 % should use .internalstopped to avoid setting newerror et al.
-/.internalstopped { //null 1 .stopped //null ne } bind executeonly def
+/.internalstopped { //null 1 .stopped //null ne } .internalbind def
 % handleerror procedure as mentioned in the "Operators" section of the PLRM Section 8.2
 % This invokes the handleerror procedure from errordict (unless we are running under a
 % JOBSERVER where we want to always use a defined error handler (many error handlers in
@@ -617,9 +641,9 @@ currentdict /.execute .undef
 % won't cause nested errors (Unexpected Error conditions).
 /handleerror
         //systemdict /JOBSERVER get{
-          { /.GShandleerror .systemvar //.internalstopped exec pop } bind % always use .GShandleerror.
+          { /.GShandleerror .systemvar //.internalstopped exec pop } .internalbind % always use .GShandleerror.
         } {
-          { /errordict .systemvar /handleerror get //.internalstopped exec pop } bind % PLRM standard errorhandling
+          { /errordict .systemvar /handleerror get //.internalstopped exec pop } .internalbind % PLRM standard errorhandling
         } ifelse def
 /identmatrix [1.0 0.0 0.0 1.0 0.0 0.0] readonly def
 /identmatrix {
@@ -635,13 +659,13 @@ currentdict /.execute .undef
         (GS) print
         count 0 ne { (<) print count =only } if
         (>) print flush
-} bind def
-/prompt	{ flush flushpage //systemdict /NOPROMPT get not { //.promptmsg exec} if } bind def
+} .internalbind def
+/prompt	{ flush flushpage //systemdict /NOPROMPT get not { //.promptmsg exec} if } .internalbind def
 currentdict /.promptmsg .undef
 
-/pstack	{ 0 1 count 3 sub { index == } for } bind def
+/pstack	{ 0 1 count 3 sub { index == } for } .internalbind def
 /putdeviceprops
-        { .putdeviceprops { erasepage } if } bind executeonly odef
+        { .putdeviceprops { erasepage } if } .internalbind odef
 /quit	{ /quit load 0 .quit } odef
 /run	{ dup type /filetype ne { (r) .systemvmfile } if
                 % We must close the file when execution terminates,
@@ -663,7 +687,7 @@ currentdict /.promptmsg .undef
         % startjob replaces the null on the o-stack with a procedure
         % to be executed when we get back here.
   dup //null ne { exec //true } { pop //false } ifelse
-} bind executeonly def
+} .internalbind def
 /.runexec2 {		% <continue> <file|fileproc> .runexec2 -
   exch {
     .runexec
@@ -671,10 +695,10 @@ currentdict /.promptmsg .undef
     dup type /filetype ne { cvx exec } if
     closefile
   } ifelse
-} bind def
+} .internalbind def
 /.runexec {		% <file|fileproc> .runexec -
   cvlit /.runexec1 cvx 1 index /.runexec2 cvx 4 .execn
-} bind def
+} .internalbind def
 % The following is only for compatibility with Adobe interpreters.
 /setdash {
         0 .argindex type dup /integertype eq exch /realtype eq or not {
@@ -730,7 +754,7 @@ odef
       pop
     } ifelse echo
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 /.confirm {
   //systemdict /DISPLAYING get //systemdict /NOPAUSE get not //systemdict /TTYPAUSE get or and {
@@ -742,7 +766,7 @@ odef
   } {
     pop
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 % In LanguageLevel 3, copypage erases the page.
 /copypage {
@@ -754,7 +778,7 @@ odef
         } if pop
     systemdict /..page_default_spaces .knownget { //.PurgeDict exec } if
     .beginpage
-} .bind executeonly odef
+} .forcebind odef
 
 /showpage {
         0 .endpage .doneshowpage {
@@ -772,11 +796,11 @@ odef
         { initgraphics } ifelse
     systemdict /..page_default_spaces .knownget { //.PurgeDict exec } if
     .beginpage
-} .bind executeonly odef
+} .forcebind odef
 
 % Code output by Adobe Illustrator relies on the fact that
 % `stack' is a procedure, not an operator!!!
-/stack	{ 0 1 count 3 sub { index = } for } bind def
+/stack	{ 0 1 count 3 sub { index = } for } .internalbind def
 /start	{ //systemdict /BATCH get { //null 0 .quit } { executive } ifelse } def
 /store {	% Don't alter operands before completing.
         1 .argindex where { 2 index 2 index put pop pop } { def } ifelse
@@ -809,7 +833,7 @@ currentdict /.typenames .undef
       /ifelse .systemvar
     ] cvx executeonly
   exch .setglobal
-} executeonly def
+} def
 systemdict /internaldict dup .makeinternaldict .makeoperator
 .forceput		% proc is local, systemdict is global
 currentdict /.makeinternaldict .undef
@@ -822,27 +846,27 @@ currentdict /.makeinternaldict .undef
         { exch dup length 2 index length add string	% str2 str1 new
           dup dup 4 2 roll copy		% str2 new new new1
           length 4 -1 roll putinterval
-        } bind def
+        } .internalbind def
 /copyarray
-        { dup length array copy } bind def
+        { dup length array copy } .internalbind def
 % Copy a dictionary per the Level 2 spec even in Level 1.
 /.copydict		% <fromdict> <todict> .copydict <todict>
-        { dup 3 -1 roll { put dup } forall pop } bind def
+        { dup 3 -1 roll { put dup } forall pop } .internalbind def
 /findlibfile {
   .systemvmlibfile { dup .filename pop exch //true } { //false } ifelse
 } odef
 /.growdictlength	% get size for growing a dictionary
         { length 3 mul 2 idiv 1 add
-        } bind def
+        } .internalbind def
 /.growdict		% grow a dictionary
         { dup //.growdictlength exec .setmaxlength
-        } bind def
+        } .internalbind def
 /.growput		% put, grow the dictionary if needed
         { 2 index length 3 index maxlength eq
            { 3 copy pop known not { 2 index //.growdict exec} if
            } if
           put
-        } bind def
+        } .internalbind def
 % .localvmarray may be an operator: see zsysvm.c.
 /.localvmarray where {
   pop
@@ -850,7 +874,7 @@ currentdict /.makeinternaldict .undef
   /.localvmarray {
     .currentglobal //false .setglobal
     exch array exch .setglobal
-  } bind def
+  } .internalbind def
 } ifelse
 /.localvmdict where {
   pop
@@ -858,22 +882,22 @@ currentdict /.makeinternaldict .undef
   /.localvmdict {
     .currentglobal //false .setglobal
     exch dict exch .setglobal
-  } bind def
+  } .internalbind def
 } ifelse
 /.packtomark
-        { counttomark packedarray exch pop } bind def
+        { counttomark packedarray exch pop } .internalbind def
 /runlibfile
-        {		% We don't want to bind 'run' into this procedure,
+        {		% We don't want to .internalbind 'run' into this procedure,
                         % since run may get redefined.
           findlibfile
            { exch pop /run .systemvar exec }
            { /undefinedfilename signalerror }
           ifelse
-        } bind def
+        } .internalbind def
 /selectdevice
-        { finddevice setdevice .setdefaultscreen } bind def
+        { finddevice setdevice .setdefaultscreen } .internalbind odef
 /signalerror		% <object> <errorname> signalerror -
-        { /errordict .systemvar exch get exec } bind def
+        { /errordict .systemvar exch get exec } .internalbind def
 /signaloperror {	% <object> <errorname> signaloperror -
     % Same as signalerror, except that if we are inside a pseudo-operator
     % or .errorexec, we use its error object, just as errors generated by
@@ -881,24 +905,135 @@ currentdict /.makeinternaldict .undef
     /errordict .systemvar exch get
     .finderrorobject { 3 -1 roll pop exch } if
     exec
-} bind def
+} .internalbind def
 
 % Define the =[only] procedures.  Also define =print,
 % which is used by some PostScript programs even though
 % it isn't documented anywhere.
 /write=only {
         .writecvs
-} bind def
+} .internalbind def
 /write= {
         1 index exch write=only (\n) writestring
-} bind def
-/=only	{ (%stdout) (w) file exch write=only } bind odef
-/=	{ =only (\n) print } bind def
+} .internalbind def
+/=only	{ (%stdout) (w) file exch write=only } .internalbind odef
+/=	{ =only (\n) print } .internalbind def
 /=print	/=only load def
 % Temporarily define == as = for the sake of runlibfile0.
 /== /= load def
 
-% The following procedures are documented.
+% Function to purge a named device from the device cache. This is required if we
+% want to 'reset' a device. The setpagedevice implementation, when it creates a
+% device instance, stores it in a cache. Next time we select a device we look in
+% the cache and, if we find we cached it, then we use the cached device.
+%
+% Presumably this is intended as an optimisation, but it defeats the expected use
+% of save and restore wihth devices because, after we restore a device away it is
+% not destroyed, it is in the cache. Requesting the same named device will return
+% the cached device, crucially *without* resetting any of its parameters. In
+% particular NumPages which is used to number output files and is a read-only parameter.
+%
+% /name uncachedevice -
+%
+/uncachedevice
+{
+    % Check we've been given a name
+    dup type /nametype eq
+    {
+        % Check the name isn't the current device. Check both /Name
+        % and /OutputDevice. There seem to be some conditions where
+        % only one is present.
+        %
+        currentpagedevice /Name known
+        {
+          dup currentpagedevice /Name get eq
+        }
+        {
+          //false
+        }ifelse
+        currentpagedevice /OutputDevice known
+        {
+          1 index currentpagedevice /OutputDevice get eq
+        }
+        {
+          //false
+        }ifelse
+
+        % We tested /Name and /OutputDevice to see if they exist, if they do
+        % we checked them against the requested device. If either matches the requested
+        % device we report an error, otherwise we remove the device from the cache.
+        %
+        or
+        {
+            (*** ERROR: Can't uncache the current device\n) print
+            /uncachedevice /invalidaccess signalerror
+        }
+        {
+            % Make sure devicedict exists, if it does not, ignore
+            % the request because this code doesn't know how to
+            % deal with this PostScript itnerpreter.
+            /devicedict where
+            {
+                % Get devicedict out of its containing dictionary
+                /devicedict get dup             % stack: /device -devicedict- -devicedict-
+
+                % Check if the device we were given is known
+                2 index known                   % stack: /device -devicedict- bool
+                {
+                    % device was known, get the key/value pair from devicedict
+                    dup 2 index get             % stack: /device -devicedict- value
+
+                    % We expect the value in devicedict to be an array, check it is
+                    dup type /arraytype eq
+                    {
+                        dup 1 null put          % stack: /device -devicedict- [-device- null]
+                        3 -1 roll exch          % stack: -devicedict- /device [-device- null]
+                        put                     % stack: -
+                    }
+                    {
+                        % Value in devicedict associated with the named key is not an array
+                        /uncachedevice /typecheck signalerror
+                    } ifelse
+                }
+                {
+                    % The named key is not present in devicedict
+                    /uncachedevice /undefined signalerror
+                } ifelse
+            } if
+        } ifelse
+    }
+    {
+        % The parameter we were given wasn't a name type
+        /uncachedevice /typecheck signalerror
+    } ifelse
+} bind readonly odef
+
+% Function to purge all but the current device from the device cache
+%
+% - purgedevicecache -
+%
+/purgedevicecache
+{
+    % Find devicedict, if it doesn't exist just exit silently, we don't know
+    % how to deal with this PostScript interpreter
+    /devicedict where
+    {
+        % Get devicedict from the containing dictionary
+        /devicedict get
+        % For each key/value pair in devicedict
+        {
+          pop                                       % Discard the value
+          dup currentpagedevice /Name get eq not    % Check if the key is the same as the current device
+          {
+              uncachedevice                         % If not, purge the device from the cache
+          }
+          {
+              pop                                   % Don't purge the current device
+          } ifelse
+        } forall
+    } if
+} bind readonly odef
+
 /finddevice {		% <devicename> finddevice <device>
   /devicedict .systemvar exch get
   dup 1 get //null eq {
@@ -909,7 +1044,9 @@ currentdict /.makeinternaldict .undef
     dup dup 0 get //false .copydevice2 1 exch put
     exch .setglobal
   } if 1 get
-} bind executeonly odef
+} .internalbind odef
+
+% The following procedures are documented.
 
 % Run a resource file.  This allows us to distinguish resource objects
 % from objects coming from input files.
@@ -922,10 +1059,10 @@ userdict /.currentresourcefile //null put
   2 .execn		% stopped <file>
   .userdict /.currentresourcefile 3 -1 roll put
   { stop } if
-} bind executeonly def
+} .internalbind def
 /.runresource {		% <file> .runresource -
   { /run .systemvar exec } .execasresource
-} bind def
+} .internalbind def
 
 % Convenience function (documented extension)
 /.shellarguments		% -> shell_arguments true (or) false
@@ -935,7 +1072,7 @@ userdict /.currentresourcefile //null put
               { pop //false }
              ifelse }
            { //false } ifelse
-        } bind def
+        } .internalbind def
 
 % Define the procedure that the C code uses for running files
 % named on the command line.
@@ -947,13 +1084,13 @@ userdict /.currentresourcefile //null put
 % reopened if a startjob does a restore.
 /.runstdin {
   { { (%stdin) (r) file cvx } .runexec } execute0
-} bind def
+} .internalbind def
 % Define the procedure that the C code uses for running commands
 % given on the command line with -c.  We turn the string into a file so that
 % .runexec can do the right thing with a startjob.
 /.runstring {
   0 0 .systemvmstring .systemvmSFD cvx { .runexec } execute0
-} bind def
+} .internalbind def
 
 % Define the procedure that the C code uses to set up for executing
 % a string that may be received in pieces.
@@ -973,7 +1110,7 @@ def
 /.runstringbegin {
   1 .systemvmarray dup 0 //.needinput 0 get put cvx	% { .needinput } in systemvm
   0 0 .systemvmstring .systemvmSFD cvx .runexec
-} bind executeonly def
+} .internalbind def
 
 % Define a special version of runlibfile that aborts on errors.
 /runlibfile0
@@ -989,7 +1126,7 @@ def
            { (While reading ) print .currentfilename print (:\n) print flush
              /handleerror .systemvar exec /runlibfile0 1 .quit
            } if
-        } bind def
+        } .internalbind def
 % Temporarily substitute it for the real runlibfile.
 /.runlibfile /runlibfile load def
 /runlibfile //runlibfile0 def
@@ -1020,40 +1157,44 @@ currentdict /runlibfile0 .undef
        { not exch pop exit } { pop } ifelse
     }
    for exch pop .quit
- } bind executeonly def
+ } .internalbind def
+/.acquire_$error {
+  //systemdict /$error get
+} .internalbind def
+
 /.errorhandler		% <command> <errorname> .errorhandler -
   {		% Detect an internal 'stopped'.
     1 .instopped { //null eq { pop pop stop } if } if
-    $error /.inerror get 1 .instopped { pop } { pop //true } ifelse
+    //.acquire_$error exec /.inerror get 1 .instopped { pop } { pop //true } ifelse
      { //.unstoppederrorhandler exec
      } if	% detect error recursion
-    $error /globalmode .currentglobal //false .setglobal put
-    $error /.inerror //true put
-    $error /newerror //true put
-    $error exch /errorname exch put
-    $error exch /command exch put
-    $error /errorinfo known not { $error /errorinfo //null put } if
-    $error /recordstacks get $error /errorname get /VMerror ne and
+    //.acquire_$error exec /globalmode .currentglobal //false .setglobal put
+    //.acquire_$error exec /.inerror //true put
+    //.acquire_$error exec /newerror //true put
+    //.acquire_$error exec exch /errorname exch put
+    //.acquire_$error exec exch /command exch put
+    //.acquire_$error exec /errorinfo known not { //.acquire_$error exec /errorinfo //null put } if
+    //.acquire_$error exec /recordstacks get //.acquire_$error exec /errorname get /VMerror ne and
      {		% Attempt to store the stack contents atomically.
-       count array astore dup $error /ostack 4 -1 roll
+       count array astore dup //.acquire_$error exec /ostack 4 -1 roll
        % Grab the execstack, then remove to two elements that are from
        % this error handler (not interesting).
        countexecstack array execstack dup length 2 sub 0 exch getinterval
-       $error /estack 3 -1 roll
-       countdictstack array dictstack $error /dstack 3 -1 roll
+       //.acquire_$error exec /estack 3 -1 roll
+       countdictstack array dictstack //.acquire_$error exec /dstack 3 -1 roll
        put put put aload pop
      }
-     { $error /dstack .undef
-       $error /estack .undef
-       $error /ostack .undef
+     { //.acquire_$error exec /dstack .undef
+       //.acquire_$error exec /estack .undef
+       //.acquire_$error exec /ostack .undef
      }
     ifelse
-    $error /position currentfile status
+    //.acquire_$error exec /position currentfile status
      { currentfile { fileposition } //.internalstopped exec { pop //null } if
      }
      {		% If this was a scanner error, the file is no longer current,
                 % but the command holds the file, which may still be open.
-       $error /command get dup type /filetype eq
+       //.acquire_$error exec /command get dup type /filetype eq
         { { fileposition } //.internalstopped exec { pop //null } if }
         { pop //null }
        ifelse
@@ -1061,10 +1202,10 @@ currentdict /runlibfile0 .undef
     ifelse put
                 % During initialization, we don't reset the allocation
                 % mode on errors.
-    $error /globalmode get $error /.nosetlocal get and .setglobal
-    $error /.inerror //false put
+    //.acquire_$error exec /globalmode get //.acquire_$error exec /.nosetlocal get and .setglobal
+    //.acquire_$error exec /.inerror //false put
     stop
-  } bind executeonly def
+  } .internalbind def
 currentdict /.unstoppederrorhandler .undef
 
 % Define the standard handleerror.  We break out the printing procedure
@@ -1146,9 +1287,10 @@ currentdict /.unstoppederrorhandler .undef
         { (Current file position is ) print position = }
        if
 
-} bind executeonly def
+} .internalbind def
 /.printerror
-{ $error begin newerror
+{
+     //.acquire_$error exec begin newerror
      {
        /command load errorname //systemdict /SHORTERRORS get
         { (%%[ Error: ) print =only flush
@@ -1193,7 +1335,8 @@ currentdict /.unstoppederrorhandler .undef
      ifelse	% newerror
      end
      flush
-} bind executeonly def
+} .internalbind def
+currentdict /.acquire_$error .undef
 currentdict /.printerror_long .undef
 
 % Define $error.  This must be in local VM.
@@ -1239,10 +1382,10 @@ currentdict /errordict ErrorNames length 3 add dict
    3 1 roll
    mark 1 index systemdict /.errorhandler get /exec load //.packtomark exec cvx put
    .setglobal
- } bind def
+ } .internalbind def
 /.registererror		% <name> .registererror -
  { errordict exch //.registererror2 exec
- } bind def
+ } .internalbind def
 currentdict /.registererror2 .undef
 
 ErrorNames
@@ -1255,7 +1398,7 @@ errordict begin
    } forall
 /handleerror	% this key is 'well known' and some PS may redefine it
  { /.printerror .systemvar exec
- } bind def
+ } .internalbind def
 end		% errordict
 
 gserrordict /unknownerror errordict /unknownerror get put
@@ -1277,7 +1420,7 @@ errordict /unknownerror .undef
   noaccess pop
   //systemdict /.setsafeerrors .forceundef
   //systemdict /.SAFERERRORLIST .forceundef
-} bind executeonly odef
+} .internalbind odef
 
 SAFERERRORS {.setsafererrors} if
 
@@ -1288,13 +1431,13 @@ SAFERERRORS {.setsafererrors} if
 % Define the [write]==[only] procedures.
 /.dict 8 dict dup
 begin def
-  /.cvp {1 index exch 1 .writecvp} bind def
-  /.p {1 index exch writestring} bind def
-  /.p1 {2 index exch writestring} bind def
-  /.p2 {3 index exch writestring} bind def
+  /.cvp {1 index exch 1 .writecvp} .internalbind def
+  /.p {1 index exch writestring} .internalbind def
+  /.p1 {2 index exch writestring} .internalbind def
+  /.p2 {3 index exch writestring} .internalbind def
   /.print
         { dup type .dict exch .knownget { exec } { .cvp } ifelse
-        } bind def
+        } .internalbind def
   /arraytype
         {dup rcheck
           {() exch dup xcheck
@@ -1308,20 +1451,20 @@ begin def
              (])}
            ifelse exch pop .p}
           {.cvp}
-         ifelse} bind def
+         ifelse} .internalbind def
   /packedarraytype /arraytype load def
 {//.dict begin .print pop end}
-  bind
+  .bind
 end
 
 /write==only exch def
-/write== {1 index exch write==only (\n) writestring} bind def
-/==only { (%stdout) (w) file exch write==only } bind def
-/== {==only (\n) print} bind def
-
+/write== {1 index exch write==only (\n) writestring} .internalbind def
+/==only { (%stdout) (w) file exch write==only } .internalbind def
+/== {==only (\n) print} .internalbind def
 % Define [write]===[only], an extension that prints dictionaries
 % in readable form and doesn't truncate strings.
 /.dict /write==only load 0 get dup length 2 add dict .copydict dup
+
 begin def
   /dicttype
         { dup rcheck
@@ -1334,19 +1477,19 @@ begin def
            { .cvp
            }
           ifelse
-        } bind def
+        } .internalbind def
   /stringtype
         { 1 index exch 2 .writecvp
-        } bind def
+        } .internalbind def
 
 {//.dict begin .print pop end}
-  bind
+  .internalbind
 end
 
 /write===only exch def
-/write=== {1 index exch write===only (\n) writestring} bind def
-/===only { (%stdout) (w) file exch write===only } bind def
-/=== { ===only (\n) print } bind def
+/write=== {1 index exch write===only (\n) writestring} .internalbind def
+/===only { (%stdout) (w) file exch write===only } .internalbind def
+/=== { ===only (\n) print } .internalbind def
 
 % Create the initialization queue.
 1183615869 internaldict dup
@@ -1362,7 +1505,7 @@ end
   } if
   .delayed_init_queue 3 1 roll .growput
   end
-} bind def
+} .internalbind def
 
 begin
 /.execute_scheduled_inits %   - .execute_scheduled_inits -
@@ -1387,7 +1530,7 @@ begin
   } loop
   currentdict /.newdelayed_init_queue undef
   end
-} bind def
+} .internalbind def
 end
 
 (END PROCS) VMDEBUG
@@ -1403,10 +1546,10 @@ currentdict
 % Define .findencoding.  (This is redefined in Level 2.)
 /.findencoding
  { //EncodingDirectory exch get exec
- } bind def
+ } .internalbind def
 /.defineencoding
  { //EncodingDirectory 3 1 roll put
- } bind def
+ } .internalbind def
 % If we've got the composite font extensions, define findencoding.
 % To satisfy the Genoa FTS, findencoding must be a procedure, not an operator.
 /rootfont where { pop /findencoding { .findencoding } def } if
@@ -1416,7 +1559,7 @@ currentdict
 % exist for the sake of toolbin/encs2c.ps.
 /.registerencoding {	% <index> <array> .registerencoding -
   pop pop
-} bind odef
+} .internalbind odef
 
 % Load StandardEncoding.
 %% Replace 1 (gs_std_e.ps)
@@ -1538,12 +1681,12 @@ devicedict /Default devicedict .defaultdevicename get put
     { 3 copy 6 copy //setcolorscreen }
     { //setscreen }
    ifelse
-} bind def
+} .internalbind def
 /.setloresscreen {	% <dpi> .setloresscreen -
   .setloreshalftone
   0 array cvx settransfer	% Genoa CET won't accept a packed array!
   /setstrokeadjust where { pop //true setstrokeadjust } if
-} bind def
+} .internalbind def
 % Use a 45-degree spot screen for high-resolution devices.
 % The PS3 CET insists that the screen be an array and not a packedarray (!).
 currentpacking //false setpacking
@@ -1631,7 +1774,7 @@ setpacking
     { //setscreen			% not high resolution
     }
    ifelse
-} bind def
+} .internalbind def
 /.sethiresscreen {	% <dpi> .sethiresscreen
   .sethireshalftone     % pushes true if a screen halftone used
                         % Stack: doscree
@@ -1664,7 +1807,7 @@ setpacking
   % Increase fill adjustment so that we effectively use Adobe's
   % any-part-of-pixel rule.
   0.5 dup .setfilladjust2
-} bind def
+} .internalbind def
 
 % Set the default screen and BG/UCR.
 % We define the proc here, rather than inline in .setdefaultbgucr
@@ -1678,12 +1821,12 @@ setpacking
     (%.defaultbgrucrproc) cvn load dup
     setblackgeneration setundercolorremoval
   } if
-} bind def
+} .internalbind def
 /.useloresscreen {	% - .useloresscreen <bool>
         % Compute min(|dpi x|,|dpi y|) as the definition of the resolution.
   72 72 matrix defaultmatrix dtransform abs exch abs .min
   dup 150 lt //systemdict /DITHERPPI known not and
-} bind def
+} .internalbind def
 
 /.gsgetdeviceprop	% <device> <propname> gsgetdeviceprop <value>
  { 2 copy mark exch //null .dicttomark .getdeviceparams
@@ -1691,7 +1834,7 @@ setpacking
     { pop dup /undefined signalerror }
     { 5 1 roll pop pop pop pop }
    ifelse
- } bind def
+ } .internalbind def
 
 % The following implementation uses LL2 extensions, but only in stopped
 % contexts so that with LL1, the .set??reshalftone will be used.
@@ -1712,7 +1855,7 @@ setpacking
     { pop pop //false } { //true } ifelse
   }
   if
-} bind def
+} .internalbind def
 currentdict /.gsgetdeviceprop .forceundef
 
 /.setdefaulthalftone {
@@ -1722,12 +1865,12 @@ currentdict /.gsgetdeviceprop .forceundef
     //.useloresscreen exec { .setloreshalftone } { .sethireshalftone pop } ifelse
   }
   ifelse
-} bind def
+} .internalbind def
 
 /.setdefaultscreen {
   //.useloresscreen exec { .setloresscreen } { .sethiresscreen } ifelse
   //.setdefaultbgucr exec
-} bind def
+} .internalbind def
 currentdict /.setdefaultbgucr .undef
 currentdict /.useloresscreen .undef
 
@@ -1780,7 +1923,7 @@ currentdict /.useloresscreen .undef
      2 index 2 index 3 -1 roll put 1 add
    } for
    0 exch getinterval exch pop
-} bind def
+} .internalbind def
 
 %   false <dir_list> <template> .generate_dir_list_templates_with_length <t1> ... <tN>
 %   true  <dir_list> <template> .generate_dir_list_templates_with_length <t1> <l1> ... <tN> <ln>
@@ -1872,7 +2015,7 @@ currentdict /.useloresscreen .undef
     } forall
   } ifelse                                         % (t1) ?l1 (t2) ?l2 ... (tN) ?ln {} b [dl] (templ) (ffn)
   pop pop pop pop pop                              % (t1) ?l1 (t2) ?l2 ... (tN) ?ln
-} .bind executeonly odef
+} .forcebind odef
 currentdict /.makepathtemplate .undef
 
 %   <dir_list> <template> .generate_dir_list_templates <t1> ... <tN>
@@ -1882,12 +2025,12 @@ currentdict /.makepathtemplate .undef
 %
 /.generate_dir_list_templates
 { //false 3 1 roll //.generate_dir_list_templates_with_length
-} .bind executeonly odef
+} .forcebind odef
 
 % Load the initialization files for optional features.
 %% Replace 4 INITFILES
 systemdict /INITFILES known
- { INITFILES { <00> search { exch pop dup runlibfile VMDEBUG }{ dup runlibfile VMDEBUG exit } ifelse } .bind loop
+ { INITFILES { <00> search { exch pop dup runlibfile VMDEBUG }{ dup runlibfile VMDEBUG exit } ifelse } .forcebind loop
  }
 if
 
@@ -1910,7 +2053,7 @@ if
   /FontName () def
   /Encoding StandardEncoding def
   /FontBBox { 0 0 0 0 } readonly def % executable is bogus, but customary ...
-  /BuildChar { pop pop 0 0 setcharwidth } bind def
+  /BuildChar { pop pop 0 0 setcharwidth } .internalbind def
   /PaintType 0 def		% shouldn't be needed!
 end
 /NullFont exch definefont setfont
@@ -1943,7 +2086,7 @@ currentdict /.runlibfile .undef
     { dup type /operatortype eq
        {
          % This might be a real operator, so bind might cause a typecheck
-         {.bind} //.internalstopped exec pop
+         {.forcebind} //.internalstopped exec pop
        }
       if pop pop
     } forall
@@ -2153,7 +2296,7 @@ gsave
 % This is a hack to get around problems
 % in some common PostScript-generating applications.
 <04> cvn JOBSERVER {
-    { { clear cleardictstack //false 0 .startnewjob } 2 .stop } bind
+    { { clear cleardictstack //false 0 .startnewjob } 2 .stop } .internalbind
   } {
     { }
   } ifelse def
@@ -2170,13 +2313,13 @@ gsave
 }
 {
   {currentfile (%-12345X) .peekstring pop (%-12345X) eq <04> cvn load if}
-} ifelse bind def
+} ifelse .internalbind def
 
 <1b45> cvn { } def		% PJL reset prologue (ESC E)
 <1b451b> cvn <1b> cvn load def	% PJL reset epilogue (ESC E + UEL)
 (\001M) cvn			% TBCP initiator
  { currentfile /TBCPDecode filter cvx exec
- } bind def
+ } .internalbind def
 /@PJL				% H-P job control
  {
    % Windows 2000 driver includes PJL into %%BeginFeature block.
@@ -2193,7 +2336,7 @@ gsave
      } if
    } if
    currentfile //=string readline pop pop
- } bind def
+ } .internalbind def
 
 % Install the EPS handler if needed
 systemdict /EPSBoundingBoxInit known { EPSBoundingBoxInit } if
@@ -2219,7 +2362,7 @@ readonly def
   {systemdict exch .forceundef} forall
 
   //systemdict /SAFERUndefinePostScriptOperators .forceundef
-} .bind executeonly def % must be bound and hidden for .forceundef
+} .forcebind def % must be bound and hidden for .forceundef
 
 /tempfilepaths
 [
@@ -2270,7 +2413,7 @@ readonly def
 
     .activatepathcontrol
   } ifelse
-} bind def
+} .internalbind def
 
 /.locksafe_userparams {
   SAFETY /safe get not {
@@ -2309,7 +2452,7 @@ readonly def
     >> setuserparams
   }
   if
-} .bind executeonly def
+} .forcebind def
 
 currentdict /tempfilepaths undef
 
@@ -2325,7 +2468,7 @@ currentdict /tempfilepaths undef
   << /.LockSafetyParams //true >> setpagedevice
   setglobal
   //SAFETY /safe //true .forceput % overrides readonly
-} .bind executeonly odef
+} .forcebind odef
 
 /.setsafe
 {
@@ -2347,7 +2490,7 @@ currentdict /tempfilepaths undef
     } if
   }
   ifelse
-} .bind executeonly odef
+} .forcebind odef
 %% --- End documented extensions ---
 
 % This is only used during startup. Its required so that
@@ -2369,7 +2512,7 @@ currentdict /tempfilepaths undef
   >> setpagedevice
   setglobal
   //SAFETY /safe //true .forceput % overrides readonly
-} .bind def
+} .forcebind def
 
 % See /.locksafeglobal above.
 %
@@ -2393,7 +2536,7 @@ currentdict /tempfilepaths undef
     } if
   }
   ifelse
-} .bind executeonly odef
+} .forcebind odef
 
 % If we are running in SAFER mode, lock things down
 SAFER { .setsafeglobal } if
@@ -2410,7 +2553,7 @@ currentdict /.locksafeglobal .undef
    /OLDPDF where {/OLDPDF get not {/SHA256Encode /MD5Encode /AESDecode /JPXDecode /JBIG2Decode /ArcfourDecode /.EOFDecode} if} if
   ]
   {filterdict exch undef} forall
-} .bind executeonly def
+} .forcebind def
 
 /UndefinePostScriptOperators {
   % This list is of operators which no longer appear to be used, and which we do not believe
@@ -2555,7 +2698,7 @@ currentdict /.locksafeglobal .undef
 
   //systemdict /UndefinePostScriptFilters .forceundef
   //systemdict /UndefinePostScriptOperators .forceundef
-} .bind executeonly def % must be bound and hidden for .forceundef
+} .forcebind def % must be bound and hidden for .forceundef
 
 % If we delayed binding, make it possible to do it later.
 /.bindnow {
@@ -2566,8 +2709,10 @@ currentdict /.locksafeglobal .undef
   % Temporarily disable the typecheck error.
   errordict /typecheck 2 copy get
   errordict /typecheck { pop } put	% pop the command
-  0 1 .delaycount 1 sub { .delaybind exch get .bind pop } for
+  0 1 .delaycount 1 sub { .delaybind exch get .forcebind pop } for
+  0 1 .delayinternalcount 1 sub { .delayinternalbind exch get .forcebind pop } for
   //systemdict /.delaybind {} .forceput	% reclaim the space
+  //systemdict /.delayinternalbind {} .forceput	% reclaim the space
   //systemdict /.bindnow .forceundef	% ditto
   .applyundefinternalnames
   put
@@ -2584,10 +2729,12 @@ currentdict /.locksafeglobal .undef
   //systemdict /.undefinternalnames .forceundef
   //systemdict /.applyundefinternalnames .forceundef
   //systemdict /.undefinternalnameslist .forceundef
+  //systemdict /.internalbind .forceundef
+  //systemdict /.forcebind .forceundef
   currentuserparams /IdiomRecognition known {
     1 dict dup /IdiomRecognition 4 -1 roll put setuserparams
   } if
-} .bind def
+} .forcebind def
 
 % Turn off array packing, since some PostScript code assumes that
 % procedures are writable.
@@ -2685,6 +2832,8 @@ systemdict /.setCPSImode .undef		% must be after gs_cet.ps
 
 DELAYBIND not {
   systemdict /.bindnow .undef       % We only need this for DELAYBIND
+  systemdict /.internalbind .undef
+  systemdict /.forcebind .undef
   systemdict /.forcecopynew .undef	% remove temptation
   systemdict /.forceput .undef		% ditto
   systemdict /.forceundef .undef	% ditto

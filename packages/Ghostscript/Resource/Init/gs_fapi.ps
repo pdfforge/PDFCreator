@@ -51,7 +51,7 @@ languagelevel 2 .setlanguagelevel
   % dup mark eq {
   %   pop //true
   % } if
-} bind def
+} .internalbind def
 
 %----------------------------- Process FAPIconfig -----------------------
 
@@ -170,20 +170,20 @@ currentdict /super.complete_instance currentdict /complete_instance get put
   } if
   def
   currentdict end
-} bind def
+} .internalbind def
 
 /complete_instance  % <font_name> <FontDict> <Options> complete_FAPI_Font <font_name> <FontDict>
 { //super.complete_instance exec
   dup /CIDFontName known { /CIDFontPath } { /FontPath } ifelse //RefinePath exec
-} bind def
+} .internalbind def
 
 /IsMyRecord      % <raw_record> -> <raw_record> bool
 { dup type /dicttype eq { dup /FAPI known } { //false } ifelse
-} bind def
+} .internalbind def
 
 /IsActive       % <record> IsActive <bool>
 { pop //is_device_compatible_to_FAPI exec
-} bind def
+} .internalbind def
 
 /FontRecordVirtualMethods //RecordVirtualMethodsStub dup length 2 add dict copy begin
   /IsActive //IsActive def
@@ -192,7 +192,7 @@ currentdict /super.complete_instance currentdict /complete_instance get put
     //FontOptions //complete_instance exec
     2 copy //GetSize exec
     4 3 roll setglobal
-  } bind def
+  } .internalbind def
 currentdict end def
 
 /CIDFontRecordVirtualMethods //RecordVirtualMethodsStub dup length 3 add dict copy begin
@@ -203,7 +203,7 @@ currentdict end def
     //CIDFontOptions //complete_instance exec
     2 copy //GetSize exec
     4 3 roll setglobal
-  } bind def
+  } .internalbind def
 currentdict end def
 
 /ReadFCOfontmap:   % <path> ReadFCOfontmap: name dict ...
@@ -283,7 +283,7 @@ currentdict end def
     } ifelse
   } loop
   currentdict /fontfile undef
-} bind def
+} .internalbind def
 
 %----------------------------------The Redefintion---------------------
 
@@ -293,26 +293,26 @@ currentdict end def
 4 dict begin
   /CategoryName /Font def
   /MapFileName systemdict /FAPIfontmap known {/FAPIfontmap .systemvar} {(FAPIfontmap)} ifelse def
-  /VerifyMap  { pop } bind def
+  /VerifyMap  { pop } .internalbind def
   /PreprocessRecord  % <map> <Name> <raw_record> PreprocessRecord <map> <Name> <record> <bool>
   { //IsMyRecord exec dup {
       pop dup /RecordVirtualMethods //FontRecordVirtualMethods put
       //true
     } if
-  } bind def
+  } .internalbind def
 currentdict end Redefine
 
 % Redefine the /CIDFont category :
 4 dict begin
   /CategoryName /CIDFont def
   /MapFileName systemdict /FAPIcidfmap known {/FAPIcidfmap .systemvar} {(FAPIcidfmap)} ifelse def
-  /VerifyMap  { pop } bind def
+  /VerifyMap  { pop } .internalbind def
   /PreprocessRecord  % <map> <Name> <raw_record> PreprocessRecord <map> <Name> <record> <bool>
   { //IsMyRecord exec dup {
       pop dup /RecordVirtualMethods //CIDFontRecordVirtualMethods put
       //true
     } if
-  } bind def
+  } .internalbind def
 currentdict end Redefine
 
 %==================== A hook for buildfont* operators ====================
@@ -365,7 +365,7 @@ bind def
 { % checks whether execution stack contains packedarray started with /FAPI_hook_disable .
   /FAPI_hook_disable /MappedCategoryRedefiner /ProcSet findresource /execstack_lookup get exec
   //null ne
-} bind def
+} .internalbind def
 
 /FAPIhook_aux  %      <string|name> <font_dict> .FAPIhook <string|name> <font>
 {                                                     % name <<font>>
@@ -416,7 +416,7 @@ bind def
     % Remove the plugin request from the font dictionary
     dup /FAPIPlugInReq undef
   } ifelse
-} bind def
+} .internalbind def
 
 /FAPIhook  %      <string|name> <font_dict> .FAPIhook <string|name> <font>
 { //is_device_compatible_to_FAPI exec
@@ -424,33 +424,33 @@ bind def
   } {
     { (FAPIhook is disabled for the current device.\n) print flush } //FAPI_hook_debug exec
   } ifelse
-} bind def
+} .internalbind def
 
 % ------------------ Redefine .buildfont* with FAPI : -----------------------
 
 /.buildfont1
 { //.buildfont1 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 /.buildfont2
 { //.buildfont2 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 /.buildfont42
 { //.buildfont42 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 /.buildfont9
 { //.buildfont9 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 /.buildfont10
 { //.buildfont10 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 /.buildfont11
 { //.buildfont11 exec //FAPIhook exec
-} bind % 'odef' is below.
+} .internalbind % 'odef' is below.
 
 end % the temporary dictionary for local binding.
 odef odef odef odef odef odef

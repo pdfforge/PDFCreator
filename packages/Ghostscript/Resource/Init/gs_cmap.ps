@@ -44,7 +44,7 @@
   } if
   pop
   CMAPDEBUG { (...FINISHED...\n) print } if
-} bind def
+} .internalbind def
 
 /.composefontdict {		% <name> <cmap|cmapname> <fonts> composefont <name> <font_dict>
   10 dict begin
@@ -74,13 +74,13 @@
     CMap /WMode .knownget { /WMode exch def } if
     /FontType 0 def
   pop pop currentdict end
-} bind executeonly odef
+} .internalbind odef
 
 % composefont doesn't appear in CMap files -- it's documented in
 % the "PostScript Language Reference Manual Supplement".
 /composefont {		% <name> <cmap|cmapname> <fonts> composefont <font>
   .composefontdict /Font defineresource
-} bind def
+} .internalbind def
 
 % ---------------- CMap operators ---------------- %
 
@@ -115,7 +115,7 @@
   /.FontIndex 0 def
   /.TempMaps [20 dict 50 dict 50 dict] def
   /CodeMap //null def		% for .buildcmap
-} bind def
+} .internalbind def
 
 /endcmap {		% - endcmap -
   //.rewriteTempMapsNotDef exec
@@ -154,7 +154,7 @@
 
   currentdict /.TempMaps undef
   /FontMatrices FontMatrices .endmap def
-} bind def
+} .internalbind def
 
 /.endmap {		% <map> .endmap <map>
   dup type /arraytype eq {
@@ -168,31 +168,31 @@
   } {
     dup type /stringtype eq { readonly } if
   } ifelse
-} bind def
+} .internalbind def
 
 /.appendmap {		% -mark- <elt> ... <array#> .appendmap -
   .TempMaps exch get counttomark 1 add 1 roll
   ] 1 index length exch put
-} bind def
+} .internalbind def
 
 /begincodespacerange {	% <count> begincodespacerange -
   pop mark
-} bind def
+} .internalbind def
 
 /endcodespacerange {	% <code_lo> <code_hi> ... endcodespacerange -
   0 .appendmap
-} bind def
+} .internalbind def
 
 /usecmap {		% <CMap_name> usecmap -
   /CMap findresource dup
                 % Copy the top level of .CodeMapData
   /.CodeMapData exch /.CodeMapData get copyarray def
   /FontMatrices exch /FontMatrices get copyarray def
-} bind def
+} .internalbind def
 
 /usefont {		% <fontID> usefont -
   /.FontIndex exch def
-} bind def
+} .internalbind def
 
 /beginusematrix {	% <fontID> beginusematrix -
   FontMatrices wcheck not FontMatrices length 2 index le or {
@@ -200,11 +200,11 @@
     dup 0 FontMatrices putinterval
     /FontMatrices exch def
   } if
-} bind def
+} .internalbind def
 
 /endusematrix {		% <matrix> endusematrix -
   FontMatrices 3 1 roll put
-} bind def
+} .internalbind def
 
 % ------ Rearranged font operators ------ %
 
@@ -213,17 +213,17 @@
   /.FontNames exch def
   /.FontName exch def
   begincmap
-} bind def
+} .internalbind def
 /endrearrangedfont {	% - endrearrangedfont -
   (REARRANGED FONTS NOT IMPLEMENTED YET.) = flush
   .FontName .FontNames 0 get findfont end definefont pop
-} bind def
+} .internalbind def
 
 % ------ Character name/code selector operators ------ %
 
 /beginbfchar {		% <count> beginbfchar -
   pop mark
-} bind def
+} .internalbind def
 /endbfchar {		% [ <code> <to_code|charname> ... endbfchar
   ] [ //true  % [<da><ta>] [ true
   3 -1 roll   % [ true [<da><ta>]
@@ -237,11 +237,11 @@
   } forall
   pop
   1 .appendmap
-} bind def
+} .internalbind def
 
 /beginbfrange {		% <count> beginbfrange -
   pop mark
-} bind def
+} .internalbind def
 /endbfrange {		% <code_lo> <code_hi> <to_code|(charname*)> ...
                         %   endbfrange -
   ] [ 0        % [<da><ta><set>] [ 0
@@ -273,12 +273,12 @@
   } forall
   pop
   1 .appendmap
-} bind def
+} .internalbind def
 
 /.addbfchar {		% <code> <to_code|charname> .addbfchar
                         %   <prefix> <params> <key> <value> <font_index>
   1 index exch .addbfrange
-} bind def
+} .internalbind def
 /.addbfrange {		% <code_lo> <code_hi> <to_code|charname>
                         %   .addbfrange <<same as .addbfchar>>
   4 string dup 3
@@ -304,23 +304,23 @@
     3 -1 roll
   } ifelse
   .FontIndex
-} bind def
+} .internalbind def
 
 % ------ CID selector operators ------ %
 
 /begincidchar {		% <count> begincidchar -
   pop mark
-} bind def
+} .internalbind def
 /endcidchar {		% <code> <cid> ... endcidchar -
   1 .endmapchars
-} bind def
+} .internalbind def
 
 /begincidrange {	% <count> begincidrange -
   pop mark
-} bind def
+} .internalbind def
 /endcidrange {		% <code_lo> <code_hi> <cid_base> ... endcidrange -
   1 .endmapranges
-} bind def
+} .internalbind def
 
 /.endmapchars {         % -mark- <code> <cid> ... <map#> .endmapchars -
   counttomark 1 add 1 roll
@@ -390,7 +390,7 @@
     } if
   } repeat
   counttomark 2 add -1 roll .appendmap
-} bind def
+} .internalbind def
 
 /.endmapranges {	% -mark- <code_lo> <code_hi> <cid_base> ... <map#>
                         %   .endmapranges -
@@ -496,29 +496,29 @@
      } if % end of 2 (or more) ranges
   } repeat
   counttomark 2 add -1 roll .appendmap
-} bind def
+} .internalbind def
 
 /.endmapvalue {		% <cid> .endmapvalue (hi,lo) .FontIndex
   2 string dup 0 3 index -8 bitshift put	% value
   dup 1 4 -1 roll 255 and put
   .FontIndex		% font_index
-} bind def
+} .internalbind def
 
 % ------ notdef operators ------ %
 
 /beginnotdefchar {	% <count> beginnotdefchar -
   pop mark
-} bind def
+} .internalbind def
 /endnotdefchar {	% <code> <cid> ... endnotdefchar -
   2 .endmapchars
-} bind def
+} .internalbind def
 
 /beginnotdefrange {	% <count> beginnotdefrange -
   pop mark
-} bind def
+} .internalbind def
 /endnotdefrange {	% <code_lo> <code_hi> <cid> ... endnotdefrange -
   2 .endmapranges
-} bind def
+} .internalbind def
 
 % ---------------- Resource category definition ---------------- %
 
@@ -553,7 +553,7 @@ dup /DefineResource {
   } if
   dup /CodeMap .knownget { //null eq { .buildcmap } if } if
   /Generic /Category findresource /DefineResource get exec
-} bind executeonly put
+} .internalbind put
 /Category defineresource pop
         % We might have loaded CID font support already.
 /CIDInit /ProcSet 2 copy { findresource } //.internalstopped exec

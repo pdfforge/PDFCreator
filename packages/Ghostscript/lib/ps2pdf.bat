@@ -8,6 +8,9 @@ set LIBDIR=%~dp0
 
 rem The current default compatibility level is PDF 1.4.
 echo -dCompatibilityLevel#1.4 >"%TEMP%\_.at"
+rem So disable higher level features to prevent warnings
+echo -dWriteXRefStm#false >>"%TEMP%\_.at"
+echo -dWriteObjStms#false >>"%TEMP%\_.at"
 goto bot
 
 rem Pass arguments through a file to avoid overflowing the command line.

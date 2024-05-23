@@ -273,7 +273,7 @@ There are two unrelated sets of TIFF drivers. There are five color TIFF drivers 
    .. note::
       The composite CMYK output, because it uses the tint transformed colour equivalents for any spot colours (see Postscript Language Reference "Separation Color Spaces" and "DeviceN Color Spaces"), may not produce an accurate preview, if the job uses overprinting.
 
-   The :title:`tiffsep` device also prints the names of any spot colors detected within a document to stderr, (stderr is also used for the output from the :title:`bbox` device). For each spot color, the name of the color is printed preceded by '%%SeparationName: '. This provides a simple mechanism for users and external applications to be informed about the names of spot colors within a document.
+   The :title:`tiffsep` device can also print the names of any spot colors detected within a document to stderr, (stderr is also used for the output from the :title:`bbox` device). For each spot color, the name of the color is printed preceded by '%%SeparationName: '. This provides a simple mechanism for users and external applications to be informed about the names of spot colors within a document. This is controlled by the ``PrintSpotCMYK`` switch, which defaults to ``false`` (don't print).
 
    Generally Ghostscript will support a maximum of 64 process and spot colors. The :title:`tiffsep` device the :title:`psdcmyk` device and the :title:`psdcmyk16` devices maintain rendered data in a planar form with a maximum of 64 planes set by the definition of ``GS_CLIENT_COLOR_MAX_COMPONENTS`` in the code. That is there can be up to 64 colorants accurately handled with overprint on a single page. If more than 64 colorants are encountered, those beyond 64 will be mapped to CMYK using the alternate tint transform.
 
@@ -295,6 +295,8 @@ There are two unrelated sets of TIFF drivers. There are five color TIFF drivers 
    The file specified via the ``OutputFile`` command line parameter will not be created (it is opened, but deleted prior to finishing each page).
 
    File names for the separations for the CMYK colorants are created by appending '(Cyan).tif', '(Magenta).tif' '(Yellow).tif' or '(Black).tif' to the to the end of the file name specified via the ``OutputFile`` parameter. File names for the spot color separation files are created by appending the ``Spot`` color name in '(' and ').tif' to the filename. If the file name specified via the ``OutputFile`` parameter ends with the suffix '.tif', then the suffix is removed prior to adding the component name in '(' and ').tif'.
+
+   The :title:`tiffsep1` device can also print the names of any spot colors detected within a document to stderr, (stderr is also used for the output from the :title:`bbox` device). For each spot color, the name of the color is printed preceded by '%%SeparationName: '. This provides a simple mechanism for users and external applications to be informed about the names of spot colors within a document. This is controlled by the ``PrintSpotCMYK`` switch, which defaults to ``false`` (don't print).
 
 :title:`tiffscaled`
    The :title:`tiffscaled` device renders internally at the specified resolution to an 8 bit greyscale image. This is then scaled down by an integer scale factor (set by ``-dDownScaleFactor=`` described below) and then error diffused to give 1bpp output. The compression can be set using ``-sCompression=`` as described below.

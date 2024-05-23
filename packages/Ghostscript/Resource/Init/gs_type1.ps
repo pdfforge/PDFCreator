@@ -149,7 +149,7 @@
    {//.buildfont1} stopped
    4 3 roll .setglobal
    {//.buildfont1 $error /errorname get signalerror} if
- } .bind executeonly def	% hide .forceput
+ } .forcebind def	% hide .forceput
 
  % container for CloseSource flag (default //true to prevent buildup of file handles)
  /closesourcedict mark
@@ -178,7 +178,7 @@
         cvx exec
     } ifelse
   } stopped
-} bind executeonly def
+} .internalbind def
 
 % If the diskfont feature isn't included, define a dummy .loadfontdict.
 /.loadfontdict where
@@ -205,7 +205,7 @@ ifelse
     end
     { stop } if
    cleartomark
- } bind def
+ } .internalbind def
 % undefine stuff that is only used internally, and is immediately bound
 currentdict /closesourcedict .undef
 currentdict /.loadfont1 .undef
@@ -232,7 +232,7 @@ currentdict /.loadfont1 .undef
         { CFFCharStrings 0 get} if
     } if
   end
-} bind def
+} .internalbind def
 
 % Here are the BuildChar and BuildGlyph implementation for Type 1 fonts.
 % The names %Type1BuildChar and %Type1BuildGlyph are known to the interpreter.
@@ -241,10 +241,10 @@ currentdict /.loadfont1 .undef
 
 (%Type1BuildChar)  cvn {	% <font> <code> %Type1BuildChar -
   1 index /Encoding get 1 index get //.type1build exec .type1execchar
-} bind executeonly def
+} .internalbind def
 (%Type1BuildGlyph) cvn {	% <font> <name> %Type1BuildGlyph -
   dup //.type1build exec .type1execchar
-} bind executeonly def
+} .internalbind def
 
 1183615869 internaldict begin
 % CCRun is an undocumented procedure provided for Type 4 and Type 0 fonts.
@@ -276,7 +276,7 @@ currentdict /.loadfont1 .undef
   1 index dup type /integertype eq {
     3 index /Encoding get exch get
   } if exch .type1execchar
-} bind def
+} .internalbind def
 
 % setweightvector is an undocumented procedure that force writes
 % weight vector to the font. Do extra checks for safety.
@@ -293,7 +293,7 @@ currentdict /.loadfont1 .undef
   } if
   2 copy /WeightVector exch .forceput
   .setweightvector
-} .bind executeonly odef
+} .forcebind odef
 end
 
 % Register the font types for definefont.
@@ -305,9 +305,9 @@ buildfontdict 4 /.buildfont4 cvx put
 pop
 (%Type2BuildChar)  cvn {	% <font> <code> %Type2BuildChar -
   1 index /Encoding get 1 index get //.type1build exec .type2execchar
-} bind executeonly def
+} .internalbind def
 (%Type2BuildGlyph) cvn {	% <font> <name> %Type2BuildGlyph -
   dup //.type1build exec .type2execchar
-} bind executeonly def
+} .internalbind def
 buildfontdict 2 /.buildfont2 cvx put
 %END2

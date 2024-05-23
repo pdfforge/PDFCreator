@@ -1,81 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>NGettext</id>
-    <version>0.6.2</version>
-    <title>NGettext</title>
+    <version>0.6.7</version>
     <authors>Vitaly Zilnik</authors>
     <owners>Vitaly Zilnik</owners>
-    <licenseUrl>https://raw.githubusercontent.com/neris/NGettext/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/neris/NGettext</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/VitaliiTsilnyk/NGettext</projectUrl>
     <description>A cross-platform .NET implementation of the GNU/Gettext library.</description>
     <tags>ngettext gettext internationalization localization i18n l10n translate</tags>
+    <repository type="git" url="git://github.com/VitaliiTsilnyk/NGettext" />
     <dependencies>
       <group targetFramework=".NETFramework2.0" />
       <group targetFramework=".NETFramework3.5" />
-      <group targetFramework=".NETFramework3.5-Client" />
       <group targetFramework=".NETFramework4.0" />
-      <group targetFramework=".NETFramework4.0-Client" />
       <group targetFramework=".NETFramework4.5" />
       <group targetFramework=".NETFramework4.6" />
-      <group targetFramework=".NETPortable4.0-Profile136" />
-      <group targetFramework=".NETPortable4.0-Profile328" />
-      <group targetFramework=".NETPortable4.5-Profile259" />
+      <group targetFramework=".NETPortable0.0-Profile136" />
+      <group targetFramework=".NETPortable0.0-Profile328" />
       <group targetFramework=".NETStandard1.0">
-        <dependency id="Microsoft.CSharp" version="[4.0.1, )" />
-        <dependency id="System.Runtime" version="[4.1.0, )" />
-        <dependency id="System.Globalization" version="[4.0.11, )" />
-        <dependency id="System.Collections" version="[4.0.11, )" />
-        <dependency id="System.IO" version="[4.1.0, )" />
-        <dependency id="System.Diagnostics.Debug" version="[4.0.11, )" />
-        <dependency id="System.Runtime.Extensions" version="[4.1.0, )" />
-        <dependency id="System.Text.RegularExpressions" version="[4.1.0, )" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard1.3">
-        <dependency id="Microsoft.CSharp" version="[4.0.1, )" />
-        <dependency id="System.Runtime" version="[4.1.0, )" />
-        <dependency id="System.Globalization" version="[4.0.11, )" />
-        <dependency id="System.Collections" version="[4.0.11, )" />
-        <dependency id="System.IO" version="[4.1.0, )" />
-        <dependency id="System.Diagnostics.Debug" version="[4.0.11, )" />
-        <dependency id="System.Runtime.Extensions" version="[4.1.0, )" />
-        <dependency id="System.Text.RegularExpressions" version="[4.1.0, )" />
-        <dependency id="System.Runtime.InteropServices" version="[4.1.0, )" />
-        <dependency id="System.Diagnostics.TraceSource" version="[4.0.0, )" />
-        <dependency id="System.IO.FileSystem" version="[4.0.1, )" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.TraceSource" version="4.3.0" exclude="Build,Analyzers" />
       </group>
+      <group targetFramework=".NETStandard2.0" />
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework2.0" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework3.5" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework3.5-Client" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.0" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.0-Client" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.6" />
-      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETPortable4.0-Profile136" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETPortable4.0-Profile136" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETPortable4.0-Profile136" />
-      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETPortable4.0-Profile328" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETPortable4.0-Profile328" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETPortable4.0-Profile328" />
-      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Collections" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Diagnostics.Debug" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Dynamic.Runtime" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Globalization" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.IO" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Linq" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Linq.Expressions" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Runtime" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Runtime.Extensions" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Text.Encoding" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Text.Encoding.Extensions" targetFramework=".NETPortable4.5-Profile259" />
-      <frameworkAssembly assemblyName="System.Text.RegularExpressions" targetFramework=".NETPortable4.5-Profile259" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework2.0, .NETFramework3.5, .NETFramework4.0, .NETFramework4.5, .NETFramework4.6, .NETPortable0.0-Profile136, .NETPortable0.0-Profile328" />
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.0, .NETFramework4.5, .NETFramework4.6" />
+      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETPortable0.0-Profile136, .NETPortable0.0-Profile328" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETPortable0.0-Profile136, .NETPortable0.0-Profile328" />
     </frameworkAssemblies>
-    <releaseNotes>.NET Core update (.NET Core 1.0.0, .NET Core SDK Preview 2).</releaseNotes>
   </metadata>
 </package>

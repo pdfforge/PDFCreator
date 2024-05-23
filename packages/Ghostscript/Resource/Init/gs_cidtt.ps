@@ -52,14 +52,14 @@ currentdict /super.complete_instance currentdict /complete_instance get put
     % Now fill it :
     Decoding TT_cmap SubstNWP GDBytes CIDMap .fillCIDMap
   currentdict end
-} bind def
+} .internalbind def
 
 /GenerateIdentityCIDMap   % <font> GenerateCIDMap <font>
 { begin
     /CIDMap [ 44000 string 44000 string 44000 string] def
     CIDMap .fillIdentityCIDMap
   currentdict end
-} bind def
+} .internalbind def
 
 /load_sfnts  % <FontDict> load_sfnts <FontDict>
 { % Read the True Type file from the path /Path, and buld /sfnts,
@@ -104,7 +104,7 @@ currentdict /super.complete_instance currentdict /complete_instance get put
     //ChooseDecoding exec                                  % <font>
     //GenerateCIDMap exec                                  % <font>
   } ifelse
-} bind def
+} .internalbind def
 
 %-----------TrueType-specific methods for category redefinition : -----------
 
@@ -129,14 +129,14 @@ currentdict /super.complete_instance currentdict /complete_instance get put
     } ifelse
   } ifelse
   end
-} bind def
+} .internalbind def
 
 /complete_instance  % <font_name> <FontDict> <Options> complete_FAPI_Font <font_name> <FontDict>
 { 1 index /CIDFontType 2 put % Other types are not emulated yet.
   //super.complete_instance exec
   //RefinePath exec
   //load_sfnts exec
-} bind def
+} .internalbind def
 
 /ValidFileTypes
 <<
@@ -147,13 +147,13 @@ currentdict /super.complete_instance currentdict /complete_instance get put
 /IsMyRecord      % <raw_record> -> <raw_record> bool
 {
   dup type /dicttype eq { dup /FileType .knownget { //ValidFileTypes exch known } { //false } ifelse } { //false } ifelse
-} bind def
+} .internalbind def
 
 currentdict /ValidFileTypes undef
 
 /IsActive       % <record> IsActive <bool>
 { pop //true
-} bind def
+} .internalbind def
 
 /CIDFontRecordVirtualMethods //RecordVirtualMethodsStub dup length 3 add dict copy begin
   /GetCSI //TranslateCSI def
@@ -163,20 +163,20 @@ currentdict /ValidFileTypes undef
     //CIDFontOptions //complete_instance exec
     2 copy //GetSize exec
     4 3 roll setglobal
-  } bind def
+  } .internalbind def
 currentdict end def
 
 % Redefine the /CIDFont category :
 4 dict begin
   /CategoryName /CIDFont def
   /IsMapFileOptional //true def
-  /VerifyMap  { pop } bind def
+  /VerifyMap  { pop } .internalbind def
   /PreprocessRecord  % <map> <Name> <raw_record> PreprocessRecord <map> <Name> <record> <bool>
   { //IsMyRecord exec dup {
       pop dup /RecordVirtualMethods //CIDFontRecordVirtualMethods put
       //true
     } if
-  } bind def
+  } .internalbind def
 currentdict end
 
 /MappedCategoryRedefiner /ProcSet findresource /Redefine get exec

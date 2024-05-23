@@ -40,7 +40,7 @@
  } bind executeonly def
 (%Type42BuildGlyph) cvn	% <font> <name> %Type42BuildGlyph -
  { dup //.type42build exec
- } bind executeonly def
+ } .internalbind def
 
 currentdict /.type42build .undef
 
@@ -57,5 +57,5 @@ buildfontdict 42
     } {
       systemdict /.buildfont42 get exec
     } ifelse
-  } bind
+  } .internalbind
 put

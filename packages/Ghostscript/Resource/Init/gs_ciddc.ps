@@ -37,7 +37,7 @@ currentglobal //true setglobal
   pop                                         % /ResName
   currentdict end /Decoding                   % /ResName <<inst>> /Decoding
   defineresource pop
-} bind
+} .internalbind
 
 >> /ProcSet defineresource pop
 
@@ -50,33 +50,33 @@ dup /InstanceType /dicttype put
 %----------------ParseCMap_Inverse procset----------------------------
 
 /ParseCMap_Inverse <<
-  /findresource { pop } bind
-  /defineresource { pop pop } bind
+  /findresource { pop } .internalbind
+  /defineresource { pop pop } .internalbind
   /dict {}
-  /def { pop pop } bind
+  /def { pop pop } .internalbind
   /dup //null
-  /begin { pop } bind
+  /begin { pop } .internalbind
   /end {}
   /currentdict //null
   /CMapName //null
-  /usecmap { pop } bind
+  /usecmap { pop } .internalbind
   /begincmap {}
   /endcmap {}
-  /begincodespacerange { pop mark } bind
-  /endcodespacerange { cleartomark } bind
-  /beginnotdefrange { pop mark } bind
-  /endnotdefrange { cleartomark } bind
-  /beginbfchar { pop mark } bind
-  /endbfchar { pop mark } bind
+  /begincodespacerange { pop mark } .internalbind
+  /endcodespacerange { cleartomark } .internalbind
+  /beginnotdefrange { pop mark } .internalbind
+  /endnotdefrange { cleartomark } .internalbind
+  /beginbfchar { pop mark } .internalbind
+  /endbfchar { pop mark } .internalbind
   /beginbfrange { begincidrange }
   /endbfrange { endcidrange }
   /begincidchar { beginbfchar }
   /endcidchar { endbfchar }
-  /begincidrange { pop mark } bind
-  /endcidrange  { cleartomark } bind
+  /begincidrange { pop mark } .internalbind
+  /endcidrange  { cleartomark } .internalbind
 >>  % Just keep it on stack for a while.
 
-% Now we define another dict for local binding, than merge it with the previous one :
+% Now we define another dict for local .internalbinding, than merge it with the previous one :
 dup length 5 add dict begin
 
   /.Ranges 40 dict def % Key = CID/256, value = array of 256 integer codes.
@@ -84,7 +84,7 @@ dup length 5 add dict begin
 
   /.StringToInt     % <string> .StringToInt <integer>
   { 0 exch { exch 8 bitshift add } forall
-  } bind def
+  } .internalbind def
 
   /.SetCouple    % <I> <b> .SetCouple -
   { exch                                    % b I
@@ -111,7 +111,7 @@ dup length 5 add dict begin
     } {
       pop 3 2 roll put                      %
     } ifelse
-  } bind def
+  } .internalbind def
 
   /endcidrange
   { % Writes the inversed CMap to .Ranges
@@ -131,13 +131,13 @@ dup length 5 add dict begin
       pop
     } repeat
     pop % mark
-  } bind def
+  } .internalbind def
 
   /.GetCIDDecoding         % - .GetCIDDEcoding <dict>
   { //.Ranges dup length dict copy
     //.Ranges //.PurgeDict exec
     //.Ranges /CIDCount 0 put
-  } bind def
+  } .internalbind def
 
 currentdict end
 exch copy % Merge the dicts - see above.
@@ -204,7 +204,7 @@ begin
     exch pop begin                                   %
     .GetCIDDecoding
     end
-  } bind executeonly def
+  } .internalbind def
 
   /FindResource      % <name> FindResource <dict>
   { currentglobal exch                               % bGlobal /InstName
@@ -212,7 +212,7 @@ begin
     dup //.MakeInstance exec                         % bGlobal /InstName <Inst>
     DefineResource                                   % bGlobal <Inst>
     exch setglobal                                   % <Inst>
-  } bind executeonly def
+  } .internalbind def
 
 currentdict end
 /CIDDecoding exch /Category defineresource pop

@@ -28,7 +28,7 @@ level2dict begin
 
 /.makestackdict
         { { counttomark -1 roll } forall .dicttomark
-        } bind def
+        } .internalbind def
 /currenthalftone		% - currenthalftone <dict>
         { mark .currenthalftone
            { { exch pop }		% halftone
@@ -63,7 +63,7 @@ currentdict /.makestackdict undef
     counttomark 2 roll
   } forall pop pop
   /Default 1 index .dicttomark exch pop { .sethalftone5 }
-} bind def
+} .internalbind def
 
 % The value of each entry in .halftonetypes is a procedure:
 %	<setdict> <htdict> <<proc>> <setdict'> <htdict'> <sethalftoneproc>
@@ -74,7 +74,7 @@ systemdict begin
 15 dict /.halftonetypes 1 index def begin
   1 {
     mark exch /Default exch .dicttomark { .sethalftone5 }
-  } bind def
+  } .internalbind def
   2 {
     1 { /Frequency /Angle /SpotFunction } {
       /RedFrequency /RedAngle /RedSpotFunction
@@ -82,10 +82,10 @@ systemdict begin
       /BlueFrequency /BlueAngle /BlueSpotFunction
       /GrayFrequency /GrayAngle /GraySpotFunction
     } //.makehalftoneRGBV exec
-  } bind def
+  } .internalbind def
   3 {
     mark exch /Default exch .dicttomark { .sethalftone5 }
-  } bind def
+  } .internalbind def
   4 {
     3 { /Width /Height /Thresholds } {
       /RedWidth /RedHeight /RedThresholds
@@ -93,7 +93,7 @@ systemdict begin
       /BlueWidth /BlueHeight /BlueThresholds
       /GrayWidth /GrayHeight /GrayThresholds
     } //.makehalftoneRGBV exec
-  } bind def
+  } .internalbind def
   5 {
     pop dup length dict copy
     mark 1 index {
@@ -114,7 +114,7 @@ systemdict begin
         pop
       } ifelse
     } forall .dicttomark { .sethalftone5 }
-  } bind def
+  } .internalbind def
 end
 end
 currentdict /.makehalftoneRGBV undef
@@ -132,7 +132,7 @@ currentdict /.makehalftoneRGBV undef
   } if
   exec exec
   .setglobal pop
-} .bind odef
+} .forcebind odef
 % Redefine setscreen and setcolorscreen to recognize halftone dictionaries,
 % and to insert the Frequency and Angle into Type 1 halftones, per
 % Adobe TN 5085.
@@ -145,19 +145,19 @@ currentdict /.makehalftoneRGBV undef
       languagelevel 3 ge { dup /AccurateScreens dup getuserparam put } if
     }
    if
- } bind def
+ } .internalbind def
 /setscreen		% <ignore*2> <dict> setscreen -
         { dup type /dicttype eq
            { //.fixsethalftonescreen exec sethalftone pop pop pop }
            { //setscreen }
           ifelse
-        } .bind odef
+        } .forcebind odef
 /setcolorscreen		% <ignore*11> <dict> setcolorscreen -
         { dup type /dicttype eq
            { //.fixsethalftonescreen exec sethalftone 12 { pop } repeat }
            { //setcolorscreen }
           ifelse
-        } .bind odef
+        } .forcebind odef
 currentdict /.fixsethalftonescreen undef
 
 % Redefine currentscreen and currentcolorscreen to extract the Frequency
@@ -167,7 +167,7 @@ currentdict /.fixsethalftonescreen undef
     { dup /Frequency get 1 index /Angle get }
     { 60.0 0.0 }	% Adobe returns these as reals
    ifelse 3 2 roll
- } bind def
+ } .internalbind def
 /currentscreen		% - currentscreen 60 0 <dict>
         { .currenthalftone
            { { //.fixcurrenthalftonescreen exec }% halftone
@@ -196,7 +196,7 @@ currentdict /.fixcurrenthalftonescreen undef
 
 /.UserObjects {
   .userdict /UserObjects
-} bind executeonly odef
+} .internalbind odef
 % In order to get proper error recovery behavior, we need to be careful
 % not to pop any operands from the stack until we're done.
 % The code below faithfully duplicates the apparent array-growing
@@ -220,21 +220,21 @@ currentdict /.fixcurrenthalftonescreen undef
     .UserObjects 3 .argindex 1 add 10 .max .localvmarray put
   } ifelse
   .UserObjects get 2 .argindex 2 index put pop pop
-} .bind odef
+} .forcebind odef
 /execuserobject {		% <index> execuserobject -
   dup type /integertype ne {
     % Adobe validates the argument before accessing UserObjects - CET 31-03
     /execuserobject .systemvar /typecheck signalerror
   } if
   .UserObjects get 1 .argindex get exch pop exec
-} .bind odef
+} .forcebind odef
 /undefineuserobject {		% <index> undefineuserobject -
   dup type /integertype ne {
     % Adobe validates the argument before accessing UserObjects - CET 31-11
     /undefineuserobject .systemvar /typecheck signalerror
   } if
   .UserObjects get 1 .argindex //null put pop
-} .bind odef
+} .forcebind odef
 currentdict /.UserObjects undef
 
 % ------ Cache control ------ %

@@ -29,7 +29,7 @@
   } {
     1 index /FontType 3 -1 roll put //true
   } ifelse
-} bind def
+} .internalbind def
 
 /.cidfonttypes where { pop } { /.cidfonttypes 6 dict def } ifelse
 .cidfonttypes
@@ -45,7 +45,7 @@
        dup length string copy
        exch setglobal
    } ifelse
-} bind def
+} .internalbind def
 
 % The key in .cidfonttypes is the CIDFontType value;
 % the value is a procedure that takes a font name and the CIDFont dictionary
@@ -112,7 +112,7 @@ dup 0 {
     } ifelse
   } forall
   3 -1 roll setglobal
-} bind def
+} .internalbind def
 
 % Read some Subrs for the current Type 1 subfont.
 % The subfont's Private dict is currentdict; the CIDFont itself is the
@@ -123,7 +123,7 @@ dup 0 {
     dup SDBytes .readint exch SDBytes add SDBytes .readint
     1 index sub string ReadString 2 index 3 1 roll put
   } for
-} bind def
+} .internalbind def
 
 % Ensure that all the Subrs for the current Type 1 subfont are loaded.
 % The subfont's Private dict is currentdict; the CIDFont itself is the
@@ -145,7 +145,7 @@ dup 0 {
     } ifelse
     Subrs copy pop
   } if
-} bind def
+} .internalbind def
 
 % ------ CIDFontType 1 (FontType 10) ------ %
 
@@ -230,7 +230,7 @@ pop		% .cidfonttypes
   CIDFontName currentdict /CIDFont defineresource pop
   end			% CID font dict
   end			% resource category dict
-} bind def
+} .internalbind def
 
 % Some Adobe fonts include the line
 %   /Setup /cid_Setup load def
@@ -252,7 +252,7 @@ pop		% .cidfonttypes
         % Read from a string or an array of strings.
     GlyphData .stringsreadstring
   } ifelse
-} bind def
+} .internalbind def
 /.stringsreadstring	% <pos> <string> <strings> .stringsreadstring
                         %   <vmstring>
 { dup type /stringtype eq
@@ -282,17 +282,17 @@ pop		% .cidfonttypes
      ifelse
    }
   ifelse
-} bind def
+} .internalbind def
 
 % Interpret a byte string as a (big-endian) integer.
 /.cvbsi			% <bytes> .cvbsi <int>
 { 0 exch { exch 8 bitshift add } forall
-} bind def
+} .internalbind def
 
 % Read an integer from binary data.
 /.readint		% <pos> <nbytes> .readint <int>
 { string ReadString .cvbsi
-} bind def
+} .internalbind def
 
 currentdict end
 
@@ -303,7 +303,7 @@ currentdict end
 /.readglyphdata {
   currentfont exch .type9mapcid
   FDArray exch get exch
-} bind executeonly def
+} .internalbind executeonly def
 
 % BuildGlyph procedure for CIDFontType 0.
 % The name %Type9BuildGlyph is known to the interpreter.
@@ -323,7 +323,7 @@ currentdict end
   } ifelse	%**** WRONG ****
   end
   .setglobal
-} bind executeonly def
+} .internalbind executeonly def
 
 % ------ CIDFontType 2 ------ %
 
@@ -336,7 +336,7 @@ currentdict end
   } if
                         % Stack: cidfont cid glyphindex
   1 index exch .type42execchar
-} bind executeonly def
+} .internalbind executeonly def
 
 % ---------------- Define resources ---------------- %
 
@@ -367,7 +367,7 @@ languagelevel exch 2 .setlanguagelevel
     /ProvideUnicodeDecoding get exec
   } if
   dup /CIDFontType get //.cidfonttypes exch get exec
-} bind executeonly odef
+} .internalbind executeonly odef
 
 /CIDFont /Generic /Category findresource dup length dict .copydict
 dup /InstanceType /dicttype put
@@ -389,14 +389,14 @@ dup /DefineResource {
   } {
     dup /undefinedresource signalerror
   } ifelse
-} bind def
+} .internalbind def
 dup /.LoadResource {
   currentglobal {
     //.loadcidfontresource exec
   } {
     //true setglobal {//.loadcidfontresource exec} stopped //false setglobal {stop} if
   } ifelse
-} bind put
+} .internalbind put
 
 /Category defineresource pop
 
@@ -425,7 +425,7 @@ dup /.CheckResource {
       //false
     } ifelse
   } ifelse
-} bind put
+} .internalbind put
 /Category defineresource pop
 
 .setlanguagelevel

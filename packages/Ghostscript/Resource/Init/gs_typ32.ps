@@ -59,11 +59,11 @@ systemdict /.makeglyph32 .undef
   } if
   1 index /CharStrings get 3 index 3 -1 roll put
   pop pop pop pop
-} obind
+} executeonly obind
 
 /removeall {		% <type32font> removeall -
   0 65535 2 index removeglyphs pop
-} obind
+} executeonly obind
 
 /.removeglyphs systemdict /.removeglyphs get
 systemdict /.removeglyphs .undef
@@ -74,7 +74,7 @@ systemdict /.removeglyphs .undef
                 % Stack: cidmin cidmax font CharStrings cid bitmap
     pop dup 5 index ge { dup 4 index le { 2 copy undef } if } if pop
   } forall pop pop pop pop
-} obind
+} executeonly obind
 
 .dicttomark /ProcSet defineresource pop
 
@@ -84,7 +84,7 @@ systemdict /.removeglyphs .undef
   dup /FontType 32 .forceput
   dup /CharStrings 20 dict .forceput
   1 index exch .buildfont32 exch pop
-} .bind executeonly odef
+} .forcebind odef
 .cidfonttypes begin
 
 
@@ -126,7 +126,7 @@ currentdict /CIDFontType4 .forceundef
     [ 1 0 0 1 11 -2 roll exch neg exch neg ] 5 -1 roll imagemask
   } ifelse
   pop pop pop pop
-} .bind def
+} .forcebind def
 
 systemdict /.getmetrics32 .undef
 

@@ -1583,14 +1583,6 @@
             </summary>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
         </member>
-        <member name="M:NLog.ILogger.DebugException(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Debug(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Debug</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
-        </member>
         <member name="M:NLog.ILogger.Debug(System.Exception,System.String)">
             <summary>
             Writes the diagnostic message and exception at the <c>Debug</c> level.
@@ -1635,14 +1627,6 @@
             </summary>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILogger.Debug(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Debug(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Debug</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Debug``1(System.IFormatProvider,System.String,``0)">
             <summary>
@@ -1707,6 +1691,22 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILogger.Debug(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Debug(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Debug</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILogger.DebugException(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Debug(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Debug</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="M:NLog.ILogger.Info``1(``0)">
             <overloads>
             Writes the diagnostic message at the <c>Info</c> level using the specified format provider and format parameters.
@@ -1730,14 +1730,6 @@
             Writes the diagnostic message at the <c>Info</c> level.
             </summary>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
-        </member>
-        <member name="M:NLog.ILogger.InfoException(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Info(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Info</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Info(System.Exception,System.String)">
             <summary>
@@ -1783,14 +1775,6 @@
             </summary>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILogger.Info(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Info(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Info</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Info``1(System.IFormatProvider,System.String,``0)">
             <summary>
@@ -1855,6 +1839,22 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILogger.Info(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Info(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Info</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILogger.InfoException(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Info(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Info</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="M:NLog.ILogger.Warn``1(``0)">
             <overloads>
             Writes the diagnostic message at the <c>Warn</c> level using the specified format provider and format parameters.
@@ -1878,14 +1878,6 @@
             Writes the diagnostic message at the <c>Warn</c> level.
             </summary>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
-        </member>
-        <member name="M:NLog.ILogger.WarnException(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Warn(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Warn</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Warn(System.Exception,System.String)">
             <summary>
@@ -1931,14 +1923,6 @@
             </summary>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILogger.Warn(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Warn(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Warn</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Warn``1(System.IFormatProvider,System.String,``0)">
             <summary>
@@ -2003,6 +1987,22 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILogger.Warn(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Warn(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Warn</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILogger.WarnException(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Warn(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Warn</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="M:NLog.ILogger.Error``1(``0)">
             <overloads>
             Writes the diagnostic message at the <c>Error</c> level using the specified format provider and format parameters.
@@ -2026,14 +2026,6 @@
             Writes the diagnostic message at the <c>Error</c> level.
             </summary>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
-        </member>
-        <member name="M:NLog.ILogger.ErrorException(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Error(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Error</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Error(System.Exception,System.String)">
             <summary>
@@ -2079,14 +2071,6 @@
             </summary>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILogger.Error(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Error(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Error</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Error``1(System.IFormatProvider,System.String,``0)">
             <summary>
@@ -2151,6 +2135,22 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILogger.Error(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Error(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Error</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILogger.ErrorException(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Error(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Error</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="M:NLog.ILogger.Fatal``1(``0)">
             <overloads>
             Writes the diagnostic message at the <c>Fatal</c> level using the specified format provider and format parameters.
@@ -2174,14 +2174,6 @@
             Writes the diagnostic message at the <c>Fatal</c> level.
             </summary>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
-        </member>
-        <member name="M:NLog.ILogger.FatalException(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Fatal(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Fatal</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Fatal(System.Exception,System.String)">
             <summary>
@@ -2227,14 +2219,6 @@
             </summary>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILogger.Fatal(System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILogger.Fatal(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Fatal</c> level.
-            </summary>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILogger.Fatal``1(System.IFormatProvider,System.String,``0)">
             <summary>
@@ -2299,11 +2283,29 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILogger.Fatal(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Fatal(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Fatal</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILogger.FatalException(System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILogger.Fatal(System.Exception,System.String)"/> - Writes the diagnostic message and exception at the <c>Fatal</c> level.
+            </summary>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="T:NLog.ILoggerBase">
             <content>
             Auto-generated Logger members for binary compatibility with NLog 1.0.
             </content>
             <summary>
+            Obsolete and replaced by <see cref="T:NLog.ILogger"/> with NLog v5.3.
+            
             Logger with only generic methods (passing 'LogLevel' to methods) and core properties.
             </summary>
         </member>
@@ -2564,6 +2566,7 @@
         </member>
         <member name="E:NLog.ILoggerBase.LoggerReconfigured">
             <summary>
+            Obsolete on the ILogger-interface, instead use <see cref="E:NLog.Logger.LoggerReconfigured"/> with NLog v5.3.
             Occurs when logger configuration changes.
             </summary>
         </member>
@@ -2574,6 +2577,7 @@
         </member>
         <member name="P:NLog.ILoggerBase.Factory">
             <summary>
+            Obsolete on the ILogger-interface, instead use <see cref="P:NLog.Logger.Factory"/> with NLog v5.3.
             Gets the factory that created this logger.
             </summary>
         </member>
@@ -2624,15 +2628,6 @@
             <param name="level">The log level.</param>
             <param name="messageFunc">A function returning message to be written. Function is not evaluated if logging is not enabled.</param>
         </member>
-        <member name="M:NLog.ILoggerBase.LogException(NLog.LogLevel,System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.Exception,System.String,System.Object[])"/> - Writes the diagnostic message and exception at the specified level.
-            </summary>
-            <param name="level">The log level.</param>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
-        </member>
         <member name="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.Exception,System.String,System.Object[])">
             <summary>
             Writes the diagnostic message and exception at the specified level.
@@ -2675,15 +2670,6 @@
             <param name="level">The log level.</param>
             <param name="message">A <see langword="string" /> containing format items.</param>
             <param name="args">Arguments to format.</param>
-        </member>
-        <member name="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.String,System.Exception)">
-            <summary>
-            Obsolete and replaced by <see cref="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.Exception,System.String,System.Object[])"/> - Writes the diagnostic message and exception at the specified level.
-            </summary>
-            <param name="level">The log level.</param>
-            <param name="message">A <see langword="string" /> to be written.</param>
-            <param name="exception">An exception to be logged.</param>
-            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
         </member>
         <member name="M:NLog.ILoggerBase.Log``1(NLog.LogLevel,System.IFormatProvider,System.String,``0)">
             <summary>
@@ -2754,8 +2740,28 @@
             <param name="argument2">The second argument to format.</param>
             <param name="argument3">The third argument to format.</param>
         </member>
+        <member name="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.Exception,System.String,System.Object[])"/> - Writes the diagnostic message and exception at the specified level.
+            </summary>
+            <param name="level">The log level.</param>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
+        <member name="M:NLog.ILoggerBase.LogException(NLog.LogLevel,System.String,System.Exception)">
+            <summary>
+            Obsolete and replaced by <see cref="M:NLog.ILoggerBase.Log(NLog.LogLevel,System.Exception,System.String,System.Object[])"/> - Writes the diagnostic message and exception at the specified level.
+            </summary>
+            <param name="level">The log level.</param>
+            <param name="message">A <see langword="string" /> to be written.</param>
+            <param name="exception">An exception to be logged.</param>
+            <remarks>This method was marked as obsolete before NLog 4.3.11 and it may be removed in a future release.</remarks>
+        </member>
         <member name="T:NLog.ISuppress">
             <summary>
+            Obsolete and replaced by <see cref="T:NLog.ILogger"/> with NLog v5.3.
+            
             Provides an interface to execute System.Actions without surfacing any exceptions raised for that action.
             </summary>
         </member>
@@ -3039,6 +3045,46 @@
         <member name="P:NLog.Common.IInternalLoggerContext.LogFactory">
             <summary>
             The current LogFactory next to LogManager
+            </summary>
+        </member>
+        <member name="T:NLog.Common.InternalEventOccurredHandler">
+            <summary>
+            Handle Internal LogEvent written to the InternalLogger
+            </summary>
+            <remarks>
+            Never use/call NLog Logger-objects when handling these internal events, as it will lead to deadlock / stackoverflow.
+            </remarks>
+        </member>
+        <member name="T:NLog.Common.InternalLogEventArgs">
+            <summary>
+            Internal LogEvent details from <see cref="T:NLog.Common.InternalLogger"/> 
+            </summary>
+        </member>
+        <member name="P:NLog.Common.InternalLogEventArgs.Message">
+            <summary>
+            The rendered message
+            </summary>
+        </member>
+        <member name="P:NLog.Common.InternalLogEventArgs.Level">
+            <summary>
+            The log level
+            </summary>
+        </member>
+        <member name="P:NLog.Common.InternalLogEventArgs.Exception">
+            <summary>
+            The exception. Could be null.
+            </summary>
+        </member>
+        <member name="P:NLog.Common.InternalLogEventArgs.SenderType">
+            <summary>
+            The type that triggered this internal log event, for example the FileTarget. 
+            This property is not always populated. 
+            </summary>
+        </member>
+        <member name="P:NLog.Common.InternalLogEventArgs.SenderName">
+            <summary>
+            The context name that triggered this internal log event, for example the name of the Target. 
+            This property is not always populated. 
             </summary>
         </member>
         <member name="T:NLog.Common.InternalLogger">
@@ -3544,6 +3590,7 @@
         </member>
         <member name="P:NLog.Common.InternalLogger.LogToTrace">
             <summary>
+            Obsolete and replaced by <see cref="P:NLog.Common.InternalLogger.LogWriter"/> with NLog v5.3.
             Gets or sets a value indicating whether internal messages should be written to the <see cref="N:System.Diagnostics"/>.Trace
             </summary>
         </member>
@@ -3560,12 +3607,23 @@
         </member>
         <member name="E:NLog.Common.InternalLogger.LogMessageReceived">
             <summary>
+            Obsolete and replaced by <see cref="E:NLog.Common.InternalLogger.InternalEventOccurred"/> with NLog 5.3.
             Event written to the internal log.
             </summary>
             <remarks>
             EventHandler will only be triggered for events, where severity matches the configured <see cref="P:NLog.Common.InternalLogger.LogLevel"/>.
             
             Avoid using/calling NLog Logger-objects when handling these internal events, as it will lead to deadlock / stackoverflow.
+            </remarks>
+        </member>
+        <member name="E:NLog.Common.InternalLogger.InternalEventOccurred">
+            <summary>
+            Internal LogEvent written to the InternalLogger
+            </summary>
+            <remarks>
+            EventHandler will only be triggered for events, where severity matches the configured <see cref="P:NLog.Common.InternalLogger.LogLevel"/>.
+            
+            Never use/call NLog Logger-objects when handling these internal events, as it will lead to deadlock / stackoverflow.
             </remarks>
         </member>
         <member name="P:NLog.Common.InternalLogger.IncludeTimestamp">
@@ -3660,58 +3718,6 @@
             Determine if logging is enabled.
             </summary>
             <returns><c>true</c> if logging is enabled; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:NLog.Common.InternalLogger.WriteToLogFile(System.String)">
-            <summary>
-            Write internal messages to the log file defined in <see cref="P:NLog.Common.InternalLogger.LogFile"/>.
-            </summary>
-            <param name="message">Message to write.</param>
-            <remarks>
-            Message will be logged only when the property <see cref="P:NLog.Common.InternalLogger.LogFile"/> is not <c>null</c>, otherwise the
-            method has no effect.
-            </remarks>
-        </member>
-        <member name="M:NLog.Common.InternalLogger.WriteToTextWriter(System.String)">
-            <summary>
-            Write internal messages to the <see cref="T:System.IO.TextWriter"/> defined in <see cref="P:NLog.Common.InternalLogger.LogWriter"/>.
-            </summary>
-            <param name="message">Message to write.</param>
-            <remarks>
-            Message will be logged only when the property <see cref="P:NLog.Common.InternalLogger.LogWriter"/> is not <c>null</c>, otherwise the
-            method has no effect.
-            </remarks>
-        </member>
-        <member name="M:NLog.Common.InternalLogger.WriteToConsole(System.String)">
-            <summary>
-            Write internal messages to the <see cref="T:System.Console"/>.
-            </summary>
-            <param name="message">Message to write.</param>
-            <remarks>
-            Message will be logged only when the property <see cref="P:NLog.Common.InternalLogger.LogToConsole"/> is <c>true</c>, otherwise the 
-            method has no effect.
-            </remarks>
-        </member>
-        <member name="M:NLog.Common.InternalLogger.WriteToErrorConsole(System.String)">
-            <summary>
-            Write internal messages to the <see cref="P:System.Console.Error"/>.
-            </summary>
-            <param name="message">Message to write.</param>
-            <remarks>
-            Message will be logged when the property <see cref="P:NLog.Common.InternalLogger.LogToConsoleError"/> is <c>true</c>, otherwise the 
-            method has no effect.
-            </remarks>
-        </member>
-        <member name="M:NLog.Common.InternalLogger.WriteToTrace(System.String)">
-            <summary>
-            Write internal messages to the <see cref="T:System.Diagnostics.Trace"/>.
-            </summary>
-            <param name="message">A message to write.</param>
-            <remarks>
-            Works when property <see cref="P:NLog.Common.InternalLogger.LogToTrace"/> set to true.
-            The <see cref="T:System.Diagnostics.Trace"/> is used in Debug and Release configuration. 
-            The <see cref="T:System.Diagnostics.Debug"/> works only in Debug configuration and this is reason why is replaced by <see cref="T:System.Diagnostics.Trace"/>.
-            in DEBUG 
-            </remarks>
         </member>
         <member name="M:NLog.Common.InternalLogger.LogAssemblyVersion(System.Reflection.Assembly)">
             <summary>
@@ -5704,6 +5710,22 @@
             <remarks>If initializing not started or failed, then checking process will be canceled</remarks>
             </summary>
         </member>
+        <member name="M:NLog.Config.LoggingConfiguration.FlushAllTargetsAsync(NLog.Config.LoggingConfiguration,NLog.Common.AsyncContinuation,System.Nullable{System.TimeSpan})">
+            <summary>
+            Flushes any pending log messages on all appenders.
+            </summary>
+            <param name="loggingConfiguration">Config containing Targets to Flush</param>
+            <param name="asyncContinuation">Flush completed notification (success / timeout)</param>
+            <param name="asyncTimeout">Optional timeout that guarantees that completed notification is called.</param>
+            <returns></returns>
+        </member>
+        <member name="M:NLog.Config.LoggingConfiguration.BuildLoggerConfiguration(System.String,NLog.LogLevel,System.Collections.Generic.List{NLog.Config.LoggingRule})">
+            <summary>
+            Change this method with NLog v6 to disconnect LogFactory from Targets/Layouts
+            - Remove LoggingRule-List-parameter
+            - Return ITargetWithFilterChain[]
+            </summary>
+        </member>
         <member name="M:NLog.Config.LoggingConfiguration.ToString">
             <inheritdoc/>
         </member>
@@ -5928,6 +5950,8 @@
         </member>
         <member name="P:NLog.Config.LoggingRule.ChildRules">
             <summary>
+            Obsolete since too exotic feature with NLog v5.3.
+            
             Gets a collection of child rules to be evaluated when this rule matches.
             </summary>
         </member>
@@ -5975,7 +5999,7 @@
             </summary>
             <remarks>
             NLog v4.6 introduced the setting with default value <see cref="F:NLog.Filters.FilterResult.Neutral"/>. 
-            NLog v5 marked it as obsolete and change default value to <see cref="F:NLog.Filters.FilterResult.Log"/>
+            NLog v5 marked it as obsolete and change default value to <see cref="F:NLog.Filters.FilterResult.Ignore"/>
             </remarks>
         </member>
         <member name="P:NLog.Config.LoggingRule.FilterDefaultAction">
@@ -6123,6 +6147,8 @@
         </member>
         <member name="T:NLog.Config.MutableUnsafeAttribute">
             <summary>
+            Obsolete and replaced by <see cref="T:NLog.Config.ThreadAgnosticImmutableAttribute"/> with NLog v5.3.
+            
             Marks the layout or layout renderer depends on mutable objects from the LogEvent
             
             This can be <see cref="P:NLog.LogEventInfo.Properties"/> or <see cref="P:NLog.LogEventInfo.Exception"/>
@@ -6393,6 +6419,18 @@
              - The result should not be precalculated, for example the target sends some extra context information. 
              </remarks>
         </member>
+        <member name="T:NLog.Config.ThreadAgnosticImmutableAttribute">
+            <summary>
+            Marks the layout or layout renderer as thread independent - it producing correct results 
+            regardless of the thread it's running on.
+            
+            Layout or layout-renderer depends on <see cref="P:NLog.LogEventInfo.Properties"/> or <see cref="P:NLog.LogEventInfo.Exception"/>,
+            and requires that LogEvent-state is recognized as immutable.
+            </summary>
+            <remarks>
+            Must be used in combination with <see cref="T:NLog.Config.ThreadAgnosticAttribute"/>, else it will have no effect
+            </remarks>
+        </member>
         <member name="T:NLog.Config.ThreadSafeAttribute">
              <summary>
              Marks the layout or layout renderer as thread safe - it producing correct results 
@@ -6541,18 +6579,24 @@
         </member>
         <member name="M:NLog.Config.XmlLoggingConfiguration.GetCandidateConfigFilePaths">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Get file paths (including filename) for the possible NLog config files. 
             </summary>
             <returns>The file paths to the possible config file</returns>
         </member>
         <member name="M:NLog.Config.XmlLoggingConfiguration.SetCandidateConfigFilePaths(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Overwrite the paths (including filename) for the possible NLog config files.
             </summary>
             <param name="filePaths">The file paths to the possible config file</param>
         </member>
         <member name="M:NLog.Config.XmlLoggingConfiguration.ResetCandidateConfigFilePath">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Clear the candidate file paths and return to the defaults.
             </summary>
         </member>
@@ -8375,6 +8419,13 @@
             Clear o
             </summary>
         </member>
+        <member name="M:NLog.Internal.CallSiteInformation.AddCallSiteHiddenAssembly(System.Reflection.Assembly)">
+            <summary>
+            Adds the given assembly which will be skipped 
+            when NLog is trying to find the calling method on stack trace.
+            </summary>
+            <param name="assembly">The assembly to skip.</param>
+        </member>
         <member name="M:NLog.Internal.CallSiteInformation.SetStackTrace(System.Diagnostics.StackTrace,System.Nullable{System.Int32},System.Type)">
             <summary>
             Sets the stack trace for the event info.
@@ -8394,6 +8445,8 @@
         </member>
         <member name="P:NLog.Internal.CallSiteInformation.UserStackFrame">
             <summary>
+            Obsolete and replaced by <see cref="P:NLog.LogEventInfo.CallerMemberName"/> or ${callsite} with NLog v5.3.
+            
             Gets the stack frame of the method that did the logging.
             </summary>
         </member>
@@ -8428,20 +8481,15 @@
             <param name="stackFrames">The stack trace of the logging method invocation</param>
             <param name="firstUserStackFrame">Starting point for skipping async MoveNext-frames</param>
         </member>
-        <member name="M:NLog.Internal.CallSiteInformation.SkipAssembly(System.Diagnostics.StackFrame)">
+        <member name="M:NLog.Internal.CallSiteInformation.SkipStackFrameWhenHidden(System.Reflection.MethodBase)">
             <summary>
-            Assembly to skip?
+            Skip StackFrame when from hidden Assembly / ClassType
             </summary>
-            <param name="frame">Find assembly via this frame. </param>
-            <returns><c>true</c>, we should skip.</returns>
         </member>
-        <member name="M:NLog.Internal.CallSiteInformation.IsLoggerType(System.Diagnostics.StackFrame,System.Type)">
+        <member name="M:NLog.Internal.CallSiteInformation.SkipStackFrameWhenLoggerType(System.Reflection.MethodBase,System.Type)">
             <summary>
-            Is this the type of the logger?
+            Skip StackFrame when type of the logger
             </summary>
-            <param name="frame">get type of this logger in this frame.</param>
-            <param name="loggerType">Type of the logger.</param>
-            <returns></returns>
         </member>
         <member name="M:NLog.Internal.CollectionExtensions.Filter``2(System.Collections.Generic.IList{``0},``1,System.Func{``0,``1,System.Boolean})">
             <summary>
@@ -10268,7 +10316,7 @@
             <param name="stackFrame">StackFrame from the calling method</param>
             <returns>Fully qualified class name</returns>
         </member>
-        <member name="M:NLog.Internal.StackTraceUsageUtils.LookupAssemblyFromStackFrame(System.Diagnostics.StackFrame)">
+        <member name="M:NLog.Internal.StackTraceUsageUtils.LookupAssemblyFromMethod(System.Reflection.MethodBase)">
             <summary>
             Returns the assembly from the provided StackFrame (If not internal assembly)
             </summary>
@@ -10638,10 +10686,6 @@
             <summary>
             Convert the wide-char into utf8-bytes, and then escape
             </summary>
-            <param name="target"></param>
-            <param name="charArray"></param>
-            <param name="byteArray"></param>
-            <param name="hexChars"></param>
         </member>
         <member name="M:NLog.Internal.UrlHelper.IsAllowedChar(NLog.Internal.UrlHelper.EscapeEncodingOptions,System.Char)">
             <summary>
@@ -10769,6 +10813,10 @@
             <summary>
              Used to render the application domain name.
              </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/AppDomain-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/AppDomain-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.AppDomainLayoutRenderer.#ctor">
             <summary>
@@ -10799,15 +10847,15 @@
         </member>
         <member name="T:NLog.LayoutRenderers.AppSettingLayoutRenderer">
             <summary>
-            Application setting.
+            Render value for Application setting retrieved from App.config or Web.config file.
             </summary>
             <remarks>
-            Use this layout renderer to insert the value of an application setting
-            stored in the application's App.config or Web.config file.
-            </remarks>
             <code lang="NLog Layout Renderer">
             ${appsetting:item=mysetting:default=mydefault} - produces "mydefault" if no appsetting
             </code>
+            <a href="https://github.com/NLog/NLog/wiki/AppSetting-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/AppSetting-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.AppSettingLayoutRenderer.Item">
             <summary>
@@ -10843,8 +10891,9 @@
             it is recommended to use it in conjunction with the <see cref="T:NLog.LayoutRenderers.Wrappers.CachedLayoutRendererWrapper"/>.
             </remarks>
             <remarks>
-            The entry assembly can't be found in some cases e.g. ASP.NET, unit tests, etc.
+            <a href="https://github.com/NLog/NLog/wiki/AssemblyVersion-Layout-Renderer">See NLog Wiki</a>
             </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/AssemblyVersion-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.AssemblyVersionLayoutRenderer.Name">
             <summary>
@@ -10918,6 +10967,10 @@
             <summary>
             Thread identity information (username).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Environment-User-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Environment-User-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.EnvironmentUserLayoutRenderer.UserName">
             <summary>
@@ -10950,6 +11003,10 @@
             <summary>
             The information about the garbage collector.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Gc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Gc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.GarbageCollectorInfoLayoutRenderer.Property">
             <summary>
@@ -10999,6 +11056,10 @@
             <summary>
             The identifier of the current process.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ProcessId-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ProcessId-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.ProcessIdLayoutRenderer.#ctor">
             <summary>
@@ -11017,6 +11078,10 @@
             <summary>
             The information about the running process.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ProcessInfo-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ProcessInfo-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ProcessInfoLayoutRenderer.Property">
             <summary>
@@ -11249,6 +11314,10 @@
             <summary>
             The name of the current process.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ProcessName-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ProcessName-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ProcessNameLayoutRenderer.FullName">
             <summary>
@@ -11299,6 +11368,10 @@
             <summary>
             The call site source file name. Full callsite <see cref="T:NLog.LayoutRenderers.CallSiteLayoutRenderer"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Callsite-file-name-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Callsite-file-name-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.CallSiteFileNameLayoutRenderer.IncludeSourcePath">
             <summary>
@@ -11328,6 +11401,10 @@
             <summary>
             The call site (class name, method name and source information).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Callsite-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Callsite-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.CallSiteLayoutRenderer.ClassName">
             <summary>
@@ -11394,6 +11471,10 @@
             <summary>
             The call site source line number. Full callsite <see cref="T:NLog.LayoutRenderers.CallSiteLayoutRenderer"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Callsite-line-number-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Callsite-line-number-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.CallSiteLineNumberLayoutRenderer.SkipFrames">
             <summary>
@@ -11437,6 +11518,10 @@
             <summary>
             Stack trace renderer.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Stack-Trace-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Stack-Trace-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.StackTraceLayoutRenderer.Format">
             <summary>
@@ -11484,6 +11569,10 @@
             <summary>
             Log event context data.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/All-Event-Properties-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/All-Event-Properties-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.AllEventPropertiesLayoutRenderer.#ctor">
             <summary>
@@ -11540,6 +11629,10 @@
             <summary>
             Log event context data. See <see cref="P:NLog.LogEventInfo.Properties"/>.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/EventProperties-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/EventProperties-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.EventPropertiesLayoutRenderer.Item">
             <summary>
@@ -11577,6 +11670,10 @@
             <summary>
             Render a Global Diagnostics Context item. See <see cref="T:NLog.GlobalDiagnosticsContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Gdc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Gdc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.GdcLayoutRenderer.Item">
             <summary>
@@ -11601,8 +11698,12 @@
         </member>
         <member name="T:NLog.LayoutRenderers.InstallContextLayoutRenderer">
             <summary>
-            Installation parameter (passed to InstallNLogConfig).
+            Lookup parameter value from <see cref="P:NLog.Config.InstallationContext.Parameters"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/InstallContext-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/InstallContext-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.InstallContextLayoutRenderer.Parameter">
             <summary>
@@ -11618,6 +11719,10 @@
             Obsolete and replaced by <see cref="T:NLog.LayoutRenderers.ScopeContextPropertyLayoutRenderer"/> with NLog v5.
             Render Mapped Diagnostics Logical (MDC) from <see cref="T:NLog.MappedDiagnosticsContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Mdc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Mdc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.MdcLayoutRenderer.Item">
             <summary>
@@ -11639,6 +11744,10 @@
             Obsolete and replaced by <see cref="T:NLog.LayoutRenderers.ScopeContextPropertyLayoutRenderer"/> with NLog v5.
             Render Mapped Diagnostics Logical Context (MDLC) from <see cref="T:NLog.MappedDiagnosticsLogicalContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Mdlc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Mdlc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.MdlcLayoutRenderer.Item">
             <summary>
@@ -11660,6 +11769,10 @@
             Obsolete and replaced by <see cref="T:NLog.LayoutRenderers.ScopeContextNestedStatesLayoutRenderer"/> with NLog v5.
             Render Nested Diagnostic Context (NDC) from <see cref="T:NLog.NestedDiagnosticsContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Ndc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Ndc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.NdcLayoutRenderer.TopFrames">
             <summary>
@@ -11687,6 +11800,10 @@
             Obsolete and replaced by <see cref="T:NLog.LayoutRenderers.ScopeContextNestedStatesLayoutRenderer"/> with NLog v5.
             Render Nested Diagnostic Context (NDLC) from <see cref="T:NLog.NestedDiagnosticsLogicalContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Ndlc-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Ndlc-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.NdlcLayoutRenderer.TopFrames">
             <summary>
@@ -11714,6 +11831,10 @@
             Obsolete and replaced by <see cref="T:NLog.LayoutRenderers.ScopeContextTimingLayoutRenderer"/> with NLog v5.
             Render Nested Diagnostic Context (NDLC) timings from <see cref="T:NLog.NestedDiagnosticsLogicalContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/NdlcTiming-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/NdlcTiming-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.NdlcTimingLayoutRenderer.CurrentScope">
             <summary>
@@ -11740,6 +11861,10 @@
             <summary>
             Renders the nested states from <see cref="T:NLog.ScopeContext"/> like a callstack
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ScopeIndent-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ScopeIndent-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ScopeContextIndentLayoutRenderer.Indent">
             <summary>
@@ -11754,6 +11879,10 @@
             <summary>
             Renders the nested states from <see cref="T:NLog.ScopeContext"/> like a callstack
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ScopeNested-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ScopeNested-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ScopeContextNestedStatesLayoutRenderer.TopFrames">
             <summary>
@@ -11792,6 +11921,10 @@
             <summary>
             Renders specified property-item from <see cref="T:NLog.ScopeContext"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ScopeProperty-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ScopeProperty-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ScopeContextPropertyLayoutRenderer.Item">
             <summary>
@@ -11818,6 +11951,10 @@
             <summary>
             <see cref="T:NLog.ScopeContext"/> Timing Renderer (Async scope)
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ScopeTiming-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ScopeTiming-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ScopeContextTimingLayoutRenderer.CurrentScope">
             <summary>
@@ -11852,6 +11989,10 @@
             <summary>
             A renderer that puts into log a System.Diagnostics trace correlation id.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Trace-Activity-Id-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Trace-Activity-Id-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.TraceActivityIdLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -11860,6 +12001,10 @@
             <summary>
             A counter value (increases on each layout rendering).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Counter-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Counter-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.CounterLayoutRenderer.Value">
             <summary>
@@ -11886,6 +12031,10 @@
             <summary>
             Globally-unique identifier (GUID).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Guid-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Guid-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.GuidLayoutRenderer.Format">
             <summary>
@@ -11906,6 +12055,10 @@
             <summary>
             The sequence ID
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/SequenceId-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/SequenceId-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.SequenceIdLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -11914,6 +12067,10 @@
             <summary>
             Current date and time.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Date-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Date-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.DateLayoutRenderer.#ctor">
             <summary>
@@ -11945,6 +12102,10 @@
             <summary>
             The date and time in a long, sortable format yyyy-MM-dd HH:mm:ss.ffff.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/LongDate-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/LongDate-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.LongDateLayoutRenderer.UniversalTime">
             <summary>
@@ -11959,6 +12120,10 @@
             <summary>
             The process time in format HH:mm:ss.mmm.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ProcessTime-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ProcessTime-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ProcessTimeLayoutRenderer.Invariant">
             <summary>
@@ -11984,6 +12149,10 @@
             <summary>
             The short date in a sortable format yyyy-MM-dd.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ShortDate-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ShortDate-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ShortDateLayoutRenderer.UniversalTime">
             <summary>
@@ -11998,6 +12167,10 @@
             <summary>
             The Ticks value of current date and time.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Ticks-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Ticks-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.TicksLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -12006,6 +12179,10 @@
             <summary>
             The time in a 24-hour, sortable format HH:mm:ss.mmmm.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Time-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Time-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.TimeLayoutRenderer.UniversalTime">
             <summary>
@@ -12032,6 +12209,10 @@
             <summary>
             DB null for a database
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/db-null-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/db-null-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.DbNullLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -12040,6 +12221,10 @@
             <summary>
             The current application domain's base directory.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Basedir-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Basedir-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="F:NLog.LayoutRenderers.BaseDirLayoutRenderer._processDir">
             <summary>
@@ -12087,6 +12272,10 @@
             <summary>
             The current working directory of the application.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/CurrentDir-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/CurrentDir-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.CurrentDirLayoutRenderer.File">
             <summary>
@@ -12107,6 +12296,10 @@
             <summary>
             The directory where NLog.dll is located.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/NLogDir-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/NLogDir-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.NLogDirLayoutRenderer.File">
             <summary>
@@ -12134,6 +12327,10 @@
             The executable directory from the <see cref="P:System.Diagnostics.Process.MainModule"/> FileName,
             using the current process <see cref="M:System.Diagnostics.Process.GetCurrentProcess"/>
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ProcessDir-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ProcessDir-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ProcessDirLayoutRenderer.File">
             <summary>
@@ -12184,6 +12381,10 @@
             <summary>
             System special folder path (includes My Documents, My Music, Program Files, Desktop, and more).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Special-Folder-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Special-Folder-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.SpecialFolderLayoutRenderer.Folder">
             <summary>
@@ -12233,6 +12434,10 @@
             <summary>
             A temporary directory.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/TempDir-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/TempDir-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.TempDirLayoutRenderer.File">
             <summary>
@@ -12265,6 +12470,10 @@
             Render information of <see cref="P:System.Exception.Data" />
             for the exception passed to the logger call
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ExceptionData-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ExceptionData-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.ExceptionDataLayoutRenderer.Item">
             <summary>
@@ -12298,6 +12507,10 @@
             Exception information provided through 
             a call to one of the Logger.*Exception() methods.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Exception-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Exception-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.ExceptionLayoutRenderer.#ctor">
             <summary>
@@ -12460,6 +12673,10 @@
             <summary>
             Renders contents of the specified file.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/FileContents-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/FileContents-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.FileContentsLayoutRenderer.#ctor">
             <summary>
@@ -12550,6 +12767,10 @@
             <summary>
             Thread identity information (name and authentication information).
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Identity-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Identity-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.IdentityLayoutRenderer.Separator">
             <summary>
@@ -12676,7 +12897,7 @@
         </member>
         <member name="M:NLog.LayoutRenderers.LayoutRenderer.Register(System.String,System.Type)">
             <summary>
-            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2.
             
             Register a custom layout renderer.
             </summary>
@@ -12686,7 +12907,7 @@
         </member>
         <member name="M:NLog.LayoutRenderers.LayoutRenderer.Register(System.String,System.Func{NLog.LogEventInfo,System.Object})">
             <summary>
-            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2.
             
             Register a custom layout renderer with a callback function <paramref name="func"/>. The callback receives the logEvent.
             </summary>
@@ -12695,7 +12916,7 @@
         </member>
         <member name="M:NLog.LayoutRenderers.LayoutRenderer.Register(System.String,System.Func{NLog.LogEventInfo,NLog.Config.LoggingConfiguration,System.Object})">
             <summary>
-            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2.
             
             Register a custom layout renderer with a callback function <paramref name="func"/>. The callback receives the logEvent and the current configuration.
             </summary>
@@ -12704,7 +12925,7 @@
         </member>
         <member name="M:NLog.LayoutRenderers.LayoutRenderer.Register(NLog.LayoutRenderers.FuncLayoutRenderer)">
             <summary>
-            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> with NLog v5.2.
             
             Register a custom layout renderer with a callback function <paramref name="layoutRenderer"/>. The callback receives the logEvent and the current configuration.
             </summary>
@@ -12754,6 +12975,10 @@
             <summary>
             The log level.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Level-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Level-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.LevelLayoutRenderer.Format">
             <summary>
@@ -12778,7 +13003,10 @@
             <remarks>
             This is used to escape '${' sequence 
             as ;${literal:text=${}'
+            
+            <a href="https://github.com/NLog/NLog/wiki/Literal-Layout-Renderer">See NLog Wiki</a>
             </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Literal-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.LiteralLayoutRenderer.#ctor">
             <summary>
@@ -12819,6 +13047,10 @@
             <summary>
             XML event description compatible with log4j, Chainsaw and NLogViewer.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Log4JXMLEvent-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Log4JXMLEvent-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.#ctor">
             <summary>
@@ -12845,9 +13077,21 @@
             </summary>
             <docgen category='Layout Options' order='50' />
         </member>
+        <member name="P:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.LoggerName">
+            <summary>
+            Gets or sets the log4j:event logger-xml-attribute. Default: ${logger}
+            </summary>
+            <docgen category='Layout Options' order='10' />
+        </member>
+        <member name="P:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.FormattedMessage">
+            <summary>
+            Gets or sets the log4j:event message-xml-element. Default: ${message}
+            </summary>
+            <docgen category='Layout Options' order='10' />
+        </member>
         <member name="P:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.AppInfo">
             <summary>
-            Gets or sets the AppInfo field. By default it's the friendly name of the current AppDomain.
+            Gets or sets the log4j:event log4japp-xml-element. By default it's the friendly name of the current AppDomain.
             </summary>
             <docgen category='Layout Options' order='10' />
         </member>
@@ -12939,12 +13183,6 @@
             </summary>
             <docgen category='Layout Options' order='10' />
         </member>
-        <member name="P:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.LoggerName">
-            <summary>
-            Gets or sets the log4j:event logger-xml-attribute (Default ${logger})
-            </summary>
-            <docgen category='Layout Options' order='50' />
-        </member>
         <member name="P:NLog.LayoutRenderers.Log4JXmlEventLayoutRenderer.WriteThrowableCData">
             <summary>
              Gets or sets whether the log4j:throwable xml-element should be written as CDATA
@@ -12961,12 +13199,21 @@
             <summary>
             The logger name.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Logger-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Logger-Layout-Renderer">Documentation on NLog Wiki</seealso>/// 
         </member>
         <member name="P:NLog.LayoutRenderers.LoggerNameLayoutRenderer.ShortName">
             <summary>
             Gets or sets a value indicating whether to render short logger name (the part after the trailing dot character).
             </summary>
             <docgen category='Layout Options' order='10' />
+        </member>
+        <member name="P:NLog.LayoutRenderers.LoggerNameLayoutRenderer.PrefixName">
+            <summary>
+            Gets or sets a value indicating whether to render prefix of logger name (the part before the trailing dot character).
+            </summary>
         </member>
         <member name="M:NLog.LayoutRenderers.LoggerNameLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -12975,6 +13222,10 @@
             <summary>
             The environment variable.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Environment-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Environment-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.EnvironmentLayoutRenderer.Variable">
             <summary>
@@ -12995,6 +13246,10 @@
             <summary>
             The host name that the process is running on.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/HostName-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/HostName-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.HostNameLayoutRenderer.InitializeLayoutRenderer">
             <inheritdoc/>
@@ -13021,7 +13276,10 @@
             </summary>
             <remarks>
             Skips loopback-adapters and tunnel-interfaces. Skips devices without any MAC-address
+            
+            <a href="https://github.com/NLog/NLog/wiki/Local-IP-Address-Layout-Renderer">See NLog Wiki</a>
             </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Local-IP-Address-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.LocalIpAddressLayoutRenderer.AddressFamily">
             <summary>
@@ -13042,6 +13300,10 @@
             <summary>
             The machine name that the process is running on.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/MachineName-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/MachineName-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.MachineNameLayoutRenderer.InitializeLayoutRenderer">
             <inheritdoc/>
@@ -13053,6 +13315,10 @@
             <summary>
             The formatted log message.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Message-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Message-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.MessageLayoutRenderer.#ctor">
             <summary>
@@ -13092,6 +13358,10 @@
             <summary>
             The identifier of the current thread.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ThreadId-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ThreadId-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.ThreadIdLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -13100,6 +13370,10 @@
             <summary>
             The name of the current thread.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ThreadName-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ThreadName-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.ThreadNameLayoutRenderer.Append(System.Text.StringBuilder,NLog.LogEventInfo)">
             <inheritdoc/>
@@ -13108,6 +13382,10 @@
             <summary>
             Render a NLog Configuration variable assigned from API or loaded from config-file
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Var-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Var-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.VariableLayoutRenderer.Name">
             <summary>
@@ -13145,7 +13423,10 @@
             </summary>
             <remarks>
             The value of the inner layout will be rendered only once and reused subsequently.
+            
+            <a href="https://github.com/NLog/NLog/wiki/Cached-Layout-Renderer">See NLog Wiki</a>
             </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Cached-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="T:NLog.LayoutRenderers.Wrappers.CachedLayoutRendererWrapper.ClearCacheOption">
             <summary>
@@ -13201,6 +13482,10 @@
             <summary>
             Filters characters not allowed in the file names by replacing them with safe character.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Filesystem-Normalize-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Filesystem-Normalize-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.FileSystemNormalizeLayoutRendererWrapper.FSNormalize">
             <summary>
@@ -13219,6 +13504,10 @@
             <summary>
             Escapes output of another layout using JSON rules.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Json-Encode-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Json-Encode-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.JsonEncodeLayoutRendererWrapper.JsonEncode">
             <summary>
@@ -13251,6 +13540,10 @@
             <summary>
             Left part of a text
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Left-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Left-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.LeftLayoutRendererWrapper.Length">
             <summary>
@@ -13277,6 +13570,10 @@
             <summary>
             Converts the result of another layout output to lower case.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Lowercase-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Lowercase-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.LowercaseLayoutRendererWrapper.Lowercase">
             <summary>
@@ -13329,6 +13626,10 @@
             <summary>
             Render a single property of a object
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/ObjectPath-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/ObjectPath-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.ObjectPathRendererWrapper.Path">
              <summary>
@@ -13372,6 +13673,10 @@
             <summary>
             Only outputs the inner layout when exception has been defined for log message.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/OnException-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/OnException-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.OnExceptionLayoutRendererWrapper.Else">
             <summary>
@@ -13392,6 +13697,10 @@
             <example>
             ${onhasproperties:, Properties\: ${all-event-properties}}
             </example>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/OnHasProperties-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/OnHasProperties-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.OnHasPropertiesLayoutRendererWrapper.Else">
             <summary>
@@ -13426,6 +13735,10 @@
             <summary>
             Applies padding to another layout output.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Pad-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Pad-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.PaddingLayoutRendererWrapper.Padding">
             <summary>
@@ -13473,6 +13786,10 @@
             <example>
             ${replace:searchFor=\\n+:replaceWith=-:regex=true:inner=${message}}
             </example>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Replace-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Replace-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.ReplaceLayoutRendererWrapper.SearchFor">
             <summary>
@@ -13548,6 +13865,10 @@
             <summary>
             Replaces newline characters from the result of another layout renderer with spaces.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Replace-NewLines-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Replace-NewLines-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.ReplaceNewLinesLayoutRendererWrapper.Replacement">
             <summary>
@@ -13565,6 +13886,10 @@
             <summary>
             Right part of a text
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Right-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Right-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.RightLayoutRendererWrapper.Length">
             <summary>
@@ -13584,7 +13909,10 @@
             </summary>
             <remarks>
             See <a href="https://en.wikipedia.org/wiki/ROT13">https://en.wikipedia.org/wiki/ROT13</a>.
+            
+            <a href="https://github.com/NLog/NLog/wiki/Rot13-Layout-Renderer">See NLog Wiki</a>
             </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Rot13-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.Rot13LayoutRendererWrapper.Text">
             <summary>
@@ -13621,6 +13949,10 @@
             ${substring:${level}:start=-2:length=2}
             ${substring:Inner=${level}:start=2:length=2}
             </example>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Substring-layout-renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Substring-layout-renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.SubstringLayoutRendererWrapper.Start">
             <summary>
@@ -13658,6 +13990,10 @@
             <summary>
             Trims the whitespace from the result of another layout renderer.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Trim-Whitespace-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Trim-Whitespace-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.TrimWhiteSpaceLayoutRendererWrapper.TrimWhiteSpace">
             <summary>
@@ -13681,6 +14017,10 @@
             ${uppercase:Inner=${level}} 
             ${level:uppercase} // [AmbientProperty]
             </example>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Uppercase-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Uppercase-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.UppercaseLayoutRendererWrapper.Uppercase">
             <summary>
@@ -13714,6 +14054,10 @@
             <summary>
             Encodes the result of another layout output for use with URLs.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Url-Encode-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Url-Encode-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.LayoutRenderers.Wrappers.UrlEncodeLayoutRendererWrapper.#ctor">
             <summary>
@@ -13771,6 +14115,10 @@
             <summary>
             Only outputs the inner layout when the specified condition has been met.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/When-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/When-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.WhenLayoutRendererWrapper.When">
             <summary>
@@ -13898,6 +14246,10 @@
             <summary>
             Converts the result of another layout output to be XML-compliant.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/Xml-Encode-Layout-Renderer">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/Xml-Encode-Layout-Renderer">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.LayoutRenderers.Wrappers.XmlEncodeLayoutRendererWrapper.XmlEncode">
             <summary>
@@ -14039,9 +14391,9 @@
             <para>
             If <see cref="P:NLog.Layouts.LayoutWithHeaderAndFooter.Header"/> is set, then the header generation with column names will be disabled.
             </para>
-            <a href="https://github.com/NLog/NLog/wiki/JsonLayout">See NLog Wiki</a>
+            <a href="https://github.com/NLog/NLog/wiki/CsvLayout">See NLog Wiki</a>
             </remarks>
-            <seealso href="https://github.com/NLog/NLog/wiki/JsonLayout">Documentation on NLog Wiki</seealso>
+            <seealso href="https://github.com/NLog/NLog/wiki/CsvLayout">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.Layouts.CsvLayout.#ctor">
             <summary>
@@ -14746,13 +15098,19 @@
         </member>
         <member name="P:NLog.Layouts.Log4JXmlEventLayout.LoggerName">
             <summary>
-            Gets or sets the log4j:event logger-xml-attribute (Default ${logger})
+            Gets or sets the log4j:event logger-xml-attribute. Default: ${logger}
+            </summary>
+            <docgen category='Layout Options' order='100' />
+        </member>
+        <member name="P:NLog.Layouts.Log4JXmlEventLayout.FormattedMessage">
+            <summary>
+            Gets or sets the log4j:event message-xml-element. Default: ${message}
             </summary>
             <docgen category='Layout Options' order='100' />
         </member>
         <member name="P:NLog.Layouts.Log4JXmlEventLayout.AppInfo">
             <summary>
-            Gets or sets the AppInfo field. By default it's the friendly name of the current AppDomain.
+            Gets or sets the log4j:event log4japp-xml-element. By default it's the friendly name of the current AppDomain.
             </summary>
             <docgen category='Layout Options' order='100' />
         </member>
@@ -15622,6 +15980,8 @@
         </member>
         <member name="P:NLog.LogEventInfo.UserStackFrame">
             <summary>
+            Obsolete and replaced by <see cref="P:NLog.LogEventInfo.CallerMemberName"/> or ${callsite} with NLog v5.3.
+            
             Gets the stack frame of the method that did the logging.
             </summary>
         </member>
@@ -15869,6 +16229,8 @@
         </member>
         <member name="M:NLog.LogFactory.#ctor(NLog.Config.LoggingConfiguration)">
             <summary>
+            Obsolete instead use <see cref="T:NLog.LogFactory"/> default-constructor, and assign <see cref="P:NLog.LogFactory.Configuration"/> with NLog 5.0.
+            
             Initializes a new instance of the <see cref="T:NLog.LogFactory" /> class.
             </summary>
             <param name="config">The config.</param>
@@ -15984,6 +16346,7 @@
         </member>
         <member name="M:NLog.LogFactory.GetCurrentClassLogger(System.Type)">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogFactory.GetCurrentClassLogger``1"/> with NLog v5.2.
             Gets a custom logger with the full name of the current class, so namespace and class name.
             Use <paramref name="loggerType"/> to create instance of a custom <see cref="T:NLog.Logger"/>.
             If you haven't defined your own <see cref="T:NLog.Logger"/> class, then use the overload without the loggerType.
@@ -16079,15 +16442,6 @@
             <param name="asyncContinuation">The asynchronous continuation.</param>
             <param name="timeout">Maximum time to allow for the flush. Any messages after that time will be discarded.</param>
         </member>
-        <member name="M:NLog.LogFactory.FlushAllTargetsAsync(NLog.Config.LoggingConfiguration,NLog.Common.AsyncContinuation,System.Nullable{System.TimeSpan})">
-            <summary>
-            Flushes any pending log messages on all appenders.
-            </summary>
-            <param name="loggingConfiguration">Config containing Targets to Flush</param>
-            <param name="asyncContinuation">Flush completed notification (success / timeout)</param>
-            <param name="asyncTimeout">Optional timeout that guarantees that completed notification is called.</param>
-            <returns></returns>
-        </member>
         <member name="M:NLog.LogFactory.SuspendLogging">
             <summary>
             Suspends the logging, and returns object for using-scope so scope-exit calls <see cref="M:NLog.LogFactory.ResumeLogging"/>
@@ -16127,9 +16481,18 @@
         </member>
         <member name="M:NLog.LogFactory.OnConfigurationReloaded(NLog.Config.LoggingConfigurationReloadedEventArgs)">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogFactory.OnConfigurationReloaded(NLog.Config.LoggingConfigurationReloadedEventArgs)"/> with NLog 5.2.
+            
             Raises the event when the configuration is reloaded. 
             </summary>
             <param name="e">Event arguments</param>
+        </member>
+        <member name="M:NLog.LogFactory.BuildLoggerConfiguration(System.String,System.Collections.Generic.List{NLog.Config.LoggingRule})">
+            <summary>
+            Change this method with NLog v6 to completely disconnect LogFactory from Targets/Layouts
+            - Remove LoggingRule-List-parameter
+            - Return ITargetWithFilterChain[]
+            </summary>
         </member>
         <member name="F:NLog.LogFactory._isDisposing">
             <summary>
@@ -16150,29 +16513,39 @@
         </member>
         <member name="M:NLog.LogFactory.GetCandidateConfigFilePaths">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Get file paths (including filename) for the possible NLog config files. 
             </summary>
             <returns>The file paths to the possible config file</returns>
         </member>
         <member name="M:NLog.LogFactory.GetCandidateConfigFilePaths(System.String)">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Get file paths (including filename) for the possible NLog config files. 
             </summary>
             <returns>The file paths to the possible config file</returns>
         </member>
         <member name="M:NLog.LogFactory.SetCandidateConfigFilePaths(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Overwrite the candidates paths (including filename) for the possible NLog config files.
             </summary>
             <param name="filePaths">The file paths to the possible config file</param>
         </member>
         <member name="M:NLog.LogFactory.ResetCandidateConfigFilePath">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Clear the candidate file paths and return to the defaults.
             </summary>
         </member>
         <member name="M:NLog.LogFactory.LoadConfiguration(System.String)">
             <summary>
+            Obsolete and replaced by <see cref="M:NLog.LogManager.Setup"/> and <see cref="M:NLog.SetupBuilderExtensions.LoadConfigurationFromFile(NLog.Config.ISetupBuilder,System.String,System.Boolean)"/> with NLog v5.2.
+            
             Loads logging configuration from file (Currently only XML configuration files supported)
             </summary>
             <param name="configFile">Configuration file to be read</param>
@@ -19844,11 +20217,6 @@
             LogManager wraps a singleton instance of <see cref="T:NLog.LogFactory" />.
             </remarks>
         </member>
-        <member name="F:NLog.LogManager.factory">
-            <remarks>
-            Internal for unit tests
-            </remarks>
-        </member>
         <member name="P:NLog.LogManager.LogFactory">
             <summary>
             Gets the <see cref="T:NLog.LogFactory" /> instance used in the <see cref="T:NLog.LogManager"/>.
@@ -19905,6 +20273,11 @@
             Setter will re-configure all <see cref="T:NLog.Logger"/>-objects, so no need to also call <see cref="M:NLog.LogManager.ReconfigExistingLoggers" />
             </remarks>
         </member>
+        <member name="P:NLog.LogManager.GlobalThreshold">
+            <summary>
+            Gets or sets the global log threshold. Log events below this threshold are not logged.
+            </summary>
+        </member>
         <member name="M:NLog.LogManager.Setup">
             <summary>
             Begins configuration of the LogFactory options using fluent interface
@@ -19923,25 +20296,20 @@
             <param name="configFile">Configuration file to be read</param>
             <returns>LogFactory instance for fluent interface</returns>
         </member>
-        <member name="P:NLog.LogManager.GlobalThreshold">
-            <summary>
-            Gets or sets the global log threshold. Log events below this threshold are not logged.
-            </summary>
-        </member>
-        <member name="M:NLog.LogManager.GetCurrentClassLogger">
-            <summary>
-            Gets the logger with the full name of the current class, so namespace and class name.
-            </summary>
-            <returns>The logger.</returns>
-            <remarks>This is a slow-running method. 
-            Make sure you're not doing this in a loop.</remarks>
-        </member>
         <member name="M:NLog.LogManager.AddHiddenAssembly(System.Reflection.Assembly)">
             <summary>
             Adds the given assembly which will be skipped 
             when NLog is trying to find the calling method on stack trace.
             </summary>
             <param name="assembly">The assembly to skip.</param>
+        </member>
+        <member name="M:NLog.LogManager.GetCurrentClassLogger">
+            <summary>
+            Gets the logger with the full name of the current class, so namespace and class name.
+            </summary>
+            <returns>The logger.</returns>
+            <remarks>This method introduces performance hit, because of StackTrace capture.
+            Make sure you are not calling this method in a loop.</remarks>
         </member>
         <member name="M:NLog.LogManager.GetCurrentClassLogger(System.Type)">
             <summary>
@@ -19950,10 +20318,10 @@
             Use <paramref name="loggerType"/> to create instance of a custom <see cref="T:NLog.Logger"/>.
             If you haven't defined your own <see cref="T:NLog.Logger"/> class, then use the overload without the loggerType.
             </summary>
-            <param name="loggerType">The logger class. This class must inherit from <see cref="T:NLog.Logger" />.</param>
+            <param name="loggerType">The type of the logger to create. The type must inherit from <see cref="T:NLog.Logger"/></param>
             <returns>The logger of type <paramref name="loggerType"/>.</returns>
-            <remarks>This is a slow-running method. 
-            Make sure you're not doing this in a loop.</remarks>
+            <remarks>This method introduces performance hit, because of StackTrace capture.
+            Make sure you are not calling this method in a loop.</remarks>
         </member>
         <member name="M:NLog.LogManager.CreateNullLogger">
             <summary>
@@ -20501,6 +20869,10 @@
             <summary>
             TraceListener which routes all messages through NLog.
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/NLog-Trace-Listener-for-System-Diagnostics-Trace">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/NLog-Trace-Listener-for-System-Diagnostics-Trace">Documentation on NLog Wiki</seealso>
         </member>
         <member name="M:NLog.NLogTraceListener.#ctor">
             <summary>
@@ -20545,11 +20917,23 @@
             </summary>
             <param name="message">A message to write.</param>
         </member>
+        <member name="M:NLog.NLogTraceListener.Write(System.Object)">
+            <summary>
+            When overridden in a derived class, writes the specified message to the listener you create in the derived class.
+            </summary>
+            <param name="o">A message payload to write.</param>
+        </member>
         <member name="M:NLog.NLogTraceListener.WriteLine(System.String)">
             <summary>
             When overridden in a derived class, writes a message to the listener you create in the derived class, followed by a line terminator.
             </summary>
             <param name="message">A message to write.</param>
+        </member>
+        <member name="M:NLog.NLogTraceListener.WriteLine(System.Object)">
+            <summary>
+            When overridden in a derived class, writes the specified message to the listener you create in the derived class.
+            </summary>
+            <param name="o">A message payload to write.</param>
         </member>
         <member name="M:NLog.NLogTraceListener.Close">
             <summary>
@@ -20996,6 +21380,16 @@
             Configures <see cref="E:NLog.Common.InternalLogger.LogMessageReceived"/>
             </summary>
         </member>
+        <member name="M:NLog.SetupInternalLoggerBuilderExtensions.AddEventSubscription(NLog.Config.ISetupInternalLoggerBuilder,NLog.Common.InternalEventOccurredHandler)">
+            <summary>
+            Configures <see cref="E:NLog.Common.InternalLogger.InternalEventOccurred"/>
+            </summary>
+        </member>
+        <member name="M:NLog.SetupInternalLoggerBuilderExtensions.RemoveEventSubscription(NLog.Config.ISetupInternalLoggerBuilder,NLog.Common.InternalEventOccurredHandler)">
+            <summary>
+            Configures <see cref="E:NLog.Common.InternalLogger.InternalEventOccurred"/>
+            </summary>
+        </member>
         <member name="M:NLog.SetupInternalLoggerBuilderExtensions.SetupFromEnvironmentVariables(NLog.Config.ISetupInternalLoggerBuilder)">
             <summary>
             Configure the InternalLogger properties from Environment-variables and App.config using <see cref="M:NLog.Common.InternalLogger.Reset"/>
@@ -21351,6 +21745,11 @@
         <member name="M:NLog.SetupLogFactoryBuilderExtensions.AddCallSiteHiddenAssembly(NLog.Config.ISetupLogFactoryBuilder,System.Reflection.Assembly)">
             <summary>
             Mark Assembly as hidden, so Assembly methods are excluded when resolving ${callsite} from StackTrace
+            </summary>
+        </member>
+        <member name="M:NLog.SetupLogFactoryBuilderExtensions.AddCallSiteHiddenClassType(NLog.Config.ISetupLogFactoryBuilder,System.Type)">
+            <summary>
+            Mark Type as hidden, so Type methods are excluded when resolving ${callsite} from StackTrace
             </summary>
         </member>
         <member name="T:NLog.SetupSerializationBuilderExtensions">
@@ -22940,6 +23339,7 @@
         </member>
         <member name="P:NLog.Targets.FileTarget.NetworkWrites">
             <summary>
+            Obsolete and replaced by <see cref="P:NLog.Targets.FileTarget.KeepFileOpen"/> = <c>false</c> with NLog v5.3.
             Gets or sets a value indicating whether concurrent writes to the log file by multiple processes on different network hosts.
             </summary>
             <remarks>
@@ -24655,9 +25055,21 @@
             </summary>
             <docgen category='Layout Options' order='10' />
         </member>
+        <member name="P:NLog.Targets.NLogViewerTarget.LoggerName">
+            <summary>
+            Gets or sets the log4j:event logger-xml-attribute. Default: ${logger}
+            </summary>
+            <docgen category='Layout Options' order='10' />
+        </member>
+        <member name="P:NLog.Targets.NLogViewerTarget.FormattedMessage">
+            <summary>
+            Gets or sets the log4j:event message-xml-element. Default: ${message}
+            </summary>
+            <docgen category='Layout Options' order='10' />
+        </member>
         <member name="P:NLog.Targets.NLogViewerTarget.AppInfo">
             <summary>
-            Gets or sets the AppInfo field. By default it's the friendly name of the current AppDomain.
+            Gets or sets the log4j:event log4japp-xml-element. By default it's the friendly name of the current AppDomain.
             </summary>
             <docgen category='Layout Options' order='10' />
         </member>
@@ -24741,12 +25153,6 @@
         <member name="P:NLog.Targets.NLogViewerTarget.NdcItemSeparator">
             <summary>
             Gets or sets the stack separator for log4j:NDC in output from <see cref="T:NLog.ScopeContext"/> nested context.
-            </summary>
-            <docgen category='Layout Options' order='10' />
-        </member>
-        <member name="P:NLog.Targets.NLogViewerTarget.LoggerName">
-            <summary>
-            Gets or sets the renderer for log4j:event logger-xml-attribute (Default ${logger})
             </summary>
             <docgen category='Layout Options' order='10' />
         </member>

@@ -118,7 +118,7 @@ setpacking
     } ifelse                              % {precopy}
   } for                                   % {copy}
   cvx
-} bind def
+} .internalbind def
 
 //.BindAux 0 //BindWithCurrentdict put   % bind the recursive call in 'Bind'.
 
@@ -150,7 +150,7 @@ setpacking
     /status 0 def % variable for the current status to enumerate - do not bind with it !
   end
   exch setglobal
-} bind def
+} .internalbind def
 
 /execstack_lookup     % <object> execstack_lookup <object1>
                       % <object> execstack_lookup null
@@ -208,7 +208,7 @@ setpacking
     } ifelse
   } for                                            % <object> bGlobal [execstack] bResult
   exch pop exch setglobal exch pop                 % bResult
-} bind def
+} .internalbind def
 
 currentpacking //false setpacking
 /MethodsToRedefine 5 dict begin
@@ -383,7 +383,7 @@ currentpacking //false setpacking
         pop
       } if
       RESMPDEBUG { (resmp GetCIDSystemInfoFromMap end) = } if
-    } bind def
+    } .bind def
 
 currentdict end def
 setpacking
@@ -519,7 +519,7 @@ setpacking
     CategoryName NewCategory /Category defineresource pop
   } if
   end % OptionsDict
-} bind executeonly def
+} .internalbind def
 
 currentdict /PutPreprocessRecord .undef
 

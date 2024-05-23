@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2023 Artifex Software, Inc.
+% Copyright (C) 2001-2024 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -23,8 +23,9 @@
 % These correspond to the 4 predefined settings in Acrobat Distiller 5,
 % plus a "default" setting that doesn't downsample images.
 
+mark
 { /pdfwrite finddevice pop } .internalstopped
-{pop pop (%END PDFWR) .skipeof} if
+{cleartomark (%END PDFWR) .skipeof} {cleartomark} ifelse
 
 languagelevel 2 .setlanguagelevel
 
@@ -333,7 +334,7 @@ languagelevel 2 .setlanguagelevel
     } loop
     pop pop pop
   } ifelse
-} bind def
+} .internalbind def
 
 % Encode values to pass for the /pdfmark or /DSC pseudo-parameter.
 /.pdf===dict mark
@@ -345,7 +346,7 @@ languagelevel 2 .setlanguagelevel
          1 index exch pdf===only ( )
        }
       forall pop exch writestring
-   } bind
+   } .internalbind
   /packedarraytype 1 index
   /dicttype
    { 1 index (<<\n) writestring
@@ -353,7 +354,7 @@ languagelevel 2 .setlanguagelevel
         1 index exch pdf===only dup (\n) writestring
       }
      forall (>>) writestring
-   } bind
+   } .internalbind
   /nametype {
     % If the name string includes any non-regular characters,
     % write it with two preceding and one following null character(s).
@@ -373,7 +374,7 @@ languagelevel 2 .setlanguagelevel
     } {
       write===only
     } ifelse
-  } bind
+  } .internalbind
   /realtype {
     % Prevent using floating point format - see Bug 688167.
     dup dup 0 lt { neg } if 0.01 lt {
@@ -388,11 +389,11 @@ languagelevel 2 .setlanguagelevel
     } {
       write===only
     } ifelse
-  } bind
+  } .internalbind
 .dicttomark readonly def
 /pdf===only {	% <file> <obj> pdf===only -
   .pdf===dict 1 index type .knownget { exec } { write===only } ifelse
-} bind def
+} .internalbind def
 /.pdfcvbuf 30 string def	% enough for most arguments
 userdict /.pdfcvstring () put
 /.pdfcvs {		% <obj> .pdfcvs <string>
@@ -405,7 +406,7 @@ userdict /.pdfcvstring () put
   } /NullEncode filter dup 3 -1 roll pdf===only
   closefile
   .setglobal .pdfcvstring
-} bind def
+} .internalbind def
 
 % Redefine pdfmark to pass the data to the driver.
 % We use a pseudo-parameter named /pdfmark whose value is an array:
@@ -414,7 +415,7 @@ userdict /.pdfcvstring () put
   currentdevice //null //false counttomark 1 add 3 roll
                 % Don't allow the page device to get cleared....
   {.putdeviceparams} .currentpagedevice pop {.setpagedevice} 3 .execn
-} bind def
+} .internalbind def
 % Convert relevant operands to strings in an array.
 /.pdfcvsloop {		% -mark- values ... markname start step .pdfcvsloop
                         %   [values ... ctm markname]
@@ -424,20 +425,20 @@ userdict /.pdfcvstring () put
    3 1 roll
                         % Stack: values start step
    2 index length 3 sub { 2 copy 2 copy get .pdfcvs put pop } for
-} bind def
+} .internalbind def
 /.pdfcvsall {		% -mark- values ... markname .pdfcvsall <<same>>
   0 1 .pdfcvsloop
-} bind def
+} .internalbind def
 /.pdfcvseven {		% -mark- key value ... markname .pdfcvseven <<same>>
   1 2 .pdfcvsloop
-} bind def
+} .internalbind def
 /.pdfcvsnone {		% -mark- values ... markname .pdfcvsnone <<same>>
   100000 1 .pdfcvsloop
-} bind def
+} .internalbind def
 /.pdfcvsfirst {		% -mark- first values ... markname .pdfcvsfirst<<same>>
   .pdfcvsnone
   dup 0 2 copy get .pdfcvs put
-} bind def
+} .internalbind def
 % The procedures in the following dictionary are called with the entire
 % pdfmark operand list (including the pdfmark name) on the stack;
 % they may modify this ad lib.  They must call .pdfcvsxxx.
@@ -461,16 +462,16 @@ userdict /.pdfcvstring () put
     } {
       .pdfcvsall
     } ifelse
-  } bind
+  } .internalbind
         % Unpack the array for PUTINTERVAL.
   /PUTINTERVAL {
     pop aload pop /.PUTINTERVAL .pdfcvsall
-  } bind
+  } .internalbind
 .dicttomark readonly def
 /.pdfparamerror {	% ? ? ? -mark- ... <errname> <opname> .pdfparamerror -
     counttomark 4 add 2 roll cleartomark pop pop pop
     .systemvar exch signalerror
-} bind def
+} .internalbind def
 
 /.CountLeafs {
   0 exch
@@ -496,7 +497,7 @@ userdict /.pdfcvstring () put
       pop pop 0 exit
     } ifelse
   } forall
-} bind def
+} .internalbind def
 
 /.ExtractLeafs
 {
@@ -521,7 +522,7 @@ userdict /.pdfcvstring () put
       } if
     } ifelse
   } forall
-} bind def
+} .internalbind def
 
 /.pdfpagelabels {
   dup type /dicttype eq {
@@ -571,7 +572,7 @@ userdict /.pdfcvstring () put
   }{
     /pdfpagelabels .pdfparamerror
   } ifelse
-} bind def
+} .internalbind def
 
 /pdfmark {		% -mark- <key> <value> ... <markname> pdfmark -
   counttomark 0 eq {
@@ -643,7 +644,7 @@ currentdict /.pdfmarkparams .undef
             } {
               resourcestatus
             } ifelse
-          } bind .makeoperator .forceput
+          } .internalbind .makeoperator .forceput
           systemdict /.pdf_hooked_DSC_Creator //true .forceput
         } executeonly if
         pop
@@ -655,7 +656,7 @@ currentdict /.pdfmarkparams .undef
   {
     pop
   } ifelse
-} .bind executeonly odef % must be bound and hidden for .forceput
+} .forcebind odef % must be bound and hidden for .forceput
 
 % Use the DSC processing hook to pass DSC comments to the driver.
 % We use a pseudo-parameter named DSC whose value is an array:
@@ -686,7 +687,7 @@ currentdict /.pdfmarkparams .undef
   } {
     pop pop pop
   } ifelse
-} bind def
+} .internalbind def
 currentdict /.pdf_hook_DSC_Creator undef
 /.initialize_dsc_parser where {
   pop
@@ -719,7 +720,7 @@ currentdict /.pdf_hook_DSC_Creator undef
       << /ProcessDSCComment 3 -1 roll >> setuserparams
       setglobal
     } if
-  } bind .schedule_init
+  } .internalbind .schedule_init
 } if
 
 % ---------------- {set,current}distillerparams ---------------- %
@@ -864,7 +865,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     { currentdevice }
     { /pdfwrite finddevice }
    ifelse
- } bind def
+ } .internalbind def
 
 % Some badly designed PostScript files only expect the current/set
 % distillerparams operators to exist in a distiller. Since we have
@@ -902,7 +903,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     /setdistillerparams cvx /undefined signalerror
   } if
   .setdistillerparams
-} bind odef
+} .internalbind odef
 /currentdistillerparams {
   % Check to see if the current device is a Distiller
   /IsDistiller /GetDeviceParam .special_op {
@@ -914,7 +915,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     /currentdistillerparams cvx /undefined signalerror
   } if
   .currentdistillerparams
-} bind odef
+} .internalbind odef
 
 % Patch 'where' so that the distiller operators are only visible
 % if the pdfwrite device is the current one.
@@ -930,7 +931,7 @@ currentdict /.pdf_hook_DSC_Creator undef
   } {
     .where pop dup //systemdict eq { pop //false } { //true } ifelse
   } ifelse
-} bind
+} .internalbind
 { /currentdistillerparams /setdistillerparams /pdfmark }
 { .wheredict exch 2 index put } forall pop
 
@@ -954,7 +955,7 @@ currentdict /.pdf_hook_DSC_Creator undef
   } {
     known
   } ifelse
-} .bind odef
+} .forcebind odef
 
 % Create a table for translation DSC comments into Unicode UTF-16
 /.make_DSC_translation_table {        % <encoding> .make_DSC_translation_table <array>
@@ -985,7 +986,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     3 1 roll put                             % [out] [in]
   } for
   pop                                        % [out]
-} bind def
+} .internalbind def
 
 1000 % priority
 {
@@ -1000,20 +1001,18 @@ currentdict /.pdf_hook_DSC_Creator undef
   systemdict /ProvideUnicode .knownget not { //false } if or
   {
     currentglobal //true setglobal
-    systemdict /.setupUnicodeDecoder known {
-      /Unicode /Decoding resourcestatus {
-        pop pop
-        /Unicode /Decoding findresource
-        .setupUnicodeDecoder
-      } {
-        QUIET not {
-          (WARNING: /Unicode /Decoding resource is not accessible but it is useful for generating ToUnicode CMap.) =
-        } if
-      } ifelse
-    } if
+    /Unicode /Decoding resourcestatus {
+      pop pop
+      /Unicode /Decoding findresource
+      .setupUnicodeDecoder
+    } {
+      QUIET not {
+        (WARNING: /Unicode /Decoding resource is not accessible but it is useful for generating ToUnicode CMap.) =
+      } if
+    } ifelse
     setglobal
   } if
-} bind .schedule_init
+} .internalbind .schedule_init
 
 1010 % priority
 {
@@ -1056,7 +1055,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     currentdict end .setdistillerparams
     .distillerdevice //null //false mark .putdeviceparams
     dup type /booleantype eq not { cleartomark pop } if pop pop
-} bind .schedule_init
+} .internalbind .schedule_init
 
 2000 % priority
 { % Note, this may not work if the initial device is not pdfwrite
@@ -1067,7 +1066,7 @@ currentdict /.pdf_hook_DSC_Creator undef
     % Inform the device with initial graphic state. See gdev_pdf_fill_path.
     newpath fill
   } if
-} bind .schedule_init
+} .internalbind .schedule_init
 
 .setlanguagelevel
 

@@ -38,7 +38,7 @@ statusdict begin
    } {
      pop pop	% success -- pop the arguments
    } ifelse
-} bind def
+} .internalbind def
 
 % Keep the table of named paper sizes as procedures. Reuse them later
 % as compatibility operators.
@@ -150,8 +150,8 @@ readonly def
 
 % Define the pagetype values for the known page formats.
 % This array is now used for deterministic enumeration of .pagetypeprocs
-/.pagetypenames [ .pagetypeprocs { pop } bind forall ]
-  { .namestring exch .namestring gt } bind .sort
+/.pagetypenames [ .pagetypeprocs { pop } .internalbind forall ]
+  { .namestring exch .namestring gt } .internalbind .sort
   readonly def
 
 %%%%%% The following items were suggested by a user as useful.
@@ -160,41 +160,41 @@ readonly def
 
 /ramsize         4194304 def
 /hardwareiomode        0 def
-        /sethardwareiomode     {pop} bind def
+        /sethardwareiomode     {pop} .internalbind def
 /softwareiomode        0 def
-        /setsoftwareiomode     {pop} bind def
+        /setsoftwareiomode     {pop} .internalbind def
 /dosysstart        //false def
-        /setdosysstart         {pop} bind def
+        /setdosysstart         {pop} .internalbind def
 /allowjobreset      //true def
-        /setallowjobreset      {pop} bind def
+        /setallowjobreset      {pop} .internalbind def
 /defaultpaperfamily    0 def
-        /setdefaultpaperfamily {pop} bind def
+        /setdefaultpaperfamily {pop} .internalbind def
 /defaultpapertray      0 def
-        /setdefaultpapertray   {pop} bind def
+        /setdefaultpapertray   {pop} .internalbind def
 /defaulttrayswitch //false def
-        /setdefaulttrayswitch  {pop} bind def
+        /setdefaulttrayswitch  {pop} .internalbind def
 
 % Tray and format selection
 
-/11x17tray {/11x17 .uservar stopped { pop pop /11x17tray $error /errorname get signalerror } if } bind executeonly def
-/a3tray {/a3 .uservar stopped { pop pop /a3tray $error /errorname get signalerror } if } bind executeonly def
-/a4tray {/a4 .uservar stopped { pop pop /a4tray $error /errorname get signalerror } if } bind executeonly def
-/a5tray {/a5 .uservar stopped { pop pop /a5tray $error /errorname get signalerror } if } bind executeonly def
-/a6tray {/a6 .uservar stopped { pop pop /a6tray $error /errorname get signalerror } if } bind executeonly def
-/b4tray {/b4 .uservar stopped { pop pop /b4tray $error /errorname get signalerror } if } bind executeonly def
-/b5tray {/b5 .uservar stopped { pop pop /b5tray $error /errorname get signalerror } if } bind executeonly def
-/flsatray {/flsa .uservar stopped { pop pop /flsatray $error /errorname get signalerror } if } bind executeonly def
-/flsetray {/flse .uservar stopped { pop pop /flsetray $error /errorname get signalerror } if } bind executeonly def
-/halflettertray {/halfletter .uservar stopped { pop pop /halflettertray $error /errorname get signalerror } if } bind executeonly def
-/ledgertray {/ledger .uservar stopped { pop pop /ledgertray $error /errorname get signalerror } if } bind executeonly def
-/legaltray {/legal .uservar stopped { pop pop /legaltray $error /errorname get signalerror } if } bind executeonly def
-/lettertray {/letter .uservar stopped { pop pop /lettertray $error /errorname get signalerror } if } bind executeonly def
+/11x17tray {/11x17 .uservar stopped { pop pop /11x17tray $error /errorname get signalerror } if } .internalbind def
+/a3tray {/a3 .uservar stopped { pop pop /a3tray $error /errorname get signalerror } if } .internalbind def
+/a4tray {/a4 .uservar stopped { pop pop /a4tray $error /errorname get signalerror } if } .internalbind def
+/a5tray {/a5 .uservar stopped { pop pop /a5tray $error /errorname get signalerror } if } .internalbind def
+/a6tray {/a6 .uservar stopped { pop pop /a6tray $error /errorname get signalerror } if } .internalbind def
+/b4tray {/b4 .uservar stopped { pop pop /b4tray $error /errorname get signalerror } if } .internalbind def
+/b5tray {/b5 .uservar stopped { pop pop /b5tray $error /errorname get signalerror } if } .internalbind def
+/flsatray {/flsa .uservar stopped { pop pop /flsatray $error /errorname get signalerror } if } .internalbind def
+/flsetray {/flse .uservar stopped { pop pop /flsetray $error /errorname get signalerror } if } .internalbind def
+/halflettertray {/halfletter .uservar stopped { pop pop /halflettertray $error /errorname get signalerror } if } .internalbind def
+/ledgertray {/ledger .uservar stopped { pop pop /ledgertray $error /errorname get signalerror } if } .internalbind def
+/legaltray {/legal .uservar stopped { pop pop /legaltray $error /errorname get signalerror } if } .internalbind def
+/lettertray {/letter .uservar stopped { pop pop /lettertray $error /errorname get signalerror } if } .internalbind def
 
 % Per-job parameters
 
 /paperfamily 0 def	% 0 is US, 1 is European
 /papertray 1 def
-        /setpapertray {statusdict exch /papertray exch put} bind def
+        /setpapertray {statusdict exch /papertray exch put} .internalbind def
 /trayswitch //false def	% paperout feeds from another tray
 % We don't implement the (undocumented by Adobe) papersize 'operator',
 % because it's very awkward to make it interact properly with all the
@@ -206,43 +206,43 @@ readonly def
 %%%%%% Reference Manual, First Edition, and subsequent 'compatibility'
 %%%%%% documentation from Adobe.
 
- /checkpassword {statusdict begin .password eq end} bind def
- /defaulttimeouts {statusdict begin .timeouts aload pop end} bind def
+ /checkpassword {statusdict begin .password eq end} .internalbind def
+ /defaulttimeouts {statusdict begin .timeouts aload pop end} .internalbind def
  /diskonline {
     //false (%disk*%) { pop not exit } 8192 string /IODevice resourceforall
- } bind def
- /diskstatus {10240 2097152 } bind odef %  - diskstatus <free> <total> (in 1024 byte pages)
+ } .internalbind def
+ /diskstatus {10240 2097152 } .internalbind odef %  - diskstatus <free> <total> (in 1024 byte pages)
 
 %/dostartpage
- /eescratch {pop 0} bind def
- /idlefonts {statusdict begin mark .idlefonts aload pop end} bind def
+ /eescratch {pop 0} .internalbind def
+ /idlefonts {statusdict begin mark .idlefonts aload pop end} .internalbind def
  /jobname () def
 %/jobtimeout
  /manualfeed //false def
  /manualfeedtimeout 60 def
- /margins {statusdict begin .topmargin .leftmargin end} bind def
- /pagecount {4711} bind def
- /pagestackorder {//false} bind def
+ /margins {statusdict begin .topmargin .leftmargin end} .internalbind def
+ /pagecount {4711} .internalbind def
+ /pagestackorder {//false} .internalbind def
  /pagetype 0 def
  /prefeed //false def
- /printererror {pop pop} bind def
- /printername {statusdict /.printername get exch copy} bind def
+ /printererror {pop pop} .internalbind def
+ /printername {statusdict /.printername get exch copy} .internalbind def
  /processcolors /processcolors load def		% defined in systemdict
  /product product def		% product is defined in systemdict
  /revision revision def		% revision is defined in systemdict
- /sccbatch {pop 9600 0} bind def
- /sccinteractive {pop 9600 0} bind def
- /setdefaulttimeouts {statusdict begin .timeouts astore pop end} bind def
- /setdostartpage {statusdict exch /dostartpage exch put} bind def
- /setduplexmode {mark /Duplex 3 -1 roll currentdevice putdeviceprops} bind def
- /seteescratch {pop pop} bind def
- /setidlefonts {] statusdict exch /.idlefonts exch put} bind def
- /setjobtimeout {statusdict exch /jobtimeout exch put} bind def
+ /sccbatch {pop 9600 0} .internalbind def
+ /sccinteractive {pop 9600 0} .internalbind def
+ /setdefaulttimeouts {statusdict begin .timeouts astore pop end} .internalbind def
+ /setdostartpage {statusdict exch /dostartpage exch put} .internalbind def
+ /setduplexmode {mark /Duplex 3 -1 roll currentdevice putdeviceprops} .internalbind def
+ /seteescratch {pop pop} .internalbind def
+ /setidlefonts {] statusdict exch /.idlefonts exch put} .internalbind def
+ /setjobtimeout {statusdict exch /jobtimeout exch put} .internalbind def
  /setmargins
   { statusdict begin
     /.leftmargin exch def /.topmargin exch def
     end
-  } bind def
+  } .internalbind def
 
 % The following compatibility operators are only documented by Adobe in a
 % supplement to the Red Book.
@@ -260,20 +260,20 @@ readonly def
 % We follow the convention that ORIENT1 determines the orientation value
 % that means portait: false means 0, true means 1.
 
- /pagemargin { 0 } bind def
+ /pagemargin { 0 } .internalbind def
  /pageparams
   { currentdevice 1 dict dup /.MediaSize dup put .getdeviceparams
     exch pop exch pop aload pop 0 ORIENT1 { 1 } { 0 } ifelse
-  } bind def
+  } .internalbind def
  /setpage
   { ORIENT1 { 1 } { 0 } ifelse ne {exch} if
     //.setpagesize exec
-  } bind def
- /setpagemargin {pop} bind def	% can't do better without setpagedevice
+  } .internalbind def
+ /setpagemargin {pop} .internalbind def	% can't do better without setpagedevice
  /setpageparams
   { exch pop ORIENT1 { 1 } { 0 } ifelse ne {exch} if
     //.setpagesize exec
-  } bind def
+  } .internalbind def
  /setpagetype
   { statusdict begin
                 % The Adobe documentation only defines setpagetype
@@ -291,15 +291,15 @@ readonly def
         /pagetype exch def
     } ifelse
     end
-  } bind def
+  } .internalbind def
 
  /setpassword
   {exch checkpassword
     {statusdict exch /.password exch put //true}
     {pop //false}
-   ifelse} bind def
+   ifelse} .internalbind def
  /setprintername
-  {dup length string copy statusdict exch /.printername exch put} bind def
+  {dup length string copy statusdict exch /.printername exch put} .internalbind def
 
 % setresolution is not documented by Adobe, but some applications
 % use it anyway, without testing whether or not it is present.
@@ -311,10 +311,10 @@ readonly def
  /setresolution
   { mark /HWResolution [ 4 -1 roll dup ] currentdevice putdeviceprops pop
     initmatrix erasepage
-  } bind def
- /setsccbatch {pop pop pop} bind def
- /setsccinteractive {pop pop pop} bind def
- /settumble {pop} bind def
+  } .internalbind def
+ /setsccbatch {pop pop pop} .internalbind def
+ /setsccinteractive {pop pop pop} .internalbind def
+ /settumble {pop} .internalbind def
  /waittimeout 300 def
 
 %%%%%% End of documented items.
@@ -381,13 +381,13 @@ systemdict begin
 
 serverdict begin
 
- /execjob { } bind def
+ /execjob { } .internalbind def
 % The Red Book implies that something like the following is
 % an appropriate definition of exitserver.
- /exitserver { clear stop } bind def
+ /exitserver { clear stop } .internalbind def
 % However, this interacts badly with our standard error handler,
 % so we override it with the following less appropriate definition.
- /exitserver { 0 ne { clear cleardictstack } if } bind def
- /setrealdevice { } bind def
+ /exitserver { 0 ne { clear cleardictstack } if } .internalbind def
+ /setrealdevice { } .internalbind def
 
 end	% serverdict

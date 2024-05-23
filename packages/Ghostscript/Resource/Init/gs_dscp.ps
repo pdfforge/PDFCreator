@@ -21,18 +21,18 @@
   dup 0 ge {
     << /Orientation 2 index >> setpagedevice
   } if pop
-} bind def
+} .internalbind def
 
 % This dictionary contains local handlers for DSC comments.
 % See header in zdscpars.c for more information.
 % <dsc_dict> handler <dsc_dict>
 /DSCparseprocs mark
-   /Orientation { dup /Orientation get send_orientation } bind
+   /Orientation { dup /Orientation get send_orientation } .internalbind
    /PageOrientation { dup /PageOrientation .knownget { send_orientation }
                       { dup /Orientation .knownget { send_orientation } if }
-                      ifelse } bind
-   /Page { dup /Orientation .knownget { send_orientation } if } bind
-   /NOP { } bind
+                      ifelse } .internalbind
+   /Page { dup /Orientation .knownget { send_orientation } if } .internalbind
+   /NOP { } .internalbind
 .dicttomark readonly def
 
 % This procedure is called whenever a DSC comment is found by the interpreter
@@ -54,7 +54,7 @@
     } if
   } if
   pop pop				% remove file, dict
-} bind def
+} .internalbind def
 
 % Check whether the currently installed parser is the one defined in this file.
 /.using_parse_dsc {			% - .using_parse_dsc <proc> <using?>
@@ -65,9 +65,9 @@
   } {
     //false
   } ifelse
-} bind def
+} .internalbind def
 
-% Establish a binding for dsc_dict.
+% Establish a .internalbinding for dsc_dict.
 userdict /dsc_dict //null put
 
 % - dsc_init -
@@ -88,13 +88,13 @@ userdict /dsc_dict //null put
   } ifelse
   setglobal
   /do_parse_dsc //true def
-} bind def
+} .internalbind def
 
 % Enable the DSC parser defined in this file.
 % - enable_dsc -
 /enable_dsc {
   dsc_init
-} bind def
+} .internalbind def
 
 % Disable the DSC parser defined in this file.
 % - disable_dsc -
@@ -112,4 +112,4 @@ userdict /dsc_dict //null put
   } ifelse
         % If we couldn't restore the old parser, at least disable ours.
   /do_parse_dsc //false def
-} bind def
+} .internalbind def

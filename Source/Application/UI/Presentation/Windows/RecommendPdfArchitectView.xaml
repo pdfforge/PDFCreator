@@ -45,27 +45,28 @@
                             BorderBrush="#EEEEEE"
                             Background="#FAFAFA"
                             BorderThickness="1 0 1 1">
-            <StackPanel>
-                <Label Margin="20 10 0 0"
-                       Style="{StaticResource LargeLabel}"
+            <StackPanel Margin="20 10 20 10">
+                <Label Style="{StaticResource LargeLabel}"
                        HorizontalAlignment="Left"
                        FontSize="11"
                        Content="{Binding Translation.BenefitFromFreeFeatures}" />
 
-                <UniformGrid Columns="2" Margin="20 10 10 0" HorizontalAlignment="Center">
-                    <UniformGrid.Resources>
+                <Grid Margin="0 10 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center" />
                             <Setter Property="FontWeight" Value="Light" />
                             <Setter Property="FontSize" Value="14" />
-                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="Margin" Value="10 0 20 0" />
                             <Setter Property="TextWrapping" Value="Wrap" />
-                        </Style>
-
-                        <Style TargetType="DockPanel">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="Width" Value="250" />
-                            <Setter Property="Margin" Value="0 5" />
                         </Style>
 
                         <Style TargetType="ContentControl">
@@ -73,33 +74,31 @@
                             <Setter Property="Focusable" Value="False" />
                             <Setter Property="Height" Value="20" />
                         </Style>
-                    </UniformGrid.Resources>
-                    <DockPanel>
-                        <ContentControl Content="{StaticResource ViewArchitect}" />
-                        <TextBlock Text="{Binding Translation.ViewAndPrint}" />
-                    </DockPanel>
-                    <DockPanel>
-                        <ContentControl Content="{StaticResource CreateArchitect}" />
-                        <TextBlock Text="{Binding Translation.CreatePdfFiles}" />
-                    </DockPanel>
-                    <DockPanel>
-                        <ContentControl Content="{StaticResource SplitMerge}" />
-                        <TextBlock Text="{Binding Translation.SplitPdfFiles}" />
-                    </DockPanel>
-                    <DockPanel>
-                        <ContentControl Content="{StaticResource Merge}" />
-                        <TextBlock Text="{Binding Translation.MergePdfFiles}" />
-                    </DockPanel>
-                </UniformGrid>
+                    </Grid.Resources>
+                    <ContentControl Grid.Column="0" 
+                                    Content="{StaticResource ViewArchitect}" />
+                    <TextBlock Grid.Column="1" 
+                               Text="{Binding Translation.ViewAndPrint}" />
+                    <ContentControl Grid.Column="2"
+                                    Content="{StaticResource CreateArchitect}" />
+                    <TextBlock Grid.Column="3" 
+                               Text="{Binding Translation.CreatePdfFiles}" />
+                    <ContentControl Grid.Column="4"
+                                    Content="{StaticResource Merge}" />
+                    <TextBlock Grid.Column="5" 
+                               Text="{Binding Translation.MergePdfFiles}" />
+                </Grid>
             </StackPanel>
         </Border>
 
-        <DockPanel Margin="0 40 0 0">
+        <DockPanel Margin="0 30 10 0">
             <CheckBox DockPanel.Dock="Left" Margin="20 0 0 0"
                       Visibility="{Binding OfferDoNotShowAgain, Converter={StaticResource CollapsedIfFalse}}"
                       Content="{Binding Translation.DontShowAgain}"
                       IsChecked="{Binding DoNotRecommendArchitect, Mode=TwoWay}" />
-            <UniformGrid DockPanel.Dock="Right" Rows="1" HorizontalAlignment="Right">
+            <UniformGrid DockPanel.Dock="Right" Rows="1" 
+                         Margin="20 0 0 0"
+                         HorizontalAlignment="Right">
                 <Button  Margin="0 0 5 0"
                          Content="{Binding Translation.InfoButtonContent}"
                          Command="{Binding InfoCommand}"

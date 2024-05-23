@@ -19,6 +19,12 @@
             Current catalog locale.
             </summary>
         </member>
+        <member name="P:NGettext.Catalog.FormatProvider">
+            <summary>
+            Current format provider.
+            Current catalog culture format provider will be used by default.
+            </summary>
+        </member>
         <member name="P:NGettext.Catalog.Translations">
             <summary>
             Loaded raw translation strings.
@@ -184,6 +190,13 @@
             </summary>
             <param name="messageId"></param>
             <returns>Returns all translations for given <paramref name="messageId"/> or null if not found.</returns>
+        </member>
+        <member name="M:NGettext.Catalog.IsTranslationExist(System.String)">
+            <summary>
+            Checks whether given message ID is present in the loaded translation list.
+            </summary>
+            <param name="messageId"></param>
+            <returns></returns>
         </member>
         <member name="T:NGettext.ICatalog">
             <summary>
@@ -786,103 +799,6 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="T:NGettext.Plural.DefaultPluralRuleGenerator">
-            <summary>
-            Default plural rule generator.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.DefaultPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
-            <summary>
-            Creates a plural rule for given culture.
-            </summary>
-            <remarks>
-            Default furmulas created using information from http://cldr.unicode.org/
-            </remarks>
-            <param name="cultureInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRule">
-            <summary>
-            Represents a plural form rule which can generate a plural form index by given number.
-            </summary>
-        </member>
-        <member name="P:NGettext.Plural.IPluralRule.NumPlurals">
-            <summary>
-            Maximum number of plural forms supported.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRule.Evaluate(System.Int64)">
-            <summary>
-            Evaluates a number and returns a plural form index.
-            </summary>
-            <param name="number">Number which needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRuleGenerator">
-            <summary>
-            Plural rule generator.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
-            <summary>
-            Creates a plural rule for given culture.
-            </summary>
-            <param name="cultureInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRuleTextParser">
-            <summary>
-            Represents a plural rule generator that can generate plural rules based on parsed text.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRuleTextParser.SetPluralRuleText(System.String)">
-            <summary>
-            Sets a plural rule text representation that needs to be parsed.
-            </summary>
-            <param name="pluralRuleText">Plural rule text representation.</param>
-        </member>
-        <member name="T:NGettext.Plural.PluralRule">
-            <summary>
-            Default plural rule implementation which uses a evaluation delegate instance to evaluate a plural form.
-            </summary>
-        </member>
-        <member name="F:NGettext.Plural.PluralRule.EvaluatorDelegate">
-            <summary>
-            Evaluation delegate instance.
-            </summary>
-        </member>
-        <member name="F:NGettext.Plural.PluralRule.Default">
-            <summary>
-            Default plural rule instance.
-            </summary>
-        </member>
-        <member name="P:NGettext.Plural.PluralRule.NumPlurals">
-            <summary>
-            Maximum number of plural forms supported.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.PluralRule.#ctor(System.Int32,NGettext.Plural.PluralRuleEvaluatorDelegate)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NGettext.Plural.PluralRule"/> class using specified maximum plural
-            forms value and an evaluation delegate.
-            </summary>
-            <param name="numPlurals"></param>
-            <param name="evaluatorDelegate"></param>
-        </member>
-        <member name="M:NGettext.Plural.PluralRule.Evaluate(System.Int64)">
-            <summary>
-            Evaluates a number and returns a plural form index.
-            </summary>
-            <param name="number">Number which needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
-        </member>
-        <member name="T:NGettext.Plural.PluralRuleEvaluatorDelegate">
-            <summary>
-            Represents a plural rule evaluation delegate used in the DefaultPluralRule.
-            </summary>
-            <param name="number">Number whitch needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
-        </member>
         <member name="T:NGettext.Plural.Ast.AstTokenParser">
             <summary>
             Plural rule formula parser.
@@ -1073,6 +989,103 @@
             <summary>
             )
             </summary>
+        </member>
+        <member name="T:NGettext.Plural.DefaultPluralRuleGenerator">
+            <summary>
+            Default plural rule generator.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.DefaultPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
+            <summary>
+            Creates a plural rule for given culture.
+            </summary>
+            <remarks>
+            Default furmulas created using information from http://cldr.unicode.org/
+            </remarks>
+            <param name="cultureInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRule">
+            <summary>
+            Represents a plural form rule which can generate a plural form index by given number.
+            </summary>
+        </member>
+        <member name="P:NGettext.Plural.IPluralRule.NumPlurals">
+            <summary>
+            Maximum number of plural forms supported.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRule.Evaluate(System.Int64)">
+            <summary>
+            Evaluates a number and returns a plural form index.
+            </summary>
+            <param name="number">Number which needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRuleGenerator">
+            <summary>
+            Plural rule generator.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
+            <summary>
+            Creates a plural rule for given culture.
+            </summary>
+            <param name="cultureInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRuleTextParser">
+            <summary>
+            Represents a plural rule generator that can generate plural rules based on parsed text.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRuleTextParser.SetPluralRuleText(System.String)">
+            <summary>
+            Sets a plural rule text representation that needs to be parsed.
+            </summary>
+            <param name="pluralRuleText">Plural rule text representation.</param>
+        </member>
+        <member name="T:NGettext.Plural.PluralRule">
+            <summary>
+            Default plural rule implementation which uses a evaluation delegate instance to evaluate a plural form.
+            </summary>
+        </member>
+        <member name="F:NGettext.Plural.PluralRule.EvaluatorDelegate">
+            <summary>
+            Evaluation delegate instance.
+            </summary>
+        </member>
+        <member name="F:NGettext.Plural.PluralRule.Default">
+            <summary>
+            Default plural rule instance.
+            </summary>
+        </member>
+        <member name="P:NGettext.Plural.PluralRule.NumPlurals">
+            <summary>
+            Maximum number of plural forms supported.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.PluralRule.#ctor(System.Int32,NGettext.Plural.PluralRuleEvaluatorDelegate)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Plural.PluralRule"/> class using specified maximum plural
+            forms value and an evaluation delegate.
+            </summary>
+            <param name="numPlurals"></param>
+            <param name="evaluatorDelegate"></param>
+        </member>
+        <member name="M:NGettext.Plural.PluralRule.Evaluate(System.Int64)">
+            <summary>
+            Evaluates a number and returns a plural form index.
+            </summary>
+            <param name="number">Number which needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
+        </member>
+        <member name="T:NGettext.Plural.PluralRuleEvaluatorDelegate">
+            <summary>
+            Represents a plural rule evaluation delegate used in the DefaultPluralRule.
+            </summary>
+            <param name="number">Number whitch needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
         </member>
     </members>
 </doc>

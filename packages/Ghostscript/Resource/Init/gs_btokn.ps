@@ -156,14 +156,14 @@ mark
   /marktype 1 index
   /nulltype 1 index
   /booleantype 1 index
-  /nametype { length add } .bind
+  /nametype { length add } .forcebind
   /stringtype 1 index
   /arraytype 0	% replaced below
   /dicttype 0	% replaced below
 .dicttomark def
 /.cntobj {
   dup type //cntdict exch get exec
-} .bind def
+} .forcebind def
 cntdict /arraytype {
   dup length            % #refs #chars array len
   4 -1 roll add         % #chars array #refs+len
@@ -172,11 +172,11 @@ cntdict /arraytype {
   } if
   3 1 roll              % #refs+len #chars array
   //.cntobj forall
-} .bind put	% replace arraytype in cntdict
+} .forcebind put	% replace arraytype in cntdict
 
 cntdict /dicttype {
   /writeobject .systemvar /typecheck signalerror
-} bind put
+} .internalbind put
 
 
 /.bosheader {		% <top_length> <total_length> <string8> .bosheader
@@ -198,7 +198,7 @@ cntdict /dicttype {
   } if
   2 index 3 3 -1 roll put
   1 index 2 3 -1 roll put
-} .bind def
+} .forcebind def
 
 /.writeobjects {	% <file> <tag> <array> .writeobjects -
   % Apply the tag early and forget about it.
@@ -269,7 +269,7 @@ cntdict /dicttype {
   } for
 
   cleartomark		% Clean up
-} .bind def
+} .forcebind def
 
 /.writeobject {
   3 copy exch
@@ -277,7 +277,7 @@ cntdict /dicttype {
                 % to avoid a possible invalidaccess.
   .currentglobal //false .setglobal exch 1 array astore exch .setglobal
   //.writeobjects exec pop pop pop
-} .bind def
+} .forcebind def
 
 /printobject {		% <obj> <tag> printobject -
   currentobjectformat 0 eq {
@@ -299,7 +299,7 @@ cntdict /dicttype {
                 % This is a pseudo-operator so it will restore the stack
                 % if it gets an error.
   mark 0 0 3 .argindex //.cntobj exec cleartomark pop
-} bind def
+} .internalbind def
 /.printerror {
   $error /binary get .languagelevel 2 ge and {
     currentobjectformat 0 ne {
@@ -315,7 +315,7 @@ cntdict /dicttype {
   }
   //.printerror		% known to be a procedure
   ifelse
-} bind def
+} .internalbind def
 
 currentdict /cntdict .undef
 

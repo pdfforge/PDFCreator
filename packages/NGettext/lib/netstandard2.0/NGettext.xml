@@ -19,6 +19,12 @@
             Current catalog locale.
             </summary>
         </member>
+        <member name="P:NGettext.Catalog.FormatProvider">
+            <summary>
+            Current format provider.
+            Current catalog culture format provider will be used by default.
+            </summary>
+        </member>
         <member name="P:NGettext.Catalog.Translations">
             <summary>
             Loaded raw translation strings.
@@ -71,6 +77,23 @@
             and loads data from specified stream using a new <see cref="T:NGettext.Loaders.MoLoader"/> instance.
             </summary>
             <param name="moStream">Stream that contain binary data in the MO file format.</param>
+            <param name="cultureInfo">Culture info.</param>
+        </member>
+        <member name="M:NGettext.Catalog.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Catalog"/> class using the current UI culture info
+            and loads data for specified domain and locale directory using a new <see cref="T:NGettext.Loaders.MoLoader"/> instance.
+            </summary>
+            <param name="domain">Catalog domain name.</param>
+            <param name="localeDir">Directory that contains gettext localization files.</param>
+        </member>
+        <member name="M:NGettext.Catalog.#ctor(System.String,System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Catalog"/> class using given culture info
+            and loads data for specified domain and locale directory using a new <see cref="T:NGettext.Loaders.MoLoader"/> instance.
+            </summary>
+            <param name="domain">Catalog domain name.</param>
+            <param name="localeDir">Directory that contains gettext localization files.</param>
             <param name="cultureInfo">Culture info.</param>
         </member>
         <member name="M:NGettext.Catalog.Load(NGettext.Loaders.ILoader)">
@@ -184,6 +207,13 @@
             </summary>
             <param name="messageId"></param>
             <returns>Returns all translations for given <paramref name="messageId"/> or null if not found.</returns>
+        </member>
+        <member name="M:NGettext.Catalog.IsTranslationExist(System.String)">
+            <summary>
+            Checks whether given message ID is present in the loaded translation list.
+            </summary>
+            <param name="messageId"></param>
+            <returns></returns>
         </member>
         <member name="T:NGettext.ICatalog">
             <summary>
@@ -411,6 +441,25 @@
             a plural form rule using <see cref="T:NGettext.Plural.AstPluralRuleGenerator"/>.
             </summary>
         </member>
+        <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.String,System.String,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoAstPluralLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            <see cref="T:NGettext.Plural.AstPluralRuleGenerator"/> will be used to generate a plural form rule.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.String,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            <see cref="T:NGettext.Plural.AstPluralRuleGenerator"/> will be used to generate a plural form rule.
+            </summary>
+            <param name="filePath"></param>
+            <param name="parser"></param>
+        </member>
         <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.IO.Stream,NGettext.Loaders.MoFileParser)">
             <summary>
             Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
@@ -419,6 +468,23 @@
             </summary>
             <param name="moStream"></param>
             <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            <see cref="T:NGettext.Plural.AstPluralRuleGenerator"/> will be used to generate a plural form rule.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            <see cref="T:NGettext.Plural.AstPluralRuleGenerator"/> will be used to generate a plural form rule.
+            </summary>
+            <param name="filePath"></param>
         </member>
         <member name="M:NGettext.Loaders.MoAstPluralLoader.#ctor(System.IO.Stream)">
             <summary>
@@ -526,6 +592,25 @@
             Gets a MO file format parser instance.
             </summary>
         </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,System.String,NGettext.Plural.IPluralRuleGenerator,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <param name="pluralRuleGenerator"></param>
+            <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,NGettext.Plural.IPluralRuleGenerator,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            </summary>
+            <param name="filePath"></param>
+            <param name="pluralRuleGenerator"></param>
+            <param name="parser"></param>
+        </member>
         <member name="M:NGettext.Loaders.MoLoader.#ctor(System.IO.Stream,NGettext.Plural.IPluralRuleGenerator,NGettext.Loaders.MoFileParser)">
             <summary>
             Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
@@ -534,6 +619,55 @@
             <param name="moStream"></param>
             <param name="pluralRuleGenerator"></param>
             <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,System.String,NGettext.Plural.IPluralRuleGenerator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <param name="pluralRuleGenerator"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,System.String,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            that will be located in the localeDir using the domain name and catalog's culture info.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,NGettext.Plural.IPluralRuleGenerator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            </summary>
+            <param name="filePath"></param>
+            <param name="pluralRuleGenerator"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String,NGettext.Loaders.MoFileParser)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            </summary>
+            <param name="filePath"></param>
+            <param name="parser"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Loaders.MoLoader"/> class which will try to load a MO file
+            from the specified path.
+            </summary>
+            <param name="filePath"></param>
         </member>
         <member name="M:NGettext.Loaders.MoLoader.#ctor(System.IO.Stream,NGettext.Plural.IPluralRuleGenerator)">
             <summary>
@@ -564,6 +698,21 @@
             </summary>
             <param name="catalog">A catalog instance to load translations to.</param>
         </member>
+        <member name="M:NGettext.Loaders.MoLoader.Load(System.String,System.String,NGettext.Catalog)">
+            <summary>
+            Loads translations to the specified catalog using catalog's culture info from specified locale directory and specified domain.
+            </summary>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <param name="catalog"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.Load(System.String,NGettext.Catalog)">
+            <summary>
+            Loads translations to the specified catalog from specified MO file path.
+            </summary>
+            <param name="filePath"></param>
+            <param name="catalog"></param>
+        </member>
         <member name="M:NGettext.Loaders.MoLoader.Load(System.IO.Stream,NGettext.Catalog)">
             <summary>
             Loads translations to the specified catalog from specified MO file stream.
@@ -577,6 +726,25 @@
             </summary>
             <param name="parsedMoFile"></param>
             <param name="catalog"></param>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.FindTranslationFile(System.Globalization.CultureInfo,System.String,System.String)">
+            <summary>
+            Finds corresponding translation file using specified culture info, domain and a locale directory.
+            </summary>
+            <param name="cultureInfo"></param>
+            <param name="domain"></param>
+            <param name="localeDir"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NGettext.Loaders.MoLoader.GetFileName(System.String,System.String,System.String)">
+            <summary>
+            Constructs a standard path to the MO translation file using specified path to the locale directory, 
+            domain and locale's TwoLetterISOLanguageName string.
+            </summary>
+            <param name="localeDir"></param>
+            <param name="domain"></param>
+            <param name="locale"></param>
+            <returns></returns>
         </member>
         <member name="T:NGettext.Loaders.ReadOnlyStreamWrapper">
             <summary>
@@ -675,6 +843,39 @@
             </returns>
             <exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.NotSupportedException">The stream does not support seeking. </exception><exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>1</filterpriority>
         </member>
+        <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins an asynchronous read operation.
+            </summary>
+            <returns>
+            An <see cref="T:System.IAsyncResult"/> that represents the asynchronous read, which could still be pending.
+            </returns>
+            <param name="buffer">The buffer to read the data into. </param><param name="offset">The byte offset in <paramref name="buffer"/> at which to begin writing data read from the stream. </param><param name="count">The maximum number of bytes to read. </param><param name="callback">An optional asynchronous callback, to be called when the read is complete. </param><param name="state">A user-provided object that distinguishes this particular asynchronous read request from other requests. </param><exception cref="T:System.IO.IOException">Attempted an asynchronous read past the end of the stream, or a disk error occurs. </exception><exception cref="T:System.ArgumentException">One or more of the arguments is invalid. </exception><exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><exception cref="T:System.NotSupportedException">The current Stream implementation does not support the read operation. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins an asynchronous write operation.
+            </summary>
+            <returns>
+            An IAsyncResult that represents the asynchronous write, which could still be pending.
+            </returns>
+            <param name="buffer">The buffer to write data from. </param><param name="offset">The byte offset in <paramref name="buffer"/> from which to begin writing. </param><param name="count">The maximum number of bytes to write. </param><param name="callback">An optional asynchronous callback, to be called when the write is complete. </param><param name="state">A user-provided object that distinguishes this particular asynchronous write request from other requests. </param><exception cref="T:System.IO.IOException">Attempted an asynchronous write past the end of the stream, or a disk error occurs. </exception><exception cref="T:System.ArgumentException">One or more of the arguments is invalid. </exception><exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><exception cref="T:System.NotSupportedException">The current Stream implementation does not support the write operation. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.EndRead(System.IAsyncResult)">
+            <summary>
+            Waits for the pending asynchronous read to complete.
+            </summary>
+            <returns>
+            The number of bytes read from the stream, between zero (0) and the number of bytes you requested. Streams return zero (0) only at the end of the stream, otherwise, they should block until at least one byte is available.
+            </returns>
+            <param name="asyncResult">The reference to the pending asynchronous request to finish. </param><exception cref="T:System.ArgumentNullException"><paramref name="asyncResult"/> is null. </exception><exception cref="T:System.ArgumentException"><paramref name="asyncResult"/> did not originate from a <see cref="M:System.IO.Stream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/> method on the current stream. </exception><exception cref="T:System.IO.IOException">The stream is closed or an internal error has occurred.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.EndWrite(System.IAsyncResult)">
+            <summary>
+            Ends an asynchronous write operation.
+            </summary>
+            <param name="asyncResult">A reference to the outstanding asynchronous I/O request. </param><exception cref="T:System.ArgumentNullException"><paramref name="asyncResult"/> is null. </exception><exception cref="T:System.ArgumentException"><paramref name="asyncResult"/> did not originate from a <see cref="M:System.IO.Stream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/> method on the current stream. </exception><exception cref="T:System.IO.IOException">The stream is closed or an internal error has occurred.</exception><filterpriority>2</filterpriority>
+        </member>
         <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.ReadByte">
             <summary>
             Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at the end of the stream.
@@ -689,6 +890,12 @@
             Writes a byte to the current position in the stream and advances the position within the stream by one byte.
             </summary>
             <param name="value">The byte to write to the stream. </param><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><exception cref="T:System.NotSupportedException">The stream does not support writing, or the stream is already closed. </exception><exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.Close">
+            <summary>
+            Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
+            </summary>
+            <filterpriority>1</filterpriority>
         </member>
         <member name="M:NGettext.Loaders.ReadOnlyStreamWrapper.Dispose(System.Boolean)">
             <summary>
@@ -785,103 +992,6 @@
             </summary>
             <param name="input"></param>
             <returns></returns>
-        </member>
-        <member name="T:NGettext.Plural.DefaultPluralRuleGenerator">
-            <summary>
-            Default plural rule generator.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.DefaultPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
-            <summary>
-            Creates a plural rule for given culture.
-            </summary>
-            <remarks>
-            Default furmulas created using information from http://cldr.unicode.org/
-            </remarks>
-            <param name="cultureInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRule">
-            <summary>
-            Represents a plural form rule which can generate a plural form index by given number.
-            </summary>
-        </member>
-        <member name="P:NGettext.Plural.IPluralRule.NumPlurals">
-            <summary>
-            Maximum number of plural forms supported.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRule.Evaluate(System.Int64)">
-            <summary>
-            Evaluates a number and returns a plural form index.
-            </summary>
-            <param name="number">Number which needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRuleGenerator">
-            <summary>
-            Plural rule generator.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
-            <summary>
-            Creates a plural rule for given culture.
-            </summary>
-            <param name="cultureInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="T:NGettext.Plural.IPluralRuleTextParser">
-            <summary>
-            Represents a plural rule generator that can generate plural rules based on parsed text.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.IPluralRuleTextParser.SetPluralRuleText(System.String)">
-            <summary>
-            Sets a plural rule text representation that needs to be parsed.
-            </summary>
-            <param name="pluralRuleText">Plural rule text representation.</param>
-        </member>
-        <member name="T:NGettext.Plural.PluralRule">
-            <summary>
-            Default plural rule implementation which uses a evaluation delegate instance to evaluate a plural form.
-            </summary>
-        </member>
-        <member name="F:NGettext.Plural.PluralRule.EvaluatorDelegate">
-            <summary>
-            Evaluation delegate instance.
-            </summary>
-        </member>
-        <member name="F:NGettext.Plural.PluralRule.Default">
-            <summary>
-            Default plural rule instance.
-            </summary>
-        </member>
-        <member name="P:NGettext.Plural.PluralRule.NumPlurals">
-            <summary>
-            Maximum number of plural forms supported.
-            </summary>
-        </member>
-        <member name="M:NGettext.Plural.PluralRule.#ctor(System.Int32,NGettext.Plural.PluralRuleEvaluatorDelegate)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NGettext.Plural.PluralRule"/> class using specified maximum plural
-            forms value and an evaluation delegate.
-            </summary>
-            <param name="numPlurals"></param>
-            <param name="evaluatorDelegate"></param>
-        </member>
-        <member name="M:NGettext.Plural.PluralRule.Evaluate(System.Int64)">
-            <summary>
-            Evaluates a number and returns a plural form index.
-            </summary>
-            <param name="number">Number which needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
-        </member>
-        <member name="T:NGettext.Plural.PluralRuleEvaluatorDelegate">
-            <summary>
-            Represents a plural rule evaluation delegate used in the DefaultPluralRule.
-            </summary>
-            <param name="number">Number whitch needs to be evaluated.</param>
-            <returns>Plural form index.</returns>
         </member>
         <member name="T:NGettext.Plural.Ast.AstTokenParser">
             <summary>
@@ -1073,6 +1183,103 @@
             <summary>
             )
             </summary>
+        </member>
+        <member name="T:NGettext.Plural.DefaultPluralRuleGenerator">
+            <summary>
+            Default plural rule generator.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.DefaultPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
+            <summary>
+            Creates a plural rule for given culture.
+            </summary>
+            <remarks>
+            Default furmulas created using information from http://cldr.unicode.org/
+            </remarks>
+            <param name="cultureInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRule">
+            <summary>
+            Represents a plural form rule which can generate a plural form index by given number.
+            </summary>
+        </member>
+        <member name="P:NGettext.Plural.IPluralRule.NumPlurals">
+            <summary>
+            Maximum number of plural forms supported.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRule.Evaluate(System.Int64)">
+            <summary>
+            Evaluates a number and returns a plural form index.
+            </summary>
+            <param name="number">Number which needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRuleGenerator">
+            <summary>
+            Plural rule generator.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRuleGenerator.CreateRule(System.Globalization.CultureInfo)">
+            <summary>
+            Creates a plural rule for given culture.
+            </summary>
+            <param name="cultureInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NGettext.Plural.IPluralRuleTextParser">
+            <summary>
+            Represents a plural rule generator that can generate plural rules based on parsed text.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.IPluralRuleTextParser.SetPluralRuleText(System.String)">
+            <summary>
+            Sets a plural rule text representation that needs to be parsed.
+            </summary>
+            <param name="pluralRuleText">Plural rule text representation.</param>
+        </member>
+        <member name="T:NGettext.Plural.PluralRule">
+            <summary>
+            Default plural rule implementation which uses a evaluation delegate instance to evaluate a plural form.
+            </summary>
+        </member>
+        <member name="F:NGettext.Plural.PluralRule.EvaluatorDelegate">
+            <summary>
+            Evaluation delegate instance.
+            </summary>
+        </member>
+        <member name="F:NGettext.Plural.PluralRule.Default">
+            <summary>
+            Default plural rule instance.
+            </summary>
+        </member>
+        <member name="P:NGettext.Plural.PluralRule.NumPlurals">
+            <summary>
+            Maximum number of plural forms supported.
+            </summary>
+        </member>
+        <member name="M:NGettext.Plural.PluralRule.#ctor(System.Int32,NGettext.Plural.PluralRuleEvaluatorDelegate)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NGettext.Plural.PluralRule"/> class using specified maximum plural
+            forms value and an evaluation delegate.
+            </summary>
+            <param name="numPlurals"></param>
+            <param name="evaluatorDelegate"></param>
+        </member>
+        <member name="M:NGettext.Plural.PluralRule.Evaluate(System.Int64)">
+            <summary>
+            Evaluates a number and returns a plural form index.
+            </summary>
+            <param name="number">Number which needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
+        </member>
+        <member name="T:NGettext.Plural.PluralRuleEvaluatorDelegate">
+            <summary>
+            Represents a plural rule evaluation delegate used in the DefaultPluralRule.
+            </summary>
+            <param name="number">Number whitch needs to be evaluated.</param>
+            <returns>Plural form index.</returns>
         </member>
     </members>
 </doc>

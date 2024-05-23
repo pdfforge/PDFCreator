@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using pdfforge.PDFCreator.Core.Services;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter
 {
@@ -13,10 +14,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Converter
                 return null;
 
             var type = value.GetType();
+            // for EnumTranslation<>
             var trans = type.GetProperty("Translation");
             if (trans != null)
                 return trans.GetValue(value);
-
+            
+            if (value is Language languageValue)
+                return languageValue.NativeName;
+            
             if (value is ConversionProfileWrapper profileWrapper)
                 return profileWrapper.Name;
 

@@ -140,7 +140,7 @@ systemdict /NEWPDF known {
   {
       <</DisablePageHandler //true>> setpagedevice
   } if
-} bind def
+} .internalbind def
 
 /EnablePageHandlerDevice
 {
@@ -150,12 +150,12 @@ systemdict /NEWPDF known {
   {
       <</DisablePageHandler //false>> setpagedevice
   } if
-} bind def
+} .internalbind def
 
 /newpdf_pdfformaterror {    % <string> pdfformaterror -
   (%stdout) (w) file
   dup 3 -1 roll writestring flushfile
-} bind executeonly def
+} .internalbind def
 
 % This routine sets up the transparency compositor requirement, and
 % number of spot channels required (if any) in the device. This needs
@@ -177,7 +177,7 @@ systemdict /NEWPDF known {
     pop
   } ifelse
   setpagedevice
-}bind def
+}.internalbind def
 
 % Takes the selected Box as a parameter and scales it to fit the current media.
 % If the amount of scaling would be reduced by rotating the content, then
@@ -230,9 +230,22 @@ systemdict /NEWPDF known {
 
     % If we need to rotate, recalculate the box
     {
-      90 rotate
-      0 2 index neg translate                   % move 0,0 to bottom right of media to account for rotation
-      exch                                      % swap media width/height for scaling calculation
+      % We take any existing /Rotate key in the dictionary into account as well, because
+      % that way we will preserve the orientation which would be used when displaying
+      % the original, un-modified page. Note that PostScript's rotate operator works
+      % counter-clockwise, while PDF works clockwise....
+      %
+      7 index dup /Rotate known {/Rotate get}{90}ifelse
+      270 eq {
+        90 rotate
+        0 2 index neg translate                 % move 0,0 to bottom right of media to account for rotation
+        exch                                    % swap media width/height for scaling calculation
+      }
+      {
+        270 rotate
+        dup neg 0 translate                     % move 0,0 to bottom right of media to account for rotation
+        exch                                    % swap media width/height for scaling calculation
+      } ifelse
     }if
 
     % Now use the box and media values to calculate the required x/y scale factors
@@ -271,7 +284,7 @@ systemdict /NEWPDF known {
 
     dup scale                           % scale both axes the same
     pop pop pop                         % remove the leftover boxwidth, boxheight and mediawidth/height
-} bind def
+} .internalbind def
 
 /newpdf_get_media_box { % <pagedict> get_media_box <box> <bool>
   dup /MediaBox known {
@@ -295,7 +308,7 @@ systemdict /NEWPDF known {
     (               Output may be incorrect.\n) newpdf_pdfformaterror
     [ 0 0 currentpagedevice /PageSize get aload pop ] //false
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 % [llx lly urx ury] newpdf_check_empty_box [llx lly urx ury] true | false
 % rturns true and the original array if its valid, otherwise returns false
@@ -329,7 +342,7 @@ systemdict /NEWPDF known {
      (                  Output may be incorrect.\n) print flush
     pop //false
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 /newpdf_get_any_box { % <pagedict> get_any_box <box name> <box>
   //systemdict /UseBleedBox .knownget dup { and } if {
@@ -434,7 +447,7 @@ systemdict /NEWPDF known {
     } ifelse
     4 array astore            % /SomeBox [mX0 mY0 mX1 mY1]
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 % This routine is used to set the PostScript /PageSize from the requested Box of the
 % PDF file. Much of this is copied from the old pdfshowpage_setpage routine which
@@ -634,7 +647,7 @@ systemdict /NEWPDF known {
   }ifelse
 
   pop
-} bind executeonly def
+} .internalbind def
 
 % This routine checks a list of known/implemented command line switches to see if they
 % have been defined in the PostScript environment. If they have we construct a dictionary
@@ -667,7 +680,7 @@ systemdict /NEWPDF known {
   /PageCount /CumulativePageCount where { /CumulativePageCount get }{currentpagedevice /PageCount get} ifelse def
 
   currentdict end
-} bind executeonly def
+} .internalbind def
 
 currentdict /PDFSwitches undef
 
@@ -704,14 +717,13 @@ currentdict /PDFSwitches undef
   {
     pop 0
   } ifelse
-}bind def
+}.internalbind def
 
 /runpdfpagerange
 {
   /PageList where {
     pop
-    pdfpagecount
-    .PDFparsePageList
+    PageList pdfpagecount .PDFparsePageList
     dup 0 eq {	% No ranges, error
       (\n   **** Error: Invalid PageList: ) print
       PageList  print
@@ -744,7 +756,7 @@ currentdict /PDFSwitches undef
       } if
     } ifelse
   } ifelse
-} bind def
+} .internalbind def
 
 
 /runpdf_collection_entry
@@ -771,7 +783,7 @@ currentdict /PDFSwitches undef
   } {
     pop pop
   }ifelse
-} bind def
+} .internalbind def
 
 % <file> runpdf -
 /newpdf_runpdf
@@ -803,7 +815,7 @@ currentdict /PDFSwitches undef
   } {
     pop pop
   }ifelse
-} bind def
+} .internalbind def
 
 % start a PDF file, and specify interpreter parameters to be used
 % to override any command line ones.
@@ -866,13 +878,13 @@ currentdict /PDFSwitches undef
       pop
     }ifelse
   }ifelse
-} bind def
+} .internalbind def
 
 % -file- runpdfbegin -
 /runpdfbegin
 {
   <<>> runpdfbegin_with_params
-} bind def
+} .internalbind def
 
 /pdfgetpage
 {
@@ -895,21 +907,21 @@ currentdict /PDFSwitches undef
       /Page# exch put
     } ifelse
   }ifelse
-} bind def
+} .internalbind def
 
 /process_trailer_attrs
 {
-}bind def
+}.internalbind def
 
 /pdfshowpage_init
 {
-} bind def
+} .internalbind def
 
 /pdfshowpage_setpage
 {
   dup newpdf_device_setup
   dup newpdf_set_pagesize
-} bind def
+} .internalbind def
 
 /pdfshowpage_finish
 {
@@ -931,7 +943,7 @@ currentdict /PDFSwitches undef
       (               Could not draw this page at all, page will be missing in the output.\n) newpdf_pdfformaterror
     } if
   }ifelse
-} bind def
+} .internalbind def
 
 /pdfshowpage
 {
@@ -944,7 +956,7 @@ currentdict /PDFSwitches undef
     pdfshowpage_setpage
     pdfshowpage_finish
   }ifelse
-} bind def
+} .internalbind def
 
 /runpdfend
 {
@@ -965,7 +977,7 @@ currentdict /PDFSwitches undef
   % add the number of pages already in the output to the 'Dest' of
   % Outlines and Link annotations.
   add <</PageCount 3 -1 roll >> setpagedevice
-} bind def
+} .internalbind def
 
 /pdfopen
 {
@@ -999,7 +1011,7 @@ currentdict /PDFSwitches undef
     pop
     <</NumPages 0>>
   } ifelse
-} bind def
+} .internalbind def
 
 /pdfclose
 {
@@ -1013,12 +1025,12 @@ currentdict /PDFSwitches undef
       pop
     } if
   }ifelse
-} bind def
+} .internalbind def
 
 /pdfavailable
 {
   .PDFAvailable
-} bind def
+} .internalbind def
 
 % <int> <int> dopdfpages -
 % First Page and then LastPage
@@ -1078,7 +1090,7 @@ currentdict /PDFSwitches undef
     } for
   } ifelse
   //EnablePageHandlerDevice exec
-} bind def
+} .internalbind def
 
 /.runps /run load def
 /run {
@@ -1153,7 +1165,7 @@ currentdict /PDFSwitches undef
   } {
     closefile % file was empty
   } ifelse
-} bind odef
+} .internalbind odef
 currentdict /runpdfstring .undef
 
 currentdict /DisablePageHandlerDevice undef
@@ -1188,7 +1200,7 @@ currentdict /EnablePageHandlerDevice undef
   } {
     closefile
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 % Recursively enumerate /Names entries
 % <node> pdf_collection_names /temp_file_name ...
@@ -1217,7 +1229,7 @@ currentdict /EnablePageHandlerDevice undef
       } forall
     } if
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 /runpdf {        % <file> runpdf -
     dup type /filetype eq
@@ -1238,7 +1250,7 @@ currentdict /EnablePageHandlerDevice undef
     {
       (   **** Error: Attempt to process something other than a file object in runpdf.\n) pdfformaterror
     } ifelse
-} bind executeonly odef
+} .internalbind odef
 
 end            % systemdict
 
@@ -1246,7 +1258,7 @@ end            % systemdict
 % It is OK to use { (%stdin) run } here, because a startjob cannot occur.
 /.runstdin {
   { (%stdin) run } execute0
-} bind executeonly def
+} .internalbind def
 
 end            % userdict
 
@@ -1268,7 +1280,7 @@ systemdict /ALLOWPSTRANSPARENCY get
     {
       /.setopacityalpha /undefined cvx signalerror
     } ifelse
-  } bind def
+  } .internalbind def
 
   /.setshapealpha
   {
@@ -1284,7 +1296,7 @@ systemdict /ALLOWPSTRANSPARENCY get
     {
       /.setshapealpha /undefined cvx signalerror
     } ifelse
-  } bind def
+  } .internalbind def
 } if
 
 .setglobal

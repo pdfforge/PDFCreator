@@ -269,11 +269,29 @@ The following installation steps assume that the Ghostscript directory is ``DISK
 If you have ``DECWindows/Motif`` installed, you may wish to replace the ``FONTMAP.GS`` file with ``FONTMAP.VMS``. Read the comment at the beginning of the latter file for more information.
 
 
+Installing Ghostscript on MacOS
+------------------------------------
+
+The simplest way to install :title:`Ghostscript` on a Mac would be to use MacPorts_ or Homebrew_.
+
+The installation on MacPorts would be as follows:
+
+- Install MacPorts - https://www.macports.org/install.php
+- Goto https://ports.macports.org/port/ghostscript/ & follow the instructions there.
+   - If your MacPorts is out of date and cannot find the latest verison of Ghostscript be sure to `update MacPorts`_.
+- At the end of the install, run ``gs --version`` in a new Terminal window to validate your installation.
+
+
+
+
 
 .. External links
 
 .. _RPM: http://www.rpm.org/
 .. _Ghostscript releases: https://ghostscript.com/releases
+.. _Homebrew: https://formulae.brew.sh/formula/ghostscript
+.. _MacPorts: https://ports.macports.org/port/ghostscript/
+.. _update MacPorts: https://guide.macports.org/chunked/using.html
 
 
 .. include:: footer.rst

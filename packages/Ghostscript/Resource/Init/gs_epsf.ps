@@ -32,7 +32,7 @@
 /EPSBoundingBoxString () def	% set if either BoundingBox is seen (even if invalid)
 /EPSBoundingBoxSetState {
   //systemdict /EPSBoundingBoxState 3 -1 roll .forceput
-} .bind executeonly odef % .forceput must be bound and hidden
+} .forcebind odef % .forceput must be bound and hidden
 
 % Parse 4 numbers for a bounding box
 /EPSBoundingBoxParse { % (llx lly urx ury) -- llx lly urx ury true OR false
@@ -45,7 +45,7 @@
     } {
       cleartomark //false
     } ifelse
-} bind executeonly odef
+} .internalbind odef
 
 % Crop the page to the BoundingBox
 /EPSBoundingBoxCrop { % llx lly urx ury --
@@ -55,7 +55,7 @@
   exch 3 index sub exch 2 index sub % stack: llx lly urx-llx ury-lly
   << /PageSize [ 5 -2 roll ] >> setpagedevice
   neg exch neg exch translate
-} bind executeonly odef
+} .internalbind odef
 
 % Rescale, translate and rotate to fit the BoundingBox on the page
 /EPSBoundingBoxFitPage { % llx lly urx ury --
@@ -113,7 +113,7 @@
   % Center the document
   neg exch neg exch translate
 
-} bind executeonly odef
+} .internalbind odef
 
 /EPSBoundingBoxProcess { % (llx lly urx ury) state --
   % The following 'lt' check prioritzies HiResBoundingBox over BoundingBox
@@ -160,7 +160,7 @@
   } {
     pop pop
   } ifelse
-} bind executeonly odef
+} .internalbind odef
 
 % Perform anchorsearch on the strings in the array until a match is found.
 /anchorsearchforany { % haystack [needle1 ...] --> post needle true
@@ -180,7 +180,7 @@
       } ifelse
     } forall
     exch              % haystack false | post needle true
-} bind def
+} .internalbind def
 
 /ProcessEPSComment { % file comment --  file comment
   /EPSBoundingBoxState .systemvar 3 lt {
@@ -254,7 +254,7 @@
       } ifelse
     } ifelse
   } if
-} bind executeonly def
+} .internalbind def
 
 % Install EPS handler for DSC comments, which we do later
 /EPSBoundingBoxInit {
@@ -266,7 +266,7 @@
     4 array astore cvx readonly
     << /ProcessDSCComment 3 -1 roll >> setuserparams
   } if
-} bind executeonly odef
+} .internalbind odef
 
 
 /.runNoEPS /run load def
@@ -284,7 +284,7 @@
   count runEPS_op_count sub {pop} repeat
   countdictstack runEPS_dict_count sub {end} repeat
   runEPS_save restore
-} bind executeonly odef
+} .internalbind odef
 
 /run { % file OR string --
   dup type /filetype ne { (r) file } if
@@ -319,7 +319,7 @@
     pop
     cvx //.runNoEPS
   } ifelse
-} bind odef
+} .internalbind odef
 
 % Handle DOS EPS files.
 
@@ -359,7 +359,7 @@
 userdict begin
 /.runstdin {
   { (%stdin) run } execute0
-} bind def
+} .internalbind def
 end
 
 % undefine things defined in this file and not referenced elsewhere

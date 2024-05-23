@@ -30,23 +30,23 @@ level2dict begin
 
 (%gsavepagedevice) cvn
  { currentpagedevice pop gsave
- } bind def
+ } .internalbind def
 
 (%savepagedevice) cvn
  { currentpagedevice pop save
- } bind def
+ } .internalbind def
 
 (%gstatepagedevice) cvn
  { currentpagedevice pop gstate
- } bind def
+ } .internalbind def
 
 (%copygstatepagedevice) cvn
  { currentpagedevice pop copy
- } bind def
+ } .internalbind def
 
 (%currentgstatepagedevice) cvn
  { currentpagedevice pop currentgstate
- } bind def
+ } .internalbind def
 
 % Define interpreter callouts for handling gstate-restoring operators
 % when the current page device needs to be changed.
@@ -140,14 +140,14 @@ level2dict begin
         ifelse .copydict readonly
       }
      ifelse
-   } bind
+   } .internalbind
   /OutputAttributes 1 index
   /Policies
     { 3 copy pop .knownget
        { dup length 2 index length add dict .copydict }
        { dup length dict }
       ifelse copy readonly
-    } bind
+    } .internalbind
 .dicttomark readonly def
 
 % M. Sweet, Easy Software Products:
@@ -261,7 +261,7 @@ NOMEDIAATTRS {
       ifelse
     }
    forall pop
- } bind def
+ } .internalbind def
 
 currentdict /.presentspecial .undef
 
@@ -284,7 +284,7 @@ currentdict /.presentspecial .undef
      /setpagedevice .systemvar /rangecheck signalerror
    } if
    2 array astore
- } bind def
+ } .internalbind def
 
 % Try setting the device parameters from the merged request.
 /.trysetparams		% <merged> <(ignored)> <device> <Policies>
@@ -298,7 +298,7 @@ currentdict /.presentspecial .undef
 SETPDDEBUG { (Putting.) = pstack flush } if
    .putdeviceparamsonly
 SETPDDEBUG { (Result of putting.) = pstack flush } if
- } bind executeonly odef
+ } .internalbind odef
 
 /.installpagedevice
  {	% Since setpagedevice doesn't create new device objects,
@@ -326,46 +326,46 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
         % A careful reading of the Red Book reveals that an erasepage
         % should occur, but *not* an initgraphics.
    erasepage .beginpage
- } bind executeonly def
+ } .internalbind def
 
 /.uninstallpagedevice
  {
    {2 .endpage { .currentnumcopies //false .outputpage } if} //.internalstopped exec pop
    nulldevice
- } bind executeonly def
+ } .internalbind def
 
 (%grestorepagedevice) cvn
  {
  .uninstallpagedevice
  grestore
  //.installpagedevice exec
- } bind def
+ } .internalbind def
 
 (%grestoreallpagedevice) cvn
  { .uninstallpagedevice grestore //.installpagedevice exec grestoreall
- } bind def
+ } .internalbind def
 
 (%restore1pagedevice) cvn
  { .uninstallpagedevice grestore //.installpagedevice exec restore
- } bind def
+ } .internalbind def
 
 (%restorepagedevice) cvn
  { .uninstallpagedevice restore //.installpagedevice exec
- } bind def
+ } .internalbind def
 
 (%setgstatepagedevice) cvn
  { .uninstallpagedevice setgstate //.installpagedevice exec
- } bind def
+ } .internalbind def
 
 % Redefine .currentpagedevice and .setpagedevice so they convert between
 % null and a fixed empty directionary.
 /.nullpagedevice 0 dict readonly def
 /.currentpagedevice {
   //.currentpagedevice exch dup //null eq { pop //.nullpagedevice } if exch
-} bind odef
+} .internalbind odef
 /.setpagedevice {
   dup //.nullpagedevice eq { pop //null } if //.setpagedevice
-} bind odef
+} .internalbind odef
 
 % ---------------- Auxiliary definitions ---------------- %
 
@@ -394,7 +394,7 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
     }
     if
     pop
-  } bind
+  } .internalbind
 .dicttomark readonly def
 % Note that the values of .requiredattrs are executed, not just fetched.
 /.requiredattrs mark
@@ -443,9 +443,9 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
     mark 0 mark .dicttomark readonly .dicttomark
   }
   (%MediaDestination) 0
-  /Install {{.callinstall}} bind
-  /BeginPage {{.callbeginpage}} bind
-  /EndPage {{.callendpage}} bind
+  /Install {{.callinstall}} .internalbind
+  /BeginPage {{.callbeginpage}} .internalbind
+  /EndPage {{.callendpage}} .internalbind
   /Policies .defaultpolicies
   /ImagingBBox //null		% default value
   /UseCIEColor /.getuseciecolor load
@@ -490,7 +490,7 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
   % makes the dictionary read only
   .writeonlykeys {2 index exch undef pop} forall
   dup .setpagedevice
-} bind def
+} .internalbind def
 
 % Copy a dictionary recursively.
 /.copytree {	% <dict> .copytree <dict'>
@@ -568,12 +568,12 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
       readonly
     } ifelse
   } if
-} bind odef
+} .internalbind odef
 
 % Define access to device defaults.
 /.defaultdeviceparams
  { finddevice //null .getdeviceparams
- } bind def
+ } .internalbind def
 
 % Select media (input or output).  The hard work is done in an operator:
 %	<pagedict> <attrdict> <policydict> <keys> .matchmedia <key> true
@@ -606,7 +606,7 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
       forall
     }
    ifelse
- } bind def
+ } .internalbind def
 
 % Apply Policies to any unprocessed failed requests.
 % As we process each request entry, we replace the error name
@@ -629,7 +629,7 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
     cleartomark
     /setpagedevice .systemvar /configurationerror signalerror
   } ifelse
-} bind executeonly odef
+} .internalbind odef
 
 % Making this an operator means we can properly hide
 % the contents - specifically .forceput
@@ -642,14 +642,14 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
   { 4 index 3 1 roll .forceput } executeonly
   { 3 index exch .undef }
   ifelse
-} bind executeonly odef
+} .internalbind odef
 
 /7Policy {		% For PageSize only, just impose the request.
   1 index /PageSize eq
   { pop pop 1 index /PageSize 7 put }
   { .policyprocs 0 get exec }
   ifelse
-} bind executeonly odef
+} .internalbind odef
 
 /.applypolicies		% <orig> <merged> <failed> .applypolicies
                         %   <orig> <merged'> <failed'>
@@ -674,7 +674,7 @@ SETPDDEBUG { (Result of putting.) = pstack flush } if
      } ifelse
   }
   forall pop
-} .bind executeonly odef
+} .forcebind odef
 
 currentdict /0Policy undef
 currentdict /1Policy undef
@@ -695,7 +695,7 @@ currentdict /7Policy undef
     { pop .putdeviceparams
     }
    ifelse
- } bind def
+ } .internalbind def
 
 
 /.postinstall {		% mark ... <failed> <merged> .postinstall -
@@ -1003,7 +1003,7 @@ SETPDDEBUG { (Installing.) = pstack flush } if
     //.postinstall exec
   } ifelse
   setglobal           % return to original VM allocation mode
-} .bind executeonly odef
+} .forcebind odef
 
 % We break out the code after calling the Install procedure into a
 % separate procedure, since it is executed even if Install causes an error.

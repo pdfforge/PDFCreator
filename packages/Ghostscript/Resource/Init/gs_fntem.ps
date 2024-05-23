@@ -53,7 +53,7 @@ systemdict exch /.xlatmap exch put
     /Encoding findresource
   } if
   /Encoding exch def
-} bind def
+} .internalbind def
 
 /FontOptions 5 dict begin
   /make_procs currentdict def
@@ -70,7 +70,7 @@ systemdict exch /.xlatmap exch put
     % See gs_fapi.ps
     currentdict /CharStrings known not {/CharStrings << /.notdef () >> def} if
     //FontCommon exec
-  } bind def
+  } .internalbind def
 
   42
   { /FontMatrix [1 0 0 1 0 0] def
@@ -79,7 +79,7 @@ systemdict exch /.xlatmap exch put
     /sfnts [<00010000 0000 0000 0000 0000 0000>] def
     /GlyphDirectory [] def
     //FontCommon exec
-  } bind def
+  } .internalbind def
 
   %fixme : more font types.
 
@@ -103,14 +103,14 @@ currentdict end def
   } ifelse
   end
   RESMPDEBUG { (fntem TranslateCSI end ) = } if
-} bind def
+} .internalbind def
 
 /CIDFontCommon
 { /CIDSystemInfo currentdict //TranslateCSI exec def
   currentdict /CSI undef
   /FontBBox [-128 -128 1024 1024] def % zfapi.ps refines it.
   /CIDCount 1 def % ChooseDecoding will set a reasonable value.
-} bind def
+} .internalbind def
 
 % GFlyph substitution table for narrow, wide, proportional glyphs -
 % used with TrueTypes.
@@ -204,13 +204,13 @@ setpacking
     /GlyphDirectory [] def
     /GDBytes 1 def
     /FDBytes 0 def
-  } bind def
+  } .internalbind def
 
   1
   { //CIDFontCommon exec
     /FontMatrix [1 0 0 1 0 0] def
     /BuildGlyph {} def
-  } bind def
+  } .internalbind def
 
   2
   { //CIDFontCommon exec
@@ -220,7 +220,7 @@ setpacking
     /sfnts [<00010000 0000 0000 0000 0000 0000>] def
     /Encoding [] def
     /CharStrings << /.notdef 0 >> def
-  } bind def
+  } .internalbind def
 
 currentdict end def
 
@@ -239,7 +239,7 @@ currentdict end def
   setglobal
   currentdict end
   end
-} bind def
+} .internalbind def
 
 /GetFilePath    % <scratch> <Name> <record> GetFilePath <filepath>
 { exch pop                       % (scratch) <record>
@@ -248,12 +248,12 @@ currentdict end def
   % What we make here it is not a complete PS resource.
   % Unable to provide full conformity :
   % the attempt to run this file may fail.
-} bind def
+} .internalbind def
 
 /GetSize        % <Name> <record> GetSize <size>
 { pop pop -1 % Unknown size.
   % fixme: probably we could provide an estimation size for some fonts.
-} bind def
+} .internalbind def
 
 /RecordVirtualMethodsStub 3 dict begin
   /GetFilePath //GetFilePath def
@@ -336,7 +336,7 @@ currentdict end def
     } if
     1 index exch /SubstNWP exch put
   } if
-} bind def
+} .internalbind def
 
 /PrintFontRef      % <string|name> <font> PrintFontRef <string|name> <font>
 { dup /FontName known { (Font ) } { (CIDFont ) } ifelse print
@@ -350,7 +350,7 @@ currentdict end def
   } {
     pop
   } ifelse
-} bind def
+} .internalbind def
 
 /GetFontType       % <font> GetFontType int
 { dup /CIDFontType .knownget {
@@ -358,7 +358,7 @@ currentdict end def
   } {
     /FontType get
   } ifelse
-} bind def
+} .internalbind def
 
 /FindInArray    % <array> <elem> .array_find <bool>
 { //false 3 1 roll
@@ -368,7 +368,7 @@ currentdict end def
     } if
   } forall
   pop
-} bind def
+} .internalbind def
 
 /ProvideUnicodeDecoding % <font> ProvideUnicodeDecoding <font>
 {
@@ -411,7 +411,7 @@ currentdict end def
     exit
   } executeonly loop
   exch setglobal
-} .bind executeonly odef % must be bound and hidden for .forceput
+} .forcebind odef % must be bound and hidden for .forceput
 
 currentdict end /ProcSet defineresource pop
 

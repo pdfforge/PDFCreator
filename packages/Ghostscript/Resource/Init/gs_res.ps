@@ -103,7 +103,7 @@ setglobal
 /.findcategory {	% <name> .findcategory -
                         %   (pushes the category on the dstack)
     /Category .findresource begin	% note: *not* findresource
-} bind def
+} .internalbind def
 
 % If an error occurs within the logic of a resource operator (after operand
 % acquisition and checking), the Adobe interpreters report the operator name,
@@ -119,12 +119,12 @@ setglobal
 /.undefinedresource {	% <command> .undefinedresource -
     /Category dup load eq { /undefined } { /undefinedresource } ifelse
     signaloperror
-} bind def
+} .internalbind def
 
 /.resourceexec {	% <key> /xxxResource .resourceexec -
                         %   (also pops the category from the dstack)
   load exec end
-} bind def
+} .internalbind def
 
 % .getvminstance treats instances on disk as undefined.
 /.getvminstance {	% <key> .getvminstance <instance> -true-
@@ -134,7 +134,7 @@ setglobal
   } {
     //false
   } ifelse
-} bind def
+} .internalbind def
 
 20 dict begin
 
@@ -155,10 +155,10 @@ setglobal
         }{
           /defineresource cvx /typecheck signaloperror
         } ifelse
-} bind executeonly odef
+} .internalbind odef
 /FindResource		% (redefined below)
         { .Instances exch get 0 get
-        } bind executeonly def
+        } .internalbind def
 
                 % Additional entries
 
@@ -168,7 +168,7 @@ setglobal
 /.LocalInstances 0 dict def
 /.GetInstance
         { .Instances exch .knownget
-        } bind def
+        } .internalbind def
 /.CheckResource
         { dup gcheck currentglobal and
            { /DefineResource /FindResource /ResourceForAll /ResourceStatus
@@ -177,7 +177,7 @@ setglobal
           forall
           not { /defineresource cvx /invalidaccess signaloperror } if
           //true
-        } bind def
+        } .internalbind def
 
 .Instances end begin	% for the base case of findresource
 
@@ -198,7 +198,7 @@ setglobal
         2 copy dup /Category eq
           { pop //Category 0 get begin } { //.findcategory exec } ifelse
         /FindResource //.resourceexec exec exch pop exch pop
-} bind
+} .internalbind
 end		% .Instances of Category
 def
 /findresource {
@@ -210,7 +210,7 @@ def
       /findresource .systemvar /typecheck signalerror
     } if
     /findresource cvx //.findresource .errorexec
-} bind executeonly odef
+} .internalbind odef
 
 /defineresource {	% <key> <instance> <category> defineresource <instance>
     2 .argindex 2 index 2 index	% catch stackunderflow
@@ -226,7 +226,7 @@ def
         /DefineResource //.resourceexec exec
         4 1 roll pop pop pop
     } .errorexec
-} bind executeonly odef
+} .internalbind odef
 % We must prevent resourceforall from automatically restoring the stacks,
 % because we don't want the stacks restored if proc causes an error or
 % executes a 'stop'. On the other hand, resourceforall is defined in the
@@ -240,10 +240,10 @@ def
         % Stack: <template> <proc> <scratch> <category> proc
         exch pop		% pop the category
         exec end
-} .bind executeonly def
+} .forcebind def
 /resourceforall {	% <template> <proc> <scratch> <category> resourceforall1 -
         //resourceforall1 exec		% see above
-} .bind executeonly odef
+} .forcebind odef
 /resourcestatus {	% <key> <category> resourcestatus <status> <size> true
                         % <key> <category> resourcestatus false
   {
@@ -259,7 +259,7 @@ def
     % for error reporting. CET 23-26
     /resourcestatus cvx $error /errorname get signalerror
   } if
-} .bind executeonly odef
+} .forcebind odef
 /undefineresource {	% <key> <category> undefineresource -
   0 .argindex type /nametype ne {
     /undefinedresource cvx /typecheck signaloperror
@@ -272,7 +272,7 @@ def
     % here but uses operator for the errors above. CET 23-33
     /undefineresource cvx $error /errorname get signalerror
   } if
-} .bind executeonly odef
+} .forcebind odef
 
 % Define the system parameters used for the Generic implementation of
 % ResourceFileName.
@@ -293,7 +293,7 @@ systemdict begin
       } ifelse
     } ifelse
   } forall
-} bind def
+} .internalbind def
 
 %  <path> <name> <string> .resource_dir_name <path> <name> <string>
 /.resource_dir_name
@@ -310,7 +310,7 @@ systemdict begin
       /.default_resource_dir cvx /configurationerror signalerror
     } if
   } ifelse
-} bind def
+} .internalbind def
 
 currentdict /pssystemparams known not {
   /pssystemparams 10 dict readonly def
@@ -364,7 +364,7 @@ status {
 /.rfnstring 8192 string def
 /.genericrfn		% <key> <scratch> <prefix> .genericrfn <filename>
  { 3 -1 roll //.rfnstring cvs concatstrings exch copy
- } bind def
+ } .internalbind def
 
 % Define the Generic category.
 
@@ -385,11 +385,11 @@ status {
         % Use .setstackprotect to prevent the stacks from being restored if
         % an error occurs during execution of proc.
   1 get //false .setstackprotect exec //true .setstackprotect
-} bind def
+} .internalbind def
 /.localresourceforall {		% <key> <value> <args> .localr'forall -
   exch pop
   2 copy 0 get .stringmatch { //.enumerateresource exec } { pop pop } ifelse
-} bind def
+} .internalbind def
 /.globalresourceforall {	% <key> <value> <args> .globalr'forall -
   exch pop
   2 copy 0 get .stringmatch {
@@ -401,7 +401,7 @@ status {
   } {
     pop pop
   } ifelse
-} bind def
+} .internalbind def
 /.externalresourceforall {	% <filename> <len> <args> .externalr'forall -
   3 1 roll 1 index length 1 index sub getinterval exch
   dup 3 get begin .Instances .LocalInstances end
@@ -411,7 +411,7 @@ status {
   } {
     2 index known { pop pop } { //.enumerateresource exec } ifelse
   } ifelse
-} bind def
+} .internalbind def
 
 /DefineResource dup {
         .CheckResource
@@ -442,7 +442,7 @@ status {
            { /defineresource cvx /typecheck signaloperror
            }
         ifelse
-} .bind executeonly .makeoperator		% executeonly to prevent access to .forceput
+} .forcebind .makeoperator		% executeonly to prevent access to .forceput
 /UndefineResource
         {  { dup 2 index .knownget
               { dup 1 get 1 ge
@@ -458,7 +458,7 @@ status {
            { 2 copy .Instances exch exec
            }
           if .LocalInstances exch exec
-        } .bind executeonly
+        } .forcebind
 % Because of some badly designed code in Adobe's CID font downloader that
 % makes findresource and resourcestatus deliberately inconsistent with each
 % other, the default FindResource must not call ResourceStatus if there is
@@ -484,7 +484,7 @@ status {
            /findresource cvx //.undefinedresource exec
           } ifelse
         } ifelse
-} .bind executeonly
+} .forcebind
 % Because of some badly designed code in Adobe's CID font downloader, the
 % definition of ResourceStatus for Generic and Font must be the same (!).
 % We patch around this by using an intermediate .ResourceFileStatus procedure.
@@ -494,10 +494,10 @@ status {
         } {
           .ResourceFileStatus
         } ifelse
-} .bind executeonly
+} .forcebind
 /.ResourceFileStatus {
         .ResourceFile { closefile 2 -1 //true } { pop //false } ifelse
-} bind executeonly
+} .internalbind
 /ResourceForAll {
                 % Construct a new procedure to hold the arguments.
                 % All objects constructed here must be in local VM to avoid
@@ -555,7 +555,7 @@ status {
         3 2 roll pop % args
         { forall } 0 get
         currentdict end 2 .execn begin
-} .bind executeonly
+} .forcebind
 
 /ResourceFileName  {                          % /in (scr) --> (p/c/n)
   exch //.rfnstring cvs                       % (scr) (n)
@@ -587,7 +587,7 @@ status {
     ifelse
   } ifelse
   exch copy                                   % (p/c/n)
-} .bind executeonly
+} .forcebind
 
                 % Additional entries
 
@@ -601,7 +601,7 @@ status {
 
 /.LocalInstances
         { localinstancedict Category .knownget not { //.emptydict } if
-        } bind
+        } .internalbind
 /.GetInstance
         { currentglobal
            { .Instances exch .knownget }
@@ -611,10 +611,10 @@ status {
              ifelse
            }
           ifelse
-        } bind
+        } .internalbind
 /.CheckResource
         { //true
-        } bind
+        } .internalbind
 /.vmused {
                 % - .vmused <usedvalue>
                 % usedvalue = vmstatus in global + vmstatus in local.
@@ -622,7 +622,7 @@ status {
     .currentglobal not .setglobal
     vmstatus pop exch pop add
   } repeat
-} bind executeonly odef
+} .internalbind odef
 /.DoLoadResource {
                 % .LoadResource may push entries on the operand stack.
                 % It is an undocumented feature of Adobe implementations,
@@ -641,7 +641,7 @@ status {
         2 3 -1 roll put
                 % Stack: ... count key
         exch count 1 sub exch sub {exch pop} repeat
-} bind
+} .internalbind
 /.LoadResource
         { dup .ResourceFile
            { exch pop currentglobal
@@ -652,7 +652,7 @@ status {
            { dup //.undefinedresource exec
            }
          ifelse
-        } bind
+        } .internalbind
 /.ResourceFile
         {
           Category //.rfnstring cvs length                      % key l
@@ -681,7 +681,7 @@ status {
                pop //false
              } ifelse
           } ifelse
-        } bind
+        } .internalbind
 
 .dicttomark
 /Category defineresource pop
@@ -704,7 +704,7 @@ mark
  /ColorSpaceFamily
    { }	% These must be deferred, because optional features may add some.
  /Emulator
-   mark EMULATORS { <00> search { exch pop cvn exch }{ cvn exit } ifelse } .bind loop //.packtomark exec
+   mark EMULATORS { <00> search { exch pop cvn exch }{ cvn exit } ifelse } .forcebind loop //.packtomark exec
  /Filter
    { }	% These must be deferred, because optional features may add some.
  /IODevice
@@ -753,17 +753,17 @@ counttomark 2 idiv
              ifelse
            }
           ifelse
-        } bind executeonly
+        } .internalbind
    /UndefineResource
-        { /undefineresource cvx /invalidaccess signaloperror } bind executeonly
+        { /undefineresource cvx /invalidaccess signaloperror } .internalbind
    /FindResource
         { .Instances 1 index .knownget
            { exch pop }
            { /findresource cvx //.undefinedresource exec }
           ifelse
-        } bind executeonly
+        } .internalbind
    /ResourceStatus
-        { .Instances exch known { 0 0 //true } { //false } ifelse } bind executeonly
+        { .Instances exch known { 0 0 //true } { //false } ifelse } .internalbind
    /ResourceForAll
         /Generic //.findcategory exec /ResourceForAll load end
 
@@ -790,7 +790,7 @@ counttomark 2 idiv
    dict .copydict begin
    counttomark 2 idiv { def } repeat pop	% pop the mark
    currentdict end /Category defineresource pop
- } bind def
+ } .internalbind def
 
 /ColorRendering mark /InstanceType /dicttype .definecategory
 % ColorSpace is defined below
@@ -844,10 +844,10 @@ pop pop
 % The "hooks" are no-ops here, redefined in LL3.
 /.definedefaultcs {	% <index> <value> .definedefaultcs -
   pop pop
-} bind def
+} .internalbind def
 /.undefinedefaultcs {	% <index> .undefinedefaultcs -
   pop
-} bind def
+} .internalbind def
 
 /ColorSpace mark
 
@@ -866,7 +866,7 @@ userdict /.localcsdefaults //false put
     1 index //.definedefaultcs exec
     currentglobal not { .userdict /.localcsdefaults //true put } if
   } if
-} bind executeonly
+} .internalbind
 
 /UndefineResource {
   dup /Generic /Category findresource /UndefineResource get exec
@@ -889,7 +889,7 @@ userdict /.localcsdefaults //false put
   } {
     pop
   } ifelse
-} bind executeonly
+} .internalbind
 
 .definecategory			% ColorSpace
 
@@ -904,7 +904,7 @@ userdict /.localcsdefaults //false put
 
 /.Instances mark
   EncodingDirectory
-   { dup length 256 eq { [ exch readonly 0 -1 ] } { pop [//null 2 -1] } ifelse
+   {dup length 256 eq { [ exch readonly 0 -1 ] } { pop [//null 2 -1] } ifelse
    } forall
 .dicttomark
 
@@ -919,7 +919,7 @@ userdict /.localcsdefaults //false put
     { exch copy exch pop }
     { /Generic /Category findresource /ResourceFileName get exec }
    ifelse
- } bind executeonly
+ } .internalbind
 
 .definecategory			% Encoding
 
@@ -973,7 +973,7 @@ userdict /.localcsdefaults //false put
                 % Scan a FONTPATH directory and try again.
     //.scannextfontdir exec not { //false exit } if
   } loop
-} bind def
+} .internalbind def
 
 /.fontstatus {		% <fontname> .fontstatus <fontname> <found>
   //.fontstatusaux exec
@@ -983,7 +983,7 @@ userdict /.localcsdefaults //false put
     { //.fontstatusaux exec }
     { //false } ifelse
   } ifelse
-} bind executeonly def
+} .internalbind def
 currentdict /.fontstatusaux .undef
 
 /Font mark
@@ -993,11 +993,11 @@ currentdict /.fontstatusaux .undef
 /DefineResource
         { 2 copy //definefont exch pop
           /Generic /Category findresource /DefineResource get exec
-        } bind executeonly
+        } .internalbind
 /UndefineResource
         { dup //undefinefont
           /Generic /Category findresource /UndefineResource get exec
-        } bind executeonly
+        } .internalbind
 /FindResource {
         dup //.getvminstance exec {
           exch pop 0 get
@@ -1008,14 +1008,14 @@ currentdict /.fontstatusaux .undef
             .loadfontresource
           } ifelse
         } ifelse
-} bind executeonly
+} .internalbind
 /ResourceForAll {
         { //.scannextfontdir exec not { exit } if } loop
         /Generic /Category findresource /ResourceForAll get exec
-} .bind executeonly
+} .forcebind
 /.ResourceFileStatus {
         .fontstatus { pop 2 -1 //true } { pop //false } ifelse
-} bind executeonly
+} .internalbind
 
 /.loadfontresource {
         dup //.vmused exch
@@ -1032,7 +1032,7 @@ currentdict /.fontstatusaux .undef
         } {
           pop
         } ifelse exch pop
-} bind
+} systemdict /CETMODE .knownget not {//false} if {.bind}{.internalbind}ifelse
 
 /.Instances FontDirectory length 2 mul dict
 
@@ -1052,26 +1052,26 @@ currentdict /.fontstatusaux .undef
     }
    ifelse
    //.definefontmap exec
- } bind def
+ } .internalbind def
 
 /definefont {
   { /Font defineresource } stopped {
       /definefont cvx $error /errorname get signalerror
   } if
-} bind executeonly odef
+} .internalbind odef
 /undefinefont {
   /Font undefineresource
-} bind executeonly odef
+} .internalbind odef
 % The Red Book requires that findfont be a procedure, not an operator,
 % but it still needs to restore the stacks reliably if it fails.
 /.findfontop {
   { /Font findresource } stopped {
     pop /findfont cvx $error /errorname get signalerror
   } if
-} bind executeonly odef
+} .internalbind odef
 /findfont {
   .findfontop
-} bind executeonly def	% Must be a procedure, not an operator
+} .internalbind def	% Must be a procedure, not an operator
 
 % Remove initialization utilities.
 currentdict /.definecategory .undef
@@ -1093,9 +1093,9 @@ end				% level2dict
     { /Encoding findresource } stopped {
       pop /findencoding cvx $error /errorname get signalerror
     } if
-  } bind def
+  } .internalbind def
   /findencoding /.findencoding load def		% must be a procedure
-  /.defineencoding { /Encoding defineresource pop } bind def
+  /.defineencoding { /Encoding defineresource pop } .internalbind def
         % ColorRendering resources and ProcSet
   systemdict /ColorRendering .knownget {
     /ColorRendering exch /ProcSet defineresource pop
@@ -1158,7 +1158,7 @@ end				% level2dict
   } forall
         % clean up
   systemdict /.fixresources undef
-} bind def
+} .internalbind def
 
 %% Replace 1 (gs_resmp.ps)
 (gs_resmp.ps)  dup runlibfile VMDEBUG

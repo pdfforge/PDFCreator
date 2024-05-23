@@ -19,16 +19,20 @@ Setting Up a Unix lpr Filter for Ghostscript
 
 
 ``unix-lpr.sh``
-   a flexible, multi-option print filter.
+   A flexible, multi-option print filter.
 
 ``lprsetup.sh``
    A shell script which sets up soft links and creates a template insert for the ``printcap`` file.
+
+.. note::
+
+   These shell scripts can be found in the ``lib`` folder of the Ghostscript source tree.
 
 
 What it can do
 ----------------------
 
-The print filter resides in the Ghostscript installation directory (often ``/usr/local/share/ghostscript``, but may be something else at your installation), together with a dummy filter directory containing various soft links which point to the filter. It offers the following features:
+The print filter resides in the Ghostscript installation directory (often ``/usr/local/bin`` as the default location, but may be something else at your installation), together with a dummy filter directory containing various soft links which point to the filter. It offers the following features:
 
 - Multiple devices supported by a single filter.
 

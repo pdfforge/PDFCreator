@@ -5,39 +5,126 @@
 <!-- [1.0 end visible header] ============================================== -->
 
 <!-- [2.0 begin contents] ================================================== -->
-<h2><a name="Version10.02.1"></a>Version 10.02.1 (2023-11-01)</h2>
+<h2><a name="Version10.03.0"></a>Version 10.03.0 (2024-03-06)</h2>
 <p> Highlights in this release include:
 <ul>
 <li>
-<p>The old, PostScript based PDF interpreter has been removed, it is no longer
-available.
+<p>A vulnerability was identified in the way Ghostscript/GhostPDL called tesseract for
+the OCR devices, which could allow arbitrary code execution. As as result, we strongly
+urge anyone including the OCR devices in their build to update as soon as possible.
 </li>
 <li>
-<p>We've continued to improve the performance of the PDF interpreter written in C
-and improve it's behaviour in edge and out-of-specification cases.
+<p>As of this release (10.03.0) pdfwrite creates PDF files with XRef streams and
+ObjStm streams. This can result in considerably smaller PDF output files.
+See <a href="https://ghostscript.readthedocs.io/en/latest/VectorDevices.html">Vector Devices</a> for more details.
 </li>
 <li>
-<p>Our efforts in code hygiene and maintainability continue, with a particular focus
-on fuzz testing.
+<p>Ghostscript/pdfwrite now supports passing through PDF "Optional Content".
+</li>
+<li>
+<p>Our efforts in code hygiene and maintainability continue.
 </li>
 <li>
 <p>The usual round of bug fixes, compatibility changes, and incremental improvements.
 </li>
+<li>
+<p>(9.53.0) We have added the capability to build with the Tesseract OCR engine. In such
+a build, new devices are available (pdfocr8/pdfocr24/pdfocr32) which render the
+output file to an image, OCR that image, and output the image "wrapped" up as a
+PDF file, with the OCR generated text information included as "invisible" text
+(in PDF terms, text rendering mode 3).
+<p>Mainly due to time constraints, we only support including Tesseract from
+source included in our release packages, and not linking to Tesseract/Leptonica
+shared libraries. Whether we add this capability will be largely dependent on
+community demand for the feature.
+<p>See <a href="https://www.ghostscript.com/ocr.html">Enabling OCR</a> for more details.
+</li>
 </ul>
 <p>For a list of open issues, or to report problems,
 please visit <a href="http://bugs.ghostscript.com/">bugs.ghostscript.com</a>.
-<h3><a name="10.02.1_Incompatible_changes"></a>Incompatible changes</h3>
+<h3><a name="10.03.0_Incompatible_changes"></a>Incompatible changes</h3>
 <h4>Included below are incompatible changes from recent releases (the
 specific release in question is listed in parentheses). We include these,
 for now, as we are aware that not everyone upgrades with every release.</h4>
 <ul>
+<li>
+<p>(10.03.0) Almost all the &quot;internal&quot; PostScript procedures defined
+during the interpreter startup are now &quot;executeonly&quot;, further reducing
+the attack surface of the interpreter.
+<p>The nature of these procedures means there should be no impact for legitimate
+usage, but it is possible it will impact uses which abuse the previous accessibility
+(even for legitimate reasons). Such cases may now require &quot;DELAYBIND&quot;,
+See <a href="https://ghostscript.readthedocs.io/en/latest/Use.html#ddelaybind">DELAYBIND</a>
+</li>
+<li>
+<p>(10.03.0) The &quot;makeimagedevice&quot; non-standard operator has been removed. It allowed
+low level access to the graphics library in a way that was, essentially impossible to secure.
+</li>
+<li>
+<p>(10.03.0) The &quot;putdeviceprops&quot;, &quot;getdeviceprops&quot;, &quot;finddevice&quot;,
+&quot;copydevice&quot;, &quot;findprotodevice&quot; non-standard operators have all been removed.
+They provided functionality that is either accessible through standard operators, or should not
+be used by user PostScript.
+</li>
+<li>
+<p>(10.03.0) The process of &quot;tidying&quot; the PostScript namespace should have removed
+only non-standard and undocumented operators. Nevertheless, it is possible that
+any integrations or utilities that rely on those non-standard and undocumented
+operators may stop working or may change behaviour.
+<p>If you encounter such a case, please contact us (<a href="https://discord.gg/H9GXKwyPvY">Discord<a>,
+<a href="https://web.libera.chat/#ghostscript">#ghostscript IRC channel</a>,
+or the gs-devel mailing list would be best), and we'll work with you to either find an
+alternative solution or return the previous functionality, if there is genuinely no other
+option.
+</li>
+<li>
+<p>(9.55.0) Changes to the <code>device API</code>. This will affect developers and maintainers of
+Ghostscript devices. Firstly, and most importantly, the way device-specific "procs" are specified has
+been rewritten to make it (we think!) clearer and less confusing. See
+<a href="https://ghostscript.readthedocs.io/Drivers.htm">The Interface between Ghostscript and Device Drivers</a> and
+<a href="https://www.notion.so/artifexsoftware/The-Great-Device-Rework-Of-2021-94092fe1395d4a088b91462f0ca5038a">The Great Device Rework Of 2021</a>
+for more details.
+</li>
+<li>
+<p>(9.55.0) The command line options <code>-sGraphicsICCProfile=___</code>, <code>-dGraphicsIntent=#</code>, <code>-dGraphicsBlackPt=#</code>,
+<code>-dGraphicsKPreserve=#</code> have been changed to <code>-sVectorICCProfile=___</code>, <code>-dVectorIntent=#</code>, <code>-dVectorBlackPt=#</code>,
+<code>-dVectorKPreserve=#</code>.
+</li>
+<li>
+<p>(9.53.0) As of 9.53.0, we have (re-)introduced the patch level to the version number,
+this helps facilitate a revised policy on handling security-related issues.
+<p><strong>Note for GSView Users: </strong>The patch level addition breaks GSView 5 (it is
+hardcoded to check for versions <code>704-999</code>. It is possible, but not guaranteed that
+a GSView update might be forthcoming to resolve this.
+</li>
+<li>
+<p>(9.52) <code>-dALLOWPSTRANSPARENCY</code>: The transparency compositor (and related
+features), whilst we are improving it, remains sensitive to being driven correctly, and
+incorrect use can have unexpected/undefined results. Hence, as part of improving security,
+we limited access to these operators, originally using the <code>-dSAFER</code> feature.
+As we made "SAFER" the default mode, that became unacceptable, hence the new option
+<code>-dALLOWPSTRANSPARENCY</code> which enables access to the operators.
+</li>
+<li>
+<p>(9.50) There are a couple of subtle incompatibilities between the old and new SAFER
+implementations. Firstly, as mentioned in the 9.50 release notes, SAFER now leaves
+standard PostScript functionality unchanged (except for the file access limitations).
+Secondly, the interaction with <code>save</code>&sol;<code>restore</code> operations
+has changed. See <a href="https://ghostscript.readthedocs.io/Use.htm#Safer">SAFER</a>.
+<p><strong>Important Note for Windows Users</strong>:
+<br>
+The file/path pattern matching is case-sensitive, even on Windows. This is a
+change in behaviour compared to the old code which, on Windows, was case
+<i>in</i>sensitive. This is in recognition of changes in Windows behaviour,
+in that it now supports (although does not enforce) case sensitivity.
+</li>
 </ul>
-<h3><a name="10.02.1_changelog"></a>Changelog</h3>
+<h3><a name="10.03.0_changelog"></a>Changelog</h3>
 <p>From 9.55.0 onwards, in recognition of how unwieldy very large HTML files can become
 (History9.html had reached 8.1Mb!), we intend to only include the summary highlights (above).
 <p>For anyone wanting the full details of the changes in
 a release, we ask them to look at the history in our public git repository:
-<a href="https://git.ghostscript.com/?p=ghostpdl.git;a=shortlog;h=refs/tags/ghostpdl-10.02.1">ghostpdl-10.02.1</a> log.
+<a href="https://git.ghostscript.com/?p=ghostpdl.git;a=shortlog;h=refs/tags/ghostpdl-10.03.0">ghostpdl-10.03.0</a> log.
 <p>If this change does not draw negative feedback, History?.htm file(s) will be removed from the release archives.
 
 <!-- [2.0 end contents] ==================================================== -->
@@ -46,7 +133,7 @@ a release, we ask them to look at the history in our public git repository:
 <hr>
 
 <p>
-<small>Copyright &copy; 2005-2023 Artifex Software, Inc.
+<small>Copyright &copy; 2005-2024 Artifex Software, Inc.
 All rights reserved.</small>
 
 <p>
@@ -56,11 +143,10 @@ implied.
 This software is distributed under license and may not be copied, modified
 or distributed except as expressly authorized under the terms of that
 license.  Refer to licensing information at <a href="https://www.artifex.com">https://www.artifex.com</a>
-or contact Artifex Software, Inc.,  1305 Grant Avenue - Suite 200,
-Novato, CA 94945, U.S.A., +1(415)492-9861, for further information.
+or contact Artifex Software, Inc., 39 Mesa Street, Suite 108A, San Francisco, CA 94129, USA,
 
 <p>
-<small>Ghostscript version 10.02.1, 01 November 2023
+<small>Ghostscript version 10.03.0, 06 March 2024
 
 <!-- [3.0 end visible trailer] ============================================= -->
 

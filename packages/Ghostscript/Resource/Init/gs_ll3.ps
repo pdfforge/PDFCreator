@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2023 Artifex Software, Inc.
+% Copyright (C) 2001-2024 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -110,7 +110,7 @@ currentdict /.bind_ undef
     3 index read not { pop exch not exch exit } if
     3 copy put pop pop
   } for 3 -1 roll pop exch
-} bind def
+} .internalbind def
 
 /.bigstring {	% <size> .bigstring <string|bytestring>
   count 1 lt { /.bigstring cvx /stackunderflow signalerror } if
@@ -118,7 +118,7 @@ currentdict /.bind_ undef
     /.bigstring cvx /typecheck signalerror
   } if
   dup 65400 gt { .bytestring } { string } ifelse
-} bind def
+} .internalbind def
 
 % ------ HalftoneTypes 6, 10, 16 and HalftoneMode ------ %
 
@@ -163,7 +163,7 @@ currentdict /.bind_ undef
   } if
   mark /HalftoneType 5 /Default currentdict end .dicttomark
   { .sethalftone5 }
-} bind def
+} .internalbind def
 
 /.sethalftone6 {	% <dict> <dict> .sethalftone6 <setdict> <dict5>
                         %   { .sethalftone5 }
@@ -171,7 +171,7 @@ currentdict /.bind_ undef
   dup /Thresholds get
   1 index /Width get 2 index /Height get
   //null 8 //.makehalftone7 exec
-} bind def
+} .internalbind def
 
 /.sethalftone10 {	% <dict> <dict> .sethalftone10 <setdict> <dict5>
                         %   { .sethalftone5 }
@@ -181,7 +181,7 @@ currentdict /.bind_ undef
   dup /Thresholds get dup type /stringtype eq { 0 () .subfiledecode } if
   1 index /Xsquare get dup 3 index /Ysquare get dup
   8 //.makehalftone7 exec
-} bind def
+} .internalbind def
 
 /.sethalftone16 {	% <dict> <dict> .sethalftone16 <setdict> <dict5>
                         %   { .sethalftone5 }
@@ -194,7 +194,7 @@ currentdict /.bind_ undef
   } {			% 1-rectangle case
     //null
   } ifelse 16 //.makehalftone7 exec
-} bind def
+} .internalbind def
 
 .halftonetypes begin
   6 //.sethalftone6 def
@@ -208,9 +208,12 @@ end
     //setcolorscreen
   } {
     12 { pop } repeat //.getdefaulthalftone exec
+    currentglobal
+    true setglobal
     { //sethalftone }
     { .setdefaulthalftone }
     ifelse
+    setglobal
   } ifelse
 } odef
 /setscreen {
@@ -218,20 +221,26 @@ end
     //setscreen
   } {
     pop pop pop //.getdefaulthalftone exec
+    currentglobal
+    true setglobal
     { //sethalftone }
     { .setdefaulthalftone }
     ifelse
+    setglobal
   } ifelse
 } odef
 /sethalftone {
   /HalftoneMode getuserparam 0 eq {
     //sethalftone
   } {
-    gsave //sethalftone grestore
+    pop
+    currentglobal
+    true setglobal
     //.getdefaulthalftone exec
     { //sethalftone }
     { .setdefaulthalftone }
     ifelse
+    setglobal
   } ifelse
 } odef
 
@@ -248,7 +257,7 @@ end
   exch dup                            % /name <<sub-image>> <<image>> <<image>>
   4 2 roll                            % <<image>> <<image>> /name <<sub-image>>
   put                                 % <<image>>
-} bind def
+} .internalbind def
 
 % Copy mask data source to a reusable stream
 % <dict> <source> buffer_mask <dict> <file>
@@ -258,7 +267,7 @@ end
   1 index /BitsPerComponent get mul 7 add 8 idiv
   exch /Height get mul () /SubFileDecode filter
   /ReusableStreamDecode filter
-} bind def
+} .internalbind def
 
 % Data type vs. mask type decission table.
 % All procedures have the signature:
@@ -284,14 +293,14 @@ end
         1 array astore cvx 0 () /SubFileDecode filter
       } ifelse
       /DataDict //update_image3 exec
-    } bind
+    } .internalbind
   .dicttomark readonly
   /arraytype mark  % data is a proc
     /stringtype { % convert mask to proc
       exch pop
       1 array astore cvx
       /MaskDict //update_image3 exec
-    } bind
+    } .internalbind
     /arraytype { % buffer mask in reusable stream and convert back to proc
       exch pop
       //buffer_mask exec
@@ -299,7 +308,7 @@ end
       { readstring pop } aload pop
       4 packedarray cvx
       /MaskDict //update_image3 exec
-    } bind
+    } .internalbind
     /packedarraytype 1 index
     /filetype 1 index
   .dicttomark readonly
@@ -309,12 +318,12 @@ end
       exch pop
       1 array astore cvx 0 () /SubFileDecode filter
       /MaskDict //update_image3 exec
-    } bind
+    } .internalbind
     /arraytype { % buffer the mask and convert to file
       exch pop
       //buffer_mask exec
       /MaskDict //update_image3 exec
-    } bind
+    } .internalbind
     /packedarraytype 1 index
     /filetype {
       //systemdict /userdict get /PDFTopSave known {
@@ -324,7 +333,7 @@ end
         //buffer_mask exec
         /MaskDict //update_image3 exec
       } ifelse
-    } bind
+    } .internalbind
   .dicttomark readonly
 .dicttomark readonly def
 
@@ -352,7 +361,7 @@ end
       } ifelse
     } if
     .image3
-  } bind put
+  } .internalbind put
   dup 4 /.image4 load put
 % We also detect ImageType 103 here: it isn't worth making a separate file
 % just for this.
@@ -443,7 +452,7 @@ systemdict /.reuseparamdict mark
     /$error .systemvar /errorinfo [ /ColorSpace //null ] put
     /shfill .systemvar /undefined signalerror
   } ifelse
-} bind def
+} .internalbind def
 
 /.buildshading_and_shfill {
   //.buildshading exec .shfill
@@ -464,7 +473,7 @@ systemdict /.reuseparamdict undef
   } if
   .buildshadingpattern
   3 -1 roll pop counttomark 1 add 2 roll setcolorspace setcolor pop
-} bind def
+} .internalbind def
 
 .patterntypes
   2 //.buildpattern2 put

@@ -52,7 +52,7 @@
   exch 3 -1 roll 1 add 16 mul 12 add sub
   f exch subfilefilter flushfile	% skip to start
   f exch subfilefilter end
-} .bind executeonly odef
+} .forcebind odef
 
 % <file> .init_otto_font_file <file>
 /.init_wOFF_otto_font_file {
@@ -88,7 +88,7 @@
   { exch pop f exch subfilefilter}
   { pop f exch subfilefilter /FlateDecode filter} ifelse
   end
-} bind def
+} .internalbind def
 
 % <file> .loadfontfile -
 /.loadnonottofontfile /.loadfontfile load def
@@ -115,7 +115,7 @@
                 % Not a TrueType font.
     .loadnonottofontfile
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 currentdict /.init_wOFF_otto_font_file .forceundef
 
@@ -125,12 +125,12 @@ currentdict /.init_wOFF_otto_font_file .forceundef
 /subfilefilter {	% <file> <length> subfilefilter <filter>
         % SubFileDecode interprets a length of 0 as infinite.
   dup 0 le { pop pop () 0 } if () /SubFileDecode filter
-} bind def
+} .internalbind def
 
 
 /advance {	% <n> advance -
   f cff eq { pos add /pos exch store } { pop } ifelse
-} bind def
+} .internalbind def
 /next {		% - next <byte>
   f read {
     1 advance
@@ -144,7 +144,7 @@ currentdict /.init_wOFF_otto_font_file .forceundef
       pdfformaterror
     } if
   } ifelse
-} bind def
+} .internalbind def
 /next2 {	% - next2 <byte1> <byte2>
   f read {
     f read {
@@ -155,7 +155,7 @@ currentdict /.init_wOFF_otto_font_file .forceundef
       CFFDEBUG { (  ) print dup = } if
     } ifelse
   } if
-} bind def
+} .internalbind def
 /nextstring {	% <length> nextstring <string>
   dup 0 eq {
     pop ()
@@ -163,29 +163,29 @@ currentdict /.init_wOFF_otto_font_file .forceundef
     string f exch readstring pop dup length advance
     CFFDEBUG { (  ) print dup //== exec } if
   } ifelse
-} bind def
+} .internalbind def
 
 /card8		% - card8 <card8>
  /next load
 def
 /card16 {	% - card16 <card16>
   next2 exch 8 bitshift add
-} bind def
+} .internalbind def
 /card32 {	% - card32 <card32>
   card16 16 bitshift card16 add
-} bind def
+} .internalbind def
 /offsetprocs [
   /card8 load
   /card16 load
-  { card8 16 bitshift card16 add } bind
+  { card8 16 bitshift card16 add } .internalbind
   /card32 load
 ] readonly def
 /offsetproc {	% <offsize> offsetproc <proc>
   1 sub //offsetprocs exch get
-} bind def
+} .internalbind def
 /offset {	% <offsize> offset <offset>
   offsetproc exec
-} bind def
+} .internalbind def
 /sid		% - <sid> sid
   /card16 load
 def
@@ -201,7 +201,7 @@ def
 % ordinary CFF font.
 /StartData {          % <resname> <nbytes> StartData -
   currentfile exch subfilefilter //false //false ReadData pop
-} bind executeonly def
+} .internalbind def
 /ReadData {           % <resname> <file> <forceresname> <forcecid> ReadData <fontset>
         % Initialize.
 
@@ -236,7 +236,7 @@ def
   end		% FontSetInit ProcSet
   /FontSet defineresource
 
-} bind executeonly def
+} .internalbind def
 
 % ---------------- Resource category definition ---------------- %
 

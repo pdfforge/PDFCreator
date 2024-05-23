@@ -206,6 +206,9 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="Microsoft.CSharp">
+          <Paket>True</Paket>
+        </Reference>
         <Reference Include="NGettext">
           <HintPath>..\..\..\..\packages\NGettext\lib\net46\NGettext.dll</HintPath>
           <Private>True</Private>

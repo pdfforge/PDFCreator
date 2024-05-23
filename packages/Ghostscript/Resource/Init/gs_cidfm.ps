@@ -26,7 +26,7 @@ languagelevel 2 .setlanguagelevel
 { % Only for client's needs.
   dup type /stringtype eq exch
   dup type /nametype eq 3 -1 roll or
-} bind def
+} .internalbind def
 
 /RecordVirtualMethods 3 dict begin
 
@@ -42,7 +42,7 @@ languagelevel 2 .setlanguagelevel
 
     dup length dict copy                    % /Name <<CIDFont>>
     1 index ResourceStatus pop exch pop     % /Name <<CIDFont>> size
-  } bind def
+  } .internalbind def
 
   /GetFilePath  % <scratch> <Name> <record> GetFilePath <filepath>
   { % We know that currentdict is the category.
@@ -51,7 +51,7 @@ languagelevel 2 .setlanguagelevel
     {
       exch ResourceFileName
     } if
-  } bind def
+  } .internalbind def
 
   /GetSize   % <Name> <record> GetSize <size>
   { % We know that currentdict is the category.
@@ -69,7 +69,7 @@ languagelevel 2 .setlanguagelevel
         /undefinedresource signalerror
       } ifelse
     }ifelse
-  } bind def
+  } .internalbind def
 
   /GetCSI   % <record> GetCSI null
             % <record> GetCSI dict
@@ -87,11 +87,11 @@ languagelevel 2 .setlanguagelevel
       GetCIDSystemInfoFromMap
     } ifelse
     RESMPDEBUG { (cidfm GetCSI end ) print dup = } if
-  } bind def
+  } .internalbind def
 
   /IsActive % <record> IsActive <bool>
   { pop //true
-  } bind def
+  } .internalbind def
 
 currentdict end def
 
@@ -142,7 +142,7 @@ currentdict end def
 /.splitdirname {
   (/) rsearch { //true } { (\\) rsearch } ifelse
   {exch concatstrings exch pop //true}{//false} ifelse
-} bind def
+} .internalbind def
 
 % <file> .addcidfmappath -
 /.addcidfmpermitpath
@@ -152,7 +152,7 @@ currentdict end def
     //.splitdirname exec
     {dup def} if
   } if
-} bind def
+} .internalbind def
 
 /VerifyMap  % <raw_map> VerifyMap -
 {
@@ -256,7 +256,7 @@ currentdict end def
     } loop
   } loop
   pop pop
-} bind def
+} .internalbind def
 
 currentdict /.splitdirname undef
 currentdict /.addcidfmpermitpath undef
@@ -273,7 +273,7 @@ currentdict /.addcidfmpermitpath undef
   } {
     //false
   } ifelse
-} bind def
+} .internalbind def
 
 currentdict end
 

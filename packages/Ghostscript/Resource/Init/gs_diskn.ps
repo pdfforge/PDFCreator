@@ -53,7 +53,7 @@ systemdict begin
     exch .setglobal
   } executeonly
   if
-} .bind executeonly odef % must be bound and hidden for .forceput
+} .forcebind odef % must be bound and hidden for .forceput
 
 % Modify .putdevparams to force regeneration of .searchabledevs list
 /.putdevparams {
@@ -61,7 +61,7 @@ systemdict begin
   % doesn't get run enough to justify the complication
   //.putdevparams
   //systemdict /.searchabledevs .forceundef
-} .bind executeonly odef % must be bound and hidden for .forceundef
+} .forcebind odef % must be bound and hidden for .forceundef
 
 % ------ extend filenameforall to handle wildcards in %dev% part of pattern -------%
 /filenameforall {
@@ -144,7 +144,7 @@ systemdict begin
     //file
   }
   if
-} bind odef
+} .internalbind odef
 
 % redefine deletefile to search all devices in order
 /deletefile {
@@ -158,7 +158,7 @@ systemdict begin
   }
   forall
   not { $error /errorname get /deletefile .systemvar exch signalerror } if
-} bind odef
+} .internalbind odef
 
 % redefine status to search all devices in order
 /status {
@@ -180,7 +180,7 @@ systemdict begin
     //status
   }
   ifelse
-} bind odef
+} .internalbind odef
 
 % Also redefine renamefile to search all devices in order
 /renamefile {
@@ -198,7 +198,7 @@ systemdict begin
   not { $error /errorname get /renamefile .systemvar exch signalerror } if
   3 -1 roll concatstrings exch
   //renamefile
-} bind odef
+} .internalbind odef
 
 % redefine devforall to process devices in numeric order
 % Spec's for 'devforall' are unclear, but font downloaders may expect this

@@ -34,7 +34,7 @@ if outfile='' then do
 	infile=infile''inext
 end
 
-gs options '-q -P- -dSAFER -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile='outfile options '-c save pop -f' infile
+gs options '-q -P- -dCompatibilityLevel=1.4 -dWriteXRefStm=false -dWriteObjStms=false -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile='outfile options infile
 exit
 
 usage:

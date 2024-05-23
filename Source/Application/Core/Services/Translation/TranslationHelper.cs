@@ -45,7 +45,7 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<string> PossibleLanguagePaths { get; set; } = new List<string> { "Languages", @"..\..\..\..\Languages", @"..\..\..\..\..\Languages" };
+        public List<string> PossibleLanguagePaths { get; set; } = new List<string> { "Languages", @"..\..\..\..\Languages", @"..\..\..\..\..\Languages", @"..\..\..\..\..\..\Languages" };
 
         public IEnumerable<Language> GetAvailableLanguages()
         {

@@ -36,7 +36,7 @@ languagelevel dup 2 .max .setlanguagelevel
   } forall pop
   dup .settrapparams	% Let the operator check parameter validity.
   .userdict /.trapparams 3 -1 roll put pop
-} bind executeonly .makeoperator
+} .internalbind .makeoperator
 
 /.copyparams {		% <obj> .copyparams <obj'>
   dup type /dicttype eq {
@@ -53,12 +53,12 @@ languagelevel dup 2 .max .setlanguagelevel
 
 /currenttrapparams dup {	% - currenttrapparams <paramdict>
   /.trapparams .uservar .copyparams
-} bind executeonly .makeoperator
+} .internalbind executeonly .makeoperator
 
 /settrapzone dup {		% - settrapzone -
         % ****** DUMMY ******
   newpath
-} bind .makeoperator
+} .internalbind .makeoperator
 
 % Define initial (dummy) trapping parameters.
 % These values are mostly complete guesses.

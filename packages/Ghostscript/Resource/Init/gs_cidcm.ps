@@ -57,15 +57,15 @@ languagelevel 2 .setlanguagelevel currentglobal //true setglobal
 begin
 
   /begincmap {} def
-  /usecmap {pop} bind def
+  /usecmap {pop} .internalbind def
 
-  {stop} bind
+  {stop} .internalbind
   [ /begincodespacerange /endcodespacerange /beginnotdefchar /endnotdefchar
     /beginnotdefrange /endnotdefrange /begincidchar /endcidchar /begincidrange
     /endcidrange /endcmap /usefont /StartData
   ] {
     1 index def
-  } bind forall
+  } .internalbind forall
   pop
 
 currentdict end def
@@ -80,7 +80,7 @@ currentdict end def
   } {
     //findresource exec
   } ifelse
-} bind def
+} .internalbind def
 
 % Define procedures for pre-scanning :
 
@@ -100,7 +100,7 @@ currentdict end def
   } repeat {
     begin
   } repeat
-} bind def
+} .internalbind def
 
 /PrescanFile {     % - PrescanFile -
   { //.prs_dict /.prsFile get token {
@@ -115,7 +115,7 @@ currentdict end def
       stop
     } ifelse
   } loop
-} bind odef
+} .internalbind odef
 
 /GetCIDSystemInfoFromFile { % <file> GetCIDSystemInfoFromFile <CSI>
 
@@ -136,7 +136,7 @@ currentdict end def
   //.prs_dict /.prsResult get
   end
   RESMPDEBUG { (cidcm GetCIDSystemInfoFromFile end) = } if
-} bind def
+} .internalbind def
 
 /GetCIDSystemInfo {     % <InstName> <CatName> GetCIDSystemInfo <CSI>
 
@@ -197,7 +197,7 @@ currentdict end def
   } ifelse
   end
   RESMPDEBUG { (cidcm GetCIDSystemInfo end) = } if
-} bind def
+} .internalbind def
 
 /IsCompatibleCSI {  % <CSI-M> <CSI-F> IsCompatibleCSI <bool>
 
@@ -240,7 +240,7 @@ currentdict end def
     exch pop exch pop                   % bEQ
     exit
   } loop
-} bind def
+} .internalbind def
 
 /IsWellComposed {     % <CIDFontName> <CMapName> IsWellComposed <bool>
 
@@ -258,7 +258,7 @@ currentdict end def
   } {
     pop pop //false
   } ifelse
-} bind def
+} .internalbind def
 
 /IsComposedFont {   % <FontName> IsComposedFont <CIDFontName> <CMapName> true
                     % <FontName> IsComposedFont false
@@ -294,7 +294,7 @@ currentdict end def
     } for
     pop
   } stopped
-} bind def
+} .internalbind def
 
 /ComposeName { % <CIDFont> <CMap> <scr> ComposeName <CIDFont-CMap>
   dup dup 5 2 roll                        % (scr) (scr) /CIDFont /CMap (scr)
@@ -307,7 +307,7 @@ currentdict end def
   exch getinterval                        % (scr) /CMap l1 (scrT)
   3 2 roll exch cvs length                % (scr) l1 l2
   add 0 exch getinterval                  % (CIDFont-CMap)
-} bind def
+} .internalbind def
 
 % Redefine the /Font category with CIDFont-CMap construction :
 
@@ -327,7 +327,7 @@ currentdict end def
       //FindResource exec
     } ifelse
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 /ResourceStatus {  % <InstName> ResourceStatus <nStatus> <nSize> true
                    % <InstName> ResourceStatus false
@@ -359,7 +359,7 @@ currentdict end def
       //false
     } ifelse
   } ifelse
-} bind executeonly def
+} .internalbind def
 
 /ResourceForAll { % <template> <proc> <scratch> ResourceForAll -
 
@@ -440,7 +440,7 @@ currentdict end def
 
   % Make the enumerator and apply it :
   /MappedCategoryRedefiner /ProcSet findresource /MakeResourceEnumerator get exec exec
-} bind executeonly def
+} .internalbind def
 
 currentdict end /Font exch /Category defineresource pop
 end
