@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="../../Styles/Buttons/IconButton.xaml" />
                 <ResourceDictionary Source="../../Styles/Buttons/SquaredIconButton.xaml" />
                 <ResourceDictionary Source="../../Styles/Icons/ComponentIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/FeedbackIcons.xaml" />
                 <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
                 <ResourceDictionary Source="../../Styles/HoverBorder.xaml" />
                 <ResourceDictionary Source="../../Styles/HoverExpander.xaml" />
@@ -39,8 +40,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <!-- 760 is the specified banner width -->
-        <Grid Width="760" HorizontalAlignment="Center">
+        <Grid>
             <Grid.RowDefinitions>
                 <!-- PDFCreator Logo -->
                 <RowDefinition Height="Auto" MaxHeight="100" />
@@ -55,13 +55,18 @@
                 <!-- Tip Banner -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- 760 is the specified banner width -->
+                <ColumnDefinition Width="760"/>
+                <ColumnDefinition Width="*"  />
+            </Grid.ColumnDefinitions>
 
-            <Viewbox Grid.Row="0" MaxHeight="75" HorizontalAlignment="Center" Margin="0 20 0 0">
+            <Viewbox Grid.Row="0" Grid.Column="1" MaxHeight="75" HorizontalAlignment="Center" Margin="0 20 0 0">
                 <userControls:ApplicationLogoControl Margin="15" Foreground="Black" />
             </Viewbox>
-
             <!-- Drop zone -->
-            <Border Grid.Row="1" SnapsToDevicePixels="True"
+            <Border Grid.Row="1" Grid.Column="1" SnapsToDevicePixels="True"
                     x:Name="DragDropBorder"
                     DockPanel.Dock="Top"
                     Style="{StaticResource DragDropBorderStyle}"
@@ -82,7 +87,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Button Content="{Binding Translation.ChooseFileButton}"
+                                <Button Grid.Row="0" Content="{Binding Translation.ChooseFileButton}"
                                         help:HelpProvider.HelpTopic="AppPrinters"
                                         Style="{StaticResource AccentButton}"
                                         Padding="30 30"
@@ -104,10 +109,10 @@
                 </Viewbox>
             </Border>
 
-            <Separator Grid.Row="2" Margin="0 0" Background="{StaticResource AccentGrey}" />
+            <Separator Grid.Row="2" Grid.Column="1" Margin="0 0" Background="{StaticResource AccentGrey}" />
 
             <!-- History Header -->
-            <DockPanel Grid.Row="3" Margin="0 10 0 0" IsEnabled="{Binding HistoryEnabledByGpo}" Style="{StaticResource GpoToolTipStyle}">
+            <DockPanel Grid.Row="3" Grid.Column="1" Margin="0 10 0 0" IsEnabled="{Binding HistoryEnabledByGpo}" Style="{StaticResource GpoToolTipStyle}">
                 <Label DockPanel.Dock="Left" Margin="2 0 0 0"
                        Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}"
                        Style="{StaticResource LightLabel}"
@@ -143,8 +148,8 @@
 
             <!-- History -->
             <!-- Margin r-23 to push out scrollbar and align with History Settings Button -->
-            <Grid Grid.Row="4" Margin="0 10 -23 0"
-                  Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}">
+            <Grid Grid.Row="4" Grid.Column="1" Margin="0 10 -23 0"
+          Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}">
                 <ListBox Visibility="{Binding HistoryEnabled, Converter={StaticResource CollapsedIfFalse}}"
                          ItemsSource="{Binding JobHistory, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                          ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -155,17 +160,17 @@
                                        Background="Transparent">
                                 <!-- Remove History Item -->
                                 <Button DockPanel.Dock="Right" Margin="10 0 0 0"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding DataContext.RemoveHistoricJobCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource SquaredIconButton}"
-                                    ToolTip="{Binding DataContext.Translation.RemoveFromHistory, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                                        VerticalAlignment="Top"
+                                        Command="{Binding DataContext.RemoveHistoricJobCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Style="{StaticResource SquaredIconButton}"
+                                        ToolTip="{Binding DataContext.Translation.RemoveFromHistory, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
                                     <iconPacks:PackIconMaterialDesign Kind="Delete" />
                                 </Button>
 
                                 <Expander DockPanel.Dock="Left"
-                                          IsExpanded="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
-                                          Style="{StaticResource HoverExpander}">
+                                  IsExpanded="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                  Style="{StaticResource HoverExpander}">
                                     <Expander.Header>
                                         <DockPanel VerticalAlignment="Center">
                                             <Label DockPanel.Dock="Left"
@@ -194,7 +199,7 @@
 
                                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 0 0">
                                             <Label Content="{Binding DataContext.Translation.DocumentInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                   Style="{StaticResource LightLabel}" />
+                                           Style="{StaticResource LightLabel}" />
                                             <DockPanel>
                                                 <TextBlock Text="{Binding DataContext.Translation.TitleLabel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                                                 <TextBlock Text="{Binding Metadata.Title}" Margin="5 0 0 0" />
@@ -211,13 +216,13 @@
 
                                         <!-- Actions DropDown -->
                                         <contextMenuButton:ContextMenuButton Grid.Row="1" Grid.Column="1"
-                                                    Margin="10 0 0 0"
-                                                    VerticalAlignment="Bottom"
-                                                    Content ="{Binding DataContext.Translation.Actions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                    ItemsSource="{Binding DataContext.HistoryQuickActionMenuItems, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                    Style="{StaticResource DefaultButton}"
-                                                    MenuItemsCommandParameter="{Binding}"
-                                                    Width="110">
+                                                                             Margin="10 0 0 0"
+                                                                             VerticalAlignment="Bottom"
+                                                                             Content ="{Binding DataContext.Translation.Actions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                                             ItemsSource="{Binding DataContext.HistoryQuickActionMenuItems, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                                             Style="{StaticResource DefaultButton}"
+                                                                             MenuItemsCommandParameter="{Binding}"
+                                                                             Width="110">
                                         </contextMenuButton:ContextMenuButton>
                                     </Grid>
                                 </Expander>
@@ -236,10 +241,12 @@
             </Grid>
 
             <!-- Tip Banner -->
-            <ContentControl Grid.Row="5" Margin="0 20"
+            <ContentControl Grid.Row="5" Grid.Column="1" Margin="0 20 0 20" 
                             regions:RegionManager.RegionName="{x:Static presentation:RegionNames.HomeViewBannerRegion}" />
         </Grid>
 
+        <!-- Rss feed -->
         <ContentControl HorizontalAlignment="Right" regions:RegionManager.RegionName="{x:Static presentation:RegionNames.RssFeedRegion}" />
+        
     </Grid>
 </UserControl>

@@ -63,6 +63,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             {
                 case MessageOptions.Ok:
                 case MessageOptions.OkCancel:
+                case MessageOptions.OkCancelUac:
                     Interaction.Response = MessageResponse.Ok;
                     break;
 
@@ -100,6 +101,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             switch (Interaction.Buttons)
             {
                 case MessageOptions.OkCancel:
+                case MessageOptions.OkCancelUac:
                 case MessageOptions.RetryCancel:
                 case MessageOptions.MoreInfoCancel:
                 case MessageOptions.YesNoCancel:
@@ -193,6 +195,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                     break;
 
                 case MessageOptions.OkCancel:
+                    LeftButtonContent = Translation.Ok;
+                    RightButtonContent = Translation.Cancel;
+                    break;
+
+                case MessageOptions.OkCancelUac:
+                    ShowUacShield = true;
                     LeftButtonContent = Translation.Ok;
                     RightButtonContent = Translation.Cancel;
                     break;

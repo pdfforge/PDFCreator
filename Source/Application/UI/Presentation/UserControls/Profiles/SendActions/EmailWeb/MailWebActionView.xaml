@@ -7,22 +7,26 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:selectFiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeMailWebActionViewModel, IsDesignTimeCreatable=True}"
-             help:HelpProvider.HelpTopic="OpenEmailClient">
+             help:HelpProvider.HelpTopic="OpenEmailWeb">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <HeaderedContentControl Header="{Binding Translation.Email}"
                             Style="{StaticResource BorderlessHeaderPanel}">
         <StackPanel>
+
             <TextBlock Text="{Binding Translation.MultipleRecipientsHintText}"
                        TextWrapping="Wrap" TextAlignment="Right" />
-            <Label Margin="0 10 0 0"
+
+            <Label Margin="0 20 0 0"
                    Content="{Binding Translation.RecipientsToText}" />
 
             <controls:TokenControl Margin="0 10 0 0"
@@ -40,16 +44,28 @@
             <controls:TokenControl Margin="0 10 0 0"
                                    DataContext="{Binding RecipientsBccTokenViewModel}" />
 
-            <Label Margin="0 20 0 0">
-                <TextBlock Text="{Binding Translation.AdditionalAttachmentsText}" />
-            </Label>
-            <selectFiles:SelectFilesUserControl Margin="0 10 0 0"
+            <Button Margin="0 20 0 0" HorizontalAlignment="Left" Command="{Binding EditEmailTextCommand}"
+                    Content="{Binding Translation.EditMailText}" />
+
+            <selectFiles:SelectFilesUserControl Margin="0 20 0 0"
                                                 DataContext="{Binding AdditionalAttachmentsViewModel}" />
 
-            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                <Button Command="{Binding EditEmailTextCommand}"
-                        Content="{Binding Translation.EditMailText}" />
-            </StackPanel>
+            <UniformGrid Margin="0 20 0 0" Columns="3">
+                <RadioButton 
+                    GroupName="SendingOptions"
+                    Content="{Binding Translation.SaveDraft}"
+                    IsChecked="{Binding SendingOptionNothing}"/>
+
+                <RadioButton 
+                    GroupName="SendingOptions" 
+                    IsChecked="{Binding CurrentProfile.EmailWebSettings.ShowDraft}"
+                    Content="{Binding Translation.ShowDraft}"/>
+
+                <RadioButton 
+                    GroupName="SendingOptions" 
+                    IsChecked="{Binding CurrentProfile.EmailWebSettings.SendWebMailAutomatically}"
+                    Content="{Binding Translation.AutomaticSend}"/>
+            </UniformGrid>
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

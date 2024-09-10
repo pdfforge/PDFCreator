@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using MdXaml;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
 {
@@ -8,6 +9,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
         {
             DataContext = viewModel;
             InitializeComponent();
+            // Required to prevent ms build to remove the MdXaml assembly from the output
+            var _ = typeof(Markdown);
         }
     }
 }

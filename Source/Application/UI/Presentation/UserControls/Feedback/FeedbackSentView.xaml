@@ -1,0 +1,94 @@
+﻿<controls:MetroWindow x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             SizeToContent="WidthAndHeight"
+             Padding="0"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeFeedbackSentViewModel, IsDesignTimeCreatable=True}"
+             ShowMaxRestoreButton="False"
+             ShowMinButton="False"
+             TitleCharacterCasing="Normal"
+             Title="{Binding Title}"
+             BorderThickness="1"
+             WindowTitleBrush="{DynamicResource FeedbackTitleBarYellowBrush}"
+             BorderBrush="{DynamicResource FeedbackTitleBarYellowBrush}">
+
+    <controls:MetroWindow.WindowButtonCommands>
+        <controls:WindowButtonCommands Style="{DynamicResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" />
+    </controls:MetroWindow.WindowButtonCommands>
+
+    <controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Grid Margin="3 4 0 1"
+                  Width="{TemplateBinding Width}"
+                  Height="{TemplateBinding Height}"
+                  Background="Transparent">
+                <Image Source="../../Resources/feedback_icon.png"/>
+            </Grid>
+        </DataTemplate>
+    </controls:MetroWindow.IconTemplate>
+
+    <controls:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Margin="7 0 0 0"
+                       Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Width="{TemplateBinding Width}"
+                       Height="{TemplateBinding Height}"
+                       FontSize="13"
+                       FontFamily="{DynamicResource Inter}">
+            </TextBlock>
+        </DataTemplate>
+    </controls:MetroWindow.TitleTemplate>
+
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/MainResourceDict.xaml"/>
+                <ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml"/>
+                <ResourceDictionary Source="../../Styles/Fonts.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="../../Styles/MainResourceDict.xaml"/>
+                    <ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml"/>
+                    <ResourceDictionary Source="../../Styles/Fonts.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0"
+                    Margin="40 20 40 0"
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left">
+            <Label Content="{Binding TitleText}"/>
+            <TextBlock Margin="0 10 0 0" Text="{Binding BodyText}"/>
+        </StackPanel>
+
+        <Button Grid.Row="1"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="20 40 20 20"
+                Height="33"
+                MaxWidth="133"
+                Content="Ok"
+                Style="{StaticResource AccentButton}"
+                Command="{Binding OkCommand}"/>
+    </Grid>
+</controls:MetroWindow>

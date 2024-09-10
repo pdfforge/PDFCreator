@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Conversion.Settings.Helpers;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;

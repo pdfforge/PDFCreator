@@ -46,6 +46,9 @@
                 <ResourceDictionary Source="../Styles/Icons/pdfforgeLogos.xaml" />
                 <ResourceDictionary Source="../Styles/ListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
+            <converter:IsNullConverter x:Key="CollapsedIfNull" TrueValue="Collapsed" FalseValue="Visible" />
+            <converter:StringIsNullOrWhiteSpaceConverter x:Key="CollapsedIfNullOrWhiteSpace" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
 
@@ -55,14 +58,12 @@
 
     <i:Interaction.Behaviors>
         <!--The first two behaviors are needed by MahApps. They are added by default, but as we overwrite behaviors, we have to add them again-->
-
         <behaviours:BorderlessWindowBehavior />
         <behaviours:GlowWindowBehavior />
         <behaviours:WindowsSettingBehaviour />
     </i:Interaction.Behaviors>
 
     <b:Interaction.Behaviors>
-
         <beh:EventToCommandBehavior Command="{Binding WindowClosedCommand}" Event="Closing" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding WindowActivatedCommand}" Event="Activated" PassArguments="True" />
         <beh:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter" PassArguments="True" />
@@ -82,28 +83,51 @@
                 <Setter Property="FontSize" Value="10" />
                 <Setter Property="Foreground" Value="{StaticResource DefaultTextColorBrush}" />
             </Style>
-            <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
         </Grid.Resources>
 
         <Grid.RowDefinitions>
+            <!-- Header -->
             <RowDefinition Height="Auto" />
-            <!-- Margin --> 
-            <RowDefinition Height="20" />
+            <!-- Controls --> 
+            <RowDefinition Height="Auto" />
+            <!-- Margin -->
+            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
-            <!-- 56 is tapped out to fit n jobs in the list-->
-            <RowDefinition Height="56" />
+            <!-- Margin -->
+            <RowDefinition Height="15" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <!-- Compensate Scrollbar -->
+            <ColumnDefinition Width="28"/>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <Label Grid.Column="0"
+        
+        <!-- Header --> 
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+               Margin="0 0 0 15"
+               DockPanel.Dock="Left"
                Style="{StaticResource LargeLabel}"
-               Content="{Binding Translation.WindowHeader}" Grid.ColumnSpan="2" />
+               Content="{Binding Translation.WindowHeader}"  />
 
-        <StackPanel Grid.Row="0" Grid.Column="1"
+        <!-- Sort -->
+        <contextMenuButton:ContextMenuButton
+            Grid.Row="1" Grid.Column="2"
+            HorizontalAlignment="Right"
+            Margin="10 0 5 0"
+            Style="{StaticResource SquaredIconButton}"
+            ShowArrow="False"
+            ItemsSource="{Binding SortMenuItems}"
+            MenuItemsCommand="{Binding SortCommand}" 
+            ToolTip="{Binding Translation.Sort}">
+            <iconPacks:PackIconMaterialDesign Kind="Sort" />
+        </contextMenuButton:ContextMenuButton>
+        
+        <!-- Add another file --> 
+        <StackPanel Grid.Row="1" Grid.Column="4"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <Label Content="{Binding Translation.AddAnotherFile}"
@@ -115,31 +139,48 @@
             </Button>
         </StackPanel>
 
-        <ListBox Name="JobList"
-                 Grid.Row="2"  Grid.Column="0"
+        <!-- Checkbox: Select all--> 
+        <CheckBox Grid.Row="1" Grid.Column="0" 
+                  Margin="5 0 0 0"
+                  Height="25"
+                  VerticalAlignment="Bottom"
+                  IsChecked="{Binding SelectUnselectAll}" 
+                  Command="{Binding SelectUnSelectAllJobsCommand}"
+                  CommandParameter="{Binding ElementName=JobList}"
+                  ToolTip="{Binding Translation.SelectAll}"/>
+
+        <!-- r:-19  to compensate scrollbar -->
+        <!-- t:-5  to compensate inner margin -->
+        <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                 Margin="0 -5 -19 0" 
+                 Name="JobList"
                  ItemsSource="{Binding JobInfos}"
                  Style="{StaticResource DragAndDropNoEffectsListBox}"
-                 SelectionMode="Extended"
                  dd:DragDrop.DropHandler="{Binding CustomDropHandler}"
-                 ScrollViewer.CanContentScroll="False">
+                 ScrollViewer.CanContentScroll="False"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 PreviewMouseDown="ListBox_PreviewMouseDown_HandleShiftSelection"
+                 SelectionMode="Multiple">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="SelectionChanged">
-                    <b:InvokeCommandAction Command="{Binding JobListSelectionChanged}" />
+                    <b:InvokeCommandAction Command="{Binding JobListSelectionChangedCommand}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
-            <b:Interaction.Behaviors>
-                <beh:EventToCommandBehavior Command="{Binding ListSelectionChangedCommand}"
-                                            Event="SelectionChanged" PassArguments="True" />
-            </b:Interaction.Behaviors>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem" BasedOn="{StaticResource NoEffectsListBoxItem}">
+                    <EventSetter Event="MouseEnter" Handler="ListBoxItem_MouseEnter_ShowCurrentItemsDocumentInfo"/>
+                    <EventSetter Event="MouseLeave" Handler="ListBoxItem_MouseLeave_ShowFirstItemsDocumentInfo"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="jobInfo:JobInfo">
-                    <DockPanel Margin="0 0 10 10" Background="Transparent"
+                    <DockPanel Margin="0 5 10 5" Background="Transparent"
                                Height="{StaticResource SquaredButtonSize}">
 
                         <Button DockPanel.Dock="Right"
                                 Margin="10 0 0 0"
                                 Style="{StaticResource SquaredIconButton}"
-                                Cursor="{x:Static Cursors.ScrollNS}"
+                                Cursor="{x:Static Cursors.Hand}"
                                 IsTabStop="False">
                             <iconPacks:PackIconMaterialDesign Kind="DragHandle" />
                         </Button>
@@ -148,18 +189,20 @@
                                 Margin="10 0 0 0"
                                 Command="{Binding DataContext.DeleteJobCommand, ElementName=ThisWindow}"
                                 CommandParameter="{Binding}"
-                                Style="{StaticResource SquaredIconButton}">
+                                Style="{StaticResource SquaredIconButton}"
+                                ToolTip="{Binding DataContext.Translation.DeleteTooltip, RelativeSource={RelativeSource AncestorType=controls:MetroWindow}}">
                             <iconPacks:PackIconMaterialDesign Kind="Delete" />
                         </Button>
 
                         <Border Style="{StaticResource BrightHoverBorder}" 
                                 HorizontalAlignment="Stretch">
-                            <DockPanel Margin="4 0 10 2" VerticalAlignment="Center" 
+                            <DockPanel Margin="4 1 10 2" VerticalAlignment="Center" 
                                        HorizontalAlignment="Stretch">
                                 <CheckBox Height="25" Margin="0 1 10 0"
                                           Background="White"
-                                          VerticalAlignment="Center" HorizontalAlignment="Center"
-                                          IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, Mode=FindAncestor}}" />
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}, Mode=FindAncestor}}"
+                                          IsHitTestVisible="False" />
 
                                 <Label DockPanel.Dock="Top" Content="{Binding Metadata.PrintJobName}" />
 
@@ -194,39 +237,37 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!-- DocumentInfo and Merged Files -->
-        <Grid Grid.Row="2" Grid.Column="1"
-              Margin="10 0 0 0">
+        <!-- Document Info  -->
+        <Grid Grid.Row="3" Grid.Column="4"
+              Visibility="{Binding DisplayedJobInfo, Converter={StaticResource CollapsedIfNull}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Label Content="{Binding Translation.DocumentInfoHeader}" />
+                <Label  Content="{Binding Translation.DocumentInfoHeader}"/>
+
                 <TextBlock Margin="0 10 0 0">
                     <Run Text="{Binding Translation.PrintJobTitle, Mode=OneWay}" />
-                    <Run Text="{Binding SelectedPrintJob.SourceFiles[0].DocumentTitle}" />
+                    <Run Text="{Binding DisplayedJobInfo.SourceFiles[0].DocumentTitle}" />
                 </TextBlock>
-
                 <TextBlock>
                     <Run Text="{Binding Translation.PrintJobAuthor, Mode=OneWay}" />
-                    <Run Text="{Binding SelectedPrintJob.SourceFiles[0].Author}" />
+                    <Run Text="{Binding DisplayedJobInfo.SourceFiles[0].Author}" />
                 </TextBlock>
-
                 <TextBlock>
                     <Run Text="{Binding Translation.PrintJobPages, Mode=OneWay}" />
-                    <Run Text="{Binding SelectedPrintJob.TotalPages, Mode=OneWay}" />
+                    <Run Text="{Binding DisplayedJobInfo.TotalPages, Mode=OneWay}" />
                 </TextBlock>
-
-                <TextBlock>
+                <TextBlock Visibility="{Binding DisplayedJobInfo.SourceFiles[0].PrinterName, Converter={StaticResource CollapsedIfNullOrWhiteSpace}}">
                     <Run Text="{Binding Translation.PrintJobPrinter, Mode=OneWay}" />
-                    <Run Text="{Binding SelectedPrintJob.SourceFiles[0].PrinterName}" />
+                    <Run Text="{Binding DisplayedJobInfo.SourceFiles[0].PrinterName}" />
                 </TextBlock>
             </StackPanel>
 
-            <DockPanel Margin="0 30 0 0"  Grid.Row="1" 
-                       Visibility="{Binding SelectedPrintJob.ShowMergedFiles, Converter={StaticResource BoolToVisibilityConverter}}">
+            <DockPanel Margin="0 15 0 0"  Grid.Row="1" 
+                       Visibility="{Binding DisplayedJobInfo.ShowMergedFiles, Converter={StaticResource CollapsedIfFalse}}">
                 <Label DockPanel.Dock="Top"
                        Content="{Binding Translation.MergedFilesHeader}" />
 
@@ -235,7 +276,7 @@
                               VerticalScrollBarVisibility="Auto"
                               CanContentScroll="False"
                               IsTabStop="False" >
-                    <ItemsControl ItemsSource="{Binding SelectedPrintJob.SourceFiles}">
+                    <ItemsControl ItemsSource="{Binding DisplayedJobInfo.SourceFiles}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="jobInfo:SourceFileInfo">
                                 <StackPanel Orientation="Horizontal">
@@ -254,34 +295,25 @@
             </DockPanel>
         </Grid>
 
-        <Label Grid.Row="3" Grid.Column="0" 
-               Content="{Binding Translation.DragHint}"
-               Style="{StaticResource LightLabel}" Grid.ColumnSpan="2" />
+        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+               Margin="0 0 10 0"
+               Style="{StaticResource LightLabel}"  >
+            <TextBlock Text="{Binding Translation.DragHint}"
+                       TextWrapping="Wrap" 
+                       Foreground="{StaticResource LightLabelForegroundBrush}"/>
+        </Label>
 
-        <UniformGrid Grid.Row="4" Grid.Column="0" Columns="3"
-                     Margin="-5 0 -5 0"
-                     VerticalAlignment="Bottom">
-            <Button Margin="5 0" 
-                    Content="{Binding Translation.MergeButtonContent}"
-                    Command="{Binding MergeJobsCommand}"
-                    CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}" />
-            <Button Content="{Binding Translation.MergeAllButtonContent}"
-                    Margin="5 0"
-                    Command="{Binding MergeAllJobsCommand}"
-                    CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}"
-                    IsEnabled="True"/>
-            <contextMenuButton:ContextMenuButton
-                Margin="5 0"
-                Style="{StaticResource DefaultButton}"
-                ItemsSource="{Binding SortMenuItems}"
-                Content ="{Binding Translation.Sort}"
-                MenuItemsCommand="{Binding SortCommand}" />
-        </UniformGrid>
+        <Button Grid.Row="5" Grid.Column="2" Margin="0 0 5 0" 
+                Content="{Binding Translation.MergeButtonContent}"
+                Command="{Binding MergeJobsCommand}" 
+                CommandParameter="{Binding ElementName=JobList, Path=SelectedItems}" >
+        </Button>
 
-        <Button Grid.Row="4" Grid.Column="1" Margin="10 0 0 0"
-                Style="{StaticResource AffirmativeButton}"
+        
+        <Button Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2" Margin="5 0 0  0"
                 VerticalAlignment="Bottom"
                 IsCancel="True"
                 Content="{Binding Translation.ContinueButtonContent}" />
+        
     </Grid>
 </controls:MetroWindow>

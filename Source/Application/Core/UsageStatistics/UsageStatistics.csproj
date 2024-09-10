@@ -36,6 +36,7 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -48,11 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvqUsageStatisticsSender.cs" />
+    <Compile Include="UsageStatisticsJsonSerializer.cs" />
     <Compile Include="Mode.cs" />
     <Compile Include="IServiceEventsHandler.cs" />
     <Compile Include="IPdfCreatorUsageStatisticsManager.cs" />
     <Compile Include="IUsageStatisticsManager.cs" />
     <Compile Include="PdfCreatorJobFinishedMetric.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ServerJobFinishedMetric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsageStatisticsEventsHandler.cs" />
@@ -90,6 +98,13 @@
       <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Choose>

@@ -5,28 +5,26 @@
         <ResourceDictionary Source="ColorDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="NoEffectsListBoxItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <DockPanel>
+                        <!-- Set "empty" template to disable bling bling -->
+                        <ContentPresenter />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="NoEffectsListBox" TargetType="ListBox">
         <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <DockPanel>
-                                    <!-- Set "empty" template to disable bling bling -->
-                                    <ContentPresenter />
-                                </DockPanel>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource NoEffectsListBoxItem}" />
     </Style>
 
     <Style x:Key="DragAndDropNoEffectsListBox" TargetType="ListBox" BasedOn="{StaticResource NoEffectsListBox}">

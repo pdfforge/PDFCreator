@@ -19,7 +19,6 @@ using System.Windows.Input;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using NLog;
 using Logger = NLog.Logger;
-using pdfforge.PDFCreator.Core.Controller;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep
 {
@@ -44,12 +43,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
 
         public ICommand OpenWithPdfArchitectCommand { get; }
         public ICommand OpenExplorerCommand { get; }
+        public ICommand OpenUrlCommand { get; }
         public ICommand QuickActionOpenWithDefaultCommand { get; }
         public IAsyncCommand UpdateSendContextMenuButtonItemsCommand { get; }
         public ICommand SendEmailCommand { get; }
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private string _fullPath;
         public ICommand CopyToClipboardCommand { get; set; }
+
+
         public QuickActionViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IReadableFileSizeFormatter readableFileSizeHelper,
             ICurrentSettings<ObservableCollection<ConversionProfile>> profilesProvider, ICurrentSettingsProvider currentSettingsProvider,
             IAttachToOutlookItemAssistant attachToOutlookItemAssistant) : base(translationUpdater)
@@ -68,7 +70,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             UpdateSendContextMenuButtonItemsCommand = new AsyncCommand(UpdateSendContextMenuButtonItemsExecute);
             CopyToClipboardCommand = _commandLocator.GetCommand<CopyToClipboardCommand>();
             FinishCommand = new DelegateCommand(OnFinish);
+            OpenUrlCommand = _commandLocator.GetCommand<UrlOpenCommand>();
         }
+
+
+        public bool HasDropBoxSharedLink => Job?.Profile?.DropboxSettings is { Enabled: true, CreateShareLink: true };
+        public bool HasOneDriveLink => Job?.Profile?.OneDriveSettings is { Enabled: true, CreateShareLink: false };
+        public bool HasOneDriveSharedLink => Job?.Profile?.OneDriveSettings is { Enabled: true, CreateShareLink: true };
 
         private void OnFinish(object obj)
         {
@@ -87,7 +95,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             FileDirectory = System.IO.Path.GetDirectoryName(firstFile);
             FileSize = _readableFileSizeHelper.GetFileSizeString(firstFile);
             FullPath = System.IO.Path.GetFullPath(firstFile);
-            RaisePropertyChanged(nameof(IsActive));
+            
+            ShowDisableQuickActionsCheckBox = !job.Profile.DropboxSettings.ShowShareLink && !job.Profile.OneDriveSettings.ShowShareLink;
+            RaisePropertyChanged(nameof(ShowDisableQuickActionsCheckBox));
 
             IsSaveFileTemporary = job.Profile.SaveFileTemporary;
             RaisePropertyChanged(nameof(IsSaveFileTemporary));
@@ -105,6 +115,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             private set
             {
                 _job = value;
+                RaisePropertyChanged(nameof(HasOneDriveSharedLink));
+                RaisePropertyChanged(nameof(HasDropBoxSharedLink));
+                RaisePropertyChanged(nameof(HasOneDriveLink));
                 RaisePropertyChanged(nameof(Job));
             }
         }
@@ -218,23 +231,27 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
             }
         }
 
-        public bool IsActive
+        public bool DisableQuickActions
         {
             set
             {
-                if (_job != null && _currentSettingsProvider != null)
-                {
-                    var conversionProfile = SettingsHelper.GetProfileByGuid(_profilesProvider.Settings, _job.Profile.Guid);
-                    conversionProfile.ShowQuickActions = !value;
-                    _job.Profile.ShowQuickActions = !value;
-                    RaisePropertyChanged(nameof(IsActive));
-                }
+                if (Job == null || _currentSettingsProvider == null) 
+                    return;
+
+                var conversionProfile = SettingsHelper.GetProfileByGuid(_profilesProvider.Settings, _job.Profile.Guid);
+                conversionProfile.ShowQuickActions = !value;
+                Job.Profile.ShowQuickActions = !value;
+                RaisePropertyChanged(nameof(DisableQuickActions));
             }
             get
             {
-                return _job?.Profile?.ShowQuickActions == false;
+                if (Job is { Profile: not null })
+                    return !Job.Profile.ShowQuickActions;
+                return false;
             }
         }
+
+        public bool ShowDisableQuickActionsCheckBox { get; set; }
 
         public DelegateCommand FinishCommand { get; }
     }

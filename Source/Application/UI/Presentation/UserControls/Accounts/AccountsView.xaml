@@ -89,7 +89,8 @@
                             <DataTemplate DataType="{x:Type settings:MicrosoftAccount}">
                                 <!--Graph Accounts can't be edited. Not setting the EditCommand hides the button-->
                                 <accounts:AccountCell
-                                    AccountNameString="{Binding DataContext.Translation.OutlookAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                    AccountNameString="{Binding DataContext.Translation.MicrosoftAccount, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                    EditCommand="{Binding DataContext.MicrosoftAccountEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                                     RemoveCommand="{Binding DataContext.MicrosoftAccountRemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
                                     <accounts:AccountCell.Icon>
                                         <iconPacks:MaterialDesign Kind="MailOutline" Width="25" />

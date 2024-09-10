@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using pdfforge.PDFCreator.Utilities.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,30 +101,72 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
         {
             var attachmentList = new List<string>();
 
-            if (!DropboxShareLinksAreUsed(job, settings))
+            if (!OneDriveShareLinksAreUsed(job, settings) && !DropboxShareLinksAreUsed(job, settings))
             {
                 attachmentList.AddRange(job.OutputFiles);
-                attachmentList.AddRange(settings.AdditionalAttachments);
             }
+            // Additional attachments must always be added
+            // If the user wants them as share link, he needs to upload them and put the share link in the mail content 
+            attachmentList.AddRange(settings.AdditionalAttachments);
 
             return attachmentList;
         }
 
         private bool DropboxShareLinksAreUsed(Job job, IMailActionSettings mailSettings)
         {
-            if (job.Profile.DropboxSettings.Enabled == false || job.Profile.DropboxSettings.CreateShareLink == false)
+            if (job.Profile.DropboxSettings.Enabled == false)
                 return false;
 
-            if (mailSettings.Content.IndexOf("<Dropbox", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (!TokenIdentifier.ContainsAnyToken(mailSettings.Content, TokenNames.DropboxFullLinks, TokenNames.DropboxHtmlLinks))
                 return false;
 
             var mailTypeName = mailSettings.GetType().Name;
             if (!job.Profile.IsFirstActionBeforeSecond(nameof(DropboxSettings), mailTypeName))
             {
-                _logger.Warn("To use the share links instead of mail attachments, the Dropbox action must be executed before the mail action.");
+                _logger.Warn("To use the Dropbox share link instead of mail attachments, " +
+                             "the Dropbox action must be executed before the mail action. " +
+                             "For the current mail, the converted output will be attached.");
                 return false;
             }
 
+            if (job.Profile.DropboxSettings.CreateShareLink == false)
+            {
+                _logger.Warn("To use the Dropbox share link instead of mail attachments, " +
+                             "a share link must be enabled in the Dropbox action. " +
+                             "For the current mail, the converted output will be attached.");
+                return false;
+            }
+
+            _logger.Info("Converted documents are not added to mail attachments because Dropbox share link token was set in content");
+            return true;
+        }
+
+        private bool OneDriveShareLinksAreUsed(Job job, IMailActionSettings mailSettings)
+        {
+            if (job.Profile.OneDriveSettings.Enabled == false)
+                return false;
+
+            if (!TokenIdentifier.ContainsAnyToken(mailSettings.Content ,TokenNames.OneDriveShareLink, TokenNames.OneDriveShareLinkHtml))
+                return false;
+
+            var mailTypeName = mailSettings.GetType().Name;
+            if (!job.Profile.IsFirstActionBeforeSecond(nameof(OneDriveSettings), mailTypeName))
+            {
+                _logger.Warn("To use the OneDrive share link instead of mail attachments, " +
+                             "the OneDrive action must be executed before the mail action. " +
+                             "For the current mail, the converted output will be attached.");
+                return false;
+            }
+
+            if (job.Profile.OneDriveSettings.CreateShareLink == false)
+            {
+                _logger.Warn("To use the OneDrive share link instead of mail attachments, " +
+                             "a share link must be enabled in the OneDrive action. " +
+                             "For the current mail, the converted output will be attached.");
+                return false;
+            }
+
+            _logger.Info("Converted documents are not added to mail attachments because OneDrive share link token was set in content");
             return true;
         }
     }

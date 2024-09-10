@@ -29,6 +29,7 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using pdfforge.PDFCreator.Utilities;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 
 namespace pdfforge.PDFCreator.Editions.PDFCreator
@@ -81,7 +82,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
             container.Register<ILicenseChecker, UnlicensedLicenseChecker>();
             container.Register<IOfflineActivator, UnlicensedOfflineActivator>();
 
-            container.Register<IPrioritySupportUrlOpenCommand, DisabledPrioritySupportUrlOpenCommand>();
+            container.Register<IPrioritySupportUrlOpenCommand, OpenBusinessHintInsteadOfPrioritySupportCommand>();
         }
 
         protected override void RegisterUserTokenExtractor(Container container)

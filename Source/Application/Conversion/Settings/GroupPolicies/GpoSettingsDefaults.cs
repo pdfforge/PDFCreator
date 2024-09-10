@@ -29,5 +29,7 @@
 
         public string PageSize => null;
         public string PageOrientation => null;
+
+        public bool HideFeedbackForm => false;
     }
 }

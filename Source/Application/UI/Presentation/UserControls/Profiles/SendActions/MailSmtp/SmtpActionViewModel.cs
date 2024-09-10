@@ -87,6 +87,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             AdditionalAttachmentsViewModel = selectFilesUserControlViewModelFactory.Builder()
                 .WithTitleGetter(() => Translation.MailAttachmentTitle)
                 .WithFileListGetter(profile => profile.EmailSmtpSettings.AdditionalAttachments)
+                .WithAddFileButtonTextGetter(() => Translation.AddAttachmentFile)
                 .WithPropertyChanged(StatusChanged)
                 .Build();
 

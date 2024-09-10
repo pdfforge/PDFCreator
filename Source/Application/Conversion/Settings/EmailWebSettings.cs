@@ -69,6 +69,16 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string RecipientsCc { get; set; } = "";
 		
 		/// <summary>
+		/// Bool to control of we send a draft or just store it
+		/// </summary>
+		public bool SendWebMailAutomatically { get; set; } = false;
+		
+		/// <summary>
+		/// Bool to control if we show draft after interactive conversion
+		/// </summary>
+		public bool ShowDraft { get; set; } = true;
+		
+		/// <summary>
 		/// Subject line of the e-mail
 		/// </summary>
 		public string Subject { get; set; } = "";
@@ -93,6 +103,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			try { Recipients = Data.UnescapeString(data.GetValue(@"" + path + @"Recipients")); } catch { Recipients = "";}
 			try { RecipientsBcc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsBcc")); } catch { RecipientsBcc = "";}
 			try { RecipientsCc = Data.UnescapeString(data.GetValue(@"" + path + @"RecipientsCc")); } catch { RecipientsCc = "";}
+			SendWebMailAutomatically = bool.TryParse(data.GetValue(@"" + path + @"SendWebMailAutomatically"), out var tmpSendWebMailAutomatically) ? tmpSendWebMailAutomatically : false;
+			ShowDraft = bool.TryParse(data.GetValue(@"" + path + @"ShowDraft"), out var tmpShowDraft) ? tmpShowDraft : true;
 			try { Subject = Data.UnescapeString(data.GetValue(@"" + path + @"Subject")); } catch { Subject = "";}
 		}
 		
@@ -110,6 +122,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Recipients", Data.EscapeString(Recipients));
 			data.SetValue(@"" + path + @"RecipientsBcc", Data.EscapeString(RecipientsBcc));
 			data.SetValue(@"" + path + @"RecipientsCc", Data.EscapeString(RecipientsCc));
+			data.SetValue(@"" + path + @"SendWebMailAutomatically", SendWebMailAutomatically.ToString());
+			data.SetValue(@"" + path + @"ShowDraft", ShowDraft.ToString());
 			data.SetValue(@"" + path + @"Subject", Data.EscapeString(Subject));
 		}
 		
@@ -126,6 +140,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Recipients = Recipients;
 			copy.RecipientsBcc = RecipientsBcc;
 			copy.RecipientsCc = RecipientsCc;
+			copy.SendWebMailAutomatically = SendWebMailAutomatically;
+			copy.ShowDraft = ShowDraft;
 			copy.Subject = Subject;
 			return copy;
 		}
@@ -162,6 +178,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(RecipientsCc != source.RecipientsCc)
 				RecipientsCc = source.RecipientsCc;
 				
+			if(SendWebMailAutomatically != source.SendWebMailAutomatically)
+				SendWebMailAutomatically = source.SendWebMailAutomatically;
+				
+			if(ShowDraft != source.ShowDraft)
+				ShowDraft = source.ShowDraft;
+				
 			if(Subject != source.Subject)
 				Subject = source.Subject;
 				
@@ -181,6 +203,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(Recipients, v.Recipients)) return false;
 			if (!Object.Equals(RecipientsBcc, v.RecipientsBcc)) return false;
 			if (!Object.Equals(RecipientsCc, v.RecipientsCc)) return false;
+			if (!Object.Equals(SendWebMailAutomatically, v.SendWebMailAutomatically)) return false;
+			if (!Object.Equals(ShowDraft, v.ShowDraft)) return false;
 			if (!Object.Equals(Subject, v.Subject)) return false;
 			return true;
 		}

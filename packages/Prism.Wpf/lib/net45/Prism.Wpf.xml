@@ -604,30 +604,6 @@
             <param name="notification">The INotification or IConfirmation parameter to show.</param>
             <returns></returns>
         </member>
-        <member name="M:Prism.Ioc.IContainerRegistryExtensions.RegisterDialog``1(Prism.Ioc.IContainerRegistry,System.String)">
-            <summary>
-            Registers an object to be used as a dialog in the IDialogService.
-            </summary>
-            <typeparam name="TView">The Type of object to register as the dialog</typeparam>
-            <param name="containerRegistry"></param>
-            <param name="name">The unique name to register with the dialog.</param>
-        </member>
-        <member name="M:Prism.Ioc.IContainerRegistryExtensions.RegisterDialog``2(Prism.Ioc.IContainerRegistry,System.String)">
-            <summary>
-            Registers an object to be used as a dialog in the IDialogService.
-            </summary>
-            <typeparam name="TView">The Type of object to register as the dialog</typeparam>
-            <typeparam name="TViewModel">The ViewModel to use as the DataContext for the dialog</typeparam>
-            <param name="containerRegistry"></param>
-            <param name="name">The unique name to register with the dialog.</param>
-        </member>
-        <member name="M:Prism.Ioc.IContainerRegistryExtensions.RegisterDialogWindow``1(Prism.Ioc.IContainerRegistry)">
-            <summary>
-            Registers an object that implements IDialogWindow to be used to host all dialogs in the IDialogService.
-            </summary>
-            <typeparam name="TWindow">The Type of the Window class that will be used to host dialogs in the IDialogService</typeparam>
-            <param name="containerRegistry"></param>
-        </member>
         <member name="M:Prism.Ioc.IContainerRegistryExtensions.RegisterForNavigation(Prism.Ioc.IContainerRegistry,System.Type,System.String)">
             <summary>
             Registers an object for navigation
@@ -4761,72 +4737,6 @@
             Gets  the hint.
             </summary>
             <value>The hint to use for sorting.</value>
-        </member>
-        <member name="T:Prism.Services.Dialogs.DialogWindow">
-            <summary>
-            Interaction logic for DialogWindow.xaml
-            </summary>
-            <summary>
-            DialogWindow
-            </summary>
-        </member>
-        <member name="M:Prism.Services.Dialogs.DialogWindow.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="M:Prism.Services.Dialogs.IDialogAware.CanCloseDialog">
-            <summary>
-            Determines if the dialog can be closed.
-            </summary>
-            <returns>True: close the dialog; False: the dialog will not close</returns>
-        </member>
-        <member name="M:Prism.Services.Dialogs.IDialogAware.OnDialogClosed">
-            <summary>
-            Called when the dialog is closed.
-            </summary>
-        </member>
-        <member name="M:Prism.Services.Dialogs.IDialogAware.OnDialogOpened(Prism.Services.Dialogs.IDialogParameters)">
-            <summary>
-            Called when the dialog is opened.
-            </summary>
-            <param name="parameters">The parameters passed to the dialog</param>
-        </member>
-        <member name="P:Prism.Services.Dialogs.IDialogAware.Title">
-            <summary>
-            The title of the dialog that will show in the Window title bar.
-            </summary>
-        </member>
-        <member name="E:Prism.Services.Dialogs.IDialogAware.RequestClose">
-            <summary>
-            Instructs the IDialogWindow to close the dialog.
-            </summary>
-        </member>
-        <member name="P:Prism.Services.Dialogs.IDialogResult.Parameters">
-            <summary>
-            The parameters from the dialog
-            </summary>
-        </member>
-        <member name="P:Prism.Services.Dialogs.IDialogResult.Result">
-            <summary>
-            The result of the dialog.
-            </summary>
-        </member>
-        <member name="M:Prism.Services.Dialogs.IDialogService.Show(System.String,Prism.Services.Dialogs.IDialogParameters,System.Action{Prism.Services.Dialogs.IDialogResult})">
-            <summary>
-            Shows a non-modal dialog
-            </summary>
-            <param name="name">The name of the dialog to show</param>
-            <param name="parameters">The parameters to pass to the dialog</param>
-            <param name="callback">The action to perform when the dialog is closed.</param>
-        </member>
-        <member name="M:Prism.Services.Dialogs.IDialogService.ShowDialog(System.String,Prism.Services.Dialogs.IDialogParameters,System.Action{Prism.Services.Dialogs.IDialogResult})">
-            <summary>
-            Shows a modal dialog
-            </summary>
-            <param name="name">The name of the dialog to show</param>
-            <param name="parameters">The parameters to pass to the dialog</param>
-            <param name="callback">The action to perform when the dialog is closed.</param>
         </member>
         <member name="T:System.Collections.ObjectModel.CollectionExtensions">
             <summary>

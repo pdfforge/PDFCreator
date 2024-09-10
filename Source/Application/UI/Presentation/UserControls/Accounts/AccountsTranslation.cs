@@ -8,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
 
         public string Accounts { get; protected set; } = "Accounts";
+        public string AccountLabel { get; protected set; } = "Account:";
         public string ManageAccountsDescription { get; protected set; } = "Manage your credentials for corresponding actions. Added accounts and changes will be available for all profiles.";
         public string ManageAccounts { get; protected set; } = "Manage Accounts";
         public string AddFtpAccount { get; protected set; } = "Add FTP account";
@@ -17,11 +18,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public string UnsuccessfulConnectionTest { get; protected set; } = "Couldn't establish a connection with the provided credentials";
         public string AddSmtpAccount { get; protected set; } = "Add SMTP account";
         public string SmtpAccount { get; protected set; } = "SMTP Account";
-        public string OutlookAccount { get; protected set; } = "Outlook Account";
+        public string MicrosoftAccount { get; protected set; } = "Microsoft Account";
         public string HttpAccount { get; protected set; } = "HTTP Account";
         public string AddHttpAccount { get; protected set; } = "Add HTTP account";
         public string AddDropboxAccount { get; protected set; } = "Add Dropbox account";
-        public string AddMicrosoftAccount { get; protected set; } = "Add Outlook Web Access account";
+        public string AddMicrosoftAccount { get; protected set; } = "Add Microsoft account";
         public string DropboxAccount { get; protected set; } = "Dropbox Account";
         public string AddTimeServerAccount { get; protected set; } = "Add Time Server account";
         public string TimeServerAccount { get; protected set; } = "Time Server Account";
@@ -34,6 +35,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public string PassphraseRequired { get; protected set; } = "Key file requires passphrase";
         public string Save { get; protected set; } = "Save";
         public string Ok { get; protected set; } = "Ok";
+        public string RequestPermissions { get; protected set; } = "Request Permissions";
         public string ServerLabel { get; protected set; } = "Server:";
         public string UserNameLabel { get; protected set; } = "User Name:";
         public string AddAccount { get; protected set; } = "Add account";
@@ -63,5 +65,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 
         public string RestrictedHint { get; set; } = "This feature is not supported by the selected output format";
         public string EnabledHint { get; set; } = "This feature is already enabled for the selected profile";
+        public string MailReadWrite{ get; set; } = "Read and write e-mails";
+        public string FilesReadWrite { get; set; } = "Read and write files";
+        public string MailSend { get; set; } = "Send e-mails";
+        public string MailPermissionsLabel { get; set; } = "OWA Permissions";
+        public string OneDrivePermissionsLabel { get; set; } = "OneDrive Permissions";
     }
 }

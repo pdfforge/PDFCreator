@@ -99,7 +99,7 @@ namespace pdfforge.PDFCreator.Core.Services.Update
         public string Type { get; set; }
         public string Text { get; set; }
         public int Priority { get; set; }
-        public string BulletPoint => "- " + Text;
+        public string TextWithListPrefix => "* " + Text;
 
         public ChangeLogItem Copy()
         {

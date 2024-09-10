@@ -37,6 +37,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
         ///     Merge the second JobInfo into the first one
         /// </summary>
         void Merge(JobInfo jobInfo, JobInfo jobInfoToMerge);
+
+        void DeleteInf(JobInfo jobInfo);
     }
 
     public class JobInfoManager : IJobInfoManager
@@ -115,11 +117,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo
 
             // Create a new ObservableCollection to avoid threading problems
             jobInfo.SourceFiles = new ObservableCollection<SourceFileInfo>(sourceFiles);
+            }
 
-            DeleteInf(jobInfoToMerge);
-        }
-
-        private void DeleteInf(JobInfo jobInfo)
+        public void DeleteInf(JobInfo jobInfo)
         {
             try
             {

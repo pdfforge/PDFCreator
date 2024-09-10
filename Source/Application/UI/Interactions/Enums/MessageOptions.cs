@@ -5,6 +5,7 @@ namespace pdfforge.PDFCreator.UI.Interactions.Enums
         MoreInfoCancel,
         Ok,
         OkCancel,
+        OkCancelUac,
         RetryCancel,
         YesNoCancel,
         YesNo,

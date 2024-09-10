@@ -4,17 +4,17 @@ using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Graph;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
-    public class MicrosoftAccountRemoveCommand : TranslatableCommandBase<OutlookWebAccountTranslation>, IWaitableCommand
+    public class MicrosoftAccountRemoveCommand : TranslatableCommandBase<MicrosoftTranslation>, IWaitableCommand
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<Accounts> _accountsProvider;

@@ -110,8 +110,9 @@
     <Compile Include="Banner\FrequentTipsControl\FrequentTipsControlViewModel.cs" />
     <Compile Include="Banner\FrequentTipsControl\FrequentTip.cs" />
     <Compile Include="Behaviors\AllowableCharactersTextBoxBehavior.cs" />
-    <Compile Include="Commands\AccountCommands\MicrosoftAccountAddCommand.cs" />
+    <Compile Include="Commands\AccountCommands\MicrosoftAccountEditCommand.cs" />
     <Compile Include="Commands\AccountCommands\MicrosoftAccountRemoveCommand.cs" />
+    <Compile Include="Commands\AccountCommands\MicrosoftAccountRequestPermissionCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountEditCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountRemoveCommand.cs" />
     <Compile Include="Commands\AccountCommands\TimeServerAccountAddCommand.cs" />
@@ -134,11 +135,12 @@
     <Compile Include="Commands\EvaluateSettingsCommands\SettingsLoadingNotifyUserCommand.cs" />
     <Compile Include="Commands\EvaluateSettingsCommands\SkipIfSameNavigationTargetCommand.cs" />
     <Compile Include="Commands\EvaluateSettingsCommands\EvaluateTabSwitchRelevantSettingsAndNotifyUserCommand.cs" />
+    <Compile Include="Commands\FeedbackCommand.cs" />
     <Compile Include="Commands\IniCommands\SaveSettingsToIniCommand.cs" />
     <Compile Include="Commands\IPrintTestPageAsyncCommand.cs" />
     <Compile Include="Commands\NavigateApplicationSettingsTabCommand.cs" />
     <Compile Include="Commands\NavigatePrismRegionCommand.cs" />
-    <Compile Include="Commands\PrioritySupportCommand\DisabledPrioritySupportUrlOpenCommand.cs" />
+    <Compile Include="Commands\PrioritySupportCommand\OpenBusinessHintInsteadOfPrioritySupportCommand.cs" />
     <Compile Include="Commands\PrioritySupportCommand\IPrioritySupportUrlOpenCommand.cs" />
     <Compile Include="Commands\ProfileCommands\WaitMainShellClosedCommand.cs" />
     <Compile Include="Commands\QuickActions\QuickActionCommandBase.cs" />
@@ -173,6 +175,7 @@
     </Compile>
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\ColumnConverter.cs" />
+    <Compile Include="Converter\CompareToThresholdToVisibilityConverter.cs" />
     <Compile Include="Converter\ExistingFileBehaviourConverter.cs" />
     <Compile Include="Converter\MenuTabColumnWidthConverter.cs" />
     <Compile Include="Converter\ObjectToObjectOrTranslatableConverter.cs" />
@@ -185,12 +188,17 @@
     <Compile Include="DesignTime\DesignTimeCsScriptActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeEMailWebActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeErrorViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeFeedbackButtonViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeFeedbackSender.cs" />
+    <Compile Include="DesignTime\DesignTimeFeedbackSentViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeFeedbackWindowViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeFtpConnectionFactory.cs" />
     <Compile Include="DesignTime\DesignTimeFtpConnectionTester.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionInvoker.cs" />
     <Compile Include="DesignTime\DesignTimeInteractionRequest.cs" />
     <Compile Include="DesignTime\DesignTimeLicenseChecker.cs" />
     <Compile Include="DesignTime\DesignTimeLoadSpecificProfileViewModel.cs" />
+    <Compile Include="DesignTime\DesignTimeOneDriveActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeOsHelper.cs" />
     <Compile Include="DesignTime\DesignTimeOpenFileInteractionHelper.cs" />
     <Compile Include="DesignTime\DesignTimeDirectConvertViewModel.cs" />
@@ -214,6 +222,8 @@
     <Compile Include="DesignTime\DesignTimeTestFileDummyHelper.cs" />
     <Compile Include="DesignTime\DesignTimeTitleReplacementsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeTokenViewModelFactory.cs" />
+    <Compile Include="DesignTime\DesignTimeUsageStatisticsJsonSerializer.cs" />
+    <Compile Include="DesignTime\DesignTimeUsageStatisticsViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeUserTokenActionViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeWebLinkLauncher.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeActionOrderHelper.cs" />
@@ -230,6 +240,14 @@
     <Compile Include="Events\ManagePrintJobEvent.cs" />
     <Compile Include="Events\TrialStatusChangedEvent.cs" />
     <Compile Include="Helper\AccessKeyHelper.cs" />
+    <Compile Include="Helper\Feedback\AhaAppData.cs" />
+    <Compile Include="Helper\Feedback\AhaResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AhaResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\Feedback\AhaFeedbackSender.cs" />
+    <Compile Include="Helper\Feedback\IFeedbackSender.cs" />
     <Compile Include="Helper\PdfEditorHelper.cs" />
     <Compile Include="Helper\PrinterMappingsHelper.cs" />
     <Compile Include="Helper\TestPage\TestPageHelper.cs" />
@@ -259,8 +277,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DropboxResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Accounts\AccountViews\Graph\OutlookWebAccountTranslation.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\MicrosoftAccountPermissionsPayload.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\DesignTimeMicrosoftAccountViewModel.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\MicrosoftAccountView.xaml.cs">
+      <DependentUpon>MicrosoftAccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\MicrosoftAccountViewModel.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\MicrosoftTranslation.cs" />
+    <Compile Include="UserControls\Accounts\AccountViews\Microsoft\OneDriveTranslation.cs" />
     <Compile Include="UserControls\ActionLocator.cs" />
+    <Compile Include="UserControls\FeedbackButton\FeedbackButton.xaml.cs">
+      <DependentUpon>FeedbackButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FeedbackButton\FeedbackButtonTranslation.cs" />
+    <Compile Include="UserControls\FeedbackButton\FeedbackButtonViewModel.cs" />
+    <Compile Include="UserControls\Feedback\FeedbackSentTranslation.cs" />
+    <Compile Include="UserControls\Feedback\FeedbackSentView.xaml.cs">
+      <DependentUpon>FeedbackSentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Feedback\FeedbackSentViewModel.cs" />
     <Compile Include="UserControls\Overlay\OverwriteOrAppendInteraction.cs" />
     <Compile Include="UserControls\Overlay\OverwriteOrAppendOverlay.xaml.cs">
       <DependentUpon>OverwriteOrAppendOverlay.xaml</DependentUpon>
@@ -649,6 +684,10 @@
     </Compile>
     <Compile Include="UserControls\Profiles\SendActions\MailSmtp\EditEmailTextViewModel.cs" />
     <Compile Include="DesignTime\DesignTimeOpenViewerActionViewModel.cs" />
+    <Compile Include="UserControls\Profiles\SendActions\OneDrive\OneDriveActionView.xaml.cs">
+      <DependentUpon>OneDriveActionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Profiles\SendActions\OneDrive\OneDriveActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionTranslation.cs" />
     <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionViewModel.cs" />
     <Compile Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionView.xaml.cs">
@@ -804,11 +843,11 @@
     <Compile Include="UserControls\PrintJob\SignaturePasswordStep\SignaturePasswordStepView.xaml.cs">
       <DependentUpon>SignaturePasswordStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BusinessFeatureBadge.xaml.cs">
+    <Compile Include="UserControls\BusinessFeatureBadge\BusinessFeatureBadge.xaml.cs">
       <DependentUpon>BusinessFeatureBadge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BusinessFeatureTranslation.cs" />
-    <Compile Include="UserControls\BusinessFeatureBadgeViewModel.cs" />
+    <Compile Include="UserControls\BusinessFeatureBadge\BusinessFeatureTranslation.cs" />
+    <Compile Include="UserControls\BusinessFeatureBadge\BusinessFeatureBadgeViewModel.cs" />
     <Compile Include="UserControls\PrintJob\FtpPasswordStep\FtpPasswordStepView.xaml.cs">
       <DependentUpon>FtpPasswordStepView.xaml</DependentUpon>
     </Compile>
@@ -897,6 +936,12 @@
     <Compile Include="ViewModelBases\TranslatableAsyncCommandBase.cs" />
     <Compile Include="ViewModelBases\TranslatableViewModelBase.cs" />
     <Compile Include="Windows\CustomDropEventHandler.cs" />
+    <Compile Include="Windows\Feedback\FeedbackMessage.cs" />
+    <Compile Include="Windows\Feedback\FeedbackWindowTranslation.cs" />
+    <Compile Include="Windows\Feedback\FeedbackWindowView.xaml.cs">
+      <DependentUpon>FeedbackWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Feedback\FeedbackWindowViewModel.cs" />
     <Compile Include="Windows\ManagePrintJobExceptionHandler.cs" />
     <Compile Include="Windows\ManagePrintJobsViewModel.cs" />
     <Compile Include="Windows\ManagePrintJobsWindow.xaml.cs">
@@ -1016,7 +1061,6 @@
     <Compile Include="Workflow\IWorkflowStep.cs" />
     <Compile Include="Workflow\IWorkflowErrorViewModel.cs" />
     <Compile Include="Workflow\IWorkflowViewModel.cs" />
-    <Compile Include="Workflow\Steps\DropboxSharedLinkStep.cs" />
     <Compile Include="Workflow\Steps\ErrorStep.cs" />
     <Compile Include="Workflow\Steps\QuickActionStep.cs" />
     <Compile Include="Workflow\Steps\FtpPasswordStep.cs" />
@@ -1041,6 +1085,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FontSelectorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\FlowDocument.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Icons\FeedbackIcons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1191,6 +1243,18 @@
     <Page Include="UserControls\Accounts\AccountCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FeedbackButton\FeedbackButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Feedback\FeedbackSentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Accounts\AccountViews\Microsoft\MicrosoftAccountView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Overlay\OverwriteOrAppendOverlay.xaml">
       <SubType>Designer</SubType>
@@ -1388,6 +1452,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Profiles\SendActions\OneDrive\OneDriveActionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Profiles\SendActions\OpenFile\OpenViewerActionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1528,7 +1596,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\BusinessFeatureBadge.xaml">
+    <Page Include="UserControls\BusinessFeatureBadge\BusinessFeatureBadge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1672,6 +1740,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Feedback\FeedbackWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ManagePrintJobsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1700,6 +1771,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Helper\Feedback\AhaResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AhaResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Accounts\AccountViews\Dropbox\DropboxResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DropboxResources.Designer.cs</LastGenOutput>
@@ -1801,6 +1876,10 @@
       <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj">
+      <Project>{5472ec0c-e7b8-42e7-8717-d274ef0f452f}</Project>
+      <Name>GongSolutions.WPF.DragDrop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interactions\Interactions.csproj">
       <Project>{9fa4da88-81e9-4ff9-8521-70102762415b}</Project>
       <Name>Interactions</Name>
@@ -1815,6 +1894,7 @@
     <EmbeddedResource Include="Resources\passwordsmatcher.lst" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\feedback_icon.png" />
     <Resource Include="Resources\pdfcreator_icon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1833,6 +1913,17 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
       <ItemGroup>
+        <Reference Include="ICSharpCode.AvalonEdit">
+          <HintPath>..\..\..\..\packages\AvalonEdit\lib\net462\ICSharpCode.AvalonEdit.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
         <Reference Include="CommonServiceLocator">
           <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\net47\CommonServiceLocator.dll</HintPath>
           <Private>True</Private>
@@ -1846,17 +1937,6 @@
       <ItemGroup>
         <Reference Include="DataStorage">
           <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="GongSolutions.WPF.DragDrop">
-          <HintPath>..\..\..\..\packages\gong-wpf-dragdrop\lib\net47\GongSolutions.WPF.DragDrop.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -1911,6 +1991,28 @@
       <ItemGroup>
         <Reference Include="MahApps.Metro.SimpleChildWindow">
           <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="MdXaml">
+          <HintPath>..\..\..\..\packages\MdXaml\lib\net462\MdXaml.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
+      <ItemGroup>
+        <Reference Include="MdXaml.Plugins">
+          <HintPath>..\..\..\..\packages\MdXaml.Plugins\lib\net462\MdXaml.Plugins.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

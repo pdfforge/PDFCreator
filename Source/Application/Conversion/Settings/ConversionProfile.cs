@@ -89,6 +89,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public JpegSettings JpegSettings { get; set; } = new JpegSettings();
 		
 		/// <summary>
+		/// OneDrive settings for the current user
+		/// </summary>
+		public OneDriveSettings OneDriveSettings { get; set; } = new OneDriveSettings();
+		
+		/// <summary>
 		/// Opens the printed file in a viewer
 		/// </summary>
 		public OpenViewer OpenViewer { get; set; } = new OpenViewer();
@@ -251,6 +256,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.ReadValues(data, path + @"Ghostscript\");
 			HttpSettings.ReadValues(data, path + @"HttpSettings\");
 			JpegSettings.ReadValues(data, path + @"JpegSettings\");
+			OneDriveSettings.ReadValues(data, path + @"OneDriveSettings\");
 			OpenViewer.ReadValues(data, path + @"OpenViewer\");
 			PageNumbers.ReadValues(data, path + @"PageNumbers\");
 			PdfSettings.ReadValues(data, path + @"PdfSettings\");
@@ -306,6 +312,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.StoreValues(data, path + @"Ghostscript\");
 			HttpSettings.StoreValues(data, path + @"HttpSettings\");
 			JpegSettings.StoreValues(data, path + @"JpegSettings\");
+			OneDriveSettings.StoreValues(data, path + @"OneDriveSettings\");
 			OpenViewer.StoreValues(data, path + @"OpenViewer\");
 			PageNumbers.StoreValues(data, path + @"PageNumbers\");
 			PdfSettings.StoreValues(data, path + @"PdfSettings\");
@@ -358,6 +365,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Ghostscript = Ghostscript.Copy();
 			copy.HttpSettings = HttpSettings.Copy();
 			copy.JpegSettings = JpegSettings.Copy();
+			copy.OneDriveSettings = OneDriveSettings.Copy();
 			copy.OpenViewer = OpenViewer.Copy();
 			copy.PageNumbers = PageNumbers.Copy();
 			copy.PdfSettings = PdfSettings.Copy();
@@ -407,6 +415,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Ghostscript.ReplaceWith(source.Ghostscript);
 			HttpSettings.ReplaceWith(source.HttpSettings);
 			JpegSettings.ReplaceWith(source.JpegSettings);
+			OneDriveSettings.ReplaceWith(source.OneDriveSettings);
 			OpenViewer.ReplaceWith(source.OpenViewer);
 			PageNumbers.ReplaceWith(source.PageNumbers);
 			PdfSettings.ReplaceWith(source.PdfSettings);
@@ -497,6 +506,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(Ghostscript, v.Ghostscript)) return false;
 			if (!Object.Equals(HttpSettings, v.HttpSettings)) return false;
 			if (!Object.Equals(JpegSettings, v.JpegSettings)) return false;
+			if (!Object.Equals(OneDriveSettings, v.OneDriveSettings)) return false;
 			if (!Object.Equals(OpenViewer, v.OpenViewer)) return false;
 			if (!Object.Equals(PageNumbers, v.PageNumbers)) return false;
 			if (!Object.Equals(PdfSettings, v.PdfSettings)) return false;

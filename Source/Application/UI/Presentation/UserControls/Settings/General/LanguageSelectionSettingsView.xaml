@@ -6,6 +6,7 @@
              xmlns:general="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General"
              xmlns:controller="clr-namespace:pdfforge.PDFCreator.Core.Controller;assembly=PDFCreator.Controller"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:utilities="clr-namespace:pdfforge.PDFCreator.Utilities;assembly=PDFCreator.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance general:LanguageSelectionSettingsViewModel}">
@@ -60,7 +61,7 @@
                             <Hyperlink Command="{Binding VisitWebsiteCommand}"
                                        NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
                                        Style="{StaticResource DefaultHyperLink}">
-                                <TextBlock Text="{x:Static controller:Urls.PdfforgeTranslationUrl}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Static utilities:Urls.PdfforgeTranslationUrl}" TextTrimming="CharacterEllipsis" />
                             </Hyperlink>
                         </TextBlock>
                     </DockPanel>

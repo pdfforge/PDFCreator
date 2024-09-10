@@ -3,13 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:usageStatisticsSettings="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatisticsSettings"
       xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
       xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"      
-      d:DataContext="{d:DesignInstance usageStatisticsSettings:DesignTimeUsageStatisticsViewModel, d:IsDesignTimeCreatable=True}"
+      d:DataContext="{d:DesignInstance designTime:DesignTimeUsageStatisticsViewModel, d:IsDesignTimeCreatable=True}"
       help:HelpProvider.HelpTopic="{Binding HelpTopic}">
     <UserControl.Resources>
 
@@ -67,7 +67,6 @@
                 </DockPanel>
             </Border>
         </StackPanel>
-            
 
         <!--Show usage statistics expander-->
         <StackPanel Style="{StaticResource GpoToolTipStyle}">

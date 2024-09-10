@@ -19,6 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
 
         private readonly IInteractionRequest _interactionRequest;
         private readonly Func<string> _getSelectFileInteractionTitle;
+        private readonly Func<string> _getSelectAddFileButtonText;
         private readonly Func<ConversionProfile, List<string>> _profileToFileListFunction;
         private readonly List<string> _tokens;
         private readonly string _filter;
@@ -29,6 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
             IDispatcher dispatcher,
             IInteractionRequest interactionRequest,
             Func<string> getSelectFileInteractionTitle,
+            Func<string> getSelectAddFileButtonText,
             Func<ConversionProfile, List<string>> profileToFileListFunction,
             List<string> tokens,
             string filter)
@@ -37,6 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
             _interactionRequest = interactionRequest;
             _getSelectFileInteractionTitle = getSelectFileInteractionTitle;
             _profileToFileListFunction = profileToFileListFunction;
+            _getSelectAddFileButtonText = getSelectAddFileButtonText;
             _tokens = tokens;
             _filter = filter;
 
@@ -109,6 +112,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
             {
                 _fileList = new Helper.SynchronizedCollection<string>(_profileToFileListFunction(CurrentProfile));
                 return _fileList.ObservableCollection;
+            }
+        }
+
+        public string ButtonText
+        {
+            get
+            {
+                var text = Translation.AddFile;
+                if (_getSelectAddFileButtonText != null)
+                {
+                    text = _getSelectAddFileButtonText();
+                }
+                return text;
             }
         }
     }

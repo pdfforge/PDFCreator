@@ -8,6 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     {
         public DesignTimeSelectFilesUserControlViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCurrentSettingsProvider(), null, null,
             () => "",
+            () => "",
             profile => new List<string> { "test1", "test2", "test3" }, new List<string> { "testToken1", "testToken2", "testToken3" }, "")
         {
         }

@@ -37,5 +37,6 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
         public bool LoadSharedProfiles => _gpoSettings.LoadSharedProfiles;
         public bool AllowUserDefinedProfiles => _gpoSettings.AllowUserDefinedProfiles;
         public bool DisableLicenseExpirationReminder => _gpoSettings.DisableLicenseExpirationReminder;
+        public bool HideFeedbackForm => _gpoSettings.HideFeedbackForm;
     }
 }

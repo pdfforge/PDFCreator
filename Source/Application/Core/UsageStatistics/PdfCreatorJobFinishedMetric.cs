@@ -1,4 +1,5 @@
-﻿using pdfforge.UsageStatistics;
+﻿using System.Threading;
+using pdfforge.UsageStatistics;
 
 namespace pdfforge.PDFCreator.Core.UsageStatistics
 {
@@ -41,15 +42,20 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
         //Send actions
         public bool Mailclient { get; set; }
         public bool Smtp { get; set; }
+        public bool SmtpSendOnBehalfOf { get; set; }
+        public bool SmtpReplyTo { get; set; }
         public bool MailWebAccess { get; set; }
+        public bool MailWebAccessSendMailAutomatically { get; set; }
         public bool OpenViewer { get; set; }
         public bool OpenWithPdfArchitect { get; set; }
         public bool Script { get; set; }
         public bool Print { get; set; }
         public bool Ftp { get; set; }
         public bool Http { get; set; }
+        public bool OneDrive { get; set; }
+        public bool OneDriveShareLink { get; set; }
         public bool Dropbox { get; set; }
-        
+
         //GPOs
         public bool DisableApplicationSettings { get; set; }
         public bool DisableDebugTab { get; set; }
@@ -73,5 +79,8 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
         public bool IsShared { get; set; }
         public bool AllowUserDefinedProfiles { get; set; }
         public bool HasShareFilename { get; set; }
+
+        //Opened Windows
+        public bool OpenedMainShell { get; set; }
     }
 }

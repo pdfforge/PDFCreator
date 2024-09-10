@@ -91,6 +91,32 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             var collectionView = CollectionViewSource.GetDefaultView(DropboxAccounts);
             collectionView.MoveCurrentTo(latestAccount);
         }
+        public bool CreateShareLink
+        {
+            get => CurrentProfile != null && CurrentProfile.DropboxSettings.CreateShareLink;
+            set
+            {
+                if (value == CurrentProfile.DropboxSettings.CreateShareLink) return;
+
+                if (!value)
+                    ShowShareLink = false;
+
+                CurrentProfile.DropboxSettings.CreateShareLink = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool ShowShareLink
+        {
+            get => CurrentProfile != null && CurrentProfile.DropboxSettings.ShowShareLink;
+            set
+            {
+                if (value == CurrentProfile.DropboxSettings.ShowShareLink) return;
+
+                CurrentProfile.DropboxSettings.ShowShareLink = value;
+                RaisePropertyChanged();
+            }
+        }
 
         protected override void OnCurrentProfileChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {

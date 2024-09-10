@@ -39,6 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
             {
                 Account.AccountInfo = args.Account.Username;
                 Account.AccountId = args.Account.HomeAccountId.Identifier;
+                Account.PermissionScopes = string.Join(",", args.RequestScopes);
             }
 
             Account.MicrosoftJson = stringJson;

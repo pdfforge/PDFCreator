@@ -3,7 +3,7 @@
   <options>
     <namespace>pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings</namespace>
     <addRaisePropertyChanged>False</addRaisePropertyChanged>
-    <generatorVersion>1.5.0.0</generatorVersion>
+    <generatorVersion>1.6.0.0</generatorVersion>
   </options>
   <classes>
     <class name="GpoSettingsContainer" propertyName="GpoSettingsContainer" readonly="False" classtype="Class">
@@ -61,6 +61,9 @@
         <value name="DisableUsageStatistics" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
           <comment>Activate to completely disable the anonymous usage statistics.</comment>
         </value>
+        <value name="HideFeedbackForm" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+          <comment>Activate to hide feedback form</comment>
+        </value>
         <value name="HideLicenseTab" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
           <comment>Activate to hide license tab.</comment>
         </value>
@@ -74,7 +77,7 @@
           <comment>Activate to load profiles from ini file in "%ProgramData%\pdfforge\PDFCreator". This is activated by default and must be explicitly disabled.</comment>
         </value>
         <value name="SharedSettingsFilename" type="value" datatype="String" enumname="" defaultvalue="settings" islist="False">
-	        <comment>Set the filename of the shared settings file. The default is 'settings.ini'.</comment>
+          <comment>Set the filename of the shared settings file. The default is 'settings.ini'.</comment>
         </value>
       </class>
     </class>

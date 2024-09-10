@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeFeedbackButtonViewModel, IsDesignTimeCreatable=True}"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/icons.xaml" />
+                <ResourceDictionary Source="../../Styles/Buttons/SquaredIconButton.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/FeedbackIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/AboutViewIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <contextMenuButton:ContextMenuButton Visibility="{Binding HideFeedbackForm,  Converter={StaticResource CollapsedIfTrueConverter}}"
+                                         ToolTip="{Binding Translation.SendYourFeedback}"
+                                         Width="33"
+                                         Style="{StaticResource YellowSquaredIconButton}"
+                                         ShowArrow="False"
+                                         ContextMenuPosition="BottomLeft">
+            <contextMenuButton:ContextMenuButton.Content>
+                <!--The margin of the ContentControl is set to visually center the icon
+                Otherwise, it does not look centered-->
+                <ContentControl Margin="6 7 6 6"
+                                IsHitTestVisible="False"
+                                Content="{StaticResource FeedbackButtonIcon}"/>
+            </contextMenuButton:ContextMenuButton.Content>
+            <contextMenuButton:ContextMenuButton.ContextMenu>
+                <ContextMenu>
+                    <!-- Feedback Command -->
+                <MenuItem 
+                          Command="{Binding FeedbackCommand}" >
+                        <MenuItem.Header>
+                            <TextBlock Text="{Binding Translation.SendFeedback}" />
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <ContentControl Foreground="{StaticResource AboutViewIconColor}"
+                                            Content="{StaticResource FeedbackButtonIcon}"
+                                            Width="20"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <!-- Feedback PrioritySupportCommand -->
+                    <MenuItem Command="{Binding PrioritySupportCommand}" >
+                        <MenuItem.Header>
+                            <Grid>
+                                <TextBlock Text="{Binding Translation.PrioritySupport}" />
+                                <!-- Is IsHitTestVisible false to keep the mouse over / 
+                                     PrioritySupportCommand opens required link for PDFCreator Free -->
+                                <local:BusinessFeatureBadge Margin="0 14 0 0"
+                                                            Edition="AllLicensed"
+                                                            IsHitTestVisible="False" />
+                            </Grid>
+                        </MenuItem.Header>
+                        <MenuItem.Icon>
+                            <ContentControl Content="{StaticResource AboutPrioritySupportIcon}"
+                                    Margin="-2 8 0 0" Width="34"
+                                    VerticalAlignment="Center" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </contextMenuButton:ContextMenuButton.ContextMenu>
+    </contextMenuButton:ContextMenuButton>
+</UserControl>

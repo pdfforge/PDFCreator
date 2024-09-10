@@ -73,10 +73,10 @@
                             <Setter Property="Margin" Value="5" />
                         </Style>
                     </UniformGrid.Resources>
-                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToCopyContent}"
-                              Content="{Binding Translation.CopyContentPermissionCheckBox}" />
                     <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowPrinting}"
                               Content="{Binding Translation.PrintDocumentPermissionCheckbox}" />
+                    <CheckBox IsChecked="{Binding CurrentProfile.PdfSettings.Security.AllowToCopyContent}"
+                              Content="{Binding Translation.CopyContentPermissionCheckBox}" />
                     <CheckBox Margin="30 5 5 5"
                               IsEnabled="{Binding CurrentProfile.PdfSettings.Security.AllowPrinting}"
                               IsChecked="{Binding RestrictLowQualityPrintingEnabled}"

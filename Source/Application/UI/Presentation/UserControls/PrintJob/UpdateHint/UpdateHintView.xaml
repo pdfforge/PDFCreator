@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:update="clr-namespace:pdfforge.PDFCreator.Core.Services.Update;assembly=PDFCreator.Services"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:mdxaml="clr-namespace:MdXaml;assembly=MdXaml"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              MaxWidth="550"
              mc:Ignorable="d"
@@ -15,15 +16,19 @@
                 <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml" />
                 <ResourceDictionary Source="../../../Styles/Icons/pdfforgeLogos.xaml" />
                 <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/FlowDocument.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <mdxaml:Markdown x:Key="MdEngine" DocumentStyle="{StaticResource FlowDocumentReleaseNotes}" />
+            <mdxaml:TextToFlowDocumentConverter x:Key="MdConverter" Markdown="{StaticResource MdEngine}" />
             <Style TargetType="ItemsControl" x:Key="UpdateChangeItemsControl">
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
                         <DataTemplate DataType="update:ChangeLogItem">
-                            <TextBlock Margin="0 5 0 0"
-                                       TextWrapping="Wrap"
-                                       Text="{Binding Text, StringFormat={}- {0}}" />
+                            <FlowDocumentScrollViewer Document="{Binding TextWithListPrefix, Converter={StaticResource MdConverter}}"
+                                                          HorizontalScrollBarVisibility="Disabled"
+                                                          VerticalScrollBarVisibility="Disabled"
+                                                          IsEnabled="False" />
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>

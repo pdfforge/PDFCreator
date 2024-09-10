@@ -22,12 +22,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
 
         public ServerUsageStatisticsViewModel(IOsHelper osHelper, ICommandLocator commandLocator,
             ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings, IUsageMetricFactory usageMetricFactory,
-            ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider)
-            : base(osHelper, currentSettingsProvider, gpoSettings, translationUpdater, usageStatisticsProvider, commandLocator, applicationNameProvider)
+            ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider, ITranslationUpdater translationUpdater, 
+            ApplicationNameProvider applicationNameProvider, IUsageStatisticsJsonSerializer usageStatisticsJsonSerializer)
+            : base(osHelper, currentSettingsProvider, gpoSettings, translationUpdater, usageStatisticsProvider, 
+                commandLocator, applicationNameProvider, usageStatisticsJsonSerializer)
         {
             _usageMetricFactory = usageMetricFactory;
         }
-
 
         protected override string GetJobSampleData()
         {
@@ -36,24 +37,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
             metric.Duration = TimeSpan.Zero.Milliseconds;
             metric.OutputFormat = OutputFormat.Pdf.ToString();
             metric.Status = "Success";
-            metric.Attachment = true;
-            metric.Background = true;
-            metric.Dropbox = true;
-            metric.Cover = true;
             metric.NumberOfCopies = 1;
-            metric.Script = true;
-            metric.CustomScript = true;
             metric.TotalPages = 1;
-            metric.Print = true;
-            metric.Signature = true;
-            metric.Encryption = true;
-            metric.UserToken = true;
-            metric.Ftp = true;
-            metric.Http = true;
-            metric.Smtp = true;
-            metric.Stamp = true;
 
-            return ConvertToJson(metric);
+            return UsageStatisticsJsonSerializer.Serialize(metric);
         }
 
         protected override string GetServiceSampleData()
@@ -64,7 +51,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
             metric.TotalDocuments = 1;
             metric.OperatingSystem = OsHelper.GetWindowsVersion();
 
-            return ConvertToJson(metric);
+            return UsageStatisticsJsonSerializer.Serialize(metric);
         }
 
         public override HelpTopic HelpTopic => HelpTopic.ServerGeneralSettingsTab;

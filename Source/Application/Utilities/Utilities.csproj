@@ -67,8 +67,9 @@
     <Compile Include="IShellExecuteHelper.cs" />
     <Compile Include="ITempDirectoryHelper.cs" />
     <Compile Include="SplitDocumentFilePathHelper.cs" />
+    <Compile Include="Tokens\TokenNames.cs" />
+    <Compile Include="URLs.cs" />
     <Compile Include="WindowsApi\Kernel32Wrapper.cs" />
-    <Compile Include="OutputFormatHelper.cs" />
     <Compile Include="PathUtil.cs" />
     <Compile Include="DownloadSpeed.cs" />
     <Compile Include="FileAssoc.cs" />
@@ -129,10 +130,6 @@
     <ProjectReference Include="..\Core\ServiceLocator\ServiceLocator.csproj">
       <Project>{4b9272be-2f52-48cd-93d9-8880f509b304}</Project>
       <Name>ServiceLocator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Conversion\Settings\Settings.csproj">
-      <Project>{94936199-C9C7-4A5F-A58E-6123158E84F3}</Project>
-      <Name>Settings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,6 +13,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using System.Text;
+using System.Windows.Forms.VisualStyles;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.EmailWeb
 {
@@ -28,6 +29,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
 
         public DelegateCommand EditEmailTextCommand { get; set; }
         private EmailWebSettings EmailWebSettings => CurrentProfile?.EmailWebSettings;
+
+
+        public bool SendingOptionNothing
+        {
+            get => CurrentProfile?.EmailWebSettings != null && !CurrentProfile.EmailWebSettings.ShowDraft && !CurrentProfile.EmailWebSettings.SendWebMailAutomatically;
+            set
+            {
+                if (!value) return;
+                CurrentProfile.EmailWebSettings.ShowDraft = false;
+                CurrentProfile.EmailWebSettings.SendWebMailAutomatically = false;
+            }
+        }
 
         public MailWebActionViewModel(
             IActionLocator actionLocator,
@@ -52,6 +65,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
 
             AdditionalAttachmentsViewModel = selectFilesUserControlViewModelFactory.Builder()
                 .WithTitleGetter(() => Translation.MailAttachmentTitle)
+                .WithAddFileButtonTextGetter(() => Translation.AddAttachmentFile)
                 .WithFileListGetter(profile => profile.EmailWebSettings.AdditionalAttachments)
                 .WithPropertyChanged(StatusChanged)
                 .Build();
@@ -106,6 +120,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             {
                 EmailWebSettings.AccountId = _accountProvider.Settings.MicrosoftAccounts.First().AccountId;
             }
+            RaisePropertyChanged(nameof(SendingOptionNothing));
             base.MountView();
         }
 

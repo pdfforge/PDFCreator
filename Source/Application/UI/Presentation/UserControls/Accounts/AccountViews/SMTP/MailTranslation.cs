@@ -18,14 +18,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string RecipientsToText { get; set; } = "To:";
         public string RecipientsCcText { get; set; } = "CC:";
         public string RecipientsBccText { get; set; } = "BCC:";
-        public string AdditionalAttachmentsText { get; set; } = "Additional E-mail Attachments:";
-        public string EditMailText { get; set; } = "Edit E-mail text";
+        public string EditMailText { get; set; } = "Edit Subject And Content";
 
         public string MailAttachmentTitle { get; set; } = "Select E-mail Attachment File";
 
         public string Email { get; set; } = "E-mail";
         public virtual string Title { get; set; } = "E-mail (OWA)";
         public virtual string InfoText { get; set; } = "Creates a draft in Outlook Web Access (OWA) with the converted documents attached and opens the browser to edit and send it.";
+
+        public virtual string AutomaticSend { get; set; } = "Send e-mail directly";
+        public virtual string ShowDraft { get; set; } = "Open draft in browser";
+        public virtual string SaveDraft { get; set; } = "Create draft";
+        public virtual string AddAttachmentFile { get; set; } = "Add Attachment";
     }
 
     public class MailTranslation : AccountsTranslation, IActionTranslation
@@ -58,13 +62,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string SendEmailViaSmtp { get; set; } = "Send e-mail via SMTP";
 
         public string SelectSmtpAccountLabel { get; set; } = "Please select a SMTP account:";
-        public string EditMailText { get; set; } = "Edit e-mail text";
         public string SendTestMail { get; set; } = "Send test e-mail";
 
         //TestAssistant
         public string DocumentFile { get; set; } = "Document File";
 
-        public string AdditionalAttachmentFile { get; set; } = "Additional Attachment File";
+        public virtual string AddAttachmentFile { get; set; } = "Add Attachment";
+        public string EditMailText { get; set; } = "Edit Subject And Content";
 
         public string TestMailSent { get; set; } = "The test e-mail was successfully sent to the following recipients:";
         public string SetSmtpServerPassword { get; set; } = "Set SMTP Server Password";

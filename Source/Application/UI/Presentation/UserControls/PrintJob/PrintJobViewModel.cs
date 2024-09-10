@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Conversion.Settings.Helpers;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Macros;
@@ -32,7 +33,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using pdfforge.PDFCreator.Core.Controller;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
@@ -356,6 +356,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
                 _jobInfoManager.Merge(first, job);
                 _jobInfoQueue.Remove(job, false);
+                _jobInfoManager.DeleteInf(job);
             }
 
             _jobInfoManager.SaveToInfFile(first);

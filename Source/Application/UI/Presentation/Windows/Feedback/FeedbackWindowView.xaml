@@ -1,0 +1,357 @@
+<controls:MetroWindow x:Class="pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                      xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+                      xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                      mc:Ignorable="d"
+                      d:DataContext="{d:DesignInstance designTime:DesignTimeFeedbackWindowViewModel, IsDesignTimeCreatable=True}"
+                      IsMaxRestoreButtonEnabled="False"
+                      ShowMaxRestoreButton="False"
+                      IsMinButtonEnabled="False"
+                      ShowMinButton="False"
+                      AllowDrop="True"
+                      WindowTitleBrush="{DynamicResource FeedbackTitleBarYellowBrush}"
+					  BorderBrush="{DynamicResource FeedbackTitleBarYellowBrush}"
+                      BorderThickness="1"
+                      Title="{Binding Title}"
+                      Name="WindowName"
+                      SizeToContent="Height"
+					  MaxWidth="730"
+                      ContentRendered="FeedbackWindowView_OnContentRender">
+	<controls:MetroWindow.IconTemplate>
+		<DataTemplate>
+			<Grid Margin="3 4 0 1"
+                  Width="{TemplateBinding Width}"
+                  Height="{TemplateBinding Height}"
+                  Background="Transparent">
+				<Image Source="../../Resources/feedback_icon.png" />
+			</Grid>
+		</DataTemplate>
+	</controls:MetroWindow.IconTemplate>
+
+	<controls:MetroWindow.TitleTemplate>
+		<DataTemplate>
+			<TextBlock Margin="7 0 0 1"
+                       Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Width="{TemplateBinding Width}"
+                       Height="{TemplateBinding Height}"
+                       FontSize="13">
+			</TextBlock>
+		</DataTemplate>
+	</controls:MetroWindow.TitleTemplate>
+	<controls:MetroWindow.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../../Styles/MainResourceDict.xaml" />
+				<ResourceDictionary Source="../../Styles/DefaultsDictionary.xaml" />
+				<ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
+				<ResourceDictionary Source="../../Styles/Buttons/SquaredIconButton.xaml" />
+				<ResourceDictionary Source="../../Styles/Datagrid.xaml" />
+				<ResourceDictionary Source="../../Styles/ListBox.xaml" />
+				<ResourceDictionary Source="../../Styles/HoverBorder.xaml" />
+				<ResourceDictionary Source="../../Styles/TextBlock.xaml" />
+				<ResourceDictionary Source="../../Styles/Icons/FeedbackIcons.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			<converter:BoolToVisibilityConverter x:Key="HiddenIfFalseConverter" TrueValue="Visible" FalseValue="Hidden" />
+			<converter:BoolToVisibilityConverter x:Key="VisibleIfTrueConverter" TrueValue="Visible" FalseValue="Collapsed" />
+			<converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
+			<converter:BoolToVisibilityConverter x:Key="UploadedFileToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+			<converter:BoolNegationConverter x:Key="BoolNegationConverter"/>
+			<converter:StringIsNullOrWhiteSpaceConverter x:Key="VisibleIfStringIsEmptyConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+			<converter:CompareToThresholdToVisibilityConverter x:Key="CompareToThresholdConverter" Threshold="2" BiggerValue="Collapsed" SmallerOrEqualValue="Visible" />
+		</ResourceDictionary>
+	</controls:MetroWindow.Resources>
+
+	<Grid Margin="20 40 20 20" 
+          IsEnabled="{Binding IsSending, Converter={StaticResource BoolNegationConverter}}">
+		<Grid.RowDefinitions>
+			<!-- Feedback Type -->
+			<RowDefinition Height="Auto" />
+			<!-- Email -->
+			<RowDefinition Height="Auto" />
+			<!-- Feedback Text -->
+			<RowDefinition Height="Auto" />
+			<!-- Char Count -->
+			<RowDefinition Height="Auto" />
+			<!-- Uploaded Files -->
+			<RowDefinition Height="Auto" />
+			<!-- File size limit -->
+			<RowDefinition Height="Auto" />
+			<!-- Button -->
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<!-- Split the grid in half so the combobox is always half as wide as the window-->
+            <ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+		<Grid.Resources>
+			
+		</Grid.Resources>
+
+		<!-- Feedback Type -->
+		<DockPanel Grid.Row="0" Grid.Column="0"
+                    Margin="20 0 0 0"
+                    LastChildFill="True">
+			<Label DockPanel.Dock="Top" 
+                   Content="{Binding Translation.FeedbackType}" />
+			<Grid DockPanel.Dock="Bottom"
+                  Margin="0 10 0 0">
+                <ComboBox ItemsSource="{Binding FeedbackTypes, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Value"
+                          SelectedValuePath="Key"
+                          IsSelected="False"
+                          SelectedValue="{Binding SelectedType, Mode=TwoWay}"
+                          Style="{StaticResource FeedbackTypeComboboxStyle}"
+                          ToolTip="{Binding SelectedItem.Value, RelativeSource={RelativeSource Self}}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding FeedbackTypeChangedCommand}"></i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ComboBox.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="ComboBoxItem.Template" Value="{StaticResource FeedbackTypeComboboxItem}" />
+                            <Setter Property="ComboBoxItem.ToolTip" Value="{Binding Value}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </Grid>
+			
+		</DockPanel>
+
+		<!-- Email -->
+		<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Orientation="Vertical"
+                    Margin="20 20 73 0">
+			<Label Content="{Binding Translation.EmailLabel}" />
+			<Grid>
+                <TextBox Margin="0 10 0 0"
+                         Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="NoWrap"
+                         MaxLength="320"
+						 Name="EmailTextBox"/>
+                <!-- Placeholder if empty -->
+                <TextBlock Margin="6 10 0 0"
+						   VerticalAlignment="Center"
+                           Text="{Binding Translation.EmailPlaceholder}"
+						   Foreground="{StaticResource PlaceholderTextColorBrush}"
+						   IsHitTestVisible="False">
+   					<TextBlock.Style>
+						<Style>
+							<Style.Triggers>
+								<!-- Use converter to check for non empty string (visibility as intermediate value) -->
+                                <DataTrigger Binding="{Binding Email, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Collapsed">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Email, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Visible">
+									<Setter Property="TextBlock.Visibility" Value="Visible"></Setter>
+								</DataTrigger>
+                                <DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=EmailTextBox}" Value="True">
+									<Setter Property="TextBlock.Visibility" Value="Collapsed"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+            </Grid>
+			
+        </StackPanel>
+
+		<!-- Feedback Text and Files -->
+		<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                    Orientation="Vertical"
+                    Margin="20 30 0 0">
+			<Label Content="{Binding Translation.DescribeYourFeedback}" />
+			<DockPanel LastChildFill="True">
+				<!-- Attach File -->
+				<Button DockPanel.Dock="Right"
+                        Margin="20 10 20 0"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding AttachFileCommand}"
+						ToolTip="{Binding Translation.AttachFile}"
+                        Style="{StaticResource SquaredIconButton}">
+                    <!--The margin of the ContentControl is set to visually center the icon-->
+                    <!--Otherwise, it does not look centered-->
+                    <ContentControl Padding="3" Margin="10 9 8 9 " IsHitTestVisible="False"
+                                    Content="{StaticResource AttachFileIcon}"/>
+				</Button>
+
+				<!-- Feedback Text -->
+				<StackPanel DockPanel.Dock="Left">
+					<Grid>
+                        <TextBox Margin="0 10 0 0"
+                                 Padding="5 10 5 10"
+                                 MaxLength="800"
+                                 Text="{Binding FeedbackText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="140"
+                                 Style="{StaticResource MultilineBorderlessTextBox}" 
+								 Name="FeedbackTextBox"/>
+						<!-- Placeholder if empty -->
+                        <TextBlock Margin="6 17 0 0"
+                                   VerticalAlignment="Top"
+                                   Text="{Binding Translation.FeedbackPlaceholder}"
+                                   Foreground="{StaticResource PlaceholderTextColorBrush}"
+                                   IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <!-- Use converter to check for non empty string (visibility as intermediate value) -->
+                                        <DataTrigger Binding="{Binding FeedbackText, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Collapsed">
+                                            <Setter Property="TextBlock.Visibility" Value="Collapsed"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding FeedbackText, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Visible">
+                                            <Setter Property="TextBlock.Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=FeedbackTextBox}" Value="True">
+                                            <Setter Property="TextBlock.Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+					</Grid>
+					
+				</StackPanel>
+			</DockPanel>
+		</StackPanel>
+
+        <!-- Text counter on the bottom right of TextBox-->
+        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                   HorizontalAlignment="Right"
+                   Margin="0 5 73 0"
+                   FontWeight="Light"
+                   FontSize="10"
+                   Foreground="{StaticResource SeparatorBrush}"
+                   Text="{Binding CharacterCount, UpdateSourceTrigger=PropertyChanged}" />
+
+		<!-- Uploaded Files -->
+		<!-- Margin l19 to align with textbox -->
+		<!-- Margin r-3 to push out scrollbar -->
+		<Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+              HorizontalAlignment="Stretch"
+              Visibility="{Binding FileIsAttached, Converter={StaticResource UploadedFileToVisibilityConverter}}"
+              IsVisibleChanged="UploadedFiles_OnIsVisibleChanged">
+			<Border VerticalAlignment="Top"
+                    Margin="19 10 -3 0"
+                    BorderThickness="0"
+                    Height="95">
+				<Border.Resources>
+					<Style TargetType="ListBox" BasedOn="{StaticResource NoEffectsListBox}">
+						<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
+						<Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+					</Style>
+				</Border.Resources>
+				<ListBox ItemsSource="{Binding UploadedFiles}">
+					<ListBox.Resources>
+						<DataTemplate x:Key="UploadedFileContentControlTemplate" DataType="{x:Type ContentControl}">
+							<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+								<Label VerticalAlignment="Center"
+                                       Padding="10 10"
+                                       MinWidth="50"
+                                       Content="{Binding DataContext.Translation.File, ElementName=WindowName}" />
+								<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Margin="10 0 0 0"
+                                       Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.Resources>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<DockPanel LastChildFill="True"
+									   VerticalAlignment="Center"
+									   Margin="0 10 0 0">
+								<!--Remove attached file-->
+								<Button DockPanel.Dock="Right"
+										Margin="20 0 8 0"
+										Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=controls:MetroWindow}}"
+										CommandParameter="{Binding}"
+										Style="{StaticResource SquaredIconButton}">
+									<iconPacks:PackIconMaterialDesign Kind="Delete" />
+								</Button>
+
+								<!-- Filepath -->
+								<Border HorizontalAlignment="Stretch">
+									<Border.Style>
+										<Style>
+											<Setter Property="Border.Margin" Value="0" />
+											<Setter Property="Border.Padding" Value="0" />
+											<Setter Property="Border.Background" Value="{StaticResource TextBoxBackgroundBrush}" />
+											<Setter Property="Border.BorderThickness" Value="0" />
+											<Setter Property="Border.CornerRadius" Value="2" />
+											<Style.Triggers>
+												<Trigger Property="Border.IsMouseOver" Value="True">
+													<Setter Property="Border.Background" Value="{StaticResource HoverBorderMouseOverBrush}" />
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</Border.Style>
+									<ContentControl Content="{Binding}"
+													ContentTemplate="{StaticResource UploadedFileContentControlTemplate}">
+									</ContentControl>
+								</Border>
+							</DockPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Border>
+			<!-- Border to cover scrollbar when content is not scrollable-->
+			<Border HorizontalAlignment="Right"
+                    Width="15"
+                    Background="White"
+                    Visibility="{Binding NumUploadedFiles, Converter={StaticResource CompareToThresholdConverter}}" />
+		</Grid>
+
+		<!--File size limit -->
+		<TextBlock Grid.Row="5" Grid.Column="1" DockPanel.Dock="Bottom"
+                   HorizontalAlignment="Right"
+                   Margin="0 0 73 0"
+                   Visibility="{Binding FileIsAttached, Converter={StaticResource HiddenIfFalseConverter}}"
+                   Text="{Binding MbUsed, UpdateSourceTrigger=PropertyChanged}"
+                   FontWeight="Light"
+                   FontSize="10">
+			<TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource DefaultTextBlock}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FileSizeLimitExceeded, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+		<!-- Send Button -->
+		<Border Grid.Row="6" Grid.Column="1"
+                Margin="0 10 20 10"
+                MinHeight="43"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+            <Button Command="{Binding SendFeedbackCommand}"
+                    Height="33"
+                    Style="{StaticResource AccentButton}"
+                    ToolTip="{Binding Translation.SendUsFeedback}">
+				<Grid IsHitTestVisible="False">
+					<TextBlock Visibility="{Binding IsSending, 
+							   Converter={StaticResource CollapsedIfTrueConverter}, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding Translation.Send}"
+                               Foreground="White"/>
+                    <controls:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSending, Converter={StaticResource VisibleIfTrueConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                           Foreground="White"
+                                           Width="25"
+                                           Height="25"/>
+				</Grid>
+			</Button>
+        </Border>
+	</Grid>
+</controls:MetroWindow>

@@ -82,6 +82,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Help
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/e-mail")] OpenEmailClient,
 
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/outlook-web-access")] OpenEmailWeb,
+
+        [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/onedrive")] OpenOneDrive,
+
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/smtp")] SendEmailOverSmtp,
 
         [HelpTopic("pdfcreator/pdfcreator-settings/profile-settings/actions/send/run-program")] RunScript,

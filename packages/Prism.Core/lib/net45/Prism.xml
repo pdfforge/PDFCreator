@@ -179,8 +179,8 @@
             <summary>
             Raises <see cref="E:Prism.Commands.DelegateCommandBase.CanExecuteChanged"/> so every command invoker
             can requery to check if the command can execute.
-            </summary>
             <remarks>Note that this will trigger the execution of <see cref="E:Prism.Commands.DelegateCommandBase.CanExecuteChanged"/> once for each invoker.</remarks>
+            </summary>
         </member>
         <member name="M:Prism.Commands.DelegateCommandBase.Execute(System.Object)">
             <summary>
@@ -257,7 +257,7 @@
             </summary>
             <param name="executeMethod">Delegate to execute when Execute is called on the command. This can be null to just hook up a CanExecute delegate.</param>
             <param name="canExecuteMethod">Delegate to execute when CanExecute is called on the command. This can be null.</param>
-            <exception cref="T:System.ArgumentNullException">When both <paramref name="executeMethod"/> and <paramref name="canExecuteMethod"/> are <see langword="null" />.</exception>
+            <exception cref="T:System.ArgumentNullException">When both <paramref name="executeMethod"/> and <paramref name="canExecuteMethod"/> ar <see langword="null" />.</exception>
         </member>
         <member name="M:Prism.Commands.DelegateCommand`1.Execute(`0)">
             <summary>
@@ -554,14 +554,6 @@
             </summary>
             <value><see langword="null"/> if the object referenced by the current <see cref="T:Prism.Events.DelegateReference"/> object has been garbage collected; otherwise, a reference to the <see cref="T:System.Delegate"/> referenced by the current <see cref="T:Prism.Events.DelegateReference"/> object.</value>
         </member>
-        <member name="M:Prism.Events.DelegateReference.TargetEquals(System.Delegate)">
-            <summary>
-            Checks if the <see cref="T:System.Delegate" /> (the target) referenced by the current <see cref="T:Prism.Events.DelegateReference"/> object are equal to another <see cref="T:System.Delegate" />.
-            This is equivalent with comparing <see cref="P:Prism.Events.DelegateReference.Target"/> with <paramref name="delegate"/>, only more efficient.
-            </summary>
-            <param name="delegate">The other delegate to compare with.</param>
-            <returns>True if the target referenced by the current object are equal to <paramref name="delegate"/>.</returns>
-        </member>
         <member name="T:Prism.Events.DispatcherEventSubscription">
             <summary>
              Extends <see cref="T:Prism.Events.EventSubscription"/> to invoke the <see cref="P:Prism.Events.EventSubscription.Action"/> delegate
@@ -667,11 +659,6 @@
             </summary>
             <param name="token">The <see cref="T:Prism.Events.SubscriptionToken"/> returned by <see cref="T:Prism.Events.EventBase"/> while subscribing to the event.</param>
             <returns><see langword="true"/> if there is a <see cref="T:Prism.Events.SubscriptionToken"/> that matches; otherwise <see langword="false"/>.</returns>
-        </member>
-        <member name="M:Prism.Events.EventBase.Prune">
-            <summary>
-            Forces the PubSubEvent to remove any subscriptions that no longer have an execution strategy.
-            </summary>
         </member>
         <member name="T:Prism.Events.EventSubscription">
             <summary>
@@ -1072,10 +1059,24 @@
             The instance of the wrapped container
             </summary>
         </member>
+        <member name="P:Prism.Ioc.IContainerExtension.SupportsModules">
+            <summary>
+            Determines if the container can be used with modules.
+            </summary>
+            <remarks>Only containers that are mutable can support modules.</remarks>
+        </member>
         <member name="M:Prism.Ioc.IContainerExtension.FinalizeExtension">
             <summary>
             Used to perform any final steps for configuring the extension that may be required by the container.
             </summary>
+        </member>
+        <member name="M:Prism.Ioc.IContainerExtension.ResolveViewModelForView(System.Object,System.Type)">
+            <summary>
+            Used as the ViewModel resolver for ViewModelLocationProvider.SetDefaultViewModelFactory
+            </summary>
+            <param name="view">The view instance</param>
+            <param name="viewModelType">The ViewModel type to create</param>
+            <returns></returns>
         </member>
         <member name="T:Prism.Logging.Category">
             <summary>
@@ -1269,7 +1270,7 @@
         </member>
         <member name="M:Prism.Modularity.IModule.OnInitialized(Prism.Ioc.IContainerProvider)">
             <summary>
-            Notifies the module that it has been initialized.
+            Notifies the module that it has be initialized.
             </summary>
         </member>
         <member name="T:Prism.Modularity.IModuleCatalog">

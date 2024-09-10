@@ -66,4 +66,40 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+
+    <!-- A nearly identical (excluding the colors) style to the SquaredIconButton was introduced for the feedback button -->
+    <!-- TODO: Refactor this duplicate style with a DependencyProperty for the colors that are needed for the mouse over events -->
+    <Style x:Key="YellowSquaredIconButton" BasedOn="{StaticResource SquaredIconButton}" TargetType="ButtonBase">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{StaticResource YellowSquaredIconButtonBackgroundBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Background="{TemplateBinding Background}"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}">
+
+                        <ContentPresenter  IsHitTestVisible="false"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="{TemplateBinding Padding}"
+                                           Content="{TemplateBinding Content}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource YellowSquaredIconButtonMouseOverBackgroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{StaticResource SquaredIconButtonDisabledBackgroundBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

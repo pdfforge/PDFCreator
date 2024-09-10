@@ -19,24 +19,27 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
             var encryption = CalculatePermissionValue(profile);
             _logger.Debug("Calculated Permission Value: " + encryption);
 
-            if (string.IsNullOrEmpty(jobPasswords.PdfOwnerPassword))
+            if (string.IsNullOrEmpty(jobPasswords.PdfOwnerPassword) && string.IsNullOrEmpty(profile.PdfSettings.Security.OwnerPassword))
             {
                 _logger.Error("Launched encryption without owner password.");
                 throw new ProcessingException("Launched encryption without owner password.", ErrorCode.Encryption_NoOwnerPassword);
             }
 
-            var ownerPassword = Encoding.Default.GetBytes(jobPasswords.PdfOwnerPassword);
+            var nonEncodedOwnerPassword = string.IsNullOrEmpty(jobPasswords.PdfOwnerPassword) ? profile.PdfSettings.Security.OwnerPassword : jobPasswords.PdfOwnerPassword;
+            var ownerPassword = Encoding.Default.GetBytes(nonEncodedOwnerPassword);
 
             byte[] userPassword = null;
 
             if (profile.PdfSettings.Security.RequireUserPassword)
             {
-                if (string.IsNullOrEmpty(jobPasswords.PdfUserPassword))
+                if (string.IsNullOrEmpty(jobPasswords.PdfUserPassword) && string.IsNullOrEmpty(profile.PdfSettings.Security.UserPassword))
                 {
                     _logger.Error("Launched encryption without user password.");
                     throw new ProcessingException("Launched encryption without user password.", ErrorCode.Encryption_NoUserPassword);
                 }
-                userPassword = Encoding.Default.GetBytes(jobPasswords.PdfUserPassword);
+                
+                var nonEncodedUserPassword = string.IsNullOrEmpty(jobPasswords.PdfUserPassword) ? profile.PdfSettings.Security.UserPassword : jobPasswords.PdfUserPassword;
+                userPassword = Encoding.Default.GetBytes(nonEncodedUserPassword);
             }
 
             switch (profile.PdfSettings.Security.EncryptionLevel)

@@ -60,8 +60,13 @@
                       Content="{Binding Translation.EnsureUniqueDropboxFilenamesText}" />
 
             <CheckBox Margin="0 20 0 0"
-                      IsChecked="{Binding CurrentProfile.DropboxSettings.CreateShareLink}"
+                      IsChecked="{Binding CreateShareLink}"
                       Content="{Binding Translation.CreateShareLinkText}" />
+
+            <CheckBox Margin="30 10 0 0"
+                      IsEnabled="{Binding CreateShareLink}"
+                      IsChecked="{Binding ShowShareLink}"
+                      Content="{Binding Translation.ShowShareLink}" />
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

@@ -1,13 +1,11 @@
-﻿using System.CodeDom;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General;
 using pdfforge.PDFCreator.Utilities;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Core.UsageStatistics;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.UserGuide;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime;
@@ -21,6 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
     {
         protected readonly ICurrentSettings<Conversion.Settings.UsageStatistics> UsageStatisticsProvider;
         private readonly ApplicationNameProvider _applicationNameProvider;
+        protected readonly IUsageStatisticsJsonSerializer UsageStatisticsJsonSerializer;
         protected readonly IOsHelper OsHelper;
 
         protected string ApplicationNameWithEdition => _applicationNameProvider?.ApplicationNameWithEdition;
@@ -54,12 +53,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
 
         protected UsageStatisticsViewModelBase(IOsHelper osHelper,
             ICurrentSettingsProvider currentSettingsProvider, IGpoSettings gpoSettings,
-            ITranslationUpdater translationUpdater, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider, ICommandLocator commandLocator, ApplicationNameProvider applicationNameProvider)
+            ITranslationUpdater translationUpdater, ICurrentSettings<Conversion.Settings.UsageStatistics> usageStatisticsProvider, 
+            ICommandLocator commandLocator, ApplicationNameProvider applicationNameProvider,
+            IUsageStatisticsJsonSerializer usageStatisticsJsonSerializer)
             : base(translationUpdater, currentSettingsProvider, gpoSettings)
         {
             OsHelper = osHelper;
             UsageStatisticsProvider = usageStatisticsProvider;
             _applicationNameProvider = applicationNameProvider;
+            UsageStatisticsJsonSerializer = usageStatisticsJsonSerializer;
 
             VisitWebsiteCommand = commandLocator.GetInitializedCommand<UrlOpenCommand, string>(Urls.PrivacyPolicyUrl);
             ShowUserGuideCommand = commandLocator.GetCommand<ShowUserGuideCommand>();
@@ -73,42 +75,5 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.UsageStatist
 
         protected abstract string GetJobSampleData();
         protected abstract string GetServiceSampleData();
-
-        protected string ConvertToJson(IUsageMetric metric)
-        {
-            DefaultContractResolver contractResolver = new DefaultContractResolver()
-            {
-                NamingStrategy = new SnakeCaseNamingStrategy()
-            };
-
-            var settings = new JsonSerializerSettings()
-            {
-                ContractResolver = contractResolver,
-                Formatting = Formatting.Indented
-            };
-
-            return JsonConvert.SerializeObject(metric, settings);
-        }
-
     }
-
-    public class DesignTimeUsageStatisticsViewModel : UsageStatisticsViewModelBase
-    {
-        public DesignTimeUsageStatisticsViewModel() : base(new OsHelper(),
-            new DesignTimeCurrentSettingsProvider(), new GpoSettingsDefaults(), new DesignTimeTranslationUpdater(),
-            new DesignTimeCurrentSettings<Conversion.Settings.UsageStatistics>(), new DesignTimeCommandLocator(),
-            new DesignTimeApplicationNameProvider())
-        {
-
-        }
-
-        public override HelpTopic HelpTopic => HelpTopic.General;
-        public override bool IsDisabledByGpo => false;
-        public override bool ShowServiceSample => false;
-
-        protected override string GetJobSampleData() => "{ }";
-
-        protected override string GetServiceSampleData() => "{ }";
-    }
-
 }

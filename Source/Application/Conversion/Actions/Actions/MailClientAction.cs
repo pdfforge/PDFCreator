@@ -148,6 +148,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     result.Add(ErrorCode.MailClient_Subject_RequiresUserToken);
                 if (TokenIdentifier.ContainsUserToken(profile.EmailClientSettings.Content))
                     result.Add(ErrorCode.MailClient_Content_RequiresUserToken);
+                
                 foreach (var path in profile.EmailClientSettings.AdditionalAttachments)
                 {
                     if (TokenIdentifier.ContainsUserToken(path))

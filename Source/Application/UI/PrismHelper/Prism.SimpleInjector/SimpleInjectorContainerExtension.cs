@@ -33,10 +33,10 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
             throw new NotImplementedException();
         }
 
-        public IContainerRegistry RegisterInstance(Type type, object instance)
+        public void RegisterInstance(Type type, object instance)
         {
             Instance.RegisterSingleton(type, () => instance);
-            return this;
+
         }
 
         public IContainerRegistry RegisterInstance(Type type, object instance, string name)
@@ -44,10 +44,10 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
             throw new NotImplementedException();
         }
 
-        public IContainerRegistry RegisterSingleton(Type @from, Type to)
+        public void RegisterSingleton(Type @from, Type to)
         {
             Instance.RegisterSingleton(from, to);
-            return this;
+
         }
 
         public IContainerRegistry RegisterSingleton(Type @from, Type to, string name)
@@ -55,13 +55,12 @@ namespace pdfforge.PDFCreator.UI.PrismHelper.Prism.SimpleInjector
             throw new NotImplementedException();
         }
 
-        public IContainerRegistry Register(Type @from, Type to)
+        public void Register(Type @from, Type to)
         {
             Instance.Register(from, to);
-            return this;
         }
 
-        public IContainerRegistry Register(Type @from, Type to, string name)
+        public void Register(Type @from, Type to, string name)
         {
             throw new NotImplementedException("Simple Inject cannot register by name");
         }

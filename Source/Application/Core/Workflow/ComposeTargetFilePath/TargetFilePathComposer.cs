@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using pdfforge.PDFCreator.Conversion.Settings.Helpers;
 using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath

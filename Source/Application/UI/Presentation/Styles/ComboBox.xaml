@@ -150,6 +150,112 @@
         </Setter>
     </Style>
 
+    <ControlTemplate x:Key="FeedbackTypeComboboxItem" TargetType="ComboBoxItem">
+        <!-- r=8 is hand measured to add enough width for the total combobox width (biggest drop down item + DropDownArrow) -->
+        <!-- Width is set to make the dropdown not outgrow the combobox -->
+        <Border Padding="5 5 8 5"
+                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}"
+                Name="PART_Background_ComboboxItem"
+                Background="Transparent">
+            <ContentPresenter Margin="{StaticResource ComboBoxArrowMargin}"
+                              Name="ContentPresenter">
+                <ContentPresenter.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    </Style>
+                </ContentPresenter.Resources>
+            </ContentPresenter>
+        </Border>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_Background_ComboboxItem" Property="Background" Value="{StaticResource ComboBoxMouseOverBrush}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="PART_Background_ComboboxItem" Property="Background" Value="{StaticResource ComboBoxSelectedBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="FeedbackTypeComboboxItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="Template" Value="{StaticResource FeedbackTypeComboboxItem}"></Setter>
+    </Style>
+
+    <!-- A nearly identical (excluding the ToolTip) style to the BorderlessCombobox was introduced for the feedback type dropdown -->
+    <!-- TODO: Refactor this duplicate style with a DependencyProperty for the Tooltip -->
+    <Style x:Key="FeedbackTypeComboboxStyle" TargetType="ComboBox" BasedOn="{StaticResource BorderlessCombobox}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource FeedbackTypeComboboxItemStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Border CornerRadius="2"
+                    Height="{TemplateBinding Height}"
+                    Background="{TemplateBinding Background}">
+                        <Grid HorizontalAlignment="Stretch">
+                            <ToggleButton BorderThickness="0"
+                                  Background="Transparent"
+                                  ClickMode="Press"
+                                  Template="{StaticResource EmptyToggleButton}"
+                                  Focusable="False"
+                                  IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                            <!-- Add invisible ItemsPresenter in Grid to get set width of biggest item -->
+                            <ItemsPresenter Opacity="0" Margin="0 0 0 0" IsHitTestVisible="False" />
+
+                            <DockPanel LastChildFill="True" Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch">
+                                <ToggleButton DockPanel.Dock="Right"
+                                      IsHitTestVisible="False"
+                                      Focusable="False"
+                                      Template="{StaticResource pdfforgeComboBoxArrow}"
+                                      IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+                                <ContentPresenter DockPanel.Dock="Left"
+                                          Margin="0 0 3 0"
+                                          x:Name="ContentSite" IsHitTestVisible="False"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding ComboBox.SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </DockPanel>
+
+                            <Popup Name="Popup" Placement="Bottom" Focusable="False" AllowsTransparency="True"
+                           IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
+                           PopupAnimation="Slide">
+                                <ScrollViewer Background="{StaticResource ComboBoxPopUpBackgroundBrush}"
+                                      SnapsToDevicePixels="True"
+                                      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
+                                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"
+                                            HorizontalAlignment="Left" />
+                                </ScrollViewer>
+                            </Popup>
+
+                            <!-- Disabled Layer -->
+                            <Border Background="White" Opacity="0.4" CornerRadius="2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DisabledEmptyComboboxStyle" TargetType="ComboBox" BasedOn="{StaticResource BorderlessCombobox}">
         <Setter Property="IsEnabled" Value="True" />
         <Style.Triggers>

@@ -18,6 +18,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
+using NaturalSort.Extension;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
@@ -47,10 +48,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _jobInfoQueue.OnNewJobInfo += OnNewJobInfo;
 
             ConvertFileCommand = commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
-            ListSelectionChangedCommand = new DelegateCommand(ListSelectionChanged);
-            DeleteJobCommand = new DelegateCommand(ExecuteDeleteJob);
+            DeleteJobCommand = new DelegateCommand(DeleteJobExecute);
             MergeJobsCommand = new DelegateCommand(ExecuteMergeJobs, CanExecuteMergeJobs);
             MergeAllJobsCommand = new DelegateCommand(ExecuteMergeAllJobs, HasMoreThanOneJob);
+            SelectUnSelectAllJobsCommand = new DelegateCommand(SelectUnSelectAllJobsExecute);
             WindowClosedCommand = new DelegateCommand(OnWindowClosed);
             WindowActivatedCommand = new DelegateCommand(OnWindowActivated);
             DragEnterCommand = new DelegateCommand<DragEventArgs>(OnDragEnter);
@@ -62,8 +63,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
             _synchronizedJobs = new Helper.SynchronizedCollection<JobInfo>(_jobInfoQueue.JobInfos);
             _jobInfos = _synchronizedJobs.ObservableCollection;
+            DisplayedJobInfo = _jobInfos.FirstOrDefault();
             JobInfos = new CollectionView(_jobInfos);
-            JobListSelectionChanged = new DelegateCommand(ListItemChange);
+
+            JobListSelectionChangedCommand = new DelegateCommand(JobListSelectionChangedExecute);
         }
 
         private void SetupSortMenuItems()
@@ -72,8 +75,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             {
                 new MenuItem { Header = Translation.IdAscending, CommandParameter = MergeSortingEnum.IdAscending },
                 new MenuItem { Header = Translation.IdDescending, CommandParameter = MergeSortingEnum.IdDescending },
-                new MenuItem { Header = Translation.AlphabeticalAscending, CommandParameter = MergeSortingEnum.AlphabeticalAscending },
-                new MenuItem { Header = Translation.AlphabeticalDescending, CommandParameter = MergeSortingEnum.AlphabeticalDescending },
+                new MenuItem { Header = Translation.NameAscending, CommandParameter = MergeSortingEnum.NameAscending },
+                new MenuItem { Header = Translation.NameDescending, CommandParameter = MergeSortingEnum.NameDescending },
                 new MenuItem { Header = Translation.DateAscending, CommandParameter = MergeSortingEnum.DateAscending },
                 new MenuItem { Header = Translation.DateDescending, CommandParameter = MergeSortingEnum.DateDescending }
             };
@@ -93,12 +96,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
                     list = list.OrderByDescending(info => info.SourceFiles[0].JobCounter).ToList();
                     break;
 
-                case MergeSortingEnum.AlphabeticalAscending:
-                    list = list.OrderBy(info => info.Metadata.PrintJobName).ToList();
+                case MergeSortingEnum.NameAscending:
+                    list = list.OrderBy(info => info.Metadata.PrintJobName, StringComparison.OrdinalIgnoreCase.WithNaturalSort()).ToList();
                     break;
 
-                case MergeSortingEnum.AlphabeticalDescending:
-                    list = list.OrderByDescending(info => info.Metadata.PrintJobName).ToList();
+                case MergeSortingEnum.NameDescending:
+                    list = list.OrderByDescending(info => info.Metadata.PrintJobName, StringComparison.OrdinalIgnoreCase.WithNaturalSort()).ToList();
                     break;
 
                 case MergeSortingEnum.DateAscending:
@@ -120,24 +123,36 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             JobInfos.Refresh();
         }
 
-        private void ListItemChange(object obj)
+        private void JobListSelectionChangedExecute(object obj)
         {
             MergeJobsCommand.RaiseCanExecuteChanged();
             MergeAllJobsCommand.RaiseCanExecuteChanged();
-            RaisePropertyChanged(nameof(SelectedPrintJob));
+            
+            if (!_suppressUncheckOfSelectUnselectAllOnSelectedChanged)
+            {
+                SelectUnselectAll = false;
+                RaisePropertyChanged(nameof(SelectUnselectAll));
+            }
         }
 
-        public JobInfo SelectedPrintJob
+        private JobInfo _displayedJobInfo;
+
+        public JobInfo DisplayedJobInfo
         {
-            get { return (JobInfo)JobInfos.CurrentItem; }
+            set
+            {
+                _displayedJobInfo = value;
+                RaisePropertyChanged(nameof(DisplayedJobInfo));
+            }
+            get { return _displayedJobInfo; }
         }
 
         public CollectionView JobInfos { get; private set; }
         public ICommand ConvertFileCommand { get; set; }
-        public DelegateCommand ListSelectionChangedCommand { get; }
         public DelegateCommand DeleteJobCommand { get; }
         public DelegateCommand MergeJobsCommand { get; }
         public DelegateCommand MergeAllJobsCommand { get; }
+        public DelegateCommand SelectUnSelectAllJobsCommand { get; }
         public DelegateCommand WindowClosedCommand { get; }
         public DelegateCommand WindowActivatedCommand { get; }
 
@@ -148,12 +163,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public DelegateCommand<DragEventArgs> DropCommand { get; }
         public DelegateCommand<KeyEventArgs> KeyDownCommand { get; }
 
-        public DelegateCommand JobListSelectionChanged { get; set; }
-
-        private void ListSelectionChanged(object obj)
-        {
-            MergeJobsCommand.RaiseCanExecuteChanged();
-        }
+        public DelegateCommand JobListSelectionChangedCommand { get; set; }
 
         private void OnKeyDown(KeyEventArgs e)
         {
@@ -212,21 +222,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             MergeJobsCommand.RaiseCanExecuteChanged();
             MergeAllJobsCommand.RaiseCanExecuteChanged();
             SortCommand.RaiseCanExecuteChanged();
+
+            SelectUnselectAll = false;
+            RaisePropertyChanged(nameof(SelectUnselectAll));
         }
 
-        private void ExecuteDeleteJob(object o)
+        private void DeleteJobExecute(object o)
         {
-            var jobInfo = o as JobInfo;
-            var position = JobInfos.CurrentPosition;
+            //var position = JobInfos.CurrentPosition;
 
-            if (jobInfo == null)
+            if (o is not JobInfo jobInfo)
                 return;
 
             _jobInfos.Remove(jobInfo);
             _jobInfoQueue.Remove(jobInfo, true);
 
-            if (_jobInfos.Count > 0)
-                JobInfos.MoveCurrentToPosition(Math.Max(0, position - 1));
+            //if (_jobInfos.Count > 0)
+            //    JobInfos.MoveCurrentToPosition(Math.Max(0, position - 1));
 
             MergeJobsCommand.RaiseCanExecuteChanged();
             MergeAllJobsCommand.RaiseCanExecuteChanged();
@@ -254,6 +266,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
                 _jobInfoManager.Merge(first, job);
                 _jobInfos.Remove(job);
                 _jobInfoQueue.Remove(job, false);
+                _jobInfoManager.DeleteInf(job);
             }
 
             _jobInfoManager.SaveToInfFile(first);
@@ -265,6 +278,29 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             JobInfos.Refresh();
         }
 
+
+        public bool SelectUnselectAll { get; set; } = false;
+
+        private bool _suppressUncheckOfSelectUnselectAllOnSelectedChanged = false;
+
+        private void SelectUnSelectAllJobsExecute(object o)
+        {
+            if (o is not ListBox listBox) 
+                return;
+
+            _suppressUncheckOfSelectUnselectAllOnSelectedChanged = true;
+            if (SelectUnselectAll)
+                listBox.SelectAll();
+            else
+                listBox.UnselectAll();
+
+            ResetLastSelectedItem?.Invoke();
+
+            _suppressUncheckOfSelectUnselectAllOnSelectedChanged = false;
+        }
+
+        public Action ResetLastSelectedItem { get; set; }
+
         private bool CanExecuteMergeJobs(object o)
         {
             var jobs = o as IEnumerable<object>;
@@ -274,7 +310,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private void ExecuteMergeAllJobs(object o)
         {
             ExecuteMergeJobs(_jobInfos);
-            RaisePropertyChanged(nameof(SelectedPrintJob));
+            SetDisplayedJobInfoToFirst();
         }
 
         private bool HasMoreThanOneJob(object o)
@@ -282,6 +318,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             return _jobInfos.Count > 1;
         }
 
+        public void SetDisplayedJobInfoToFirst()
+        {
+            DisplayedJobInfo = _jobInfos.FirstOrDefault();
+        }
+        
         public override string Title => _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
     }
 
@@ -289,8 +330,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
     {
         IdAscending,
         IdDescending,
-        AlphabeticalAscending,
-        AlphabeticalDescending,
+        NameAscending,
+        NameDescending,
         DateAscending,
         DateDescending
     }

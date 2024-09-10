@@ -270,6 +270,8 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement
             profile.OpenViewer.OpenWithPdfArchitect = true;
             profile.PdfSettings.Security.EncryptionLevel = EncryptionLevel;
             profile.EmailClientSettings.AddSignature = WithEmailSignature;
+            profile.EmailSmtpSettings.AddSignature = WithEmailSignature;
+            profile.EmailWebSettings.AddSignature = WithEmailSignature;
         }
 
         public override ConversionProfile CreateDefaultProfile()

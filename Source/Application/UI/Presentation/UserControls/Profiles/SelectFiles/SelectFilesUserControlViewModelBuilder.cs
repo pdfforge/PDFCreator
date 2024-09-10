@@ -12,6 +12,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
     {
         ISelectFilesUserControlViewModelBuilder WithTitleGetter(Func<string> getSelectFileInteractionTitle);
 
+        ISelectFilesUserControlViewModelBuilder WithAddFileButtonTextGetter(Func<string> getAddFileButtonText);
+
         ISelectFilesUserControlViewModelBuilder WithFileListGetter(Func<ConversionProfile, List<string>> getFileList);
 
         ISelectFilesUserControlViewModelBuilder WithFileFilter(string filter);
@@ -31,6 +33,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
         private readonly IInteractionRequest _interactionRequest;
 
         private Func<string> _getSelectFileInteractionTitle;
+        private Func<string> _getAddFileButtonText;
         private Func<ConversionProfile, List<string>> _getFileList;
         private List<string> _tokens;
         private string _filter;
@@ -50,6 +53,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
         public ISelectFilesUserControlViewModelBuilder WithTitleGetter(Func<string> getSelectFileInteractionTitle)
         {
             _getSelectFileInteractionTitle = getSelectFileInteractionTitle;
+            return this;
+        }
+
+        public ISelectFilesUserControlViewModelBuilder WithAddFileButtonTextGetter(Func<string> getAddFileButtonText)
+        {
+            _getAddFileButtonText = getAddFileButtonText;
             return this;
         }
 
@@ -81,7 +90,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles
         {
             var vm = new SelectFilesUserControlViewModel(_translationUpdater,
                 _selectedProfileProvider, _dispatcher, _interactionRequest,
-                _getSelectFileInteractionTitle, _getFileList, _tokens, _filter);
+                _getSelectFileInteractionTitle, _getAddFileButtonText, _getFileList, _tokens, _filter);
 
             vm.PropertyChanged += _propertyChangedEventHandler;
 

@@ -15,12 +15,13 @@
                    xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
                    xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
                    xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+                   xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
                    mc:Ignorable="d"
                    Title="{Binding ApplicationNameAndVersion}"
                    TitleCharacterCasing="Normal"
                    Height="800" Width="1200"
                    MinHeight="600"
-                   MinWidth="800"
+                   MinWidth="908"
                    BorderBrush="{DynamicResource TitleBarBackground}"
                    GlowBrush="{DynamicResource TitleBarBackground}"
                    WindowTitleBrush="{DynamicResource TitleBarBackground}"
@@ -43,6 +44,7 @@
                 <ResourceDictionary Source="Styles/Icons/icons.xaml" />
                 <ResourceDictionary Source="Styles/Icons/pdfforgeLogos.xaml" />
                 <ResourceDictionary Source="Styles/Icons/PDFArchitectIcons.xaml" />
+                <ResourceDictionary Source="Styles/Buttons/SquaredIconButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed" />
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
@@ -67,59 +69,59 @@
     <Grid>
         <Grid AllowDrop="True" Background="Transparent"  
               IsEnabled="{Binding MainShellLocked, Converter={StaticResource BoolNegationConverter}}">
-        <!-- The background has to be set to make drag&drop work anywhere in the grid -->
-        <Grid.Resources>
-            <converter:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
-            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <!-- The background has to be set to make drag&drop work anywhere in the grid -->
+            <Grid.Resources>
+                <converter:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+                <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <b:Interaction.Behaviors>
-            <obsidian:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter"
+            <b:Interaction.Behaviors>
+                <obsidian:EventToCommandBehavior Command="{Binding DragEnterCommand}" Event="DragEnter"
                                              PassArguments="True" />
-            <obsidian:EventToCommandBehavior Command="{Binding DragDropCommand}" Event="Drop" PassArguments="True" />
-        </b:Interaction.Behaviors>
+                <obsidian:EventToCommandBehavior Command="{Binding DragDropCommand}" Event="Drop" PassArguments="True" />
+            </b:Interaction.Behaviors>
 
-        <Border Grid.Row="0"
+            <Border Grid.Row="0"
                 BorderThickness="0 0 0 2"
                 BorderBrush="{StaticResource AccentGrey}">
-            <StackPanel ZIndex="100" Background="{StaticResource MainTabButtonRegionBackground}">
-                <!-- Tab Switch Buttons -->
-                <Grid Margin="40 10 40 10" Height="33">
-                    <Grid.Resources>
-                        <converter:StringMatchToShowColourConverter x:Key="StringToActiveColorConverter"
+                <StackPanel ZIndex="100" Background="{StaticResource MainTabButtonRegionBackground}">
+                    <!-- Tab Switch Buttons -->
+                    <Grid Margin="40 10 40 10" Height="33">
+                        <Grid.Resources>
+                            <converter:StringMatchToShowColourConverter x:Key="StringToActiveColorConverter"
                                                                     ColourActive="{StaticResource AccentButtonBackgroundBrush}"
                                                                     ColourInActive="{StaticResource DefaultButtonBackgroundBrush}" />
-                        <converter:StringMatchToShowColourConverter x:Key="StringToActiveForegroundColorConverter"
+                            <converter:StringMatchToShowColourConverter x:Key="StringToActiveForegroundColorConverter"
                                                                     ColourActive="White"
                                                                     ColourInActive="{StaticResource DefaultButtonForegroundBrush}" />
-                        <converter:ValueIsNotEqualToParameterConverter x:Key="ValueIsNotEqualToParameterConverter" />
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <!-- Home -->
-                        <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
-                        <!-- Profile -->
-                        <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
-                        <!-- Printer -->
-                        <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
-                        <!-- Accounts -->
-                        <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
-                        <!-- Settings -->
-                        <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
-                        <!-- Architect -->
-                        <ColumnDefinition Width="Auto" />
-                        <!-- Space -->
-                        <ColumnDefinition Width="0.01*" />
-                        <!-- Info -->
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                            <converter:ValueIsNotEqualToParameterConverter x:Key="ValueIsNotEqualToParameterConverter" />
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <!-- Home -->
+                            <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
+                            <!-- Profile -->
+                            <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
+                            <!-- Printer -->
+                            <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
+                            <!-- Accounts -->
+                            <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
+                            <!-- Settings -->
+                            <ColumnDefinition Width="*" MinWidth="110" MaxWidth="140" />
+                            <!-- Architect -->
+                            <ColumnDefinition Width="Auto" />
+                            <!-- Space -->
+                            <ColumnDefinition Width="0.01*" />
+                            <!-- Info & Feedback -->
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0"
+                        <Button Grid.Column="0"
                             Name="HomeButton"
                             Content="{Binding Translation.Home}"
                             help:HelpProvider.HelpTopic="Home"
@@ -135,7 +137,7 @@
                                             Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                             ConverterParameter={x:Static presentation:RegionViewName.HomeView}}" />
 
-                    <Button Grid.Column="1" Margin="10 0 0 0"
+                        <Button Grid.Column="1" Margin="10 0 0 0"
                             Content="{Binding Translation.Profiles}"
                             help:HelpProvider.HelpTopic="ProfileSettings"
                             Background="{ Binding ActivePath,
@@ -150,7 +152,7 @@
                                                 Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                                 ConverterParameter={x:Static presentation:RegionViewName.ProfilesView}}" />
 
-                    <Button Grid.Column="2" Margin="10 0 0 0"
+                        <Button Grid.Column="2" Margin="10 0 0 0"
                             Content="{Binding Translation.Printer}"
                             help:HelpProvider.HelpTopic="AppPrinters"
                             Background="{ Binding ActivePath,
@@ -165,7 +167,7 @@
                                                 Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                                 ConverterParameter={x:Static presentation:RegionViewName.PrinterView}}" />
 
-                    <Button Grid.Column="3" Margin="10 0 0 0"
+                        <Button Grid.Column="3" Margin="10 0 0 0"
                             Content="{Binding Translation.Accounts}"
                             help:HelpProvider.HelpTopic="Accounts"
                             Background="{ Binding ActivePath,
@@ -180,20 +182,20 @@
                                                 Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                                 ConverterParameter={x:Static presentation:RegionViewName.AccountsView}}" />
 
-                    <controls:Badged Grid.Column="4" Margin="10 0 0 0"
+                        <controls:Badged Grid.Column="4" Margin="10 0 0 0"
                                      BadgePlacementMode="TopRight"
                                      Badge="{Binding UpdateBadge}"
                                      BadgeBackground="{StaticResource WarningBrush}">
-                        <controls:Badged.Style>
-                            <Style TargetType="controls:Badged" BasedOn="{StaticResource {x:Type controls:Badged}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowUpdate}" Value="true">
-                                        <Setter Property="ToolTip" Value="{Binding Translation.UpdateToolTip}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </controls:Badged.Style>
-                        <Button Command="{Binding NavigateCommand}"
+                            <controls:Badged.Style>
+                                <Style TargetType="controls:Badged" BasedOn="{StaticResource {x:Type controls:Badged}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShowUpdate}" Value="true">
+                                            <Setter Property="ToolTip" Value="{Binding Translation.UpdateToolTip}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:Badged.Style>
+                            <Button Command="{Binding NavigateCommand}"
                                 Background="{ Binding ActivePath,
                                             Converter={StaticResource StringToActiveColorConverter},
                                             ConverterParameter={x:Static presentation:RegionViewName.ApplicationSettingsView}}"
@@ -207,10 +209,10 @@
                                 IsHitTestVisible="{ Binding ActivePath,
                                             Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                             ConverterParameter={x:Static presentation:RegionViewName.ApplicationSettingsView}}">
-                        </Button>
-                    </controls:Badged>
+                            </Button>
+                        </controls:Badged>
 
-                    <Button Grid.Column="5" Margin="10 0 0 0"
+                        <Button Grid.Column="5" Margin="10 0 0 0"
                             Command="{Binding NavigateCommand}"
                             Background="{ Binding ActivePath,
                                             Converter={StaticResource StringToActiveColorConverter},
@@ -221,60 +223,71 @@
                                                 Converter={StaticResource ValueIsNotEqualToParameterConverter},
                                                 ConverterParameter={x:Static presentation:RegionViewName.ArchitectView}}"
                             Padding="0">
-                        <ContentControl Content="{StaticResource PdfArchitectLogoWithoutSlogan}" />
-                    </Button>
+                            <ContentControl Content="{StaticResource PdfArchitectLogoWithoutSlogan}" />
+                        </Button>
 
-                    <Button Grid.Column="7" Margin="10 0 0 0"
-                            help:HelpProvider.HelpTopic="General"
-                            DockPanel.Dock="Right"
-                            Background="{ Binding ActivePath,
-                                            Converter={StaticResource StringToActiveColorConverter},
-                                            ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
-                            Foreground="{ Binding ActivePath,
-                                            Converter={StaticResource StringToActiveForegroundColorConverter},
-                                            ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="{x:Static presentation:RegionViewName.AboutView}"
-                            IsHitTestVisible="{ Binding ActivePath,
-                                                Converter={StaticResource ValueIsNotEqualToParameterConverter},
-                                                ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
-                            Width="33" Padding="0">
-                        <iconPacks:PackIconMaterialDesign Kind="InfoOutline" Height="25" />
-                    </Button>
-                </Grid>
+                        <!-- Feedback & About in Grid cause the feedback can be hidden by GPO -->
+                        <Grid Grid.Column="7">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="10 0 0 0"
+                                    Grid.Column="0"
+                                    help:HelpProvider.HelpTopic="General"
 
-                <!-- Usage Stats Info -->
-                <Border Visibility="{Binding ShowUsageStatsInfo,  Converter={StaticResource CollapsedIfFalse}}"
+                                    Background="{ Binding ActivePath,
+                                                    Converter={StaticResource StringToActiveColorConverter},
+                                                    ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
+                                    Foreground="{ Binding ActivePath,
+                                                    Converter={StaticResource StringToActiveForegroundColorConverter},
+                                                    ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
+                                    Command="{Binding NavigateCommand}"
+                                    CommandParameter="{x:Static presentation:RegionViewName.AboutView}"
+                                    IsHitTestVisible="{ Binding ActivePath,
+                                                        Converter={StaticResource ValueIsNotEqualToParameterConverter},
+                                                        ConverterParameter={x:Static presentation:RegionViewName.AboutView}}"
+                                    Width="33" Padding="0">
+                                <iconPacks:PackIconMaterialDesign Kind="InfoOutline" Height="25" />
+                            </Button>
+
+                            <userControls:FeedbackButton Margin="10 0 0 0"
+                                                         Grid.Column="1" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Usage Stats Info -->
+                    <Border Visibility="{Binding ShowUsageStatsInfo,  Converter={StaticResource CollapsedIfFalse}}"
                         BorderThickness="0 2 0 0"
                         BorderBrush="{StaticResource AccentGrey}">
-                    <DockPanel Margin="40 10"
+                        <DockPanel Margin="40 10"
                                FlowDirection="LeftToRight">
-                        <ContentControl VerticalAlignment="Center"
+                            <ContentControl VerticalAlignment="Center"
                                         Foreground="{StaticResource InfoBrush}">
-                            <iconPacks:MaterialDesign Kind="Info" />
-                        </ContentControl>
-                        <TextBlock Margin="10 0 0 0"
+                                <iconPacks:MaterialDesign Kind="Info" />
+                            </ContentControl>
+                            <TextBlock Margin="10 0 0 0"
                                    Text="{Binding UsageStatisticsInfoText}"
                                    VerticalAlignment="Center" />
-                        <UniformGrid Margin="10 0 0 0"
+                            <UniformGrid Margin="10 0 0 0"
                                      Rows="1"
                                      HorizontalAlignment="Left">
-                            <Button Margin="0 0 5 0"
+                                <Button Margin="0 0 5 0"
                                     Command="{Binding DismissUsageStatsInfoCommand}"
                                     Content="{Binding Translation.UsageStatsDismiss}" />
-                            <Button Margin="5 0 0 0"
+                                <Button Margin="5 0 0 0"
                                     Command="{Binding ReadMoreUsageStatsCommand}"
                                     CommandParameter="{x:Static presentation:RegionViewName.ApplicationSettingsView}"
                                     Content="{Binding Translation.ReadMore}" />
-                        </UniformGrid>
-                    </DockPanel>
-                </Border>
-                <!-- Trial remaining days Info -->
-                <Border Visibility="{Binding ShowTrialRemainingDaysInfo,  Converter={StaticResource CollapsedIfFalse}}"
+                            </UniformGrid>
+                        </DockPanel>
+                    </Border>
+                    <!-- Trial remaining days Info -->
+                    <Border Visibility="{Binding ShowTrialRemainingDaysInfo,  Converter={StaticResource CollapsedIfFalse}}"
                         Background="{StaticResource AccentGrey}">
-                    <StackPanel Margin="40 10 "
+                        <StackPanel Margin="40 10 "
                                 VerticalAlignment="Center">
-                        <TextBlock FontWeight="DemiBold"
+                            <TextBlock FontWeight="DemiBold"
                                    FontSize="14"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center">
@@ -286,38 +299,38 @@
                                          Foreground="{StaticResource DefaultTextColorBrush}" />
                                 </Hyperlink.Inlines>
                             </Hyperlink>
-                        </TextBlock>
-                        <Button Margin="0 -15 10 0"
+                            </TextBlock>
+                            <Button Margin="0 -15 10 0"
                                 VerticalAlignment="Center"
                                 Style="{StaticResource TransparentButton}"
                                 HorizontalAlignment="Right"
                                 Command="{Binding DismissTrialExpireInfoCommand}">
-                            <iconPacks:PackIconMaterialDesign Kind="Close"
+                                <iconPacks:PackIconMaterialDesign Kind="Close"
                                                               Height="13"
                                                               Width="13"
                                                               HorizontalAlignment="Right"
                                                               VerticalAlignment="Center"
                                                               Foreground="{StaticResource DefaultButtonForegroundBrush}" />
-                        </Button>
-                    </StackPanel>
-                </Border>
-                <!-- License Expiration Info -->
-                <userControls:LicenseExpirationReminderControl />
-            </StackPanel>
-        </Border>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <!-- License Expiration Info -->
+                    <userControls:LicenseExpirationReminderControl />
+                </StackPanel>
+            </Border>
 
-        <ContentControl Grid.Row="1"
+            <ContentControl Grid.Row="1"
                         regions:RegionManager.RegionName="{x:Static presentation:RegionNames.MainRegion}" />
 
-        <StatusBar Grid.Row="2">
-            <StatusBarItem Margin="10 0" Height="24">
-                <StaticResource ResourceKey="pdfforge-white" />
-            </StatusBarItem>
+            <StatusBar Grid.Row="2">
+                <StatusBarItem Margin="10 0" Height="24">
+                    <StaticResource ResourceKey="pdfforge-white" />
+                </StatusBarItem>
 
-            <StatusBarItem HorizontalAlignment="Right" Margin="10 0" DockPanel.Dock="Right">
-                <ContentControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.BusinessHintStatusBarRegion}" />
-            </StatusBarItem>
-        </StatusBar>
+                <StatusBarItem HorizontalAlignment="Right" Margin="10 0" DockPanel.Dock="Right">
+                    <ContentControl regions:RegionManager.RegionName="{x:Static presentation:RegionNames.BusinessHintStatusBarRegion}" />
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
         <controls:ProgressRing 
             Visibility="{Binding MainShellLocked, Converter={StaticResource CollapsedIfFalseConverter}}" 

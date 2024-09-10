@@ -131,6 +131,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
             Logger.Trace("COM: Merging two ComJobs.");
             _jobInfoManager.Merge(job1, job2);
             JobInfoQueue.Remove(job2);
+            _jobInfoManager.DeleteInf(job2);
         }
 
         public void MergeAllJobs()
@@ -146,6 +147,7 @@ namespace pdfforge.PDFCreator.Core.ComImplementation
 
                 _jobInfoManager.Merge(firstJob, nextJob);
                 JobInfoQueue.Remove(nextJob);
+                _jobInfoManager.DeleteInf(nextJob);
             }
         }
 

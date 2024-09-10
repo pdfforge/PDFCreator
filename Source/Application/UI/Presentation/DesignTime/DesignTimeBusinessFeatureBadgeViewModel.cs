@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
     internal class DesignTimeBusinessFeatureBadgeViewModel : BusinessFeatureBadgeViewModel
     {
-        public DesignTimeBusinessFeatureBadgeViewModel() : base(new DesignTimeEditionHelper(), null, new DesignTimeTranslationUpdater())
+        public DesignTimeBusinessFeatureBadgeViewModel() : base(new DesignTimeEditionHelper(), new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater())
         {
         }
     }

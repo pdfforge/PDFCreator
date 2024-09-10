@@ -76,7 +76,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while signing. The certificate is invalid or has expired.")]
         Signature_Invalid = 12206,
 
-        [Translation("The specified time server account is not configured.")]
+        [Translation("Time server account not set or not available.\nPlease check your configured accounts.")]
         Signature_NoTimeServerAccount = 12207,
 
         [Translation("The certificate file is unavailable.")]
@@ -166,7 +166,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("No SMTP e-mail user name is specified.")]
         Smtp_NoUserSpecified = 15104,
 
-        [Translation("The specified SMTP account is not configured.")]
+        [Translation("SMTP account not set or not available.\nPlease check your configured accounts.")]
         Smtp_NoAccount = 15105,
 
         [Translation("Missing password for e-mail via SMTP.")]
@@ -274,7 +274,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("User cancelled retyping the FTP server password.")]
         Ftp_UserCancelled = 18110,
 
-        [Translation("The specified FTP account is not configured.")]
+        [Translation("FTP account not set or not available.\nPlease check your configured accounts.")]
         Ftp_NoAccount = 18111,
 
         [Translation("The FTP server URL has an invalid format.")]
@@ -283,7 +283,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while uploading file to the FTP server.")]
         Ftp_GenericError = 18999,
 
-        [Translation("The specified Dropbox account is not configured.")]
+        [Translation("Dropbox account not set or not available.\nPlease check your configured accounts.")]
         Dropbox_AccountNotSpecified = 19001,
 
         [Translation("The specified Dropbox access token is not configured.")]
@@ -433,7 +433,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Automatic saving requires setting the password for the HTTP authentication.")]
         HTTP_NoPasswordForAuthWithAutoSave = 32103,
 
-        [Translation("The specified HTTP account is not configured.")]
+        [Translation("HTTP account not set or not available.\nPlease check your configured accounts.")]
         HTTP_NoAccount = 32104,
 
         [Translation("User cancelled retyping HTTP authentication password.")]
@@ -638,11 +638,29 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while adding page numbers to the document.")]
         PageNumbers_GenericError = 48999,
 
+        [Translation("The permissions for your Microsoft account have expired.\nPlease request them again in the Accounts tab.")]
+        Microsoft_Account_Expired = 49501,
+
+        [Translation("The upload to OneDrive failed.")]
+        OneDrive_Upload_Failed = 49201,
+
+        [Translation("User tokens in the shared folder path require the user token action to be enabled.")]
+        OneDrive_SharedFolder_RequiresUserTokenAction = 49202,
+
+        [Translation("The provided shared folder path is not a valid path.")]
+        OneDrive_InvalidSharedFolder = 49203,
+
+        [Translation("You don't have the permissions to upload to OneDrive.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        OneDrive_MissingPermissions = 49204,
+
+        [Translation("A share link to the file could not be created.")]
+        OneDrive_CouldNotCreateShareLink = 49205,
+
         [Translation("Error while uploading the document to Outlook.")]
         Outlook_Web_Upload_Error = 49400,
 
-        [Translation("Error no Outlook Web Access account configured.")]
-        Outlook_Web_Account_Missing = 49401,
+        [Translation("Microsoft account not set or not available.\nPlease check your configured accounts.")]
+        Microsoft_Account_Missing = 49401,
 
         [Translation("Could not create draft on account.")]
         Outlook_Web_Mail_Create = 49403,
@@ -673,6 +691,12 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("At least one of the additional Outlook Web Access attachment files is unavailable.")]
         Outlook_Web_InvalidAttachmentFiles = 49413,
+
+        [Translation("You don't have the permissions to read and write e-mails.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        Outlook_Web_MissingReadWritePermissions = 49414,
+
+        [Translation("You don't have the permissions to send e-mails directly.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        Outlook_Web_MissingSendPermission = 49415,
 
         [Translation("General error during Outlook Web Access action.")]
         Outlook_Web_General_Error = 49999,

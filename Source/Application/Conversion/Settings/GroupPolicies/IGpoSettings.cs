@@ -37,6 +37,8 @@
         bool AllowUserDefinedProfiles { get; }
 
         bool DisableLicenseExpirationReminder { get; }
+
+        bool HideFeedbackForm { get; }
     };
 }
 

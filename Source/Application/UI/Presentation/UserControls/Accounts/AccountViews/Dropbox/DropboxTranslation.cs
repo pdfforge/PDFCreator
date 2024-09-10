@@ -14,6 +14,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string DropboxAccountSeverResponseErrorMessage { get; set; } = "Incorrect response from Dropbox Server. Account could not be created. Please try again.";
         public string DropboxAccountCreationErrorMessage { get; set; } = "Dropbox account could not be created. Please try again.";
         public string CreateShareLinkText { get; set; } = "Create a link to share the uploaded files. Anyone with the link can view this file.";
+        public string ShowShareLink { get; set; } = "Show share link at the end of interactive workflow.";
         public string DropboxAccountSelectContent { get; set; } = "Please select Dropbox Account:";
         public string DropboxDirectoryLabel { get; set; } = "Directory:";
         public string EnsureUniqueDropboxFilenamesText { get; set; } = "Don't overwrite files (adds an increasing number in case of conflict).";

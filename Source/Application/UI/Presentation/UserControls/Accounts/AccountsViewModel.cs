@@ -82,7 +82,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             DropboxAccountAddCommand = _commandLocator.GetCommand<DropboxAccountAddCommand>();
             DropboxAccountRemoveCommand = _commandLocator.GetCommand<DropboxAccountRemoveCommand>();
 
-            MicrosoftAccountAddCommand = _commandLocator.GetCommand<MicrosoftAccountAddCommand>();
+            MicrosoftAccountEditCommand = _commandLocator.GetCommand<MicrosoftAccountEditCommand>();
             MicrosoftAccountRemoveCommand = _commandLocator.GetCommand<MicrosoftAccountRemoveCommand>();
 
             TimeServerAccountAddCommand = _commandLocator.GetCommand<TimeServerAccountAddCommand>();
@@ -109,7 +109,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
                     AddAccountMenuItems.Add(new MenuItem
                     {
                         Header = Translation.AddMicrosoftAccount,
-                        Command = MicrosoftAccountAddCommand,
+                        Command = MicrosoftAccountEditCommand,
                         Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Mail, Width = 25 }
                     });
                 }
@@ -232,7 +232,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         public ICommand FtpAccountAddCommand { get; }
         public ICommand FtpAccountEditCommand { get; }
         public ICommand FtpAccountRemoveCommand { get; }
-        public ICommand MicrosoftAccountAddCommand { get; }
+
+        public ICommand MicrosoftAccountEditCommand { get; }
         public ICommand MicrosoftAccountRemoveCommand { get; }
 
         public ICommand SmtpAccountAddCommand { get; }

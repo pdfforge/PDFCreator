@@ -8,6 +8,7 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             xmlns:utilities="clr-namespace:pdfforge.PDFCreator.Utilities;assembly=PDFCreator.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance designTime:DesignTimeAboutViewModel, IsDesignTimeCreatable=True}">
@@ -18,7 +19,9 @@
                 <ResourceDictionary Source="../../Styles/Buttons/DefaultButtons.xaml" />
                 <ResourceDictionary Source="../../Styles/Icons/pdfforgeLogos.xaml" />
                 <ResourceDictionary Source="../../Styles/Icons/AboutViewIcons.xaml" />
+                <ResourceDictionary Source="../../Styles/Icons/FeedbackIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 150 0 0">
@@ -56,7 +59,7 @@
             <Button Margin="10"   
                     Style="{StaticResource TransparentButton}"
                     Command="{Binding PdfforgeWebsiteCommand}"
-                    CommandParameter="{x:Static controller:Urls.KnowledgeBase}">
+                    CommandParameter="{x:Static utilities:Urls.KnowledgeBase}">
                 <StackPanel Orientation="Vertical">
                     <iconPacks:PackIconMaterialDesign Kind="School"
                                                       Foreground="{StaticResource AboutViewIconColor}"
@@ -72,7 +75,7 @@
             <Button Margin="10"   
                     Style="{StaticResource TransparentButton}"
                     Command="{Binding PdfforgeWebsiteCommand}"
-                    CommandParameter="{x:Static controller:Urls.Forums}">
+                    CommandParameter="{x:Static utilities:Urls.Forums}">
                 <StackPanel Orientation="Vertical">
                     <iconPacks:PackIconMaterialDesign Kind="People"
                                                   Foreground="{StaticResource AboutViewIconColor}"
@@ -90,7 +93,6 @@
             <!-- Priority Support Button -->
             <Grid Margin="10">
                 <Button Style="{StaticResource TransparentButton}"
-                        IsEnabled="{Binding IsBusinessEdition}"
                         Command="{Binding PrioritySupportCommand}">
                     <StackPanel Orientation="Vertical">
                         <!-- tb -4 to compensate different icon format -->
@@ -105,6 +107,27 @@
                 <userControls:BusinessFeatureBadge Margin="0 0 0 10"
                     Edition="AllLicensed" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
+            <!-- Feedback Button -->
+            <Button Visibility="{Binding HideFeedbackForm,  Converter={StaticResource CollapsedIfTrueConverter}}"
+                    Margin="10"   
+                    Style="{StaticResource TransparentButton}"
+                    Command="{Binding FeedbackCommand}" >
+                <StackPanel Orientation="Vertical">
+                    <!-- Grid to compensate FeedbackIcon size -->
+                    <Grid Height="35">
+                        <!-- "Sms" is the inverted FeedbackIcon -->
+                        <iconPacks:PackIconMaterialDesign Kind="Sms"
+                                                          Margin="0 2 0 0"
+                                                          Foreground="{StaticResource AboutViewIconColor}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Width="30"
+                                                          Height="20" />
+                    </Grid>
+                    <TextBlock Margin="5"
+                               Text="{Binding Translation.Feedback}" />
+                </StackPanel>
+            </Button>
         </UniformGrid>
 
         <!--pdfforge logo + license-->

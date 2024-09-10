@@ -8,6 +8,7 @@
              xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance designTime:DesignTimeQuickActionViewModel, IsDesignTimeCreatable=True}"
@@ -19,8 +20,11 @@
                 <ResourceDictionary Source="../../../Styles/OutputFormat/OutputFormatIconControl.xaml" />
                 <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml" />
                 <ResourceDictionary Source="../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../Styles/Hyperlink.xaml" />
+                <ResourceDictionary Source="../../../Styles/Buttons/SquaredIconButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrue" TrueValue="Collapsed" FalseValue="Visible" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalse" TrueValue="Visible" FalseValue="Collapsed" />
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel Margin="0 20">
@@ -33,74 +37,218 @@
 
             <StackPanel DockPanel.Dock="Top" Margin="30 0 0 0">
                 <Label Content="{Binding Translation.SelectFilename}" />
-                <TextBox Margin="0 10 0 0"
-                         TextWrapping="Wrap" Text="{Binding FileName}"
-                         Padding="0"
-                         Height="Auto"
-                         IsReadOnly="True" Background="Transparent"
-                         AcceptsReturn="True" />
-
-                <StackPanel Margin="0 20 0 0"
-                            Visibility="{Binding IsSaveFileTemporary, Converter={StaticResource CollapsedIfTrue}}">
-                    <Label Content="{Binding Translation.Directory}" />
-                    <TextBox Margin="0 10 0 0"
-                             TextWrapping="Wrap" Text="{Binding FileDirectory, Mode=OneWay}"
-                             Padding="0"
-                             Height="Auto"
-                             IsReadOnly="True" Background="Transparent"
-                             AcceptsReturn="True" />
-                </StackPanel>
+                <TextBlock Margin="0 10 0 0" >
+                    <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
+                               Command="{Binding OpenWithPdfArchitectCommand}"
+                               CommandParameter="{Binding Job}"
+                               Style="{StaticResource DefaultHyperLink}">
+                        <TextBlock Text="{Binding FileName, Mode=OneWay}"
+                                   Padding="0" Height="Auto"/>
+                    </Hyperlink>
+                </TextBlock>
+                <Grid Margin="0 20 0 0"
+                      Visibility="{Binding IsSaveFileTemporary, Converter={StaticResource CollapsedIfTrue}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label Content="{Binding Translation.Directory}" />
+                        <TextBlock Margin="0 10 0 0" >
+                            <Hyperlink NavigateUri="Look in DownloadHyperlink_OnRequestNavigate"
+                                       Command="{Binding OpenExplorerCommand}"
+                                       CommandParameter="{Binding Job}"
+                                       Style="{StaticResource DefaultHyperLink}">
+                                <TextBlock Text="{Binding FileDirectory, Mode=OneWay}"
+                                           Padding="0" Height="Auto" TextTrimming="CharacterEllipsis" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" 
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top">
+                        <Button Style="{StaticResource SquaredIconButton}"
+                                Command="{Binding CopyToClipboardCommand}"
+                                CommandParameter="{Binding FullPath}"
+                                ToolTip="{Binding Translation.CopyToClipboard}"
+                                Margin="20  0 0 0" VerticalAlignment="Top">
+                            <iconPacks:MaterialDesign Kind="ContentCopy"  />
+                        </Button>
+                    </StackPanel>
+                </Grid>
 
                 <Label Margin="0 20 0 0"
                        Content="{Binding Translation.TotalFileSize}" />
                 <TextBlock Margin="0 10 0 0"
                            TextWrapping="Wrap" Text="{Binding FileSize}" />
+
+                <!--Share Links-->
+                <StackPanel Margin="0 0 0 0">
+                    <!--DropBox-->
+                    <Grid Margin="0 20 0 0" Visibility="{Binding HasDropBoxSharedLink, Converter={StaticResource CollapsedIfFalse}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="{Binding Translation.DropBoxSharedLink}" />
+                            <TextBlock Margin="0 10 0 0" >
+                                <Hyperlink NavigateUri="{Binding Job.ShareLinks.DropboxShareUrl}"
+                                           Command="{Binding OpenUrlCommand}"
+                                           CommandParameter="{Binding Job.ShareLinks.DropboxShareUrl}"
+                                           ToolTip="{Binding Job.ShareLinks.DropboxShareUrl}"
+                                           Style="{StaticResource DefaultHyperLink}">
+                                    <TextBlock Text="{Binding Job.ShareLinks.DropboxShareUrl, Mode=OneWay}"
+                                               Padding="0" Height="Auto" TextTrimming="CharacterEllipsis" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button 
+                                Style="{StaticResource SquaredIconButton}"
+                                Command="{Binding CopyToClipboardCommand}"
+                                CommandParameter="{Binding Job.ShareLinks.DropboxShareUrl}"
+                                ToolTip="{Binding Translation.CopyToClipboard}"
+                                Margin="20  0 0 0" VerticalAlignment="Top">
+                                <iconPacks:MaterialDesign Kind="ContentCopy"  />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <!--OneDrive Private Link-->
+                    <Grid Margin="0 20 0 0" Visibility="{Binding HasOneDriveLink, Converter={StaticResource CollapsedIfFalse}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="{Binding Translation.OneDrivePrivateLink}" />
+                            <TextBlock Margin="0 10 0 0" >
+                                <Hyperlink NavigateUri="{Binding Job.ShareLinks.OneDrivePrivateUrl}"
+                                           Command="{Binding OpenUrlCommand}"
+                                           CommandParameter="{Binding Job.ShareLinks.OneDrivePrivateUrl}"
+                                           Style="{StaticResource DefaultHyperLink}"
+                                           ToolTip="{Binding Job.ShareLinks.OneDrivePrivateUrl}">
+                                    <TextBlock Text="{Binding Job.ShareLinks.OneDrivePrivateUrl, Mode=OneWay}"
+                                               Padding="0" Height="Auto" TextTrimming="CharacterEllipsis" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button 
+                                Style="{StaticResource SquaredIconButton}"
+                                Command="{Binding CopyToClipboardCommand}"
+                                CommandParameter="{Binding Job.ShareLinks.OneDrivePrivateUrl}"
+                                ToolTip="{Binding Translation.CopyToClipboard}"
+                                Margin="20  0 0 0" VerticalAlignment="Top">
+                                <iconPacks:MaterialDesign Kind="ContentCopy"  />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <!--OneDrive Share Link-->
+                    <Grid Margin="0 20 0 0" Visibility="{Binding HasOneDriveSharedLink, Converter={StaticResource CollapsedIfFalse}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="{Binding Translation.OneDriveShareLink}" />
+                            <TextBlock Margin="0 10 0 0" >
+                                <Hyperlink NavigateUri="{Binding Job.ShareLinks.OneDriveShareUrl}"
+                                           Command="{Binding OpenUrlCommand}"
+                                           CommandParameter="{Binding Job.ShareLinks.OneDriveShareUrl}"
+                                           Style="{StaticResource DefaultHyperLink}"
+                                           ToolTip="{Binding Job.ShareLinks.DropboxShareUrl}">
+                                    <TextBlock Text="{Binding Job.ShareLinks.OneDriveShareUrl, Mode=OneWay}"
+                                               Padding="0" Height="Auto" TextTrimming="CharacterEllipsis" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button 
+                                Style="{StaticResource SquaredIconButton}"
+                                Command="{Binding CopyToClipboardCommand}"
+                                CommandParameter="{Binding Job.ShareLinks.OneDriveShareUrl}"
+                                ToolTip="{Binding Translation.CopyToClipboard}"
+                                Margin="20  0 0 0" VerticalAlignment="Top">
+                                <iconPacks:MaterialDesign Kind="ContentCopy"  />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </StackPanel>
         </DockPanel>
 
         <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-            <CheckBox Content="{Binding Translation.DontShowUntilNextUpdate}" IsChecked="{Binding IsActive}" Margin="0 0 0 10" />
+            <CheckBox Visibility="{Binding ShowDisableQuickActionsCheckBox, Converter={StaticResource CollapsedIfFalse}}"
+                      Content="{Binding Translation.DontShowUntilNextUpdate}" 
+                      IsChecked="{Binding DisableQuickActions}" Margin="0 0 0 10" />
 
             <UniformGrid Margin="-5 20 -5 0" Rows="1">
                 <!--Send Action-->
-                <contextMenuButton:ContextMenuButton
-                    Margin="5 0 "
-                    VerticalAlignment="Bottom"
-                    Content ="{Binding DataContext.Translation.Send, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                    Style="{StaticResource DefaultButton}"
-                    MinWidth="110"
-                    MenuItemsCommandParameter="{Binding}"
-                    ShowArrow="True"
-                    ItemsSource="{Binding SendMenuItems}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction Command="{Binding UpdateSendContextMenuButtonItemsCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </contextMenuButton:ContextMenuButton>
+                <Grid Margin="5 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            Command="{Binding SendEmailCommand }"
+                            CommandParameter="{Binding Job}">
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Send}" />
+                    </Button>
+                    <contextMenuButton:ContextMenuButton Grid.Column="1" Margin="2 0 0 0"
+                                                         Style="{StaticResource DefaultButton}"
+                                                         ShowArrow="True"
+                                                         MinWidth="21"
+                                                         MaxWidth="21"
+                                                         Padding="0"
+                                                         ItemsSource="{Binding SendMenuItems}"
+                                                         MenuItemsCommandParameter="{Binding}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding UpdateSendContextMenuButtonItemsCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </contextMenuButton:ContextMenuButton>
+                </Grid>
 
                 <!--Open Action-->
-                <contextMenuButton:ContextMenuButton Margin="5 0 "
-                                                     VerticalAlignment="Bottom"
-                                                     Content ="{Binding DataContext.Translation.Open, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                     Style="{StaticResource DefaultButton}"
-                                                     MinWidth="110"
-                                                     MenuItemsCommandParameter="{Binding}"
-                                                     ShowArrow="True">
-                    <contextMenuButton:ContextMenuButton.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{Binding Translation.OpenPDFArchitect}"
-                                      Command="{Binding OpenWithPdfArchitectCommand}"
-                                      CommandParameter="{Binding Job}" />
-                            <MenuItem Header="{Binding Translation.OpenDefaultProgram}"
-                                      Command="{Binding QuickActionOpenWithDefaultCommand}"
-                                      CommandParameter="{Binding Job}" />
-                            <MenuItem Header="{Binding Translation.OpenExplorer}"
-                                      Command="{Binding OpenExplorerCommand}"
-                                      CommandParameter="{Binding Job}" />
-                        </ContextMenu>
-                    </contextMenuButton:ContextMenuButton.ContextMenu>
-                </contextMenuButton:ContextMenuButton>
+                <Grid Margin="5 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                           Command="{Binding OpenExplorerCommand}"
+                           CommandParameter="{Binding Job}">
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Translation.Open}" />
+                    </Button>
+                    <contextMenuButton:ContextMenuButton Grid.Column="1" Margin="2 0 0 0"
+                                                        Style="{StaticResource DefaultButton}"
+                                                        ShowArrow="True"
+                                                        MinWidth="21"
+                                                        MaxWidth="21"
+                                                        Padding="0">
+                        <contextMenuButton:ContextMenuButton.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{Binding Translation.OpenPDFArchitect}"
+                                         Command="{Binding OpenWithPdfArchitectCommand}"
+                                         CommandParameter="{Binding Job}" />
+                                <MenuItem Header="{Binding Translation.OpenDefaultProgram}"
+                                         Command="{Binding QuickActionOpenWithDefaultCommand}"
+                                         CommandParameter="{Binding Job}" />
+                                <MenuItem Header="{Binding Translation.OpenExplorer}"
+                                         Command="{Binding OpenExplorerCommand}"
+                                         CommandParameter="{Binding Job}" />
+                            </ContextMenu>
+                        </contextMenuButton:ContextMenuButton.ContextMenu>
+                    </contextMenuButton:ContextMenuButton>
+                </Grid>
 
                 <!--OK Button-->
                 <Button Margin="5 0"

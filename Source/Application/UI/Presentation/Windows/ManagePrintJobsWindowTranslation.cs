@@ -8,8 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string AddAnotherFile { get; private set; } = "Add another file";
         public string ContinueButtonContent { get; private set; } = "Continue";
         public string DeleteTooltip { get; private set; } = "Delete print job";
-        public string MergeAllButtonContent { get; private set; } = "Merge All";
-        public string MergeButtonContent { get; private set; } = "Merge Selected";
+        public string MergeButtonContent { get; private set; } = "Merge";
         public string WindowHeader { get; private set; } = "Reorder and Merge Print Jobs";
         public string DocumentInfoHeader { get; private set; } = "Document Info";
         public string MergedFilesHeader { get; private set; } = "Merged Files";
@@ -23,11 +22,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         public string IdAscending { get; set; } = "Sort by ID ascending";
         public string IdDescending { get; set; } = "Sort by ID descending";
 
-        public string AlphabeticalAscending { get; set; } = "Sort alphabetically ascending";
-        public string AlphabeticalDescending { get; set; } = "Sort alphabetically descending";
+        public string NameAscending { get; set; } = "Sort by name ascending";
+        public string NameDescending { get; set; } = "Sort by name descending";
 
         public string DateAscending { get; set; } = "Sort by date ascending";
         public string DateDescending { get; set; } = "Sort by date descending";
+        public string SelectAll { get; set; } = "Select all"; 
         public string Sort { get; set; } = "Sort";
     }
 }

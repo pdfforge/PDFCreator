@@ -7512,6 +7512,10 @@
             <summary>
             Matches when the result of the calculated layout has been repeated a moment ago
             </summary>
+            <remarks>
+            <a href="https://github.com/NLog/NLog/wiki/WhenRepeated-Filter">See NLog Wiki</a>
+            </remarks>
+            <seealso href="https://github.com/NLog/NLog/wiki/WhenRepeated-Filter">Documentation on NLog Wiki</seealso>
         </member>
         <member name="P:NLog.Filters.WhenRepeatedFilter.TimeoutSeconds">
             <summary>
@@ -8772,18 +8776,6 @@
             </summary>
             <param name="messageProperties">Message-template-parameters</param>
             <param name="eventProperties">The dictionary that initially contains no message-template-parameters</param>
-        </member>
-        <member name="P:NLog.Internal.PropertiesDictionary.ParameterEnumerator.Current">
-            <inheritDoc/>
-        </member>
-        <member name="P:NLog.Internal.PropertiesDictionary.ParameterEnumerator.System#Collections#IEnumerator#Current">
-            <inheritDoc/>
-        </member>
-        <member name="P:NLog.Internal.PropertiesDictionary.DictionaryEnumerator.Current">
-            <inheritDoc/>
-        </member>
-        <member name="P:NLog.Internal.PropertiesDictionary.DictionaryEnumerator.System#Collections#IEnumerator#Current">
-            <inheritDoc/>
         </member>
         <member name="P:NLog.Internal.PropertiesDictionary.DictionaryCollection.Count">
             <inheritDoc/>
@@ -21131,6 +21123,7 @@
             <summary>
             Gets or sets a value indicating whether to use auto logger name detected from the stack trace.
             </summary>
+            <remarks>Default Logger-Name is <see cref="P:System.Diagnostics.TraceListener.Name"/> of the <see cref="T:NLog.NLogTraceListener" /></remarks>
         </member>
         <member name="M:NLog.NLogTraceListener.Write(System.String)">
             <summary>
@@ -27592,7 +27585,7 @@
             Limits the number of messages written per timespan to the wrapped target.
             </summary>
             <remarks>
-            <a href="https://github.com/nlog/nlog/wiki/LimitingWrappers-target">See NLog Wiki</a>
+            <a href="https://github.com/nlog/nlog/wiki/LimitingWrapper-target">See NLog Wiki</a>
             </remarks>
             <seealso href="https://github.com/NLog/NLog/wiki/LimitingWrapper-target">Documentation on NLog Wiki</seealso>
         </member>

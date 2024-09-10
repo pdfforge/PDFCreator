@@ -20,11 +20,11 @@
                 <ResourceDictionary Source="../../../Styles/ListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <workflowEditor:FacadeColorValueConverter x:Key="DragDropColorConverter" Background="{StaticResource ContentAreaColorBrush}" />
-
             <DataTemplate x:Key="SelectFilesListBoxItemTemplate"  DataType="system:String">
                 <DockPanel dd:DragDrop.IsDragSource="{Binding }"
                            Background ="{x:Null}"
                            FlowDirection="LeftToRight"
+                           Margin="0 10 0 0"
                            LastChildFill="True">
 
                     <!-- Move -->
@@ -68,23 +68,22 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid MinHeight="40">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-            <ListBox Margin="0 0 0 0"
+        <Button Grid.Row="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{Binding ButtonText}"
+                Command="{Binding AddFileCommand}"
+                Style="{StaticResource DefaultButton}" />
+
+            <ListBox Grid.Row="1" 
+                     Margin="0 -2 0 0" 
                      ItemsSource="{Binding FileList}"
                      Style="{StaticResource DragAndDropNoEffectsListBox}"
                      ItemTemplate="{StaticResource SelectFilesListBoxItemTemplate}" />
-        </StackPanel>
-        <Button Margin="0 5 0 0"
-                Grid.Row="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{Binding Translation.AddFile}"
-                Command="{Binding AddFileCommand}"
-                Style="{StaticResource DefaultButton}" />
     </Grid>
 </UserControl>

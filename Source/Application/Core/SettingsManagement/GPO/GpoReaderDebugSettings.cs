@@ -29,5 +29,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO
 
         public string PageSize => "Automatic";
         public string PageOrientation => "Automatic";
+
+        public bool HideFeedbackForm => true;
     }
 }

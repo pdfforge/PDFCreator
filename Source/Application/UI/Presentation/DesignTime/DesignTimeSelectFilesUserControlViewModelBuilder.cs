@@ -21,6 +21,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
             return this;
         }
 
+        public ISelectFilesUserControlViewModelBuilder WithAddFileButtonTextGetter(Func<string> getAddFileButtonText)
+        {
+            return this;
+        }
+
         public ISelectFilesUserControlViewModelBuilder WithFileListGetter(Func<ConversionProfile, List<string>> getFileList)
         {
             return this;

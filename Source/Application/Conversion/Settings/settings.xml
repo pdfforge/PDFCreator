@@ -53,6 +53,12 @@
 	          <value name="AccountInfo" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
 		          <comment />
 	          </value>
+	          <value name="PermissionScopes" type="value" datatype="String" enumname="" defaultvalue="">
+		          <comment />
+	          </value>
+	          <value name="ExpirationDate" type="value" datatype="long" enumname="" defaultvalue="">
+		          <comment />
+	          </value>
 	          <value name="MicrosoftJson" type="password" defaultvalue="">
 		          <comment>Json Containing all info including refresh token</comment>
 	          </value>
@@ -312,7 +318,34 @@
           <value name="SharedFolder" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
             <comment />
           </value>
+	        <value name="ShowShareLink" type="value" datatype="bool" enumname="" defaultvalue="false" islist="False">
+		        <comment />
+	        </value>
         </class>
+		<class name="OneDriveSettings" propertyName="OneDriveSettings" readonly="False" classtype="Class">
+			<comment>OneDrive settings for the current user</comment>
+			<value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+				<comment>ID of the linked account</comment>
+			</value>
+			<value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+				<comment />
+			</value>
+			<value name="CreateShareLink" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+				<comment>If true, creates a link that can be used to share the file uploaded to OneDrive</comment>
+			</value>
+			<value name="OpenUploadedFile" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+				<comment>If true, opens the file after the upload to OneDrive</comment>
+			</value>
+			<value name="EnsureUniqueFilenames" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+				<comment>If true, files with the same name will not be overwritten on the server. A counter will be appended instead (i.e. document_2.pdf)</comment>
+			</value>
+			<value name="SharedFolder" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
+				<comment />
+			</value>
+			<value name="ShowShareLink" type="value" datatype="bool" enumname="" defaultvalue="false" islist="False">
+				<comment />
+			</value>
+		</class>
         <class name="EmailClientSettings" propertyName="EmailClientSettings" readonly="False" classtype="Class">
           <comment>Opens the default e-mail client with the converted document as attachment</comment>
           <value name="AddSignature" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
@@ -375,6 +408,12 @@
 		  <value name="Subject" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
 			  <comment>Subject line of the e-mail</comment>
 		  </value>
+			<value name="SendWebMailAutomatically" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+				<comment>Bool to control of we send a draft or just store it</comment>
+			</value>
+			<value name="ShowDraft" type="value" datatype="Bool" enumname="" defaultvalue="true">
+				<comment>Bool to control if we show draft after interactive conversion</comment>
+			</value>
 		</class>
         <class name="EmailSmtpSettings" propertyName="EmailSmtpSettings" readonly="False" classtype="Class">
           <comment>Sends a mail without user interaction through SMTP</comment>

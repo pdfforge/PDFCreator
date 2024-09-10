@@ -157,6 +157,8 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.OneDrive;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OneDrive;
 using SystemInterface;
 using SystemInterface.Diagnostics;
 using SystemInterface.IO;
@@ -165,7 +167,6 @@ using SystemWrapper.Diagnostics;
 using SystemWrapper.IO;
 using Translatable;
 using Container = SimpleInjector.Container;
-using FtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpAccountView;
 using GeneralSettingsView = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.GeneralSettingsView;
 using HashUtil = pdfforge.PDFCreator.Utilities.HashUtil;
 using IDownloader = pdfforge.PDFCreator.Core.Services.Download.IDownloader;
@@ -174,6 +175,7 @@ using IProcessStarter = pdfforge.PDFCreator.Utilities.Process.IProcessStarter;
 using IRegistry = SystemInterface.Microsoft.Win32.IRegistry;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 using ManagePrintJobsWindow = pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindow;
+using MicrosoftAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftAccountView;
 using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
 using ProcessStarter = pdfforge.PDFCreator.Utilities.Process.ProcessStarter;
 using RegistryWrap = SystemWrapper.Microsoft.Win32.RegistryWrap;
@@ -181,6 +183,10 @@ using SmtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Account
 using WebClientDownloader = pdfforge.PDFCreator.Core.Services.Download.WebClientDownloader;
 using WebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.WebLinkLauncher;
 using WorkflowEditorTestPageUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.WorkflowEditorTestPageUserControl;
+using pdfforge.PDFCreator.UI.Interactions.Feedback;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Feedback;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback;
+using pdfforge.PDFCreator.UI.Presentation.Windows.Feedback;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
 {
@@ -208,6 +214,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton(() => EditionHelper);
             container.RegisterSingleton<IPdfEditorHelper, PdfEditorHelper>();
             container.RegisterSingleton<DropboxAppData>(() => new DropboxAppData(Data.Decrypt(DropboxAppKey.Encrypted_DropboxAppKey)));
+            container.RegisterSingleton<AhaAppData>(() => new AhaAppData(Data.Decrypt(AhaResources.Encrypted_AhaAuthKey)));
             container.RegisterSingleton<IDropboxTokenCache, DropboxTokenCache>();
 
             container.RegisterSingleton<IInstallationPathProvider>(() => InstallationPathProviders.PDFCreatorProvider);
@@ -449,6 +456,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ICustomScriptHandler, CustomScriptHandler>();
             container.RegisterSingleton<ICustomScriptLoader, CsScriptLoader>();
 
+            container.Register<IFeedbackSender, AhaFeedbackSender>();
+
             RegisterTranslationUpdater(container);
             RegisterSettingsLoader(container);
             RegisterCurrentSettingsProvider(container);
@@ -622,7 +631,8 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
                 return new UsageStatisticsOptions(Urls.UsageStatisticsEndpointUrl, product, version);
             });
-            container.RegisterSingleton<IUsageStatisticsSender, UsageStatisticsSender>();
+            container.RegisterSingleton<IUsageStatisticsJsonSerializer, UsageStatisticsJsonSerializer>();
+            container.RegisterSingleton<IUsageStatisticsSender, AvqUsageStatisticsSender>();
             container.RegisterSingleton<IUsageMetricFactory, UsageMetricFactory>();
         }
 
@@ -811,6 +821,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(MailWebAction),
                 typeof(SmtpMailAction),
                 typeof(DropboxAction),
+                typeof(OneDriveAction),
                 typeof(FtpAction),
                 typeof(HttpAction),
             });
@@ -846,6 +857,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(PresenterActionFacade<PrintActionView, PrintActionViewModel>),
                 typeof(PresenterActionFacade<FTPActionView, FtpActionViewModel>),
                 typeof(PresenterActionFacade<HttpActionView, HttpActionViewModel>),
+                typeof(PresenterActionFacade<OneDriveActionView, OneDriveActionViewModel>),
                 typeof(PresenterActionFacade<DropboxActionView, DropboxActionViewModel>)
             };
 
@@ -935,6 +947,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(FtpAccountInteraction), typeof(FtpAccountView));
             ViewRegistry.RegisterInteraction(typeof(SmtpAccountInteraction), typeof(SmtpAccountView));
             ViewRegistry.RegisterInteraction(typeof(HttpAccountInteraction), typeof(HttpAccountView));
+            ViewRegistry.RegisterInteraction(typeof(MicrosoftAccountInteraction), typeof(MicrosoftAccountView));
             ViewRegistry.RegisterInteraction(typeof(TimeServerAccountInteraction), typeof(TimeServerAccountView));
             ViewRegistry.RegisterInteraction(typeof(TitleReplacementEditInteraction), typeof(TitleReplacementEditUserControl));
             ViewRegistry.RegisterInteraction(typeof(RestartApplicationInteraction), typeof(RestartApplicationInteractionView));
@@ -947,7 +960,14 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             ViewRegistry.RegisterInteraction(typeof(OverwriteOrAppendInteraction), typeof(OverwriteOrAppendOverlay));
             ViewRegistry.RegisterInteraction(typeof(LoadSpecificProfileInteraction), typeof(LoadSpecificProfileView));
             ViewRegistry.RegisterInteraction(typeof(EditPrinterProfileUserInteraction), typeof(EditPrinterProfileUserUserControl));
-
+            ViewRegistry.RegisterInteraction(typeof(FeedbackInteraction), typeof(FeedbackWindowView),
+                new WindowOptions { ApplyWindowCustomization = window => window.WindowStartupLocation = WindowStartupLocation.CenterScreen });
+            ViewRegistry.RegisterInteraction(typeof(FeedbackSentInteraction), typeof(FeedbackSentView),
+                new WindowOptions
+                {
+                    ResizeMode = ResizeMode.NoResize,
+                    ApplyWindowCustomization = window => window.WindowStartupLocation = WindowStartupLocation.CenterScreen
+                });
             RegisterObsidianLicenseInteractions();
         }
 

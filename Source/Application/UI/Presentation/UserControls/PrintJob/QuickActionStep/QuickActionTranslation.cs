@@ -17,8 +17,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string Send { get; private set; } = "Send";
         public string AttachTo { get; private set; } = "Attach to:";
         public string TotalFileSize { get; private set; } = "Total file size:";
+        public string DropBoxSharedLink { get; private set; } = "DropBox:";
 
         public string DontShowUntilNextUpdate { get; private set; } = "Don't show Quick Actions until the next update";
         public string CopyToClipboard { get; private set; } = "Copy the full path to clipboard";
+        public string OneDrivePrivateLink { get; private set; } = "OneDrive private link";
+        public string OneDriveShareLink { get; private set; } = "OneDrive share link";
     }
 }

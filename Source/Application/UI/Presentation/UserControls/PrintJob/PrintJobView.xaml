@@ -12,6 +12,7 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
              xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
+             xmlns:utilities="clr-namespace:pdfforge.PDFCreator.Utilities;assembly=PDFCreator.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}"
@@ -205,7 +206,7 @@
                       Visibility="{Binding ShowTrialRemainingDaysInfo, Converter={StaticResource CollapsedIfTrueConverter}}">
                     <Label Visibility="{Binding HasBanner, Converter={StaticResource CollapsedIfFalseConverter}}">
                         <Hyperlink Command="{Binding OpenUrlCommand}"
-                                   CommandParameter="{x:Static controller:Urls.ProfessionalHintUrl}"
+                                   CommandParameter="{x:Static utilities:Urls.ProfessionalHintUrl}"
                                    Foreground="{StaticResource DefaultTextColorBrush}">
                             <Hyperlink.Inlines>
                                 <Run Text="{Binding Translation.RemoveAds, Mode=OneWay}" />

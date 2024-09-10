@@ -77,6 +77,11 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 		public bool DisableUsageStatistics { get; set; } = false;
 		
 		/// <summary>
+		/// Activate to hide feedback form
+		/// </summary>
+		public bool HideFeedbackForm { get; set; } = false;
+		
+		/// <summary>
 		/// Activate to hide license tab.
 		/// </summary>
 		public bool HideLicenseTab { get; set; } = false;
@@ -118,6 +123,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			DisableTips = bool.TryParse(data.GetValue(@"" + path + @"DisableTips"), out var tmpDisableTips) ? tmpDisableTips : false;
 			DisableTitleTab = bool.TryParse(data.GetValue(@"" + path + @"DisableTitleTab"), out var tmpDisableTitleTab) ? tmpDisableTitleTab : false;
 			DisableUsageStatistics = bool.TryParse(data.GetValue(@"" + path + @"DisableUsageStatistics"), out var tmpDisableUsageStatistics) ? tmpDisableUsageStatistics : false;
+			HideFeedbackForm = bool.TryParse(data.GetValue(@"" + path + @"HideFeedbackForm"), out var tmpHideFeedbackForm) ? tmpHideFeedbackForm : false;
 			HideLicenseTab = bool.TryParse(data.GetValue(@"" + path + @"HideLicenseTab"), out var tmpHideLicenseTab) ? tmpHideLicenseTab : false;
 			HidePdfArchitectInfo = bool.TryParse(data.GetValue(@"" + path + @"HidePdfArchitectInfo"), out var tmpHidePdfArchitectInfo) ? tmpHidePdfArchitectInfo : false;
 			LoadSharedAppSettings = bool.TryParse(data.GetValue(@"" + path + @"LoadSharedAppSettings"), out var tmpLoadSharedAppSettings) ? tmpLoadSharedAppSettings : true;
@@ -141,6 +147,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			data.SetValue(@"" + path + @"DisableTips", DisableTips.ToString());
 			data.SetValue(@"" + path + @"DisableTitleTab", DisableTitleTab.ToString());
 			data.SetValue(@"" + path + @"DisableUsageStatistics", DisableUsageStatistics.ToString());
+			data.SetValue(@"" + path + @"HideFeedbackForm", HideFeedbackForm.ToString());
 			data.SetValue(@"" + path + @"HideLicenseTab", HideLicenseTab.ToString());
 			data.SetValue(@"" + path + @"HidePdfArchitectInfo", HidePdfArchitectInfo.ToString());
 			data.SetValue(@"" + path + @"LoadSharedAppSettings", LoadSharedAppSettings.ToString());
@@ -166,6 +173,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			copy.DisableTips = DisableTips;
 			copy.DisableTitleTab = DisableTitleTab;
 			copy.DisableUsageStatistics = DisableUsageStatistics;
+			copy.HideFeedbackForm = HideFeedbackForm;
 			copy.HideLicenseTab = HideLicenseTab;
 			copy.HidePdfArchitectInfo = HidePdfArchitectInfo;
 			copy.LoadSharedAppSettings = LoadSharedAppSettings;
@@ -214,6 +222,9 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if(DisableUsageStatistics != source.DisableUsageStatistics)
 				DisableUsageStatistics = source.DisableUsageStatistics;
 				
+			if(HideFeedbackForm != source.HideFeedbackForm)
+				HideFeedbackForm = source.HideFeedbackForm;
+				
 			if(HideLicenseTab != source.HideLicenseTab)
 				HideLicenseTab = source.HideLicenseTab;
 				
@@ -250,6 +261,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.GPO.Settings
 			if (!Object.Equals(DisableTips, v.DisableTips)) return false;
 			if (!Object.Equals(DisableTitleTab, v.DisableTitleTab)) return false;
 			if (!Object.Equals(DisableUsageStatistics, v.DisableUsageStatistics)) return false;
+			if (!Object.Equals(HideFeedbackForm, v.HideFeedbackForm)) return false;
 			if (!Object.Equals(HideLicenseTab, v.HideLicenseTab)) return false;
 			if (!Object.Equals(HidePdfArchitectInfo, v.HidePdfArchitectInfo)) return false;
 			if (!Object.Equals(LoadSharedAppSettings, v.LoadSharedAppSettings)) return false;

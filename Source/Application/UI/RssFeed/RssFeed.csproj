@@ -108,7 +108,7 @@
       <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Presentation\Presentation.csproj">
-      <Project>{CF5FF5FD-39AD-472D-ABC3-44D4E7909E68}</Project>
+      <Project>{cf5ff5fd-39ad-472d-abc3-44d4e7909e68}</Project>
       <Name>Presentation</Name>
     </ProjectReference>
   </ItemGroup>
@@ -202,20 +202,6 @@
       <ItemGroup>
         <Reference Include="Prism">
           <HintPath>..\..\..\..\packages\Prism.Core\lib\net45\Prism.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="mscorlib">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ValueTuple">
-          <HintPath>..\..\..\..\packages\System.ValueTuple\lib\net47\System.ValueTuple.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

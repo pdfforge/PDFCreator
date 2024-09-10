@@ -35,6 +35,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         TokenWarningCheckResult TokenWarningCheck(string textWithTokens, ConversionProfile profile);
     }
 
+    internal static class TokenListExtension
+    {
+        public static void RemoveToken(this List<string> tokenList, string tokenName)
+        {
+            tokenList.Remove("<" + tokenName + ">");
+        }
+    }
+
     public class TokenHelper : ITokenHelper
     {
         private TokenPlaceHoldersTranslation _translation;
@@ -97,8 +105,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tr.AddToken(new StringToken("PrintJobName", _translation.TitleFromPrintJob));
             tr.AddToken(new StringToken("Subject", _translation.SubjectFromSettings));
             tr.AddToken(new StringToken("Keywords", _translation.KeywordsFromSettings));
-            tr.AddToken(new StringToken("DropboxHtmlLinks", "<a href=\"https://dropbox.com/link1\">File.pdf</a>"));
-            tr.AddToken(new StringToken("DropboxFullLinks", "File.pdf ( https://dropbox.com/link1 )"));
+            tr.AddToken(new StringToken(TokenNames.DropboxHtmlLinks, "<a href=\"https://dropbox.com/link1\">File.pdf</a>"));
+            tr.AddToken(new StringToken(TokenNames.DropboxFullLinks, "File.pdf (https://dropbox.com/link1)"));
+            tr.AddToken(new StringToken(TokenNames.OneDriveShareLink, "https://1drv.ms/link"));
+            tr.AddToken(new StringToken(TokenNames.OneDriveShareLinkHtml, "<a href=\"https://1drv.ms/link\">https://1drv.ms/link1</a>"));
             tr.AddToken(new EnvironmentToken());
             tr.AddToken(new ParameterPreviewToken("User", _translation.FormatTokenPreviewText));
 
@@ -138,8 +148,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<OutputFilenames>");
             tokenList.Remove("<Subject>");
             tokenList.Remove("<Keywords>");
-            tokenList.Remove("<DropboxHtmlLinks>");
-            tokenList.Remove("<DropboxFullLinks>");
+            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
+            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
             tokenList.Remove("<PageNumber>");
 
             return tokenList;
@@ -152,8 +164,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             tokenList.Remove("<OutputFilenames>");
             tokenList.Remove("<InputDirectory>");
             tokenList.Remove("<OutputFilePath>");
-            tokenList.Remove("<DropboxHtmlLinks>");
-            tokenList.Remove("<DropboxFullLinks>");
+            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
+            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
             tokenList.Remove("<PageNumber>");
 
             return tokenList;
@@ -164,8 +178,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             var tokenList = GetTokenListWithFormatting();
             tokenList.Remove("<OutputFilePath>");
-            tokenList.Remove("<DropboxHtmlLinks>");
-            tokenList.Remove("<DropboxFullLinks>");
+            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
+            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
             tokenList.Remove("<PageNumber>");
 
             return tokenList;
@@ -177,8 +193,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
             var tokenList = GetTokenListWithFormatting();
             tokenList.Remove("<Author>");
             tokenList.Remove("<OutputFilePath>");
-            tokenList.Remove("<DropboxHtmlLinks>");
-            tokenList.Remove("<DropboxFullLinks>");
+            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
+            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
             tokenList.Remove("<Counter>");
             tokenList.Remove("<JobID>");
             tokenList.Remove("<Keywords>");
@@ -201,8 +219,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         {
             var tokenList = GetTokenListWithFormatting();
-            tokenList.Remove("<DropboxHtmlLinks>");
-            tokenList.Remove("<DropboxFullLinks>");
+            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
+            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
+            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
             tokenList.Remove("<PageNumber>");
             return tokenList;
         }

@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Feedback button icon-->
+    <Viewbox x:Key="FeedbackButtonIcon" Stretch="Uniform" x:Shared="False">
+        <Canvas UseLayoutRounding="False" Width="19.999999" Height="19.999999">
+            <Canvas.Clip>
+                <RectangleGeometry Rect="0.0,0.0,19.999999,19.999999"/>
+            </Canvas.Clip>
+            <Path>
+                <Path.Data>
+                    <PathGeometry Figures="M -2 -2 H 22 V 22 H -2 Z" FillRule="Nonzero"/>
+                </Path.Data>
+            </Path>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}">
+                <Path.Data>
+                    <PathGeometry Figures="M 18 0 H 2 C 0.9 0 0 0.9 0 2 v 18 l 4 -4 h 14 c 1.1 0 2 -0.9 2 -2 V 2 C 20 0.9 19.1 0 18 0 Z m 0 14 H 3.17 L 2 15.17 V 2 H 18 Z M 5 7 H 7 V 9 H 5 Z m 8 0 h 2 V 9 H 13 Z M 9 7 h 2 V 9 H 9 Z" FillRule="Nonzero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+
+    <!-- Attach a file button icon -->
+    <Viewbox x:Key="AttachFileIcon" Stretch="Uniform" x:Shared="False">
+        <Canvas UseLayoutRounding="False" Width="620.0" Height="800.0">
+            <Canvas.Clip>
+                <RectangleGeometry Rect="0.0,0.0,620.0,800.0"/>
+            </Canvas.Clip>
+            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=ContentControl}}">
+                <Path.Data>
+                    <PathGeometry Figures="M 420 360 V 160 h 80 V 360 Z M 220 636 Q 185 626 162.5 597 Q 140 568 140 530 V 160 h 80 z m 30 164 Q 146 800 73 727 Q 0 654 0 550 V 180 Q 0 105 52.5 52.5 Q 105 0 180 0 Q 255 0 307.5 52.5 Q 360 105 360 180 V 480 H 280 V 180 Q 279 138 250.5 109 Q 222 80 180 80 q -42 0 -71 29 q -29 29 -29 71 v 370 q -1 71 49 120.5 q 50 49.5 121 49.5 q 25 0 47.5 -6.5 Q 320 707 340 694 v 89 q -21 8 -43.5 12.5 Q 274 800 250 800 Z M 420 760 V 640 H 300 V 560 H 420 V 440 h 80 v 120 h 120 v 80 H 500 v 120 z" FillRule="Nonzero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+</ResourceDictionary>

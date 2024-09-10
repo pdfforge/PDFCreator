@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace pdfforge.PDFCreator.Utilities.Tokens
 {
@@ -18,6 +19,16 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
                 return false;
 
             return Regex.IsMatch(parameter, @"<User:.*>", RegexOptions.IgnoreCase);
+        }
+
+        public static bool ContainsAnyToken(string input, params string[] tokenNames)
+        {
+            foreach (var token in tokenNames)
+            {
+                if (input.IndexOf("<" + token + ">", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -37,6 +37,8 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		
 		public string SharedFolder { get; set; } = "PDFCreator";
 		
+		public bool ShowShareLink { get; set; } = false;
+		
 		
 		public void ReadValues(Data data, string path = "")
 		{
@@ -45,6 +47,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			Enabled = bool.TryParse(data.GetValue(@"" + path + @"Enabled"), out var tmpEnabled) ? tmpEnabled : false;
 			EnsureUniqueFilenames = bool.TryParse(data.GetValue(@"" + path + @"EnsureUniqueFilenames"), out var tmpEnsureUniqueFilenames) ? tmpEnsureUniqueFilenames : false;
 			try { SharedFolder = Data.UnescapeString(data.GetValue(@"" + path + @"SharedFolder")); } catch { SharedFolder = "PDFCreator";}
+			ShowShareLink = bool.TryParse(data.GetValue(@"" + path + @"ShowShareLink"), out var tmpShowShareLink) ? tmpShowShareLink : false;
 		}
 		
 		public void StoreValues(Data data, string path)
@@ -54,6 +57,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			data.SetValue(@"" + path + @"Enabled", Enabled.ToString());
 			data.SetValue(@"" + path + @"EnsureUniqueFilenames", EnsureUniqueFilenames.ToString());
 			data.SetValue(@"" + path + @"SharedFolder", Data.EscapeString(SharedFolder));
+			data.SetValue(@"" + path + @"ShowShareLink", ShowShareLink.ToString());
 		}
 		
 		public DropboxSettings Copy()
@@ -65,6 +69,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			copy.Enabled = Enabled;
 			copy.EnsureUniqueFilenames = EnsureUniqueFilenames;
 			copy.SharedFolder = SharedFolder;
+			copy.ShowShareLink = ShowShareLink;
 			return copy;
 		}
 		
@@ -85,6 +90,9 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if(SharedFolder != source.SharedFolder)
 				SharedFolder = source.SharedFolder;
 				
+			if(ShowShareLink != source.ShowShareLink)
+				ShowShareLink = source.ShowShareLink;
+				
 		}
 		
 		public override bool Equals(object o)
@@ -97,6 +105,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 			if (!Object.Equals(Enabled, v.Enabled)) return false;
 			if (!Object.Equals(EnsureUniqueFilenames, v.EnsureUniqueFilenames)) return false;
 			if (!Object.Equals(SharedFolder, v.SharedFolder)) return false;
+			if (!Object.Equals(ShowShareLink, v.ShowShareLink)) return false;
 			return true;
 		}
 		

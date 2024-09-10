@@ -14,7 +14,7 @@ namespace pdfforge.PDFCreator.Utilities.IO
         ///     to ensure this in a readable way.
         /// </summary>
         /// <returns>A unique filename</returns>
-        string CreateUniqueFileName();
+        string CreateUniqueFileName(Func<string, bool> newUniqueCondition = null);
     }
 
     public abstract class UniqueFilenameBase : IUniquePath
@@ -55,9 +55,13 @@ namespace pdfforge.PDFCreator.Utilities.IO
         ///     to ensure this in a readable way.
         /// </summary>
         /// <returns>A unique filename</returns>
-        public string CreateUniqueFileName()
+        public string CreateUniqueFileName(Func<string, bool> newUniqueCondition = null)
         {
-            while (UniqueCondition(LastUniqueFilename))
+            Func<string, bool> condition = UniqueCondition;
+            if (newUniqueCondition != null)
+                condition = newUniqueCondition;
+            
+            while (condition(LastUniqueFilename))
             {
                 LastUniqueFilename = PathSafe.Combine(_directory, _fileBody + "_" + _appendix + _extension);
                 _appendix++;

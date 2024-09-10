@@ -42,6 +42,9 @@
     <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>..\..\..\..\packages\test\Microsoft.CodeAnalysis.Common\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -57,9 +60,12 @@
     <Compile Include="ActionOrderHelper.cs" />
     <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\DefaultViewerCheck.cs" />
+    <Compile Include="Actions\Helper\Microsoft\FileUploadResult.cs" />
     <Compile Include="Actions\MailWebAction.cs" />
     <Compile Include="Actions\Mail\ClientWrapper.cs" />
     <Compile Include="Actions\Mail\GraphManger.cs" />
+    <Compile Include="Actions\OneDrive\OneDriveAction.cs" />
+    <Compile Include="Actions\Helper\Microsoft\MicrosoftActionHelper.cs" />
     <Compile Include="Actions\OpenFileAction.cs" />
     <Compile Include="Actions\Dropbox\DropboxAction.cs" />
     <Compile Include="Actions\Dropbox\DropboxAppData.cs" />
@@ -94,8 +100,8 @@
     <Compile Include="Actions\WebMail\GraphMailAttachmentItem.cs" />
     <Compile Include="Actions\WebMail\GraphMailBody.cs" />
     <Compile Include="Actions\WebMail\CreateMessageResponse.cs" />
-    <Compile Include="Actions\WebMail\CreateUploadSessionRequest.cs" />
-    <Compile Include="Actions\WebMail\CreateUploadSessionResponse.cs" />
+    <Compile Include="Actions\Helper\Microsoft\CreateUploadSessionRequest.cs" />
+    <Compile Include="Actions\Helper\Microsoft\CreateUploadSessionResponse.cs" />
     <Compile Include="Actions\WebMail\GraphMailEmailAddress.cs" />
     <Compile Include="Actions\WebMail\GraphMailRecipient.cs" />
     <Compile Include="Actions\WebMail\GraphMailMessage.cs" />

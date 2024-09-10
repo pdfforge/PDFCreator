@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
                         job.Profile.DropboxSettings.EnsureUniqueFilenames,
                         job.OutputFileTemplate);
 
-                    if (shareLink == null)
+                    if (shareLink?.ShareUrl == null)
                     {
                         return new ActionResult(ErrorCode.Dropbox_Upload_And_Share_Error);
                     }
@@ -52,8 +52,8 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Dropbox
                     job.ShareLinks.DropboxShareUrl = shareLink.ShareUrl;
 
                     shareLink.Filename = shareLink.Filename.Split('/').Last();
-                    job.TokenReplacer.AddToken(new StringToken("DROPBOXFULLLINKS", $"{shareLink.Filename} ( {shareLink.ShareUrl} )"));
-                    job.TokenReplacer.AddToken(new StringToken("DROPBOXHTMLLINKS", $"<a href = '{shareLink.ShareUrl}'>{shareLink.Filename}</a>"));
+                    job.TokenReplacer.AddToken(new StringToken(TokenNames.DropboxFullLinks, $"{shareLink.ShareUrl}"));
+                    job.TokenReplacer.AddToken(new StringToken(TokenNames.DropboxHtmlLinks, $"<a href = '{shareLink.ShareUrl}'>{shareLink.Filename}</a>"));
                 }
                 catch
                 {

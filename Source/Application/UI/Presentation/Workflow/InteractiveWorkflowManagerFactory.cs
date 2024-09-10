@@ -40,7 +40,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             WorkflowSteps.Add(new HttpPasswordStep());
             WorkflowSteps.Add(new SignaturePasswordStep(_signaturePasswordCheck));
             WorkflowSteps.Add(WorkflowStep.Create<ProgressView>());
-            WorkflowSteps.Add(new DropboxSharedLinkStep());
             WorkflowSteps.Add(new UpdateHintStep(_updateHelper));
             WorkflowSteps.Add(new QuickActionStep());
 

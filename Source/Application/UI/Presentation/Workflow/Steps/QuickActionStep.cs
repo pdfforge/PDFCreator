@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
 
         public override bool IsStepRequired(Job job)
         {
-            return job.Profile.ShowQuickActions;
+            return job.Profile.ShowQuickActions || job.Profile.OneDriveSettings.ShowShareLink || job.Profile.DropboxSettings.ShowShareLink;
         }
     }
 }
