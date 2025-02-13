@@ -151,7 +151,20 @@ namespace pdfforge.PDFCreator.Utilities
 
         public string GetInstallerPath()
         {
-            return Path.Combine(_assemblyHelper.GetAssemblyDirectory(), "PDF Architect", "architect-setup.exe");
+            try
+            {
+                var architectDirectory = PathSafe.Combine(_assemblyHelper.GetAssemblyDirectory(), "PDF Architect");
+                var allFiles = Directory.GetFiles(architectDirectory);
+                foreach (var file in allFiles)
+                {
+                    if (file.Contains("Installer") && file.EndsWith(".exe"))
+                        return PathSafe.Combine(architectDirectory, file);
+                }
+            }
+            catch
+            { }
+
+            return "";
         }
 
         private string TryFindInstallationPath(string msiDisplayName, string applicationExeName, string publisherName)

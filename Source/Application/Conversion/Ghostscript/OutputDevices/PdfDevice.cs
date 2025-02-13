@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using SystemInterface.IO;
 
@@ -84,9 +85,11 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     break;
             }
 
-            parameters.Add("-sPDFACompatibilityPolicy=1");
+            parameters.Add("-dPDFACompatibilityPolicy=1");
 
-            parameters.Add("-sOutputICCProfile=" + iccFile);
+            parameters.Add("-sOutputICCProfile=" + Path.GetFileName(iccFile));
+            // the "\\"at the end is needed by ghostscript and must be present
+            parameters.Add("-sICCProfilesDir=" + Path.GetDirectoryName(iccFile) + "\\");
 
             var defFile = PathSafe.Combine(Job.JobTempFolder, "pdfa_def.ps");
             var sb = new StringBuilder(GhostscriptResources.PdfaDefinition);
@@ -115,7 +118,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     FileWrap.WriteAllBytes(iccFile, GhostscriptResources.ISOcoated_v2_grey1c_bas);
                     break;
             }
-            parameters.Add("-sOutputICCProfile=" + iccFile);
+
+            parameters.Add("-sOutputICCProfile=" + Path.GetFileName(iccFile));
+            // the "\\"at the end is needed by ghostscript and must be present
+            parameters.Add("-sICCProfilesDir=" + Path.GetDirectoryName(iccFile) + "\\");
 
             //Set in pdf-X example, but is not documented in the distiller parameters
 
@@ -233,8 +239,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
                 case CompressionColorAndGray.Automatic:
                 default:
-                    parameters.Add("-dAutoFilterColorImages=true");
-                    parameters.Add("-dAutoFilterGrayImages=true");
+                    parameters.Add("-dAutoFilterColorImages=false");
+                    parameters.Add("-dAutoFilterGrayImages=false");
                     parameters.Add("-dEncodeColorImages=true");
                     parameters.Add("-dEncodeGrayImages=true");
                     parameters.Add("-dColorImageFilter=/DCTEncode");

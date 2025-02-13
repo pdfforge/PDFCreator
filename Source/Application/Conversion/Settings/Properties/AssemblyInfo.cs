@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Avanquest pdfforge GmbH")]
 [assembly: AssemblyProduct("PDFCreator Settings")]
-[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2024")]
+[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben
 
-[assembly: AssemblyVersion("5.3.2.0")]
-[assembly: AssemblyFileVersion("5.3.2.0")]
+[assembly: AssemblyVersion("5.3.3.0")]
+[assembly: AssemblyFileVersion("5.3.3.0")]

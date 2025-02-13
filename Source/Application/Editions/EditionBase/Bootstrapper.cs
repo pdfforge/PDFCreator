@@ -1,4 +1,4 @@
-﻿using pdfforge.Banners;
+using pdfforge.Banners;
 using pdfforge.Banners.Helper;
 using pdfforge.CustomScriptAction;
 using pdfforge.DataStorage;
@@ -522,7 +522,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private void RegisterTranslationUpdater(Container container)
         {
-            var testDoubleTextLength = Debugger.IsAttached
+            var testDoubleTextLength = Debugger.IsAttached 
                                        && Environment.GetEnvironmentVariable("PDFCREATOR_TESTDOUBLETEXTLENGTH", EnvironmentVariableTarget.User) == "true";
 
             if (testDoubleTextLength)

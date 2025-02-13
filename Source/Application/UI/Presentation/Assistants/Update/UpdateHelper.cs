@@ -210,7 +210,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         public void SetNewUpdateTime()
         {
             var timeSpan = UpdateInterval.ToTimeSpan();
-            NextUpdate = DateTime.Now.Add(timeSpan);
+            if (timeSpan == TimeSpan.MaxValue)
+                NextUpdate = DateTime.MaxValue;
+            else
+                NextUpdate = DateTime.Now.Add(timeSpan);
+
             _showUpdateDuringSession = false;
         }
 

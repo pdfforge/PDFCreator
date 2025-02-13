@@ -2,7 +2,7 @@
 {
     public static class Urls
     {
-        public const string ArchitectDownloadUrl = "https://go.pdfforge.org/pdfarchitect/download";
+        public const string ArchitectDownloadUrl = "https://www.pdfarchitect.org/download/?configid=7337901D-7D94-481D-ABFC-4314E1698065";
         public const string ArchitectWebsiteUrl = "https://go.pdfforge.org/pdfarchitect/info";
         public const string SodaPdfWebsiteUrl = "https://go.pdfforge.org/pdfcreator/recommend-soda";
         public const string Facebook = "https://go.pdfforge.org/facebook";

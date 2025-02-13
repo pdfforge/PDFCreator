@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Avanquest pdfforge GmbH")]
 [assembly: AssemblyProduct("PrismHelper")]
-[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2024")]
+[assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("4.2.0.0")]
-[assembly: AssemblyVersion("5.3.2.0")]
-[assembly: AssemblyFileVersion("5.3.2.0")]
+[assembly: AssemblyVersion("5.3.3.0")]
+[assembly: AssemblyFileVersion("5.3.3.0")]
