@@ -69,6 +69,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             Logger.Info("Shortened Job folder: " + jobTempFolder);
 
             parameters.Add("--permit-file-all=" + jobTempFolder + "\\");
+            AddPermitDevices(parameters, ghostscriptVersion);
             SetLibPaths(parameters, ghostscriptVersion);
             SetFontPath(parameters);
 
@@ -116,6 +117,10 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
             parameters.Add(pdfMarkFileName);
 
             return parameters;
+        }
+
+        protected virtual void AddPermitDevices(IList<string> parameters, GhostscriptVersion ghostscriptVersion)
+        {
         }
 
         private void SetLibPaths(ICollection<string> parameters, GhostscriptVersion ghostscriptVersion)

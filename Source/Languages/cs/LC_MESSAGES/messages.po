@@ -3,6 +3,7 @@ msgstr ""
 "Project-Id-Version: Czech (PDFCreator)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2024-10-16 16:08+0000\n"
 "Last-Translator: Lukáš Mižoch <lukas.mizoch@spsch.eu>\n"
 "Language-Team: Czech <https://translate.pdfforge.org/projects/pdfcreator/"
 "messages/cs/>\n"
@@ -11,6 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
@@ -18,25 +20,6 @@ msgid_plural "Do you want to convert the {0} selected files?"
 msgstr[0] "Chceš převést {0} vybraný soubor?"
 msgstr[1] "Chceš převést {0} vybrané soubory?"
 msgstr[2] "Chceš převést {0} vybraných souborů?"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Remind me later"
-msgstr "Připomeň mi později"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Manage license"
-msgstr "Spravovat licenci"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license has expired."
-msgstr "Platnost vaší licence vypršela."
-
-#. pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "Platnost vaší licence vyprší za {0} den."
-msgstr[1] "Platnost vaší licence vyprší za {0} dny."
-msgstr[2] "Platnost vaší licence vyprší za {0} dnů."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
@@ -60,6 +43,7 @@ msgstr "Tiskárna"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -540,6 +524,24 @@ msgstr "Licence je platná."
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+#, fuzzy
+#| msgid "The activation has expired. Please renew your activation."
+msgid ""
+"Your offline activation has expired. Please reactivate your license "
+"immediately to avoid application blocking."
+msgstr "Aktivace vypršela. Obnovte prosím aktivaci."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid ""
+"Your Internal License Server activation has expired. Please reactivate your "
+"license immediately to avoid application blocking."
+msgstr ""
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license is not valid for this version."
 msgstr "Licence není platná pro tuto verzi."
 
@@ -695,21 +697,20 @@ msgstr "Sdílejte svou zpětnou vazbu"
 msgid "Describe your feedback"
 msgstr "Popište svou zpětnou vazbu"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail"
 msgid "Email"
 msgstr "E-mail"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail Address:"
 msgid "Email address"
-msgstr "E-mailová adresa:"
+msgstr "E-mailová adresa"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Please provide details here"
-msgstr ""
+msgstr "Prosím napište detaily sem"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "What type of feedback would you like to send?"
@@ -768,6 +769,7 @@ msgstr "Video soubory"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -909,8 +911,8 @@ msgid "Open with PDF Architect"
 msgstr "Otevři PDF-Architektem"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Open with E-Mail Client"
-msgstr "Otevři e-mailovým klientem"
+msgid "Open with Email Client"
+msgstr "Otevři emailovým klientem"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "History is disabled"
@@ -1015,6 +1017,7 @@ msgstr "Přímá konverze"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1074,6 +1077,7 @@ msgstr "Nahradit:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1223,6 +1227,12 @@ msgid "Expires:"
 msgstr "Vyprší:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#, fuzzy
+#| msgid "License Agreement"
+msgid "License renews on:"
+msgstr "Souhlas s licencí"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "License Key:"
 msgstr "Licenční klíč:"
 
@@ -1255,12 +1265,24 @@ msgid "Please share your activation to all users on your system."
 msgstr "Prosím sdílejte svou aktivaci se všemi uživateli systému."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "An error occured while storing license for all users."
+#, fuzzy
+#| msgid "An error occured while storing license for all users."
+msgid "An error occurred while storing license for all users."
 msgstr "Během ukládání licence pro všechny uživatele došlo k chybě."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Store license for all users was successful."
 msgstr "Uložení licence pro všechny uživatele bylo úspěšné."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "Remind me later"
+msgstr "Připomeň mi později"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#, fuzzy
+#| msgid "License"
+msgid "View License"
+msgstr "Licence"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -1268,6 +1290,7 @@ msgstr "Uložení licence pro všechny uživatele bylo úspěšné."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1979,11 +2002,11 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid ""
-"Select this to only save files in a temporary directory, e.g. if sent by e-"
-"mail"
+"Select this to only save files in a temporary directory, e.g. if sent by "
+"email"
 msgstr ""
 "Tuto možnost vyberte, chcete -li ukládat soubory pouze do dočasného "
-"adresáře, např. pokud je zaslán e-mailem"
+"adresáře, např. pokud je zaslán emailem"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid "Select target directory"
@@ -2160,6 +2183,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is already enabled for the selected profile"
 msgstr "Tato funkce je již povolena pro vybraný profil"
@@ -2188,9 +2212,78 @@ msgstr "Tato funkce je již povolena pro vybraný profil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is not supported by the selected output format"
 msgstr "Tato funkce není podporována vybraným výstupním formátem"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Directory:"
+msgstr "Adresář:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr "Stránky:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr "Disky:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Selected Account:"
+msgstr "Vybraný účet:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr "Nepřepisovat soubory (v případě konfliktu se přidá vzrůstající číslo)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr "Zobrazit odkaz na konci pracovního postupu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Open upload in browser"
+msgstr "Otevřít nahrávku v prohlížeči"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sharepoint"
+msgstr "Sharepoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload a file to your OneDrive"
+msgstr "Nahrát soubor na OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Select an account or create a new one ->"
+msgstr "Vyberte účet nebo vytvořte nový →"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Run program"
@@ -2300,7 +2393,7 @@ msgstr "JménoDefinovanéUživatelem:například"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
 msgid ""
-"Use the value in the Profile Settings (e.g. for title or e-mail recipient) "
+"Use the value in the Profile Settings (e.g. for title or email recipient) "
 "via the following token pattern:"
 msgstr ""
 "Použijte hodnotu v nastavení profilu (např. titulek) pomocí následujícího "
@@ -2615,6 +2708,7 @@ msgstr "Soubor s certifikátem:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2649,6 +2743,7 @@ msgstr "Zobrazit jen obrázky"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2732,15 +2827,6 @@ msgstr "Soubory PFX/P12"
 msgid "Set certificate password"
 msgstr "Nastavit heslo certifikátu"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Select account or create a new one ->"
 msgstr "Vyberte účet nebo vytvořte nový ->"
@@ -3010,27 +3096,12 @@ msgstr "Ulož na plochu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgctxt "PrintJobWindowButton"
-msgid "E-mail"
-msgstr "E-mail"
+msgid "Email"
+msgstr "Email"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-msgid "Send e-mail without saving"
-msgstr "Odešli e-mail bez uložení"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Directory:"
-msgstr "Adresář:"
+msgid "Send email without saving"
+msgstr "Odešli email bez uložení"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid ""
@@ -3096,7 +3167,7 @@ msgid "Quick Actions"
 msgstr "Rychlé akce"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Send by e-mail"
+msgid "Send by email"
 msgstr "Poslat emailem"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
@@ -3125,14 +3196,16 @@ msgid "Copy the full path to clipboard"
 msgstr "Kopírovat celou cestu do schránky"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-#| msgid "OneDrive share link"
 msgid "OneDrive private link"
 msgstr "OneDrive odkaz pro sdílení"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "OneDrive share link"
 msgstr "OneDrive odkaz pro sdílení"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Sharepoint share link"
+msgstr "Sharepoint odkaz pro sdílení"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 msgid "Please select a profile:"
@@ -3236,6 +3309,7 @@ msgstr "Děkujeme vám za sdělení, co můžeme vylepšit."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3248,6 +3322,7 @@ msgstr "Účet:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3264,6 +3339,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3276,6 +3352,7 @@ msgstr "Správa účtů"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3288,6 +3365,7 @@ msgstr "Přidat účet FTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3300,6 +3378,7 @@ msgstr "FTP účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3312,6 +3391,7 @@ msgstr "Otestovat FTP účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3324,6 +3404,7 @@ msgstr "Spojení bylo navázáno"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3336,6 +3417,7 @@ msgstr "Nelze vytvořit spojení se zadanými přihlašovacími údaji"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3348,6 +3430,7 @@ msgstr "Přidat účet SMTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3360,6 +3443,7 @@ msgstr "Účet SMTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3372,6 +3456,7 @@ msgstr "Účet Microsoft"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3384,6 +3469,7 @@ msgstr "HTTP účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3396,6 +3482,7 @@ msgstr "Přidat účet HTTP"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3408,6 +3495,7 @@ msgstr "Přidat účet Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3420,6 +3508,20 @@ msgstr "Přidat účet Microsoft"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Please select a Microsoft account"
+msgstr "Prosím vyberte účet Microsoft"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3432,6 +3534,7 @@ msgstr "Účet Dropbox"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3444,6 +3547,7 @@ msgstr "Přidejte účet Časového serveru"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3456,6 +3560,7 @@ msgstr "Účet Časového serveru"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3468,6 +3573,7 @@ msgstr "Nepřepisuj soubory (v případě konfliktu se přidá vzrůstající č
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3481,6 +3587,7 @@ msgstr "K provedení testu spojení je třeba dočasně nastavit heslo"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3493,6 +3600,7 @@ msgstr "KEY soubor vyžaduje heslo"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3505,6 +3613,7 @@ msgstr "Vyžádat oprávnění"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3517,6 +3626,7 @@ msgstr "Server:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3529,6 +3639,7 @@ msgstr "Uživatelské jméno:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3541,6 +3652,7 @@ msgstr "Přidat účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3560,6 +3672,7 @@ msgstr[2] "Účet se používá v následujících profilech:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3572,6 +3685,7 @@ msgstr "Časový limit v sekundách:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3584,6 +3698,7 @@ msgstr "Režim odesílání:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3596,6 +3711,7 @@ msgstr "Protokol:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3608,6 +3724,7 @@ msgstr "Soubor soukromého klíče:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3620,6 +3737,7 @@ msgstr "Ověření"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3632,6 +3750,7 @@ msgstr "Uživatelské jméno"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3644,6 +3763,7 @@ msgstr "Key soubor"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3656,6 +3776,7 @@ msgstr "Vyberte KEY soubor"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3668,11 +3789,12 @@ msgstr "KEY soubory"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Read and write e-mails"
-msgstr "Číst a psát e-maily"
+msgid "Read and write emails"
+msgstr "Číst a psát emaily"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3680,6 +3802,7 @@ msgstr "Číst a psát e-maily"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3692,11 +3815,12 @@ msgstr "Číst a zapisovat soubory"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Send e-mails"
-msgstr "Odeslat e-maily"
+msgid "Send emails"
+msgstr "Odeslat emaily"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3704,6 +3828,7 @@ msgstr "Odeslat e-maily"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3716,11 +3841,90 @@ msgstr "OWA oprávnění"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Read site infos on SharePoint"
+msgstr "Číst informace o sharepointové stránce"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint Permissions"
+msgstr "Oprávnění SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "OneDrive Permissions"
 msgstr "Oprávnění OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "OneDrive"
+msgstr "OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint"
+msgstr "SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Outlook Web Access"
+msgstr "Outlook Web Access"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "send directly"
+msgstr "odeslat přímo"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "HTTP"
@@ -3841,12 +4045,12 @@ msgid "You can now close this window."
 msgstr "Nyní můžete toto okno zavřít."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail (SMTP)"
-msgstr "E-mail (SMTP)"
+msgid "Email (SMTP)"
+msgstr "Email (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Sends the document as an e-mail without user interaction by using SMTP."
-msgstr "Odešle dokument jako e-mail bez zásahu uživatele pomocí SMTP."
+msgid "Sends the document as an email without user interaction by using SMTP."
+msgstr "Odešle dokument jako email bez zásahu uživatele pomocí SMTP."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3860,8 +4064,8 @@ msgstr "Odebrat účet SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail Address:"
-msgstr "E-mailová adresa:"
+msgid "Email Address:"
+msgstr "Emailová adresa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3875,8 +4079,8 @@ msgstr "SSL"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send e-mail via SMTP"
-msgstr "Odeslání e-mailu prostřednictvím protokolu SMTP"
+msgid "Send email via SMTP"
+msgstr "Odeslání emailu prostřednictvím protokolu SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3885,8 +4089,8 @@ msgstr "Vyberte účet SMTP:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send test e-mail"
-msgstr "Pošli testovací e-mail"
+msgid "Send test email"
+msgstr "Pošli testovací email"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3896,21 +4100,19 @@ msgstr "Soubor dokumentu"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add Attachment"
-msgstr "Přidej přílohu"
+msgstr "Přidat přílohu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit Subject And Content"
-msgstr ""
+msgstr "Upravit věc a obsah"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "The test e-mail was successfully sent to the following recipients:"
-msgstr "Testovací e-mail byl úspěšně odeslán následujícím příjemcům:"
+msgid "The test email was successfully sent to the following recipients:"
+msgstr "Testovací email byl úspěšně odeslán následujícím příjemcům:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3974,25 +4176,19 @@ msgstr "Skrytá kopie (BCC):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Additional E-mail Attachments:"
+msgid "Additional Email Attachments:"
 msgstr "Další e-mailové přílohy:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Select E-mail Attachment File"
-msgstr "Vyberte soubor přílohy e-mailu"
+msgid "Select Email Attachment File"
+msgstr "Vyberte soubor přílohy emailu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Check e-mail client"
-msgstr "Zkontrolujte e-mailového klienta"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail"
-msgstr "E-mail"
+msgid "Check email client"
+msgstr "Zkontrolujte emailového klienta"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4034,8 +4230,8 @@ msgid "Reply To:"
 msgstr "Odpovědět:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "E-mail (OWA)"
-msgstr "E-mail (Outlook)"
+msgid "Email (OWA)"
+msgstr "Email (Outlook)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid ""
@@ -4046,18 +4242,16 @@ msgstr ""
 "převedenými dokumenty a otevře prohlížeč pro jejich úpravu a odeslání."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "Send e-mail directly"
-msgstr "Odeslat e-mail přímo"
+msgid "Send email directly"
+msgstr "Odeslat email přímo"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
 msgid "Open draft in browser"
-msgstr "Otevřít soubor v prohlížeči."
+msgstr "Otevřít návrh v prohlížeči"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid "Create draft"
-msgstr ""
+msgstr "Vytvořit návrh"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "The SMTP action will be disabled for this profile."
@@ -4067,14 +4261,14 @@ msgstr[1] "SMTP akce bude u těchto profilů deaktivována."
 msgstr[2] "SMTP akce bude u těchto profilů deaktivována."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-msgid "E-mail (Desktop)"
-msgstr "E-mail (desktop)"
+msgid "Email (Desktop)"
+msgstr "Email (desktop)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid ""
-"Opens the default e-mail client with the converted document as attachment."
+"Opens the default email client with the converted document as attachment."
 msgstr ""
-"Otevře výchozí e-mailového klienta s převedeným dokumentem jako přílohou."
+"Otevře výchozí emailového klienta s převedeným dokumentem jako přílohou."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Edit Time Server Account"
@@ -4153,14 +4347,6 @@ msgid ""
 msgstr ""
 "Nahraje dokument do Outlooku pro uložení konceptu nebo odeslání příjemci."
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "The Outlook Web Access action will be disabled for this profile."
-msgid_plural ""
-"The Outlook Web Access action will be disabled for these profiles."
-msgstr[0] "Outlook bude zakázán pro tento profil."
-msgstr[1] "Outlook bude zakázán pro tyto profily."
-msgstr[2] "Outlook bude zakázán pro tyto profily."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Remove Microsoft Account"
 msgstr "Odebrat účet Microsoft"
@@ -4170,13 +4356,18 @@ msgid "Edit Microsoft Account"
 msgstr "Editovat účet Microsoft"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "Please choose the permissions you want to grant PDFCreator"
-msgstr "Prosím zvolte oprávnění, která chcete udělit PDFCreatoru"
+msgid "Please choose the action you want to use with this Account"
+msgstr "Prosím zvolte akci, kterou chcete provést s tímto účtem"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "These permissions will be needed to use the actions:"
+msgstr "Tato oprávnění jsou vyžadována pro použití těchto akcí:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid ""
-"The permissions for your Microsoft account have expired. Please request them."
-msgstr ""
+"The permissions for your Microsoft account have expired. Please request them "
+"again."
+msgstr "Oprávnění pro Microsoft účet vypršela. Vyžádejte si je znovu."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "You will be asked to sign in to your Microsoft account."
@@ -4187,44 +4378,21 @@ msgid "Note: Granted permissions can only be revoked via the Microsoft portal."
 msgstr ""
 "Poznámka: Udělená oprávnění mohou být odvolána pouze přes portál Microsoftu."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid ""
-#| "Don't overwrite files (adds an increasing number in case of conflict)"
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr "Nepřepisuj soubory (v případě konfliktu se přidá vzrůstající číslo)"
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "The actions using this account will be disabled for this profile."
+msgid_plural ""
+"The actions using this account will be disabled for these profiles."
+msgstr[0] "Akce používající tento účet bude zakázána v tomto profilu."
+msgstr[1] "Akce používající tento účet bude zakázána v těchto profilech."
+msgstr[2] "Akce používající tento účet bude zakázána v těchto profilech."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Show share link at the end of interactive workflow"
-msgid "Show link at the end of interactive workflow"
-msgstr "Zobrazit odkaz pro sdílení na konci pracovního postupu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "OneDrive share link"
 msgid "Private link"
-msgstr "OneDrive odkaz pro sdílení"
+msgstr "Soukromý odkaz"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
-msgid "Open upload in browser"
-msgstr "Otevřít soubor v prohlížeči."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "OneDrive"
-msgstr "OneDrive"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "Upload a file to your OneDrive"
-msgstr "Nahrát soubor na OneDrive"
+msgstr "Odkaz pro sdílení (kdokoliv s odkazem má přístup)"
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4236,12 +4404,12 @@ msgid ""
 msgstr "Tato nastavení byla provedena administrátorem a nemohou být změněna."
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by the free PDFCreator"
+msgid "Email automatically created by the free PDFCreator"
 msgstr "Tento email byl vytvořen automaticky programem PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by PDFCreator"
-msgstr "E-mail byl automaticky vytvořen PDFCreatorem"
+msgid "Email automatically created by PDFCreator"
+msgstr "Email byl automaticky vytvořen PDFCreatorem"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
 msgid "keyword 1 keyword 2"
@@ -4381,11 +4549,11 @@ msgstr "Uživatelské tokeny"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"User Tokens allow to predefine information like the e-mail address, subject, "
+"User Tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
-"Uživatelské tokeny vám umožňují předefinovat informace jako e-mailovou "
+"Uživatelské tokeny vám umožňují předefinovat informace jako emailovou "
 "adresu, předmět, text a další přímo v dokumentu, aniž byste museli manuálně "
 "otevírat nastavení PDFCreator pro každou konverzi."
 
@@ -4435,7 +4603,7 @@ msgstr "Odešli PDF bez uložení"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"All you want to do is send your PDF documents by e-mail, ftp or similar and "
+"All you want to do is send your PDF documents by email, ftp or similar and "
 "not bother where to save them? PDFCreator has a feature that allows you to "
 "save files only temporarily before they automatically get deleted."
 msgstr ""
@@ -4744,6 +4912,10 @@ msgstr "Zastavit službu PDFCreator Server"
 msgid "There have been errors. Please check the errors tab."
 msgstr "Vyskytly se chyby. Prosím zkontrolujte záložku s chybami."
 
+#: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+msgid "Observation mode - restart as an administrator for full access."
+msgstr "Pozorovací režim – restartujte jako administrátor pro plný přístup."
+
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
 msgid "Store failed print jobs"
 msgstr "Uložit neúspěšné tiskové úlohy"
@@ -5048,6 +5220,25 @@ msgstr "TIFF (vícestránkový grafický soubor)"
 msgid "Secured PDF"
 msgstr "Zabezpečený PDF"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your offline activation on the {0}"
+msgstr ""
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your Internal License Server activation on the {0}"
+msgstr ""
+
+#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "Platnost vaší licence vyprší za {0} den."
+msgstr[1] "Platnost vaší licence vyprší za {0} dny."
+msgstr[2] "Platnost vaší licence vyprší za {0} dnů."
+
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
 msgid ""
 "There was an error with a component licensed by pdfforge.\n"
@@ -5097,11 +5288,6 @@ msgstr ""
 "Kontaktujte prosím: licensing@pdfforge.org"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" is invalid or has expired. Please check your "
-#| "license, otherwise PDFCreator will shutdown.\n"
-#| "Do you want to check your license now?"
 msgid ""
 "A license key for {0} could not be found. Please provide your license key, "
 "otherwise PDFCreator will shutdown. \n"
@@ -5109,18 +5295,14 @@ msgid ""
 msgstr ""
 "Vaše licence na \"{0}\" je neplatná nebo vypršela. Zkontrolujte prosím svou "
 "licenci, jinak se aplikace PDFCreator vypne.\n"
-"Chcete nyní ověřit licenci?"
+"Chcete nyní aktivovat licenci?"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" has expired.\n"
-#| "PDFCreator will shut down."
 msgid ""
 "A license key could not be found.\n"
 "PDFCreator will shut down."
 msgstr ""
-"Vaše licence na \"{0}\" vypršela.\n"
+"Licence nebyla nalezena.\n"
 "PDFCreator bude ukončen."
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
@@ -5245,8 +5427,8 @@ msgid "Could not open output file with default viewer."
 msgstr "Nelze otevřít výstupní soubor standardním prohlížečem."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No compatible e-mail client installed."
-msgstr "Neinstalován žádný kompatibilní e-mailový klient."
+msgid "No compatible email client installed."
+msgstr "Neinstalován žádný kompatibilní emailový klient."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5301,8 +5483,8 @@ msgstr ""
 "povoleny."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unknown error in e-mail client action."
-msgstr "Neznámá chyba v e-mailovém klientovi."
+msgid "Unknown error in email client action."
+msgstr "Neznámá chyba v emailovém klientovi."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "No certificate file is specified."
@@ -5353,6 +5535,8 @@ msgid ""
 "Time server account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro časový server není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5464,15 +5648,15 @@ msgid "Error while running the script action."
 msgstr "Při spuštění skriptu došlo k chybě."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail address is specified."
-msgstr "Není zadána žádná e-mailová adresa SMTP."
+msgid "No SMTP email address is specified."
+msgstr "Není zadána žádná emailová adresa SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail recipients are specified."
-msgstr "Nebyly zadáni příjemci e-mailů SMTP."
+msgid "No SMTP email recipients are specified."
+msgstr "Nebyly zadáni příjemci emailů SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail server is specified."
+msgid "No SMTP email server is specified."
 msgstr "Není zadán žádný poštovní server SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5480,17 +5664,19 @@ msgid "Invalid SMTP port."
 msgstr "Neplatný port SMTP serveru."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail user name is specified."
-msgstr "Není zadáno žádné uživatelské jméno pro SMTP e-mail."
+msgid "No SMTP email user name is specified."
+msgstr "Není zadáno žádné uživatelské jméno pro SMTP email."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "SMTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro SMTP není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The e-mail via SMTP could not be delivered to one or more recipients."
+msgid "The email via SMTP could not be delivered to one or more recipients."
 msgstr "Email zaslaný pomocí SMTP nebyl doručen jednomu či více příjemcům."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5498,12 +5684,12 @@ msgid "Could not authorize to SMTP server."
 msgstr "Nebylo možné se autorizovat na serveru SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "User cancelled retyping SMTP e-mail password."
+msgid "User cancelled retyping SMTP email password."
 msgstr "Uživatel nepotvrdil heslo pro SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Invalid SMTP e-mail recipients."
-msgstr "Neplatní SMTP e-mail příjemci."
+msgid "Invalid SMTP email recipients."
+msgstr "Neplatní SMTP email příjemci."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5511,11 +5697,11 @@ msgid ""
 msgstr "Nejméně jedna z příloh pro akci SMTP není k dispozici."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Missing password for e-mail via SMTP."
-msgstr "Chybí heslo pro SMTP e-mail."
+msgid "Missing password for email via SMTP."
+msgstr "Chybí heslo pro SMTP email."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving requires setting the password for e-mail via SMTP."
+msgid "Automatic saving requires setting the password for email via SMTP."
 msgstr ""
 "Automatické ukládání vyžaduje nastavení hesla pro odeslání e-mailu přes SMTP."
 
@@ -5571,8 +5757,8 @@ msgid ""
 msgstr "Uživatelské tokeny pro dodatečné přílohy SMTP musí být povoleny."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while sending e-mail via SMTP."
-msgstr "Nastala chyba při odesílání e-mailu pomocí SMTP serveru."
+msgid "Error while sending email via SMTP."
+msgstr "Nastala chyba při odesílání emailu pomocí SMTP serveru."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "No background file is specified."
@@ -5593,9 +5779,9 @@ msgstr "Nelze přidat pozadí. Verze PDF dokumentů nejsou kompatibilní."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"Unable to add the background. The background PDF may not be password "
+"Unable to add the background. The background PDF file may not be password "
 "protected."
-msgstr "Nelze přidat pozadí. Soubor pozadí nemůže být chráněn heslem."
+msgstr "Nelze přidat vodoznak. Soubor vodoznaku nemůže být chráněn heslem."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5656,6 +5842,8 @@ msgid ""
 "FTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro FTP server není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The FTP server URL has an invalid format."
@@ -5670,6 +5858,8 @@ msgid ""
 "Dropbox account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro Dropbox není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The specified Dropbox access token is not configured."
@@ -5891,6 +6081,8 @@ msgid ""
 "HTTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro HTTP server není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "User cancelled retyping HTTP authentication password."
@@ -6194,25 +6386,35 @@ msgstr "Nahrávání na OneDrive selhalo."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"User tokens in the shared folder path require the user token action to be "
-"enabled."
-msgstr "Uživatelské tokeny ve sdílených složkách musí být povoleny."
+"User tokens in the OneDrive shared folder path require the user token action "
+"to be enabled."
+msgstr "Uživatelské tokeny ve sdílených složkách OneDrive musí být povoleny."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The provided shared folder path is not a valid path."
-msgstr "Poskytnutá sdílená složka není platná cesta."
+msgid "The provided OneDrive shared folder path is not a valid path."
+msgstr "Poskytnutá sdílená složka OneDrive není platná cesta."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "You don't have the permissions to upload to OneDrive.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"Please check your Microsoft account permissions."
 msgstr ""
 "Nemáte oprávnění pro nahrávání na OneDrive.\n"
-"Prosím ověřte oprávnění svého účtu Microsoft v záložce Účty."
+"Prosím ověřte oprávnění svého účtu Microsoft."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "A share link to the file could not be created."
-msgstr "Odkaz pro sdílení souboru nemohl být vytvořen."
+msgid "A OneDrive share link to the file could not be created."
+msgstr "Odkaz pro sdílení souboru OneDrive nemohl být vytvořen."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"User tokens in the SharePoint shared folder path require the user token "
+"action to be enabled."
+msgstr "Uživatelské tokeny ve sdílených složkách SharePoint musí být povoleny."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The provided SharePoint shared folder path is not a valid path."
+msgstr "Poskytnutá sdílená složka SharePoint není platná cesta."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error while uploading the document to Outlook."
@@ -6223,6 +6425,8 @@ msgid ""
 "Microsoft account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Účet pro Microsoft není nastaven nebo dostupný.\n"
+"Zkontrolujte nastavení účtů."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Could not create draft on account."
@@ -6280,31 +6484,63 @@ msgstr "Nejméně jedna z příloh pro OWA není k dispozici."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to read and write e-mails.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to read and write emails.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
-"Nemáte oprávnění pro čtení a psaní e-mailů.\n"
-"Prosím ověřte oprávnění svého účtu Microsoft v záložce Účty."
+"Nemáte oprávnění pro čtení a psaní emailů.\n"
+"Prosím ověřte oprávnění svého účtu Microsoft."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to send e-mails directly.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to send emails directly.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
-"Nemáte oprávnění pro přímé odesílání e-mailů.\n"
-"Prosím ověřte oprávnění svého účtu Microsoft v záložce Účty."
+"Nemáte oprávnění pro přímé odesílání emailů.\n"
+"Prosím ověřte oprávnění svého účtu Microsoft."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid ""
-#| "You don't have the permissions to upload to OneDrive.\n"
-#| "Please check your Microsoft account permissions in the Accounts tab."
 msgid ""
 "The permissions for your Microsoft account have expired.\n"
 "Please request them again in the Accounts tab."
 msgstr ""
-"Nemáte oprávnění pro nahrávání na OneDrive.\n"
-"Prosím ověřte oprávnění svého účtu Microsoft v záložce Účty."
+"Oprávnění pro Microsoft účet vypršela.\n"
+"Vyžádejte si je znovu v kartě Účty."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The upload to SharePoint failed."
+msgstr "Nahrávání na SharePoint selhalo."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected an account. Please select a valid account to "
+"configure the SharePoint action."
+msgstr ""
+"Nebyl vybrán účet. Prosím vyberte platný účet pro konfiguraci akcí "
+"SharePoint."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a site. Please select a valid site to configure the "
+"SharePoint action."
+msgstr ""
+"Nebyla vybrána stránka. Prosím vyberte platnou stránku pro konfiguraci akcí "
+"SharePoint."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a drive. Please select a valid drive to configure "
+"the SharePoint action."
+msgstr ""
+"Nebyl vybrán disk. Prosím vyberte platný disk pro konfiguraci akcí "
+"SharePoint."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have the permissions to upload to a SharePoint drive.\n"
+"Please check your Microsoft account permissions."
+msgstr ""
+"Nemáte oprávnění pro nahrávání na SharePoint.\n"
+"Prosím ověřte oprávnění svého účtu Microsoft."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "General error during Outlook Web Access action."
@@ -6329,6 +6565,10 @@ msgstr "Uživatelské tokeny pro předmět v metadatech musí být povoleny."
 msgid ""
 "User tokens in metadata keywords require the user token action to be enabled."
 msgstr "Uživatelské tokeny pro klíčová slova v metadatech musí být povoleny."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The output document has no pages. The conversion is aborted."
+msgstr "Výstupní dokument nemá žádné stránky. Konverze byla přerušena."
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
 msgid "Auto detect (the client's default setting)"
@@ -6650,10 +6890,8 @@ msgstr "Podporováno od verze PDFCreator Professional 4.4.0"
 msgid "Supported since PDFCreator Professional 5.0.0"
 msgstr "Podporováno od verze PDFCreator Professional 5.0.0"
 
-#, fuzzy
-#| msgid "Supported since PDFCreator Professional 5.0.0"
 msgid "Supported since PDFCreator Professional 5.3.0"
-msgstr "Podporováno od verze PDFCreator Professional 5.0.0"
+msgstr "Podporováno od verze PDFCreator Professional 5.3.0"
 
 msgid "pdfforge"
 msgstr "PDFforge"
@@ -6835,12 +7073,10 @@ msgid "Allow further profiles defined by User"
 msgstr "Povolit další profily definované uživatelem"
 
 msgid "Hide feedback form"
-msgstr ""
+msgstr "Skrýt formulář pro zpětnou vazbu"
 
-#, fuzzy
-#| msgid "Activate to hide the tips on home screen"
-msgid "Activate to hide feedback form on home and about view."
-msgstr "Chcete-li skrýt tipy na domovské obrazovce, aktivujte"
+msgid "Activate to hide feedback form"
+msgstr "Aktivujte pro skrytí formuláře pro zpětnou vazbu"
 
 msgid "Albanian"
 msgstr "Albánština"
@@ -6916,3 +7152,9 @@ msgstr "Nastavit úroveň protokolování:"
 
 msgid "Allow users to define additional profiles"
 msgstr "Umožnit uživatelům definovat další profily"
+
+#~ msgid "Manage license"
+#~ msgstr "Spravovat licenci"
+
+#~ msgid "Your license has expired."
+#~ msgstr "Platnost vaší licence vypršela."

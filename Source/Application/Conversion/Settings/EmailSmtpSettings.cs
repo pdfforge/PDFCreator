@@ -34,7 +34,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool AddSignature { get; set; } = true;
 		
 		/// <summary>
-		/// The list of additional attachments for the e-mail
+		/// The list of additional attachments for the email
 		/// </summary>
 		public List<string> AdditionalAttachments { get; set; } = new List<string>();
 		
@@ -44,7 +44,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string Content { get; set; } = "";
 		
 		/// <summary>
-		/// Display name for e-mail sender
+		/// Display name for email sender
 		/// </summary>
 		public string DisplayName { get; set; } = "";
 		
@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// Set the e-mail body format
+		/// Set the email body format
 		/// </summary>
 		public EmailFormatSetting Format { get; set; } = EmailFormatSetting.Text;
 		
@@ -64,27 +64,27 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string OnBehalfOf { get; set; } = "";
 		
 		/// <summary>
-		/// The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string Recipients { get; set; } = "";
 		
 		/// <summary>
-		/// The list of recipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string RecipientsBcc { get; set; } = "";
 		
 		/// <summary>
-		/// The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email in the 'CC' field, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string RecipientsCc { get; set; } = "";
 		
 		/// <summary>
-		/// Specifies an address that should be used to reply to the e-mail
+		/// Specifies an address that should be used to reply to the email
 		/// </summary>
 		public string ReplyTo { get; set; } = "";
 		
 		/// <summary>
-		/// Subject line of the e-mail
+		/// Subject line of the email
 		/// </summary>
 		public string Subject { get; set; } = "";
 		

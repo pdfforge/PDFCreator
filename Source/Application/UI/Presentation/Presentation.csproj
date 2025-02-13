@@ -74,7 +74,6 @@
     <Compile Include="Assistants\FileConversionAssistant.cs" />
     <Compile Include="Assistants\CreatorIniSettingsAssistant.cs" />
     <Compile Include="Assistants\IUpdateHelper.cs" />
-    <Compile Include="Assistants\LicenseExpirationReminder.cs" />
     <Compile Include="Assistants\LoadSettingsTranslation.cs" />
     <Compile Include="Assistants\MailTestAssistants\TestMailAssistantBase.cs" />
     <Compile Include="Assistants\PrinterAssistant.cs" />
@@ -233,6 +232,7 @@
     <Compile Include="DesignTime\Helper\DesignTimeEditionHelper.cs" />
     <Compile Include="DesignTime\Helper\DesignTimeFontSelectorControlViewModelFactory.cs" />
     <Compile Include="DesignTime\DesignTimeJobStepPasswordViewModelBase.cs" />
+    <Compile Include="Events\CloseLicenseExpirationReminderEvent.cs" />
     <Compile Include="Events\SettingsLoadingEvent.cs" />
     <Compile Include="Events\ProfileRenamedEvent.cs" />
     <Compile Include="Events\RefreshHistoryRequestedEvent.cs" />
@@ -549,7 +549,6 @@
       <DependentUpon>InteractionHostWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\QuickActions\QuickActionOpenWithPdfArchitectCommand.cs" />
-    <Compile Include="LicenseExpirationReminderTranslation.cs" />
     <Compile Include="NavigationChecks\TabSwitchSettingsCheck.cs" />
     <Compile Include="NavigationChecks\ISettingsNavigationCheck.cs" />
     <Compile Include="NavigationChecks\NavigateDefaultViewerCheck.cs" />
@@ -585,16 +584,11 @@
     <Compile Include="UserControls\ApplicationLogoControl.xaml.cs">
       <DependentUpon>ApplicationLogoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DesignTime\DesignTimeLicenseExpirationReminderViewModel.cs" />
     <Compile Include="UserControls\Dialogs\InputInteractionView.xaml.cs">
       <DependentUpon>InputInteractionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\InputBoxWindowTranslation.cs" />
     <Compile Include="UserControls\Dialogs\InputBoxWindowViewModel.cs" />
-    <Compile Include="UserControls\LicenseExpirationReminderControl.xaml.cs">
-      <DependentUpon>LicenseExpirationReminderControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\LicenseExpirationReminderViewModel.cs" />
     <Compile Include="UserControls\Misc\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
@@ -1363,10 +1357,6 @@
     <Page Include="UserControls\Dialogs\InputInteractionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\LicenseExpirationReminderControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Misc\MessageView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -15,7 +15,7 @@ using System;
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
 	/// <summary>
-	/// Opens the default e-mail client with the converted document as attachment
+	/// Opens the default email client with the converted document as attachment
 	/// </summary>
 	public partial class EmailClientSettings : INotifyPropertyChanged {
 		#pragma warning disable 67
@@ -29,12 +29,12 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool AddSignature { get; set; } = true;
 		
 		/// <summary>
-		/// The list of additional attachments for the e-mail
+		/// The list of additional attachments for the email
 		/// </summary>
 		public List<string> AdditionalAttachments { get; set; } = new List<string>();
 		
 		/// <summary>
-		/// Body text of the e-mail
+		/// Body text of the email
 		/// </summary>
 		public string Content { get; set; } = "";
 		
@@ -44,27 +44,27 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public bool Enabled { get; set; } = false;
 		
 		/// <summary>
-		/// Set the e-mail body format
+		/// Set the email body format
 		/// </summary>
 		public EmailFormatSetting Format { get; set; } = EmailFormatSetting.Auto;
 		
 		/// <summary>
-		/// The list of recipients of the e-mail, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string Recipients { get; set; } = "";
 		
 		/// <summary>
-		/// The list of recipients of the e-mail in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email in the 'BCC' field, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string RecipientsBcc { get; set; } = "";
 		
 		/// <summary>
-		/// The list of recipients of the e-mail in the 'CC' field, i.e. info@someone.com; me@mywebsite.org
+		/// The list of recipients of the email in the 'CC' field, i.e. info@someone.com; me@mywebsite.org
 		/// </summary>
 		public string RecipientsCc { get; set; } = "";
 		
 		/// <summary>
-		/// Subject line of the e-mail
+		/// Subject line of the email
 		/// </summary>
 		public string Subject { get; set; } = "";
 		

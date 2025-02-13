@@ -24,7 +24,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Home
         public string OpenExplorer { get; private set; } = "Open folder";
         public string PrintWithPDFArchitect { get; private set; } = "Print with PDF Architect";
         public string OpenPDFArchitect { get; private set; } = "Open with PDF Architect";
-        public string OpenMailClient { get; private set; } = "Open with E-Mail Client";
+        public string OpenMailClient { get; private set; } = "Open with Email Client";
         public string HistoryIsDisabled { get; private set; } = "History is disabled";
 
         public string FormatCallToAction(string printerName)

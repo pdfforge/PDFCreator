@@ -9,6 +9,7 @@ namespace pdfforge.PDFCreator.Utilities
         private static readonly string InvalidFileCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()))}]+";
 
         private static readonly string InvalidPathCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}*/?]+";
+        private static readonly string InvalidWebPathCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}*?]+";
 
         private static readonly string InvalidFtpCharRegex = $@"/\\|[{Regex.Escape(new string(Path.GetInvalidPathChars()) + ":*?")}]+";
 
@@ -45,6 +46,12 @@ namespace pdfforge.PDFCreator.Utilities
         public static bool IsValidFtpPath(string path)
         {
             return !Regex.IsMatch(path, InvalidFtpCharRegex);
+        }
+
+        public static bool IsValidWebPath(string name)
+        {
+            var containsABadCharacter = new Regex(InvalidWebPathCharRegex);
+            return !containsABadCharacter.IsMatch(name);
         }
 
         //Todo: Check if this is obsolete and can be replaced by PathUtil.IsValidRootedPath

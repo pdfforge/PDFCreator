@@ -25,6 +25,8 @@ namespace pdfforge.PDFCreator.Utilities
         PathUtilStatus IsValidRootedPathWithResponse(string path);
 
         bool IsValidFilename(string fileName);
+
+        string GetCleanFileNameWithoutUniqueCounter(string fileName, string outputPathTemplate);
     }
 
     public class PathUtil : IPathUtil
@@ -176,6 +178,26 @@ namespace pdfforge.PDFCreator.Utilities
                 return false;
 
             return true;
+        }
+
+        public string GetCleanFileNameWithoutUniqueCounter(string fileName, string outputPathTemplate)
+        {
+            var filenameFromTemplate = PathSafe.GetFileName(outputPathTemplate);
+            var outputFileName = fileName;
+            if (!fileName.Equals(filenameFromTemplate))
+            {
+                var extension = PathSafe.GetExtension(outputFileName);
+                var fileNameLengthWithoutExtension = filenameFromTemplate.Length - extension.Length;
+                var searchString = fileName.Substring(fileNameLengthWithoutExtension);
+                var uniqueAppendixIndex = searchString.LastIndexOf("_", StringComparison.InvariantCulture);
+                if (uniqueAppendixIndex > -1)
+                {
+                    var fileNameWithCounter = fileName.Substring(0, uniqueAppendixIndex + fileNameLengthWithoutExtension);
+                    outputFileName = PathSafe.ChangeExtension(fileNameWithCounter, extension);
+                }
+            }
+
+            return outputFileName;
         }
     }
 

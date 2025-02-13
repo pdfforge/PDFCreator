@@ -39,6 +39,13 @@
 %   the content of the element "GuidelineSpecifiedDocumentContextParameter"
 %   (specification identifier BT-24) of the XML instance file.
 %
+% Optionally:
+%   -sZUGFeRDDateTime can be used to set a string representing the modification
+%   date of the XML invoice file. If this is ommitted a dummy value will be
+%   used. It is up to the user to create a correctly formatted PDF date/time
+%   string. See section 7.9.4 of the PDF 2.0 specification (ISO-32000-2:2017)
+%   for details of the format.
+%
 % The user must additionally set -dPDFA=3 and -sColorConversionStrategy
 % on the Ghostscript command line, and set the permissions for Ghostscript
 % to read both these files. It is simplest to put the files in a directory
@@ -68,6 +75,9 @@
 %
 % The program was further refined and expanded by Adrian Devries in :
 %   https://bugs.ghostscript.com/show_bug.cgi?id=703862
+%
+% And refined again following feedback from Thorsten Engel in:
+%   https://bugs.ghostscript.com/show_bug.cgi?id=707694
 %
 % It should not be necessary to modify this program, the comments in the
 % code are there purely for information, but there is one area which
@@ -440,9 +450,15 @@ ZUGFeRDVersion (2p1) eq {
     [ {InvoiceStream} <<
         /Type /EmbeddedFile
         /Subtype (text/xml) cvn
-        % TODO: Determine file length, and add /Length entry
         /Params <<
-          /ModDate (D:20130121081433+01'00') % TODO: Determine file date.
+          /ModDate systemdict /ZUGFeRDDateTime known
+            {ZUGFeRDDateTime}
+            {(D:20130121081433+01'00')}
+            ifelse
+          /Size ZUGFeRDXMLFile status
+            {pop pop exch pop}
+            {(Failed to get file status!\n)print /status load /ioerror signalerror}
+            ifelse
         >>
       >> /PUT pdfmark
     % Now read the data from the file and store it in the stream

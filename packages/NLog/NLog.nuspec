@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>NLog</id>
-    <version>5.3.3</version>
+    <version>5.4.0</version>
     <title>NLog for .NET Framework and .NET Standard</title>
     <authors>Jarek Kowalski,Kim Christensen,Julian Verdurmen</authors>
     <license type="expression">BSD-3-Clause</license>
@@ -14,7 +14,7 @@ NLog supports traditional logging, structured logging and the combination of bot
 
 Supported platforms:
 
-- .NET 5, 6, 7 and 8
+- .NET 5, 6, 7, 8 and 9
 - .NET Core 1, 2 and 3
 - .NET Standard 1.3+ and 2.0+
 - .NET Framework 3.5 - 4.8
@@ -24,29 +24,29 @@ Supported platforms:
 For ASP.NET Core, check: https://www.nuget.org/packages/NLog.Web.AspNetCore</description>
     <releaseNotes>ChangeLog:
 
-- FileTarget - Reset reusable MemoryStream when above max capacity (#5548) (@RomanSoloweow)
-- ThreadIdLayoutRenderer - Added IStringValueRenderer optimization (#5568) (@snakefoot)
-- PropertiesDictionary - Added PropertyDictionaryEnumerator to enumerate without allocation (#5566) (@snakefoot)
-- PropertiesDictionary - Simplify PropertyDictionaryEnumerator MoveNext (#5567) (@snakefoot)
-- TargetWithContext - Skip caching when render value for ContextProperties (#5562) (@snakefoot)
-- SimpleLayout - Refactor to reduce code complexity (#5557) (@snakefoot)
-- DatabaseTarget - CloseConnection even when ThrowExceptions = true (#5556) (@snakefoot)
-- LoggerNameMatcher private classes marked as sealed (#5553) (@snakefoot)
-- LoggingConfigurationParser - Refactor to reduce code complexity (#5554) (@snakefoot)
-- LoggingConfigurationParser - Refactor to reduce code complexity (#5551) (@snakefoot)
-- FileArchiveModeRolling - Refactor to reduce code complexity (#5550) (@snakefoot)
-- LimitingTargetWrapper - Fix wiki-link in XML docs (#5542) (@snakefoot)
-- FileTarget - Improve internal logging when invalid FileName (#5541) (@snakefoot)
-- WhenRepeatedFilter - Added wiki-link in XML docs (#5540) (@snakefoot)
-- RegEx IsMatch is faster with RegexOptions.ExplicitCapture to skip capture (#5536) (@snakefoot)
-- PropertyTypeConverter - Use Type IsAssignableFrom instead of Equals (#5535) (@snakefoot)
-- StackTraceUsageUtils - Refactor to reduce code complexity (#5527) (@snakefoot)
-- AsyncRequestQueue - Premature optimization of Enqueue (#5526) (@snakefoot)
-- JsonLayout - Refactor to reduce code complexity (#5525) (@snakefoot)
-- XmlLayout - Refactor to reduce code complexity (#5524) (@snakefoot)
-- AsyncTaskTarget - Added more logging to diagnose batching logic (#5523) (@snakefoot)
-- Layout will always initializes nested layouts (#5522) (@snakefoot)
-- NLogTraceListener - Reduce boxing of EventType + EventId properties (#5519) (@snakefoot)
+- Fix AppDomain BaseDirectory on NET9 when it returns Long UNC (#5698) (@snakefoot)
+- AsyncTaskTarget - Reduce default throttle after failure to 50ms instead of 500ms (#5700) (@snakefoot)
+- ColoredConsoleTarget - Recognize NO_COLOR environment variable (#5702) (@snakefoot)
+- More InternalLogger output when target disabled because failed to initialize (#5696) (@snakefoot)
+- SimpleLayout - FromString avoid first chance exception when unknown layoutrenderer-type (#5681) (@snakefoot)
+- ObjectGraphScanner - Handle property-getter that throws when AOT (#5651) (@snakefoot)
+- LoggingConfigurationParser - Handle property-getter that throws when AOT (#5656) (@snakefoot)
+- Remove Serializable-attribute and SerializationInfo since obsolete in NET8 (#5604) (@snakefoot)
+- Marked JsonLayout EscapeForwardSlash as obsolete (#5695) (@snakefoot)
+- Marked NLogViewerTarget and IncludeNLogData as obsolete (#5694) (@snakefoot)
+- Marked XmlLoggingConfiguration AppConfig as obsolete (#5693) (@snakefoot)
+- Marked XmlLoggingConfiguration InitializeSucceeded as obsolete (#5692) (@snakefoot)
+- Marked LogEventInfo SetStackTrace with UserStackFrameNumber as obsolete (#5691) (@snakefoot)
+- Marked SetupFromEnvironmentVariables and LogToTrace as obsolete (#5689) (@snakefoot)
+- FileTarget - Introduced WriteToFile without concurrentWrites (#5687) (@snakefoot)
+- TraceTarget - Fixed Header output (#5682) (@snakefoot)
+- CounterLayoutRenderer - Lock on readonly field to fix Sonar Code Smell (#5680) (@snakefoot)
+- LogAssemblyVersion should check InternalLogger IsInfoEnabled (#5630) (@snakefoot)
+- MethodFactory - Only register methods from class-types (#5684) (@snakefoot)
+- StringBuilderExt - Updated EqualTo for StringBuilder to foreach-loop (#5686) (@snakefoot)
+- SimpleLayout - Refactor RenderAllRenderers to use foreach (#5611) (@snakefoot)
+- JsonLayout - Optimize AppendStringEscape for success path (#5610) (@snakefoot)
+- JsonLayout - Optimize ExcludeEmptyProperties to skip string cast (#5601) (@snakefoot)
 
 NLog v5.2 changes how to load extensions: https://nlog-project.org/2023/05/30/nlog-5-2-trim-warnings.html
 
@@ -55,9 +55,9 @@ List of major changes in NLog 5.0: https://nlog-project.org/2022/05/16/nlog-5-0-
 Full changelog: https://github.com/NLog/NLog/blob/master/CHANGELOG.md
 
 For all config options and platform support, check https://nlog-project.org/config/</releaseNotes>
-    <copyright>Copyright (c) 2004-2024 NLog Project - https://nlog-project.org/</copyright>
+    <copyright>Copyright (c) 2004-2025 NLog Project - https://nlog-project.org/</copyright>
     <tags>NLog logging log structured tracing logfiles database eventlog console email</tags>
-    <repository type="git" url="https://github.com/NLog/NLog.git" commit="341c753ad4dce4dd476dcf0bc3ff2cfd9db76493" />
+    <repository type="git" url="https://github.com/NLog/NLog.git" commit="4d45d445601312040107cbe2ac00e56c4bf4a60b" />
     <dependencies>
       <group targetFramework=".NETFramework3.5" />
       <group targetFramework=".NETFramework4.5" />

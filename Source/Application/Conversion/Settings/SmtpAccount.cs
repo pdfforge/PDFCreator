@@ -21,7 +21,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public string AccountId { get; set; } = "";
 		
 		/// <summary>
-		/// E-mail address that is displayed as sender
+		/// Email address that is displayed as sender
 		/// </summary>
 		public string Address { get; set; } = "";
 		

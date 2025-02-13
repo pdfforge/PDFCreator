@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -27,16 +28,18 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
     private readonly IGraphManager _graphManager;
     private readonly IUniqueFilenameFactory _uniqueFilenameFactory;
     private readonly IWebLinkLauncher _webLinkLauncher;
+    private readonly IPathUtil _pathUtil;
     private readonly MicrosoftActionHelper _microsoftActionHelper;
     private HttpClient _httpClient;
 
-    public OneDriveAction(IGraphManager graphManager, IUniqueFilenameFactory uniqueFilenameFactory, MicrosoftActionHelper microsoftActionHelper, IWebLinkLauncher webLinkLauncher) : 
+    public OneDriveAction(IGraphManager graphManager, IUniqueFilenameFactory uniqueFilenameFactory, MicrosoftActionHelper microsoftActionHelper, IWebLinkLauncher webLinkLauncher, IPathUtil pathUtil) : 
         base(p => p.OneDriveSettings)
     {
         _graphManager = graphManager;
         _uniqueFilenameFactory = uniqueFilenameFactory;
         _microsoftActionHelper = microsoftActionHelper;
         _webLinkLauncher = webLinkLauncher;
+        _pathUtil = pathUtil;
     }
 
     protected override ActionResult DoProcessJob(Job job, IPdfProcessor processor)
@@ -87,9 +90,10 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
         foreach (var filePath in job.OutputFiles)
         {
             var fileName = Path.GetFileName(filePath);
-            
+            fileName = _pathUtil.GetCleanFileNameWithoutUniqueCounter(fileName, job.OutputFileTemplate);
+
             if (ensureUniqueFilenames)
-                fileName = await EnsureUniqueFileNames(fileName, destinationFolder, accessToken);
+                fileName = await EnsureUniqueFileNames(fileName, job.OutputFileTemplate, destinationFolder, accessToken);
 
             var uploadSessionUrl = $"{GraphManager.BaseURL}/me/drive/root:/{destinationFolder}/{fileName}:/createUploadSession";
             var uploadResult = await _microsoftActionHelper.UploadFile(uploadSessionUrl, filePath, accessToken);
@@ -160,7 +164,7 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
         return destinationFolder;
     }
 
-    private async Task<string> EnsureUniqueFileNames(string fileName, string destinationFolder, string accessToken)
+    private async Task<string> EnsureUniqueFileNames(string fileName, string outputFilenameTemplate, string destinationFolder, string accessToken)
     {
         var fileExists = await DoesFileExistOnOneDrive(fileName, destinationFolder, accessToken);
 
@@ -291,7 +295,7 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
                 return result;
         }
 
-        if (!ValidName.IsValidPath(profile.OneDriveSettings.SharedFolder))
+        if (!ValidName.IsValidWebPath(profile.OneDriveSettings.SharedFolder))
             result.Add(ErrorCode.OneDrive_InvalidSharedFolder);
 
         return result;

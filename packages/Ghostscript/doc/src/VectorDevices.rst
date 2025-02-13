@@ -420,7 +420,7 @@ The :title:`pdfwrite` family of devices recognize all of the Acrobat Distiller 5
      - false
      - false
    * - EmbedAllFonts
-     -
+     - :ref:`(17)<DistillerParameters_note_17>`
      - true
      - false
      - true
@@ -866,6 +866,11 @@ Note 16
 ^^^^^^^^^
    When true image data in the source which is encoded using the JPX (JPEG 2000) filter will not be decompressed and then recompressed on output. This prevents the multiplication of JPEG artefacts caused by lossy compression. ``PassThroughJPXImages`` currently only affects simple JPX encoded images. It has no effect on JPEG encoded images (see above) or masked images. In addition this parameter will be ignored if the :title:`pdfwrite` device needs to modify the source data. This can happen if the image is being downsampled, changing colour space or having transfer functions applied. Note that this parameter essentially overrides the ``EncodeColorImages`` and ``EncodeGrayImages`` parameters if they are false, the image will still be written with a ``JPXDecode`` filter. NB this feature currently only works with PostScript or PDF input, it does not work with PCL, PXL or XPS input.
 
+.. _DistillerParameters_note_17:
+
+Note 17
+^^^^^^^^^
+   When ``EmbedAllFonts`` is false only Fonts (not CIDFonts) which are symbolic will be embedded in the output file. When ``EmbedAllFonts`` is true the behaviour is dependent on the input type. Ordinarily (all interpreters except PDF) all the fonts will be embedded in the output. Fonts which are not embedded in the input will have a substitute assigned and that will be embedded in the output. For PDF input only, if the Font or CIDFont is not embedded in the input then it will not be embedded in the output. This is a change in behaviour with the release of 10.03.0. If you have defined a specific font as a known good substitute in Fontmap.GS or cidfmap then you will also need to add it to the ``AlwaysEmbed`` array in order that it gets embedded.
 
 
 Color Conversion and Management
@@ -1125,6 +1130,13 @@ The following switches are used for generating metadata according to the Adobe X
 
    Obviously this is all heuristic and undoubtedly there is more we can do to improve the functionality here, but we need concrete examples to work from.
 
+``-dToUnicodeForStdEnc``
+   Controls whether or not :title:`pdfwrite` generates a ``ToUnicode`` CMap for simple fonts (ie not CIDFonts) where all the glyph names can be found in one of hte standard encodings.
+   
+   Because these names are standard a PDF consumer can determine the sense of the text using just the names, a ``ToUnicode`` CMap is redundant. However it seems that some consumers are unable to perform this kind of lookup and only use the ``ToUnicode`` CMap. Accordingly :title:`pdfwrite` now emits ``ToUnicode`` CMaps for these fonts.
+   
+   As this is a change in behaviour, and the inclusion of ``ToUnicode`` CMaps increases the output file size slightly, this control has been added to allow users to restore the old behaviour by setting it to false.
+
 ``-dWriteXRefStm=boolean``
    Controls whether the pdfwrite device will use an XRef stream in the output file instead of a regular xref table. This switch defaults to true, however if the output file is less than PDF 1.5 then XRef streams are not supported, and it will be set to false.
    
@@ -1133,7 +1145,7 @@ The following switches are used for generating metadata according to the Adobe X
 ``-dWriteObjStms=boolean``
    Controls whether the pdfwrite device will use ObjStms to store non-stream objects in the output file. This switch defaults to true, however if the output file is less than PDF 1.5, or XRef streams are disabled then ObjStms are not supported and this switch will be set to false. Additionally, the pdfwrite device does not currently support ObjStms when Linearizing (Optimize for Fast Web View) the output file and ObjStms will be disabled if Linearization is activated.
    
-   Using ObjStms can significantly reduce the size of soem PDF files, at the cost of somewhat reduced performance. Taking as an exmple the PDF 1.7 Reference Manual; the original file is ~32MB, producing a PDF file from it using pdfwrite without the XRefStm or ObjStms enabled produces a file ~19MB, with both these features the output file is ~13.9MB. This is currently a new feature and can be disabled if problems arise.
+   Using ObjStms can significantly reduce the size of some PDF files, at the cost of somewhat reduced performance. Taking as an exmple the PDF 1.7 Reference Manual; the original file is ~32MB, producing a PDF file from it using pdfwrite without the XRefStm or ObjStms enabled produces a file ~19MB, with both these features enabled the output file is ~13.9MB. This is currently a new feature and can be disabled if problems arise.
 
 ----
 

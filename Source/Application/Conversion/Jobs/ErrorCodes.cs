@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Could not open output file with default viewer.")]
         Viewer_CouldNotOpenOutputFileWithDefaultViewer = 10102,
 
-        [Translation("No compatible e-mail client installed.")]
+        [Translation("No compatible email client installed.")]
         MailClient_NoCompatibleEmailClientInstalled = 11101,
 
         [Translation("At least one of the attachment files for the mail client action is unavailable.")]
@@ -37,7 +37,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("User tokens in the additional mail client attachment files require the user token action to be enabled.")]
         MailClient_AdditionalAttachment_RequiresUserToken = 11108,
 
-        [Translation("Unknown error in e-mail client action.")]
+        [Translation("Unknown error in email client action.")]
         MailClient_GenericError = 11999,
 
         [Translation("No certificate file is specified.")]
@@ -151,40 +151,40 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while running the script action.")]
         RunProgram_GenericError = 14999,
 
-        [Translation("No SMTP e-mail address is specified.")]
+        [Translation("No SMTP email address is specified.")]
         Smtp_NoEmailAddress = 15100,
 
-        [Translation("No SMTP e-mail recipients are specified.")]
+        [Translation("No SMTP email recipients are specified.")]
         Smtp_NoRecipients = 15101,
 
-        [Translation("No SMTP e-mail server is specified.")]
+        [Translation("No SMTP email server is specified.")]
         Smtp_NoServerSpecified = 15102,
 
         [Translation("Invalid SMTP port.")]
         Smtp_InvalidPort = 15103,
 
-        [Translation("No SMTP e-mail user name is specified.")]
+        [Translation("No SMTP email user name is specified.")]
         Smtp_NoUserSpecified = 15104,
 
         [Translation("SMTP account not set or not available.\nPlease check your configured accounts.")]
         Smtp_NoAccount = 15105,
 
-        [Translation("Missing password for e-mail via SMTP.")]
+        [Translation("Missing password for email via SMTP.")]
         Smtp_NoPasswordSpecified = 15111,
 
-        [Translation("Automatic saving requires setting the password for e-mail via SMTP.")]
+        [Translation("Automatic saving requires setting the password for email via SMTP.")]
         Smtp_AutoSaveWithoutPassword = 15112,
 
-        [Translation("The e-mail via SMTP could not be delivered to one or more recipients.")]
+        [Translation("The email via SMTP could not be delivered to one or more recipients.")]
         Smtp_EmailNotDelivered = 15106,
 
         [Translation("Could not authorize to SMTP server.")]
         Smtp_AuthenticationDenied = 15107,
 
-        [Translation("User cancelled retyping SMTP e-mail password.")]
+        [Translation("User cancelled retyping SMTP email password.")]
         Smtp_UserCancelled = 15108,
 
-        [Translation("Invalid SMTP e-mail recipients.")]
+        [Translation("Invalid SMTP email recipients.")]
         Smtp_InvalidRecipients = 15109,
 
         [Translation("At least one of the attachment files for the SMTP action is unavailable.")]
@@ -220,7 +220,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("User tokens in the additional SMTP attachment files require the user token action to be enabled.")]
         Smtp_AdditionalAttachment_RequiresUserToken = 15122,
 
-        [Translation("Error while sending e-mail via SMTP.")]
+        [Translation("Error while sending email via SMTP.")]
         Smtp_GenericError = 15999,
 
         [Translation("No background file is specified.")]
@@ -235,7 +235,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Unable to add the background. The PDF format versions are not compatible.")]
         Background_ConformanceError = 17103,
 
-        [Translation("Unable to add the background. The background PDF may not be password protected.")]
+        [Translation("Unable to add the background. The background PDF file may not be password protected.")]
         Background_BadPasswordError = 17104,
 
         [Translation("User tokens in background file path require the user token action to be enabled.")]
@@ -243,6 +243,15 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("Error while adding background to the document.")]
         Background_GenericError = 17999,
+
+        [Translation("The path to the background file has to be an absolute path, e.g. 'C:\\documents\\background.pdf'")]
+        Background_InvalidRootedPath = 36001,
+
+        [Translation("The background file path is too long.")]
+        Background_PathTooLong = 36002,
+
+        [Translation("The background file contains illegal characters.")]
+        Background_IllegalCharacters = 36003,
 
         [Translation("The FTP server is not specified.")]
         Ftp_NoServer = 18100,
@@ -470,15 +479,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("User tokens in target directory require the user token action to be enabled.")]
         TargetDirectory_RequiresUserTokens = 34005,
 
-        [Translation("The path to the background file has to be an absolute path, e.g. 'C:\\documents\\background.pdf'")]
-        Background_InvalidRootedPath = 36001,
-
-        [Translation("The background file path is too long.")]
-        Background_PathTooLong = 36002,
-
-        [Translation("The background file contains illegal characters.")]
-        Background_IllegalCharacters = 36003,
-
         [Translation("The certificate file path is invalid absolute path.")]
         Signature_CertificateFile_InvalidRootedPath = 38001,
 
@@ -632,7 +632,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The page number font is unavailable.")]
         PageNumbers_FontNotFound = 48002,
 
-        [Translation("User tokens in page number format require the user token action to be enabled.")] 
+        [Translation("User tokens in page number format require the user token action to be enabled.")]
         PageNumbers_RequiresUserTokens = 48003,
 
         [Translation("Error while adding page numbers to the document.")]
@@ -644,16 +644,16 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The upload to OneDrive failed.")]
         OneDrive_Upload_Failed = 49201,
 
-        [Translation("User tokens in the shared folder path require the user token action to be enabled.")]
+        [Translation("User tokens in the OneDrive shared folder path require the user token action to be enabled.")]
         OneDrive_SharedFolder_RequiresUserTokenAction = 49202,
 
-        [Translation("The provided shared folder path is not a valid path.")]
+        [Translation("The provided OneDrive shared folder path is not a valid path.")]
         OneDrive_InvalidSharedFolder = 49203,
 
-        [Translation("You don't have the permissions to upload to OneDrive.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        [Translation("You don't have the permissions to upload to OneDrive.\nPlease check your Microsoft account permissions.")]
         OneDrive_MissingPermissions = 49204,
 
-        [Translation("A share link to the file could not be created.")]
+        [Translation("A OneDrive share link to the file could not be created.")]
         OneDrive_CouldNotCreateShareLink = 49205,
 
         [Translation("Error while uploading the document to Outlook.")]
@@ -692,11 +692,29 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("At least one of the additional Outlook Web Access attachment files is unavailable.")]
         Outlook_Web_InvalidAttachmentFiles = 49413,
 
-        [Translation("You don't have the permissions to read and write e-mails.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        [Translation("You don't have the permissions to read and write emails.\nPlease check your Microsoft account permissions.")]
         Outlook_Web_MissingReadWritePermissions = 49414,
 
-        [Translation("You don't have the permissions to send e-mails directly.\nPlease check your Microsoft account permissions in the Accounts tab.")]
+        [Translation("You don't have the permissions to send emails directly.\nPlease check your Microsoft account permissions.")]
         Outlook_Web_MissingSendPermission = 49415,
+
+
+        [Translation("The upload to SharePoint failed.")]
+        Sharepoint_Upload_Failed = 49502,
+        [Translation("You don't have selected an account. Please select a valid account to configure the SharePoint action.")]
+        Sharepoint_Missing_Account = 49503,
+        [Translation("You don't have selected a site. Please select a valid site to configure the SharePoint action.")]
+        Sharepoint_Missing_Site = 49504,
+        [Translation("You don't have selected a drive. Please select a valid drive to configure the SharePoint action.")]
+        Sharepoint_Missing_Drive = 49505,
+        [Translation("You don't have the permissions to upload to a SharePoint drive.\nPlease check your Microsoft account permissions.")]
+        Sharepoint_MissingPermissions = 49506,
+
+        [Translation("User tokens in the SharePoint shared folder path require the user token action to be enabled.")]
+        Sharepoint_SharedFolder_RequiresUserTokenAction = 49207,
+
+        [Translation("The provided SharePoint shared folder path is not a valid path.")]
+        Sharepoint_InvalidSharedFolder = 49208,
 
         [Translation("General error during Outlook Web Access action.")]
         Outlook_Web_General_Error = 49999,
@@ -712,5 +730,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("User tokens in metadata keywords require the user token action to be enabled.")]
         Metadata_Keywords_RequiresUserToken = 50003,
+
+        [Translation("The output document has no pages. The conversion is aborted.")]
+        UserToken_NoPagesInOutputDocument = 60000,
     }
 }

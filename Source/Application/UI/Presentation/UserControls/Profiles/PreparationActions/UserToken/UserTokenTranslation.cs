@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationA
         public string UserTokenTitle { get; private set; } = "Extract User Tokens";
         public string UserTokenIntroduction { get; private set; } = "User tokens allow you to define your own place holders for settings and set the values directly in your document. Place a pattern like this on a separate line in your document:";
         private string UserTokenDocumentExample { get; set; } = "NameDefinedByUser:Example Value";
-        public string UserTokenInSettingsText { get; private set; } = "Use the value in the Profile Settings (e.g. for title or e-mail recipient) via the following token pattern:";
+        public string UserTokenInSettingsText { get; private set; } = "Use the value in the Profile Settings (e.g. for title or email recipient) via the following token pattern:";
         public string UserTokenSettingsExample { get; private set; } = "<User:NameDefinedByUser:Default Value>";
         public string DefaultValueExplanation { get; private set; } = "The default value will be used in case the user token is not defined in your document.";
         public string SelectSeparator { get; private set; } = "Select Separator:";

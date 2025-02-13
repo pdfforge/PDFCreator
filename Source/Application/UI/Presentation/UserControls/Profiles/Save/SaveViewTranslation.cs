@@ -22,7 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
         public string NoSendActionEnabledHintInfo { get; private set; } = "Saving files temporarily without any enabled send action, will only store files in a temporary folder";
 
-        public string TemporarySaveFilesHint { get; private set; } = "Select this to only save files in a temporary directory, e.g. if sent by e-mail";
+        public string TemporarySaveFilesHint { get; private set; } = "Select this to only save files in a temporary directory, e.g. if sent by email";
         public string SelectTargetDirectory { get; private set; } = "Select target directory";
 
         public string OverWriteFiles { get; private set; } = "Overwrite files";

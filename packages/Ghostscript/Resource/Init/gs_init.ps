@@ -34,7 +34,7 @@
 % Interpreter library version number
 % NOTE: the interpreter code requires that the first non-comment token
 % in this file be an integer, and that it match the compiled-in version!
-10031
+10040
 
 % Check the interpreter revision.
 dup revision ne
@@ -1143,13 +1143,12 @@ currentdict /runlibfile0 .undef
       (; OffendingCommand: ) print =only ( ]%%) =
     }
     { (Unrecoverable error: ) print =only flush
-      ( in ) print =only flush
+      ( in ) print =only (\n) print flush
       count 2 gt
        { (Operand stack:\n  ) print
          count 1 sub -1 2 { (  ) print index =only flush } for
-         () =only
+         (\n) =only flush
        } if
-       (\n) =only flush
     }
    ifelse
    -1 0 1 //ErrorNames length 1 sub
@@ -1225,7 +1224,7 @@ currentdict /.unstoppederrorhandler .undef
            }
            {
              exch print exch		% print heading. stack <==flag> <stack>
-             1 index not { () =only } if
+             1 index not { (\n) =only } if
              { 1 index { (\n    ) } { (   ) } ifelse print
                dup type /dicttype eq
                {
@@ -1264,7 +1263,7 @@ currentdict /.unstoppederrorhandler .undef
        errorname /VMerror eq
         { (VM status:) print mark vmstatus
           counttomark { ( ) print counttomark -1 roll dup =only } repeat
-          cleartomark () =only
+          cleartomark (\n) =only
         } if
 
        .languagelevel 2 ge
@@ -1275,7 +1274,7 @@ currentdict /.unstoppederrorhandler .undef
        .oserrno dup 0 ne
         { (Last OS error: ) print
           errorname /VMerror ne
-           { dup .oserrorstring { =only pop } { =only } ifelse }
+           { dup .oserrorstring { =only (\n) print pop } { =only (\n) print } ifelse }
            { =only }
           ifelse
         }

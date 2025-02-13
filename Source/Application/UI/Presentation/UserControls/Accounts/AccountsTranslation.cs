@@ -65,9 +65,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
 
         public string RestrictedHint { get; set; } = "This feature is not supported by the selected output format";
         public string EnabledHint { get; set; } = "This feature is already enabled for the selected profile";
-        public string MailReadWrite{ get; set; } = "Read and write e-mails";
+        public string MailReadWrite{ get; set; } = "Read and write emails";
         public string FilesReadWrite { get; set; } = "Read and write files";
-        public string MailSend { get; set; } = "Send e-mails";
+        public string MailSend { get; set; } = "Send emails";
         public string MailPermissionsLabel { get; set; } = "OWA Permissions";
         public string OneDrivePermissionsLabel { get; set; } = "OneDrive Permissions";
     }

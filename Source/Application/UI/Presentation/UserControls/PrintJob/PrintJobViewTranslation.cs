@@ -32,9 +32,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string SaveToDesktop { get; private set; } = "Save to Desktop";
 
         [Context("PrintJobWindowButton")]
-        public string Email { get; private set; } = "E-mail";
+        public string Email { get; private set; } = "Email";
 
-        public string SendEmailWithoutSaving { get; private set; } = "Send e-mail without saving";
+        public string SendEmailWithoutSaving { get; private set; } = "Send email without saving";
         public string SubjectLabel { get; private set; } = "Subject:";
         public string TitleLabel { get; private set; } = "Title:";
         public string FilenameText { get; private set; } = "Filename:";

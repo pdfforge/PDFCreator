@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
 
         public event EventHandler<OutputEventArgs> Output;
 
-        public TimeSpan Timeout { get; set; } = TimeSpan.FromHours(24);
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(30);
 
         private bool Run(IList<string> parameters, string tempOutputFolder)
         {

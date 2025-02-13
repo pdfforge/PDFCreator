@@ -95,12 +95,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         {
             try
             {
-                _logger.Info("Launch e-mail client action");
+                _logger.Info("Launch email client action");
 
                 var mailClient = _emailClientFactory.CreateEmailClient();
                 if (mailClient == null)
                 {
-                    _logger.Error("No compatible e-mail client installed.");
+                    _logger.Error("No compatible email client installed.");
                     return new ActionResult(ErrorCode.MailClient_NoCompatibleEmailClientInstalled);
                 }
 
@@ -110,16 +110,16 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 if (!success)
                 {
-                    _logger.Warn("Could not start e-mail client");
+                    _logger.Warn("Could not start email client");
                     return new ActionResult(ErrorCode.MailClient_GenericError);
                 }
 
-                _logger.Info("Done starting e-mail client");
+                _logger.Info("Done starting email client");
                 return new ActionResult();
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Exception in e-mail client Action ");
+                _logger.Error(ex, "Exception in email client Action ");
                 return new ActionResult(ErrorCode.MailClient_GenericError);
             }
         }

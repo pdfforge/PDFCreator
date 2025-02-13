@@ -1,12 +1,10 @@
-﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
@@ -52,6 +50,20 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
         {
             _displayUserNameInSpoolJobTitle = displayUserNameInSpoolJobTitle;
             _printer = printer;
+        }
+
+        protected override void AddPermitDevices(IList<string> parameters, GhostscriptVersion ghostscriptVersion)
+        {
+            Logger.Info("GhostscriptVersion: " + ghostscriptVersion.Version);
+            if (Version.TryParse(ghostscriptVersion.Version, out var gsVersion))
+            {
+                var permitDevicesGhostscriptVersion = new Version(10, 4);
+                if (gsVersion >= permitDevicesGhostscriptVersion)
+                {
+                    Logger.Info("Add permitted device: mswinpr2");
+                    parameters.Add("--permit-devices=mswinpr2");
+                }
+            }
         }
 
         private string GetOutputFileParameter(ConversionProfile profile)

@@ -6,8 +6,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
     public class SmtpMailTranslation : MailTranslation
     {
-        public override string Title { get; set; } = "E-mail (SMTP)";
-        public override string InfoText { get; set; } = "Sends the document as an e-mail without user interaction by using SMTP.";
+        public override string Title { get; set; } = "Email (SMTP)";
+        public override string InfoText { get; set; } = "Sends the document as an email without user interaction by using SMTP.";
     }
 
     public class OutlookWebTranslation : AccountsTranslation, IActionTranslation
@@ -20,13 +20,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string RecipientsBccText { get; set; } = "BCC:";
         public string EditMailText { get; set; } = "Edit Subject And Content";
 
-        public string MailAttachmentTitle { get; set; } = "Select E-mail Attachment File";
+        public string MailAttachmentTitle { get; set; } = "Select Email Attachment File";
 
-        public string Email { get; set; } = "E-mail";
-        public virtual string Title { get; set; } = "E-mail (OWA)";
+        public string Email { get; set; } = "Email";
+        public virtual string Title { get; set; } = "Email (OWA)";
         public virtual string InfoText { get; set; } = "Creates a draft in Outlook Web Access (OWA) with the converted documents attached and opens the browser to edit and send it.";
 
-        public virtual string AutomaticSend { get; set; } = "Send e-mail directly";
+        public virtual string AutomaticSend { get; set; } = "Send email directly";
         public virtual string ShowDraft { get; set; } = "Open draft in browser";
         public virtual string SaveDraft { get; set; } = "Create draft";
         public virtual string AddAttachmentFile { get; set; } = "Add Attachment";
@@ -53,16 +53,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         }
 
         //AccountView
-        public string EmailAddressLabel { get; set; } = "E-mail Address:";
+        public string EmailAddressLabel { get; set; } = "Email Address:";
 
         public string PortLabel { get; set; } = "Port:";
         public string Ssl { get; set; } = "SSL";
 
         //ActionUserControl
-        public string SendEmailViaSmtp { get; set; } = "Send e-mail via SMTP";
+        public string SendEmailViaSmtp { get; set; } = "Send email via SMTP";
 
         public string SelectSmtpAccountLabel { get; set; } = "Please select a SMTP account:";
-        public string SendTestMail { get; set; } = "Send test e-mail";
+        public string SendTestMail { get; set; } = "Send test email";
 
         //TestAssistant
         public string DocumentFile { get; set; } = "Document File";
@@ -70,7 +70,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public virtual string AddAttachmentFile { get; set; } = "Add Attachment";
         public string EditMailText { get; set; } = "Edit Subject And Content";
 
-        public string TestMailSent { get; set; } = "The test e-mail was successfully sent to the following recipients:";
+        public string TestMailSent { get; set; } = "The test email was successfully sent to the following recipients:";
         public string SetSmtpServerPassword { get; set; } = "Set SMTP Server Password";
         public string NoAccount { get; set; } = "The specified account is not configured.";
 
@@ -88,14 +88,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string RecipientsToText { get; set; } = "To:";
         public string RecipientsCcText { get; set; } = "CC:";
         public string RecipientsBccText { get; set; } = "BCC:";
-        public string AdditionalAttachmentsText { get; set; } = "Additional E-mail Attachments:";
+        public string AdditionalAttachmentsText { get; set; } = "Additional Email Attachments:";
 
-        public string MailAttachmentTitle { get; set; } = "Select E-mail Attachment File";
+        public string MailAttachmentTitle { get; set; } = "Select Email Attachment File";
 
-        public string CheckMailClient { get; set; } = "Check e-mail client";
-        public string Email { get; set; } = "E-mail";
-        public virtual string Title { get; set; } = "E-mail (Desktop)";
-        public virtual string InfoText { get; set; } = "Opens the default e-mail client with the converted document as attachment.";
+        public string CheckMailClient { get; set; } = "Check email client";
+        public string Email { get; set; } = "Email";
+        public virtual string Title { get; set; } = "Email (Desktop)";
+        public virtual string InfoText { get; set; } = "Opens the default email client with the converted document as attachment.";
 
         public string SpecifySender { get; set; } = "Specify Sender";
         public string SpecifySenderLabel { get; set; } = "Specify Sender:";

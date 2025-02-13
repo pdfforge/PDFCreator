@@ -3,6 +3,7 @@ msgstr ""
 "Project-Id-Version: Danish (PDFCreator)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2024-10-28 01:04+0000\n"
 "Last-Translator: P. Allan <pallan@hotmail.dk>\n"
 "Language-Team: Danish <https://translate.pdfforge.org/projects/pdfcreator/"
 "messages/da/>\n"
@@ -11,30 +12,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
 msgid_plural "Do you want to convert the {0} selected files?"
 msgstr[0] "Skal den {0} valgte fil konverteres?"
 msgstr[1] "Skal de {0} valgte filer konverteres?"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Remind me later"
-msgstr "Påmind senere"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Manage license"
-msgstr "Administrer licens"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license has expired."
-msgstr "Licensen er udløbet."
-
-#. pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "Licensen udløber om {0} dag."
-msgstr[1] "Licensen udløber om {0} dage."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
@@ -58,6 +42,7 @@ msgstr "Printer"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -325,16 +310,12 @@ msgid "Sort by ID descending"
 msgstr "Faldende efter ID"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Sort by date ascending"
 msgid "Sort by name ascending"
-msgstr "Stigende efter dato"
+msgstr "Stigende efter navn"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Sort by date descending"
 msgid "Sort by name descending"
-msgstr "Faldende efter dato"
+msgstr "Faldende efter navn"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Sort by date ascending"
@@ -345,10 +326,8 @@ msgid "Sort by date descending"
 msgstr "Faldende efter dato"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Select File:"
 msgid "Select all"
-msgstr "Vælg fil:"
+msgstr "Vælg alle"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Sort"
@@ -544,6 +523,26 @@ msgstr "Licensen er gyldig."
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid ""
+"Your offline activation has expired. Please reactivate your license "
+"immediately to avoid application blocking."
+msgstr ""
+"Offline aktivering er udløbet. Genaktiver licensen nu således, at programmet "
+"ikke bliver blokeret."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid ""
+"Your Internal License Server activation has expired. Please reactivate your "
+"license immediately to avoid application blocking."
+msgstr ""
+"Aktivering via licens-server er udløbet. Genaktiver licensen nu således, at "
+"programmet ikke bliver blokeret."
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license is not valid for this version."
 msgstr "Licensen er ugyldig til denne version."
 
@@ -602,6 +601,8 @@ msgid ""
 "The license is not recognized by the Internal License Server.\n"
 "Please import the license."
 msgstr ""
+"Licensen findes ikke på den internationale licensserver.\n"
+"Importer licensen."
 
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
@@ -610,6 +611,8 @@ msgid ""
 "The license is meant to be used with the Internal License Server.\n"
 "Please ensure that the InternalLicenseServerUrl parameter is set."
 msgstr ""
+"Licensen er beregnet til brug med den internationale licensserver.\n"
+"Tjek at InternalLicenseServerUrl parameter er opsat."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -691,49 +694,46 @@ msgstr "Andre ændringer"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Share your feedback"
-msgstr ""
+msgstr "Del feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Describe your feedback"
-msgstr ""
+msgstr "Beskriv feedback"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail"
 msgid "Email"
-msgstr "E-mail"
+msgstr "Email"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail Address:"
 msgid "Email address"
-msgstr "E-mailadresse:"
+msgstr "E-mail-adresse"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Please provide details here"
-msgstr ""
+msgstr "Giv detaljer her"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "What type of feedback would you like to send?"
-msgstr ""
+msgstr "Hvilken slags feedback skal sendes?"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Please select a profile:"
 msgid "Please select a feedback type"
-msgstr "Vælg en profil:"
+msgstr "Vælg en type af feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I need to report an issue"
-msgstr ""
+msgstr "Problem skal rapporteres"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I want to share positive feedback"
-msgstr ""
+msgstr "Giver positiv feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I would like to suggest a feature"
-msgstr ""
+msgstr "Foreslår en funktion"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
@@ -743,13 +743,11 @@ msgstr "Send"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Send us your feedback"
-msgstr ""
+msgstr "Giv os feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Save as file"
 msgid "Attach a file"
-msgstr "Gem som fil"
+msgstr "Vedhæft fil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
@@ -765,10 +763,8 @@ msgid "PDF files"
 msgstr "PDF-filer"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "key files"
 msgid "Video files"
-msgstr "nøglefiler"
+msgstr "Videofiler"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -776,6 +772,7 @@ msgstr "nøglefiler"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -793,20 +790,16 @@ msgid "All files"
 msgstr "Alle filer"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Files:"
 msgid "File:"
-msgstr "Filer:"
+msgstr "Fil:"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "An error occured while storing license for all users."
 msgid "An error occured while attempting to submit your feedback"
-msgstr "Der opstod en fejl under lagring af licens for alle brugere."
+msgstr "Der opstod en fejl under afsendelse af feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
 msgid "Send us feedback"
-msgstr ""
+msgstr "Giv os feedback"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
 msgid "BUSINESS FEATURE"
@@ -846,7 +839,7 @@ msgstr "(Fora)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "Feedback"
-msgstr ""
+msgstr "Tilbagemelding"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "Print to '{0}' to get started!"
@@ -921,7 +914,7 @@ msgid "Open with PDF Architect"
 msgstr "Åbn med PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Open with E-Mail Client"
+msgid "Open with Email Client"
 msgstr "Åbn med mail-klient"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
@@ -1027,6 +1020,7 @@ msgstr "Konverter direkte"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1086,6 +1080,7 @@ msgstr "Erstat med:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1235,6 +1230,10 @@ msgid "Expires:"
 msgstr "Udløber:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "License renews on:"
+msgstr "Licens fornyes på:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "License Key:"
 msgstr "Licensnøgle:"
 
@@ -1259,23 +1258,28 @@ msgid "Validating license..."
 msgstr "Validerer licens..."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#, fuzzy
-#| msgid ""
-#| "Do you want to make the license available for all users on your system?"
 msgid "Do you want to share your activation to all users on your system?"
-msgstr "Skal licensen være tilgængelig for alle brugere af systemet?"
+msgstr "Skal aktiveringen deles med alle brugere af systemet?"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Please share your activation to all users on your system."
-msgstr ""
+msgstr "Del venligst aktiveringen med alle brugere på systemet."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "An error occured while storing license for all users."
+msgid "An error occurred while storing license for all users."
 msgstr "Der opstod en fejl under lagring af licens for alle brugere."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Store license for all users was successful."
 msgstr "Lagring af licens for alle brugere er udført."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "Remind me later"
+msgstr "Påmind senere"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "View License"
+msgstr "Se licens"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -1283,6 +1287,7 @@ msgstr "Lagring af licens for alle brugere er udført."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1991,8 +1996,8 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid ""
-"Select this to only save files in a temporary directory, e.g. if sent by e-"
-"mail"
+"Select this to only save files in a temporary directory, e.g. if sent by "
+"email"
 msgstr ""
 "Vælg for kun at gemme filer midlertidigt. F.eks. hvis de sendes med e-mail"
 
@@ -2168,6 +2173,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is already enabled for the selected profile"
 msgstr "Funktionen er allerede aktiveret for den valgte profil"
@@ -2196,9 +2202,78 @@ msgstr "Funktionen er allerede aktiveret for den valgte profil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is not supported by the selected output format"
 msgstr "Funktionen understøttes ikke af det valgte outputformat"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Directory:"
+msgstr "Mappe:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr "Sider:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr "Drev:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Selected Account:"
+msgstr "Vælg konto:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr "Overskriv ikke filer (nummerering, hvis filen allerede findes)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr "Vis link efter interaktiv arbejdsgang"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Open upload in browser"
+msgstr "Åbn upload i browser"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sharepoint"
+msgstr "SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload a file to your OneDrive"
+msgstr "Upload en fil til OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Select an account or create a new one ->"
+msgstr "Vælg en konto eller opret en ny ->"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Run program"
@@ -2308,10 +2383,10 @@ msgstr "BrugerdefineretNavn:Eksempelværdi"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
 msgid ""
-"Use the value in the Profile Settings (e.g. for title or e-mail recipient) "
+"Use the value in the Profile Settings (e.g. for title or email recipient) "
 "via the following token pattern:"
 msgstr ""
-"Brug værdien i profilindstillinger (f.eks. titel eller e-mailmodtager) med "
+"Brug værdien i profilindstillinger (f.eks. titel eller emailmodtager) med "
 "følgende token-mønster:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2623,6 +2698,7 @@ msgstr "Certifikatfil:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2657,6 +2733,7 @@ msgstr "Vis kun billede"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2740,15 +2817,6 @@ msgstr "PFX/P12 filer"
 msgid "Set certificate password"
 msgstr "Certifikatets adgangskode"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Select account or create a new one ->"
 msgstr "Vælg konto eller opret en ny ->"
@@ -3016,27 +3084,12 @@ msgstr "Gem på skrivebord"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgctxt "PrintJobWindowButton"
-msgid "E-mail"
-msgstr "E-mail"
+msgid "Email"
+msgstr "Email"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-msgid "Send e-mail without saving"
-msgstr "Send e-mail uden at gemme"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Directory:"
-msgstr "Mappe:"
+msgid "Send email without saving"
+msgstr "Send email uden at gemme"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid ""
@@ -3101,8 +3154,8 @@ msgid "Quick Actions"
 msgstr "Hurtige handlinger"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Send by e-mail"
-msgstr "Send via e-mail"
+msgid "Send by email"
+msgstr "Send via email"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Open"
@@ -3118,10 +3171,8 @@ msgid "Total file size:"
 msgstr "Total filstørrelse:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-#| msgid "Dropbox"
 msgid "DropBox:"
-msgstr "Dropbox"
+msgstr "Dropbox:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Don't show Quick Actions until the next update"
@@ -3132,14 +3183,16 @@ msgid "Copy the full path to clipboard"
 msgstr "Kopier komplet sti til udklipsholder"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "OneDrive private link"
-msgstr "Version"
+msgstr "OneDrive privat link"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "OneDrive share link"
-msgstr ""
+msgstr "OneDrive delt link"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Sharepoint share link"
+msgstr "SharePoint delt link"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 msgid "Please select a profile:"
@@ -3210,34 +3263,32 @@ msgid "Invalid credentials for '{0}'. Please try retyping your password."
 msgstr "Ugyldige legitimationsoplysninger for '{0}'. Indtast adgangskode."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
-#, fuzzy
-#| msgid "Successful:"
 msgid "Successfully shared"
-msgstr "Udført:"
+msgstr "Er delt"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Your feedback has been sent!"
-msgstr ""
+msgstr "Tilbagemelding er sendt!"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "We value our customers' input!"
-msgstr ""
+msgstr "Vi sætter pris på input fra kunderne!"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for taking the time to share your input."
-msgstr ""
+msgstr "Tak for at bruge tid på at dele dette input."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for sharing your positive experience with us."
-msgstr ""
+msgstr "Tak for at dele positive erfaringer."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for taking the time to share your ideas."
-msgstr ""
+msgstr "Tak for at bruge tid på at komme med ideer."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for letting us know how we can improve."
-msgstr ""
+msgstr "Tak for at fortælle os, hvad vi kan forbedre."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3245,13 +3296,12 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Accounts"
 msgid "Account:"
-msgstr "Konti"
+msgstr "Konto:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3259,6 +3309,7 @@ msgstr "Konti"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3275,6 +3326,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3287,6 +3339,7 @@ msgstr "Administrer konti"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3299,6 +3352,7 @@ msgstr "Tilføj FTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3311,6 +3365,7 @@ msgstr "FTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3323,6 +3378,7 @@ msgstr "Test FTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3335,6 +3391,7 @@ msgstr "Der er oprettet en forbindelse"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3347,6 +3404,7 @@ msgstr "Med disse rettigheder kan der ikke oprettes forbindelse"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3359,6 +3417,7 @@ msgstr "Tilføj SMTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3371,13 +3430,12 @@ msgstr "SMTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Dropbox Account"
 msgid "Microsoft Account"
-msgstr "Dropbox-konto"
+msgstr "Microsoft-konto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3385,6 +3443,7 @@ msgstr "Dropbox-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3397,6 +3456,7 @@ msgstr "HTTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3409,6 +3469,7 @@ msgstr "Tilføj HTTP-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3421,13 +3482,12 @@ msgstr "Tilføj Dropbox-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Add Dropbox account"
 msgid "Add Microsoft account"
-msgstr "Tilføj Dropbox-konto"
+msgstr "Tilføj Microsoft-konto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3435,6 +3495,20 @@ msgstr "Tilføj Dropbox-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Please select a Microsoft account"
+msgstr "Vælg en Microsoft-konto"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3447,6 +3521,7 @@ msgstr "Dropbox-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3459,6 +3534,7 @@ msgstr "Tilføj tidsserver-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3471,6 +3547,7 @@ msgstr "Tidsserver-konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3483,6 +3560,7 @@ msgstr "Overskriv ikke filer (nummererer ved konflikt)"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3496,6 +3574,7 @@ msgstr "For at teste forbindelsen skal adgangskoden benyttes midlertidigt"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3508,13 +3587,12 @@ msgstr "Nøglefil kræver adgangsfrase"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "Request Permissions"
-msgstr "Version"
+msgstr "Bed om tilladelser"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3522,6 +3600,7 @@ msgstr "Version"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3534,6 +3613,7 @@ msgstr "Server:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3546,6 +3626,7 @@ msgstr "Brugernavn:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3558,6 +3639,7 @@ msgstr "Tilføj konto"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3576,6 +3658,7 @@ msgstr[1] "Kontoen anvendes i følgende profiler:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3588,6 +3671,7 @@ msgstr "Timeout i sekunder:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3600,6 +3684,7 @@ msgstr "Sendemåde:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3612,6 +3697,7 @@ msgstr "Protokol:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3624,6 +3710,7 @@ msgstr "Privat nøglefil:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3636,6 +3723,7 @@ msgstr "Godkendelse"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3648,6 +3736,7 @@ msgstr "Brugernavn"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3660,6 +3749,7 @@ msgstr "Nøglefil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3672,6 +3762,7 @@ msgstr "Vælg nøglefil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3684,13 +3775,12 @@ msgstr "nøglefiler"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Secure and Protect"
-msgid "Read and write e-mails"
-msgstr "Sikkerhed og beskyttelse"
+msgid "Read and write emails"
+msgstr "Læs og skriv emails"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3698,13 +3788,12 @@ msgstr "Sikkerhed og beskyttelse"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Secure and Protect"
 msgid "Read and write files"
-msgstr "Sikkerhed og beskyttelse"
+msgstr "Læs og skriv filer"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3712,13 +3801,12 @@ msgstr "Sikkerhed og beskyttelse"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Send by e-mail"
-msgid "Send e-mails"
-msgstr "Send via e-mail"
+msgid "Send emails"
+msgstr "Send e-mails"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3726,13 +3814,12 @@ msgstr "Send via e-mail"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "OWA Permissions"
-msgstr "Version"
+msgstr "OWA tilladelser"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3740,13 +3827,90 @@ msgstr "Version"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
+msgid "Read site infos on SharePoint"
+msgstr "Læs site infos på SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint Permissions"
+msgstr "SharePoint-tilladelser"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "OneDrive Permissions"
-msgstr "Version"
+msgstr "OneDrive tilladelser"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "OneDrive"
+msgstr "OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint"
+msgstr "SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Outlook Web Access"
+msgstr "Outlook Web Access"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "send directly"
+msgstr "send direkte"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "HTTP"
@@ -3818,7 +3982,7 @@ msgstr "Opret link til filerne. Alle med linket kan se filen."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Show share link at the end of interactive workflow."
-msgstr ""
+msgstr "Vis delelink efter interaktiv arbejdsgang."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Please select Dropbox Account:"
@@ -3861,13 +4025,13 @@ msgid "You can now close this window."
 msgstr "Dette vindue kan lukkes nu."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail (SMTP)"
-msgstr "E-mail (SMTP)"
+msgid "Email (SMTP)"
+msgstr "Email (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Sends the document as an e-mail without user interaction by using SMTP."
+msgid "Sends the document as an email without user interaction by using SMTP."
 msgstr ""
-"Sender dokumentet som en e-mail uden brugermedvirken ved at benytte SMTP."
+"Sender dokumentet som en email uden brugermedvirken ved at benytte SMTP."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3881,8 +4045,8 @@ msgstr "Fjern SMTP-konto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail Address:"
-msgstr "E-mailadresse:"
+msgid "Email Address:"
+msgstr "Email adresse:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3896,8 +4060,8 @@ msgstr "SSL"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send e-mail via SMTP"
-msgstr "Send e-mail med SMTP"
+msgid "Send email via SMTP"
+msgstr "Send email med SMTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3906,8 +4070,8 @@ msgstr "Vælg en SMTP-konto:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send test e-mail"
-msgstr "Send test-e-mail"
+msgid "Send test email"
+msgstr "Send test-email"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3917,8 +4081,6 @@ msgstr "Dokumentfil"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add Attachment"
 msgstr "Tilføj vedhæftning"
 
@@ -3926,12 +4088,12 @@ msgstr "Tilføj vedhæftning"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit Subject And Content"
-msgstr ""
+msgstr "Rediger emne og indhold"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "The test e-mail was successfully sent to the following recipients:"
-msgstr "Test e-mail sendt fejlfrit til følgende modtagere:"
+msgid "The test email was successfully sent to the following recipients:"
+msgstr "Test email sendt fejlfrit til følgende modtagere:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3995,25 +4157,19 @@ msgstr "Bcc:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Additional E-mail Attachments:"
+msgid "Additional Email Attachments:"
 msgstr "Flere e-mailvedhæftninger:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Select E-mail Attachment File"
+msgid "Select Email Attachment File"
 msgstr "Vælg vedhæftningsfil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Check e-mail client"
+msgid "Check email client"
 msgstr "Tjek mail-klient"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail"
-msgstr "E-mail"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4054,8 +4210,8 @@ msgid "Reply To:"
 msgstr "Svar til:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "E-mail (OWA)"
-msgstr "E-mail (OWA)"
+msgid "Email (OWA)"
+msgstr "Email (OWA)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid ""
@@ -4066,20 +4222,16 @@ msgstr ""
 "vedhæftet og åbn i browser for at redigere og sende."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#, fuzzy
-#| msgid "Open directory"
-msgid "Send e-mail directly"
+msgid "Send email directly"
 msgstr "Åbn mappe"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
 msgid "Open draft in browser"
-msgstr "Åbn fil til visning."
+msgstr "Åbn udkast i browser"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid "Create draft"
-msgstr ""
+msgstr "Opret udkast"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "The SMTP action will be disabled for this profile."
@@ -4088,14 +4240,13 @@ msgstr[0] "SMTP-handling forhindres for denne profil."
 msgstr[1] "SMTP-handling forhindres for disse profiler."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-msgid "E-mail (Desktop)"
-msgstr "E-mail (Desktop)"
+msgid "Email (Desktop)"
+msgstr "Email (Desktop)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid ""
-"Opens the default e-mail client with the converted document as attachment."
-msgstr ""
-"Åbner standard e-mail-klienten med det konverterede dokument vedhæftet."
+"Opens the default email client with the converted document as attachment."
+msgstr "Åbner standard email-klienten med det konverterede dokument vedhæftet."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Edit Time Server Account"
@@ -4163,7 +4314,7 @@ msgstr "{0} med SFTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Microsoft"
-msgstr ""
+msgstr "Microsoft"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid ""
@@ -4173,79 +4324,50 @@ msgstr ""
 "Uploader dokumentet til Outlook Web Access for at gemme som kladde eller "
 "sende."
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "The Outlook Web Access action will be disabled for this profile."
-msgid_plural ""
-"The Outlook Web Access action will be disabled for these profiles."
-msgstr[0] "Outlook Web Access-handlingen bliver deaktiveret for denne profil."
-msgstr[1] ""
-"Outlook Web Access-handlingen bliver deaktiveret for disse profiler."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#, fuzzy
-#| msgid "Remove Dropbox Account"
 msgid "Remove Microsoft Account"
-msgstr "Fjern Dropbox-konto"
+msgstr "Fjern Microsoft-konto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#, fuzzy
-#| msgid "Dropbox Account"
 msgid "Edit Microsoft Account"
-msgstr "Dropbox-konto"
+msgstr "Rediger Microsoft-konto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "Please choose the permissions you want to grant PDFCreator"
-msgstr ""
+msgid "Please choose the action you want to use with this Account"
+msgstr "Vælg, hvad der skal ske med denne konto"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "These permissions will be needed to use the actions:"
+msgstr "Disse tilladelser er nødvendige for udførelsen:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid ""
-"The permissions for your Microsoft account have expired. Please request them."
-msgstr ""
+"The permissions for your Microsoft account have expired. Please request them "
+"again."
+msgstr "Tilladelserne til Microsoft-kontoen er udløbet. Bed om dem igen."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "You will be asked to sign in to your Microsoft account."
-msgstr ""
+msgstr "Der bliver bedt om login på Microsoft-kontoen."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Note: Granted permissions can only be revoked via the Microsoft portal."
-msgstr ""
+msgstr "Bemærk: Tilladelser kan kun tilbagekaldes via Microsoft-portalen."
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "The actions using this account will be disabled for this profile."
+msgid_plural ""
+"The actions using this account will be disabled for these profiles."
+msgstr[0] "Handlingerne, der anvender kontoen, deaktiveres for profilen."
+msgstr[1] "Handlingerne, der anvender kontoen, deaktiveres for profilerne."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid ""
-#| "Don't overwrite files (adds an increasing number in case of conflict)"
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr "Overskriv ikke filer (nummererer ved konflikt)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "Show link at the end of interactive workflow"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Private key file:"
 msgid "Private link"
-msgstr "Privat nøglefil:"
+msgstr "Privat link"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
-msgid "Open upload in browser"
-msgstr "Åbn fil til visning."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "OneDrive"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "Upload a file to your OneDrive"
-msgstr ""
+msgstr "Delelink (alle med linket kan tilgå det)"
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4257,12 +4379,12 @@ msgid ""
 msgstr "Disse indstillinger er sat af din administrator og kan ikke ændres."
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by the free PDFCreator"
-msgstr "E-mail automatisk oprettet af den gratis PDFCreator"
+msgid "Email automatically created by the free PDFCreator"
+msgstr "Email automatisk oprettet af den gratis PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by PDFCreator"
-msgstr "E-mail er oprettet automatisk af PDFCreator"
+msgid "Email automatically created by PDFCreator"
+msgstr "Email er oprettet automatisk af PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
 msgid "keyword 1 keyword 2"
@@ -4379,17 +4501,15 @@ msgstr "Vælg 'Nej' for at annullere ændringerne."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Settings are Loading"
-msgstr ""
+msgstr "Indstillinger indlæses"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "The application is still in the process of loading settings."
-msgstr ""
+msgstr "Programmet indlæser stadig indstillinger."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
-#, fuzzy
-#| msgid "Do you want to save anyway?"
 msgid "Do you want to close the application anyway?"
-msgstr "Gem alligevel?"
+msgstr "Luk programmet alligevel?"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid "User Tokens"
@@ -4397,7 +4517,7 @@ msgstr "Brugertokens"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"User Tokens allow to predefine information like the e-mail address, subject, "
+"User Tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
@@ -4450,7 +4570,7 @@ msgstr "Send PDF uden at gemme"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"All you want to do is send your PDF documents by e-mail, ftp or similar and "
+"All you want to do is send your PDF documents by email, ftp or similar and "
 "not bother where to save them? PDFCreator has a feature that allows you to "
 "save files only temporarily before they automatically get deleted."
 msgstr ""
@@ -4751,6 +4871,10 @@ msgstr "Stop PDFCreator Server service"
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "There have been errors. Please check the errors tab."
 msgstr "Der er opstået fejl. Tjek fejl-fanen."
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+msgid "Observation mode - restart as an administrator for full access."
+msgstr "Åbnet til observation - genstart som administrator for fuld adgang."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
 msgid "Store failed print jobs"
@@ -5053,6 +5177,28 @@ msgstr "TIFF (flersidet grafikfil)"
 msgid "Secured PDF"
 msgstr "Beskyttet PDF"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your offline activation on the {0}"
+msgstr ""
+"Licensen er gyldig.\n"
+"Genaktiver offline aktivering på {0}"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your Internal License Server activation on the {0}"
+msgstr ""
+"Licensen er gyldig.\n"
+"Genaktiver licensserver-aktivering på {0}"
+
+#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "Licensen udløber om {0} dag."
+msgstr[1] "Licensen udløber om {0} dage."
+
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
 msgid ""
 "There was an error with a component licensed by pdfforge.\n"
@@ -5102,30 +5248,21 @@ msgstr ""
 "Kontakt: licensing@pdfforge.org"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" is invalid or has expired. Please check your "
-#| "license, otherwise PDFCreator will shutdown.\n"
-#| "Do you want to check your license now?"
 msgid ""
 "A license key for {0} could not be found. Please provide your license key, "
 "otherwise PDFCreator will shutdown. \n"
 "Do you want to activate your license now?"
 msgstr ""
-"Licensen til \"{0}\" er ugyldig eller udløbet. Kontroller licensen. Ellers "
-"lukkes PDFCreator.\n"
-"Skal licensen kontrolleres nu?"
+"Licensnøgle til \"{0}\" findes ikke. Angiv licensnøglen. Ellers lukkes "
+"PDFCreator.\n"
+"Skal licensen aktiveres nu?"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" has expired.\n"
-#| "PDFCreator will shut down."
 msgid ""
 "A license key could not be found.\n"
 "PDFCreator will shut down."
 msgstr ""
-"Licensen til \"{0}\" er udløbet.\n"
+"Licensnøgle findes ikke.\n"
 "PDFCreator lukkes."
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
@@ -5248,7 +5385,7 @@ msgid "Could not open output file with default viewer."
 msgstr "Standardprogrammet kan ikke åbne output-filen."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No compatible e-mail client installed."
+msgid "No compatible email client installed."
 msgstr "Ingen kompatibel mail-klient."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5306,8 +5443,8 @@ msgstr ""
 "brugertoken-handlingen er aktiveret."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unknown error in e-mail client action."
-msgstr "Ukendt fejl i e-mail-klientens behandling."
+msgid "Unknown error in email client action."
+msgstr "Ukendt fejl i email-klientens behandling."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "No certificate file is specified."
@@ -5358,6 +5495,8 @@ msgid ""
 "Time server account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Konto på timeserver mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5479,46 +5618,48 @@ msgid "Error while running the script action."
 msgstr "Fejl under afvikling af script."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail address is specified."
-msgstr "SMTP-e-mailadresse er ikke angivet."
+msgid "No SMTP email address is specified."
+msgstr "SMTP-emailadresse er ikke angivet."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail recipients are specified."
-msgstr "SMTP-e-mailmodtagere er ikke angivet."
+msgid "No SMTP email recipients are specified."
+msgstr "SMTP-emailmodtagere er ikke angivet."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail server is specified."
-msgstr "SMTP-e-mail-server er ikke angivet."
+msgid "No SMTP email server is specified."
+msgstr "SMTP-email-server er ikke angivet."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Invalid SMTP port."
 msgstr "Ugyldig SMTP-port."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail user name is specified."
-msgstr "SMTP-e-mailbrugernavn er ikke angivet."
+msgid "No SMTP email user name is specified."
+msgstr "SMTP-emailbrugernavn er ikke angivet."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "SMTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"SMTP konto mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The e-mail via SMTP could not be delivered to one or more recipients."
-msgstr "E-mail via SMTP kunne ikke leveres til en eller flere modtagere."
+msgid "The email via SMTP could not be delivered to one or more recipients."
+msgstr "Email via SMTP kunne ikke leveres til en eller flere modtagere."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Could not authorize to SMTP server."
 msgstr "Kunne ikke autorisere på SMTP-server."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "User cancelled retyping SMTP e-mail password."
-msgstr "Bruger afbrød indtastning af SMTP-e-mailadgangskode."
+msgid "User cancelled retyping SMTP email password."
+msgstr "Bruger afbrød indtastning af SMTP-emailadgangskode."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Invalid SMTP e-mail recipients."
-msgstr "Ugyldige SMTP e-mail modtagere."
+msgid "Invalid SMTP email recipients."
+msgstr "Ugyldige SMTP email modtagere."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5526,11 +5667,11 @@ msgid ""
 msgstr "Mindst en fil til vedhæftning er ikke til rådighed."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Missing password for e-mail via SMTP."
-msgstr "Manglende adgangskode til e-mail via SMTP."
+msgid "Missing password for email via SMTP."
+msgstr "Manglende adgangskode til email via SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving requires setting the password for e-mail via SMTP."
+msgid "Automatic saving requires setting the password for email via SMTP."
 msgstr "Gem automatisk kræver adgangskode til e-mail via SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5595,8 +5736,8 @@ msgstr ""
 "handlingen er aktiveret."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while sending e-mail via SMTP."
-msgstr "Fejl ved afsendelse af e-mail via SMTP."
+msgid "Error while sending email via SMTP."
+msgstr "Fejl ved afsendelse af email via SMTP."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "No background file is specified."
@@ -5617,10 +5758,11 @@ msgstr "Baggrund kan ikke tilføjes. PDF-formatversionerne er ikke kompatible."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"Unable to add the background. The background PDF may not be password "
+"Unable to add the background. The background PDF file may not be password "
 "protected."
 msgstr ""
-"Baggrund kan ikke tilføjes. Baggrunds-PDF må ikke være adgangskodebeskyttet."
+"Baggrund kan ikke tilføjes. PDF til baggrund må ikke være beskyttet med "
+"adgangskode."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5680,6 +5822,8 @@ msgid ""
 "FTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"FTP konto mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The FTP server URL has an invalid format."
@@ -5694,6 +5838,8 @@ msgid ""
 "Dropbox account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Dropbox konto mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The specified Dropbox access token is not configured."
@@ -5926,6 +6072,8 @@ msgid ""
 "HTTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"HTTP konto mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "User cancelled retyping HTTP authentication password."
@@ -6238,35 +6386,43 @@ msgstr "Fejl ved tilføjelse af sidetal."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The upload to OneDrive failed."
-msgstr ""
+msgstr "Upload til OneDrive mislykkedes."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid ""
-#| "User tokens in the cover file paths require the user token action to be "
-#| "enabled."
 msgid ""
-"User tokens in the shared folder path require the user token action to be "
-"enabled."
+"User tokens in the OneDrive shared folder path require the user token action "
+"to be enabled."
 msgstr ""
-"Brugertokens i coverfilstierne kræver, at brugertoken-handlingen er "
-"aktiveret."
+"Brugertokens i delte mappestier på OneDrive kræver, at brugertoken-"
+"handlingen er aktiveret."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid "The FTP key file path is an invalid path."
-msgid "The provided shared folder path is not a valid path."
-msgstr "Sti til ftp nøglefil er ugyldig."
+msgid "The provided OneDrive shared folder path is not a valid path."
+msgstr "Den angivne sti til OneDrive delte mappe ugyldig."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "You don't have the permissions to upload to OneDrive.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"Please check your Microsoft account permissions."
 msgstr ""
+"Der mangler tilladelser til at uploade til OneDrive.\n"
+"Tjek tilladelserne til Microsoft-konto."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "A share link to the file could not be created."
+msgid "A OneDrive share link to the file could not be created."
+msgstr "Link til deling af filen i OneDrive kan ikke oprettes."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"User tokens in the SharePoint shared folder path require the user token "
+"action to be enabled."
 msgstr ""
+"Brugertokens i delte mappestier i SharePoint kræver, at brugertoken-"
+"handlingen er aktiveret."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The provided SharePoint shared folder path is not a valid path."
+msgstr "Sti til delt mappe i SharePoint er ugyldig."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error while uploading the document to Outlook."
@@ -6277,6 +6433,8 @@ msgid ""
 "Microsoft account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Microsoft-konto mangler eller er utilgængelig.\n"
+"Tjek de opsatte konti ."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Could not create draft on account."
@@ -6348,21 +6506,63 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to read and write e-mails.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to read and write emails.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
+"Det er ikke tilladt at læse og skrive emails.\n"
+"Tjek tilladelser til Microsoft-konto."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to send e-mails directly.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to send emails directly.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
+"Det er ikke tilladt at sende emails direkte.\n"
+"Tjek tilladelser til Microsoft-konto."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "The permissions for your Microsoft account have expired.\n"
 "Please request them again in the Accounts tab."
 msgstr ""
+"Tilladelserne til Microsoft-konto er udløbet.\n"
+"Indhent dem igen på fanen Konti."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The upload to SharePoint failed."
+msgstr "Upload til SharePoint mislykkedes."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected an account. Please select a valid account to "
+"configure the SharePoint action."
+msgstr ""
+"Der er ikke valgt en konto. Vælg en gyldig konto til opsætning af SharePoint-"
+"handlingen."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a site. Please select a valid site to configure the "
+"SharePoint action."
+msgstr ""
+"Der er ikke valgt et site. Vælg et gyldigt site til opsætning af SharePoint-"
+"handlingen."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a drive. Please select a valid drive to configure "
+"the SharePoint action."
+msgstr ""
+"Der er ikke valgt et drev. Vælg et gyldigt drev til opsætning af SharePoint-"
+"handlingen."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have the permissions to upload to a SharePoint drive.\n"
+"Please check your Microsoft account permissions."
+msgstr ""
+"Det er ikke tilladt at uploade til et SharePoint-drev.\n"
+"Tjek tilladelser til Microsoft-konto."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "General error during Outlook Web Access action."
@@ -6393,6 +6593,10 @@ msgid ""
 msgstr ""
 "Brugertokens i metadatanøgleord kræver, at brugertoken-handlingen er "
 "aktiveret."
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The output document has no pages. The conversion is aborted."
+msgstr "Output-dokumentet er tomt. Konverteringen er afbrudt."
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
 msgid "Auto detect (the client's default setting)"
@@ -6714,10 +6918,8 @@ msgstr "Understøttet siden PDFCreator Professional 4.4.0"
 msgid "Supported since PDFCreator Professional 5.0.0"
 msgstr "Understøttet fra PDFCreator Professional 5.0.0"
 
-#, fuzzy
-#| msgid "Supported since PDFCreator Professional 5.0.0"
 msgid "Supported since PDFCreator Professional 5.3.0"
-msgstr "Understøttet fra PDFCreator Professional 5.0.0"
+msgstr "Understøttet fra PDFCreator Professional 5.3.0"
 
 msgid "pdfforge"
 msgstr "pdfforge"
@@ -6896,11 +7098,9 @@ msgid "Allow further profiles defined by User"
 msgstr "Tillad flere brugerdefinerede profiler"
 
 msgid "Hide feedback form"
-msgstr ""
+msgstr "Skjul feedback-formular"
 
-#, fuzzy
-#| msgid "Activate to hide the tips on home screen"
-msgid "Activate to hide feedback form on home and about view."
+msgid "Activate to hide feedback form"
 msgstr "Bruges til at skjule tips på startskærmen"
 
 msgid "Albanian"
@@ -6977,3 +7177,9 @@ msgstr "Indstil login niveau:"
 
 msgid "Allow users to define additional profiles"
 msgstr "Tillad brugere at definere flere profiler"
+
+#~ msgid "Manage license"
+#~ msgstr "Administrer licens"
+
+#~ msgid "Your license has expired."
+#~ msgstr "Licensen er udløbet."

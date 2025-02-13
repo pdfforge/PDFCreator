@@ -5,7 +5,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
     public class FrequentTipsTranslation : ITranslatable
     {
         public string UserTokensTitle { get; private set; } = "User Tokens";
-        public string UserTokensText { get; private set; } = "User Tokens allow to predefine information like the e-mail address, subject, and text directly in the document without having to manually open PDFCreator settings for each conversion.";
+        public string UserTokensText { get; private set; } = "User Tokens allow to predefine information like the email address, subject, and text directly in the document without having to manually open PDFCreator settings for each conversion.";
 
         //------------------
         public string F1HelpTitle { get; private set; } = "Need help?";
@@ -25,7 +25,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Banner
         //-------------------
         public string TemporarySaveTitle { get; private set; } = "Send PDFs \"without\" saving";
 
-        public string TemporarySaveText { get; private set; } = "All you want to do is send your PDF documents by e-mail, ftp or similar and not bother where to save them? PDFCreator has a feature that allows you to save files only temporarily before they automatically get deleted.";
+        public string TemporarySaveText { get; private set; } = "All you want to do is send your PDF documents by email, ftp or similar and not bother where to save them? PDFCreator has a feature that allows you to save files only temporarily before they automatically get deleted.";
 
         //-------------------
         public string WorkflowTitle { get; private set; } = "Your individual workflow";

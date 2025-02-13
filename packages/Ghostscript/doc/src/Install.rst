@@ -102,13 +102,34 @@ For Linux, you may be able to install or upgrade Ghostscript from precompiled RP
 
 .. code-block:: bash
 
-   rpm -U ghostscript-N.NN-1.i386.rpm
-   rpm -U ghostscript-fonts-N.NN-1.noarch.rpm
+   rpm -U ghostscript-N.NN.N-1.i386.rpm
+   rpm -U ghostscript-fonts-N.NN.N-1.noarch.rpm
 
 
 However, please note that we do not create RPMs for Ghostscript, and we take no responsibility for RPMs created by others.
 
 
+We supply a snap (Snap_) of our releases, available from the downloads page: ``gs_N.NN.N_amd64_snap.tgz``. Installing the snap means
+decompressing and untarring the archive:
+
+.. code-block:: bash
+
+   gunzip gs_N.NN.N_amd64_snap.tgz
+   tar xvf gs_N.NN.N_amd64_snap.tar
+
+
+The archive contains a README, which we advise you to check for any additional details.
+
+The snap must be installed in "devmode" because Ghostscript cannot be bound by the snap file system sandbox, since it needs to access the input file,
+output file, and possibly fonts, and other resources.
+
+.. code-block:: bash
+
+   sudo snap install --devmode gs_N.NN.N_amd64.snap
+
+
+Please note: the snap includes only a monolithic Ghostscript executable, it does not include a share library, since a snap cannot replace a system's
+existing shared library.
 
 Installing Ghostscript on MS Windows
 ----------------------------------------
@@ -292,7 +313,7 @@ The installation on MacPorts would be as follows:
 .. _Homebrew: https://formulae.brew.sh/formula/ghostscript
 .. _MacPorts: https://ports.macports.org/port/ghostscript/
 .. _update MacPorts: https://guide.macports.org/chunked/using.html
-
+.. _Snap: https://ubuntu.com/core/services/guide/snaps-intro
 
 .. include:: footer.rst
 

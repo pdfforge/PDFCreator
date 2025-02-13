@@ -52,7 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 		public DropboxSettings DropboxSettings { get; set; } = new DropboxSettings();
 		
 		/// <summary>
-		/// Opens the default e-mail client with the converted document as attachment
+		/// Opens the default email client with the converted document as attachment
 		/// </summary>
 		public EmailClientSettings EmailClientSettings { get; set; } = new EmailClientSettings();
 		

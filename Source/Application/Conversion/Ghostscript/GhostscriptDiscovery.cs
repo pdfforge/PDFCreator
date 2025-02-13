@@ -17,12 +17,14 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
     public class GhostscriptDiscovery : IGhostscriptDiscovery
     {
         private readonly IAssemblyHelper _assemblyHelper;
+        private readonly IFileVersionInfoHelper _fileVersionInfoHelper;
         private readonly IFile _file;
 
-        public GhostscriptDiscovery(IFile file, IAssemblyHelper assemblyHelper)
+        public GhostscriptDiscovery(IFile file, IAssemblyHelper assemblyHelper, IFileVersionInfoHelper fileVersionInfoHelper)
         {
             _file = file;
             _assemblyHelper = assemblyHelper;
+            _fileVersionInfoHelper = fileVersionInfoHelper;
         }
 
         public List<string> PossibleGhostscriptPaths { get; set; } = new List<string> { "Ghostscript", @"..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\..\packages\Ghostscript" };
@@ -44,7 +46,12 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
                 var libPaths = new[] { PathSafe.Combine(path, @"Bin"), PathSafe.Combine(path, @"Lib") };
 
                 if (_file.Exists(exePath))
-                    return new GhostscriptVersion("<internal>", exePath, libPaths);
+                {
+                    var ghostscriptVersion = _fileVersionInfoHelper.GetFileVersion(exePath);
+                    
+                    return new GhostscriptVersion(ghostscriptVersion, exePath, libPaths);
+
+                }
             }
 
             return null;

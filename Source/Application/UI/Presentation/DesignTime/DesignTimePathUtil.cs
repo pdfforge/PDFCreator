@@ -45,5 +45,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
         {
             return false;
         }
+
+        public string GetCleanFileNameWithoutUniqueCounter(string fileName, string outputPathTemplate)
+        {
+            return fileName;
+        }
     }
 }

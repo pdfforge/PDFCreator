@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.Core.Startup.Translations
         private string LicenseInvalidGpoHideLicenseTab { get; set; } = "Your license for \"{0}\" has expired.\nPlease contact your administrator.\nPDFCreator will shut down.";
         private string TrialExpired { get; set; } = "Your trial has expired on {0}.\nPDFCreator will shut down.\n\nPlease contact: licensing@pdfforge.org";
         private string LicenseKeyNotFound { get; set; } = "A license key for {0} could not be found. Please provide your license key, otherwise PDFCreator will shutdown. \nDo you want to activate your license now?";
-        public string LicenseKeyNotFoundAfterReactivation { get; set; } = "A license key could not be found.\nPDFCreator will shut down.";
+        public string LicenseKeyCouldNotBeFound { get; set; } = "A license key could not be found.\nPDFCreator will shut down.";
         public string UsePDFCreatorTerminalServer { get; private set; } = "Please use \"PDFCreator Terminal Server\" for use on computers with installed Terminal Services.\n\nPlease visit our website for more information or contact us directly: licensing@pdfforge.org";
         
 

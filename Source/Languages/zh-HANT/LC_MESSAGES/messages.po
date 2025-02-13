@@ -3,6 +3,7 @@ msgstr ""
 "Project-Id-Version: Chinese (Traditional) (PDFCreator)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2024-10-27 09:40+0000\n"
 "Last-Translator: Norman Chu <norman704@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.pdfforge.org/"
 "projects/pdfcreator/messages/zh_Hant/>\n"
@@ -11,28 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.11.2\n"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
 msgid_plural "Do you want to convert the {0} selected files?"
 msgstr[0] "是否要轉換這 {0} 選取檔案？"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Remind me later"
-msgstr "稍後提醒"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Manage license"
-msgstr "授權管理"
-
-#: pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license has expired."
-msgstr "您的授權已到期。"
-
-#. pdfforge.PDFCreator.UI.Presentation.LicenseExpirationReminderTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "您的授權將在 {0} 天內到期。"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
@@ -56,6 +41,7 @@ msgstr "印表機"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -321,16 +307,12 @@ msgid "Sort by ID descending"
 msgstr "按ID降序排序"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Sort by date ascending"
 msgid "Sort by name ascending"
-msgstr "按日期升序排序"
+msgstr "按名稱升序排序"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Sort by date descending"
 msgid "Sort by name descending"
-msgstr "按日期降序排序"
+msgstr "按名稱降序排序"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Sort by date ascending"
@@ -341,10 +323,8 @@ msgid "Sort by date descending"
 msgstr "按日期降序排序"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-#, fuzzy
-#| msgid "Select File:"
 msgid "Select all"
-msgstr "選取檔案："
+msgstr "選取所有"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Sort"
@@ -536,6 +516,22 @@ msgstr "此授權為有效。"
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid ""
+"Your offline activation has expired. Please reactivate your license "
+"immediately to avoid application blocking."
+msgstr "您的離線啟動已過期。請立即重新啟動您的許可證，以避免應用程式被封鎖。"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid ""
+"Your Internal License Server activation has expired. Please reactivate your "
+"license immediately to avoid application blocking."
+msgstr "您的內部授權伺服器啟動已過期。請立即重新啟動授權，以避免應用程式被封鎖。"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
 msgid "The license is not valid for this version."
 msgstr "此授權對此版本已無效。"
 
@@ -594,6 +590,8 @@ msgid ""
 "The license is not recognized by the Internal License Server.\n"
 "Please import the license."
 msgstr ""
+"內部許可證伺服器無法辨識該授權。\n"
+"請匯入授權。"
 
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
@@ -602,6 +600,8 @@ msgid ""
 "The license is meant to be used with the Internal License Server.\n"
 "Please ensure that the InternalLicenseServerUrl parameter is set."
 msgstr ""
+"該授權旨在與內部授權伺服器一起使用。\n"
+"請確保已設定 InternalLicenseServerUrl 參數。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -678,49 +678,46 @@ msgstr "其他變更"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Share your feedback"
-msgstr ""
+msgstr "分享您的回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Describe your feedback"
-msgstr ""
+msgstr "描述您的回饋"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail"
 msgid "Email"
 msgstr "電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "E-mail Address:"
 msgid "Email address"
-msgstr "電子郵件信箱："
+msgstr "電子郵件信箱"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Please provide details here"
-msgstr ""
+msgstr "請在此提供詳細訊息"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "What type of feedback would you like to send?"
-msgstr ""
+msgstr "您想發送什麼類型的回饋？"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Please enter profile name:"
 msgid "Please select a feedback type"
-msgstr "請輸入設定檔名稱："
+msgstr "請選取回饋類型"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I need to report an issue"
-msgstr ""
+msgstr "我要回報一個問題"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I want to share positive feedback"
-msgstr ""
+msgstr "我想分享正面的回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "I would like to suggest a feature"
-msgstr ""
+msgstr "我想推薦一個功能"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
@@ -730,13 +727,11 @@ msgstr "傳送"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Send us your feedback"
-msgstr ""
+msgstr "向我們發送您的回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Save as file"
 msgid "Attach a file"
-msgstr "另存新檔"
+msgstr "附加檔案"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
@@ -752,10 +747,8 @@ msgid "PDF files"
 msgstr "PDF 檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "key files"
 msgid "Video files"
-msgstr "金鑰檔"
+msgstr "視訊檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -763,6 +756,7 @@ msgstr "金鑰檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -780,20 +774,16 @@ msgid "All files"
 msgstr "所有檔案"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "Files:"
 msgid "File:"
 msgstr "檔案："
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
-#, fuzzy
-#| msgid "An error occured while storing license for all users."
 msgid "An error occured while attempting to submit your feedback"
-msgstr "當儲存授權給所有使用者時發生錯誤。"
+msgstr "嘗試提交回饋時發生錯誤"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
 msgid "Send us feedback"
-msgstr ""
+msgstr "向我們發送回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
 msgid "BUSINESS FEATURE"
@@ -831,7 +821,7 @@ msgstr "(論壇)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "Feedback"
-msgstr ""
+msgstr "回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "Print to '{0}' to get started!"
@@ -906,8 +896,8 @@ msgid "Open with PDF Architect"
 msgstr "使用 PDF Architect 開啟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Open with E-Mail Client"
-msgstr "使用 E-Mail 用戶端開啟"
+msgid "Open with Email Client"
+msgstr "用電子郵件用戶端開啟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 msgid "History is disabled"
@@ -1012,6 +1002,7 @@ msgstr "直接轉換"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1071,6 +1062,7 @@ msgstr "替換為："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1218,6 +1210,10 @@ msgid "Expires:"
 msgstr "到期："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "License renews on:"
+msgstr "授權更新日期："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "License Key:"
 msgstr "授權金鑰："
 
@@ -1242,23 +1238,28 @@ msgid "Validating license..."
 msgstr "驗證授權…"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#, fuzzy
-#| msgid ""
-#| "Do you want to make the license available for all users on your system?"
 msgid "Do you want to share your activation to all users on your system?"
-msgstr "確定要讓系統的所有使用者使用此授權？"
+msgstr "您想與系統上的所有使用者分享您的授權嗎？"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Please share your activation to all users on your system."
-msgstr ""
+msgstr "請將您的授權分享給系統上的所有使用者。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-msgid "An error occured while storing license for all users."
+msgid "An error occurred while storing license for all users."
 msgstr "當儲存授權給所有使用者時發生錯誤。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Store license for all users was successful."
 msgstr "儲存授權給所有使用者已成功。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "Remind me later"
+msgstr "稍後提醒"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid "View License"
+msgstr "檢視授權"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -1266,6 +1267,7 @@ msgstr "儲存授權給所有使用者已成功。"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -1956,8 +1958,8 @@ msgstr "如果不啟用任何發送動作，檔案只會存放於暫時資料夾
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid ""
-"Select this to only save files in a temporary directory, e.g. if sent by e-"
-"mail"
+"Select this to only save files in a temporary directory, e.g. if sent by "
+"email"
 msgstr "選此只存檔於暫時目錄，例如透過電子郵件發送時"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
@@ -2125,6 +2127,7 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is already enabled for the selected profile"
 msgstr "此功能已經為所選的設定啟用"
@@ -2153,9 +2156,78 @@ msgstr "此功能已經為所選的設定啟用"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "This feature is not supported by the selected output format"
 msgstr "所選擇的輸出格式不支援此項功能"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Directory:"
+msgstr "目錄："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr "網站："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr "磁碟："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Selected Account:"
+msgstr "選取帳戶："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr "不要覆蓋檔案（如果檔案已存在，則添加一個遞增的數字）"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr "在互動式工作流程結束時顯示連結"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Open upload in browser"
+msgstr "以瀏覽器開啟上傳"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sharepoint"
+msgstr "Sharepoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload a file to your OneDrive"
+msgstr "將檔案上傳到您的 OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Select an account or create a new one ->"
+msgstr "選擇帳戶或建立一個新帳戶 ->"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Run program"
@@ -2262,7 +2334,7 @@ msgstr "使用者所定義名稱：範例值"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
 msgid ""
-"Use the value in the Profile Settings (e.g. for title or e-mail recipient) "
+"Use the value in the Profile Settings (e.g. for title or email recipient) "
 "via the following token pattern:"
 msgstr ""
 "透過以下標記形式（例如，對於標題或電子郵件收件人）使用配置設定檔中的值："
@@ -2569,6 +2641,7 @@ msgstr "憑證檔："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2603,6 +2676,7 @@ msgstr "只顯示圖片"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -2684,15 +2758,6 @@ msgstr "PFX/P12 檔"
 msgid "Set certificate password"
 msgstr "設定憑證密碼"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Select account or create a new one ->"
 msgstr "選擇帳戶或建立一個新帳戶 ->"
@@ -2955,27 +3020,12 @@ msgstr "存至桌面"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgctxt "PrintJobWindowButton"
-msgid "E-mail"
+msgid "Email"
 msgstr "電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-msgid "Send e-mail without saving"
+msgid "Send email without saving"
 msgstr "傳送電子郵件但不存檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Directory:"
-msgstr "目錄："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid ""
@@ -3035,7 +3085,7 @@ msgid "Quick Actions"
 msgstr "快捷動作"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Send by e-mail"
+msgid "Send by email"
 msgstr "發送電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
@@ -3052,10 +3102,8 @@ msgid "Total file size:"
 msgstr "檔案大小總計："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-#| msgid "Dropbox"
 msgid "DropBox:"
-msgstr "Dropbox"
+msgstr "DropBox："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Don't show Quick Actions until the next update"
@@ -3066,26 +3114,24 @@ msgid "Copy the full path to clipboard"
 msgstr "複製完整路徑到剪貼簿"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "OneDrive private link"
-msgstr "版本"
+msgstr "OneDrive 私人連結"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "OneDrive share link"
-msgstr ""
+msgstr "OneDrive 分享連結"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Sharepoint share link"
+msgstr "Sharepoint 分享連結"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
-#, fuzzy
-#| msgid "Please enter profile name:"
 msgid "Please select a profile:"
-msgstr "請輸入設定檔名稱："
+msgstr "請選取設定檔："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
-#, fuzzy
-#| msgid "Edit PDF files"
 msgid "Edit Profile"
-msgstr "編輯 PDF 檔案"
+msgstr "編輯設定黨"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
 msgid "Add printer"
@@ -3145,34 +3191,32 @@ msgid "Invalid credentials for '{0}'. Please try retyping your password."
 msgstr "無效的憑證 '{0}'。請嘗試重新輸入您的密碼。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
-#, fuzzy
-#| msgid "Successful:"
 msgid "Successfully shared"
-msgstr "成功："
+msgstr "成功分享"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Your feedback has been sent!"
-msgstr ""
+msgstr "您的回饋已發送！"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "We value our customers' input!"
-msgstr ""
+msgstr "我們重視客戶的意見！"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for taking the time to share your input."
-msgstr ""
+msgstr "感謝您花時間分享您的意見。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for sharing your positive experience with us."
-msgstr ""
+msgstr "感謝您與我們分享您的正面經驗。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for taking the time to share your ideas."
-msgstr ""
+msgstr "感謝您抽空分享您的想法。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for letting us know how we can improve."
-msgstr ""
+msgstr "感謝您讓我們知道如何改進。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3180,13 +3224,12 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Accounts"
 msgid "Account:"
-msgstr "帳戶"
+msgstr "帳戶："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3194,6 +3237,7 @@ msgstr "帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3208,6 +3252,7 @@ msgstr "管理您的憑據以執行相應的操作。所有設定檔都可以使
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3220,6 +3265,7 @@ msgstr "帳戶管理"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3232,6 +3278,7 @@ msgstr "加入 FTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3244,6 +3291,7 @@ msgstr "FTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3256,6 +3304,7 @@ msgstr "測試 FTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3268,6 +3317,7 @@ msgstr "已建立連線"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3280,6 +3330,7 @@ msgstr "無法以所提供的憑證建立連線"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3292,6 +3343,7 @@ msgstr "加入 SMTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3304,13 +3356,12 @@ msgstr "SMTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Dropbox Account"
 msgid "Microsoft Account"
-msgstr "Dropbox 帳戶"
+msgstr "微軟帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3318,6 +3369,7 @@ msgstr "Dropbox 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3330,6 +3382,7 @@ msgstr "HTTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3342,6 +3395,7 @@ msgstr "加入 HTTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3354,13 +3408,12 @@ msgstr "加入 Dropbox 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Add Dropbox account"
 msgid "Add Microsoft account"
-msgstr "加入 Dropbox 帳戶"
+msgstr "加入微軟帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3368,6 +3421,20 @@ msgstr "加入 Dropbox 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Please select a Microsoft account"
+msgstr "請選取微軟帳戶"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3380,6 +3447,7 @@ msgstr "Dropbox 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3392,6 +3460,7 @@ msgstr "加入時間伺服器帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3404,6 +3473,7 @@ msgstr "時間伺服器帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3416,6 +3486,7 @@ msgstr "不要覆蓋檔案 (發生衝突時加入一個序號)"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3429,6 +3500,7 @@ msgstr "需要臨時設定密碼以便測試連線"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3441,13 +3513,12 @@ msgstr "金鑰檔需要密碼"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "Request Permissions"
-msgstr "版本"
+msgstr "請求權限"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3455,6 +3526,7 @@ msgstr "版本"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3467,6 +3539,7 @@ msgstr "伺服器："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3479,6 +3552,7 @@ msgstr "使用者名稱:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3491,6 +3565,7 @@ msgstr "新增帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3508,6 +3583,7 @@ msgstr[0] "該帳戶在下列設定檔下使用："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3520,6 +3596,7 @@ msgstr "時限以秒計："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3532,6 +3609,7 @@ msgstr "傳送模式："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3544,6 +3622,7 @@ msgstr "協定："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3556,6 +3635,7 @@ msgstr "私鑰檔："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3568,6 +3648,7 @@ msgstr "驗證"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3580,6 +3661,7 @@ msgstr "使用者名稱"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3592,6 +3674,7 @@ msgstr "金鑰檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3604,6 +3687,7 @@ msgstr "選取金鑰檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -3616,13 +3700,12 @@ msgstr "金鑰檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Secure and Protect"
-msgid "Read and write e-mails"
-msgstr "安控和保護"
+msgid "Read and write emails"
+msgstr "讀寫電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3630,13 +3713,12 @@ msgstr "安控和保護"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Secure and Protect"
 msgid "Read and write files"
-msgstr "安控和保護"
+msgstr "讀寫檔案"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3644,12 +3726,11 @@ msgstr "安控和保護"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Send by e-mail"
-msgid "Send e-mails"
+msgid "Send emails"
 msgstr "發送電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3658,13 +3739,12 @@ msgstr "發送電子郵件"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
 msgid "OWA Permissions"
-msgstr "版本"
+msgstr "OWA 權限"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3672,13 +3752,90 @@ msgstr "版本"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-#| msgid "Version"
+msgid "Read site infos on SharePoint"
+msgstr "閱讀 SharePoint 上的網站信息"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint Permissions"
+msgstr "SharePoint 權限"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "OneDrive Permissions"
-msgstr "版本"
+msgstr "OneDrive 權限"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "OneDrive"
+msgstr "OneDrive"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "SharePoint"
+msgstr "SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "Outlook Web Access"
+msgstr "Outlook 網頁造訪"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "send directly"
+msgstr "直接發送"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
 msgid "HTTP"
@@ -3748,7 +3905,7 @@ msgstr "建立連結以分享上傳檔案。任何人可透過該連結瀏覽此
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Show share link at the end of interactive workflow."
-msgstr ""
+msgstr "在互動式工作流程結束時顯示共享連結。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Please select Dropbox Account:"
@@ -3789,11 +3946,11 @@ msgid "You can now close this window."
 msgstr "您現在可以關閉此視窗。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail (SMTP)"
+msgid "Email (SMTP)"
 msgstr "電子郵件 (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Sends the document as an e-mail without user interaction by using SMTP."
+msgid "Sends the document as an email without user interaction by using SMTP."
 msgstr "透過SMTP將文件檔發送電子郵件，而不需與用戶互動。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3808,7 +3965,7 @@ msgstr "移除 SMTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail Address:"
+msgid "Email Address:"
 msgstr "電子郵件信箱："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3823,7 +3980,7 @@ msgstr "SSL"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send e-mail via SMTP"
+msgid "Send email via SMTP"
 msgstr "透過 SMTP 發送電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3833,7 +3990,7 @@ msgstr "請選取 SMTP 帳戶："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Send test e-mail"
+msgid "Send test email"
 msgstr "傳送電子郵件測試"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3844,8 +4001,6 @@ msgstr "文件檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#, fuzzy
-#| msgid "Add attachment"
 msgid "Add Attachment"
 msgstr "加入附件"
 
@@ -3853,11 +4008,11 @@ msgstr "加入附件"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Edit Subject And Content"
-msgstr ""
+msgstr "編輯主題和內容"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "The test e-mail was successfully sent to the following recipients:"
+msgid "The test email was successfully sent to the following recipients:"
 msgstr "測試電子郵件已成功寄至下列收件人："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3922,25 +4077,19 @@ msgstr "密件副本："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Additional E-mail Attachments:"
+msgid "Additional Email Attachments:"
 msgstr "額外電子郵件附件："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Select E-mail Attachment File"
+msgid "Select Email Attachment File"
 msgstr "選取電子郵件附件檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Check e-mail client"
+msgid "Check email client"
 msgstr "檢查電子郵件用戶端"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "E-mail"
-msgstr "電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -3980,7 +4129,7 @@ msgid "Reply To:"
 msgstr "回覆："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "E-mail (OWA)"
+msgid "Email (OWA)"
 msgstr "電子郵件 (OWA)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
@@ -3992,20 +4141,16 @@ msgstr ""
 "打開瀏覽器進行編輯和發送。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#, fuzzy
-#| msgid "Open directory"
-msgid "Send e-mail directly"
+msgid "Send email directly"
 msgstr "開啟目錄"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
 msgid "Open draft in browser"
-msgstr "以瀏覽器開啟檔案。"
+msgstr "以瀏覽器開啟草稿"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid "Create draft"
-msgstr ""
+msgstr "建立草稿"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid "The SMTP action will be disabled for this profile."
@@ -4013,12 +4158,12 @@ msgid_plural "The SMTP action will be disabled for this profiles."
 msgstr[0] "此設定檔會停用 SMTP 操作。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-msgid "E-mail (Desktop)"
+msgid "Email (Desktop)"
 msgstr "電子郵件 (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 msgid ""
-"Opens the default e-mail client with the converted document as attachment."
+"Opens the default email client with the converted document as attachment."
 msgstr "使用預設的電子郵件客戶端開啓，並以轉換後的文件作為附件。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -4085,7 +4230,7 @@ msgstr "{0} 透過 SFTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Microsoft"
-msgstr ""
+msgstr "微軟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid ""
@@ -4093,77 +4238,49 @@ msgid ""
 "recipient."
 msgstr "文件檔上傳至 Outlook Web Access 保存草稿或送給收件人。"
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "The Outlook Web Access action will be disabled for this profile."
-msgid_plural ""
-"The Outlook Web Access action will be disabled for these profiles."
-msgstr[0] "此設定檔會停用 Outlook Web Access 操作。"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#, fuzzy
-#| msgid "Remove Dropbox Account"
 msgid "Remove Microsoft Account"
-msgstr "移除 Dropbox 帳戶"
+msgstr "移除微軟帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#, fuzzy
-#| msgid "Dropbox Account"
 msgid "Edit Microsoft Account"
-msgstr "Dropbox 帳戶"
+msgstr "編輯微軟帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-msgid "Please choose the permissions you want to grant PDFCreator"
-msgstr ""
+msgid "Please choose the action you want to use with this Account"
+msgstr "請選擇您要對此帳戶執行的動作"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "These permissions will be needed to use the actions:"
+msgstr "使用這些動作需要這些權限："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid ""
-"The permissions for your Microsoft account have expired. Please request them."
-msgstr ""
+"The permissions for your Microsoft account have expired. Please request them "
+"again."
+msgstr "您的微軟帳戶的權限已過期。請再次請求他們。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "You will be asked to sign in to your Microsoft account."
-msgstr ""
+msgstr "系統將要求您登入您的微軟帳戶。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Note: Granted permissions can only be revoked via the Microsoft portal."
-msgstr ""
+msgstr "注意：授予的權限只能透過微軟入口網站撤銷。"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+msgid "The actions using this account will be disabled for this profile."
+msgid_plural ""
+"The actions using this account will be disabled for these profiles."
+msgstr[0] "這些設定檔將停用使用此帳戶的動作。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid ""
-#| "Don't overwrite files (adds an increasing number in case of conflict)"
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr "不要覆蓋檔案 (發生衝突時加入一個序號)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "Show link at the end of interactive workflow"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Private key file:"
 msgid "Private link"
-msgstr "私鑰檔："
+msgstr "私人連結"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#, fuzzy
-#| msgid "Open file in viewer."
-msgid "Open upload in browser"
-msgstr "以瀏覽器開啟檔案。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "OneDrive"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-msgid "Upload a file to your OneDrive"
-msgstr ""
+msgstr "分享連結（知道該連結的任何人都可以訪問它）"
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4175,11 +4292,11 @@ msgid ""
 msgstr "這些設定是由您的系統管理員設置且無法更改。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by the free PDFCreator"
+msgid "Email automatically created by the free PDFCreator"
 msgstr "由免費的 PDFCreator 自動產生電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.MailSignatureHelperTranslation
-msgid "E-mail automatically created by PDFCreator"
+msgid "Email automatically created by PDFCreator"
 msgstr "由 PDFCreator 自動產生電子郵件"
 
 #: pdfforge.PDFCreator.UI.Presentation.Helper.Tokens.TokenPlaceHoldersTranslation
@@ -4290,17 +4407,15 @@ msgstr "選擇 '否' 以還原變更。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Settings are Loading"
-msgstr ""
+msgstr "正在載入設定"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "The application is still in the process of loading settings."
-msgstr ""
+msgstr "該應用程式仍在載入設定中。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
-#, fuzzy
-#| msgid "Do you want to save anyway?"
 msgid "Do you want to close the application anyway?"
-msgstr "是否確定要儲存？"
+msgstr "您仍要關閉該應用程式嗎？"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid "User Tokens"
@@ -4308,7 +4423,7 @@ msgstr "使用者標記"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"User Tokens allow to predefine information like the e-mail address, subject, "
+"User Tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
@@ -4358,7 +4473,7 @@ msgstr "傳送 PDF \"但不\" 存檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"All you want to do is send your PDF documents by e-mail, ftp or similar and "
+"All you want to do is send your PDF documents by email, ftp or similar and "
 "not bother where to save them? PDFCreator has a feature that allows you to "
 "save files only temporarily before they automatically get deleted."
 msgstr ""
@@ -4642,6 +4757,10 @@ msgstr "停止 PDFCreator 伺服器服務"
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "There have been errors. Please check the errors tab."
 msgstr "有發生錯誤。 請檢視錯誤標籤頁。"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+msgid "Observation mode - restart as an administrator for full access."
+msgstr "觀察模式 - 以管理員身分重新啟動以獲得完全存取權限。"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
 msgid "Store failed print jobs"
@@ -4942,6 +5061,27 @@ msgstr "TIFF (多頁圖檔)"
 msgid "Secured PDF"
 msgstr "保全的PDF"
 
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your offline activation on the {0}"
+msgstr ""
+"您的授權有效。\n"
+"請在 {0} 上重新啟用您的離線啟動"
+
+#: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid ""
+"Your license is valid.\r\n"
+"Please reactivate your Internal License Server activation on the {0}"
+msgstr ""
+"您的授權有效。\n"
+"請在 {0} 上重新啟用您的內部授權伺服器"
+
+#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "您的授權將在 {0} 天內到期。"
+
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
 msgid ""
 "There was an error with a component licensed by pdfforge.\n"
@@ -4990,29 +5130,20 @@ msgstr ""
 "請聯繫：licensing@pdfforge.org"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" is invalid or has expired. Please check your "
-#| "license, otherwise PDFCreator will shutdown.\n"
-#| "Do you want to check your license now?"
 msgid ""
 "A license key for {0} could not be found. Please provide your license key, "
 "otherwise PDFCreator will shutdown. \n"
 "Do you want to activate your license now?"
 msgstr ""
-"您的授權 \"{0}\" 是無效或已過期。請檢核您的授權，否則 PDFCreator 即將關閉，\n"
-"是否現在檢核您的授權？"
+"找不到 {0} 的授權金鑰。請提供您的授權金鑰，否則 PDFCreator 將關閉。\n"
+"是否現在啟動您的授權？"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-#| msgid ""
-#| "Your license for \"{0}\" has expired.\n"
-#| "PDFCreator will shut down."
 msgid ""
 "A license key could not be found.\n"
 "PDFCreator will shut down."
 msgstr ""
-"您的授權 \"{0}\" 已過期。\n"
+"找不到授權金鑰。\n"
 "PDFCreator 即將關閉。"
 
 #: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
@@ -5131,7 +5262,7 @@ msgid "Could not open output file with default viewer."
 msgstr "無法以預設瀏覽器開啟輸出檔案。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No compatible e-mail client installed."
+msgid "No compatible email client installed."
 msgstr "未安裝相容的電子郵件用戶端。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5177,7 +5308,7 @@ msgid ""
 msgstr "其他郵件用戶端附件檔案中的使用者標記需要開啟使用者標記操作。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Unknown error in e-mail client action."
+msgid "Unknown error in email client action."
 msgstr "發生未知錯誤在電子郵件用戶端動作。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5229,6 +5360,8 @@ msgid ""
 "Time server account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"時間伺服器帳戶未設定或不可用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5336,15 +5469,15 @@ msgid "Error while running the script action."
 msgstr "執行腳本動作時發生錯誤。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail address is specified."
+msgid "No SMTP email address is specified."
 msgstr "未指定 SMTP 的電子郵件信箱。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail recipients are specified."
+msgid "No SMTP email recipients are specified."
 msgstr "未指定 SMTP 電子郵件的收件人。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail server is specified."
+msgid "No SMTP email server is specified."
 msgstr "未指定 SMTP 郵件伺服器。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5352,7 +5485,7 @@ msgid "Invalid SMTP port."
 msgstr "無效的 SMTP 埠。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No SMTP e-mail user name is specified."
+msgid "No SMTP email user name is specified."
 msgstr "未指定 SMTP 電子郵件的使用者名稱。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5360,9 +5493,11 @@ msgid ""
 "SMTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"SMTP 帳戶未設定或不可用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The e-mail via SMTP could not be delivered to one or more recipients."
+msgid "The email via SMTP could not be delivered to one or more recipients."
 msgstr "有一個或多個收件人無法透過 SMTP 寄送電子郵件。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5370,11 +5505,11 @@ msgid "Could not authorize to SMTP server."
 msgstr "SMTP 伺服器無法驗證。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "User cancelled retyping SMTP e-mail password."
+msgid "User cancelled retyping SMTP email password."
 msgstr "使用者已取消重試 SMTP 電子郵件密碼。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Invalid SMTP e-mail recipients."
+msgid "Invalid SMTP email recipients."
 msgstr "無效的 SMTP 電子郵件收件人。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5383,11 +5518,11 @@ msgid ""
 msgstr "SMTP 動作的附件檔中至少有一個不可用。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Missing password for e-mail via SMTP."
+msgid "Missing password for email via SMTP."
 msgstr "欠缺透過 SMTP 的電子郵件密碼。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Automatic saving requires setting the password for e-mail via SMTP."
+msgid "Automatic saving requires setting the password for email via SMTP."
 msgstr "自動存檔需要設定通過 SMTP 的電子郵件密碼。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5439,7 +5574,7 @@ msgid ""
 msgstr "其他 SMTP 附件檔案中的使用者標記需要開啟使用者標記操作。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "Error while sending e-mail via SMTP."
+msgid "Error while sending email via SMTP."
 msgstr "透過 SMTP 傳送電子郵件時發生錯誤。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
@@ -5461,9 +5596,9 @@ msgstr "無法添加背景。此檔的PDF格式版本不相容。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"Unable to add the background. The background PDF may not be password "
+"Unable to add the background. The background PDF file may not be password "
 "protected."
-msgstr "無法加入背景。該背景檔PDF可能具密碼保護。"
+msgstr "無法加入背景。此背景檔 PDF 檔可能有密碼保護。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5521,6 +5656,8 @@ msgid ""
 "FTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"FTP 帳戶未設定或不可用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The FTP server URL has an invalid format."
@@ -5535,6 +5672,8 @@ msgid ""
 "Dropbox account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"Dropbox 帳戶未設定或不可用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The specified Dropbox access token is not configured."
@@ -5715,7 +5854,7 @@ msgstr "Ghostscript 內部錯誤。"
 msgid ""
 "You have printed a password-protected PDF file and Ghostscript ist not able "
 "to convert such files."
-msgstr "您列印了受密碼保護的 PDF 檔案但 Ghostscript 無法轉換這樣的檔案。"
+msgstr "您列印了具密碼保護的 PDF 檔案而 Ghostscript 無法轉換這樣的檔案。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Unknown internal error."
@@ -5751,6 +5890,8 @@ msgid ""
 "HTTP account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"HTTP 帳戶未設定或不可用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "User cancelled retyping HTTP authentication password."
@@ -6045,33 +6186,39 @@ msgstr "文件加入頁碼時發生錯誤。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The upload to OneDrive failed."
-msgstr ""
+msgstr "上傳到 OneDrive 失敗。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid ""
-#| "User tokens in the cover file paths require the user token action to be "
-#| "enabled."
 msgid ""
-"User tokens in the shared folder path require the user token action to be "
-"enabled."
-msgstr "封面檔案路徑中的使用者標記需要開啟使用者標記操作。"
+"User tokens in the OneDrive shared folder path require the user token action "
+"to be enabled."
+msgstr "OneDrive 共用資料夾路徑中的使用者標記需要啟用使用者標記動作。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-#| msgid "The FTP key file path is an invalid path."
-msgid "The provided shared folder path is not a valid path."
-msgstr "FTP金鑰檔路徑是無效的路徑。"
+msgid "The provided OneDrive shared folder path is not a valid path."
+msgstr "提供的 OneDrive 共用資料夾路徑不是有效路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "You don't have the permissions to upload to OneDrive.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"Please check your Microsoft account permissions."
 msgstr ""
+"您沒有上傳到 OneDrive 的權限。\n"
+"請檢查您的 Microsoft 帳戶權限。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "A share link to the file could not be created."
-msgstr ""
+msgid "A OneDrive share link to the file could not be created."
+msgstr "無法建立該檔案的 OneDrive 共用連結。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"User tokens in the SharePoint shared folder path require the user token "
+"action to be enabled."
+msgstr "SharePoint 共用資料夾路徑中的使用者標記需要啟用使用者標記動作。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The provided SharePoint shared folder path is not a valid path."
+msgstr "提供的 SharePoint 共用資料夾路徑不是有效路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Error while uploading the document to Outlook."
@@ -6082,6 +6229,8 @@ msgid ""
 "Microsoft account not set or not available.\n"
 "Please check your configured accounts."
 msgstr ""
+"微軟帳戶未設定或無法使用。\n"
+"請檢查您已配置的帳戶。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "Could not create draft on account."
@@ -6140,21 +6289,57 @@ msgstr "至少有一個附加 Outlook Web Access 附件檔案不可用。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to read and write e-mails.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to read and write emails.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
+"您沒有讀取和寫入電子郵件的權限。\n"
+"請檢查您的微軟帳戶權限。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"You don't have the permissions to send e-mails directly.\n"
-"Please check your Microsoft account permissions in the Accounts tab."
+"You don't have the permissions to send emails directly.\n"
+"Please check your Microsoft account permissions."
 msgstr ""
+"您沒有直接發送電子郵件的權限。\n"
+"請檢查您的微軟帳戶權限。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "The permissions for your Microsoft account have expired.\n"
 "Please request them again in the Accounts tab."
 msgstr ""
+"您的微軟帳戶的權限已過期。\n"
+"請在「帳戶」標籤中再次要求它們。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The upload to SharePoint failed."
+msgstr "上傳到 SharePoint 失敗。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected an account. Please select a valid account to "
+"configure the SharePoint action."
+msgstr "您還沒有選擇帳戶。請選擇一個有效的帳戶來設定 SharePoint 動作。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a site. Please select a valid site to configure the "
+"SharePoint action."
+msgstr "您還沒有選擇網站。請選擇一個有效的網站來設定 SharePoint 動作。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have selected a drive. Please select a valid drive to configure "
+"the SharePoint action."
+msgstr "您還沒有選擇磁碟。請選擇一個有效的磁碟機來設定 SharePoint 動作。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid ""
+"You don't have the permissions to upload to a SharePoint drive.\n"
+"Please check your Microsoft account permissions."
+msgstr ""
+"您沒有上傳到 SharePoint 磁碟機的權限。\n"
+"請檢查您的微軟帳戶權限。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "General error during Outlook Web Access action."
@@ -6179,6 +6364,10 @@ msgstr "元資料主題中的使用者標記需要開啟使用者標記操作。
 msgid ""
 "User tokens in metadata keywords require the user token action to be enabled."
 msgstr "元資料關鍵字中的使用者標記需要開啟使用者標記操作。"
+
+#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+msgid "The output document has no pages. The conversion is aborted."
+msgstr "輸出文檔沒有頁面。轉換被中止。"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
 msgid "Auto detect (the client's default setting)"
@@ -6500,10 +6689,8 @@ msgstr "從 PDFCreator 專業版 4.4.0 起支援"
 msgid "Supported since PDFCreator Professional 5.0.0"
 msgstr "從 PDFCreator 專業版 5.0.0 起支援"
 
-#, fuzzy
-#| msgid "Supported since PDFCreator Professional 5.0.0"
 msgid "Supported since PDFCreator Professional 5.3.0"
-msgstr "從 PDFCreator 專業版 5.0.0 起支援"
+msgstr "從 PDFCreator 專業版 5.3.0 起支援"
 
 msgid "pdfforge"
 msgstr "pdfforge"
@@ -6674,12 +6861,10 @@ msgid "Allow further profiles defined by User"
 msgstr "允許用戶以定義更多的設定"
 
 msgid "Hide feedback form"
-msgstr ""
+msgstr "隱藏回饋表單"
 
-#, fuzzy
-#| msgid "Activate to hide the tips on home screen"
-msgid "Activate to hide feedback form on home and about view."
-msgstr "啟動以停用主畫面的提示"
+msgid "Activate to hide feedback form"
+msgstr "啟動以隱藏反饋表單"
 
 msgid "Albanian"
 msgstr "阿爾巴尼亞"
@@ -6755,3 +6940,9 @@ msgstr "設定日誌層級："
 
 msgid "Allow users to define additional profiles"
 msgstr "允許用戶定義額外的設定"
+
+#~ msgid "Manage license"
+#~ msgstr "授權管理"
+
+#~ msgid "Your license has expired."
+#~ msgstr "您的授權已到期。"

@@ -1,4 +1,4 @@
-﻿using pdfforge.LicenseValidator.Interface;
+using pdfforge.LicenseValidator.Interface;
 using pdfforge.PDFCreator.Conversion.Actions.Actions;
 using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Jobs;
@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using pdfforge.PDFCreator.Utilities;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
+using pdfforge.PDFCreator.UI.Presentation.UserControls;
 
 namespace pdfforge.PDFCreator.Editions.PDFCreator
 {

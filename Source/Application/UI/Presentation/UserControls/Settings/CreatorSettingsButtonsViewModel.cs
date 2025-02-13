@@ -106,8 +106,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings
         {
             await _dispatcher.InvokeAsync(() =>
             {
-                var selectedView = _regionManager.Regions[RegionNames.ApplicationSettingsTabsRegion].Views.First();
-                ActivePath = selectedView.GetType().Name;
+                var selectedView = _regionManager.Regions[RegionNames.ApplicationSettingsTabsRegion].Views.FirstOrDefault();
+                if (selectedView == null)
+                {
+                    NavigateCommand.Execute(RegionViewName.GeneralSettings);
+                    ActivePath = RegionViewName.GeneralSettings;
+                }
+                else
+                    ActivePath = selectedView.GetType().Name;
+                
                 RaisePropertyChanged(nameof(ActivePath));
                 RaisePropertyChanged(nameof(IsRegionNameLong));
             });

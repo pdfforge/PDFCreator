@@ -8,7 +8,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string QuickActionWorkflowStepTitle { get; private set; } = "Quick Actions";
         public string OpenDefaultProgram { get; private set; } = "Open with default viewer";
         public string OpenExplorer { get; private set; } = "Open folder";
-        public string SendEmail { get; private set; } = "Send by e-mail";
+        public string SendEmail { get; private set; } = "Send by email";
         public string PrintFileWithArchitect { get; private set; } = "Print with PDF Architect";
         public string SelectFilename { get; private set; } = "Filename:";
         public string Directory { get; private set; } = "Directory:";

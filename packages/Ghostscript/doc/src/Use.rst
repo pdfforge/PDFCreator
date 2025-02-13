@@ -1630,7 +1630,7 @@ Also, internally, after setting an parameter with ``-p`` we perform an ``initgra
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 **-r** *number1 x number2*
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   Equivalent to ``-dDEVICEXRESOLUTION=number1`` and ``-dDEVICEYRESOLUTION=number2``, specifying the device horizontal and vertical resolution in pixels per inch for the benefit of devices such as printers that support multiple X and Y resolutions.
+   Equivalent to ``-dDEVICEXRESOLUTION=number1``, ``-dDEVICEYRESOLUTION=number2`` and ``-dFIXEDRESOLUTION``, specifying the device horizontal and vertical resolution in pixels per inch for the benefit of devices such as printers that support multiple X and Y resolutions. Also preventing the resolution changing due to, for example, a PostScript ``setpagedevice`` operation.
 
 
 
@@ -2292,7 +2292,7 @@ Other parameters
 
       Ghostscript now (as of 9.50) defaults to ``SAFER`` being active.
 
-   Enables access controls on files. Access controls fall into three categories, files from which Ghostscript is permitted to read, ones to which it is permitted to write, and ones over which it has "control" (i.e. delete/rename). These access controls apply to all files accessed via Ghostscript's internal interface to the C library file handling. Whilst we have taken considerable pains to ensure that all the code we maintain (as well as the so called "contrib" devices, that are devices included in our release packages, but not strictly maintained by the Ghostscript development team) uses this interface, we have no control over thirdparty code.
+   Enables access controls on files, selection of devices and some device parameters. File access controls fall into three categories, files from which Ghostscript is permitted to read, ones to which it is permitted to write, and ones over which it has "control" (i.e. delete/rename). These access controls apply to all files accessed via Ghostscript's internal interface to the C library file handling. Whilst we have taken considerable pains to ensure that all the code we maintain (as well as the so called "contrib" devices, that are devices included in our release packages, but not strictly maintained by the Ghostscript development team) uses this interface, we have no control over thirdparty code.
 
 
    This is an entirely new implementation of ``SAFER`` for Ghostscript versions 9.50 and later. Earlier versions relied on storing the file permission lists in Postscript VM (Virtual Memory), and only applied file access permissions to the Postscript file related operators. It relied on restricting the function of setpagedevice to avoid the device code from being manipulated into opening arbitrary files. The application of the file permissions was done within the internal context of the Postscript interpreter, and some other aspects of the Postscript restrictions were applied in the Postscript environment. With so many of the feature's capabilities relying on the Postscript context and environment, by using other (Ghostscript specific) features maliciously, the restrictions could be overridden.
@@ -2370,6 +2370,15 @@ Other parameters
 
    Finally, paths supplied on the command line (such as those in ``-I``, ``-sFONTPATH`` parameters) are added to the permitted reading list. Similarly, paths read during initialisation from ``Fontmap``, ``cidfmap``, and the platform specific font file enumeration (e.g. ``fontconfig`` on Unix systems) are automatically added to the permit read lists.
 
+   Device selection is controlled by it's own parameter :
+
+   .. code-block :: bash
+
+      --permit-devices=devicelist
+
+   ``devicelist`` is a comma-separated list of devices known to Ghostscript which may be selected using the ``/OutputDevice`` key in a dictionary supplied to ``setpagedevice``. The device names must be as they are known to Ghostscript (use ``gs --help`` for a list). Attempting to select a device not on this list will result in an ``invalidaccess`` error. For convenience the single character '``*``' may be used to permit any device.
+
+   In addition some devices have parameters which are inherently unsafe (e.g. the IJS device's ``IjsServer`` parameter). Attempting to alter these parameters after ``SAFER`` is active will result in an ``invalidaccess`` error. These parameters can only be set from the command line when ``SAFER`` is selected.   
 
 **-dPreBandThreshold=** *true/false*
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,4 +1,4 @@
-% Copyright (C) 2001-2023 Artifex Software, Inc.
+% Copyright (C) 2001-2024 Artifex Software, Inc.
 % All Rights Reserved.
 %
 % This software is provided AS-IS with no warranty, either express or
@@ -235,7 +235,7 @@ systemdict /NEWPDF known {
       % the original, un-modified page. Note that PostScript's rotate operator works
       % counter-clockwise, while PDF works clockwise....
       %
-      7 index dup /Rotate known {/Rotate get}{90}ifelse
+      7 index dup /Rotate known {/Rotate get}{pop 90}ifelse
       270 eq {
         90 rotate
         0 2 index neg translate                 % move 0,0 to bottom right of media to account for rotation
@@ -630,20 +630,40 @@ systemdict /NEWPDF known {
     } if
   } ifelse
 
-  pop % The box
+  3 1 roll          % <page dict> /BoxName [box dimensions] -> [box dimensions] <page dict> /BoxName
 
   % If we are using the MediaBox (and only the MediaBox) then we
-  % want to clip to the CropBox, if there is one present
+  % want to clip to the CropBox, if there is one present. For every
+  % other case, clip to the given Box.
 
   /MediaBox eq {
     dup /CropBox known {
       /CropBox get
       aload pop 2 index sub exch 3 index sub exch rectclip
+      pop           % [box dimensions] array
     } {
-      pop
+      pop           % <page dict>
+
+      aload         % Load the co-ordinates of the box onto the stack
+      pop           % The array with the box co-ordinates
+                    % llx lly urx ury
+      2 index sub   % ll lly urx (ury - lly)
+      exch          % llx lly height urx
+      3 index sub   % llx lly height (urx - llx)
+      exch          % llx lly width height
+      rectclip
     } ifelse
   } {
-    pop
+    pop             % <page dict>
+
+    aload           % Load the co-ordinates of the box onto the stack
+    pop             % The array with the box co-ordinates
+                    % llx lly urx ury
+    2 index sub     % ll lly urx (ury - lly)
+    exch            % llx lly height urx
+    3 index sub     % llx lly height (urx - llx)
+    exch            % llx lly width height
+    rectclip
   }ifelse
 
   pop
@@ -658,7 +678,7 @@ systemdict /NEWPDF known {
 % so here we should only handle parameters which control the behaviour of the interpreter.
 %
 /PDFSwitches [ /QUIET /PDFPassword /PDFDEBUG /PDFSTOPONERROR /PDFSTOPONWARNING /NOTRANSPARENCY /FirstPage /LastPage
-               /PDFNOCIDFALLBACK /NO_PDFMARK_OUTLINES /NO_PDFMARK_DESTS /PDFFitPage /Printed /UsePDFX3Profile
+               /PDFA /PDFACompatibilityPolicy /PDFNOCIDFALLBACK /NO_PDFMARK_OUTLINES /NO_PDFMARK_DESTS /PDFFitPage /Printed /UsePDFX3Profile
                /UseBleedBox /UseCropBox /UseArtBox /UseTrimBox /ShowAcroForm /ShowAnnots /PreserveAnnots
                /NoUserUnit /RENDERTTNOTDEF /DOPDFMARKS /PDFINFO /ShowAnnotTypes /PreserveAnnotTypes
                /CIDFSubstPath /CIDFSubstFont /SUBSTFONT /IgnoreToUnicode /NONATIVEFONTMAP /PreserveMarkedContent /OutputFile

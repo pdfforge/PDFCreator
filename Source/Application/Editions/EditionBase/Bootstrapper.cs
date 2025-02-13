@@ -298,6 +298,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IProcess, ProcessWrap>();
             container.RegisterSingleton<IPath, PathWrap>();
             container.RegisterSingleton<IPathUtil, PathUtil>();
+            container.RegisterSingleton<IFileVersionInfoHelper, FileVersionInfoHelper>();
             container.RegisterSingleton<IEnvironment, EnvironmentWrap>();
             container.RegisterSingleton<IDirectoryAccessControl, DirectoryAccessControl>();
             container.RegisterSingleton<IDirectoryHelper, DirectoryHelper>();
@@ -443,7 +444,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IUniqueDirectory, UniqueDirectory>();
             container.Register<IDeleteTempFolderCommand, DeleteTempFolderCommand>();
 
-            container.Register<ILicenseExpirationReminder, LicenseExpirationReminder>();
             container.RegisterSingleton<ICampaignHelper, CampaignHelper>();
 
             container.Register<ICommandBuilderProvider, CommandBuilderProvider>();
@@ -522,7 +522,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private void RegisterTranslationUpdater(Container container)
         {
-            var testDoubleTextLength = Debugger.IsAttached 
+            var testDoubleTextLength = Debugger.IsAttached
                                        && Environment.GetEnvironmentVariable("PDFCREATOR_TESTDOUBLETEXTLENGTH", EnvironmentVariableTarget.User) == "true";
 
             if (testDoubleTextLength)
