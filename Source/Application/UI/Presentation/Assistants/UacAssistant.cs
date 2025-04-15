@@ -1,7 +1,5 @@
 ﻿using pdfforge.Obsidian;
-using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Utilities;
 using System;
@@ -10,7 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 using Translatable;
+using pdfforge.PDFCreator.Core.SettingsManagement;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {

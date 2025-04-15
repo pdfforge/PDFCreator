@@ -1,6 +1,7 @@
 ﻿using pdfforge.DataStorage;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,9 +30,11 @@ namespace pdfforge.PDFCreator.Conversion.Settings
             return true;
         }
 
-        public DateTime GetExpirationDateTime()
+        public bool HasExpiredPermissions(DateTime now)
         {
-            return DateTimeOffset.FromUnixTimeSeconds(ExpirationDate).DateTime;
+            if (ExpirationDate == 0)
+                    return false;
+            return DateTimeOffset.FromUnixTimeSeconds(ExpirationDate).DateTime < now;
         }
     }
 }

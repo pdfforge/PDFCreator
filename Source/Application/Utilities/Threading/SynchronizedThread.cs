@@ -104,9 +104,9 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         /// <summary>
         ///     Aborts the thread
         /// </summary>
-        public void Abort()
+        public void Interrupt()
         {
-            Thread.Abort();
+            Thread.Interrupt();
         }
 
         private void RunThread()

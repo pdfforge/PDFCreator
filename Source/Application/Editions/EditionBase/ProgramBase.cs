@@ -19,8 +19,10 @@ using Prism.Regions;
 using SimpleInjector;
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading;
 using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Application = System.Windows.Forms.Application;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
@@ -28,7 +30,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
     public class ProgramBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static ErrorReportHelper _errorReportHelper;
+        private static IErrorReportHelper _errorReportHelper;
         private static Container _container;
 
         public static void Main(string[] args, Func<Bootstrapper> getBootstrapperFunc)
@@ -41,7 +43,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 CustomBindingResolver.WatchBindingResolution();
 
                 _container = new Container();
-                exitCode = StartApplication(args, getBootstrapperFunc);
+                _container.Options.ResolveUnregisteredConcreteTypes = true;
+                _container.Options.EnableAutoVerification = false;
+
+               exitCode = StartApplication(args, getBootstrapperFunc);
             }
             finally
             {
@@ -115,6 +120,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
         private static void BootstrapContainerAndApplication(Bootstrapper bootstrapper, SimpleInjectorPrismApplication application)
         {
+            bootstrapper.ConfigureServiceCollection(_container);
             bootstrapper.RegisterMainApplication(_container);
             bootstrapper.RegisterPrismNavigation(_container);
             SetupObsidian(bootstrapper);
@@ -147,7 +153,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             var errorHelper = new ErrorHelper("pdfcreator", "PDFCreator", versionHelper.ApplicationVersion, Urls.SentryDsnUrl);
 
-            _errorReportHelper = new ErrorReportHelper(inMemoryLogger, new AssemblyHelper(assembly), errorHelper);
+            _errorReportHelper = ErrorReportHelper.GetInstance(inMemoryLogger, new AssemblyHelper(assembly), errorHelper);
         }
 
         private static void UpdateErrorReportHelper(Container container)

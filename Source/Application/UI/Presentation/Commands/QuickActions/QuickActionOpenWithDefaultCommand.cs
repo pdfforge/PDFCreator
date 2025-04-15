@@ -11,6 +11,7 @@ using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Linq;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions
 {

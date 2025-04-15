@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.ActionsInterface;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Core.SettingsManagement
 {

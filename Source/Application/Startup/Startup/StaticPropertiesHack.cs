@@ -16,7 +16,7 @@ namespace pdfforge.PDFCreator.Core.Startup
         public void SetStaticProperties()
         {
             // THIS SHOULD USUALLY NOT BE DONE!
-            ErrorReportHelper.LicenseChecker = _licenseChecker;
+            ErrorReportHelper.GetInstance().SetLicenseChecker(_licenseChecker);
         }
     }
 }

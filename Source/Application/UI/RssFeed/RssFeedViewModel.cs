@@ -1,7 +1,6 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
-using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Cache;
 using pdfforge.PDFCreator.Core.SettingsManagement;
@@ -18,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -36,7 +35,7 @@ namespace pdfforge.PDFCreator.UI.RssFeed
         private readonly EditionHelper _editionHelper;
         private List<FeedItem> _feedItems;
         private readonly FileCache _fileCache;
-        private const string CacheFilename = "rssfeed.bin";
+        private const string CacheFilename = "rssfeed.json";
 
         public ICommand UrlOpenCommand { get; }
         public ICommand ShowRssFeedCommand { get; }
@@ -193,13 +192,14 @@ namespace pdfforge.PDFCreator.UI.RssFeed
                 if (_fileCache.FileAvailable(CacheFilename))
                 {
                     // File was cached and can be used
-                    FeedItems = GetStreamFromFile(CacheFilename);
+                    FeedItems = await GetStreamFromFileAsync(CacheFilename);
                 }
                 else
                 {
                     // File was not cached yet or is out-dated
                     FeedItems = await _rssService.FetchFeedAsync(Urls.RssFeedUrl);
-                    await _fileCache.SaveFileAsync(CacheFilename, CreateStreamFromString(FeedItems));
+                    var stream = await CreateStreamFromStringAsync(FeedItems);
+                    await _fileCache.SaveFileAsync(CacheFilename, stream);
                 }
             }
             catch (Exception ex)
@@ -208,26 +208,20 @@ namespace pdfforge.PDFCreator.UI.RssFeed
             }
         }
 
-        private Stream CreateStreamFromString(List<FeedItem> feedItems)
+        private async Task<Stream> CreateStreamFromStringAsync(List<FeedItem> feedItems)
         {
             var stream = new MemoryStream();
-            var bin = new BinaryFormatter();
-            bin.Serialize(stream, FeedItems);
-
+            await JsonSerializer.SerializeAsync(stream, feedItems);
             var writer = new StreamWriter(stream);
-            writer.Flush();
+            await writer.FlushAsync();
             stream.Position = 0;
             return stream;
         }
 
-        private List<FeedItem> GetStreamFromFile(string filename)
+        private async Task<List<FeedItem>> GetStreamFromFileAsync(string filename)
         {
-            using (Stream stream = File.Open(_fileCache.GetCacheFilePath(filename), FileMode.Open))
-            {
-                var bin = new BinaryFormatter();
-
-                return (List<FeedItem>)bin.Deserialize(stream);
-            }
+            await using Stream stream = File.Open(_fileCache.GetCacheFilePath(filename), FileMode.Open);
+            return await JsonSerializer.DeserializeAsync<List<FeedItem>>(stream);
         }
     }
 }

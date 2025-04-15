@@ -127,21 +127,13 @@ namespace pdfforge.PDFCreator.Core.Workflow
                     _logger.Error("The path in OutputFilenameTemplate is null or empty.");
                     return new ActionResult(ErrorCode.FilePath_NullOrEmpty);
 
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' is not a valid rooted path.");
                     return new ActionResult(ErrorCode.FilePath_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     _logger.Error("The path in OutputFilenameTemplate is too long.");
                     return new ActionResult(ErrorCode.FilePath_TooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' is not a valid rooted path.");
-                    return new ActionResult(ErrorCode.FilePath_InvalidRootedPath);
-
-                case PathUtilStatus.ArgumentEx:
-                    _logger.Error($"The path in OutputFilenameTemplate '{outputFilenameTemplate}' contains invalid characters.");
-                    return new ActionResult(ErrorCode.FilePath_InvalidCharacters);
 
                 case PathUtilStatus.Success:
                     break;
@@ -188,17 +180,11 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return new ActionResult(ErrorCode.TargetDirectory_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     return new ActionResult(ErrorCode.TargetDirectory_TooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.TargetDirectory_InvalidRootedPath);
-
-                case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.TargetDirectory_IllegalCharacters);
             }
 
             return new ActionResult();

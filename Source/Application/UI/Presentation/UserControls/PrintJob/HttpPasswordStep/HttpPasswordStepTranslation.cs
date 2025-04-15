@@ -2,8 +2,8 @@
 {
     public class HttpPasswordStepTranslation : PasswordButtonControlTranslation
     {
-        public string HttpUploadTitle { get; private set; } = "HTTP Upload";
-        public string Account { get; private set; } = "HTTP Account:";
-        public string Password { get; private set; } = "HTTP Server Password:";
+        public string HttpUploadTitle { get; private set; } = "HTTP upload";
+        public string Account { get; private set; } = "HTTP account:";
+        public string Password { get; private set; } = "HTTP server password:";
     }
 }

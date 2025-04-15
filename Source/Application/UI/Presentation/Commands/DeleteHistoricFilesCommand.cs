@@ -8,9 +8,8 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using SystemInterface.IO;
-using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {

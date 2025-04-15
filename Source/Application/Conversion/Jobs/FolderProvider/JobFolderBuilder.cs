@@ -1,5 +1,6 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Utilities.IO;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.FolderProvider

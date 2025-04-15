@@ -29,9 +29,15 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using pdfforge.Obsidian.Interaction;
+using pdfforge.PDFCreator.UI.Presentation.Helper.Interfaces;
+using pdfforge.PDFCreator.UI.Presentation.Helper.SetupDownloadHelper;
 using pdfforge.PDFCreator.Utilities;
 using IWebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.IWebLinkLauncher;
 using pdfforge.PDFCreator.UI.Presentation.UserControls;
+using pdfforge.Obsidian.Helper;
+using System.Windows;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.Editions.PDFCreator
 {
@@ -42,7 +48,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override bool HideLicensing => true;
         protected override string BannerProductName => "pdfcreator";
 
-        protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, EncryptionLevel.Aes128Bit, false);
+        protected override EditionHelper EditionHelper => new EditionHelper(Edition.Free, false);
 
         protected override void RegisterDirectImageConversion(Container container)
         {
@@ -70,7 +76,7 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
 
         protected override void RegisterInteractiveWorkflowManagerFactory(Container container)
         {
-            container.Register<IInteractiveWorkflowManagerFactory, InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep>();
+            container.Register<IInteractiveWorkflowManagerFactory, InteractiveWorkflowManagerFactoryWithConditionalHintSteps>();
         }
 
         protected override void RegisterJobBuilder(Container container)
@@ -89,7 +95,6 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override void RegisterUserTokenExtractor(Container container)
         {
             container.Register<IUserTokenExtractor, UserTokenExtractorDummy>();
-            container.Register<IPsToPdfConverter, PsToPdfConverter>();
         }
 
         protected override IGpoSettings GetGpoSettings()
@@ -109,14 +114,13 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
 
         protected override IList<Type> GetStartupConditions(IList<Type> defaultConditions)
         {
-            defaultConditions.Add(typeof(TerminalServerNotAllowedCondition));
 
             return defaultConditions;
         }
 
-        protected override void RegisterProfessionalHintHelper(Container container)
+        protected override void RegisterConditionalHintManager(Container container)
         {
-            container.RegisterSingleton<IProfessionalHintHelper, ProfessionalHintHelper>();
+            container.RegisterSingleton<IConditionalHintManager, ConditionalHintManager>();
         }
 
         protected override SettingsProvider CreateSettingsProvider()
@@ -125,7 +129,8 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         }
 
         protected override void RegisterObsidianLicenseInteractions()
-        { }
+        {
+        }
 
         protected override void RegisterPdfProcessor(Container container)
         {
@@ -140,6 +145,12 @@ namespace pdfforge.PDFCreator.Editions.PDFCreator
         protected override void RegisterNotificationService(Container container)
         {
             container.RegisterSingleton<INotificationService, DisabledNotificationService>();
+        }
+
+        protected override void RegisterBlockedInEnvironmentHelpers(Container container)
+        {
+            container.Register<IRequestHelper, RequestHelper>();
+            container.Register<ISetupDownloadHelper, SetupDownloadHelper>();
         }
     }
 }

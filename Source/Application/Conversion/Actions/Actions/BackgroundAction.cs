@@ -63,17 +63,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.BackgroundPage.File);
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return new ActionResult(ErrorCode.Background_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     return new ActionResult(ErrorCode.Background_PathTooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.Background_InvalidRootedPath);
-
-                case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.Background_IllegalCharacters);
             }
 
             if (!isJobLevelCheck && profile.BackgroundPage.File.StartsWith(@"\\"))

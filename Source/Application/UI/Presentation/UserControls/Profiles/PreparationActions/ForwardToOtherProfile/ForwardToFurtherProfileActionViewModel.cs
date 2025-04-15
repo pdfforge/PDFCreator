@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.ObjectModel;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile
 {

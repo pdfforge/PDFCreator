@@ -67,10 +67,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             var tr = CreateTokenReplacerWithPlaceHoldersBase();
 
-            tr.AddToken(new StringToken("Username", Environment.UserName));
-            tr.AddToken(new StringToken("Desktop", Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
-            tr.AddToken(new StringToken("MyDocuments", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
-            tr.AddToken(new StringToken("MyPictures", Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
+            tr.AddToken(new StringToken(TokenNames.Username, Environment.UserName));
+            tr.AddToken(new StringToken(TokenNames.Desktop, Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
+            tr.AddToken(new StringToken(TokenNames.MyDocuments, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            tr.AddToken(new StringToken(TokenNames.MyPictures, Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
 
             return tr;
         }
@@ -79,38 +79,38 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             var tr = new TokenReplacer();
 
-            tr.AddToken(new StringToken("Author", Environment.UserName));
-            tr.AddToken(new StringToken("PrintJobAuthor", Environment.UserName));
-            tr.AddToken(new StringToken("ClientComputer", Environment.MachineName));
-            tr.AddToken(new StringToken("ComputerName", Environment.MachineName));
-            tr.AddToken(new NumberToken("Counter", 1234));
-            tr.AddToken(new DateToken("DateTime", DateTime.Now));
-            tr.AddToken(new StringToken("InputFilename", _translation.InputFilename));
-            tr.AddToken(new StringToken("InputDirectory", @"C:\Temp"));
-            tr.AddToken(new NumberToken("JobID", 1));
-            tr.AddToken(new NumberToken("PageNumber", 1));
-            tr.AddToken(new NumberToken("NumberOfCopies", 1));
-            tr.AddToken(new NumberToken("NumberOfPages", 1));
-            tr.AddToken(new ListToken("OutputFilenames",
+            tr.AddToken(new StringToken(TokenNames.Author, Environment.UserName));
+            tr.AddToken(new StringToken(TokenNames.PrintJobAuthor, Environment.UserName));
+            tr.AddToken(new StringToken(TokenNames.ClientComputer, Environment.MachineName));
+            tr.AddToken(new StringToken(TokenNames.ComputerName, Environment.MachineName));
+            tr.AddToken(new NumberToken(TokenNames.Counter, 1234));
+            tr.AddToken(new DateToken(TokenNames.DateTime, DateTime.Now));
+            tr.AddToken(new StringToken(TokenNames.InputFilename, _translation.InputFilename));
+            tr.AddToken(new StringToken(TokenNames.InputDirectory, @"C:\Temp"));
+            tr.AddToken(new NumberToken(TokenNames.JobId, 1));
+            tr.AddToken(new NumberToken(TokenNames.PageNumber, 1));
+            tr.AddToken(new NumberToken(TokenNames.NumberOfCopies, 1));
+            tr.AddToken(new NumberToken(TokenNames.NumberOfPages, 1));
+            tr.AddToken(new ListToken(TokenNames.OutputFilenames,
                 new[]
                 {
                     _translation.OutputFilename,
                     _translation.OutputFilename2,
                     _translation.OutputFilename3
                 }));
-            tr.AddToken(new StringToken("OutputFilePath", @"C:\Temp"));
-            tr.AddToken(new StringToken("PrinterName", "PDFCreator"));
-            tr.AddToken(new NumberToken("SessionID", 0));
-            tr.AddToken(new StringToken("Title", _translation.TitleFromSettings));
-            tr.AddToken(new StringToken("PrintJobName", _translation.TitleFromPrintJob));
-            tr.AddToken(new StringToken("Subject", _translation.SubjectFromSettings));
-            tr.AddToken(new StringToken("Keywords", _translation.KeywordsFromSettings));
+            tr.AddToken(new StringToken(TokenNames.OutputFilePath, @"C:\Temp"));
+            tr.AddToken(new StringToken(TokenNames.PrinterName, "PDFCreator"));
+            tr.AddToken(new NumberToken(TokenNames.SessionId, 0));
+            tr.AddToken(new StringToken(TokenNames.Title, _translation.TitleFromSettings));
+            tr.AddToken(new StringToken(TokenNames.PrintJobName, _translation.TitleFromPrintJob));
+            tr.AddToken(new StringToken(TokenNames.Subject, _translation.SubjectFromSettings));
+            tr.AddToken(new StringToken(TokenNames.Keywords, _translation.KeywordsFromSettings));
             tr.AddToken(new StringToken(TokenNames.DropboxHtmlLinks, "<a href=\"https://dropbox.com/link1\">File.pdf</a>"));
             tr.AddToken(new StringToken(TokenNames.DropboxFullLinks, "File.pdf (https://dropbox.com/link1)"));
             tr.AddToken(new StringToken(TokenNames.OneDriveShareLink, "https://1drv.ms/link"));
             tr.AddToken(new StringToken(TokenNames.OneDriveShareLinkHtml, "<a href=\"https://1drv.ms/link\">https://1drv.ms/link1</a>"));
             tr.AddToken(new EnvironmentToken());
-            tr.AddToken(new ParameterPreviewToken("User", _translation.FormatTokenPreviewText));
+            tr.AddToken(new ParameterPreviewToken(TokenNames.User, _translation.FormatTokenPreviewText));
 
             return tr;
         }
@@ -140,19 +140,19 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             var tokenList = GetTokenListWithFormatting();
 
-            tokenList.Remove("<Author>");
-            tokenList.Remove("<Title>");
-            tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<InputDirectory>");
-            tokenList.Remove("<OutputFilePath>");
-            tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<Subject>");
-            tokenList.Remove("<Keywords>");
-            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
-            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
-            tokenList.Remove("<PageNumber>");
+            tokenList.RemoveToken("<" + TokenNames.Author + ">");
+            tokenList.RemoveToken("<" + TokenNames.Title + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilenames + ">");
+            tokenList.RemoveToken("<" + TokenNames.InputDirectory + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilePath + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilenames + ">");
+            tokenList.RemoveToken("<" + TokenNames.Subject + ">");
+            tokenList.RemoveToken("<" + TokenNames.Keywords + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxHtmlLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxFullLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLink + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLinkHtml + ">");
+            tokenList.RemoveToken("<" + TokenNames.PageNumber + ">");
 
             return tokenList;
         }
@@ -161,14 +161,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
         {
             var tokenList = GetTokenListWithFormatting();
 
-            tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<InputDirectory>");
-            tokenList.Remove("<OutputFilePath>");
-            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
-            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
-            tokenList.Remove("<PageNumber>");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilenames + ">");
+            tokenList.RemoveToken("<" + TokenNames.InputDirectory + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilePath + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxHtmlLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxFullLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLink + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLinkHtml + ">");
+            tokenList.RemoveToken("<" + TokenNames.PageNumber + ">");
 
             return tokenList;
         }
@@ -177,12 +177,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         {
             var tokenList = GetTokenListWithFormatting();
-            tokenList.Remove("<OutputFilePath>");
-            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
-            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
-            tokenList.Remove("<PageNumber>");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilePath + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxHtmlLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxFullLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLink + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLinkHtml + ">");
+            tokenList.RemoveToken("<" + TokenNames.PageNumber + ">");
 
             return tokenList;
         }
@@ -191,26 +191,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Tokens
 
         {
             var tokenList = GetTokenListWithFormatting();
-            tokenList.Remove("<Author>");
-            tokenList.Remove("<OutputFilePath>");
-            tokenList.RemoveToken(TokenNames.DropboxHtmlLinks);
-            tokenList.RemoveToken(TokenNames.DropboxFullLinks);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLink);
-            tokenList.RemoveToken(TokenNames.OneDriveShareLinkHtml);
-            tokenList.Remove("<Counter>");
-            tokenList.Remove("<JobID>");
-            tokenList.Remove("<Keywords>");
-            tokenList.Remove("<NumberOfCopies>");
-            tokenList.Remove("<NumberOfPages>");
-            tokenList.Remove("<OutputFilePath>");
-            tokenList.Remove("<OutputFilenames>");
-            tokenList.Remove("<PrinterName>");
-            tokenList.Remove("<PrintJobAuthor>");
-            tokenList.Remove("<SessionID>");
-            tokenList.Remove("<Title>");
-            tokenList.Remove("<PrintJobName>");
-            tokenList.Remove("<Subject>");
-            tokenList.Remove("<PageNumber>");
+            tokenList.RemoveToken("<" + TokenNames.Author + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilePath + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxHtmlLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.DropboxFullLinks + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLink + ">");
+            tokenList.RemoveToken("<" + TokenNames.OneDriveShareLinkHtml + ">");
+            tokenList.RemoveToken("<" + TokenNames.Counter + ">");
+            tokenList.RemoveToken("<" + TokenNames.JobId + ">");
+            tokenList.RemoveToken("<" + TokenNames.Keywords + ">");
+            tokenList.RemoveToken("<" + TokenNames.NumberOfCopies + ">");
+            tokenList.RemoveToken("<" + TokenNames.NumberOfPages + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilePath + ">");
+            tokenList.RemoveToken("<" + TokenNames.OutputFilenames + ">");
+            tokenList.RemoveToken("<" + TokenNames.PrinterName + ">");
+            tokenList.RemoveToken("<" + TokenNames.PrintJobAuthor + ">");
+            tokenList.RemoveToken("<" + TokenNames.SessionId + ">");
+            tokenList.RemoveToken("<" + TokenNames.Title + ">");
+            tokenList.RemoveToken("<" + TokenNames.PrintJobName + ">");
+            tokenList.RemoveToken("<" + TokenNames.Subject + ">");
+            tokenList.RemoveToken("<" + TokenNames.PageNumber + ">");
 
             return tokenList;
         }

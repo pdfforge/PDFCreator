@@ -93,23 +93,38 @@ namespace pdfforge.PDFCreator.Core.JobInfoQueue
             _logger.Debug("JobCounter: " + jobInfo.SourceFiles[0].JobCounter);
             _logger.Debug("JobId: " + jobInfo.SourceFiles[0].JobId);
 
-            var targetPosition = 0;
-
-            if (!first)
-            {
-                var nextJob = JobInfos.FirstOrDefault(j => j.PrintDateTime > jobInfo.PrintDateTime);
-
-                if (nextJob == null)
-                    targetPosition = JobInfos.Count;
-                else
-                    targetPosition = JobInfos.IndexOf(nextJob);
-            }
-
-            JobInfos.Insert(targetPosition, jobInfo);
+            InsertJobInQueue(jobInfo, first);
 
             _jobFileSet.Add(jobFile);
 
             OnNewJobInfo?.Invoke(null, new NewJobInfoEventArgs(jobInfo));
+        }
+
+        private void InsertJobInQueue(JobInfo jobInfo, bool first)
+        {
+            try
+            {
+                if (first)
+                {
+                    JobInfos.Insert(0, jobInfo);
+                    return;
+                }
+
+                var nextJob = JobInfos.FirstOrDefault(j => j.PrintDateTime > jobInfo.PrintDateTime);
+
+                if (nextJob == null)
+                {
+                    JobInfos.Add(jobInfo);
+                    return;
+                }
+
+                var targetPosition = JobInfos.IndexOf(nextJob);
+                JobInfos.Insert(targetPosition, jobInfo);
+            }
+            catch // If there is a problem with concurrent list changes, add job to the end
+            {
+                JobInfos.Add(jobInfo);
+            }
         }
 
         /// <summary>

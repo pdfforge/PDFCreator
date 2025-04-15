@@ -5,8 +5,8 @@ namespace pdfforge.PDFCreator.Core.Services.Translation
     public class ProfileNameByGuidTranslation : ITranslatable
     {
         public string DefaultGuid { get; private set; } = "<Default Profile>";
-        public string HighCompressionGuid { get; private set; } = "High Compression (small file)";
-        public string HighQualityGuid { get; private set; } = "High Quality (large file)";
+        public string HighCompressionGuid { get; private set; } = "High compression (small file)";
+        public string HighQualityGuid { get; private set; } = "High quality (large file)";
         public string JpegGuid { get; private set; } = "JPEG (graphic file)";
         public string PdfaGuid { get; private set; } = "PDF/A (long term preservation)";
         public string PngGuid { get; private set; } = "PNG (graphic file)";

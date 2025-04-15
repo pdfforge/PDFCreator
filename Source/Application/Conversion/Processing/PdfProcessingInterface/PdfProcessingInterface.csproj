@@ -1,200 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}</ProjectGuid>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Conversion.Processing.PdfProcessingInterface</RootNamespace>
-    <AssemblyName>PdfProcessingInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\..\..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\..\ActionsInterface\ActionsInterface.csproj" />
+    <ProjectReference Include="..\..\Jobs\Jobs.csproj" />
+    <ProjectReference Include="..\..\Settings\Settings.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FontPathHelper.cs" />
-    <Compile Include="ImagesToPdf\IImagesToPdf.cs" />
-    <Compile Include="ImagesToPdf\ImagesToPdfSettings.cs" />
-    <Compile Include="IPdfParser.cs" />
-    <Compile Include="PageNumbersHelper.cs" />
-    <Compile Include="SigningHelper.cs" />
-    <Compile Include="WatermarkPageMapper.cs" />
-    <Compile Include="PdfProcessorBase.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Microsoft.Win32.Registry">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="NLog">
+      <Version>5.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.AccessControl">
+      <Version>6.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Permissions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Extensions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="SystemInterface">
+      <Version>9.9.0</Version>
+    </PackageReference>
+    <PackageReference Include="SystemWrapper">
+      <Version>9.9.0</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Utilities\Utilities.csproj">
-      <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ActionsInterface\ActionsInterface.csproj">
-      <Project>{8DE100B3-17E1-46E3-830B-5E0B072483CA}</Project>
-      <Name>ActionsInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Jobs\Jobs.csproj">
-      <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
-      <Name>Jobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Settings\Settings.csproj">
-      <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-    <None Include="pdfforge.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="mscorlib">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Win32.Registry">
-          <HintPath>..\..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Configuration">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Xml">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="NLog">
-          <HintPath>..\..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.AccessControl">
-          <HintPath>..\..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Data.OracleClient">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Drawing">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceProcess">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="WindowsBase">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security.Permissions">
-          <HintPath>..\..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Principal.Windows">
-          <HintPath>..\..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\..\packages\SystemWrapper\lib\netstandard2.0\SystemWrapper.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
 </Project>

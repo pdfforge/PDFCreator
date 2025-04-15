@@ -6,7 +6,7 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
 
     public enum JpegColor
     {
-        [Translation("16 Million Colors (24 Bit)")]
+        [Translation("16 million colors (24 Bit)")]
 
         Color24Bit,
         [Translation("Grayscale (8 Bit)")]

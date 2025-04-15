@@ -1,10 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/themes/light.blue.xaml" />
         <ResourceDictionary Source="pdfforgeTheme.xaml" />
         <ResourceDictionary Source="Fonts.xaml" />
         <ResourceDictionary Source="Colors.xaml" />
@@ -68,11 +69,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="DefaultButton" BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type ButtonBase}" x:Shared="False">
+    <Style x:Key="DefaultButton" BasedOn="{StaticResource MahApps.Styles.Button.Square}" TargetType="{x:Type ButtonBase}" x:Shared="False">
         <Style.Resources>
-            <SolidColorBrush x:Key="ForegroundBrush" Color="{Binding Color, Source={StaticResource DefaultButtonForegroundBrush}}" />
-            <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Color, Source={StaticResource DefaultButtonBackgroundBrush}}" />
-            <SolidColorBrush x:Key="BorderBrush" Color="{Binding Color, Source={StaticResource DefaultButtonBorderBrush}}" />
+            <SolidColorBrush x:Key="ForegroundBrush" Color="{Binding Color, Source={StaticResource DefaultButtonForegroundBrush}}" options:Freeze="True"/>
+            <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Color, Source={StaticResource DefaultButtonBackgroundBrush}}" options:Freeze="True"/>
+            <SolidColorBrush x:Key="BorderBrush" Color="{Binding Color, Source={StaticResource DefaultButtonBorderBrush}}" options:Freeze="True"/>
         </Style.Resources>
 
         <Setter Property="FontFamily" Value="Inter" />

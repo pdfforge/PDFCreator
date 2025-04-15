@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.JobInfoQueue;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.Diagnostics;
 using SystemInterface.IO;
 

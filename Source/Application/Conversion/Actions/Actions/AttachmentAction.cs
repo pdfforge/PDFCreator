@@ -77,17 +77,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(file);
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return new ActionResult(ErrorCode.Attachment_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     return new ActionResult(ErrorCode.Attachment_PathTooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.Attachment_InvalidRootedPath);
-
-                case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.Attachment_IllegalCharacters);
             }
 
             if (!isJobLevelCheck && file.StartsWith(@"\\"))

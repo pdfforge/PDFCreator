@@ -3,13 +3,14 @@
     public class CsScriptTranslation : ActionTranslationBase
     {
         public string CsScriptDisplayName { get; private set; } = "CS-Script";
-        public string CheckScript { get; private set; } = "Check Script";
-        public string CsScriptFileLabel { get; private set; } = "CS-Script File:";
+        public string CheckScript { get; private set; } = "Check script";
+        public string CsScriptFileLabel { get; private set; } = "CS-Script file:";
         public string CsScriptsFolderDoesNotExist { get; private set; } = "The folder 'CS-Scripts' in the application directory does not exist.";
         public string LoadingCsScript { get; private set; } = "Loading CS-Script ...";
         public string LoadingCsScriptSuccessful { get; private set; } = "Loading CS-Script was successful.";
-        public string OpenCsScriptsFolder { get; private set; } = "Open CS-Scripts Folder";
-        public string ReloadScriptList { get; private set; } = "Reload Script List";
+        public string OpenCsScriptsFolder { get; private set; } = "Open CS-Scripts folder";
+        public string EnableDebuggingText { get; private set; } = "Enable debugging.";
+        public string ReloadScriptList { get; private set; } = "Reload script list";
         private string EnsureCsScriptsFolder { get; set; } = "Please ensure your CS-Scripts are located in:\n\"{0}\"";
 
         public string GetFormattedLicenseEnsureCsScriptsFolder(string csscriptsFolder)

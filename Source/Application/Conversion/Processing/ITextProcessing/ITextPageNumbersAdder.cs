@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
                 var font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H, true);
                 doc.SetFont(font);
 
-                var color = new DeviceRgb(fontColor);
+                var color = new DeviceRgb(fontColor.R, fontColor.G, fontColor.B);
                 doc.SetFontColor(color);
                 doc.SetFontSize(fontSize);
 

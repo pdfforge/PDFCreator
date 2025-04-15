@@ -11,7 +11,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
         public string PasswordHintText { get; private set; } = "Leave password empty to get a request during the print job (password will not be saved).";
         public string RemoveButtonContent { get; private set; } = "Remove";
         public string SkipButtonContent { get; private set; } = "Skip";
-        public string Title { get; private set; } = "Encryption Passwords";
+        public string Title { get; private set; } = "Encryption passwords";
         public string UserPasswordLabelContent { get; private set; } = "User password (for opening):";
         public string PasswordIndicatorText { get; private set; } = "Password strength:";
     }

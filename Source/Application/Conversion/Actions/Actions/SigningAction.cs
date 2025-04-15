@@ -126,20 +126,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(signature.BackgroundImageFile);
                     switch (pathUtilStatus)
                     {
-                        case PathUtilStatus.InvalidRootedPath:
+                        case PathUtilStatus.InvalidPath:
                             result.Add(ErrorCode.Signature_ImageFileInvalidRootedPath);
                             break;
 
                         case PathUtilStatus.PathTooLongEx:
                             result.Add(ErrorCode.Signature_ImageFilePathTooLong);
-                            break;
-
-                        case PathUtilStatus.NotSupportedEx:
-                            result.Add(ErrorCode.Signature_ImageFileUnsupportedType);
-                            break;
-
-                        case PathUtilStatus.ArgumentEx:
-                            result.Add(ErrorCode.Signature_ImageFileIllegalCharacters);
                             break;
 
                         case PathUtilStatus.Success:
@@ -184,17 +176,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.PdfSettings.Signature.CertificateFile);
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return (new ActionResult(ErrorCode.Signature_CertificateFile_InvalidRootedPath), false);
 
                 case PathUtilStatus.PathTooLongEx:
                     return (new ActionResult(ErrorCode.Signature_CertificateFile_TooLong), false);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return (new ActionResult(ErrorCode.Signature_CertificateFile_InvalidRootedPath), false);
-
-                case PathUtilStatus.ArgumentEx:
-                    return (new ActionResult(ErrorCode.Signature_CertificateFile_IllegalCharacters), false);
             }
 
             if (!isJobLevelCheck && certificateFile.StartsWith(@"\\"))

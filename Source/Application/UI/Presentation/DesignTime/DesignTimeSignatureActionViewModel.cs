@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {

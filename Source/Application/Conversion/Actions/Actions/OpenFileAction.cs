@@ -155,7 +155,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             try
             {
                 Logger.Debug("Open file with system default application: " + filePath);
-                _processStarter.Start(filePath);
+                _processStarter.Start(filePath, true);
             }
             catch (Exception ex)
             {

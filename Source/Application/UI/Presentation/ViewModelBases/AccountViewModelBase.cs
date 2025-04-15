@@ -20,7 +20,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.ViewModelBases
         private bool _askForPasswordLater;
 
         public bool AllowConversionInterrupts { get; set; } = true;
-
+        
         public bool AskForPasswordLater
         {
             get { return _askForPasswordLater; }

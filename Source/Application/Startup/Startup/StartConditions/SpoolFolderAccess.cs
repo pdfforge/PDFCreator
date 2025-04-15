@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Startup.StartConditions

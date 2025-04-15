@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Banner
 {

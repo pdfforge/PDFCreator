@@ -30,9 +30,11 @@
 
         public const string PdfCreatorProfessionalUpdateInfoUrl = "https://update.pdfforge.org/pdfcreator-professional/update-info.txt";
         public const string PdfCreatorProfessionalUpdateChangelogUrl = "https://update.pdfforge.org/pdfcreator-professional/updates";
+        public const string PdfCreatorProfessionalGetLicenseUrl = "https://go.pdfforge.org/pdfcreator/setup/get-license-professional";
 
         public const string PdfCreatorTerminalServerUpdateInfoUrl = "https://update.pdfforge.org/pdfcreator-terminal-server/update-info.txt";
         public const string PdfCreatorTerminalServerUpdateChangelogUrl = "https://update.pdfforge.org/pdfcreator-terminal-server/updates";
+        public const string PdfCreatorTerminalServerGetLicenseUrl = "https://go.pdfforge.org/pdfcreator/setup/get-license-terminal-server";
 
         public const string PdfCreatorTerminalServerUrl = "https://go.pdfforge.org/pdfcreator-terminal-server";
 
@@ -41,7 +43,7 @@
 
         public const string UsageStatisticsEndpointUrl = "https://stat.pdfforge.org/event/api/v1/single/";
 
-        //public const string AvqUsageStatisticsEndpointUrl = "https://go.pdfforge.org/pdfcreator/AvqUsageStatistics";
+        public const string AvqUsageStatisticsEndpointUrl = "https://inapp.pdfcreator.com/api/v1/event";
         public const string AvqUsageStatisticsStagingEndpointUrl = "https://stage-inapp.pdfcreator.com/api/v1/event";
 
         public const string PrivacyPolicyUrl = "https://go.pdfforge.org/privacy-policy";
@@ -72,6 +74,36 @@
         //AHA! Feedback
         public const string AhaUrlStaging = "https://stage-api-feedback.avanquest.com/api/feedback";
         public const string AhaUrl = "https://api-feedback.avanquest.com/api/feedback";
+
+        //Email Collection Endpoint
+        public const string EmailCollectionEndpoint = "https://go.pdfforge.org/PDFCreator/App/EmailCollection";
+
+        // Requesting trial when blocked in domain/terminal server
+        public const string DefaultRequestTrialUrl = "https://go.pdfforge.org/PDFCreator/App/TrialRequest/FreeInBusiness";
+        public const string FreeOnEmsTrialUrl = "https://go.pdfforge.org/PDFCreator/App/TrialRequest/FreeOnEms";
+        public const string FreeInBusinessTrialUrl = "https://go.pdfforge.org/PDFCreator/App/TrialRequest/FreeInBusiness";
+        public const string FreeOnTerminalServerTrialUrl = "https://go.pdfforge.org/PDFCreator/App/TrialRequest/FreeOnTerminalServer";
+        public const string ProfessionalOnTerminalServerTrialUrl = "https://go.pdfforge.org/PDFCreator/App/TrialRequest/ProfessionalOnTerminalServer";
+
+        // Blocked in env go links
+
+        // Shop links
+        public const string FreeOnEmsShopUrl = "https://go.pdfforge.org/PDFCreator/App/Shop/FreeOnEms";
+        public const string FreeInBusinessShopUrl = "https://go.pdfforge.org/PDFCreator/App/Shop/FreeInBusiness";
+        public const string FreeOnTerminalServerShopUrl = "https://go.pdfforge.org/PDFCreator/App/Shop/FreeOnTerminalServer";
+        public const string ProfessionalOnTerminalServerShopUrl = "https://go.pdfforge.org/PDFCreator/App/Shop/ProfessionalOnTerminalServer";
+
+        // Landing page info links
+        public const string FreeOnEmsInfoUrl = "https://go.pdfforge.org/PDFCreator/App/Info/FreeOnEms";
+        public const string FreeInBusinessInfoUrl = "https://go.pdfforge.org/PDFCreator/App/Info/FreeInBusiness";
+        public const string FreeOnTerminalServerInfoUrl = "https://go.pdfforge.org/PDFCreator/App/Info/FreeOnTerminalServer";
+        public const string ProfessionalOnTerminalServerInfoUrl = "https://go.pdfforge.org/PDFCreator/App/Info/ProfessionalOnTerminalServer";
+
+        // Request Quote links
+        public const string FreeOnEmsQuoteUrl = "https://go.pdfforge.org/PDFCreator/App/RequestQuote/FreeOnEms";
+        public const string FreeInBusinessQuoteUrl = "https://go.pdfforge.org/PDFCreator/App/RequestQuote/FreeInBusiness";
+        public const string FreeOnTerminalServerQuoteUrl = "https://go.pdfforge.org/PDFCreator/App/RequestQuote/FreeOnTerminalServer";
+        public const string ProfessionalOnTerminalServerQuoteUrl = "https://go.pdfforge.org/PDFCreator/App/RequestQuote/ProfessionalOnTerminalServer";
 
         public static string GetExtendLicenseFallbackUrl(string edition)
         {

@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.UI.Presentation.Workflow;
 using pdfforge.PDFCreator.UI.Presentation.WorkflowQuery;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob

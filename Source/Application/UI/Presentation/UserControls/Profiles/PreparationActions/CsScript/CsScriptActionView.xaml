@@ -13,8 +13,7 @@
              xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              help:HelpProvider.HelpTopic="CsScript"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance designTime:DesignTimeCsScriptActionViewModel, IsDesignTimeCreatable=True}"
-             IsEnabled="{Binding CurrentProfile.CustomScript.Enabled}">
+             d:DataContext="{d:DesignInstance designTime:DesignTimeCsScriptActionViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -39,11 +38,13 @@
             <beh:EventToCommandBehavior Command="{Binding ReloadScriptListAsyncCommand}" Event="Loaded" />
         </b:Interaction.Behaviors>
 
-        <StackPanel HorizontalAlignment="Stretch">
+        <StackPanel HorizontalAlignment="Stretch" 
+                    IsEnabled="{Binding CurrentProfile.CustomScript.Enabled}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -112,6 +113,12 @@
                         </Label>
                     </StackPanel>
                 </StackPanel>
+
+                <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"  Margin="0 10" 
+                          IsChecked="{Binding EnableDebugging }"
+                          Visibility="{Binding ShowDebuggingOption, Converter={ StaticResource VisibleIfTrue} }">
+                    <TextBlock Text="{Binding Translation.EnableDebuggingText}" TextWrapping="Wrap"></TextBlock>
+                </CheckBox>
             </Grid>
         </StackPanel>
     </HeaderedContentControl>

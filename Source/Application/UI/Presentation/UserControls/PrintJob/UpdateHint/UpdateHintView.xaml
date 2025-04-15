@@ -7,6 +7,7 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:mdxaml="clr-namespace:MdXaml;assembly=MdXaml"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:utilities="clr-namespace:pdfforge.PDFCreator.Utilities.Update;assembly=PDFCreator.Utilities"
              MaxWidth="550"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeUpdateHintViewModel, IsDesignTimeCreatable=True}">
@@ -24,7 +25,7 @@
                 <Setter Property="Focusable" Value="False" />
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
-                        <DataTemplate DataType="update:ChangeLogItem">
+                        <DataTemplate DataType="{x:Type utilities:ChangeLogItem}">
                             <FlowDocumentScrollViewer Document="{Binding TextWithListPrefix, Converter={StaticResource MdConverter}}"
                                                           HorizontalScrollBarVisibility="Disabled"
                                                           VerticalScrollBarVisibility="Disabled"
@@ -64,7 +65,7 @@
             <StackPanel Focusable="False" Margin="0 0 20 0">
                 <ItemsControl ItemsSource="{Binding UpdateVersions}" Focusable="False">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="update:ReleaseInfo">
+                        <DataTemplate DataType="{x:Type utilities:ReleaseInfo}">
                             <StackPanel Margin="0 0 0 20"
                                         Visibility="{Binding Changes, Converter={StaticResource EmptyListToVisibilityConverter}}">
                                 <Label Style="{StaticResource LargeLabel}">

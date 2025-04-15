@@ -22,7 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.NavigationChecks
         {
             var settings = _currentSettingsProvider.CheckSettings;
             var resultDict = _profileChecker.CheckProfileList(settings);
-            var settingsChanged = _settingsChanged.HaveChanged();
+            var settingsChanged = _settingsChanged.HaveChanged(ignoreAccounts: true);
 
             return new SettingsCheckResult(resultDict, settingsChanged);
         }

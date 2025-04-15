@@ -42,14 +42,25 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
             try
             {
+                if (payload.Permissions.IsOnlyOfflinePermission())
+                {
+                    var existingAccount = _accountsProvider.Settings.MicrosoftAccounts.FirstOrDefault(account => account.AccountId == payload.Account.AccountId);
+
+                    if (existingAccount != null)
+                    {
+                        existingAccount.PermissionScopes = payload.Permissions.ToPermissionScope();
+                    }
+                    IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
+                    return;
+                }
                 await _graphManager.AcquireAccessToken(payload.Account, payload.Permissions);
                 var clientWrapper = _graphManager.GetClient(payload.Account);
                 if (!string.IsNullOrEmpty(clientWrapper.Account.AccountId) && !string.IsNullOrEmpty(clientWrapper.Account.AccountInfo))
                 {
-                    var existingAccount = _accountsProvider.Settings.MicrosoftAccounts.FirstOrDefault(account => account.AccountInfo == clientWrapper.Account.AccountInfo);
+                    var existingAccount = _accountsProvider.Settings.MicrosoftAccounts.FirstOrDefault(account => account.AccountId == clientWrapper.Account.AccountId);
 
                     if (existingAccount != null)
-                        clientWrapper.Account.CopyTo(payload.Account);
+                        clientWrapper.Account.CopyTo(existingAccount);
                     else
                         _accountsProvider.Settings.MicrosoftAccounts.Add(clientWrapper.Account);
                 }

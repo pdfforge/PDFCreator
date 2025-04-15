@@ -7,7 +7,8 @@
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance controls1:DesignTimeFontSelectorControlViewModel, IsDesignTimeCreatable=true}">
+             d:DataContext="{d:DesignInstance controls1:DesignTimeFontSelectorControlViewModel, IsDesignTimeCreatable=true}"
+             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
     <UserControl.Resources>
         <converter:ColorConverter x:Key="ColorConverter" />
     </UserControl.Resources>
@@ -38,7 +39,7 @@
                 <Border CornerRadius="2" Margin="8">
                     <Border.Background>
                         <SolidColorBrush Color="{Binding FontColor,
-                                                 Converter={StaticResource ColorConverter}}" />
+                                                 Converter={StaticResource ColorConverter}}" options:Freeze="true"/>
                     </Border.Background>
                 </Border>
             </Border>

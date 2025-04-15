@@ -32,6 +32,7 @@ msgstr "Profily"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Printer"
 msgstr "Tlačiareň"
@@ -69,8 +70,10 @@ msgstr ""
 "Pomôžte nám vylepšiť {0} posielaním anonymných štatistík používania programu."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
-msgid "Read More"
+#, fuzzy
+msgid "Read more"
 msgstr "Prečítať viac"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
@@ -124,7 +127,6 @@ msgstr[1] "Vaša licencia vyprší za {0} dni."
 msgstr[2] "Vaša licencia vyprší za {0} dní."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #, fuzzy
 msgid "Your trial license expires today."
 msgstr "Platnosť vašej licencie vypršala."
@@ -149,13 +151,11 @@ msgstr "Zadaná cesta je príliš dlhá. Zadajte platnú cestu."
 msgid "Invalid settings"
 msgstr "Neplatné nastavenia"
 
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Workflow.InteractiveProfileCheckerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
 msgid "Error"
 msgstr "Chyba"
 
@@ -262,7 +262,6 @@ msgstr "Spojiť"
 msgid "Reorder and Merge Print Jobs"
 msgstr "Zmena poradia a zlúčenie tlačových úloh"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Document Info"
 msgstr "Informácie o dokumente"
@@ -280,28 +279,36 @@ msgstr "Počet stránok:"
 msgid "Files:"
 msgstr "Súbory:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Title:"
-msgstr "Názov:"
+#, fuzzy
+#| msgid "Page view:"
+msgid "Preview"
+msgstr "Náhľad stránky:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Author:"
-msgstr "Autor:"
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Title"
+msgstr "Názov"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Printer:"
-msgstr "Tlačiareň:"
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Date"
+msgstr "Dátum"
+
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Author"
+msgstr "Autor"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "ID:"
+#, fuzzy
+#| msgid "ID:"
+msgid "ID"
 msgstr "ID:"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
@@ -374,11 +381,7 @@ msgstr "Zobrazenie a tlač akéhokoľvek PDF súboru"
 msgid "Create PDF files"
 msgstr "Vytváranie PDF súborov"
 
-#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-#, fuzzy
-msgid "Read more"
-msgstr "Prečítať viac"
-
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
 msgid "Install"
@@ -554,6 +557,13 @@ msgid ""
 "license immediately to avoid application blocking."
 msgstr ""
 
+#. pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "Vaša licencia vyprší za {0} deň."
+msgstr[1] "Vaša licencia vyprší za {0} dni."
+msgstr[2] "Vaša licencia vyprší za {0} dní."
+
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
@@ -715,14 +725,13 @@ msgstr ""
 msgid "Describe your feedback"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #, fuzzy
 msgid "Email"
 msgstr "E-mail"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #, fuzzy
 msgid "Email address"
@@ -753,6 +762,7 @@ msgstr ""
 msgid "I would like to suggest a feature"
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Send"
@@ -819,30 +829,150 @@ msgstr "Súbory:"
 msgid "An error occured while attempting to submit your feedback"
 msgstr "Vyskytla sa chyba počas ukladania licencie pre všetkých používateľov."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
-msgid "Send us feedback"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Supported since PDFCreator Professional 4.1.0"
+msgid "PDFCreator Professional Required"
+msgstr "Podporované od verzie PDFCreator Professional 4.1.0"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "PDFCreator Terminal Server Required"
+msgstr "Ďalšia inštancia programu PDFCreator Server je už spustená!"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Upgrade your plan to start using PDFCreator for your business!"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "BUSINESS FEATURE"
-msgstr "BUSINESS"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+#. Text before clickable 'request a quote.'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgctxt " ...request a quote."
 msgid ""
-"You need PDFCreator Professional for this feature. Click here for more "
-"information."
+"Switch to PDFCreator {0} for access to more features, broader security "
+"capabilities and priority support - required for businesses and teams! "
+"Upgrade effortlessly and keep your workflow running smoothly or"
 msgstr ""
-"Potrebujete PDFCreator Professional pre túto funkciu. Kliknite tu pre viac "
-"informácií."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "Unlock the business features with PDFCreator Professional!"
-msgstr "Odomknite prémiové funkcie pomocou programu PDFCreator Professional!"
+#. Clickable action after 'Keep your workflow running smoothly or'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgctxt "Keep your workflow running smoothly or..."
+msgid "request a quote."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Wondering what this means for your current workflows and business?"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "Read more."
+msgstr "Prečítať viac"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Start your free 30-day trial!"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "License"
+msgid "Buy a License"
+msgstr "Licencie"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Already purchased PDFCreator {0}?"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "Request Trial"
+msgstr "Preskočiť verziu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "*Please provide a valid email address."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Downloading..."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "The new setup failed to launch, please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup launch failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Setup download failed (most likely due to a network issue), please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup download was cancelled."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download cancelled"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Once you have a license or trial key, download and install PDFCreator {0} "
+"here."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #, fuzzy
 msgid "License Agreement"
 msgstr "Stav licencie:"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Privacy policy"
+msgid "Privacy Policy"
+msgstr "Zásady ochrany osobných údajov"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed due to a network issue, please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request failed because the email address is already being used for a "
+"trial."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request sent. You will receive an email with your trial license key "
+"momentarily."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Successful:"
+msgid "Request successful"
+msgstr "Dokončené:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "User Guide"
@@ -864,152 +994,25 @@ msgstr "(Fóra)"
 msgid "Feedback"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Print to '{0}' to get started!"
-msgstr "Tlačte jednoducho cez „{0}\"!"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "BUSINESS FEATURE"
+msgstr "BUSINESS"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Choose a file to convert"
-msgstr "Vyberte súbor na prevod"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid ""
+"You need PDFCreator Professional for this feature. Click here for more "
+"information."
+msgstr ""
+"Potrebujete PDFCreator Professional pre túto funkciu. Kliknite tu pre viac "
+"informácií."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "The history is empty"
-msgstr "História je prázdna"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "Unlock the business features with PDFCreator Professional!"
+msgstr "Odomknite prémiové funkcie pomocou programu PDFCreator Professional!"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Clear History"
-msgstr "Vyčistiť históriu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Refresh History"
-msgstr "Obnoviť históriu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Enable History"
-msgstr "Povoliť históriu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Disable History"
-msgstr "Vypnúť históriu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "... or simply drop files here!"
-msgstr "... alebo sem jednoducho pretiahnite súbory!"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Files recently created by PDFCreator:"
-msgstr "Nedávno prevedené súbory:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Remove from history"
-msgstr "Odstrániť z histórie"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Actions"
-msgstr "Akcie"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#, fuzzy
-msgid "Delete file"
-msgstr "Odstrániť súbor"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with default viewer"
-msgstr "Otvoriť s predvoleným prehliadačom"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open folder"
-msgstr "Otvoriť priečinok"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Print with PDF Architect"
-msgstr "Tlačiť v programe PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with PDF Architect"
-msgstr "Otvoriť v programe PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#, fuzzy
-msgid "Open with Email Client"
-msgstr "Otvoriť v e-mailovom klientovi"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "History is disabled"
-msgstr "História je zakázaná"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Download PDF Architect now"
-msgstr "Stiahnúť PDF Architect teraz"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "More on PDF Architect"
-msgstr "Viac o programe PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Install PDF Architect now"
-msgstr "Inštalovať PDF Architect teraz"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Launch PDF Architect"
-msgstr "Spustiť PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "You already have PDF Architect on your computer"
-msgstr "PDF Architect už máte nainštalovaný na vašom počítači"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Our full-featured PDF Editor"
-msgstr "PDF editor s mnohými funkciami"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-#, fuzzy
-msgid "Split files"
-msgstr "Všetky súbory"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Other powerful PDF Architect features:"
-msgstr "Ostantné funkcie programu PDF Architect:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Edit PDF files"
-msgstr "Úprava PDF súborov"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Convert PDF files"
-msgstr "Prevod PDF súborov"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Review and Annotate"
-msgstr "Hodnotenie a pripomienky"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Secure and Protect"
-msgstr "Zabezpečenie a ochrana"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Insert page elements"
-msgstr "Vkladanie elementov stránky"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Create custom forms"
-msgstr "Tvorba vlastných formulárov"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Optical character recognition (OCR)"
-msgstr "Optické rozpoznávanie znakov (OCR)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Send for e-signature"
-msgstr "Odoslanie elektronického podpisu"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
+msgid "Send us feedback"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Debug"
@@ -1018,13 +1021,6 @@ msgstr "Ladenie"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "General"
 msgstr "Všeobecné"
-
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Title"
-msgstr "Názov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Viewer"
@@ -1062,11 +1058,15 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Edit Title Replacement"
+#, fuzzy
+#| msgid "Edit Title Replacement"
+msgid "Edit title replacement"
 msgstr "Úprava náhradného názvu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Remove All"
+#, fuzzy
+#| msgid "Remove All"
+msgid "Remove all"
 msgstr "Odstrániť všetko"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1138,7 +1138,7 @@ msgstr "Úprava náhradného názvu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
 #, fuzzy
-msgid "Title Replacements"
+msgid "Title replacements"
 msgstr "Zámena textu v názve dokumentu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1177,50 +1177,22 @@ msgstr "Odstrániť"
 msgid "RegEx"
 msgstr "RegEx"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid ""
-"Wrong license key syntax.\n"
-"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
-"Valid characters are: A-Z, 0-9 and the dash."
-msgstr ""
-"Zlý tvar licenčného kľúča.\n"
-"Musí byť zadaný v tvare „12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU\".\n"
-"Správne znaky sú A-Z, 0-9 a pomlčka."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Please enter your license key:"
-msgstr "Zadajte váš licenčný kľúč:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-#, fuzzy
-msgid "Copy the offline activation string:"
-msgstr "Offline aktivácia"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "_Ok"
-msgstr "_OK"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Paste the response code here:"
-msgstr "Prilepte tu kód odpovede:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Request an activation code on our website:"
-msgstr "Požiadavku na aktiváciu kódu zadajte na našej webstránke:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Offline activation"
-msgstr "Offline aktivácia"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
+msgid "Save"
+msgstr "Uložiť"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Last activation:"
@@ -1251,6 +1223,11 @@ msgid "Enter license key"
 msgstr "Zadajte licenčný kľúč"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Please enter your license key:"
+msgstr "Zadajte váš licenčný kľúč:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Expires:"
 msgstr "Expiruje:"
 
@@ -1274,6 +1251,11 @@ msgstr "ID zariadenia:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Manage licenses"
 msgstr "Spravovanie licencií"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Offline activation"
+msgstr "Offline aktivácia"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Online activation"
@@ -1305,6 +1287,12 @@ msgid "Store license for all users was successful."
 msgstr "Uloženie licencie pre všetkých používateľov bolo úspešné."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid ""
+"It's not possible to use offline activation because PDFCreator is configured "
+"to use the internal license server."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Remind me later"
 msgstr "Pripomenúť neskôr"
 
@@ -1314,21 +1302,40 @@ msgstr "Pripomenúť neskôr"
 msgid "View License"
 msgstr "Licencie"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
-msgid "Save"
-msgstr "Uložiť"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid ""
+"Wrong license key syntax.\n"
+"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
+"Valid characters are: A-Z, 0-9 and the dash."
+msgstr ""
+"Zlý tvar licenčného kľúča.\n"
+"Musí byť zadaný v tvare „12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU\".\n"
+"Správne znaky sú A-Z, 0-9 a pomlčka."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+#, fuzzy
+msgid "Copy the offline activation string:"
+msgstr "Offline aktivácia"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "_Ok"
+msgstr "_OK"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Paste the response code here:"
+msgstr "Prilepte tu kód odpovede:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Request an activation code on our website:"
+msgstr "Požiadavku na aktiváciu kódu zadajte na našej webstránke:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Ask"
@@ -1352,8 +1359,9 @@ msgstr "Povoliť PDFCreatoru dočasne zmeniť predvolenú tlačiareň"
 msgid "Check now"
 msgstr "Skontrolovať teraz"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Default Printer"
+msgid "Default printer"
 msgstr "Predvolená tlačiareň"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1365,7 +1373,9 @@ msgid "Language"
 msgstr "Jazyk"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Explorer Context Menu Integration"
+#, fuzzy
+#| msgid "Explorer Context Menu Integration"
+msgid "Explorer context menu integration"
 msgstr "Integrácia do kontextového menu Explorera"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1430,11 +1440,13 @@ msgid "Install Update"
 msgstr "Nainštalovať aktualizáciu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage Statistics"
+msgid "Usage statistics"
 msgstr "Štatistiky používania"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Send Usage Statistics"
+#, fuzzy
+#| msgid "Send Usage Statistics"
+msgid "Send usage statistics"
 msgstr "Posielať štatistiky používania"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1453,12 +1465,15 @@ msgstr "Príklad servisných štatistík:"
 msgid "Read our privacy policy here:"
 msgstr "Viac o zásadách ochrany osobných údajov si prečítajte tu:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Privacy policy"
 msgstr "Zásady ochrany osobných údajov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Configure Home Screen"
+#, fuzzy
+#| msgid "Configure Home Screen"
+msgid "Configure home screen"
 msgstr "Nastavenie domovskej obrazovky"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1489,11 +1504,9 @@ msgid "If you want to know more you can take a look at our manual:"
 msgstr "Ak chcete vedieť viac, môžete si pozrieť našu príručku:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage statistics"
-msgstr "Štatistiky používania"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "PDFCreator Standby"
+#, fuzzy
+#| msgid "PDFCreator Standby"
+msgid "PDFCreator standby"
 msgstr "Pohotovostný režim programu PDFCreator"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1526,7 +1539,7 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
 #, fuzzy
-msgid "Direct Image Conversion Settings"
+msgid "Direct image conversion settings"
 msgstr "Priečinok"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
@@ -1539,9 +1552,10 @@ msgstr "Vybrať súbor:"
 msgid "Select page orientation:"
 msgstr "Orientácia stránky:"
 
-#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Default Viewer"
+#, fuzzy
+#| msgid "Default Viewer"
+msgid "Default viewer"
 msgstr "Predvolený prehliadač"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
@@ -1549,11 +1563,15 @@ msgid "Executable files"
 msgstr "Spustiteľné súbory"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Executable Path:"
+#, fuzzy
+#| msgid "Executable Path:"
+msgid "Executable path:"
 msgstr "Spustiteľná cesta:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Additional Parameters:"
+#, fuzzy
+#| msgid "Additional Parameters:"
+msgid "Additional parameters:"
 msgstr "Dodatočné parametre:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
@@ -1563,6 +1581,142 @@ msgid ""
 msgstr ""
 "Tu si môžete nastaviť vlastný program pre prehliadanie vami vytvorených "
 "dokumentov. Ak tu nič nenastavíte bude použitý systémom predvolený program."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Clear log file"
+msgstr "Vyčistiť záznam súboru"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Restore"
+msgstr "Obnoviť"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Default Settings"
+msgid "Default settings"
+msgstr "Obnoviť predvolené nastavenia"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Export Settings"
+msgid "Export settings"
+msgstr "Nastavenie exportu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load settings from file"
+msgstr "Načítať nastavenia zo súboru"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load specific profiles from file"
+msgstr "Načítať špecifické profily zo súboru"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid "Load specific queues from file"
+msgstr "Načítať špecifické profily zo súboru"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Log file cleared"
+msgstr "Súbor záznamu bol vyčistený"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Logging"
+msgstr "Záznam"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Logging Level:"
+msgid "Logging level:"
+msgstr "Úroveň zaznamenávania:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert PDFCreator test page"
+msgstr "Vytvoriť PDFCreator testovaciu stránku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings to file"
+msgstr "Uložiť nastavenia do súboru"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings without passwords"
+msgstr "Uloženie nastavení bez hesiel"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Hint: We recommend to save your settings without passwords when sharing "
+"settings with our support"
+msgstr ""
+"Tip: Pokiaľ zdieľate vaše nastavenia s našou podporou, odporúčame ich "
+"ukladať bez hesiel"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Show log file"
+msgstr "Zobraziť súbor denníka"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Open event log"
+msgstr "Otvoriť záznam udalostí"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Test Pages"
+msgid "Test pages"
+msgstr "Testovacie stránky"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Print Windows test page"
+msgstr "Tlačiť Windows testovaciu stránku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Do you really want to restore the default settings? The current settings "
+"will be lost."
+msgstr ""
+"Skutočne chcete obnoviť predvolené nastavenia? Týmto stratíte aktuálne "
+"nastavenia."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "No log file"
+msgstr "Žiadny súbor záznamu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "There is currently no log file available."
+msgstr "Nie je dostupný žiadny súbor so záznamom."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Restore Default Settings"
+msgid "Restore default settings"
+msgstr "Obnoviť predvolené nastavenia"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "PDFCreator Test Page"
+msgid "PDFCreator test page"
+msgstr "Testovacia stránka programu PDFCreator"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid "Convert test page and open directory"
+msgstr ""
+"Vytlačí testovaciu stránku s aktuálnym profilom. Ak bude potrebné budete "
+"vyzvaný na uloženie nastavení."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid ""
+"Convert a test page with the current profile and open the saving directory"
+msgstr ""
+"Vytlačí testovaciu stránku s aktuálnym profilom. Ak bude potrebné budete "
+"vyzvaný na uloženie nastavení."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Convert a test page with the current profile. You will be asked to save the "
+"settings if required."
+msgstr ""
+"Vytlačí testovaciu stránku s aktuálnym profilom. Ak bude potrebné budete "
+"vyzvaný na uloženie nastavení."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 msgid "Load Profiles"
@@ -1598,160 +1752,248 @@ msgstr "Nastavenia programu PDFCreator"
 msgid "Add to settings"
 msgstr "Pridať do nastavení"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Clear log file"
-msgstr "Vyčistiť záznam súboru"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Preparation"
+msgstr "Príprava"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore"
-msgstr "Obnoviť"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Modify"
+msgstr "Úprava"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Default Settings"
-msgstr "Obnoviť predvolené nastavenia"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Export Settings"
-msgstr "Nastavenie exportu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load settings from file"
-msgstr "Načítať nastavenia zo súboru"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load specific profiles from file"
-msgstr "Načítať špecifické profily zo súboru"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #, fuzzy
-msgid "Load specific queues from file"
-msgstr "Načítať špecifické profily zo súboru"
+msgid "Send/Open"
+msgstr "Otvoriť"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Log file cleared"
-msgstr "Súbor záznamu bol vyčistený"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging"
-msgstr "Záznam"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging Level:"
-msgstr "Úroveň zaznamenávania:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert PDFCreator test page"
-msgstr "Vytvoriť PDFCreator testovaciu stránku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings to file"
-msgstr "Uložiť nastavenia do súboru"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings without passwords"
-msgstr "Uloženie nastavení bez hesiel"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Hint: We recommend to save your settings without passwords when sharing "
-"settings with our support"
-msgstr ""
-"Tip: Pokiaľ zdieľate vaše nastavenia s našou podporou, odporúčame ich "
-"ukladať bez hesiel"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Show log file"
-msgstr "Zobraziť súbor denníka"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Open event log"
-msgstr "Otvoriť záznam udalostí"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Test Pages"
-msgstr "Testovacie stránky"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Print Windows test page"
-msgstr "Tlačiť Windows testovaciu stránku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Do you really want to restore the default settings? The current settings "
-"will be lost."
-msgstr ""
-"Skutočne chcete obnoviť predvolené nastavenia? Týmto stratíte aktuálne "
-"nastavenia."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "No log file"
-msgstr "Žiadny súbor záznamu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "There is currently no log file available."
-msgstr "Nie je dostupný žiadny súbor so záznamom."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore Default Settings"
-msgstr "Obnoviť predvolené nastavenia"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "PDFCreator Test Page"
-msgstr "Testovacia stránka programu PDFCreator"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert Test Page and Open Directory"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
 #, fuzzy
-msgid ""
-"Convert a test page with the current profile and open the saving directory"
-msgstr ""
-"Vytlačí testovaciu stránku s aktuálnym profilom. Ak bude potrebné budete "
-"vyzvaný na uloženie nastavení."
+#| msgid "Choose an Action"
+msgid "Choose an action"
+msgstr "Vyberte akciu"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Convert a test page with the current profile. You will be asked to save the "
-"settings if required."
-msgstr ""
-"Vytlačí testovaciu stránku s aktuálnym profilom. Ak bude potrebné budete "
-"vyzvaný na uloženie nastavení."
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Metadata"
+msgstr "Metadata"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "More information"
-msgstr "Viac informácií"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Title:"
+msgstr "Názov:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "No"
-msgstr "Nie"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Author:"
+msgstr "Autor:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Retry"
-msgstr "Znovu"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Subject:"
+msgstr "Predmet:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Profile"
-msgstr "Profil"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Keywords:"
+msgstr "Kľúčové slová:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Queue"
-msgstr "Fronta"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+msgid "The selected output format does not support metadata"
+msgstr "Vybraný výstupný formát nepodporuje metadáta"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Click here for more information on tokens"
-msgstr "Kliknite sem pre viac informácií o tokenoch"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-msgid "The usage of user tokens requires the user token action to be enabled"
-msgstr "Minimálne jeden súbor prílohy e-mailového klienta je nedostupný."
+#| msgid "Output Format"
+msgid "Output format"
+msgstr "Formát výstupu"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Add Token"
-msgstr "Pridať token"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "General Settings"
+msgid "General settings"
+msgstr "Všeobecné nastavenia"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Page Orientation:"
+msgid "Page orientation:"
+msgstr "Orientácia stránky:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Color Model:"
+msgid "Color model:"
+msgstr "Farebný model:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Viewer Settings"
+msgid "Viewer settings"
+msgstr "Nastavenia zobrazovača"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Page view:"
+msgstr "Náhľad stránky:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Document view:"
+msgstr "Náhľad dokuemntu:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Viewer opens on page:"
+msgstr "Prehliadač otvorený na strane:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Image compression:"
+msgstr "Kompresia obrázku:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Factor:"
+msgstr "Faktor:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Resample images to (DPI):"
+msgstr "Prevzorkovať obrázky do (DPI):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Advanced:"
+msgstr "Pokročilé:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Save validation report"
+msgstr "Uložiť správu o overení"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "The rgb color mode is not supported for PDF/X"
+msgstr "Farebný režim RGB nie je podporovaný pre PDF/X"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Use new Ghostscript PDF interpreter\n"
+"(uncheck if the new version causes issues)"
+msgstr ""
+"Použite nový Ghostscript PDF interpret\n"
+"(zrušte toto začiarknutie, ak nová verzia spôsobuje problémy)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Colors:"
+msgstr "Farby:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Quality (%):"
+msgstr "Kvalita (%):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Resolution (DPI):"
+msgstr "Rozlíšenie (DPI):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"As the text format is very limited in what can be displayed, there are many "
+"ways to create a TXT file from a printed document. You can choose between "
+"four different strategies:"
+msgstr ""
+"Textový formát je veľmi obmedzený v tom, čo môže byť zobrazené, existuje "
+"mnoho spôsobov ako vytvoriť TXT súbor z tlačeného dokumentu. Môžete si "
+"vybrať štyri rôzne stratégie:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"XML-escaped Unicode along with information regarding the format of the text"
+msgstr "XML-zmenené Unicode spolu s informáciami o formáte textu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Same XML output format as above, but attempt processing similar to MuPDF"
+msgstr ""
+"Rovnaký výstupný formát XML, ako je uvedené vyššie, ale pokus o spracovanie "
+"podobný MuPDF"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
+"original text layout"
+msgstr ""
+"Text Unicode (UCS2) s označením bajtu (BOM), ktorý približne spracuje "
+"pôvodné rozloženiu textu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "UTF-8 text which approximates the original text layout"
+msgstr "Text UTF-8, ktorý približne spracuje pôvodné rozloženie textu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Add New Profile"
+msgid "Add new profile"
+msgstr "Pridať nový profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "New Profile"
+msgid "New profile"
+msgstr "Nový profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter profile name:"
+msgstr "Zadajte názov profilu:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter new profile name:"
+msgstr "Zadajte nový názov profilu:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The entered profile name is invalid or does already exist."
+msgstr "Názov profilu je neplatný alebo neexistuje."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Profile:"
+msgstr "Profil:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
+msgid "Rename"
+msgstr "Premenovať"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Rename Profile"
+msgid "Rename profile"
+msgstr "Odstrániť profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Remove Profile"
+msgid "Remove profile"
+msgstr "Odstrániť profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Are you sure, you want to remove this profile?"
+msgstr "Ste si istý, že chcete odstrániť tento profil?"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The profile is mapped to the following printer:"
+msgid_plural "The profile is mapped to the following printers:"
+msgstr[0] "Profil je priradený na nasledujúcu tlačiareň:"
+msgstr[1] "Profil je priradený na nasledujúce tlačiarne:"
+msgstr[2] "Profil je priradený na nasledujúce tlačiarne:"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "This printer will be mapped to the default profile."
+msgid_plural "These printers will be mapped to the default profile."
+msgstr[0] "Táto tlačiareň bude priradená k predvolenému profilu."
+msgstr[1] "Táto tlačiareň bude priradená k predvoleným profilom."
+msgstr[2] "Táto tlačiareň bude priradená k predvoleným profilom."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
@@ -1774,7 +2016,9 @@ msgstr "Názov súboru:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-msgid "Target Directory:"
+#, fuzzy
+#| msgid "Target Directory:"
+msgid "Target directory:"
 msgstr "Cieľový priečinok:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
@@ -1830,16 +2074,6 @@ msgstr "Viac informácií"
 msgid "Non-pdf auto-merge"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Output Format"
-msgstr "Formát výstupu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Colors:"
-msgstr "Farby:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Resolution:"
 msgstr "Rozlíšenie:"
@@ -1847,163 +2081,6 @@ msgstr "Rozlíšenie:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Compression:"
 msgstr "Kompresia:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Metadata"
-msgstr "Metadata"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Subject:"
-msgstr "Predmet:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Keywords:"
-msgstr "Kľúčové slová:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Preparation"
-msgstr "Príprava"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Modify"
-msgstr "Úprava"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#, fuzzy
-msgid "Send/Open"
-msgstr "Otvoriť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-msgid "Choose an Action"
-msgstr "Vyberte akciu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "General Settings"
-msgstr "Všeobecné nastavenia"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page Orientation:"
-msgstr "Orientácia stránky:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Color Model:"
-msgstr "Farebný model:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer Settings"
-msgstr "Nastavenia zobrazovača"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page view:"
-msgstr "Náhľad stránky:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Document view:"
-msgstr "Náhľad dokuemntu:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer opens on page:"
-msgstr "Prehliadač otvorený na strane:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Image compression:"
-msgstr "Kompresia obrázku:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Factor:"
-msgstr "Faktor:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Resample images to (DPI):"
-msgstr "Prevzorkovať obrázky do (DPI):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Advanced:"
-msgstr "Pokročilé:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Save validation report"
-msgstr "Uložiť správu o overení"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "The rgb color mode is not supported for PDF/X"
-msgstr "Farebný režim RGB nie je podporovaný pre PDF/X"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Use new Ghostscript PDF interpreter\n"
-"(uncheck if the new version causes issues)"
-msgstr ""
-"Použite nový Ghostscript PDF interpret\n"
-"(zrušte toto začiarknutie, ak nová verzia spôsobuje problémy)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Quality (%):"
-msgstr "Kvalita (%):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Resolution (DPI):"
-msgstr "Rozlíšenie (DPI):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"As the text format is very limited in what can be displayed, there are many "
-"ways to create a TXT file from a printed document. You can choose between "
-"four different strategies:"
-msgstr ""
-"Textový formát je veľmi obmedzený v tom, čo môže byť zobrazené, existuje "
-"mnoho spôsobov ako vytvoriť TXT súbor z tlačeného dokumentu. Môžete si "
-"vybrať štyri rôzne stratégie:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"XML-escaped Unicode along with information regarding the format of the text"
-msgstr "XML-zmenené Unicode spolu s informáciami o formáte textu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Same XML output format as above, but attempt processing similar to MuPDF"
-msgstr ""
-"Rovnaký výstupný formát XML, ako je uvedené vyššie, ale pokus o spracovanie "
-"podobný MuPDF"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
-"original text layout"
-msgstr ""
-"Text Unicode (UCS2) s označením bajtu (BOM), ktorý približne spracuje "
-"pôvodné rozloženiu textu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "UTF-8 text which approximates the original text layout"
-msgstr "Text UTF-8, ktorý približne spracuje pôvodné rozloženie textu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Close"
-msgstr "Zatvoriť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Back"
-msgstr "Späť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Modify Settings:"
-msgstr "Úprava nastavení:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-msgid "The selected output format does not support metadata"
-msgstr "Vybraný výstupný formát nepodporuje metadáta"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid "Shows a window to select the filename, output format etc."
@@ -2046,6 +2123,12 @@ msgid ""
 msgstr ""
 "Dočasné ukladanie súborov bez povolenej akcie odoslania iba uloží súbory do "
 "dočasného priečinka"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+#, fuzzy
+#| msgid "Call Preview:"
+msgid "Show preview"
+msgstr "Náhľad skriptu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 #, fuzzy
@@ -2109,61 +2192,27 @@ msgid ""
 "able to save files to any directory the service has write permission."
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Add New Profile"
-msgstr "Pridať nový profil"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Close"
+msgstr "Zatvoriť"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "New Profile"
-msgstr "Nový profil"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Back"
+msgstr "Späť"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter profile name:"
-msgstr "Zadajte názov profilu:"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+#, fuzzy
+#| msgid "Modify Settings:"
+msgid "Modify settings:"
+msgstr "Úprava nastavení:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter new profile name:"
-msgstr "Zadajte nový názov profilu:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The entered profile name is invalid or does already exist."
-msgstr "Názov profilu je neplatný alebo neexistuje."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Profile:"
-msgstr "Profil:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
-msgid "Rename"
-msgstr "Premenovať"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Rename Profile"
-msgstr "Odstrániť profil"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Remove Profile"
-msgstr "Odstrániť profil"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Are you sure, you want to remove this profile?"
-msgstr "Ste si istý, že chcete odstrániť tento profil?"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The profile is mapped to the following printer:"
-msgid_plural "The profile is mapped to the following printers:"
-msgstr[0] "Profil je priradený na nasledujúcu tlačiareň:"
-msgstr[1] "Profil je priradený na nasledujúce tlačiarne:"
-msgstr[2] "Profil je priradený na nasledujúce tlačiarne:"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "This printer will be mapped to the default profile."
-msgid_plural "These printers will be mapped to the default profile."
-msgstr[0] "Táto tlačiareň bude priradená k predvolenému profilu."
-msgstr[1] "Táto tlačiareň bude priradená k predvoleným profilom."
-msgstr[2] "Táto tlačiareň bude priradená k predvoleným profilom."
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Actions"
+msgstr "Akcie"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Add action"
@@ -2172,40 +2221,6 @@ msgstr "Pridať akciu"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Add actions to modify, send or prepare your documents"
 msgstr "Pridajte akcie pre úpravu, posielanie alebo prípravu vašich dokumentov"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print document"
-msgstr "Tlačiť dokument"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Duplex printing (if support by the printer)"
-msgstr "Obojstranná tlač (ak to podporuje tlačiareň)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Select printer:"
-msgstr "Vybrať tlačiareň:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Fit to the page size of the printer"
-msgstr "Prispôsobiť veľkosť stránky tlačiarni"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print"
-msgstr "Tlačiť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Prints the document to a physical printer."
-msgstr "Vytlačí dokument na fyzickej tlačiarni."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid ""
-"The selected printer is mapped to PDFCreator. Please consider using the "
-"forwarding action. It doesn't require additional printing, is quicker and "
-"less error prone."
-msgstr ""
-"Vybraná tlačiareň je namapovaná na program PDFCreator. Zvážte použitie "
-"presmerovania. Táto akcia nevyžaduje dodatočnú tlač, je rýchlejšia a menej "
-"náchylná na chyby."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2217,25 +2232,63 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+msgid "Directory:"
+msgstr "Priečinok:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #, fuzzy
-msgid "This feature is already enabled for the selected profile"
-msgstr "Táto funkcia nie je podporovaná vo zvolenom výstupnom formáte."
+msgid "Selected account:"
+msgstr "Vyberte HTTP účet:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr ""
+"Neprepisovať súbory (bude pridaná rozširujúca číslica v prípade konfliktu)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid "Open upload in browser"
+msgstr "Otvoriť súbor prehliadačom."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid "SharePoint"
+msgstr "Preskočiť verziu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload documents to your SharePoint"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2277,54 +2330,25 @@ msgstr "Táto funkcia nie je podporovaná vo zvolenom výstupnom formáte."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Directory:"
-msgstr "Priečinok:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Sites:"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Drives:"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 #, fuzzy
-msgid "Selected Account:"
-msgstr "Vyberte HTTP účet:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr ""
-"Neprepisovať súbory (bude pridaná rozširujúca číslica v prípade konfliktu)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Show link at the end of interactive workflow"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid "Open upload in browser"
-msgstr "Otvoriť súbor prehliadačom."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid "Sharepoint"
-msgstr "Preskočiť verziu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Upload a file to your OneDrive"
-msgstr ""
+msgid "This feature is already enabled for the selected profile"
+msgstr "Táto funkcia nie je podporovaná vo zvolenom výstupnom formáte."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2354,24 +2378,26 @@ msgid "Select program"
 msgstr "Vyberte program"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Additional Program Parameters:"
+#, fuzzy
+#| msgid "Additional Program Parameters:"
+msgid "Additional program parameters:"
 msgstr "Dodatočné programové parametre:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Call Preview:"
+#, fuzzy
+#| msgid "Call Preview:"
+msgid "Call preview:"
 msgstr "Náhľad skriptu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Program File:"
+#, fuzzy
+#| msgid "Program File:"
+msgid "Program file:"
 msgstr "Súbor programu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Wait until the program has ended"
 msgstr "Čakať, pokým spustený skript neskončí"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Run Program"
-msgstr "Spustiť program"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid ""
@@ -2383,8 +2409,44 @@ msgstr ""
 "PDFCreator automaticky vyvolá špecifický program a použije vytvorené súbory "
 "ako parameter."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print document"
+msgstr "Tlačiť dokument"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Duplex printing (if support by the printer)"
+msgstr "Obojstranná tlač (ak to podporuje tlačiareň)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Select printer:"
+msgstr "Vybrať tlačiareň:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Fit to the page size of the printer"
+msgstr "Prispôsobiť veľkosť stránky tlačiarni"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print"
+msgstr "Tlačiť"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Prints the document to a physical printer."
+msgstr "Vytlačí dokument na fyzickej tlačiarni."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid ""
+"The selected printer is mapped to PDFCreator. Please consider using the "
+"forwarding action. It doesn't require additional printing, is quicker and "
+"less error prone."
+msgstr ""
+"Vybraná tlačiareň je namapovaná na program PDFCreator. Zvážte použitie "
+"presmerovania. Táto akcia nevyžaduje dodatočnú tlač, je rýchlejšia a menej "
+"náchylná na chyby."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-msgid "Open File"
+#, fuzzy
+#| msgid "Open File"
+msgid "Open file"
 msgstr "Otvoriť súbor"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
@@ -2422,7 +2484,9 @@ msgid "Add file"
 msgstr "Pridať súbor"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
-msgid "Select File:"
+#, fuzzy
+#| msgid "Select File:"
+msgid "Select file:"
 msgstr "Vybrať súbor:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
@@ -2430,7 +2494,9 @@ msgid "Apply"
 msgstr "Použiť"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Extract User Tokens"
+#, fuzzy
+#| msgid "Extract User Tokens"
+msgid "Extract user tokens"
 msgstr "Extrahovať používateľský token"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2469,7 +2535,9 @@ msgstr ""
 "nastavený vo vašom dokumente."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Select Separator:"
+#, fuzzy
+#| msgid "Select Separator:"
+msgid "Select separator:"
 msgstr "Vyberte oddeľovač:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2477,7 +2545,9 @@ msgid "More on user tokens"
 msgstr "Viac o používateľských tokenoch"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "User Token"
+#, fuzzy
+#| msgid "User Token"
+msgid "User token"
 msgstr "Používateľský token"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2489,7 +2559,9 @@ msgstr ""
 "podporované v programe PDFCraetor."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-msgid "Forward to Profile"
+#, fuzzy
+#| msgid "Forward to Profile"
+msgid "Forward to profile"
 msgstr "Preposlať do profilu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
@@ -2510,11 +2582,15 @@ msgid "CS-Script"
 msgstr "CS-Skript"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Check Script"
+#, fuzzy
+#| msgid "Check Script"
+msgid "Check script"
 msgstr "Kontrola skriptu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "CS-Script File:"
+#, fuzzy
+#| msgid "CS-Script File:"
+msgid "CS-Script file:"
 msgstr "Súbor CS-Skriptu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2530,11 +2606,19 @@ msgid "Loading CS-Script was successful."
 msgstr "Načítavanie CS-Skriptu bolo úspešné."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Open CS-Scripts Folder"
+#, fuzzy
+#| msgid "Open CS-Scripts Folder"
+msgid "Open CS-Scripts folder"
 msgstr "Otvoriť priečinok s CS-Skriptami"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Reload Script List"
+msgid "Enable debugging."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+#, fuzzy
+#| msgid "Reload Script List"
+msgid "Reload script list"
 msgstr "Znovu načítať zoznam"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2607,7 +2691,9 @@ msgid "Format:"
 msgstr "Formát:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-msgid "Page Numbers"
+#, fuzzy
+#| msgid "Page Numbers"
+msgid "Page numbers"
 msgstr "Čísla stránok"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
@@ -2619,7 +2705,9 @@ msgid "Select watermark file"
 msgstr "Vybrať súbor vodoznaku"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-msgid "Watermark File (Only PDF):"
+#, fuzzy
+#| msgid "Watermark File (Only PDF):"
+msgid "Watermark file (only PDF):"
 msgstr "Súbor vodoznaku (iba PDF):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
@@ -2659,11 +2747,15 @@ msgid "Stamp"
 msgstr "Pečiatka"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Show Font as outline"
+#, fuzzy
+#| msgid "Show Font as outline"
+msgid "Show font as outline"
 msgstr "Zobraziť písmo ako obrys"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Font Color:"
+#, fuzzy
+#| msgid "Font Color:"
+msgid "Font color:"
 msgstr "Farba písma:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
@@ -2671,11 +2763,15 @@ msgid "Font:"
 msgstr "Písmo:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Outline Width:"
+#, fuzzy
+#| msgid "Outline Width:"
+msgid "Outline width:"
 msgstr "Hrúbka obysu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Stamp Text:"
+#, fuzzy
+#| msgid "Stamp Text:"
+msgid "Stamp text:"
 msgstr "Text razítka:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
@@ -2686,78 +2782,15 @@ msgstr "Vybraný typ písma nie je podporovaný. Vyberte iný typ písma."
 msgid "Places a stamp text on the document."
 msgstr "Vloží pečiatku do dokumentu."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover"
-msgstr "Obal"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Inserts one or more pages at the beginning of the document."
-msgstr "Vloží na začiatok dokumentu jednu alebo viac stránok."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Add cover"
-msgstr "Pridať obal"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Select cover file"
-msgstr "Vybrať súbor obalu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover files (PDF):"
-msgstr "Súbory obalu (PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid ""
-"Warning: The following documents are PDF 2.0 files and can't be added to "
-"other documents during the conversion:"
-msgstr ""
-"Upozornenie: Nasledujúce dokumenty sú súbory PDF 2.0 a počas prevodu ich nie "
-"je možné pridať k iným dokumentom:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background"
-msgstr "Pozadie"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Adds a background to the document."
-msgstr "Pridá pozadie do dokumentu."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Select background file"
-msgstr "Vybrať súbor pozadia"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background File (Only PDF):"
-msgstr "Súbor pozadia (iba PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Add attachment"
-msgstr "Pridať prílohu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Select attachment file"
-msgstr "Vybrať súbor prílohy"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment files (PDF):"
-msgstr "Prílohy (PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment"
-msgstr "Príloha"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Appends one or more pages at the end of the document."
-msgstr "Na koniec dokumentu pridá jednu alebo viac strán."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Position and size"
 msgstr "Pozícia a veľkosť"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Certificate File:"
+#, fuzzy
+#| msgid "Certificate File:"
+msgid "Certificate file:"
 msgstr "Súbor certifikátu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -2830,13 +2863,16 @@ msgid "Allow multiple signing"
 msgstr "Povoliť viacnásobné prihlásenie"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Display Signature:"
+#, fuzzy
+#| msgid "Display Signature:"
+msgid "Display signature:"
 msgstr "Zobrazenie podpisu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "No display"
 msgstr "Nič k zobrazeniu"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Text"
 msgstr "Text"
@@ -2846,11 +2882,15 @@ msgid "Image"
 msgstr "Obrázky"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Image and Text"
+#, fuzzy
+#| msgid "Image and Text"
+msgid "Image and text"
 msgstr "Obrázky a text"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Select Time Server:"
+#, fuzzy
+#| msgid "Select Time Server:"
+msgid "Select time server:"
 msgstr "Vyberte časový server:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2858,11 +2898,15 @@ msgid "Display signature in document"
 msgstr "Zobraziť podpis dokumentu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Signature Image:"
+#, fuzzy
+#| msgid "Signature Image:"
+msgid "Signature image:"
 msgstr "Podpisový obrázok:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Draw Custom Signature"
+#, fuzzy
+#| msgid "Draw Custom Signature"
+msgid "Draw custom signature"
 msgstr "Vytvoriť vlastný podpis"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2914,43 +2958,6 @@ msgstr "Obnoviť"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Brush"
 msgstr "Kefa"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Owner password (for editing):"
-msgstr "Vlastník hesla (pre upravovanie):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-#, fuzzy
-msgid "Note: An owner password is required to set the user password."
-msgstr "Vlastník hesla požaduje, aby ste nastavili používateľské heslá."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid ""
-"Leave password empty to get a request during the print job (password will "
-"not be saved)."
-msgstr ""
-"Nechajte heslo prázdne a dostanete požiadavku počas tlačenia (heslo nebude "
-"uložené)."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Skip"
-msgstr "Preskočiť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Encryption Passwords"
-msgstr "Šifrovanie hesiel"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "User password (for opening):"
-msgstr "Používateľské heslo (pre otvorenie):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Password strength:"
-msgstr "Sila hesla:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 msgid "Require a password to open the PDF document"
@@ -3033,16 +3040,132 @@ msgstr ""
 "Zabezpečí PDF súbory heslom a vyberá, ktoré oprávnenia obdrží užívateľ. "
 "Podpis a šifrovanie sú vždy spracované ako posledné."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Owner password (for editing):"
+msgstr "Vlastník hesla (pre upravovanie):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+#, fuzzy
+msgid "Note: An owner password is required to set the user password."
+msgstr "Vlastník hesla požaduje, aby ste nastavili používateľské heslá."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid ""
+"Leave password empty to get a request during the print job (password will "
+"not be saved)."
+msgstr ""
+"Nechajte heslo prázdne a dostanete požiadavku počas tlačenia (heslo nebude "
+"uložené)."
+
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Skip"
+msgstr "Preskočiť"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+#, fuzzy
+#| msgid "Encryption Passwords"
+msgid "Encryption passwords"
+msgstr "Šifrovanie hesiel"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "User password (for opening):"
+msgstr "Používateľské heslo (pre otvorenie):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Password strength:"
+msgstr "Sila hesla:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover"
+msgstr "Obal"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Inserts one or more pages at the beginning of the document."
+msgstr "Vloží na začiatok dokumentu jednu alebo viac stránok."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Add cover"
+msgstr "Pridať obal"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Select cover file"
+msgstr "Vybrať súbor obalu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover files (PDF):"
+msgstr "Súbory obalu (PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid ""
+"Warning: The following documents are PDF 2.0 files and can't be added to "
+"other documents during the conversion:"
+msgstr ""
+"Upozornenie: Nasledujúce dokumenty sú súbory PDF 2.0 a počas prevodu ich nie "
+"je možné pridať k iným dokumentom:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Background"
+msgstr "Pozadie"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Adds a background to the document."
+msgstr "Pridá pozadie do dokumentu."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Select background file"
+msgstr "Vybrať súbor pozadia"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+#, fuzzy
+#| msgid "Background File (Only PDF):"
+msgid "Background file (only PDF):"
+msgstr "Súbor pozadia (iba PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Add attachment"
+msgstr "Pridať prílohu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Select attachment file"
+msgstr "Vybrať súbor prílohy"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment files (PDF):"
+msgstr "Prílohy (PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment"
+msgstr "Príloha"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Appends one or more pages at the end of the document."
+msgstr "Na koniec dokumentu pridá jednu alebo viac strán."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Upload"
+#, fuzzy
+#| msgid "FTP Upload"
+msgid "FTP upload"
 msgstr "Nahrať cez FTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Account:"
+#, fuzzy
+#| msgid "FTP Account:"
+msgid "FTP account:"
 msgstr "FTP účet:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Server Password:"
+#, fuzzy
+#| msgid "FTP Server Password:"
+msgid "FTP server password:"
 msgstr "Heslo FTP servera:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
@@ -3074,46 +3197,22 @@ msgid "_Remove"
 msgstr "_Odstrániť"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Upload"
+#, fuzzy
+#| msgid "HTTP Upload"
+msgid "HTTP upload"
 msgstr "Nahrávanie cez HTTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Account:"
+#, fuzzy
+#| msgid "HTTP Account:"
+msgid "HTTP account:"
 msgstr "HTTP účet:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Server Password:"
+#, fuzzy
+#| msgid "HTTP Server Password:"
+msgid "HTTP server password:"
 msgstr "Heslo HTTP servera:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-msgid "Security"
-msgstr "Bezpečnosť"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-msgid "Set Certificate Password"
-msgstr "Nastavte heslo certifikátu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-msgid "Certificate _Password:"
-msgstr "Heslo certifikátu:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Mail"
-msgstr "SMTP E-mail"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Account:"
-msgstr "SMTP účet:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Server Password:"
-msgstr "Heslo SMTP servera:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
-msgid "Converting..."
-msgstr "Prebieha prevod..."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 #, fuzzy
@@ -3178,61 +3277,80 @@ msgid "Remove ads"
 msgstr "Odstrániť reklamy"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#, fuzzy
 msgid ""
-"Certain features are not supported by the selected output format and will be "
-"skipped automatically. Please check your profile settings."
-msgstr ""
+"Certain functions are not supported by the output format and will not be "
+"executed. Please check your profile."
+msgstr "Táto funkcia nie je podporovaná vo zvolenom výstupnom formáte."
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "After converting {0} file, we have a recommendation for you:"
-msgid_plural "After converting {0} files, we have a recommendation for you:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
+msgid "Converting..."
+msgstr "Prebieha prevod..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+msgid "Security"
+msgstr "Bezpečnosť"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #, fuzzy
-msgid "Higher encryption (256 Bit AES)"
-msgstr "Vysoké (128 bitové AES)"
+#| msgid "Set certificate password"
+msgid "Set Certificate password"
+msgstr "Nastavte heslo certifikátu"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Includes HotFolder"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #, fuzzy
-msgid "Extract settings with user tokens"
-msgstr "Extrahovať používateľský token"
+#| msgid "Certificate _Password:"
+msgid "Certificate password:"
+msgstr "Heslo certifikátu:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Automatic saving with tray notification"
-msgstr "Automatické ukladanie bez hesla certifikátu."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
 #, fuzzy
-msgid "Priority support"
-msgstr "Prioritná podpora"
+#| msgid "SMTP Mail"
+msgid "SMTP mail"
+msgstr "SMTP E-mail"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Admin friendly"
-msgstr "Administrátorsky prívetivý"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#, fuzzy
+#| msgid "SMTP Account:"
+msgid "SMTP account:"
+msgstr "SMTP účet:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "No, thanks"
-msgstr "Nie, vďaka"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#, fuzzy
+#| msgid "SMTP Server Password:"
+msgid "SMTP server password:"
+msgstr "Heslo SMTP servera:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "More Information"
-msgstr "Viac informácií"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with PDF Architect"
+msgstr "Otvoriť v programe PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Quick Actions"
 msgstr "Rýchle akcie"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with default viewer"
+msgstr "Otvoriť s predvoleným prehliadačom"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open folder"
+msgstr "Otvoriť priečinok"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #, fuzzy
 msgid "Send by email"
 msgstr "Odoslať e-mailom"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Print with PDF Architect"
+msgstr "Tlačiť v programe PDF Architect"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Open"
@@ -3276,6 +3394,111 @@ msgstr ""
 msgid "Sharepoint share link"
 msgstr "Preskočiť verziu"
 
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "After converting {0} file, we have a recommendation for you:"
+msgid_plural "After converting {0} files, we have a recommendation for you:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#, fuzzy
+msgid "Higher encryption (256 Bit AES)"
+msgstr "Vysoké (128 bitové AES)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Includes HotFolder"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#, fuzzy
+msgid "Extract settings with user tokens"
+msgstr "Extrahovať používateľský token"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Automatic saving with tray notification"
+msgstr "Automatické ukladanie bez hesla certifikátu."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+#, fuzzy
+msgid "Priority support"
+msgstr "Prioritná podpora"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Admin friendly"
+msgstr "Administrátorsky prívetivý"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "No, thanks"
+msgstr "Nie, vďaka"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "More Information"
+msgstr "Viac informácií"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#, fuzzy
+msgid "Email address:"
+msgstr "E-mailová adresa:"
+
+#. Header for bullet points like 'receive helpful guides'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt " ...receive helpful guides"
+msgid "Enter your email to:"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Get exclusive offers and expert tips"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Receive helpful guides and best practices"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Join 1,000,000+ users improving their PDF experience"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Help ensure PDFCreator Free stays free for everyone"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "Make the most of PDFCreator Free"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "I agree to receive marketing and promotional communications."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#, fuzzy
+#| msgid "Activation failed"
+msgid "Submission failed"
+msgstr "Aktivácia zlyhala"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid ""
+"Error submission failed (most likely due to a network issue), please try "
+"again."
+msgstr ""
+
+#. Text before clickable 'Privacy policy'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "... Privacy policy"
+msgid "The information you provide will be handled in accordance with our"
+msgstr ""
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 #, fuzzy
 msgid "Please select a profile:"
@@ -3283,7 +3506,7 @@ msgstr "Zadajte názov profilu:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 #, fuzzy
-msgid "Edit Profile"
+msgid "Edit profile"
 msgstr "Úprava PDF súborov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3299,7 +3522,9 @@ msgid "Last used profile"
 msgstr "Naposledy použitý profil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
-msgid "Primary Printer"
+#, fuzzy
+#| msgid "Primary Printer"
+msgid "Primary printer"
 msgstr "Hlavná tlačiareň"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3307,7 +3532,9 @@ msgid "Rename printer"
 msgstr "Premenovať tlačiareň"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
-msgid "Manage Printers"
+#, fuzzy
+#| msgid "Manage Printers"
+msgid "Manage printers"
 msgstr "Spravovať tlačiarne"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -3347,6 +3574,110 @@ msgstr "Neplatné nastavenia"
 msgid "Invalid credentials for '{0}'. Please try retyping your password."
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "More information"
+msgstr "Viac informácií"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "No"
+msgstr "Nie"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Retry"
+msgstr "Znovu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Discard"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Profile"
+msgstr "Profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Queue"
+msgstr "Fronta"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Click here for more information on tokens"
+msgstr "Kliknite sem pre viac informácií o tokenoch"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+#, fuzzy
+msgid "The usage of user tokens requires the user token action to be enabled"
+msgstr "Minimálne jeden súbor prílohy e-mailového klienta je nedostupný."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Add Token"
+msgstr "Pridať token"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Print to '{0}' to get started!"
+msgstr "Tlačte jednoducho cez „{0}\"!"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Choose a file to convert"
+msgstr "Vyberte súbor na prevod"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "The history is empty"
+msgstr "História je prázdna"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Clear History"
+msgid "Clear history"
+msgstr "Vyčistiť históriu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Refresh History"
+msgid "Refresh history"
+msgstr "Obnoviť históriu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Enable History"
+msgid "Enable history"
+msgstr "Povoliť históriu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Disable history"
+msgstr "Zakázať históriu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "... or simply drop files here!"
+msgstr "... alebo sem jednoducho pretiahnite súbory!"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Files recently created by PDFCreator:"
+msgstr "Nedávno prevedené súbory:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Remove from history"
+msgstr "Odstrániť z histórie"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Document Info"
+msgid "Document info"
+msgstr "Informácie o dokumente"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+msgid "Delete file"
+msgstr "Odstrániť súbor"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+msgid "Open with Email Client"
+msgstr "Otvoriť v e-mailovom klientovi"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "History is disabled"
+msgstr "História je zakázaná"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 #, fuzzy
 msgid "Successfully shared"
@@ -3375,6 +3706,71 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for letting us know how we can improve."
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Download PDF Architect now"
+msgstr "Stiahnúť PDF Architect teraz"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "More on PDF Architect"
+msgstr "Viac o programe PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Install PDF Architect now"
+msgstr "Inštalovať PDF Architect teraz"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Launch PDF Architect"
+msgstr "Spustiť PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "You already have PDF Architect on your computer"
+msgstr "PDF Architect už máte nainštalovaný na vašom počítači"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Our full-featured PDF Editor"
+msgstr "PDF editor s mnohými funkciami"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#, fuzzy
+msgid "Split files"
+msgstr "Všetky súbory"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Other powerful PDF Architect features:"
+msgstr "Ostantné funkcie programu PDF Architect:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Edit PDF files"
+msgstr "Úprava PDF súborov"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Convert PDF files"
+msgstr "Prevod PDF súborov"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Review and Annotate"
+msgstr "Hodnotenie a pripomienky"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Secure and Protect"
+msgstr "Zabezpečenie a ochrana"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Insert page elements"
+msgstr "Vkladanie elementov stránky"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Create custom forms"
+msgstr "Tvorba vlastných formulárov"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Optical character recognition (OCR)"
+msgstr "Optické rozpoznávanie znakov (OCR)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Send for e-signature"
+msgstr "Odoslanie elektronického podpisu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3417,7 +3813,9 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Manage Accounts"
+#, fuzzy
+#| msgid "Manage Accounts"
+msgid "Manage accounts"
 msgstr "Správca účtov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3443,7 +3841,9 @@ msgstr "Pridať FTP účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "FTP Account"
+#, fuzzy
+#| msgid "FTP Account"
+msgid "FTP account"
 msgstr "FTP účet"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3456,7 +3856,9 @@ msgstr "FTP účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Test FTP Account"
+#, fuzzy
+#| msgid "Test FTP Account"
+msgid "Test FTP account"
 msgstr "Test FTP účtu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3535,7 +3937,9 @@ msgstr "Dropbox účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "HTTP Account"
+#, fuzzy
+#| msgid "HTTP Account"
+msgid "HTTP account"
 msgstr "HTTP účet"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3615,7 +4019,9 @@ msgstr "Dropbox účet"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Add Time Server account"
+#, fuzzy
+#| msgid "Add Time Server account"
+msgid "Add time server account"
 msgstr "Pridať účet časov. servera"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3628,7 +4034,9 @@ msgstr "Pridať účet časov. servera"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Time Server Account"
+#, fuzzy
+#| msgid "Time Server Account"
+msgid "Time server account"
 msgstr "Účet časového servera"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3683,7 +4091,7 @@ msgstr "Súbor s kľúčom vyžaduje prístupovú frázu"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-msgid "Request Permissions"
+msgid "Request permissions"
 msgstr "Preskočiť verziu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3709,8 +4117,10 @@ msgstr "Server:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "User Name:"
-msgstr "Používateľské meno:"
+#, fuzzy
+#| msgid "User name"
+msgid "User name:"
+msgstr "Používateľské meno"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3768,7 +4178,9 @@ msgstr "Časový limit v sekundách:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Sending Mode:"
+#, fuzzy
+#| msgid "Sending Mode:"
+msgid "Sending mode:"
 msgstr "Režim odosielania:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3982,20 +4394,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-msgid "SharePoint"
-msgstr "Preskočiť verziu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Outlook Web Access"
 msgstr ""
 
@@ -4010,44 +4408,8 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-msgid "send directly"
+msgid "Send directly"
 msgstr "Otvoriť priečinok"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "HTTP"
-msgstr "HTTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Select HTTP Account:"
-msgstr "Vyberte HTTP účet:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Edit HTTP Account"
-msgstr "Upraviť HTTP účet"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Remove HTTP Account"
-msgstr "Odstrániť HTTP účet"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "URL:"
-msgstr "URL adresa:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Basic Authentication"
-msgstr "Základné overenie"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "The HTTP action will be disabled for this profile."
-msgid_plural "The HTTP action will be disabled for this profiles."
-msgstr[0] "Akcia HTTP bude zakázaná pre tento profil."
-msgstr[1] "Akcia HTTP bude zakázaná pre tieto profily."
-msgstr[2] "Akcia HTTP bude zakázaná pre tieto profily."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Uploads the document to an HTTP server."
-msgstr "Nahrá dokument na HTTP server."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Authenticate with Dropbox"
@@ -4089,7 +4451,9 @@ msgid "Show share link at the end of interactive workflow."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-msgid "Please select Dropbox Account:"
+#, fuzzy
+#| msgid "Please select Dropbox Account:"
+msgid "Please select Dropbox account:"
 msgstr "Zadajte Dropbox účet:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -4129,6 +4493,99 @@ msgstr "Ďakujeme vám za poskytnutie prístupu. Pokračujte na PDFCreator."
 msgid "You can now close this window."
 msgstr "Teraz môžete zavrieť toto okno."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Please select a FTP account:"
+msgstr "Vyberte FTP účet:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Upload with FTP"
+msgstr "Nahrať cez FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Remove FTP account"
+msgstr "Odstrániť FTP účet"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#, fuzzy
+#| msgid "Edit FTP Account"
+msgid "Edit FTP account"
+msgstr "Upraviť FTP účet"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "FTP"
+msgstr "FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Uploads the document with FTP."
+msgstr "Nahrá dokument pomocou FTP."
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "The FTP action will be disabled for this profile."
+msgid_plural "The FTP action will be disabled for this profiles."
+msgstr[0] "Akcia FTP bude zakázaná pre tento účet."
+msgstr[1] "Akcia FTP bude zakázaná pre tieto profily."
+msgstr[2] "Akcia FTP bude zakázaná pre tieto profily."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer not found"
+msgstr "Prehliadač nebol nájdený"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer was not found, please check your settings."
+msgstr "Prehliadač nebol nájdený, skontrolujte vaše nastavenia."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via FTP"
+msgstr "{0} cez FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via SFTP"
+msgstr "{0} cez SFTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "HTTP"
+msgstr "HTTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Select HTTP Account:"
+msgid "Select HTTP account:"
+msgstr "Vyberte HTTP účet:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Edit HTTP Account"
+msgid "Edit HTTP account"
+msgstr "Upraviť HTTP účet"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Remove HTTP Account"
+msgid "Remove HTTP account"
+msgstr "Odstrániť HTTP účet"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "URL:"
+msgstr "URL adresa:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Basic Authentication"
+msgid "Basic authentication"
+msgstr "Základné overenie"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "The HTTP action will be disabled for this profile."
+msgid_plural "The HTTP action will be disabled for this profiles."
+msgstr[0] "Akcia HTTP bude zakázaná pre tento profil."
+msgstr[1] "Akcia HTTP bude zakázaná pre tieto profily."
+msgstr[2] "Akcia HTTP bude zakázaná pre tieto profily."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Uploads the document to an HTTP server."
+msgstr "Nahrá dokument na HTTP server."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Email (SMTP)"
 msgstr "E-mail (SMTP)"
@@ -4140,7 +4597,9 @@ msgstr "Pošle dokument ako e-mail bez interakcie používateľa s použitím SM
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit SMTP Account"
+#, fuzzy
+#| msgid "Edit SMTP Account"
+msgid "Edit SMTP account"
 msgstr "Upraviť SMTP účet"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4150,18 +4609,13 @@ msgstr "Odstrániť SMTP účet"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Email Address:"
-msgstr "E-mailová adresa:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Port:"
 msgstr "Port:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "SSL"
-msgstr "SSL"
+msgid "SSL/TLS"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4188,14 +4642,7 @@ msgstr "Súbor dokumentu"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#, fuzzy
-msgid "Add Attachment"
-msgstr "Pridať prílohu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit Subject And Content"
+msgid "Edit subject and content"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4206,7 +4653,9 @@ msgstr "Testovací e-mail bol úspešne odoslaný nasledovným príjemcom:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Set SMTP Server Password"
+#, fuzzy
+#| msgid "Set SMTP Server Password"
+msgid "Set SMTP server password"
 msgstr "Nastaviť heslo SMTP servera"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4273,7 +4722,7 @@ msgstr "Ďalšie prílohy e-mailu:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-msgid "Select Email Attachment File"
+msgid "Select email attachment file"
 msgstr "Vybrať súbor prílohy"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4284,18 +4733,30 @@ msgstr "Skontrolujte e-mailového klienta"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender"
+#, fuzzy
+msgid "Open email in installed email client"
+msgstr "Otvoriť v e-mailovom klientovi"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "Specify Sender"
+msgid "Specify sender"
 msgstr "Zadajte odosielateľa"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender:"
+#, fuzzy
+#| msgid "Specify Sender:"
+msgid "Specify sender:"
 msgstr "Zadajte odosielateľa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "On Behalf Of:"
-msgstr "V mene:"
+#, fuzzy
+#| msgid "on behalf of"
+msgid "On behalf of:"
+msgstr "v mene"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4304,25 +4765,39 @@ msgstr "v mene"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid ""
+#| "If set it will be used as From and the address from the account will be "
+#| "set as Sender"
 msgid ""
-"If set it will be used as From and the address from the account will be set "
-"as Sender"
+"If set it will be used as from and the address from the account will be set "
+"as sender"
 msgstr ""
 "Pokiaľ je nastavené, bude použité ako Od a adresa účtu bude natavená ako "
 "Odosielateľ"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Display Name:"
+#, fuzzy
+#| msgid "Display Name:"
+msgid "Display name:"
 msgstr "Zobrazované meno:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Reply To:"
+#, fuzzy
+#| msgid "Reply To:"
+msgid "Reply to:"
 msgstr "Odpovedať:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "Email (OWA)"
+msgid "Email via Outlook Web"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#, fuzzy
+#| msgid "Email (OWA)"
+msgid "Email (Outlook Web)"
 msgstr "E-mail (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
@@ -4364,11 +4839,15 @@ msgstr ""
 "Otvorí predvoleného e-mailového klienta s prevedeným dokumentom v prílohe."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Edit Time Server Account"
+#, fuzzy
+#| msgid "Edit Time Server Account"
+msgid "Edit time server account"
 msgstr "Upraviť účet časového servera"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Remove Time Server Account"
+#, fuzzy
+#| msgid "Remove Time Server Account"
+msgid "Remove time server account"
 msgstr "Odstrániť účet časového servera"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -4379,55 +4858,10 @@ msgstr[1] "Podpisovanie bude pre tieto profily zakázané."
 msgstr[2] "Podpisovanie bude pre tieto profily zakázané."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Secured Time Server"
+#, fuzzy
+#| msgid "Secured Time Server"
+msgid "Secured time server"
 msgstr "Zabezpečený časový server"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Please select a FTP account:"
-msgstr "Vyberte FTP účet:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Upload with FTP"
-msgstr "Nahrať cez FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Remove FTP account"
-msgstr "Odstrániť FTP účet"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Edit FTP Account"
-msgstr "Upraviť FTP účet"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "FTP"
-msgstr "FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Uploads the document with FTP."
-msgstr "Nahrá dokument pomocou FTP."
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "The FTP action will be disabled for this profile."
-msgid_plural "The FTP action will be disabled for this profiles."
-msgstr[0] "Akcia FTP bude zakázaná pre tento účet."
-msgstr[1] "Akcia FTP bude zakázaná pre tieto profily."
-msgstr[2] "Akcia FTP bude zakázaná pre tieto profily."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer not found"
-msgstr "Prehliadač nebol nájdený"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer was not found, please check your settings."
-msgstr "Prehliadač nebol nájdený, skontrolujte vaše nastavenia."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via FTP"
-msgstr "{0} cez FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via SFTP"
-msgstr "{0} cez SFTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Microsoft"
@@ -4490,6 +4924,12 @@ msgstr "Súbor privátneho kľúča:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#, fuzzy
+#| msgid "Uploads the document to an HTTP server."
+msgid "Upload documents to your OneDrive"
+msgstr "Nahrá dokument na HTTP server."
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4604,6 +5044,12 @@ msgid "You have unsaved changes."
 msgstr "Máte neuložené zmeny."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
+#, fuzzy
+#| msgid "Do you want to proceed anyway?"
+msgid "How do you want to proceed?"
+msgstr "Napriek tomu vykonať?"
+
+#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "You have invalid settings."
 msgstr "Máte neplatné nastavenia."
 
@@ -4629,8 +5075,8 @@ msgid "To proceed you need to save your current settings."
 msgstr "Ak chcete pokračovať musíte najprv uložiť vaše aktuálne nastavenia."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
-msgid "Choose 'No' to revert the changes."
-msgstr "Vyberte „Nie\" ak sa chcete vrátiť späť na nastavenia."
+msgid "Default Viewer"
+msgstr "Predvolený prehliadač"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Settings are Loading"
@@ -4646,13 +5092,15 @@ msgid "Do you want to close the application anyway?"
 msgstr "Ste si istý, že ich chcete uložiť?"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
-msgid "User Tokens"
+#, fuzzy
+#| msgid "User Tokens"
+msgid "User tokens"
 msgstr "Používateľské tokeny"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 #, fuzzy
 msgid ""
-"User Tokens allow to predefine information like the email address, subject, "
+"User tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
@@ -4765,70 +5213,6 @@ msgstr ""
 #, fuzzy
 msgid "Error while adding attachment to selected Outlook item:"
 msgstr "Vyskytla sa chyba počas pridávania prílohy do dokumentu."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"You do not have any PDFCreator printers installed. Most likely there was a "
-"problem during the setup or the installation has been altered afterwards.\n"
-"Do you want to fix this by reinstalling the PDFCreator printers?\n"
-"\n"
-"Note: You might be asked to grant admin privileges while fixing the problem."
-msgstr ""
-"Nemáte nainštalovanú žiadnu tlačiareň programu PDFCreator. Pravdepodobne sa "
-"vyskytol problém počas inštalácie alebo bola inštalácia neskôr nahradená.\n"
-"Prajete si opraviť tento problém preinštalovaním PDFCreator tlačiarní?\n"
-"\n"
-"Poznámka: Na opravu tohto problému možno budú požadované administrátorské "
-"práva."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your printers. Please contact your "
-"administrator or the support to assist you in with this problem."
-msgstr ""
-"Program PDFCreator nemohol opraviť žiadnu z vašich tlačiarní. Kontaktujte "
-"vášho administrátora alebo podporu pre vyriešenie tohto problému."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "No printers installed"
-msgstr "Nie sú nainštalované žiadne tlačiarne"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "RepairTool not found"
-msgstr "Nástroj pre opravu nebol nájdený"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
-msgid ""
-"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
-msgstr ""
-"Dôležitý súbor programu PDFCreator chýba ({0}). Preinštalujte PDFCreator!"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "Access Denied"
-msgstr "Prístup zamietnutý"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"The temporary path where PDFCreator stores the print jobs can't be accessed. "
-"This is a configuration problem on your machine and needs to be fixed. Do "
-"you want PDFCreator to attempt repairing it?\n"
-"Your spool folder is: {0}"
-msgstr ""
-"Dočasná cesta, kde PDFCreator ukladá tlačové úlohy nie je prístupná. Tento "
-"problém konfigurácie na vašom zariadení môže byť opravený. Chcete aby sa ho "
-"program PDFCreator pokúsil opraviť?\n"
-"Váš priečinok s tlačovými úlohami je: {0}"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your spool folder. Please contact your "
-"administrator or the support to assist you in changing the permissions of "
-"the path '{0}'."
-msgstr ""
-"PDFCreator nemôže opraviť váš priečinok s tlačovými úlohami. Kontaktujte "
-"prosím vášho administrátora alebo podporu pre zmenu povolení cieľového "
-"priečinku '{0}'."
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 msgid "INI files (*.ini)|*.ini"
@@ -4963,6 +5347,12 @@ msgstr ""
 msgid "Operation failed. You probably do not have sufficient permissions."
 msgstr "Operácia zlyhala. Pravdepodobne nemáte potrebné povolenia."
 
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
+msgid ""
+"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
+msgstr ""
+"Dôležitý súbor programu PDFCreator chýba ({0}). Preinštalujte PDFCreator!"
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.Update.RestartApplicationInteractionTranslation
 msgid "Update PDFCreator"
 msgstr "Aktualizovať program PDFCreator"
@@ -5010,12 +5400,14 @@ msgstr ""
 "používania programu."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#, fuzzy
 msgid "Start PDFCreator Server Service"
-msgstr ""
+msgstr "Ďalšia inštancia programu PDFCreator Server je už spustená!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#, fuzzy
 msgid "Stop PDFCreator Server Service"
-msgstr ""
+msgstr "Ďalšia inštancia programu PDFCreator Server je už spustená!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 #, fuzzy
@@ -5025,15 +5417,6 @@ msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "Observation mode - restart as an administrator for full access."
-msgstr ""
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-#, fuzzy
-msgid "Store failed print jobs"
-msgstr "Odstrániť tlačovú úlohu"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-msgid "Store files of failed print jobs in selected directory"
 msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
@@ -5063,6 +5446,15 @@ msgstr "Počet vlákien:"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.MultiThreadingTranslation
 msgid "Recommended Number of Threads:"
 msgstr "Odporúčaný počet vlákien:"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+#, fuzzy
+msgid "Store failed print jobs"
+msgstr "Odstrániť tlačovú úlohu"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store files of failed print jobs in selected directory"
+msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Queue:"
@@ -5096,9 +5488,21 @@ msgid "PDFCreator Server is running"
 msgstr "Ďalšia inštancia programu PDFCreator Server je už spustená!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Enable History"
+msgstr "Povoliť históriu"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Disable History"
+msgstr "Vypnúť históriu"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
 msgid "Refresh History (F5)"
 msgstr "Obnoviť históriu"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Clear History"
+msgstr "Vyčistiť históriu"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Successful:"
@@ -5134,12 +5538,6 @@ msgstr "Výsledok"
 msgid "Status"
 msgstr "Stav"
 
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Author"
-msgstr "Autor"
-
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Format"
 msgstr "Formát"
@@ -5148,10 +5546,6 @@ msgstr "Formát"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Computer Name"
 msgstr "Meno počítača"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Date"
-msgstr "Dátum"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Elapsed Time"
@@ -5310,11 +5704,15 @@ msgid "<Default Profile>"
 msgstr "<Predvolený profil>"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Compression (small file)"
+#, fuzzy
+#| msgid "High Compression (small file)"
+msgid "High compression (small file)"
 msgstr "Vysoká kompresia (malý súbor)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Quality (large file)"
+#, fuzzy
+#| msgid "High Quality (large file)"
+msgid "High quality (large file)"
 msgstr "Vysoká kvalita (veľký súbor)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
@@ -5353,115 +5751,6 @@ msgid ""
 "Please reactivate your Internal License Server activation on the {0}"
 msgstr ""
 
-#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "Vaša licencia vyprší za {0} deň."
-msgstr[1] "Vaša licencia vyprší za {0} dni."
-msgstr[2] "Vaša licencia vyprší za {0} dní."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"There was an error with a component licensed by pdfforge.\n"
-"Please reinstall PDFCreator. (Error {0})"
-msgstr ""
-"Vyskytla sa chyba na licencovanom komponente od pdfforge.\n"
-"Preinštalujte program PDFCreator. (Chyba {0})"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" is invalid or has expired. Please check your "
-"license, otherwise PDFCreator will shutdown.\n"
-"Do you want to check your license now?"
-msgstr ""
-"Vaša licencia pre „{0}\" je neplatná alebo expirovala. Skontrolujte si vašu "
-"licenciu, inak PDFCreator bude ukončený.\n"
-"Chcete si skontrolovať vašu licenciu teraz?"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licencia pre „{0}\" expirovala.\n"
-"PDFCreator sa teraz ukončí."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"Please contact your administrator.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licencia pre „{0}\" expirovala.\n"
-"Kontaktujte vášho administrátora.\n"
-"PDFCreator sa teraz ukončí."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your trial has expired on {0}.\n"
-"PDFCreator will shut down.\n"
-"\n"
-"Please contact: licensing@pdfforge.org"
-msgstr ""
-"Vaša skúšobná verzia exipiruje {0}.\n"
-"PDFCreator bude ukončený.\n"
-"\n"
-"Kontaktujte nás na adrese: licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-msgid ""
-"A license key for {0} could not be found. Please provide your license key, "
-"otherwise PDFCreator will shutdown. \n"
-"Do you want to activate your license now?"
-msgstr ""
-"Vaša licencia pre „{0}\" je neplatná alebo expirovala. Skontrolujte si vašu "
-"licenciu, inak PDFCreator bude ukončený.\n"
-"Chcete si skontrolovať vašu licenciu teraz?"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-msgid ""
-"A license key could not be found.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licencia pre „{0}\" expirovala.\n"
-"PDFCreator sa teraz ukončí."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Please use \"PDFCreator Terminal Server\" for use on computers with "
-"installed Terminal Services.\n"
-"\n"
-"Please visit our website for more information or contact us directly: "
-"licensing@pdfforge.org"
-msgstr ""
-"Ak chcete na tomto počítači používať terminálové služby, tak použite "
-"„PDFCreator Terminal Server\".\n"
-"\n"
-"Pre viac informácií navštívte našu webstránku alebo nás kontaktujte priamo "
-"na licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"Can't find a supported Ghostscript installation.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"Nie je možné nájsť podporovanú Ghostscript inštaláciu.\n"
-"\n"
-"Program bude teraz ukončený."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"The Windows spooler service is not running. Please start the spooler first.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"Služba tlačových úloh systému Windows nie je spustená. Najprv ju spustite.\n"
-"\n"
-"Program bude teraz ukončený."
-
 #: pdfforge.PDFCreator.UI.Notifications.NotificationTranslation
 msgid "PDFCreator has successfully converted '{0}'."
 msgstr ""
@@ -5479,46 +5768,6 @@ msgstr ""
 #, fuzzy
 msgid "Error while converting"
 msgstr "Chyba počas tlačenia súboru."
-
-#. pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "and {0} more file/directory"
-msgid_plural "and {0} more files/directories"
-msgstr[0] "a {0} ďalší súbor/priečinok"
-msgstr[1] "a {0} ďalšie súbory/priečinky"
-msgstr[2] "a {0} ďalších súborov/priečinkov"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Convert with PDFCreator"
-msgstr "&Prevod programom PDFCreator"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Convert &Here"
-msgstr "Prevod &tu"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Merge"
-msgstr "&Spojiť"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Hint"
-msgstr "Nápoveda"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"Couldn't find PDFCreator in your system. Please check if you have installed "
-"it."
-msgstr ""
-"Nie je možné nájsť PDFCreator vo vašom systéme. Skontrolujte, či ste ho "
-"nainštalovali."
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"At least one of the selected items is not convertible! For more information "
-"about the unprintable files, see the list below."
-msgstr ""
-"Minimálne na jednej z vybraných položiek nie je možné vykonať prevod! Pre "
-"viac informácií o súboroch, ktoré nemohli byť vytlačené, pozrite zoznam "
-"nižšie."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.StandbySetting
 msgid "No standby"
@@ -5670,8 +5919,8 @@ msgstr ""
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid ""
-"The path to the signature image file has to be an absolute path, e.g. 'C:"
-"\\Images\\signature.png'"
+"The path to the signature image file has to be a valid absolute path, e.g. "
+"'C:\\Images\\signature.png'"
 msgstr ""
 "Cesta k obrázku popisu musí byť úplná, napr. „C:\\Obrázky\\podpis.pdf\""
 
@@ -5679,11 +5928,6 @@ msgstr ""
 #, fuzzy
 msgid "The path to the signature image file is too long."
 msgstr "Cesta k súboru obrázku podpisu je príliš dlhá."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The path to the signature image file contains illegal characters."
-msgstr "Cesta k súboru s obrázkom podpisu obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -5766,11 +6010,6 @@ msgstr "Žiaden súbor obalu nebol zadaný."
 #, fuzzy
 msgid "The program file is unavailable."
 msgstr "Nie je dostupný žiadny súbor so záznamom."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The program file path contains illegal characters."
-msgstr "Skript obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6088,11 +6327,6 @@ msgstr "Jedna z ciest k obalu je príliš dlhá."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "One of the cover file paths contains illegal characters."
-msgstr "Jedna z ciest k obálke obsahuje neplatné znaky."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid ""
 "Unable to add one of the cover files. The PDF format versions are not "
 "compatible."
@@ -6142,11 +6376,6 @@ msgstr "Jedna z ciest ku prílohe má neplatnú úplnú adresu."
 #, fuzzy
 msgid "One of the attachment file paths is too long."
 msgstr "Jedna z ciest prílohy je príliš dlhá."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "One of the attachment file paths contains illegal characters."
-msgstr "Jedna z adries prílohy obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6329,18 +6558,17 @@ msgstr "Adresa cieľového adresára je príliš dlhá."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The target directory contains illegal characters."
-msgstr "Cieľový adresár obsahuje neplatné znaky."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid ""
 "User tokens in target directory require the user token action to be enabled."
 msgstr "Minimálne jeden súbor prílohy e-mailového klienta je nedostupný."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid ""
+#| "The path to the background file has to be an absolute path, e.g. 'C:"
+#| "\\documents\\background.pdf'"
 msgid ""
-"The path to the background file has to be an absolute path, e.g. 'C:"
+"The path to the background file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\background.pdf'"
 msgstr ""
 "Cesta k súboru pozadia musí byť úplná, napr. „C:\\Dokumenty\\pozadie.pdf\""
@@ -6352,11 +6580,6 @@ msgstr "Adresa pozadia je príliš dlhá."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The background file contains illegal characters."
-msgstr "Adresa pozadia obsahuje neplatné znaky."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid "The certificate file path is invalid absolute path."
 msgstr "Cesta k certifikátu nie je platnou cestou."
 
@@ -6364,11 +6587,6 @@ msgstr "Cesta k certifikátu nie je platnou cestou."
 #, fuzzy
 msgid "The certificate file path is too long."
 msgstr "Cesta k certifikátu je príliš dlhá."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The certificate file path contains illegal characters."
-msgstr "Cesta k certifikátu obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6384,22 +6602,14 @@ msgstr "Cesta k FTP adresáru nie je platnou FTP adresou."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The FTP key file path is an invalid path."
-msgstr "Cesta k FTP kľúču nie je platnou adresou."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path to the FTP key file has to be an absolute path."
+#| msgid "The path to the FTP key file has to be an absolute path."
+msgid "The path to the FTP key file has to be a valid absolute path."
 msgstr "Cesta k súboru FTP kľúča nie je platná."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid "The FTP key file path is too long."
 msgstr "Cesta k súboru FTP kľúča je príliš dlhá."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The FTP key file path contains illegal characters."
-msgstr "Cesta ku FTP kľúču obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6474,28 +6684,19 @@ msgstr "Cesta nie je platná. Zadajte platnú cestu."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid ""
-"The file path is not valid or empty. Please enter a valid path.\n"
-"The file path must not contain any of the following characters: \n"
-" \\ / : * ? \\< >"
-msgstr ""
-"Cesta k priečinku nie je platná alebo nie je zadaná. Zadajte platnú cestu. \n"
-"Cesta k priečinku nesmie obsahovať žiaden z nasledujúcich znakov: \n"
-" \\ / : * ? \\< >"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid "The file path is not set."
 msgstr "Cesta k súboru FTP kľúča je príliš dlhá."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No CS-script file is specified."
+#, fuzzy
+#| msgid "No CS-script file is specified."
+msgid "No CS-Script file is specified."
 msgstr "Žiaden CS-skript nebol zadaný."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid ""
-"The CS-script file does not exist in the program data directory 'CS-Scripts' "
+"The CS-Script file does not exist in the program data directory 'CS-Scripts' "
 "folder."
 msgstr ""
 "Súbor CS-skriptu neexistuje priečinku \"CS-Scripts\" v adresári programu."
@@ -6549,8 +6750,12 @@ msgid "The watermark file is no PDF file."
 msgstr "Súbor vodoznaku nie je PDF súbor."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid ""
+#| "The path to the watermark file has to be an absolute path, e.g. 'C:"
+#| "\\documents\\watermark.pdf'"
 msgid ""
-"The path to the watermark file has to be an absolute path, e.g. 'C:"
+"The path to the watermark file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\watermark.pdf'"
 msgstr ""
 "Cesta k súboru vodoznaku musí byť úplná, napr. „C:\\Dokumenty\\vodoznak.pdf\""
@@ -6558,10 +6763,6 @@ msgstr ""
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The watermark file path is too long."
 msgstr "Cesta k vodoznaku je príliš dlhá."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The watermark file path contains illegal characters."
-msgstr "Cesta k súboru vodoznaku obsahuje neplatné znaky."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6813,62 +7014,6 @@ msgstr "Minimálne jeden súbor prílohy e-mailového klienta je nedostupný."
 msgid "The output document has no pages. The conversion is aborted."
 msgstr ""
 
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Auto detect (the client's default setting)"
-msgstr "Automatická detekcia (predvolené nastavenie klienta)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "HTML (only for Microsoft Outlook)"
-msgstr "HTML (iba pre Microsoft Outlook)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Text (only for Microsoft Outlook)"
-msgstr "Text (iba pre Microsoft Outlook)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "FTP - File Transfer Protocol"
-msgstr "FTP - protokol prenosu súborov"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "SFTP - SSH File Transfer Protocol"
-msgstr "SFTP - Protokol prenosu súboru SSH"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Right"
-msgstr "Dole vpravo"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Left"
-msgstr "Dole vľavo"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Center"
-msgstr "Dole v strede"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Right"
-msgstr "Hore vpravo"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Left"
-msgstr "Hore vľavo"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Center"
-msgstr "Hore v strede"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Auto-Detect"
-msgstr "Automaticky orientovať"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Portrait"
-msgstr "Na výšku"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Landscape"
-msgstr "Na šírku"
-
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.BackgroundRepetition
 msgid "No repetition"
 msgstr "Bez opakovania"
@@ -6969,10 +7114,32 @@ msgstr "Prevrátiť pozdĺž dlhého okraja"
 msgid "Short edge turn"
 msgstr "Prevrátiť pozdĺž krátkeho okraja"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Auto detect (the client's default setting)"
+msgstr "Automatická detekcia (predvolené nastavenie klienta)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "HTML (only for Microsoft Outlook)"
+msgstr "HTML (iba pre Microsoft Outlook)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Text (only for Microsoft Outlook)"
+msgstr "Text (iba pre Microsoft Outlook)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "FTP - File Transfer Protocol"
+msgstr "FTP - protokol prenosu súborov"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "SFTP - SSH File Transfer Protocol"
+msgstr "SFTP - Protokol prenosu súboru SSH"
+
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "16 Million Colors (24 Bit)"
+#, fuzzy
+#| msgid "16 Million Colors (24 Bit)"
+msgid "16 million colors (24 Bit)"
 msgstr "16 miliónov farieb (24 bitov)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
@@ -6980,6 +7147,98 @@ msgstr "16 miliónov farieb (24 bitov)"
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
 msgid "Grayscale (8 Bit)"
 msgstr "Odtiene sivej (8 bitov)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF"
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-1b file"
+msgid "PDF/A-1b"
+msgstr "Súbor PDF/A-1b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-2b file"
+msgid "PDF/A-2b"
+msgstr "Súbor PDF/A-1b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-3b file"
+msgid "PDF/A-3b"
+msgstr "Súbor PDF/A-3b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/X file"
+msgid "PDF/X"
+msgstr "Súbor PDF/X"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "JPEG file"
+msgid "JPEG"
+msgstr "Súbor JPEG"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PNG"
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "TIFF file"
+msgid "TIFF"
+msgstr "Súbor TIFF"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Right"
+msgid "Bottom right"
+msgstr "Dole vpravo"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Left"
+msgid "Bottom left"
+msgstr "Dole vľavo"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Center"
+msgid "Bottom center"
+msgstr "Dole v strede"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Right"
+msgid "Top right"
+msgstr "Hore vpravo"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Left"
+msgid "Top left"
+msgstr "Hore vľavo"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Center"
+msgid "Top center"
+msgstr "Hore v strede"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Auto-Detect"
+msgstr "Automaticky orientovať"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Portrait"
+msgstr "Na výšku"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Landscape"
+msgstr "Na šírku"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageSize
 msgid "A4"
@@ -7018,24 +7277,28 @@ msgid "Floating double page view (odd pages right)"
 msgstr "Plávajúce zobrazenie dvojstránky (nepárne stránky vpravo)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Million Colors with Transparency (32 Bit)"
+#, fuzzy
+#| msgid "16 Million Colors with Transparency (32 Bit)"
+msgid "16 million colors with transparency (32 Bit)"
 msgstr "16 miliónov farieb s priehľadnosťou (32 bitov)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "256 Colors (8 Bit)"
+#, fuzzy
+#| msgid "256 Colors (8 Bit)"
+msgid "256 colors (8 Bit)"
 msgstr "256 farieb (8 bitov)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Color (4 Bit)"
+#, fuzzy
+#| msgid "16 Color (4 Bit)"
+msgid "16 colors (4 Bit)"
 msgstr "16 farieb (4 bity)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "Black & White (2 Bit)"
+#, fuzzy
+#| msgid "Black & White (2 Bit)"
+msgid "Black & white (2 Bit)"
 msgstr "Čiernobiele (2 bity)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
-msgid "Default printer"
-msgstr "Predvolená tlačiareň"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 msgid "Select printer before printing"
@@ -7046,31 +7309,45 @@ msgid "Select printer ->"
 msgstr "Vybrať tlačiareň ->"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "First Page"
+#, fuzzy
+#| msgid "First Page"
+msgid "First page"
 msgstr "Prvá strana"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Last Page"
+#, fuzzy
+#| msgid "Last Page"
+msgid "Last page"
 msgstr "Posledná strana"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Custom Page"
+#, fuzzy
+#| msgid "Custom Page"
+msgid "Custom page"
 msgstr "Vlastná strana"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "4096 Colors (12 Bit)"
+#, fuzzy
+#| msgid "4096 Colors (12 Bit)"
+msgid "4096 colors (12 Bit)"
 msgstr "4096 farieb (12 bitov)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G3 Fax)"
+#, fuzzy
+#| msgid "Black & White (2 Bit G3 Fax)"
+msgid "Black & white (2 Bit G3 Fax)"
 msgstr "Čiernobiele (2 bitový G3 Fax)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G4 Fax)"
+#, fuzzy
+#| msgid "Black & White (2 Bit G4 Fax)"
+msgid "Black & white (2 Bit G4 Fax)"
 msgstr "Čiernobiele (2 bitový G4 Fax)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit LZW)"
+#, fuzzy
+#| msgid "Black & White (2 Bit LZW)"
+msgid "Black & white (2 Bit LZW)"
 msgstr "Čiernobiele (2 bitový LZW)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UnitOfMeasurement
@@ -7256,9 +7533,6 @@ msgstr "Zakázať štatistiky používania"
 msgid "Activate to completely disable the anonymous usage statistics."
 msgstr "Aktivujte, ak chcete kompletne zakázať anonymné štatistiky používania."
 
-msgid "Disable history"
-msgstr "Zakázať históriu"
-
 msgid "Activate to disable the job history."
 msgstr "Aktivujte, ak chcete zakázať históriu úloh."
 
@@ -7310,8 +7584,9 @@ msgid "Load shared profiles"
 msgstr "Načítať zdieľané profily"
 
 msgid ""
-"Activate to load profiles from ini file in \"%ProgramData%\\pdfforge"
-"\\PDFCreator\". This is activated by default and must be explicitly disabled."
+"Activate to load profiles from ini file in \"%ProgramData%"
+"\\pdfforge\\PDFCreator\". This is activated by default and must be "
+"explicitly disabled."
 msgstr ""
 "Aktivujte, ak chcete načítať profily z .ini súboru v \"%ProgramData%"
 "\\pdfforge\\PDFCreator\". Toto je štandardne aktivované a musí byť "
@@ -7326,9 +7601,6 @@ msgstr ""
 #, fuzzy
 msgid "Activate to hide feedback form"
 msgstr "Aktivujte, ak chcete skryť tipy na domovskej obrazovke"
-
-msgid "Albanian"
-msgstr "Albánčina"
 
 msgid "Catalan"
 msgstr "katalánčina"
@@ -7402,6 +7674,285 @@ msgstr "Nastavte úroveň zaznamenávania:"
 
 msgid "Allow users to define additional profiles"
 msgstr "Povoliť používateľom definovať ďalšie profily"
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your printers. Please contact your "
+#~ "administrator or the support to assist you in with this problem."
+#~ msgstr ""
+#~ "Program PDFCreator nemohol opraviť žiadnu z vašich tlačiarní. Kontaktujte "
+#~ "vášho administrátora alebo podporu pre vyriešenie tohto problému."
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your spool folder. Please contact your "
+#~ "administrator or the support to assist you in changing the permissions of "
+#~ "the path '{0}'."
+#~ msgstr ""
+#~ "PDFCreator nemôže opraviť váš priečinok s tlačovými úlohami. Kontaktujte "
+#~ "prosím vášho administrátora alebo podporu pre zmenu povolení cieľového "
+#~ "priečinku '{0}'."
+
+#~ msgid ""
+#~ "There was an error with a component licensed by pdfforge.\n"
+#~ "Please reinstall PDFCreator. (Error {0})"
+#~ msgstr ""
+#~ "Vyskytla sa chyba na licencovanom komponente od pdfforge.\n"
+#~ "Preinštalujte program PDFCreator. (Chyba {0})"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" is invalid or has expired. Please check your "
+#~ "license, otherwise PDFCreator will shutdown.\n"
+#~ "Do you want to check your license now?"
+#~ msgstr ""
+#~ "Vaša licencia pre „{0}\" je neplatná alebo expirovala. Skontrolujte si "
+#~ "vašu licenciu, inak PDFCreator bude ukončený.\n"
+#~ "Chcete si skontrolovať vašu licenciu teraz?"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licencia pre „{0}\" expirovala.\n"
+#~ "PDFCreator sa teraz ukončí."
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "Please contact your administrator.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licencia pre „{0}\" expirovala.\n"
+#~ "Kontaktujte vášho administrátora.\n"
+#~ "PDFCreator sa teraz ukončí."
+
+#~ msgid ""
+#~ "Your trial has expired on {0}.\n"
+#~ "PDFCreator will shut down.\n"
+#~ "\n"
+#~ "Please contact: licensing@pdfforge.org"
+#~ msgstr ""
+#~ "Vaša skúšobná verzia exipiruje {0}.\n"
+#~ "PDFCreator bude ukončený.\n"
+#~ "\n"
+#~ "Kontaktujte nás na adrese: licensing@pdfforge.org"
+
+#, fuzzy
+#~ msgid ""
+#~ "A license key for {0} could not be found. Please provide your license "
+#~ "key, otherwise PDFCreator will shutdown. \n"
+#~ "Do you want to activate your license now?"
+#~ msgstr ""
+#~ "Vaša licencia pre „{0}\" je neplatná alebo expirovala. Skontrolujte si "
+#~ "vašu licenciu, inak PDFCreator bude ukončený.\n"
+#~ "Chcete si skontrolovať vašu licenciu teraz?"
+
+#, fuzzy
+#~ msgid ""
+#~ "A license key could not be found.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licencia pre „{0}\" expirovala.\n"
+#~ "PDFCreator sa teraz ukončí."
+
+#~ msgid ""
+#~ "Please use \"PDFCreator Terminal Server\" for use on computers with "
+#~ "installed Terminal Services.\n"
+#~ "\n"
+#~ "Please visit our website for more information or contact us directly: "
+#~ "licensing@pdfforge.org"
+#~ msgstr ""
+#~ "Ak chcete na tomto počítači používať terminálové služby, tak použite "
+#~ "„PDFCreator Terminal Server\".\n"
+#~ "\n"
+#~ "Pre viac informácií navštívte našu webstránku alebo nás kontaktujte "
+#~ "priamo na licensing@pdfforge.org"
+
+#~ msgid ""
+#~ "Can't find a supported Ghostscript installation.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "Nie je možné nájsť podporovanú Ghostscript inštaláciu.\n"
+#~ "\n"
+#~ "Program bude teraz ukončený."
+
+#~ msgid ""
+#~ "The Windows spooler service is not running. Please start the spooler "
+#~ "first.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "Služba tlačových úloh systému Windows nie je spustená. Najprv ju "
+#~ "spustite.\n"
+#~ "\n"
+#~ "Program bude teraz ukončený."
+
+#, fuzzy
+#~| msgid "Danish"
+#~ msgid "Spanish"
+#~ msgstr "dánčina"
+
+#~ msgid ""
+#~ "You do not have any PDFCreator printers installed. Most likely there was "
+#~ "a problem during the setup or the installation has been altered "
+#~ "afterwards.\n"
+#~ "Do you want to fix this by reinstalling the PDFCreator printers?\n"
+#~ "\n"
+#~ "Note: You might be asked to grant admin privileges while fixing the "
+#~ "problem."
+#~ msgstr ""
+#~ "Nemáte nainštalovanú žiadnu tlačiareň programu PDFCreator. Pravdepodobne "
+#~ "sa vyskytol problém počas inštalácie alebo bola inštalácia neskôr "
+#~ "nahradená.\n"
+#~ "Prajete si opraviť tento problém preinštalovaním PDFCreator tlačiarní?\n"
+#~ "\n"
+#~ "Poznámka: Na opravu tohto problému možno budú požadované administrátorské "
+#~ "práva."
+
+#~ msgid "No printers installed"
+#~ msgstr "Nie sú nainštalované žiadne tlačiarne"
+
+#~ msgid "RepairTool not found"
+#~ msgstr "Nástroj pre opravu nebol nájdený"
+
+#~ msgid "Access Denied"
+#~ msgstr "Prístup zamietnutý"
+
+#~ msgid ""
+#~ "The temporary path where PDFCreator stores the print jobs can't be "
+#~ "accessed. This is a configuration problem on your machine and needs to be "
+#~ "fixed. Do you want PDFCreator to attempt repairing it?\n"
+#~ "Your spool folder is: {0}"
+#~ msgstr ""
+#~ "Dočasná cesta, kde PDFCreator ukladá tlačové úlohy nie je prístupná. "
+#~ "Tento problém konfigurácie na vašom zariadení môže byť opravený. Chcete "
+#~ "aby sa ho program PDFCreator pokúsil opraviť?\n"
+#~ "Váš priečinok s tlačovými úlohami je: {0}"
+
+#~ msgid "Albanian"
+#~ msgstr "Albánčina"
+
+#~ msgid "Printer:"
+#~ msgstr "Tlačiareň:"
+
+#~ msgid "SSL"
+#~ msgstr "SSL"
+
+#, fuzzy
+#~ msgid "Sharepoint"
+#~ msgstr "Preskočiť verziu"
+
+#~ msgid "Read More"
+#~ msgstr "Prečítať viac"
+
+#~ msgid "Default Printer"
+#~ msgstr "Predvolená tlačiareň"
+
+#~ msgid "Usage Statistics"
+#~ msgstr "Štatistiky používania"
+
+#~ msgid "Run Program"
+#~ msgstr "Spustiť program"
+
+#~ msgid "Set Certificate Password"
+#~ msgstr "Nastavte heslo certifikátu"
+
+#~ msgid "User Name:"
+#~ msgstr "Používateľské meno:"
+
+#~ msgid "Email Address:"
+#~ msgstr "E-mailová adresa:"
+
+#, fuzzy
+#~ msgid "Add Attachment"
+#~ msgstr "Pridať prílohu"
+
+#~ msgid "On Behalf Of:"
+#~ msgstr "V mene:"
+
+#~ msgid "Choose 'No' to revert the changes."
+#~ msgstr "Vyberte „Nie\" ak sa chcete vrátiť späť na nastavenia."
+
+#~ msgid "and {0} more file/directory"
+#~ msgid_plural "and {0} more files/directories"
+#~ msgstr[0] "a {0} ďalší súbor/priečinok"
+#~ msgstr[1] "a {0} ďalšie súbory/priečinky"
+#~ msgstr[2] "a {0} ďalších súborov/priečinkov"
+
+#~ msgid "&Convert with PDFCreator"
+#~ msgstr "&Prevod programom PDFCreator"
+
+#~ msgid "Convert &Here"
+#~ msgstr "Prevod &tu"
+
+#~ msgid "&Merge"
+#~ msgstr "&Spojiť"
+
+#~ msgid "Hint"
+#~ msgstr "Nápoveda"
+
+#~ msgid ""
+#~ "Couldn't find PDFCreator in your system. Please check if you have "
+#~ "installed it."
+#~ msgstr ""
+#~ "Nie je možné nájsť PDFCreator vo vašom systéme. Skontrolujte, či ste ho "
+#~ "nainštalovali."
+
+#~ msgid ""
+#~ "At least one of the selected items is not convertible! For more "
+#~ "information about the unprintable files, see the list below."
+#~ msgstr ""
+#~ "Minimálne na jednej z vybraných položiek nie je možné vykonať prevod! Pre "
+#~ "viac informácií o súboroch, ktoré nemohli byť vytlačené, pozrite zoznam "
+#~ "nižšie."
+
+#, fuzzy
+#~ msgid "The path to the signature image file contains illegal characters."
+#~ msgstr "Cesta k súboru s obrázkom podpisu obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "The program file path contains illegal characters."
+#~ msgstr "Skript obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "One of the cover file paths contains illegal characters."
+#~ msgstr "Jedna z ciest k obálke obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "One of the attachment file paths contains illegal characters."
+#~ msgstr "Jedna z adries prílohy obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "The target directory contains illegal characters."
+#~ msgstr "Cieľový adresár obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "The background file contains illegal characters."
+#~ msgstr "Adresa pozadia obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "The certificate file path contains illegal characters."
+#~ msgstr "Cesta k certifikátu obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid "The FTP key file path is an invalid path."
+#~ msgstr "Cesta k FTP kľúču nie je platnou adresou."
+
+#, fuzzy
+#~ msgid "The FTP key file path contains illegal characters."
+#~ msgstr "Cesta ku FTP kľúču obsahuje neplatné znaky."
+
+#, fuzzy
+#~ msgid ""
+#~ "The file path is not valid or empty. Please enter a valid path.\n"
+#~ "The file path must not contain any of the following characters: \n"
+#~ " \\ / : * ? \\< >"
+#~ msgstr ""
+#~ "Cesta k priečinku nie je platná alebo nie je zadaná. Zadajte platnú "
+#~ "cestu. \n"
+#~ "Cesta k priečinku nesmie obsahovať žiaden z nasledujúcich znakov: \n"
+#~ " \\ / : * ? \\< >"
+
+#~ msgid "The watermark file path contains illegal characters."
+#~ msgstr "Cesta k súboru vodoznaku obsahuje neplatné znaky."
 
 #~ msgid "Manage license"
 #~ msgstr "Správca licencií"

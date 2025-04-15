@@ -1,4 +1,5 @@
 ﻿using pdfforge.PDFCreator.Utilities.Process;
+using SystemWrapper.Diagnostics;
 
 namespace pdfforge.PDFCreator.Utilities.Web
 {
@@ -27,7 +28,8 @@ namespace pdfforge.PDFCreator.Utilities.Web
             try
             {
                 var urlWithParams = _trackingParameters.CleanUpParamsAndAppendToUrl(url);
-                _processStarter.Start(urlWithParams);
+
+                _processStarter.Start(urlWithParams, true);
             }
             catch
             {

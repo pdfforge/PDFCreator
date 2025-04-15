@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Forms;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.Utilities.UserGuide
 {
@@ -10,7 +11,13 @@ namespace pdfforge.PDFCreator.Utilities.UserGuide
     /// </summary>
     public class UserGuideLauncher : IUserGuideLauncher
     {
+        private readonly IMessageHelper _messageHelper;
         private string _helpFile;
+
+        public UserGuideLauncher(IMessageHelper messageHelper)
+        {
+            _messageHelper = messageHelper;
+        }
 
         /// <summary>
         ///     Launch the user guide with the given topic.
@@ -28,7 +35,7 @@ namespace pdfforge.PDFCreator.Utilities.UserGuide
                 return;
             }
 
-            Help.ShowHelp(null, _helpFile, HelpNavigator.Topic, topicText + ".html");
+            _messageHelper.ShowHelp( _helpFile, topicText + ".html");
         }
 
         public void SetUserGuide(string path)

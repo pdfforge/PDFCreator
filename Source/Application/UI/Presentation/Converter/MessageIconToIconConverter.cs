@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using pdfforge.PDFCreator.Utilities.Messages;
 using Image = System.Windows.Controls.Image;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Converter

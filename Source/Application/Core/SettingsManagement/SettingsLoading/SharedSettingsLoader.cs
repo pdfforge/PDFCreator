@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using SystemInterface.IO;
 
@@ -70,12 +71,20 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
         private void ApplyAppSettings(PdfCreatorSettings currentSettings, PdfCreatorSettings sharedSettings)
         {
-            if (!_gpoSettings.LoadSharedAppSettings)
-                return;
+            if (_gpoSettings.LoadSharedAppSettings)
+            {
+                _logger.Info("Apply shared app settings.");
 
-            _logger.Info("Apply shared app settings.");
-            currentSettings.ApplicationSettings = sharedSettings.ApplicationSettings;
-            currentSettings.CreatorAppSettings = sharedSettings.CreatorAppSettings;
+                //Preserve current printer mappings before it gets overwritten
+                var currentPrinterMapping = new PrinterMapping[currentSettings.ApplicationSettings.PrinterMappings.Count];
+                currentSettings.ApplicationSettings.PrinterMappings.CopyTo(currentPrinterMapping, 0);
+
+                currentSettings.ApplicationSettings = sharedSettings.ApplicationSettings;
+                currentSettings.CreatorAppSettings = sharedSettings.CreatorAppSettings;
+
+                if (!_gpoSettings.DisablePrinterTab)
+                    currentSettings.ApplicationSettings.PrinterMappings = new ObservableCollection<PrinterMapping>(currentPrinterMapping);
+            }
         }
 
         private void ApplyProfiles(PdfCreatorSettings currentSettings, PdfCreatorSettings sharedSettings)
@@ -108,7 +117,7 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
         public IEnumerable<PrinterMapping> GetSharedPrinterMappings()
         {
-            if (_gpoSettings.LoadSharedAppSettings)
+            if (_gpoSettings.LoadSharedAppSettings && _gpoSettings.DisablePrinterTab)
             {
                 var sharedSettings = GetSharedSettings();
                 if (sharedSettings != null)

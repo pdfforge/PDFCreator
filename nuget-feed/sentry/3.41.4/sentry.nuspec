@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Sentry</id>
+    <version>3.41.4</version>
+    <authors>Sentry Team and Contributors</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>sentry-nuget.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://sentry.io/</projectUrl>
+    <description>Official SDK for Sentry - Open-source error tracking that helps developers monitor and fix crashes in real time.</description>
+    <tags>Sentry GetSentry Error-Reporting Crash-Reporting Exception-Handling</tags>
+    <repository type="git" url="https://github.com/getsentry/sentry-dotnet" commit="e2a358fc772d47768f385553c29577685d7a9b04" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices.RuntimeInformation" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.0">
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net5.0" />
+      <group targetFramework="net6.0" />
+      <group targetFramework="net6.0-android31.0">
+        <dependency id="Sentry.Android.AssemblyReader" version="3.41.4" exclude="Build,Analyzers" />
+        <dependency id="Sentry.Bindings.Android" version="3.41.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0-ios16.1">
+        <dependency id="Sentry.Bindings.Cocoa" version="3.41.4" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices.NFloat.Internal" version="6.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0-maccatalyst16.1">
+        <dependency id="Sentry.Bindings.Cocoa" version="3.41.4" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices.NFloat.Internal" version="6.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.2" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="System.Reflection.Metadata" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.2" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework=".NETFramework4.6.1" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
@@ -22,7 +23,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
 
         private ObservableCollection<ConversionProfile> _profiles => _profilesProvider.Settings;
         private MicrosoftAccount _currentAccount;
-        private List<ConversionProfile> _usedInProfilesList;
+        private List<ConversionProfile> _accountUsedInProfiles;
 
         public MicrosoftAccountRemoveCommand(IInteractionRequest interactionRequest,
             ICurrentSettings<Accounts> accountsProvider,
@@ -46,30 +47,39 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_currentAccount == null)
                 return;
 
-            _usedInProfilesList = _profiles.Where(p => p.EmailWebSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
+            _accountUsedInProfiles = _profiles.Where(p => p.EmailWebSettings.AccountId.Equals(_currentAccount.AccountId) || p.OneDriveSettings.AccountId.Equals(_currentAccount.AccountId)).ToList();
 
             var title = Translation.RemoveOutlookAccount;
-
-            var messageSb = new StringBuilder();
-            messageSb.AppendLine(_currentAccount.AccountInfo);
-            messageSb.AppendLine();
-            messageSb.AppendLine(Translation.SureYouWantToDeleteAccount);
-
-            if (_usedInProfilesList.Count > 0)
-            {
-                messageSb.AppendLine(Translation.GetAccountIsUsedInFollowingMessage(_usedInProfilesList.Count));
-                messageSb.AppendLine();
-                foreach (var profile in _usedInProfilesList)
-                {
-                    messageSb.AppendLine(profile.Name);
-                }
-                messageSb.AppendLine();
-                messageSb.AppendLine(Translation.GetOutlookGetsDisabledMessage(_usedInProfilesList.Count));
-            }
-            var message = messageSb.ToString();
-            var icon = _usedInProfilesList.Count > 0 ? MessageIcon.Warning : MessageIcon.Question;
+            var message = GetRemoveAccountInteractionMessage(_accountUsedInProfiles);
+            var icon = _accountUsedInProfiles.Count > 0 ? MessageIcon.Warning : MessageIcon.Question;
             var interaction = new MessageInteraction(message, title, MessageOptions.YesNo, icon);
             _interactionRequest.Raise(interaction, DeleteAccountCallback);
+        }
+
+        private string GetRemoveAccountInteractionMessage(List<ConversionProfile> profiles)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine(_currentAccount.AccountInfo);
+            sb.AppendLine();
+            sb.AppendLine(Translation.SureYouWantToDeleteAccount);
+
+            var numProfiles = profiles.Count;
+            if (numProfiles <= 0) 
+                return sb.ToString();
+
+            sb.AppendLine(Translation.GetAccountIsUsedInFollowingMessage(numProfiles));
+            sb.AppendLine();
+
+            foreach (var profile in profiles)
+            {
+                sb.AppendLine(profile.Name);
+            }
+
+            sb.AppendLine();
+            sb.AppendLine(Translation.GetActionsGetDisabledMessage(_accountUsedInProfiles.Count));
+
+            return sb.ToString();
         }
 
         private void DeleteAccountCallback(MessageInteraction interaction)
@@ -83,11 +93,22 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
             if (_accountsProvider.Settings.MicrosoftAccounts.Contains(_currentAccount))
                 _accountsProvider.Settings.MicrosoftAccounts.Remove(_currentAccount);
 
-            foreach (var profile in _usedInProfilesList)
+
+            foreach (var profile in _accountUsedInProfiles)
             {
-                profile.DropboxSettings.AccountId = "";
-                profile.DropboxSettings.Enabled = false;
-                profile.ActionOrder.Remove(nameof(DropboxSettings));
+                if (profile.OneDriveSettings.AccountId == _currentAccount.AccountId)
+                {
+                    profile.OneDriveSettings.AccountId = "";
+                    profile.OneDriveSettings.Enabled = false;
+                    profile.ActionOrder.Remove(nameof(OneDriveSettings));
+                }
+
+                if (profile.EmailWebSettings.AccountId == _currentAccount.AccountId)
+                {
+                    profile.EmailWebSettings.AccountId = "";
+                    profile.EmailWebSettings.Enabled = false;
+                    profile.ActionOrder.Remove(nameof(EmailWebSettings));
+                }
             }
 
             // todo do we want to log the user out? Would log them out of everything not only our application

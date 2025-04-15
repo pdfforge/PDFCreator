@@ -77,6 +77,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public bool HasDropBoxSharedLink => Job?.Profile?.DropboxSettings is { Enabled: true, CreateShareLink: true };
         public bool HasOneDriveLink => Job?.Profile?.OneDriveSettings is { Enabled: true, CreateShareLink: false };
         public bool HasOneDriveSharedLink => Job?.Profile?.OneDriveSettings is { Enabled: true, CreateShareLink: true };
+        public bool HasSharepointSharedLink => Job?.Profile?.SharepointSettings is { Enabled: true };
 
         private void OnFinish(object obj)
         {
@@ -118,6 +119,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
                 RaisePropertyChanged(nameof(HasOneDriveSharedLink));
                 RaisePropertyChanged(nameof(HasDropBoxSharedLink));
                 RaisePropertyChanged(nameof(HasOneDriveLink));
+                RaisePropertyChanged(nameof(HasSharepointSharedLink));
                 RaisePropertyChanged(nameof(Job));
             }
         }
@@ -212,7 +214,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
                 {
                     activeCaptions.AddRange(_attachToOutlookItemAssistant.GetOutlookItemCaptions());
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Logger.Warn("Issues with Outlook");
                     activeCaptions = new List<string>();

@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using pdfforge.PDFCreator.Utilities.Spool;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {

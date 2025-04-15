@@ -12,6 +12,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.Utilities;
 using System.Text;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants

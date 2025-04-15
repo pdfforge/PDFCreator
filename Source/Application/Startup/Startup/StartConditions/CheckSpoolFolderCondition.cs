@@ -1,7 +1,8 @@
-﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
+﻿using System.Diagnostics;
+using NLog;
+using pdfforge.PDFCreator.Core.Startup.Translations;
 using pdfforge.PDFCreator.Core.StartupInterface;
-using pdfforge.PDFCreator.UI.Presentation.Assistants;
+using pdfforge.PDFCreator.Utilities.Spool;
 using Translatable;
 
 namespace pdfforge.PDFCreator.Core.Startup.StartConditions
@@ -10,7 +11,7 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IRepairSpoolFolderAssistant _repairSpoolFolderAssistant;
-        private readonly ApplicationTranslation _translation;
+        private readonly StartupApplicationTranslation _translation;
         private readonly ISpoolerProvider _spoolerProvider;
         private readonly ISpoolFolderAccess _spoolFolderAccess;
 
@@ -20,7 +21,7 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
         {
             _spoolFolderAccess = spoolFolderAccess;
             _repairSpoolFolderAssistant = repairSpoolFolderAssistant;
-            _translation = translationFactory.CreateTranslation<ApplicationTranslation>();
+            _translation = translationFactory.CreateTranslation<StartupApplicationTranslation>();
             _spoolerProvider = spoolerProvider;
         }
 

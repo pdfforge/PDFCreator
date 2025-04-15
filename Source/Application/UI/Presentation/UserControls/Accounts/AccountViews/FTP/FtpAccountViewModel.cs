@@ -15,6 +15,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities.Tokens;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {

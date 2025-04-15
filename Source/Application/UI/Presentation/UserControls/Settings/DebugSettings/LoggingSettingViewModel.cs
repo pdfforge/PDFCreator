@@ -9,9 +9,8 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.Services.Logging;
-using pdfforge.PDFCreator.Core.SettingsManagement;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Commands.QuickActions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 

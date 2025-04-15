@@ -52,7 +52,7 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
         private void DoAddStamp(PdfDocument pdfDocument, ConversionProfile profile, string fontPath)
         {
             var font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H, true);
-            var color = new DeviceRgb(profile.Stamping.Color);
+            var color = new DeviceRgb(profile.Stamping.Color.R, profile.Stamping.Color.G, profile.Stamping.Color.B);
 
             pdfDocument.AddFont(font);
 

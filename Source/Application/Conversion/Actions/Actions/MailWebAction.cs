@@ -98,7 +98,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 return JsonConvert.SerializeObject(message);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Could not parse Object to JSON");
                 return "";
@@ -129,7 +129,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 return new ActionResult(ErrorCode.Outlook_Web_General_Error);
 
             var settings = job.Profile.EmailWebSettings;
-            var account = job.Accounts.GetMicrosoftAccount(job.Profile);
+            var account = job.Accounts.GetOwaAccount(job.Profile);
 
             var actionResult = new ActionResult();
 
@@ -243,7 +243,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                     result.Add(ErrorCode.Outlook_Web_MissingReadWritePermissions);
                 else if (profile.EmailWebSettings.SendWebMailAutomatically && !account.HasPermissions(MicrosoftAccountPermission.MailSend))
                     result.Add(ErrorCode.Outlook_Web_MissingSendPermission);
-                else if (account.GetExpirationDateTime() < DateTime.Now)
+                else if (account.HasExpiredPermissions(DateTime.Now))
                     result.Add(ErrorCode.Microsoft_Account_Expired);
             }
 

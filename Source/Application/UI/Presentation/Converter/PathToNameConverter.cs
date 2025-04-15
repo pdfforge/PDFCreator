@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows;
 using System.Windows.Data;
 using SystemInterface.IO;
 

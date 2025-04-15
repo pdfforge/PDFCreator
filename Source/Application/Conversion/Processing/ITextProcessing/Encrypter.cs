@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System.Text;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 {

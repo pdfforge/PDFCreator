@@ -1,320 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\..\packages\PropertyChanged.Fody\build\PropertyChanged.Fody.props" Condition="Exists('..\..\..\..\packages\PropertyChanged.Fody\build\PropertyChanged.Fody.props')" Label="Paket" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94936199-C9C7-4A5F-A58E-6123158E84F3}</ProjectGuid>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Conversion.Settings</RootNamespace>
     <AssemblyName>PDFCreator.Settings</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
+    <AdditionalFiles Include="settings.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Accounts.cs" />
-    <Compile Include="Accounts.Custom.cs" />
-    <Compile Include="ApplicationSettings.cs" />
-    <Compile Include="ApplicationSettings.Custom.cs" />
-    <Compile Include="ApplicationSettingsProvider.cs" />
-    <Compile Include="AttachmentPage.cs" />
-    <Compile Include="AttachmentPageCustom.cs" />
-    <Compile Include="AutoSave.cs" />
-    <Compile Include="BackgroundPage.cs" />
-    <Compile Include="BackgroundPageCustom.cs" />
-    <Compile Include="CompressColorAndGray.cs" />
-    <Compile Include="CompressColorAndGrayCustom.cs" />
-    <Compile Include="CompressMonochrome.cs" />
-    <Compile Include="CompressMonochromeCustom.cs" />
-    <Compile Include="ConversionProfile.cs" />
-    <Compile Include="ConversionProfile.Custom.cs" />
-    <Compile Include="CoverPage.cs" />
-    <Compile Include="CoverPageCustom.cs" />
-    <Compile Include="CreatorAppSettings.cs" />
-    <Compile Include="CustomScript.cs" />
-    <Compile Include="CustomScriptCustom.cs" />
-    <Compile Include="DefaultViewer.cs" />
-    <Compile Include="DropboxAccount.cs" />
-    <Compile Include="DropboxSettings.cs" />
-    <Compile Include="DropboxSettingsCustom.cs" />
-    <Compile Include="EmailClientSettings.cs" />
-    <Compile Include="EmailClientSettingsCustom.cs" />
-    <Compile Include="EmailSmtpSettings.cs" />
-    <Compile Include="EmailWebSettingsCustom.cs" />
-    <Compile Include="EmailSmtpSettingsCustom.cs" />
-    <Compile Include="EmailWebSettings.cs" />
-    <Compile Include="Enums\AuthenticationType.cs" />
-    <Compile Include="Enums\AutoSaveExistingFileBehaviour.cs" />
-    <Compile Include="Enums\DisplaySignature.cs" />
-    <Compile Include="Enums\EmailFormatSetting.cs" />
-    <Compile Include="Enums\FtpConnectionType.cs" />
-    <Compile Include="Enums\HttpSendMode.cs" />
-    <Compile Include="Enums\PageNumberPosition.cs" />
-    <Compile Include="Enums\PageOrientation.cs" />
-    <Compile Include="Enums\BackgroundRepetition.cs" />
-    <Compile Include="Enums\ColorModel.cs" />
-    <Compile Include="Enums\CompressionColorAndGray.cs" />
-    <Compile Include="Enums\CompressionMonochrome.cs" />
-    <Compile Include="Enums\DocumentView.cs" />
-    <Compile Include="Enums\DuplexPrint.cs" />
-    <Compile Include="Enums\EncryptionLevel.cs" />
-    <Compile Include="Enums\JpegColor.cs" />
-    <Compile Include="Enums\LoggingLevel.cs" />
-    <Compile Include="Enums\OutputFormat.cs" />
-    <Compile Include="Enums\PageSize.cs" />
-    <Compile Include="Enums\PageView.cs" />
-    <Compile Include="Enums\PngColor.cs" />
-    <Compile Include="Enums\ReplacementType.cs" />
-    <Compile Include="Enums\SelectPrinter.cs" />
-    <Compile Include="Enums\SignaturePage.cs" />
-    <Compile Include="Enums\TiffColor.cs" />
-    <Compile Include="Enums\UnitOfMeasurement.cs" />
-    <Compile Include="Enums\UpdateInterval.cs" />
-    <Compile Include="Enums\UserTokenSeparator.cs" />
-    <Compile Include="Extensions\UpdateIntervalToTimeSpan.cs" />
-    <Compile Include="ForwardToFurtherProfile.cs" />
-    <Compile Include="ForwardToFurtherProfile.Custom.cs" />
-    <Compile Include="Ftp.cs" />
-    <Compile Include="FtpCustom.cs" />
-    <Compile Include="FtpAccount.cs" />
-    <Compile Include="Helpers\OutputFormatHelper.cs" />
-    <Compile Include="IEditionSettings.cs" />
-    <Compile Include="IMailActionSettings.cs" />
-    <Compile Include="IPageNumbersSetting.cs" />
-    <Compile Include="IWatermarkSettings.cs" />
-    <Compile Include="MicrosoftAccount.cs" />
-    <Compile Include="MicrosoftAccount.custom.cs" />
-    <Compile Include="MicrosoftAccountPermission.cs" />
-    <Compile Include="OneDriveSettings.cs" />
-    <Compile Include="OneDriveSettingsCustom.cs" />
-    <Compile Include="OpenViewer.cs" />
-    <Compile Include="OpenViewer.Custom.cs" />
-    <Compile Include="PageNumbers.cs" />
-    <Compile Include="Parameters.cs" />
-    <Compile Include="ParameterSettings.cs" />
-    <Compile Include="JobHistory.cs" />
-    <Compile Include="CreatorAppSettings.Custom.cs" />
-    <Compile Include="PdfCreatorSettings.Custom.cs" />
-    <Compile Include="PrinterMapping.Custom.cs" />
-    <Compile Include="RssFeed.cs" />
-    <Compile Include="SettingsHelper.cs" />
-    <Compile Include="TableColumns.cs" />
-    <Compile Include="TimeServerAccount.Custom.cs" />
-    <Compile Include="HttpAccount.Custom.cs" />
-    <Compile Include="FtpAccount.Custom.cs" />
-    <Compile Include="Ghostscript.cs" />
-    <Compile Include="GroupPolicies\GpoSettingsDefaults.cs" />
-    <Compile Include="GroupPolicies\IGpoSettings.cs" />
-    <Compile Include="HttpAccount.cs" />
-    <Compile Include="HttpSettings.cs" />
-    <Compile Include="HttpSettingsCustom.cs" />
-    <Compile Include="IProfileSetting.cs" />
-    <Compile Include="JobPasswords.cs" />
-    <Compile Include="JpegSettings.cs" />
-    <Compile Include="PdfCreatorSettings.cs" />
-    <Compile Include="PdfSettings.cs" />
-    <Compile Include="PngSettings.cs" />
-    <Compile Include="PrinterMapping.cs" />
-    <Compile Include="Printing.cs" />
-    <Compile Include="PrintingCustom.cs" />
-    <Compile Include="ProfileGuids.cs" />
-    <Compile Include="ProfileSorter.cs" />
-    <Compile Include="Properties.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripting.cs" />
-    <Compile Include="ScriptingCustom.cs" />
-    <Compile Include="Security.cs" />
-    <Compile Include="SecurityCustom.cs" />
-    <Compile Include="Signature.cs" />
-    <Compile Include="SignatureCustom.cs" />
-    <Compile Include="SmtpAccount.cs" />
-    <Compile Include="SmtpAccount.Custom.cs" />
-    <Compile Include="Stamping.cs" />
-    <Compile Include="StampingCustom.cs" />
-    <Compile Include="TextSettings.cs" />
-    <Compile Include="TiffSettings.cs" />
-    <Compile Include="TimeServerAccount.cs" />
-    <Compile Include="TitleReplacement.cs" />
-    <Compile Include="TitleReplacement.Custom.cs" />
-    <Compile Include="UsageStatistics.cs" />
-    <Compile Include="UserTokens.cs" />
-    <Compile Include="UserTokensCustom.cs" />
-    <Compile Include="Watermark.cs" />
-    <Compile Include="PageNumbers.Custom.cs" />
-    <Compile Include="Watermark.Custom.cs" />
-    <Compile Include="Workflow\IActionFacade.cs" />
-    <Compile Include="Workflow\IFixedOrderAction.cs" />
+	<ItemGroup>
+    <ProjectReference Include="..\..\Utilities\Utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
-    <Content Include="settings.xml">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
-      <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="mscorlib">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Win32.Registry">
-          <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="PropertyChanged">
-          <HintPath>..\..\..\..\packages\PropertyChanged.Fody\lib\net452\PropertyChanged.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.AccessControl">
-          <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Configuration">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Data.OracleClient">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceProcess">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="WindowsBase">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security.Permissions">
-          <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Principal.Windows">
-          <HintPath>..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="..\..\..\..\packages\Fody\build\Fody.targets" Condition="Exists('..\..\..\..\packages\Fody\build\Fody.targets')" Label="Paket" />
+	<ItemGroup>
+	  <PackageReference Include="DataStorage">
+	    <Version>3.0.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="DataStorage.SourceGenerator">
+	    <Version>2.0.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+	    <Version>3.3.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.CodeAnalysis.Common">
+	    <Version>4.10</Version>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+	    <Version>4.10</Version>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.Win32.Registry">
+	    <Version>5.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Collections.Immutable">
+	    <Version>8.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Reflection.Metadata">
+	    <Version>8.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Security.AccessControl">
+	    <Version>6.0.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Security.Permissions">
+	    <Version>8.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Security.Principal.Windows">
+	    <Version>5.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="System.Windows.Extensions">
+	    <Version>8.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="SystemInterface">
+	    <Version>9.9.0</Version>
+	  </PackageReference>
+	  <PackageReference Include="Translatable">
+	    <Version>0.3.13</Version>
+	  </PackageReference>
+	</ItemGroup>
 </Project>

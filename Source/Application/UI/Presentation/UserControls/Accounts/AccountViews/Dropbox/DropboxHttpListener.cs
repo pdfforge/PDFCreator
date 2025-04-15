@@ -39,7 +39,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
                 _logger.Debug($"DropboxHttpListener startet listening on port {port}.");
 
                 // TODO The IWebLinkLauncher currently does not work here as it escapes special chars a second time
-                _processStarter.Start(authUrl);
+                _processStarter.Start(authUrl, true);
                 var request = await GetCodeFromRequestAsync();
                 return request;
             }

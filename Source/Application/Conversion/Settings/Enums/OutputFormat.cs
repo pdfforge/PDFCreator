@@ -1,19 +1,39 @@
 ﻿using System;
 using System.ComponentModel;
+using Translatable;
 
 namespace pdfforge.PDFCreator.Conversion.Settings.Enums
 {
+    [Translatable]
     public enum OutputFormat 
     {
-        [Description("PDF")] Pdf,
-        [Description("PDF/A-1b")] PdfA1B,
-        [Description("PDF/A-2b")] PdfA2B,
-        [Description("PDF/A-3b")] PdfA3B,
-        [Description("PDF/X")] PdfX,
-        [Description("JPEG")] Jpeg,
-        [Description("PNG")] Png,
-        [Description("TIFF")] Tif,
-        [Description("Text")] Txt
+        [Translation("PDF")]
+        [Description("PDF")] 
+        Pdf,
+        [Translation("PDF/A-1b")]
+        [Description("PDF/A-1b")] 
+        PdfA1B,
+        [Translation("PDF/A-2b")]
+        [Description("PDF/A-2b")] 
+        PdfA2B,
+        [Translation("PDF/A-3b")]
+        [Description("PDF/A-3b")] 
+        PdfA3B,
+        [Translation("PDF/X")]
+        [Description("PDF/X")] 
+        PdfX,
+        [Translation("JPEG")]
+        [Description("JPEG")] 
+        Jpeg,
+        [Translation("PNG")]
+        [Description("PNG")]
+        Png,
+        [Translation("TIFF")]
+        [Description("TIFF")]
+        Tif,
+        [Translation("Text")]
+        [Description("Text")]
+        Txt
     }
 
     public static class OutputFormatExtensions

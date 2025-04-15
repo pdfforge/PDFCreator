@@ -63,17 +63,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.Watermark.File);
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return new ActionResult(ErrorCode.Watermark_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     return new ActionResult(ErrorCode.Watermark_PathTooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.Watermark_UnsupportedType);
-
-                case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.Watermark_IllegalCharacters);
             }
 
             if (!isJobLevelCheck && profile.Watermark.File.StartsWith(@"\\"))

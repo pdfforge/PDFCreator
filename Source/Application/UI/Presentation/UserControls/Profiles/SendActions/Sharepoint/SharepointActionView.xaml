@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointActionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
+             xmlns:sharepoint="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint"
+             xmlns:sharepointLocation="clr-namespace:pdfforge.PDFCreator.Conversion.Actions.Actions.Helper.Sharepoint;assembly=PDFCreator.Actions"
+             xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:settings="clr-namespace:pdfforge.PDFCreator.Conversion.Settings;assembly=PDFCreator.Settings"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance sharepoint:DesignTimeSharepointActionViewModel, IsDesignTimeCreatable=True}"
+             help:HelpProvider.HelpTopic="SharePoint">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedWhenTrue" FalseValue="Visible" TrueValue="Collapsed" />
+            <converter:BoolToVisibilityConverter x:Key="InvisibleWhenFalse" FalseValue="Hidden" TrueValue="Visible" />
+            <converter:BoolNegationConverter x:Key="NegateBoolConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <HeaderedContentControl Style="{StaticResource BorderlessHeaderPanel}">
+        <HeaderedContentControl.Header>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource LargeLabel}" Content="{Binding Translation.InfoText}" />
+                <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="10 0 0 0" />
+            </StackPanel>
+        </HeaderedContentControl.Header>
+        <StackPanel IsEnabled="{Binding CurrentProfile.SharepointSettings.Enabled}">
+        <!-- Select account -->
+        <StackPanel Margin="0 0 0 0">
+            <Label Content="{Binding Translation.SelectedAccountLabel}" />
+            <DockPanel Margin="0 10 0 0">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled, Converter={StaticResource BoolNegationConverter}}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                            IsEnabled="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
+                            Command="{Binding EditMicrosoftAccountCommand}"
+                            CommandParameter="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Build" />
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Command="{Binding AddMicrosoftAccountCommand}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Add" IsHitTestVisible="False"/>
+                    </Button>
+                </StackPanel>
+                <Grid>
+                    <ComboBox Name="MicrosoftAccountsComboBox"
+                              SelectedItem="{Binding SelectedAccount}"
+                              IsEnabled="{Binding IsLoadingAccounts, Converter={StaticResource NegateBoolConverter}}"
+                              ItemsSource="{Binding MicrosoftAccounts, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True"
+                              Style="{StaticResource DisabledEmptyComboboxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type settings:MicrosoftAccount}">
+                                <Grid>
+                                    <controls1:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                            Visibility="{Binding DataContext.IsLoadingAccounts, Converter={StaticResource InvisibleWhenFalse}, RelativeSource={RelativeSource FindAncestor, AncestorType=ComboBox}}"
+                                                            Foreground="Black"
+                                                            Width="15"
+                                                            Height="15"/>
+                                    <ContentControl>
+                                        <TextBlock Text="{Binding AccountInfo}"></TextBlock>
+                                    </ContentControl>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <Label Margin="10 0 0 0" VerticalAlignment="Center"
+                           IsHitTestVisible="False"
+                           Content="{Binding Translation.SelectOrAddAccount}"
+                           Visibility="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                </Grid>
+            </DockPanel>
+        </StackPanel>
+
+        
+        <Label HorizontalAlignment="Left"
+               Margin="0 10 0 0"
+               Content="{Binding Translation.SitesLabel}"/>
+
+        <ComboBox ItemsSource="{Binding Sites}"
+                  IsEnabled="{Binding IsLoadingAccounts, Converter={StaticResource NegateBoolConverter}}"
+                  SelectedItem="{Binding SelectedSite}"
+                  Margin="0 10 0 0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type sharepointLocation:SharepointSite}">
+                    <Grid>
+                        <controls1:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                        Visibility="{Binding DataContext.IsLoadingSites, Converter={StaticResource InvisibleWhenFalse}, RelativeSource={RelativeSource FindAncestor, AncestorType=ComboBox}}"
+                                                        Foreground="Black"
+                                                        Width="15"
+                                                        Height="15"/>
+                        <ContentControl>
+                            <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                        </ContentControl>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Label HorizontalAlignment="Left"
+               Margin="0 10 0 0"
+               Content="{Binding Translation.DriveLabel}"/>
+
+        <ComboBox ItemsSource="{Binding Drives}"
+                  SelectedItem="{Binding SelectedDrive}"
+                  IsEnabled="{Binding IsLoadingDrives, Converter={StaticResource NegateBoolConverter}}"
+                  Margin="0 10 0 0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type sharepointLocation:SharepointDrive}">
+
+                    <Grid>
+                        <controls1:ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Visibility="{Binding DataContext.IsLoadingDrives, Converter={StaticResource InvisibleWhenFalse}, RelativeSource={RelativeSource FindAncestor, AncestorType=ComboBox}}"
+                                                Foreground="Black"
+                                                Width="15"
+                                                Height="15"/>
+                        <ContentControl>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </ContentControl>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <DockPanel Margin="0 10 0 0">
+            <Label DockPanel.Dock="Top"
+                   HorizontalAlignment="Left"
+                   Content="{Binding Translation.DirectoryLabel}"/>
+            <controls:TokenControl Margin="0 10 0 0"
+                                   DataContext="{Binding SharedFolderTokenViewModel}" />
+        </DockPanel>
+
+        <StackPanel Margin="0 20 0 0">
+            <CheckBox HorizontalAlignment="Left"
+                      Margin="0 15 0 0"
+                      IsChecked="{Binding EnsureUniqueFilenames}"
+                      Content="{Binding Translation.EnsureUniqueFilename}" />
+            <CheckBox HorizontalAlignment="Left"
+                      Margin="0 10 0 0"
+                      IsChecked="{Binding ShowLink}"
+                      Visibility="{Binding IsServer, Converter={StaticResource CollapsedWhenTrue}}"
+                      Content="{Binding Translation.ShowLink}"/>
+            <CheckBox HorizontalAlignment="Left"
+                      Margin="0 10 0 0"
+                      IsChecked="{Binding OpenUploadedFile}"
+                      Visibility="{Binding IsServer, Converter={StaticResource CollapsedWhenTrue}}"
+                      Content="{Binding Translation.OpenUploadedFile}"/>
+        </StackPanel>
+    </StackPanel>
+    </HeaderedContentControl>
+</UserControl>

@@ -4,7 +4,7 @@
     {
         string ScriptFolder { get; }
 
-        LoadScriptResult LoadScriptWithValidation(string scriptFile);
+        LoadScriptResult LoadScriptWithValidation(string scriptFile, bool enableDebugging = false);
 
         LoadScriptResult ReLoadScriptWithValidation(string scriptFile);
     }

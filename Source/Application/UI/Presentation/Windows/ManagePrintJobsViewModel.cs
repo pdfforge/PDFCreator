@@ -19,6 +19,7 @@ using System.Windows.Input;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using NaturalSort.Extension;
+using pdfforge.PDFCreator.Core.Workflow;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Windows
 {
@@ -29,6 +30,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private readonly IDispatcher _dispatcher;
         private readonly ApplicationNameProvider _applicationNameProvider;
         private readonly IVersionHelper _versionHelper;
+        private IPreviewManager _previewManager;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly ObservableCollection<JobInfo> _jobInfos;
         private Helper.SynchronizedCollection<JobInfo> _synchronizedJobs;
@@ -36,7 +38,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
         public ManagePrintJobsViewModel(IJobInfoQueue jobInfoQueue, DragAndDropEventHandler dragAndDrop, IJobInfoManager jobInfoManager,
             IDispatcher dispatcher, ITranslationUpdater translationUpdater, ApplicationNameProvider applicationNameProvider,
-            IVersionHelper versionHelper, ICommandLocator commandLocator)
+            IVersionHelper versionHelper, ICommandLocator commandLocator, 
+            
+            IPreviewManager previewManager)
             : base(translationUpdater)
         {
             _jobInfoQueue = jobInfoQueue;
@@ -45,6 +49,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             _dispatcher = dispatcher;
             _applicationNameProvider = applicationNameProvider;
             _versionHelper = versionHelper;
+            PreviewManager = previewManager;
             _jobInfoQueue.OnNewJobInfo += OnNewJobInfo;
 
             ConvertFileCommand = commandLocator.GetCommand<SelectFileViaDialogAndConvertCommand>();
@@ -63,10 +68,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
             _synchronizedJobs = new Helper.SynchronizedCollection<JobInfo>(_jobInfoQueue.JobInfos);
             _jobInfos = _synchronizedJobs.ObservableCollection;
-            DisplayedJobInfo = _jobInfos.FirstOrDefault();
             JobInfos = new CollectionView(_jobInfos);
-
             JobListSelectionChangedCommand = new DelegateCommand(JobListSelectionChangedExecute);
+
+            _jobInfoQueue.OnNewJobInfo += (sender, args) =>
+            {
+                RaisePropertyChanged(nameof(PreviewManager));
+            };
         }
 
         private void SetupSortMenuItems()
@@ -135,16 +143,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             }
         }
 
-        private JobInfo _displayedJobInfo;
-
-        public JobInfo DisplayedJobInfo
+        public IPreviewManager PreviewManager
         {
+            get => _previewManager;
             set
             {
-                _displayedJobInfo = value;
-                RaisePropertyChanged(nameof(DisplayedJobInfo));
+                _previewManager = value;
+                RaisePropertyChanged(nameof(PreviewManager));
             }
-            get { return _displayedJobInfo; }
         }
 
         public CollectionView JobInfos { get; private set; }
@@ -259,14 +265,14 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
 
             foreach (var jobObject in jobs.Skip(1))
             {
-                var job = (JobInfo)jobObject;
-                if (job.JobType != first.JobType)
+                var jobInfo = (JobInfo)jobObject;
+                if (jobInfo.JobType != first.JobType)
                     continue;
 
-                _jobInfoManager.Merge(first, job);
-                _jobInfos.Remove(job);
-                _jobInfoQueue.Remove(job, false);
-                _jobInfoManager.DeleteInf(job);
+                _jobInfoManager.Merge(first, jobInfo);
+                _jobInfos.Remove(jobInfo);
+                _jobInfoQueue.Remove(jobInfo, false);
+                _jobInfoManager.DeleteInf(jobInfo);
             }
 
             _jobInfoManager.SaveToInfFile(first);
@@ -310,7 +316,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
         private void ExecuteMergeAllJobs(object o)
         {
             ExecuteMergeJobs(_jobInfos);
-            SetDisplayedJobInfoToFirst();
         }
 
         private bool HasMoreThanOneJob(object o)
@@ -318,11 +323,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             return _jobInfos.Count > 1;
         }
 
-        public void SetDisplayedJobInfoToFirst()
-        {
-            DisplayedJobInfo = _jobInfos.FirstOrDefault();
-        }
-        
         public override string Title => _applicationNameProvider.ApplicationNameWithEdition + " " + _versionHelper.FormatWithThreeDigits();
     }
 

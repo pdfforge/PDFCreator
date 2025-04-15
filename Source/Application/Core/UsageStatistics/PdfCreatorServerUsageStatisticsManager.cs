@@ -101,10 +101,16 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             metric.Smtp = job.Profile.EmailSmtpSettings.Enabled;
             metric.SmtpSendOnBehalfOf = !string.IsNullOrWhiteSpace(job.Profile.EmailSmtpSettings.OnBehalfOf);
             metric.SmtpReplyTo = !string.IsNullOrWhiteSpace(job.Profile.EmailSmtpSettings.ReplyTo);
+            metric.MailWebAccess = job.Profile.EmailWebSettings.Enabled;
+            metric.MailWebAccessSendMailAutomatically = job.Profile.EmailWebSettings.SendWebMailAutomatically;
             metric.Script = job.Profile.Scripting.Enabled;
             metric.Print = job.Profile.Printing.Enabled;
             metric.Ftp = job.Profile.Ftp.Enabled;
             metric.Http = job.Profile.HttpSettings.Enabled;
+            metric.OneDrive = job.Profile.OneDriveSettings.Enabled;
+            metric.OneDriveShareLink = job.Profile.OneDriveSettings.CreateShareLink;
+            metric.SharePoint = job.Profile.SharepointSettings.Enabled;
+            metric.SharePointShareLink = job.Profile.SharepointSettings.CreateShareLink;
             metric.Dropbox = job.Profile.DropboxSettings.Enabled;
 
             return metric;

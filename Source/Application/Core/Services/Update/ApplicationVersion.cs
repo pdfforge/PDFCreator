@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.Core.Services.Update
 {

@@ -1,156 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9FA4DA88-81E9-4FF9-8521-70102762415B}</ProjectGuid>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.UI.Interactions</RootNamespace>
     <AssemblyName>PDFCreator.Interactions</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\..\Conversion\Actions\Actions.csproj" />
+    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj" />
+    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\FeedbackType.cs" />
-    <Compile Include="Feedback\FeedbackInteraction.cs" />
-    <Compile Include="Feedback\FeedbackSentInteraction.cs" />
-    <Compile Include="LoadSpecificProfileInteraction.cs" />
-    <Compile Include="DrawSignatureInteraction.cs" />
-    <Compile Include="EditEmailTextInteraction.cs" />
-    <Compile Include="EncryptionPasswordInteraction.cs" />
-    <Compile Include="Enums\MessageIcon.cs" />
-    <Compile Include="Enums\MessageOptions.cs" />
-    <Compile Include="Enums\MessageResponse.cs" />
-    <Compile Include="Enums\PrintJobAction.cs" />
-    <Compile Include="Enums\PasswordResult.cs" />
-    <Compile Include="FtpAccountInteraction.cs" />
-    <Compile Include="MicrosoftAccountInteraction.cs" />
-    <Compile Include="TimeServerAccountInteraction.cs" />
-    <Compile Include="HttpAccountInteraction.cs" />
-    <Compile Include="AccountInteractionBase.cs" />
-    <Compile Include="InputInteraction.cs" />
-    <Compile Include="InputValidation.cs" />
-    <Compile Include="LicenseInteraction.cs" />
-    <Compile Include="ManagePrintJobsInteraction.cs" />
-    <Compile Include="BasicPasswordOverlayInteraction.cs" />
-    <Compile Include="SmtpAccountInteraction.cs" />
-    <Compile Include="MessageInteraction.cs" />
-    <Compile Include="OfflineActivationInteraction.cs" />
-    <Compile Include="PasswordMiddleButton.cs" />
-    <Compile Include="PrintJobInteraction.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecommendPdfArchitectInteraction.cs" />
-    <Compile Include="SignaturePasswordInteraction.cs" />
-    <Compile Include="StoreLicenseForAllUsersInteraction.cs" />
-    <Compile Include="UpdateDownloadInteraction.cs" />
+    <PackageReference Include="CommonServiceLocator">
+      <Version>2.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="ControlzEx">
+      <Version>5.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>2.4.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
+      <Version>1.1.122</Version>
+    </PackageReference>
+    <PackageReference Include="Obsidian">
+      <Version>1.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Json">
+      <Version>8.0.5</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-    <None Include="pdfforge.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <ItemGroup>
-    <ProjectReference Include="..\..\Conversion\Actions\Actions.csproj">
-      <Project>{1DBB980A-80ED-4263-BC5D-B90377466E14}</Project>
-      <Name>Actions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
-      <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
-      <Name>Jobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
-      <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="CommonServiceLocator">
-          <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\net47\CommonServiceLocator.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="MahApps.Metro">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\MahApps.Metro.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="MahApps.Metro.SimpleChildWindow">
-          <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Obsidian">
-          <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
 </Project>

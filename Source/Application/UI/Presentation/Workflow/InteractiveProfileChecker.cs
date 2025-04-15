@@ -4,8 +4,8 @@ using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Core.Workflow;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using System;
+using pdfforge.PDFCreator.Utilities.Messages;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Workflow

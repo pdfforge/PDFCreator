@@ -82,14 +82,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The certificate file is unavailable.")]
         Signature_FileNotFound = 12208,
 
-        [Translation("The path to the signature image file has to be an absolute path, e.g. 'C:\\Images\\signature.png'")]
+        [Translation("The path to the signature image file has to be a valid absolute path, e.g. 'C:\\Images\\signature.png'")]
         Signature_ImageFileInvalidRootedPath = 12209,
 
         [Translation("The path to the signature image file is too long.")]
         Signature_ImageFilePathTooLong = 12210,
-
-        [Translation("The path to the signature image file contains illegal characters.")]
-        Signature_ImageFileIllegalCharacters = 12211,
 
         [Translation("The signature image file is unavailable.")]
         Signature_ImageFileDoesNotExist = 12212,
@@ -135,9 +132,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("The program file is unavailable.")]
         RunProgram_FileDoesNotExist = 14101,
-
-        [Translation("The program file path contains illegal characters.")]
-        RunProgram_IllegalCharacters = 14102,
 
         [Translation("The program file path is an invalid absolute path.")]
         RunProgram_InvalidRootedPath = 14103,
@@ -244,14 +238,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("Error while adding background to the document.")]
         Background_GenericError = 17999,
 
-        [Translation("The path to the background file has to be an absolute path, e.g. 'C:\\documents\\background.pdf'")]
+        [Translation("The path to the background file has to be a valid absolute path, e.g. 'C:\\documents\\background.pdf'")]
         Background_InvalidRootedPath = 36001,
 
         [Translation("The background file path is too long.")]
         Background_PathTooLong = 36002,
-
-        [Translation("The background file contains illegal characters.")]
-        Background_IllegalCharacters = 36003,
 
         [Translation("The FTP server is not specified.")]
         Ftp_NoServer = 18100,
@@ -328,9 +319,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("One of the cover file paths is too long.")]
         Cover_PathTooLong = 22104,
 
-        [Translation("One of the cover file paths contains illegal characters.")]
-        Cover_IllegalCharacters = 22105,
-
         [Translation("Unable to add one of the cover files. The PDF format versions are not compatible.")]
         Cover_ConformanceError = 22106,
 
@@ -357,9 +345,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         [Translation("One of the attachment file paths is too long.")]
         Attachment_PathTooLong = 23105,
-
-        [Translation("One of the attachment file paths contains illegal characters.")]
-        Attachment_IllegalCharacters = 23106,
 
         [Translation("User tokens in the attachment file paths require the user token action to be enabled.")]
         Attachment_RequiresUserTokens = 23107,
@@ -473,9 +458,6 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The target directory is too long.")]
         TargetDirectory_TooLong = 34003,
 
-        [Translation("The target directory contains illegal characters.")]
-        TargetDirectory_IllegalCharacters = 34004,
-
         [Translation("User tokens in target directory require the user token action to be enabled.")]
         TargetDirectory_RequiresUserTokens = 34005,
 
@@ -485,26 +467,17 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The certificate file path is too long.")]
         Signature_CertificateFile_TooLong = 38002,
 
-        [Translation("The certificate file path contains illegal characters.")]
-        Signature_CertificateFile_IllegalCharacters = 38003,
-
         [Translation("User tokens in certificate file path require the user token action to be enabled.")]
         Signature_CertificateFile_RequiresUserTokens = 38004,
 
         [Translation("The FTP directory is an invalid FTP path.")]
         Ftp_Directory_InvalidFtpPath = 40001,
 
-        [Translation("The FTP key file path is an invalid path.")]
-        Ftp_KeyFilePath_InvalidKeyFilePath = 40002,
-
-        [Translation("The path to the FTP key file has to be an absolute path.")]
+        [Translation("The path to the FTP key file has to be a valid absolute path.")]
         Ftp_KeyFilePath_InvalidRootedPath = 40003,
 
         [Translation("The FTP key file path is too long.")]
         Ftp_KeyFilePath_PathTooLong = 40004,
-
-        [Translation("The FTP key file path contains illegal characters.")]
-        Ftp_KeyFilePath_IllegalCharacters = 40005,
 
         [Translation("The FTP key file is unavailable.")]
         Ftp_KeyFilePath_FileDoesNotExist = 40006,
@@ -548,19 +521,16 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The file path is not valid. Please enter a valid absolute path.")]
         FilePath_InvalidRootedPath = 42000,
 
-        [Translation("The file path is not valid or empty. Please enter a valid path.\nThe file path must not contain any of the following characters: \n" + @" \ / : * ? \" + "< >")]
-        FilePath_InvalidCharacters = 42001,
-
         [Translation("The file path is too long.")]
         FilePath_TooLong = 42002,
 
         [Translation("The file path is not set.")]
         FilePath_NullOrEmpty = 42003,
 
-        [Translation("No CS-script file is specified.")]
+        [Translation("No CS-Script file is specified.")]
         CustomScript_NoScriptFileSpecified = 43001,
 
-        [Translation("The CS-script file does not exist in the program data directory 'CS-Scripts' folder.")]
+        [Translation("The CS-Script file does not exist in the program data directory 'CS-Scripts' folder.")]
         CustomScript_FileDoesNotExistInScriptFolder = 43002,
 
         [Translation("Could not compile the CS-Script.")]
@@ -596,14 +566,11 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The watermark file is no PDF file.")]
         Watermark_NoPdf = 47002,
 
-        [Translation("The path to the watermark file has to be an absolute path, e.g. 'C:\\documents\\watermark.pdf'")]
+        [Translation("The path to the watermark file has to be a valid absolute path, e.g. 'C:\\documents\\watermark.pdf'")]
         Watermark_InvalidRootedPath = 47003,
 
         [Translation("The watermark file path is too long.")]
         Watermark_PathTooLong = 47004,
-
-        [Translation("The watermark file path contains illegal characters.")]
-        Watermark_IllegalCharacters = 47005,
 
         [Translation("The watermark file is unavailable.")]
         Watermark_FileDoesNotExist = 47006,
@@ -632,7 +599,7 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         [Translation("The page number font is unavailable.")]
         PageNumbers_FontNotFound = 48002,
 
-        [Translation("User tokens in page number format require the user token action to be enabled.")]
+        [Translation("User tokens in page number format require the user token action to be enabled.")] 
         PageNumbers_RequiresUserTokens = 48003,
 
         [Translation("Error while adding page numbers to the document.")]

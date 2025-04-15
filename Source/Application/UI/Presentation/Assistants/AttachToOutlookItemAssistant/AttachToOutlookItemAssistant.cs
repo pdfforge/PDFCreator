@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Actions.AttachToOutlookItem;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {

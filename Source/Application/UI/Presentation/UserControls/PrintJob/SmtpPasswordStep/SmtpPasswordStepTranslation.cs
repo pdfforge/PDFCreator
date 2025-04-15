@@ -8,8 +8,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class SmtpPasswordStepTranslation : PasswordButtonControlTranslation
     {
-        public string SmtpPasswordOverlayTitle { get; private set; } = "SMTP Mail";
-        public string SmtpAccountLabel { get; private set; } = "SMTP Account:";
-        public string SmtpServerPasswordLabel { get; private set; } = "SMTP Server Password:";
+        public string SmtpPasswordOverlayTitle { get; private set; } = "SMTP mail";
+        public string SmtpAccountLabel { get; private set; } = "SMTP account:";
+        public string SmtpServerPasswordLabel { get; private set; } = "SMTP server password:";
     }
 }

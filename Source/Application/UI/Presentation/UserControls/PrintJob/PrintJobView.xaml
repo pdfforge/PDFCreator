@@ -13,10 +13,10 @@
              xmlns:styles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles"
              xmlns:contextMenuButton="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.ContextMenuButton"
              xmlns:utilities="clr-namespace:pdfforge.PDFCreator.Utilities;assembly=PDFCreator.Utilities"
+             xmlns:controls1="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Controls"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="520"
              d:DataContext="{d:DesignInstance designTime:DesignTimePrintJobViewModel, IsDesignTimeCreatable=True}"
-             x:Name="PrintJobControl"
              Loaded="PrintJobView_OnLoaded">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -26,6 +26,7 @@
                 <ResourceDictionary Source="../../Styles/Buttons/IconButton.xaml" />
                 <ResourceDictionary Source="../../Styles/ColorDictionary.xaml" />
                 <ResourceDictionary Source="../../Styles/Gpo/GpoStyle.xaml" />
+                <ResourceDictionary Source="../../Styles/ScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
@@ -34,7 +35,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="0 20 0 0">
+    <Grid Margin="0 0 0 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -42,27 +43,26 @@
 
         <!-- Profile Settings -->
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <!--Optional row for space when there's no top ribbon-->
                 <RowDefinition Height="Auto" />
+                <!--Trial ribbon-->
                 <RowDefinition Height="Auto" />
+                <!--Profile selection-->
                 <RowDefinition Height="Auto" />
+                <!--Main content-->
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <!--Banner-->
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <Grid Grid.Row="0" Height="25"
+                  Visibility="{Binding ShowTrialRemainingDaysInfo, Converter={StaticResource CollapsedIfTrueConverter}}" />
+
             <!-- Trial remaining days Info -->
-            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            <Grid Grid.Row="1"
                        Visibility="{Binding ShowTrialRemainingDaysInfo,  Converter={StaticResource CollapsedIfFalseConverter}}"
-                       Margin="-30 -30 -30 20"
+                       Margin="-30 -10 -30 5"
                        Background="{StaticResource AccentGrey}">
                 <TextBlock Margin="30 10 30 10"
                            HorizontalAlignment="Center"
@@ -79,8 +79,7 @@
             </Grid>
 
             <!-- Select Profile -->
-            <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                       Margin="0 0 0 10">
+            <DockPanel Grid.Row="2">
                 <Label DockPanel.Dock="Top" Target="{Binding ElementName=ProfileBox}"
                        Content="{Binding Translation.ProfileLabel}" />
                 <Grid Margin="0 10 0 0">
@@ -89,114 +88,151 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <styles:ProfilesComboBox Grid.Column="0"
-                                                Profiles="{Binding ProfilesWrapper}"
-                                                SelectedProfile="{Binding SelectedProfileWrapper}"
-                                                Background="{StaticResource PrintJobProfileComboboxBackground}" />
+                                             Profiles="{Binding ProfilesWrapper}"
+                                             SelectedProfile="{Binding SelectedProfileWrapper}"
+                                             Background="{StaticResource PrintJobProfileComboboxBackground}" />
                     <Grid Grid.Column="1"
                           Style="{StaticResource GpoToolTipStyle}"
                           IsEnabled="{Binding EditButtonEnabledByGpo }">
                         <Button Margin="10 0 0 0"
                                 Command="{Binding EditProfileCommand}"
-                                Content="{Binding Translation.EditProfile}" />
+                                Content="{Binding Translation.EditProfile}"
+                                MinWidth="85" />
                     </Grid>
                 </Grid>
             </DockPanel>
 
-            <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
-                <contextMenuButton:ContextMenuButton Style="{StaticResource SelectOutputFormatContextMenuButton}"
-                                                     MenuItemsCommand="{Binding SetOutputFormatCommand}" />
-            </StackPanel>
+            <Grid Grid.Row="3" Margin="0 15 0 0"
+                  Height="420">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width ="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+                <!-- Preview -->
+                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="12"
+                        Margin="0 0 15 0"
+                        Width="150"
+                        Visibility="{Binding SelectedProfileWrapper.ConversionProfile.Preview.Enabled, Converter={StaticResource CollapsedIfFalseConverter}}"
+                        Style="{StaticResource BrightBorder}"
+                        Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Grid}}">
+                    <controls1:PreviewControl 
+                        Margin="10 10 5 10"
+                        Visibility="{Binding IsUpdatingProfile, Converter={StaticResource CollapsedIfTrueConverter}}"
+                        x:Name="PreviewControl"
+                        PreviewManager="{Binding PreviewManager}"
+                        JobInfo="{Binding JobInfo}"
+                        IsPreviewEnabled="{Binding SelectedProfileWrapper.ConversionProfile.Preview.Enabled}"/>
+                </Border>
 
-            <StackPanel  Grid.Row="2" Grid.Column="1" Margin="0 10 0 0">
-                <Label Margin="0 0 0 10" Target="{Binding ElementName=TargetFilenameTextBox}"
+                <!-- FileName -->
+                <Label Grid.Column="1" Grid.Row="0" 
+                       Target="{Binding ElementName=TargetFilenameTextBox}"
                        Content="{Binding Translation.FilenameText}" />
-                <TextBox Name="TargetFilenameTextBox" Text="{Binding OutputFilename}" />
-            </StackPanel>
+                <DockPanel Grid.Column="1" Grid.Row="1" 
+                           LastChildFill="True">
+                    <!-- Warning for restricted actions -->
+                    <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                            Visibility="{Binding AreActionsRestricted, Converter={StaticResource CollapsedIfFalseConverter}}"
+                            Command="{Binding EditProfileCommand}"
+                            ToolTip="{Binding Translation.RestrictedActionWarning}"
+                            ToolTipService.InitialShowDelay="100"
+                            Style="{StaticResource IconButton}"
+                            Foreground="{StaticResource ErrorBrush}">
 
-            <DockPanel  Grid.Row="3" Grid.Column="1"
-                        Margin="0 15 0 10" VerticalAlignment="Top">
-                <Label Margin="0 0 0 10" DockPanel.Dock="Top" Target="{Binding ElementName=TargetFolderTextBox}"
-                       Content="{Binding Translation.DirectoryLabel}" />
-                <!-- SaveTempOnly Hint-->
-                <Button DockPanel.Dock="Right" Margin="10 0 0 0"
-                        Command="{Binding Path=DisableSaveTempOnlyCommand}"
-                        Visibility="{Binding Path=SaveFileTemporaryIsEnabled, Converter={StaticResource CollapsedIfFalseConverter}}"
-                        ToolTip="{Binding Translation.SaveTempOnlyIsEnabled}"
-                        Style="{StaticResource IconButton}"
-                        Foreground="{StaticResource InfoBrush}">
-                    <iconPacks:PackIconMaterialDesign Kind="Info" />
-                </Button>
-                <Button Margin="10 0 0 0"
-                        DockPanel.Dock="Right" Padding="10 0" Height="33" Width="33"
-                        Content="..."
-                        Command="{Binding BrowseFileCommand}"
-                        IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
-                <TextBox VerticalAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         Padding="5 0"  Height="33"
-                         Name="TargetFolderTextBox"
-                         Text="{Binding OutputFolder}"
-                         IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
-            </DockPanel>
-
-            <Label Grid.Row="4" Grid.Column="0"
-                   Margin="0 30 0 0"
-                   Target="{Binding ElementName=TitleTextBox}"
-                   Content="{Binding Translation.TitleLabel}" />
-            <TextBox Grid.Row="4" Grid.Column="1"
-                     Margin="0 30 0 0"
-                     Name="TitleTextBox"
-                     Text="{Binding Metadata.Title, Mode=TwoWay}" />
-
-            <Label Grid.Row="5" Grid.Column="0"
-                   Margin="0 10 0 0"
-                   Target="{Binding ElementName=AuthorTextBox}"
-                   Content="{Binding Translation.AuthorLabel}" />
-            <TextBox Grid.Row="5" Grid.Column="1"
-                     Margin="0 10 0 0"
-                     Name="AuthorTextBox"
-                     Text="{Binding Metadata.Author}" />
-
-            <Label Grid.Row="6" Grid.Column="0"
-                   Margin="0 10 0 0"
-                   Target="{Binding ElementName=SubjectTextBox}"
-                   Content="{Binding Translation.SubjectLabel}" />
-            <TextBox Grid.Row="6" Grid.Column="1"
-                     Margin="0 10 0 0"
-                     Name="SubjectTextBox"
-                     Text="{Binding Metadata.Subject}" />
-
-            <Label Grid.Row="7" Grid.Column="0"
-                   Margin="0 10 0 0"
-                   Target="{Binding ElementName=KeywordsTextBox}"
-                   Content="{Binding Translation.KeywordsLabel}" />
-            <TextBox Grid.Row="7" Grid.Column="1"
-                     Margin="0 10 0 0"
-                     Name="KeywordsTextBox"
-                     Text="{Binding Metadata.Keywords}" />
-
-            <!--Warning for restricted actions-->
-            <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
-                    Margin="0 20 0 5"
-                    BorderThickness="0"
-                    Visibility="{Binding AreActionsRestricted, Converter={StaticResource CollapsedIfFalseConverter}}">
-                <DockPanel>
-                    <iconPacks:PackIconMaterialDesign Kind="Notifications"
-                                                      Margin="0 0 10 0"
-                                                      VerticalAlignment="Center"
-                                                      Height="14"
-                                                      Foreground="{StaticResource ErrorBrush}" />
-                    <TextBlock Text="{Binding Translation.RestrictedActionWarning}"
-                               TextWrapping="WrapWithOverflow"
-                               FontSize="12"
-                               FontWeight="DemiBold"
-                               Foreground="{StaticResource ErrorBrush}" />
+                        <iconPacks:PackIconMaterialDesign Kind="Notifications" />
+                    </Button>
+                    <ComboBox DockPanel.Dock="Right" Margin="10 0 0 0"
+                              Width="85"
+                              SelectedValue="{Binding OutputFormat}"
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="Translation"
+                              ItemsSource="{Binding Translation.OutputFormatValues}" />
+                    <TextBox  Name="TargetFilenameTextBox" 
+                              Text="{Binding OutputFilename}" />
                 </DockPanel>
-            </Border>
+
+                <!-- Directory -->
+                <Label Grid.Column="1" Grid.Row="2" 
+                       Margin="0 10 0 0" 
+                       Target="{Binding ElementName=TargetFolderTextBox}"
+                       Content="{Binding Translation.DirectoryLabel}" />
+                <DockPanel Grid.Column="1" Grid.Row="3"
+                           LastChildFill="True">
+                    <!-- SaveTempOnly Hint-->
+                    <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                            Command="{Binding Path=DisableSaveTempOnlyCommand}"
+                            Visibility="{Binding Path=SaveFileTemporaryIsEnabled, Converter={StaticResource CollapsedIfFalseConverter}}"
+                            ToolTip="{Binding Translation.SaveTempOnlyIsEnabled}"
+                            ToolTipService.InitialShowDelay="100"
+                            Style="{StaticResource IconButton}"
+                            Foreground="{StaticResource InfoBrush}">
+                        <iconPacks:PackIconMaterialDesign Kind="Info" />
+                    </Button>
+                    <Button DockPanel.Dock="Right" 
+                            Margin="10 0 0 0"
+                            Padding="10 0" Height="33" Width="33"
+                            Content="..."
+                            Command="{Binding BrowseFileCommand}"
+                            IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
+                    <TextBox VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             Padding="5 0"  Height="33"
+                             Name="TargetFolderTextBox"
+                             Text="{Binding OutputFolder}"
+                             IsEnabled="{Binding SaveFileTemporaryIsEnabled, Converter={StaticResource BoolNegationConverter}}" />
+                </DockPanel>
+                
+                <!-- Title -->
+                <Label Grid.Column="1" Grid.Row="4" Margin="0 10 0 0"
+                       Target="{Binding ElementName=TitleTextBox}"
+                       Content="{Binding Translation.TitleLabel}" />
+                <TextBox Grid.Column="1" Grid.Row="5"
+                         Name="TitleTextBox"
+                         Text="{Binding Metadata.Title, Mode=TwoWay}" />
+                <!-- Author -->
+                <Label Grid.Column="1" Grid.Row="6" Margin="0 10 0 0" 
+                       Target="{Binding ElementName=AuthorTextBox}"
+                       Content="{Binding Translation.AuthorLabel}" />
+                <TextBox Grid.Column="1" Grid.Row="7"
+                         Name="AuthorTextBox"
+                         Text="{Binding Metadata.Author}" />
+                
+                <!-- Subject -->
+                <Label Grid.Column="1" Grid.Row="8" Margin="0 10 0 0" 
+                       Target="{Binding ElementName=SubjectTextBox}"
+                       Content="{Binding Translation.SubjectLabel}" />
+                <TextBox Grid.Column="1" Grid.Row="9"
+                         Name="SubjectTextBox"
+                         Text="{Binding Metadata.Subject}" />
+                
+                <!-- Keywords -->
+                <Label Grid.Column="1" Grid.Row="10" Margin="0 10 0 0"  
+                       Target="{Binding ElementName=KeywordsTextBox}"
+                       Content="{Binding Translation.KeywordsLabel}" />
+                <TextBox Grid.Column="1" Grid.Row="11"
+                         Name="KeywordsTextBox"
+                         Text="{Binding Metadata.Keywords}" />
+            </Grid>
 
             <!--Banner Region-->
-            <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
-                        VerticalAlignment="Center">
+            <StackPanel Grid.Row="4"
+                        VerticalAlignment="Center"
+                        Margin="0 5 0 0">
                 <ContentControl HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 regions:RegionManager.RegionName="{x:Static presentation:PrintJobRegionNames.PrintJobViewBannerRegion}"
@@ -204,7 +240,8 @@
                                 IsTabStop="False" />
                 <Grid Margin="0 5"
                       Visibility="{Binding ShowTrialRemainingDaysInfo, Converter={StaticResource CollapsedIfTrueConverter}}">
-                    <Label Visibility="{Binding HasBanner, Converter={StaticResource CollapsedIfFalseConverter}}">
+                    <Label Visibility="{Binding HasBanner, Converter={StaticResource CollapsedIfFalseConverter}}"
+                           HorizontalAlignment="Right">
                         <Hyperlink Command="{Binding OpenUrlCommand}"
                                    CommandParameter="{x:Static utilities:Urls.ProfessionalHintUrl}"
                                    Foreground="{StaticResource DefaultTextColorBrush}">

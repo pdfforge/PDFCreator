@@ -18,12 +18,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.Professional
 {
     public class ProfessionalHintStepViewModel : TranslatableViewModelBase<ProfessionalHintStepTranslation>, IWorkflowViewModel
     {
-        private readonly IProfessionalHintHelper _professionalHintHelper;
+        private readonly IConditionalHintManager _conditionalHintManager;
         private TaskCompletionSource<object> _taskCompletionSource = new TaskCompletionSource<object>();
 
-        public ProfessionalHintStepViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IProfessionalHintHelper professionalHintHelper) : base(translationUpdater)
+        public ProfessionalHintStepViewModel(ITranslationUpdater translationUpdater, ICommandLocator commandLocator, IConditionalHintManager conditionalHintManager) : base(translationUpdater)
         {
-            _professionalHintHelper = professionalHintHelper;
+            _conditionalHintManager = conditionalHintManager;
             FinishStepCommand = new DelegateCommand(o => CancelExecute());
 
             ProfessionalHintCommand = new CompositeCommand(); //compose "open plus hint url" and "call step finished"
@@ -42,7 +42,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.Professional
 
         public event EventHandler StepFinished;
 
-        public string ThankYouText => Translation.GetThankYouMessage(_professionalHintHelper.CurrentJobCounter);
+        public string ThankYouText => Translation.GetThankYouMessage(_conditionalHintManager.CurrentJobCounter);
 
         public Task ExecuteWorkflowStep(Job job)
         {

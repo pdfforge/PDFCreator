@@ -4,36 +4,56 @@ using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Conversion.Settings;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
     public interface IJobDataUpdater
     {
         void UpdateTokensAndMetadata(Job job);
-
         Task UpdateTokensAndMetadataAsync(Job job);
     }
 
-    public class JobDataUpdater : IJobDataUpdater
+    public class JobDataUpdater(
+        ITokenReplacerFactory tokenReplacerFactory,
+        IPageNumberCalculator pageNumberCalculator,
+        IUserTokenExtractor userTokenExtractor,
+        IJobInfoManager jobInfoManager,
+        IPsToPdfConverter psToPdfConverter,
+        IFile file,
+        IPreviewManager previewManager)
+        : JobDataUpdaterBase(tokenReplacerFactory, pageNumberCalculator, userTokenExtractor, jobInfoManager, psToPdfConverter, file)
+    {
+        protected override void AbortPreviewTasks(string sfiFilename)
+        {
+            previewManager.AbortAndCleanUpPreview(sfiFilename);
+        }
+    }
+
+
+    public abstract class JobDataUpdaterBase : IJobDataUpdater
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IPageNumberCalculator _pageNumberCalculator;
         private readonly IUserTokenExtractor _userTokenExtractor;
         private readonly IJobInfoManager _jobInfoManager;
         private readonly IPsToPdfConverter _psToPdfConverter;
+        private readonly IFile _file;
         private readonly ITokenReplacerFactory _tokenReplacerFactory;
 
-        public JobDataUpdater(ITokenReplacerFactory tokenReplacerFactory, IPageNumberCalculator pageNumberCalculator,
-            IUserTokenExtractor userTokenExtractor, IJobInfoManager jobInfoManager, IPsToPdfConverter psToPdfConverter)
+        public JobDataUpdaterBase(ITokenReplacerFactory tokenReplacerFactory, IPageNumberCalculator pageNumberCalculator,
+            IUserTokenExtractor userTokenExtractor, IJobInfoManager jobInfoManager, IPsToPdfConverter psToPdfConverter,
+            IFile file)
         {
             _tokenReplacerFactory = tokenReplacerFactory;
             _pageNumberCalculator = pageNumberCalculator;
             _userTokenExtractor = userTokenExtractor;
             _jobInfoManager = jobInfoManager;
             _psToPdfConverter = psToPdfConverter;
+            _file = file;
         }
 
         public void UpdateTokensAndMetadata(Job job)
@@ -41,12 +61,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
             // Must be done before TokenReplacer is built
             if (job.Profile.UserTokens.Enabled)
             {
-                _psToPdfConverter.ConvertJobInfoSourceFilesToPdf(job);
-                SetSplitDocumentAndSourceFileInfos(job);
+                _logger.Debug("Trigger UpdateTokensAndMetadata for " + job.JobInfo.InfFile);
+                SetSplitDocumentAndSourceFileInfos(job.JobInfo, job.Profile);
             }
 
             // Update job after extracting split document to get new number of pages
-            job.NumberOfCopies = GetNumberOfCopies(job);
+            job.NumberOfCopies = GetNumberOfCopies(job.JobInfo.SourceFiles);
             job.NumberOfPages = _pageNumberCalculator.GetNumberOfPages(job);
 
             job.TokenReplacer = _tokenReplacerFactory.BuildTokenReplacerWithoutOutputfiles(job);
@@ -67,12 +87,12 @@ namespace pdfforge.PDFCreator.Core.Workflow
             await Task.Run(() => UpdateTokensAndMetadata(job));
         }
 
-        private int GetNumberOfCopies(Job job)
+        private int GetNumberOfCopies(IList<SourceFileInfo> sourceFileInfos)
         {
             var copies = 0;
             try
             {
-                copies = job.JobInfo.SourceFiles.First().Copies;
+                copies = sourceFileInfos.First().Copies;
             }
             catch
             { }
@@ -87,40 +107,35 @@ namespace pdfforge.PDFCreator.Core.Workflow
             return copies;
         }
 
-        private void SetSplitDocumentAndSourceFileInfos(Job job)
+        private void SetSplitDocumentAndSourceFileInfos(JobInfo jobInfo, ConversionProfile profile)
         {
-            var oldFiles = new List<string>();
-
-            foreach (var sfi in job.JobInfo.SourceFiles)
+            foreach (var sfi in jobInfo.SourceFiles)
             {
                 if (sfi.UserTokenEvaluated)
                     continue;
 
-                var parsedFile = _userTokenExtractor.ParsePdfFileForUserTokens(sfi.Filename, job.Profile.UserTokens.Separator);
+                _logger.Debug("Parse user tokens for " + sfi.Filename);
 
+                _psToPdfConverter.ConvertSourceFileToPdf(sfi).GetAwaiter().GetResult();
+                var parsedFile = _userTokenExtractor.ParsePdfFileForUserTokens(sfi.Filename, profile.UserTokens.Separator);
+
+                //Abort preview task to regenerate the preview and unblock the file for deletion
+                AbortPreviewTasks(sfi.Filename);
                 if (parsedFile.Filename != sfi.Filename)
-                    oldFiles.Add(sfi.Filename);
+                    _file.Delete(sfi.Filename);
 
                 sfi.Filename = parsedFile.Filename;
                 sfi.UserToken = parsedFile.UserToken;
                 sfi.UserTokenEvaluated = true;
-                job.JobInfo.SplitDocument = parsedFile.SplitDocument;
+                jobInfo.SplitDocument = parsedFile.SplitDocument;
 
-                if (!string.IsNullOrEmpty(job.JobInfo.SplitDocument))
-                    job.JobInfo.SourceFiles.First().TotalPages = parsedFile.NumberOfPages;
+                if (!string.IsNullOrEmpty(jobInfo.SplitDocument))
+                    jobInfo.SourceFiles.First().TotalPages = parsedFile.NumberOfPages;
                 else
                     sfi.TotalPages = parsedFile.NumberOfPages;
             }
-
-            CleanUp(oldFiles);
         }
 
-        private static void CleanUp(List<string> oldFiles)
-        {
-            foreach (var file in oldFiles)
-            {
-                File.Delete(file);
-            }
-        }
+        protected abstract void AbortPreviewTasks(string sfiFilename);
     }
 }

@@ -10,6 +10,7 @@ using pdfforge.PDFCreator.UI.Presentation.Commands.IniCommands;
 using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
+using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings

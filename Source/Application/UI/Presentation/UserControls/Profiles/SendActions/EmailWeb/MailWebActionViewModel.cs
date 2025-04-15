@@ -13,7 +13,14 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles;
 using System.Text;
-using System.Windows.Forms.VisualStyles;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.Core.Services;
+using pdfforge.PDFCreator.UI.Presentation.Commands;
+using System.Windows.Data;
+using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.EmailWeb
 {
@@ -21,11 +28,18 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
     {
         private readonly IInteractionRequest _interactionRequest;
         private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountProvider;
+        private readonly IGpoSettings _gpoSettings;
 
         public TokenViewModel<ConversionProfile> RecipientsTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsCcTokenViewModel { get; private set; }
         public TokenViewModel<ConversionProfile> RecipientsBccTokenViewModel { get; private set; }
         public SelectFilesUserControlViewModel AdditionalAttachmentsViewModel { get; private set; }
+
+        public bool EditAccountsIsDisabled => _gpoSettings != null && _gpoSettings.DisableAccountsTab;
+        public ObservableCollection<MicrosoftAccount> MicrosoftAccounts { get; set; }
+
+        public ICommand AddMicrosoftAccountCommand { get; set; }
+        public ICommand EditMicrosoftAccountCommand { get; set; }
 
         public DelegateCommand EditEmailTextCommand { get; set; }
         private EmailWebSettings EmailWebSettings => CurrentProfile?.EmailWebSettings;
@@ -42,6 +56,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             }
         }
 
+        public bool IsServer { get; private set; } = false;
+
         public MailWebActionViewModel(
             IActionLocator actionLocator,
             ErrorCodeInterpreter errorCodeInterpreter,
@@ -53,13 +69,31 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             ISelectFilesUserControlViewModelFactory selectFilesUserControlViewModelFactory,
             IDefaultSettingsBuilder defaultSettingsBuilder,
             IActionOrderHelper actionOrderHelper,
-            ICurrentSettings<Conversion.Settings.Accounts> accountProvider)
+            ICurrentSettings<Conversion.Settings.Accounts> accountProvider,
+            IGpoSettings gpoSettings,
+            ICommandLocator commandLocator,
+            EditionHelper editionHelper)
             : base(actionLocator, errorCodeInterpreter, translationUpdater, currentSettingsProvider, dispatcher, defaultSettingsBuilder, actionOrderHelper)
         {
             _interactionRequest = interactionRequest;
             _accountProvider = accountProvider;
+            _gpoSettings = gpoSettings;
+            IsServer = editionHelper.IsServer;
 
             CreateTokenViewModels(tokenViewModelFactory);
+
+            MicrosoftAccounts = _accountProvider.Settings.MicrosoftAccounts;
+            AddMicrosoftAccountCommand = commandLocator.CreateMacroCommand()
+                .AddCommand<MicrosoftAccountEditCommand>()
+                .AddCommand(new DelegateCommand(_ => RaisePropertyChanged(nameof(MicrosoftAccounts))))
+                .AddCommand(new DelegateCommand(_ => SelectNewAccountInView()))
+                .AddCommand(new DelegateCommand(_ => StatusChanged()))
+                .Build();
+
+            EditMicrosoftAccountCommand = commandLocator.CreateMacroCommand()
+                .AddCommand<MicrosoftAccountEditCommand>()
+                .AddCommand(new DelegateCommand(_ => StatusChanged()))
+                .Build();
 
             EditEmailTextCommand = new DelegateCommand(EditEmailTextExecute);
 
@@ -69,6 +103,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
                 .WithFileListGetter(profile => profile.EmailWebSettings.AdditionalAttachments)
                 .WithPropertyChanged(StatusChanged)
                 .Build();
+        }
+
+        private void SelectNewAccountInView()
+        {
+            var accountToBeSelected = MicrosoftAccounts.LastOrDefault();
+            var collectionView = CollectionViewSource.GetDefaultView(MicrosoftAccounts);
+            collectionView.MoveCurrentTo(accountToBeSelected);
         }
 
         private void CreateTokenViewModels(ITokenViewModelFactory tokenViewModelFactory)
@@ -116,10 +157,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.
             RecipientsCcTokenViewModel.MountView();
             RecipientsBccTokenViewModel.MountView();
             AdditionalAttachmentsViewModel.MountView();
-            if (_accountProvider.Settings.MicrosoftAccounts.Count > 0)
-            {
-                EmailWebSettings.AccountId = _accountProvider.Settings.MicrosoftAccounts.First().AccountId;
-            }
+
             RaisePropertyChanged(nameof(SendingOptionNothing));
             base.MountView();
         }

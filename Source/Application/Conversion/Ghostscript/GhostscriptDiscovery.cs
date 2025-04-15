@@ -27,7 +27,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             _fileVersionInfoHelper = fileVersionInfoHelper;
         }
 
-        public List<string> PossibleGhostscriptPaths { get; set; } = new List<string> { "Ghostscript", @"..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\..\packages\Ghostscript" };
+        public List<string> PossibleGhostscriptPaths { get; set; } = ["Ghostscript", @"..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\..\..\..\packages\Ghostscript", @"..\..\..\..\..\nuget-feed\Ghostscript", @"..\..\..\..\..\..\nuget-feed\Ghostscript", @"..\..\..\..\..\..\..\nuget-feed\Ghostscript", @"..\..\..\..\..\..\..\..\nuget-feed\Ghostscript"];
 
         /// <summary>
         ///     Get the internal instance if it exists, otherwise the installed instance in the given version
@@ -48,9 +48,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
                 if (_file.Exists(exePath))
                 {
                     var ghostscriptVersion = _fileVersionInfoHelper.GetFileVersion(exePath);
-                    
-                    return new GhostscriptVersion(ghostscriptVersion, exePath, libPaths);
 
+                    return new GhostscriptVersion(ghostscriptVersion, exePath, libPaths);
                 }
             }
 

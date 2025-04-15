@@ -151,7 +151,7 @@ namespace pdfforge.PDFCreator.ErrorReport
                 using (var stream = File.OpenWrite(reportFile))
                 using (var writer = new Utf8JsonWriter(stream))
                 {
-                    report.WriteTo(writer);
+                    report.WriteTo(writer, null);
                 }
             }
             catch

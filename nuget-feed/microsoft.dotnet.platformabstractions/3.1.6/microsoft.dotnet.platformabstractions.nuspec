@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.DotNet.PlatformAbstractions</id>
+    <version>3.1.6</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.TXT</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>Icon.png</icon>
+    <projectUrl>https://dot.net/</projectUrl>
+    <description>Abstractions for making code that uses file system and environment testable.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <serviceable>true</serviceable>
+    <repository type="git" url="git://github.com/dotnet/core-setup" commit="3acd9b0cd16596bad450c82be08780875a73c05c" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="System.Runtime.InteropServices.RuntimeInformation" version="4.0.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="System.AppContext" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Collections" version="4.0.11" exclude="Build,Analyzers" />
+        <dependency id="System.IO" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.IO.FileSystem" version="4.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.Reflection.TypeExtensions" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices" version="4.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.InteropServices.RuntimeInformation" version="4.0.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

@@ -8,6 +8,7 @@ using pdfforge.PDFCreator.Utilities;
 using System;
 using System.IO;
 using System.Linq;
+using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
@@ -16,14 +17,15 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly IJobRunner _jobRunner;
         private readonly INotificationService _notificationService;
         private readonly IPathUtil _pathUtil;
-        private readonly AutosaveOutputFileMover _outputFileMover;
+        private readonly IOutputFileMover _outputFileMover;
         private readonly IProfileChecker _profileChecker;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
+        private readonly IFailedJobHandler _failedJobHandler;
 
         public AutoSaveWorkflow(IJobDataUpdater jobDataUpdater, IJobRunner jobRunner, IProfileChecker profileChecker,
-            ITargetFilePathComposer targetFilePathComposer, AutosaveOutputFileMover outputFileMover,
+            ITargetFilePathComposer targetFilePathComposer, IOutputFileMover outputFileMover,
             INotificationService notificationService, IJobEventsManager jobEventsManager,
-            IPathUtil pathUtil)
+            IPathUtil pathUtil, IFailedJobHandler failedJobHandler)
         {
             JobDataUpdater = jobDataUpdater;
             JobEventsManager = jobEventsManager;
@@ -33,6 +35,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _outputFileMover = outputFileMover;
             _notificationService = notificationService;
             _pathUtil = pathUtil;
+            _failedJobHandler = failedJobHandler;
         }
 
         protected override IJobDataUpdater JobDataUpdater { get; }
@@ -48,7 +51,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
                 var result = _profileChecker.CheckJob(job);
                 if (!result)
+                {
+                    _failedJobHandler.HandleFailedJob(job, result[0]);
                     throw new ProcessingException("Invalid Profile", result[0]);
+                }
 
                 job.Passwords = JobPasswordHelper.GetJobPasswords(job.Profile, job.Accounts);
 

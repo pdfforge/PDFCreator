@@ -38,7 +38,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 
         public PathUtilStatus IsValidRootedPathWithResponse(string path)
         {
-            return PathUtilStatus.InvalidRootedPath;
+            return PathUtilStatus.InvalidPath;
         }
 
         public bool IsValidFilename(string fileName)

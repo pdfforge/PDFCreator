@@ -12,6 +12,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq.Expressions;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Font
 {

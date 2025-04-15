@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using System.Linq;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
 {

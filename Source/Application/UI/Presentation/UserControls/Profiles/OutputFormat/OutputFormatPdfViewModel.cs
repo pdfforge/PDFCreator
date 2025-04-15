@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.ComponentModel;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {

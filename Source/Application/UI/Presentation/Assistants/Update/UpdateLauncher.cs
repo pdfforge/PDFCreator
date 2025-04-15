@@ -4,15 +4,14 @@ using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.Services.Update;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
-using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Windows;
 using pdfforge.PDFCreator.Utilities;
 using pdfforge.PDFCreator.Utilities.Threading;
 using pdfforge.PDFCreator.Utilities.Web;
-using Prism.Events;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
@@ -54,10 +53,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
         private readonly IThreadManager _threadManager;
         private readonly ApplicationNameProvider _applicationNameProvider;
         private readonly IUpdateDownloader _updateDownloader;
-        private readonly IEventAggregator _eventAggregator;
+        private readonly IApplicationCloser _applicationCloser;
         private UpdateManagerTranslation _translation;
 
-        public AutoUpdateLauncher(ITranslationFactory translationFactory, IInteractionInvoker interactionInvoker, IInteractionRequest interactionRequest, IHashUtil hashUtil, IThreadManager threadManager, ApplicationNameProvider applicationNameProvider, IUpdateDownloader updateDownloader, IEventAggregator EventAggregator)
+        public AutoUpdateLauncher(ITranslationFactory translationFactory, IInteractionInvoker interactionInvoker, IInteractionRequest interactionRequest,
+            IHashUtil hashUtil, IThreadManager threadManager, ApplicationNameProvider applicationNameProvider,
+            IUpdateDownloader updateDownloader, IApplicationCloser applicationCloser)
         {
             UpdateTranslation(translationFactory);
             translationFactory.TranslationChanged += (sender, args) => UpdateTranslation(translationFactory);
@@ -67,7 +68,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
             _threadManager = threadManager;
             _applicationNameProvider = applicationNameProvider;
             _updateDownloader = updateDownloader;
-            _eventAggregator = EventAggregator;
+            _applicationCloser = applicationCloser;
         }
 
         public async Task LaunchUpdateAsync(IApplicationVersion version)
@@ -158,7 +159,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Assistants.Update
                 case RestartApplicationInteractionResult.Now:
                     _threadManager.IsStandbyDisabled = true;
                     _threadManager.UpdateAfterShutdownAction = () => LaunchDownloadedFile(downloadedFile);
-                    _eventAggregator.GetEvent<TryCloseApplicationEvent>().Publish();
+                    _applicationCloser.CloseApplication();
                     break;
 
                 case RestartApplicationInteractionResult.Later:

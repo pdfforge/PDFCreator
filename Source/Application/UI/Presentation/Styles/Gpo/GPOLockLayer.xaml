@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
              xmlns:gpo="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Styles.Gpo"
+             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance gpo:DesignTimeGpoLockLayerViewModel, d:IsDesignTimeCreatable=True}"
@@ -19,7 +20,7 @@
     </UserControl.Resources>
     <Grid Visibility="{Binding ElementName=UserControlView, Path=IsLockedByGpo, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Grid.Background>
-            <SolidColorBrush Color="Black" Opacity="0.09" />
+            <SolidColorBrush Color="Black" Opacity="0.09" options:Freeze="true"/>
         </Grid.Background>
         <Border CornerRadius="2 2 2 2"
                 VerticalAlignment="Center" HorizontalAlignment="Center" Background="White">

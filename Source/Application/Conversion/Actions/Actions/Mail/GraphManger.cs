@@ -5,13 +5,12 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Converters;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
 {
     public interface IGraphManager
     {
-        Task AcquireAccessToken(MicrosoftAccount account, List<MicrosoftAccountPermission> permissions);
+        Task AcquireAccessToken(MicrosoftAccount microsoftAccount, List<MicrosoftAccountPermission> permissions);
         Task<AuthenticationResult> GetAccessToken(MicrosoftAccount account);
         ClientWrapper GetClient(MicrosoftAccount currentAccount);
     }
@@ -19,7 +18,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
     public class GraphManager : IGraphManager
     {
         private const string AuthRecordCachePath = "http://localhost/";
-        private const string ClientId = "f1d4e9fa-243b-496f-80aa-5d6baa4cf379";
+        private const string ClientId = "26528e78-9272-4506-b396-20ecb072d10b";
         public const string BaseURL = "https://graph.microsoft.com/v1.0";
 
         private readonly List<ClientWrapper> _clients = new List<ClientWrapper>();
@@ -32,7 +31,10 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
 
         public ClientWrapper GetClient(MicrosoftAccount account)
         {
-            var fittingClients = _clients.Where(wrapper => wrapper.Account.AccountId == account.AccountId);
+            var fittingClients = _clients.Where(wrapper => 
+                wrapper.Account.AccountId == account.AccountId 
+                && wrapper.Account.Actions == account.Actions);
+
             if (fittingClients.Any())
             {
                 return fittingClients.First();
@@ -63,16 +65,26 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Mail
             return authenticationResult;
         }
 
-        public async Task AcquireAccessToken(MicrosoftAccount account, List<MicrosoftAccountPermission> permissions)
+        public async Task AcquireAccessToken(MicrosoftAccount microsoftAccount, List<MicrosoftAccountPermission> permissions)
         {
             ClientWrapper clientWrapper;
             IPublicClientApplication client;
 
-            clientWrapper = GetClient(account);
+            clientWrapper = GetClient(microsoftAccount);
             client = clientWrapper.Client;
             var permissionScope = permissions.Select(permission => permission.ToPermissionString()).ToList();
             permissionScope.Add("offline_access");
-            var authenticationResult = await client.AcquireTokenInteractive(permissionScope).ExecuteAsync();
+
+            if (string.IsNullOrEmpty(microsoftAccount.AccountId))
+            {
+                var authenticationResult = await client.AcquireTokenInteractive(permissionScope).ExecuteAsync();
+            }
+            else
+            {
+                var account =  await client.GetAccountAsync(microsoftAccount.AccountId);
+                var authenticationResult = await client.AcquireTokenInteractive(permissionScope).WithAccount(account).WithPrompt(Prompt.Consent).ExecuteAsync();
+            }
+
             var newOffset = (new DateTimeOffset(DateTime.Now.AddDays(90))).ToUnixTimeSeconds();
             clientWrapper.Account.ExpirationDate = newOffset;
         }

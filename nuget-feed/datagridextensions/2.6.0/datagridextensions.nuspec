@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>DataGridExtensions</id>
+    <version>2.6.0</version>
+    <title>Data Grid Extensions</title>
+    <authors>Tom Englert</authors>
+    <license type="file">License</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>Icon.png</icon>
+    <projectUrl>https://github.com/dotnet/DataGridExtensions</projectUrl>
+    <description>This package contains useful extensions for the MS DataGrid (System.Windows.Controls.DataGrid).
+The current version supports the following features:
+- Add filtering capabilities to the DataGrid.
+- Correctly apply initial sorting criteria.
+- Easy to use\r\n- Easy to customize
+- Attaches to the existing DataGrid</description>
+    <releaseNotes>https://raw.githubusercontent.com/dotnet/DataGridExtensions/master/ReleaseNotes.md</releaseNotes>
+    <copyright>Copyright (c) .NET Foundation and Contributors.</copyright>
+    <tags>DGX DataGrid Filter</tags>
+    <repository type="git" url="https://github.com/dotnet/DataGridExtensions.git" commit="3372f020c13642e745075384d0ef7a9561e95724" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.77" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0-windows7.0">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.77" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0-windows7.0">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.77" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework="net8.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework=".NETFramework4.6.2" />
+    </frameworkReferences>
+  </metadata>
+</package>

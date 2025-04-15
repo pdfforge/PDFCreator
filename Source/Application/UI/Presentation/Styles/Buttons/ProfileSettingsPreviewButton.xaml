@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
         <ResourceDictionary Source="../ColorDictionary.xaml" />
@@ -28,7 +29,7 @@
                                         <Setter Property="Background" Value="#fafafa" />
                                         <Setter Property="BorderBrush">
                                             <Setter.Value>
-                                                <SolidColorBrush Color="{StaticResource AccentBlue}" />
+                                                <SolidColorBrush Color="{StaticResource AccentBlue}" options:Freeze="true"/>
                                             </Setter.Value>
                                         </Setter>
                                     </Trigger>

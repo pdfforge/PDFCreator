@@ -4,14 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace pdfforge.PDFCreator.Utilities
 {
-    public static class ValidName
+    public static partial class ValidName
     {
         private static readonly string InvalidFileCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()))}]+";
-
         private static readonly string InvalidPathCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}*/?]+";
-        private static readonly string InvalidWebPathCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}*?]+";
+        private static readonly string InvalidWebPathCharRegex = $@"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}*?<>]+";
 
-        private static readonly string InvalidFtpCharRegex = $@"/\\|[{Regex.Escape(new string(Path.GetInvalidPathChars()) + ":*?")}]+";
+        private static readonly string InvalidFtpCharRegex = $@"/\\|[{Regex.Escape(new string(Path.GetInvalidPathChars()) + "<>\":*?")}]+";
 
         private static readonly char[] InvalidDropBoxChars = new[] { ':', '?', '*', '|', '"', '*', '.' };
 
@@ -57,8 +56,15 @@ namespace pdfforge.PDFCreator.Utilities
         //Todo: Check if this is obsolete and can be replaced by PathUtil.IsValidRootedPath
         public static bool IsValidPath(string name)
         {
-            var containsABadCharacter = new Regex(InvalidPathCharRegex);
-            if (containsABadCharacter.IsMatch(name))
+            var directory = Path.GetDirectoryName(name);
+            var directoryContainsABadCharacter = new Regex(InvalidPathCharRegex);
+            if (directoryContainsABadCharacter.IsMatch(directory))
+            {
+                return false;
+            }
+            var file = Path.GetFileName(name);
+            var fileContainsABadCharacter = new Regex(InvalidFileCharRegex);
+            if (fileContainsABadCharacter.IsMatch(file))
             {
                 return false;
             }

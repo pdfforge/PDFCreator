@@ -1,6 +1,6 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
-using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs.JobInfo

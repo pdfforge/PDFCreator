@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string Interactive { get; private set; } = "Interactive";
         public string Autosave { get; private set; } = "Automatic";
         public string FilenameLabel { get; private set; } = "Filename:";
-        public string TargetDirectoryLabel { get; private set; } = "Target Directory:";
+        public string TargetDirectoryLabel { get; private set; } = "Target directory:";
 
         public string LastUsedDirectory { get; protected set; } = "Last used directory";
         public string SaveOnlyTemporary { get; private set; } = "Only save file temporarily";
@@ -28,7 +28,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 
         public string NonPdfAutoMerge { get; private set; } = "Non-pdf auto-merge";
 
-        public string OutputFormat { get; private set; } = "Output Format";
+        public string OutputFormat { get; private set; } = "Output format";
         public string ColorsLabel { get; private set; } = "Colors:";
         public string ResolutionLabel { get; private set; } = "Resolution:";
         public string CompressionLabel { get; private set; } = "Compression:";

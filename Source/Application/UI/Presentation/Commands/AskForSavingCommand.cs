@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.NavigationChecks;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {

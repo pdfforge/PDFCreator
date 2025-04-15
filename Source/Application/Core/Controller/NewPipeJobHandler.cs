@@ -20,6 +20,7 @@ namespace pdfforge.PDFCreator.Core.Controller
         private readonly IJobInfoManager _jobInfoManager;
         private readonly IThreadManager _threadManager;
         private readonly IJobInfoQueueManager _jobInfoQueueManager;
+        private readonly IApplicationCloser _applicationCloser;
         private readonly IJobInfoQueue _jobInfoQueue;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IMainWindowThreadLauncher _mainWindowThreadLauncher;
@@ -27,7 +28,8 @@ namespace pdfforge.PDFCreator.Core.Controller
 
         public NewPipeJobHandler(IJobInfoQueue jobInfoQueue, ISettingsManager settingsManager,
             IFileConversionAssistant fileConversionAssistant, IMainWindowThreadLauncher mainWindowThreadLauncher,
-            IJobInfoManager jobInfoManager, IThreadManager threadManager, IJobInfoQueueManager jobInfoQueueManager)
+            IJobInfoManager jobInfoManager, IThreadManager threadManager, IJobInfoQueueManager jobInfoQueueManager,
+            IApplicationCloser applicationCloser)
         {
             _jobInfoQueue = jobInfoQueue;
             _settingsManager = settingsManager;
@@ -36,6 +38,7 @@ namespace pdfforge.PDFCreator.Core.Controller
             _jobInfoManager = jobInfoManager;
             _threadManager = threadManager;
             _jobInfoQueueManager = jobInfoQueueManager;
+            _applicationCloser = applicationCloser;
         }
 
         public void HandlePipeMessage(string message)
@@ -62,6 +65,14 @@ namespace pdfforge.PDFCreator.Core.Controller
             {
                 _logger.Info("Pipe Command: Stopping hot standby");
                 _threadManager.StopHotStandby();
+            }
+            else if(message.StartsWith("ShutDown|", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.Info("Pipe Command: Shutting down");
+
+                _threadManager.UpdateAfterShutdownAction = null;
+                _threadManager.IsStandbyDisabled = true;
+                _applicationCloser.CloseApplication();
             }
         }
 

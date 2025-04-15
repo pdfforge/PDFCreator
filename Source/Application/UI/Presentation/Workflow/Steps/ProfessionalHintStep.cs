@@ -8,16 +8,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
     {
         public override string NavigationUri => nameof(ProfessionalHintStepView);
 
-        private readonly IProfessionalHintHelper _professionalHintHelper;
+        private readonly IConditionalHintManager _conditionalHintManager;
 
-        public ProfessionalHintStep(IProfessionalHintHelper professionalHintHelper)
+        public ProfessionalHintStep(IConditionalHintManager conditionalHintManager)
         {
-            _professionalHintHelper = professionalHintHelper;
+            _conditionalHintManager = conditionalHintManager;
         }
 
         public override bool IsStepRequired(Job job)
         {
-            return _professionalHintHelper.QueryDisplayHint();
+            return _conditionalHintManager.ShouldProfessionalHintBeDisplayed();
         }
     }
 }

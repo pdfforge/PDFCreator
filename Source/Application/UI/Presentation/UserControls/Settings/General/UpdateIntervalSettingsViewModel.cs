@@ -14,13 +14,14 @@ using System.Windows.Input;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Core.Services;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
 using pdfforge.PDFCreator.UI.Presentation.Commands;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Version;
 using pdfforge.PDFCreator.Utilities;
+using pdfforge.PDFCreator.Utilities.Update;
 using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General

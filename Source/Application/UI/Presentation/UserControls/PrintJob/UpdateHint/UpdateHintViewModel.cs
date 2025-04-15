@@ -17,8 +17,12 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.CodeAnalysis;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
 {
@@ -60,7 +64,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
                                                                     versionHelper.ApplicationVersion.ToString(3),
                                                                     LatestVersionReleaseDate);
         }
-
         public ICommand InstallUpdateCommand => new AsyncCommand(InstallUpdate);
 
         private void SetCurrentDateFormat()
@@ -68,7 +71,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint
             var latestAvailableRelease = _onlineVersionHelper.LatestRelease;
 
             if (latestAvailableRelease == null || !DateTime.TryParse(latestAvailableRelease.ReleaseDate, out var latestVersionReleaseDate))
-                latestVersionReleaseDate = _assemblyHelper.GetLinkerTime();
+                latestVersionReleaseDate = File.GetCreationTime(Assembly.GetExecutingAssembly().Location);
 
             LatestVersionReleaseDate = latestVersionReleaseDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
         }

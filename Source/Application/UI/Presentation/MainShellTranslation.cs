@@ -13,7 +13,7 @@ namespace pdfforge.PDFCreator.UI.Presentation
         public string UpdateToolTip { get; private set; } = "An update is available";
 
         private string UsageStatsInfo { get; set; } = "Help us improve {0} by sending anonymous application usage statistics.";
-        public string ReadMore { get; private set; } = "Read More";
+        public string ReadMore { get; private set; } = "Read more";
         public string UsageStatsDismiss { get; private set; } = "Dismiss";
 
         public string RssFeedDisabled { get; private set; } = "RSS news feed disabled.";

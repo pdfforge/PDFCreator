@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -133,5 +134,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationA
         }
 
         protected override string SettingsPreviewString => CurrentProfile?.CustomScript.ScriptFilename;
+
+        public bool ShowDebuggingOption => Debugger.IsAttached;
+        public bool EnableDebugging
+        {
+            get => CurrentProfile?.CustomScript.EnableDebugging == true;
+            set
+            {
+                CurrentProfile.CustomScript.EnableDebugging = value;
+                RaisePropertyChanged(nameof(EnableDebugging));
+            }
+        }
     }
 }

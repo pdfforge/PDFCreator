@@ -8,13 +8,13 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System.Windows;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls
 {
     internal class FeedbackButtonViewModel : TranslatableViewModelBase<FeedbackButtonTranslation>, IWhitelisted
     {
         public IGpoSettings GpoSettings { get; }
-        private readonly EditionHelper _editionHelper;
 
         public FeedbackButtonViewModel(ICommandLocator commandLocator, ITranslationUpdater translationUpdater, IGpoSettings gpoSettings)
             : base(translationUpdater)

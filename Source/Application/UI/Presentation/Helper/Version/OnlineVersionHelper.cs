@@ -7,7 +7,6 @@ using pdfforge.PDFCreator.Conversion.Settings.Extensions;
 using pdfforge.PDFCreator.Core.Services.Cache;
 using pdfforge.PDFCreator.Core.Services.Download;
 using pdfforge.PDFCreator.Core.Services.Update;
-using pdfforge.PDFCreator.UI.Presentation.Assistants.Update;
 using pdfforge.PDFCreator.Utilities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
 {
@@ -161,7 +161,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper.Version
                 else
                 {
                     // File was not cached yet or is out-dated
-                    returnVal = await _downloader.DownloadStringTaskAsync(url);
+                    returnVal = await _downloader.GetStringAsync(url);
                     await _fileCache.SaveFileAsync(filename, CreateStreamFromString(returnVal));
                 }
             }

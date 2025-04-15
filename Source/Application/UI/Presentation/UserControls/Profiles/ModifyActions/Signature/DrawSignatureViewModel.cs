@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature
 {

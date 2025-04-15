@@ -12,7 +12,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
         public string SelectFtpAccount { get; private set; } = "Please select a FTP account:";
         public string UploadWithFtp { get; private set; } = "Upload with FTP";
         public string RemoveFtpAccount { get; private set; } = "Remove FTP account";
-        public string EditFtpAccount { get; private set; } = "Edit FTP Account";
+        public string EditFtpAccount { get; private set; } = "Edit FTP account";
         public string Title { get; set; } = "FTP";
         public string InfoText { get; set; } = "Uploads the document with FTP.";
 

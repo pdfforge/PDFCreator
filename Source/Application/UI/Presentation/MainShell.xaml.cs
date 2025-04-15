@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation
 {

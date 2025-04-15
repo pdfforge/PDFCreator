@@ -122,7 +122,7 @@ namespace pdfforge.PDFCreator.Core.Workflow
                         break;
                 }
 
-                _failedJobHandler.HandleFailedJob(job);
+                _failedJobHandler.HandleFailedJob(job, ErrorCode.Conversion_UnknownError);
 
                 if (job.CleanUpOnError)
                     CleanUp(job);

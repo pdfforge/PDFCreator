@@ -5,8 +5,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
     public class TitleReplacementsTranslation: ITranslatable
     {
         public string CancelButtonContent { get; private set; } = "Cancel";
-        public string EditTextReplacementTitle { get; private set; } = "Edit Title Replacement";
-        public string RadioButtonRemoveAll { get; private set; } = "Remove All";
+        public string EditTextReplacementTitle { get; private set; } = "Edit title replacement";
+        public string RadioButtonRemoveAll { get; private set; } = "Remove all";
         public string RadioButtonRemoveAtBeginning { get; private set; } = "Remove at beginning";
         public string RadioButtonRemoveAtEnd { get; private set; } = "Remove at end";
         public string RadioButtonReplaceWithRegEx { get; private set; } = "Replace with regular expression";
@@ -19,7 +19,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplace
         public string SampleTitleText { get; private set; } = "Sample title:";
         public string PreviewTitleText { get; private set; } = "Sample title after replacements:";
         public string AddTitleReplacement { get; private set; } = "Add title replacement";
-        public string TitleReplacementControlHeader { get; private set; } = "Title Replacements";
+        public string TitleReplacementControlHeader { get; private set; } = "Title replacements";
 
         public string TitleReplacementDescription { get; private set; } =
             "Some document titles may contain unwanted additions or do not have the right formatting. For example, when printing to PDFCreator, some applications add their name to the document title of the print job.\n"

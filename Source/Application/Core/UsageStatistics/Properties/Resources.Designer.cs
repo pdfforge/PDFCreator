@@ -61,11 +61,20 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xJn+2tibRQMNM/AYb2ruqtXA4LRWRtiGQpwe7t/t42REI2Jk2uTIv/yalkDhTFpqlClk0/HRf/k=.
+        ///   Looks up a localized string similar to xJn+2tibRQNDF11aI9l+5CaNor5eWQIZxIiAtalb1nNUEZ+D8MPir5PUhVWEdHlCag9Mv5JcL1k=.
         /// </summary>
         internal static string AvqTrackingKey {
             get {
                 return ResourceManager.GetString("AvqTrackingKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xJn+2tibRQMNM/AYb2ruqtXA4LRWRtiGQpwe7t/t42REI2Jk2uTIv/yalkDhTFpqlClk0/HRf/k=.
+        /// </summary>
+        internal static string AvqTrackingKeyStaging {
+            get {
+                return ResourceManager.GetString("AvqTrackingKeyStaging", resourceCulture);
             }
         }
     }

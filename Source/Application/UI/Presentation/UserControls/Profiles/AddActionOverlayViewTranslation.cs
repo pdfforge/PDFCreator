@@ -7,6 +7,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
         public string Preparation { get; private set; } = "Preparation";
         public string Modify { get; private set; } = "Modify";
         public string Send { get; private set; } = "Send/Open";
-        public string AddAction { get; private set; } = "Choose an Action";
+        public string AddAction { get; private set; } = "Choose an action";
     }
 }

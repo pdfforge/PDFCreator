@@ -12,6 +12,7 @@ using pdfforge.PDFCreator.Utilities.IO;
 using System;
 using System.IO;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.WorkflowQuery
 {

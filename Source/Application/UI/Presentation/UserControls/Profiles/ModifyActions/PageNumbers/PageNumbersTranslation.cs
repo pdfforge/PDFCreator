@@ -22,7 +22,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
         public EnumTranslation<UnitOfMeasurement>[] UnitOfMeasurementValues { get; private set; } = EnumTranslation<UnitOfMeasurement>.CreateDefaultEnumTranslation();
         public EnumTranslation<PageNumberPosition>[] PageNumbersPositionValues { get; private set; } = EnumTranslation<PageNumberPosition>.CreateDefaultEnumTranslation();
 
-        public override string Title { get; set; } = "Page Numbers";
+        public override string Title { get; set; } = "Page numbers";
         public override string InfoText { get; set; } = "Adds page numbers to the document.";
     }
 }

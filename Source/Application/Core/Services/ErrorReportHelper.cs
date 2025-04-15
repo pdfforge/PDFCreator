@@ -12,20 +12,43 @@ using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Services
 {
-    public class ErrorReportHelper
+    public interface IErrorReportHelper
+    {
+        void ShowErrorReport(Exception ex);
+        void ShowErrorReportInNewProcess(Exception ex);
+        ErrorHelper ErrorHelper { get; set; }
+        void SetLicenseChecker(ILicenseChecker licenseChecker);
+    }
+
+    public class ErrorReportHelper : IErrorReportHelper
     {
         private readonly InMemoryLogger _inMemoryLogger;
         private readonly IAssemblyHelper _assemblyHelper;
+        private static ILicenseChecker _licenseChecker;
+        private static IErrorReportHelper _instance;
         public ErrorHelper ErrorHelper { get; set; }
 
-        public ErrorReportHelper(InMemoryLogger inMemoryLogger, IAssemblyHelper assemblyHelper, ErrorHelper errorHelper)
+        private ErrorReportHelper(InMemoryLogger inMemoryLogger, IAssemblyHelper assemblyHelper, ErrorHelper errorHelper)
         {
             _inMemoryLogger = inMemoryLogger;
             _assemblyHelper = assemblyHelper;
             ErrorHelper = errorHelper;
         }
 
-        public static ILicenseChecker LicenseChecker { private get; set; }
+        public static IErrorReportHelper GetInstance(InMemoryLogger inMemoryLogger, IAssemblyHelper assemblyHelper, ErrorHelper errorHelper)
+        {
+            return _instance ??= new ErrorReportHelper(inMemoryLogger, assemblyHelper, errorHelper);
+        }
+
+        public static IErrorReportHelper GetInstance()
+        {
+            return _instance;
+        }
+
+        public void SetLicenseChecker(ILicenseChecker licenseChecker)
+        {
+            _licenseChecker = licenseChecker;
+        }
 
         private Dictionary<string, string> BuildAdditionalEntries()
         {
@@ -34,10 +57,10 @@ namespace pdfforge.PDFCreator.Core.Services
             if (!string.IsNullOrWhiteSpace(Thread.CurrentThread.Name))
                 additionalEntries[SentryTagNames.ThreadName] = Thread.CurrentThread.Name;
 
-            if (LicenseChecker == null)
+            if (_licenseChecker == null)
                 return additionalEntries;
 
-            var activation = LicenseChecker.GetSavedActivation();
+            var activation = _licenseChecker.GetSavedActivation();
             activation
                 .MatchSome(a =>
             {

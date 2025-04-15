@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace pdfforge.PDFCreator.Conversion.Settings
 {
@@ -13,15 +14,30 @@ namespace pdfforge.PDFCreator.Conversion.Settings
 
             return DropboxAccounts.FirstOrDefault(x => x.AccountId == dropboxAccountId);
         }
-        public MicrosoftAccount GetMicrosoftAccount(ConversionProfile profile)
+
+        public MicrosoftAccount GetOneDriveAccount(ConversionProfile profile)
         {
-            var accountId = profile.EmailWebSettings.AccountId;
+            return GetMicrosoftAccount(() => profile.OneDriveSettings.AccountId);
+        }
+
+        public MicrosoftAccount GetOwaAccount(ConversionProfile profile)
+        {
+            return GetMicrosoftAccount(() => profile.EmailWebSettings.AccountId);
+        }
+
+        public MicrosoftAccount GetSharepointAccount(ConversionProfile profile)
+        {
+            return GetMicrosoftAccount(() => profile.SharepointSettings.AccountId);
+        }
+
+        private MicrosoftAccount GetMicrosoftAccount(Func<string> getAccountId)
+        {
+            var accountId = getAccountId.Invoke();
 
             if (string.IsNullOrWhiteSpace(accountId))
-                // TODO: This is a workaround for PC-4290. Remove it after we support multiple accounts. 
-                return MicrosoftAccounts.FirstOrDefault();// return null;
+                return null;
 
-            return MicrosoftAccounts.FirstOrDefault(x => x.AccountId == accountId);
+            return MicrosoftAccounts.FirstOrDefault(account => account.AccountId == accountId);
         }
 
         public HttpAccount GetHttpAccount(ConversionProfile profile)

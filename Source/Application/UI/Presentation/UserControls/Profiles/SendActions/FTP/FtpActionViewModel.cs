@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.FTP
 {

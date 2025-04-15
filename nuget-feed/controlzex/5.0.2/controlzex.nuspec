@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>ControlzEx</id>
+    <version>5.0.2</version>
+    <authors>Jan Karger, Bastian Schmidt, James Willock</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>logo-mini.png</icon>
+    <projectUrl>https://github.com/ControlzEx/ControlzEx</projectUrl>
+    <description>ControlzEx is a library with some shared Controls for WPF.</description>
+    <releaseNotes>https://github.com/ControlzEx/ControlzEx/releases</releaseNotes>
+    <copyright>Copyright © 2015 - 2022 Jan Karger, Bastian Schmidt, James Willock</copyright>
+    <tags>WPF UI Metro Modern Material XAML Toolkit Library .NET OSS OpenSource WindowChrome</tags>
+    <repository type="git" url="https://github.com/ControlzEx/ControlzEx.git" branch="main" commit="b69f7d560ee0fceba1c7f9e908d9c15fdb9accb8" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.31" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.31" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.31" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net5.0-windows7.0">
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.31" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="5.0.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework="net5.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2" />
+      <group targetFramework=".NETFramework4.6.2" />
+    </frameworkReferences>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.5.2, .NETFramework4.6.2" />
+      <frameworkAssembly assemblyName="System.Web.Extensions" targetFramework=".NETFramework4.5.2, .NETFramework4.6.2" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

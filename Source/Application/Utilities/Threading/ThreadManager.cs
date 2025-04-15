@@ -146,11 +146,11 @@ namespace pdfforge.PDFCreator.Utilities.Threading
             foreach (var thread in _threads.ToArray())
             {
                 if (string.IsNullOrEmpty(thread.Name))
-                    _logger.Debug("Aborting thread");
+                    _logger.Debug("Interrupting thread");
                 else
-                    _logger.Debug("Aborting thread " + thread.Name);
+                    _logger.Debug("Interrupt thread " + thread.Name);
 
-                thread.Abort();
+                thread.Interrupt();
             }
 
             _logger.Debug("Exiting...");

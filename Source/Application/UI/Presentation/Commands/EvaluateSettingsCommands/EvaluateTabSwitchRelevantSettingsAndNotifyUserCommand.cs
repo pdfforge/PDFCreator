@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.NavigationChecks;
 using System;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
 {
@@ -44,10 +45,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
                 var title = Translation.Settings;
                 var text = Translation.UnsavedChanges
                            + Environment.NewLine
-                           + Translation.WantToSave
-                           + Environment.NewLine
-                           + Translation.ChooseNoToRevert;
-                var buttons = MessageOptions.YesNoCancel;
+                           + Translation.HowToProceed;
+                var buttons = MessageOptions.SaveDiscardBack;
                 return new MessageInteraction(text, title, buttons, MessageIcon.Question);
             }
 
@@ -58,10 +57,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
             {
                 var title = Translation.Settings;
                 var text = Translation.InvalidSettingsWithUnsavedChanges;
-                var buttons = MessageOptions.YesNoCancel;
-                var userQuestion = Translation.WantToSaveAnyway
-                                   + Environment.NewLine
-                                   + Translation.ChooseNoToRevert;
+                var buttons = MessageOptions.SaveDiscardBack;
+                var userQuestion = Translation.HowToProceed;
                 return new MessageInteraction(text, title, buttons, MessageIcon.Warning, result.Result, userQuestion);
             }
 
@@ -72,15 +69,16 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands
         {
             switch (interactionResult.Response)
             {
-                case MessageResponse.Yes:
+                case MessageResponse.Save:
                     RaiseIsDone(ResponseStatus.Success);
                     return;
 
-                case MessageResponse.No:
+                case MessageResponse.Discard:
                     _currentSettingsProvider.Reset(false);
                     RaiseIsDone(ResponseStatus.Skip);
                     return;
 
+                case MessageResponse.Back:
                 case MessageResponse.Cancel:
                 default:
                     RaiseIsDone(ResponseStatus.Cancel);

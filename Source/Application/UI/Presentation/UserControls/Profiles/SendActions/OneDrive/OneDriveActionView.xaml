@@ -16,25 +16,67 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../../../Styles/ColorDictionary.xaml"/>
                 <ResourceDictionary Source="../../../../Styles/DefaultsDictionary.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <converter:EqualsNullConverter x:Key="NullToVisibilityConverter" EqualValue="Visible" NotEqualValue="Collapsed" />
+            <converter:EqualsNullConverter x:Key="NullToEnabledConverter" EqualValue="false" NotEqualValue="true" />
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <!-- Select account -->
+        <StackPanel Grid.Row="0" Margin="0 0 0 20">
+            <Label Content="{Binding Translation.SelectMicrosoftAccount}" />
+            <DockPanel Margin="0 10 0 0">
+                <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                            IsEnabled="{Binding EditAccountsIsDisabled, Converter={StaticResource BoolNegationConverter}}" Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                            IsEnabled="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToEnabledConverter}}"
+                            Command="{Binding EditMicrosoftAccountCommand}"
+                            CommandParameter="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Build" />
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Command="{Binding AddMicrosoftAccountCommand}"
+                            Width="33" Padding="5">
+                        <iconPacks:PackIconMaterialDesign Kind="Add" IsHitTestVisible="False"/>
+                    </Button>
+                </StackPanel>
+                <Grid>
+                    <ComboBox Name="MicrosoftAccountsComboBox"
+                              DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
+                              SelectedValue="{Binding CurrentProfile.OneDriveSettings.AccountId}"
+                              ItemsSource="{Binding MicrosoftAccounts, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True"
+                              Style="{StaticResource DisabledEmptyComboboxStyle}" />
 
-        <DockPanel Grid.Row="0">
+                    <Label Margin="10 0 0 0" VerticalAlignment="Center"
+                           IsHitTestVisible="False"
+                           Content="{Binding Translation.SelectOrAddAccount}"
+                           Visibility="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}, NotifyOnSourceUpdated=True}" />
+                </Grid>
+            </DockPanel>
+        </StackPanel>
+
+        <!-- Directory -->
+        <DockPanel Grid.Row="1">
             <Label DockPanel.Dock="Top"
                    HorizontalAlignment="Left"
                    Content="{Binding Translation.DirectoryLabel}"/>
             <controls:TokenControl Margin="0 10 0 0"
                                    DataContext="{Binding SharedFolderTokenViewModel}" />
         </DockPanel>
-
-        <StackPanel Grid.Row="1" Margin="0 20 0 0">
+    
+        <!-- Settings -->
+        <StackPanel Grid.Row="2" Margin="0 20 0 0">
             <DockPanel>
                 <RadioButton Margin="1 0 0 0" 
                              Content="{Binding Translation.PrivateLink}"
@@ -47,14 +89,18 @@
                       Margin="0 15 0 0"
                       IsChecked="{Binding EnsureUniqueOneDriveFilenames}"
                       Content="{Binding Translation.EnsureUniqueOneDriveFilename}" />
-            <CheckBox HorizontalAlignment="Left"
-                      Margin="0 10 0 0"
-                      IsChecked="{Binding ShowLink}"
-                      Content="{Binding Translation.ShowLink}"/>
-            <CheckBox HorizontalAlignment="Left"
-                      Margin="0 10 0 0"
-                      IsChecked="{Binding OpenUploadedFile}"
-                      Content="{Binding Translation.OpenUploadedFile}"/>
+            <StackPanel HorizontalAlignment="Left" 
+                        Visibility="{Binding IsNotServer, Converter={StaticResource CollapsedIfFalseConverter}}">
+                <CheckBox HorizontalAlignment="Left"
+                          Margin="0 10 0 0"
+                          IsChecked="{Binding ShowLink}"
+                          Content="{Binding Translation.ShowLink}"/>
+                <CheckBox HorizontalAlignment="Left"
+                          Margin="0 10 0 0"
+                          IsChecked="{Binding OpenUploadedFile}"
+                          Content="{Binding Translation.OpenUploadedFile}"/>
+            </StackPanel>
+            
         </StackPanel>
         
 

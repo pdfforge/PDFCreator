@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>MahApps.Metro</id>
+    <version>2.4.10</version>
+    <title>MahApps.Metro</title>
+    <authors>Jan Karger, Dennis Daume, Brendan Forster, Paul Jenkins, Jake Ginnivan, Alex Mitchell</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>mahapps.metro.logo.png</icon>
+    <projectUrl>https://github.com/MahApps/MahApps.Metro</projectUrl>
+    <description>The goal of MahApps.Metro is to allow devs to quickly and easily cobble together a 'Modern' UI for their WPF apps (&gt;= .Net 4.5), with minimal effort.</description>
+    <releaseNotes>https://github.com/MahApps/MahApps.Metro/releases</releaseNotes>
+    <copyright>Copyright © 2023 .NET Foundation and Contributors. All rights reserved.</copyright>
+    <tags>WPF UI Metro Modern Material XAML Toolkit Library .NET OSS OpenSource</tags>
+    <repository type="git" url="https://github.com/MahApps/MahApps.Metro.git" branch="main" commit="f737ca334ee7a76c3127ff8297d0facfe7228ddc" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5.2">
+        <dependency id="ControlzEx" version="[4.4.0, 6.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="ControlzEx" version="[4.4.0, 6.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.7">
+        <dependency id="ControlzEx" version="[4.4.0, 6.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.0">
+        <dependency id="ControlzEx" version="[4.4.0, 5.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="ControlzEx" version="[4.4.0, 6.0.0)" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework=".NETFramework4.5.2" />
+      <group targetFramework=".NETFramework4.6" />
+      <group targetFramework=".NETFramework4.7" />
+    </frameworkReferences>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5.2, .NETFramework4.6, .NETFramework4.7" />
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework=".NETFramework4.5.2, .NETFramework4.6, .NETFramework4.7" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

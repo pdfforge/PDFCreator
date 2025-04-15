@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.Versioning;
 using System.Security.AccessControl;
 
 namespace pdfforge.PDFCreator.Utilities.IO
@@ -12,7 +13,8 @@ namespace pdfforge.PDFCreator.Utilities.IO
     {
         public DirectorySecurity GetAccessControl(string path)
         {
-            return Directory.GetAccessControl(path);
+            var directoryInfo = new DirectoryInfo(path);
+            return FileSystemAclExtensions.GetAccessControl(directoryInfo);
         }
     }
 }

@@ -12,4 +12,38 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style.Setters>
     </Style>
+    <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
+
+        <Style.Setters>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="FontFamily" Value="{StaticResource Inter}" />
+            <Setter Property="Foreground" Value="{StaticResource DefaultTextColorBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="LineHeight" Value="19"/>
+        </Style.Setters>
+        
+    </Style>
+
+    <Style x:Key="BlockedEnvTitleTextBlock" TargetType="TextBlock">
+        <Style.Setters>
+            <Setter Property="FontFamily" Value="{StaticResource Inter}" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="{StaticResource DefaultTextColorBrush}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="ButtonTextBlock" TargetType="TextBlock">
+        <Style.Setters>
+            <Setter Property="FontFamily" Value="{StaticResource Inter}" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="{StaticResource BlockedEnvWhiteBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style.Setters>
+    </Style>
 </ResourceDictionary>

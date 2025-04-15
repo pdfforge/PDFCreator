@@ -5,13 +5,13 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
     [Translatable]
     public enum SignaturePage
     {
-        [Translation("First Page")]
+        [Translation("First page")]
         FirstPage,
 
-        [Translation("Last Page")]
+        [Translation("Last page")]
         LastPage,
 
-        [Translation("Custom Page")]
+        [Translation("Custom page")]
         CustomPage
     }
 }

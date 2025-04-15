@@ -32,7 +32,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                   null,
                   new CampaignHelper(),
                   new DesignTimeProfileChecker(),
-                  null,
+                  new DesignTimePreviewManager(),
                   new DesignTimeApplicationNameProvider())
         {
             var jobInfo = new JobInfo()
@@ -47,7 +47,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 
             job.Profile = ProfilesWrapper != null ? ProfilesWrapper.First().ConversionProfile : new ConversionProfile();
 
-            SetNewJob(job);
+            ExecuteWorkflowStep(job);
         }
     }
 }

@@ -108,7 +108,9 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
             metric.OneDrive = job.Profile.OneDriveSettings.Enabled;
             metric.OneDriveShareLink = job.Profile.OneDriveSettings.CreateShareLink;
             metric.Dropbox = job.Profile.DropboxSettings.Enabled;
-            
+            metric.Sharepoint = job.Profile.SharepointSettings.Enabled;
+            metric.SharepointShareLink = job.Profile.SharepointSettings.CreateShareLink;
+
             //GPOs
             metric.DisableApplicationSettings = _gpoSettings.DisableApplicationSettings;
             metric.DisableDebugTab = _gpoSettings.DisableDebugTab;

@@ -1,363 +1,229 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{298FE9D1-10AC-4D58-8E05-9C5027B4BE6F}</ProjectGuid>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Core.UsageStatistics</RootNamespace>
     <AssemblyName>PDFCreator.UsageStatistics</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj" />
+    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\SettingsManagementInterface\SettingsManagementInterface.csproj" />
+    <ProjectReference Include="..\SettingsManagement\SettingsManagement.csproj" />
+    <ProjectReference Include="..\..\Utilities\Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvqUsageStatisticsSender.cs" />
-    <Compile Include="UsageStatisticsJsonSerializer.cs" />
-    <Compile Include="Mode.cs" />
-    <Compile Include="IServiceEventsHandler.cs" />
-    <Compile Include="IPdfCreatorUsageStatisticsManager.cs" />
-    <Compile Include="IUsageStatisticsManager.cs" />
-    <Compile Include="PdfCreatorJobFinishedMetric.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="ServerJobFinishedMetric.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsageStatisticsEventsHandler.cs" />
-    <Compile Include="ServiceEventsHandler.cs" />
-    <Compile Include="ServiceStoppedMetric.cs" />
-    <Compile Include="PdfCreatorUsageStatisticsManager.cs" />
-    <Compile Include="PdfCreatorServerUsageStatisticsManager.cs" />
+    <PackageReference Include="DataStorage">
+      <Version>3.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="LicenseValidator.Interface">
+      <Version>2.5.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>7.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Targets">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Win32.Registry">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="NGettext">
+      <Version>0.6.7</Version>
+    </PackageReference>
+    <PackageReference Include="NLog">
+      <Version>5.4</Version>
+    </PackageReference>
+    <PackageReference Include="Optional.StrongNamed">
+      <Version>3.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="pdfforge.UsageStatistics">
+      <Version>0.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.debian.9-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.fedora.27-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.fedora.28-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.native.System">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.native.System.Net.Http">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.native.System.Security.Cryptography.Apple">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.opensuse.42.3-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.ubuntu.18.04-x64.runtime.native.System.Security.Cryptography.OpenSsl">
+      <Version>4.3.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Concurrent">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Debug">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource">
+      <Version>8.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Tracing">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Formats.Asn1">
+      <Version>8.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Globalization">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Globalization.Calendars">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Globalization.Extensions">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.FileSystem">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.FileSystem.Primitives">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Linq">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Primitives">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reflection">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reflection.Primitives">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Resources.ResourceManager">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Extensions">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Handles">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.InteropServices">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Numerics">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.AccessControl">
+      <Version>6.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.Algorithms">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.Cng">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.Csp">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.Encoding">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.OpenSsl">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.Primitives">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.X509Certificates">
+      <Version>4.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Permissions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Encoding">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Extensions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="SystemInterface">
+      <Version>9.9.0</Version>
+    </PackageReference>
+    <PackageReference Include="Translatable">
+      <Version>0.3.13</Version>
+    </PackageReference>
+    <PackageReference Include="Translatable.NGettext">
+      <Version>0.3.13</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-    <None Include="pdfforge.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
-      <Project>{18354054-45F6-4F51-8730-D05643A400A3}</Project>
-      <Name>Jobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
-      <Project>{94936199-C9C7-4A5F-A58E-6123158E84F3}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{C6058628-42B2-4CF6-A4BE-622AD45F6E42}</Project>
-      <Name>Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SettingsManagementInterface\SettingsManagementInterface.csproj">
-      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
-      <Name>SettingsManagementInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SettingsManagement\SettingsManagement.csproj">
-      <Project>{9B31D8CD-4E32-4925-B696-7D1CF02F0142}</Project>
-      <Name>SettingsManagement</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
-      <Project>{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="LicenseValidator.Interface">
-          <HintPath>..\..\..\..\packages\LicenseValidator.Interface\lib\netstandard2.0\LicenseValidator.Interface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="mscorlib">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Win32.Registry">
-          <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="NGettext">
-          <HintPath>..\..\..\..\packages\NGettext\lib\net46\NGettext.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Configuration">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Optional">
-          <HintPath>..\..\..\..\packages\Optional.StrongNamed\lib\net461\Optional.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="UsageStatistics">
-          <HintPath>..\..\..\..\packages\pdfforge.UsageStatistics\lib\netstandard2.0\UsageStatistics.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.IO">
-          <HintPath>..\..\..\..\packages\System.IO\lib\net462\System.IO.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.ComponentModel.Composition">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Runtime">
-          <HintPath>..\..\..\..\packages\System.Runtime\lib\net462\System.Runtime.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.AccessControl">
-          <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Cryptography.Algorithms">
-          <HintPath>..\..\..\..\packages\System.Security.Cryptography.Algorithms\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Cryptography.Encoding">
-          <HintPath>..\..\..\..\packages\System.Security.Cryptography.Encoding\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Cryptography.Primitives">
-          <HintPath>..\..\..\..\packages\System.Security.Cryptography.Primitives\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Cryptography.X509Certificates">
-          <HintPath>..\..\..\..\packages\System.Security.Cryptography.X509Certificates\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Data.OracleClient">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Drawing">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.ServiceProcess">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="WindowsBase">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security.Permissions">
-          <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Principal.Windows">
-          <HintPath>..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Translatable.NGettext">
-          <HintPath>..\..\..\..\packages\Translatable.NGettext\lib\net40\Translatable.NGettext.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
 </Project>

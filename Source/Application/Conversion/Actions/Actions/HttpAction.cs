@@ -172,13 +172,12 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
         {
             try
             {
-                var multiContent = new MultipartContent();
+                using var multiContent = new MultipartContent();
                 foreach (var jobOutputFile in job.OutputFiles)
                 {
                     var fileStream = new FileStream(jobOutputFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     var outputFile = new StreamContent(fileStream);
-                    var mimeMapping = MimeMapping.GetMimeMapping(jobOutputFile);
-                    outputFile.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
+                    outputFile.Headers.ContentType = new MediaTypeHeaderValue(MimeTypes.GetMimeType(jobOutputFile));
                     outputFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
                     outputFile.Headers.ContentDisposition.FileName = Path.GetFileName(jobOutputFile);
                     outputFile.Headers.ContentDisposition.Name = GetRandomString(12);
@@ -186,7 +185,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 }
 
                 // do the Post request and wait for an answer
-                return MakePostRequest(job, multiContent).Result;
+                return MakePostRequest(job, multiContent).GetAwaiter().GetResult();
             }
             catch (Exception e)
             {
@@ -206,20 +205,15 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
             httpClient.Timeout = TimeSpan.FromSeconds(timeout);
 
-            var url = job.TokenReplacer.ReplaceTokens(account.Url);
-
             HttpResponseMessage message = null;
-
-            var msg = new HttpRequestMessage(new HttpMethod("PUT"), new Uri(url));
-
+            
             foreach (var jobOutputFile in job.OutputFiles)
             {
-                var multiContent = new MultipartContent();
+                using var multiContent = new MultipartContent();
 
                 var fileStream = new FileStream(jobOutputFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 var outputFile = new StreamContent(fileStream);
-                var mimeMapping = MimeMapping.GetMimeMapping(jobOutputFile);
-                outputFile.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
+                outputFile.Headers.ContentType = new MediaTypeHeaderValue(MimeTypes.GetMimeType(jobOutputFile));
                 outputFile.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
                 outputFile.Headers.ContentDisposition.FileName = Path.GetFileName(jobOutputFile);
                 outputFile.Headers.ContentDisposition.Name = GetRandomString(12);
@@ -228,7 +222,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
                 httpClient.DefaultRequestHeaders.Add("RequestId", Guid.NewGuid().ToString());
                 httpClient.DefaultRequestHeaders.Add("UserId", account.UserName);
                 httpClient.DefaultRequestHeaders.Add("SessionId", Guid.NewGuid().ToString());
-                httpClient.DefaultRequestHeaders.Add("ContentType", mimeMapping);
+                httpClient.DefaultRequestHeaders.Add("ContentType", MimeTypes.GetMimeType(jobOutputFile));
 
                 if (account.IsBasicAuthentication)
                 {
@@ -239,7 +233,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
 
                 try
                 {
-                    message = MakePutRequest(job, multiContent, true, Path.GetFileName(jobOutputFile)).Result;
+                    message = MakePutRequest(job, multiContent, true, Path.GetFileName(jobOutputFile)).GetAwaiter().GetResult();
                 }
                 catch (Exception e)
                 {

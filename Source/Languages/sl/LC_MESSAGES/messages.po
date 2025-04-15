@@ -10,8 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3;\n"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
@@ -32,6 +32,7 @@ msgstr "Profili"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Printer"
 msgstr "Tiskalnik"
@@ -70,8 +71,10 @@ msgstr ""
 "programa."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
-msgid "Read More"
+#, fuzzy
+msgid "Read more"
 msgstr "Preberi več"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
@@ -125,7 +128,6 @@ msgstr[2] "Vaša licenca poteče čez {0} dni."
 msgstr[3] "Vaša licenca poteče čez {0} dni."
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #, fuzzy
 msgid "Your trial license expires today."
 msgstr "Vaša licenca je potekla."
@@ -150,13 +152,11 @@ msgstr "Izbrana pot je predolga. Določite veljavno pot."
 msgid "Invalid settings"
 msgstr "Neveljavne nastavitve"
 
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Workflow.InteractiveProfileCheckerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
 msgid "Error"
 msgstr "Napaka"
 
@@ -265,7 +265,6 @@ msgstr "&Združi"
 msgid "Reorder and Merge Print Jobs"
 msgstr "Razvrsti in združi tiskalniške posle"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Document Info"
 msgstr "Podatki o dokumentu"
@@ -283,28 +282,36 @@ msgstr "Strani:"
 msgid "Files:"
 msgstr "Datoteke:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Title:"
-msgstr "Naslov:"
+#, fuzzy
+#| msgid "Page view:"
+msgid "Preview"
+msgstr "Prikaz strani:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Author:"
-msgstr "Avtor:"
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Title"
+msgstr "Naslov"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Printer:"
-msgstr "Tiskalnik:"
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Date"
+msgstr "Datum"
+
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Author"
+msgstr "Avtor"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "ID:"
+#, fuzzy
+#| msgid "ID:"
+msgid "ID"
 msgstr "ID:"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
@@ -377,11 +384,7 @@ msgstr "Ogled in tiskanje PDF-jev"
 msgid "Create PDF files"
 msgstr "Ustvarjanje PDF datotek"
 
-#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-#, fuzzy
-msgid "Read more"
-msgstr "Preberi več"
-
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
 msgid "Install"
@@ -559,6 +562,14 @@ msgid ""
 "license immediately to avoid application blocking."
 msgstr ""
 
+#. pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "Vaša licenca poteče čez {0} dan."
+msgstr[1] "Vaša licenca poteče čez {0} dni."
+msgstr[2] "Vaša licenca poteče čez {0} dni."
+msgstr[3] "Vaša licenca poteče čez {0} dni."
+
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
@@ -721,14 +732,13 @@ msgstr ""
 msgid "Describe your feedback"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #, fuzzy
 msgid "Email"
 msgstr "E-pošta"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #, fuzzy
 msgid "Email address"
@@ -759,6 +769,7 @@ msgstr ""
 msgid "I would like to suggest a feature"
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Send"
@@ -825,30 +836,150 @@ msgstr "Datoteke:"
 msgid "An error occured while attempting to submit your feedback"
 msgstr "Prišlo je do napake pri shranjevanju licence za vse uporabnike."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
-msgid "Send us feedback"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Supported since PDFCreator Professional 4.1.0"
+msgid "PDFCreator Professional Required"
+msgstr "Podprto od različice PDFCreator Professional 4.1.0 dalje"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "PDFCreator Terminal Server Required"
+msgstr "Trenutno je že v teku instanca PDFCreator Strežnika!"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Upgrade your plan to start using PDFCreator for your business!"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "BUSINESS FEATURE"
-msgstr "PLAČLJIVA FUNKCIJA"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+#. Text before clickable 'request a quote.'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgctxt " ...request a quote."
 msgid ""
-"You need PDFCreator Professional for this feature. Click here for more "
-"information."
+"Switch to PDFCreator {0} for access to more features, broader security "
+"capabilities and priority support - required for businesses and teams! "
+"Upgrade effortlessly and keep your workflow running smoothly or"
 msgstr ""
-"Za to funkcijo potrebujete PDFCreator Professional. Kliknite za več "
-"informacij."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "Unlock the business features with PDFCreator Professional!"
-msgstr "Odklenite dodatne funkcije s programom PDFCreator Professional!"
+#. Clickable action after 'Keep your workflow running smoothly or'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgctxt "Keep your workflow running smoothly or..."
+msgid "request a quote."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Wondering what this means for your current workflows and business?"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "Read more."
+msgstr "Preberi več"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Start your free 30-day trial!"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "License"
+msgid "Buy a License"
+msgstr "Licenca"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Already purchased PDFCreator {0}?"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+msgid "Request Trial"
+msgstr "Različica"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "*Please provide a valid email address."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Downloading..."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "The new setup failed to launch, please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup launch failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Setup download failed (most likely due to a network issue), please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup download was cancelled."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download cancelled"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Once you have a license or trial key, download and install PDFCreator {0} "
+"here."
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #, fuzzy
 msgid "License Agreement"
 msgstr "Status licence:"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Privacy policy"
+msgid "Privacy Policy"
+msgstr "Politika zasebnosti"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed due to a network issue, please try again."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request failed because the email address is already being used for a "
+"trial."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request sent. You will receive an email with your trial license key "
+"momentarily."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgid "Successful:"
+msgid "Request successful"
+msgstr "Uspelo:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "User Guide"
@@ -870,152 +1001,25 @@ msgstr "(Forumi)"
 msgid "Feedback"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Print to '{0}' to get started!"
-msgstr "Tiskalnik '{0}' je pripravljen, da začnete!"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "BUSINESS FEATURE"
+msgstr "PLAČLJIVA FUNKCIJA"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Choose a file to convert"
-msgstr "Izberite datoteko za pretvorbo"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid ""
+"You need PDFCreator Professional for this feature. Click here for more "
+"information."
+msgstr ""
+"Za to funkcijo potrebujete PDFCreator Professional. Kliknite za več "
+"informacij."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "The history is empty"
-msgstr "Ni zgodovine"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "Unlock the business features with PDFCreator Professional!"
+msgstr "Odklenite dodatne funkcije s programom PDFCreator Professional!"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Clear History"
-msgstr "Počisti zgodovino"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Refresh History"
-msgstr "Osveži zgodovino"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Enable History"
-msgstr "Omogoči zgodovino"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Disable History"
-msgstr "Onemogoči zgodovino"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "... or simply drop files here!"
-msgstr "... ali pa datoteke povlecite sem!"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Files recently created by PDFCreator:"
-msgstr "Nedavno ustvarjene datoteke s PDFCreator-jem:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Remove from history"
-msgstr "Odstrani iz zgodovine"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Actions"
-msgstr "Opravila"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#, fuzzy
-msgid "Delete file"
-msgstr "Izbriši datoteko"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with default viewer"
-msgstr "Odpri s privzetim pregledovalnikom"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open folder"
-msgstr "Odpri mapo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Print with PDF Architect"
-msgstr "Natisni s programom PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with PDF Architect"
-msgstr "Odpri s programom PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#, fuzzy
-msgid "Open with Email Client"
-msgstr "Odpri z e-poštnim odjemalcem"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "History is disabled"
-msgstr "Zgodovina je onemogočena"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Download PDF Architect now"
-msgstr "Prenesite program PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "More on PDF Architect"
-msgstr "Več o programu PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Install PDF Architect now"
-msgstr "Namestite program PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Launch PDF Architect"
-msgstr "Odpri program PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "You already have PDF Architect on your computer"
-msgstr "PDF Architect je že nameščen na vašem računalniku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Our full-featured PDF Editor"
-msgstr "Naš vsestranski PDF urejevalnik"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-#, fuzzy
-msgid "Split files"
-msgstr "Vse datoteke"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Other powerful PDF Architect features:"
-msgstr "Ostale zmogljive funkcije:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Edit PDF files"
-msgstr "Urejanje PDF datotek"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Convert PDF files"
-msgstr "Pretvarjanje v druge formate"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Review and Annotate"
-msgstr "Pregledovanje in opombe"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Secure and Protect"
-msgstr "Zaščita in podpisovanje"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Insert page elements"
-msgstr "Vstavljanje elementov strani"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Create custom forms"
-msgstr "Ustvarjanje obrazcev po meri"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Optical character recognition (OCR)"
-msgstr "Optično prepoznavanje znakov (OCR)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Send for e-signature"
-msgstr "Podpisovanje na daljavo"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
+msgid "Send us feedback"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Debug"
@@ -1024,13 +1028,6 @@ msgstr "Napake"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "General"
 msgstr "Splošno"
-
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Title"
-msgstr "Naslov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Viewer"
@@ -1068,11 +1065,15 @@ msgid "Cancel"
 msgstr "Prekliči"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Edit Title Replacement"
+#, fuzzy
+#| msgid "Edit Title Replacement"
+msgid "Edit title replacement"
 msgstr "Uredi samodejno oblikovanje"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Remove All"
+#, fuzzy
+#| msgid "Remove All"
+msgid "Remove all"
 msgstr "Odstrani vse"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1143,7 +1144,9 @@ msgid "Add title replacement"
 msgstr "Dodajte zamenjavo naslova"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Title Replacements"
+#, fuzzy
+#| msgid "Title Replacements"
+msgid "Title replacements"
 msgstr "Samodejno oblikovanje naslova"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1182,51 +1185,22 @@ msgstr "Odstrani"
 msgid "RegEx"
 msgstr "RegEx"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid ""
-"Wrong license key syntax.\n"
-"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
-"Valid characters are: A-Z, 0-9 and the dash."
-msgstr ""
-"Oblika licenčnega ključa ni prava.\n"
-"Podobna mora biti '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
-"Veljavni znaki so: A-Z, 0-9 in črtica."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Please enter your license key:"
-msgstr "Vnesite vaš licenčni ključ:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-#, fuzzy
-msgid "Copy the offline activation string:"
-msgstr "Aktivacija brez povezave"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-#, fuzzy
-msgid "_Ok"
-msgstr "V redu"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Paste the response code here:"
-msgstr "Tu prilepite povratno pridobljeno kodo:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Request an activation code on our website:"
-msgstr "Zaprosite za aktivacijsko kodo na naši spletni strani:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Offline activation"
-msgstr "Aktivacija brez povezave"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
+msgid "Save"
+msgstr "Shrani"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Last activation:"
@@ -1257,6 +1231,11 @@ msgid "Enter license key"
 msgstr "Vnesite licenčni ključ"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Please enter your license key:"
+msgstr "Vnesite vaš licenčni ključ:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Expires:"
 msgstr "Poteče:"
 
@@ -1280,6 +1259,11 @@ msgstr "ID naprave:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Manage licenses"
 msgstr "Upravljanje licenc"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Offline activation"
+msgstr "Aktivacija brez povezave"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Online activation"
@@ -1309,6 +1293,12 @@ msgid "Store license for all users was successful."
 msgstr "Licenca je uspešno shranjena za vse uporabnike."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid ""
+"It's not possible to use offline activation because PDFCreator is configured "
+"to use the internal license server."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Remind me later"
 msgstr "Opomni me pozneje"
 
@@ -1318,21 +1308,41 @@ msgstr "Opomni me pozneje"
 msgid "View License"
 msgstr "Licenca"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
-msgid "Save"
-msgstr "Shrani"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid ""
+"Wrong license key syntax.\n"
+"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
+"Valid characters are: A-Z, 0-9 and the dash."
+msgstr ""
+"Oblika licenčnega ključa ni prava.\n"
+"Podobna mora biti '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
+"Veljavni znaki so: A-Z, 0-9 in črtica."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+#, fuzzy
+msgid "Copy the offline activation string:"
+msgstr "Aktivacija brez povezave"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+#, fuzzy
+msgid "_Ok"
+msgstr "V redu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Paste the response code here:"
+msgstr "Tu prilepite povratno pridobljeno kodo:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Request an activation code on our website:"
+msgstr "Zaprosite za aktivacijsko kodo na naši spletni strani:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Ask"
@@ -1356,8 +1366,9 @@ msgstr "Dovoli, da PDFCreator začasno spremeni privzeti tiskalnik"
 msgid "Check now"
 msgstr "Preveri zdaj"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Default Printer"
+msgid "Default printer"
 msgstr "Privzeti tiskalnik"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1369,7 +1380,9 @@ msgid "Language"
 msgstr "Jezik"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Explorer Context Menu Integration"
+#, fuzzy
+#| msgid "Explorer Context Menu Integration"
+msgid "Explorer context menu integration"
 msgstr "Bližnjica v kontekstnem meniju Raziskovalca"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1434,11 +1447,13 @@ msgid "Install Update"
 msgstr "Namesti posodobitev"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage Statistics"
+msgid "Usage statistics"
 msgstr "Statistika o uporabi"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Send Usage Statistics"
+#, fuzzy
+#| msgid "Send Usage Statistics"
+msgid "Send usage statistics"
 msgstr "Pošlji statistiko o uporabi"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1457,12 +1472,15 @@ msgstr "Primer statistike o storitvi:"
 msgid "Read our privacy policy here:"
 msgstr "Naša politika zasebnosti:"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Privacy policy"
 msgstr "Politika zasebnosti"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Configure Home Screen"
+#, fuzzy
+#| msgid "Configure Home Screen"
+msgid "Configure home screen"
 msgstr "Nastavi domačo stran"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1494,11 +1512,9 @@ msgid "If you want to know more you can take a look at our manual:"
 msgstr "Če želite izvedeti več, so vam na voljo naša navodila:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage statistics"
-msgstr "Statistika o uporabi"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "PDFCreator Standby"
+#, fuzzy
+#| msgid "PDFCreator Standby"
+msgid "PDFCreator standby"
 msgstr "PDFCreator stanje pripravljenosti"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1531,7 +1547,7 @@ msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
 #, fuzzy
-msgid "Direct Image Conversion Settings"
+msgid "Direct image conversion settings"
 msgstr "Mapa"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
@@ -1544,9 +1560,10 @@ msgstr "Izberi datoteko:"
 msgid "Select page orientation:"
 msgstr "Orientacija strani:"
 
-#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Default Viewer"
+#, fuzzy
+#| msgid "Default Viewer"
+msgid "Default viewer"
 msgstr "Privzeti pregledovalnik"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
@@ -1554,11 +1571,15 @@ msgid "Executable files"
 msgstr "Izvedljive datoteke"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Executable Path:"
+#, fuzzy
+#| msgid "Executable Path:"
+msgid "Executable path:"
 msgstr "Pot do izvedljive datoteke:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Additional Parameters:"
+#, fuzzy
+#| msgid "Additional Parameters:"
+msgid "Additional parameters:"
 msgstr "Dodatni parametri:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
@@ -1568,6 +1589,143 @@ msgid ""
 msgstr ""
 "Tukaj lahko nastavite poljuben program za pregledovanje ustvarjenih "
 "dokumentov. Če ničesar ne izberete, bo uporabljen privzeti Windows program."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Clear log file"
+msgstr "Počisti dnevnik"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Restore"
+msgstr "Obnovi"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Default Settings"
+msgid "Default settings"
+msgstr "Privzete nastavitve"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Export Settings"
+msgid "Export settings"
+msgstr "Izvoz nastavitev"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load settings from file"
+msgstr "Uvozi nastavitve iz datoteke"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid "Load specific profiles from file"
+msgstr "Uvozi nastavitve iz datoteke"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid "Load specific queues from file"
+msgstr "Uvozi nastavitve iz datoteke"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Log file cleared"
+msgstr "Dnevniška datoteka izpraznjena"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Logging"
+msgstr "Dnevnik dogodkov"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Logging Level:"
+msgid "Logging level:"
+msgstr "Stopnja beleženja:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert PDFCreator test page"
+msgstr "Ustvari PDFCreator testno stran"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings to file"
+msgstr "Shrani nastavitve v datoteko"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings without passwords"
+msgstr "Nastavitve shrani brez gesel"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Hint: We recommend to save your settings without passwords when sharing "
+"settings with our support"
+msgstr ""
+"Namig: Če vaše nastavitve nameravate posredovati naši podpori, jih je "
+"priporočeno pred tem shraniti brez gesel"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Show log file"
+msgstr "Pokaži dnevniško datoteko"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Open event log"
+msgstr "Odpri dnevnik dogodkov"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Test Pages"
+msgid "Test pages"
+msgstr "Testne strani"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Print Windows test page"
+msgstr "Natisni Windows testno stran"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Do you really want to restore the default settings? The current settings "
+"will be lost."
+msgstr ""
+"Ali res želite obnoviti privzete nastavitve? Trenutne nastavitve bodo "
+"izgubljene."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "No log file"
+msgstr "Ni dnevniške datoteke"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "There is currently no log file available."
+msgstr "Trenutno ni nobene dnevniške datoteke."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "Restore Default Settings"
+msgid "Restore default settings"
+msgstr "Obnovi privzete nastavitve"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+#| msgid "PDFCreator Test Page"
+msgid "PDFCreator test page"
+msgstr "PDFCreator testna stran"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid "Convert test page and open directory"
+msgstr ""
+"Ustvarite testno stran s trenutnim profilom. Če bo potrebno, boste pred tem "
+"morali shraniti nastavitve."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#, fuzzy
+msgid ""
+"Convert a test page with the current profile and open the saving directory"
+msgstr ""
+"Ustvarite testno stran s trenutnim profilom. Če bo potrebno, boste pred tem "
+"morali shraniti nastavitve."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Convert a test page with the current profile. You will be asked to save the "
+"settings if required."
+msgstr ""
+"Ustvarite testno stran s trenutnim profilom. Če bo potrebno, boste pred tem "
+"morali shraniti nastavitve."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 #, fuzzy
@@ -1608,161 +1766,250 @@ msgstr "Nastavitve za PDFCreator."
 msgid "Add to settings"
 msgstr "Neveljavne nastavitve"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Clear log file"
-msgstr "Počisti dnevnik"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Preparation"
+msgstr "Priprava"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore"
-msgstr "Obnovi"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Modify"
+msgstr "Spremeni"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Default Settings"
-msgstr "Privzete nastavitve"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Export Settings"
-msgstr "Izvoz nastavitev"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load settings from file"
-msgstr "Uvozi nastavitve iz datoteke"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 #, fuzzy
-msgid "Load specific profiles from file"
-msgstr "Uvozi nastavitve iz datoteke"
+msgid "Send/Open"
+msgstr "Odpri"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
 #, fuzzy
-msgid "Load specific queues from file"
-msgstr "Uvozi nastavitve iz datoteke"
+#| msgid "Choose an Action"
+msgid "Choose an action"
+msgstr "Izberi opravilo"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Log file cleared"
-msgstr "Dnevniška datoteka izpraznjena"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Metadata"
+msgstr "Metapodatki"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging"
-msgstr "Dnevnik dogodkov"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Title:"
+msgstr "Naslov:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging Level:"
-msgstr "Stopnja beleženja:"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Author:"
+msgstr "Avtor:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert PDFCreator test page"
-msgstr "Ustvari PDFCreator testno stran"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Subject:"
+msgstr "Zadeva:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings to file"
-msgstr "Shrani nastavitve v datoteko"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Keywords:"
+msgstr "Ključne besede:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings without passwords"
-msgstr "Nastavitve shrani brez gesel"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+msgid "The selected output format does not support metadata"
+msgstr "Izbran izhodni format ne podpira metapodatkov"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Hint: We recommend to save your settings without passwords when sharing "
-"settings with our support"
-msgstr ""
-"Namig: Če vaše nastavitve nameravate posredovati naši podpori, jih je "
-"priporočeno pred tem shraniti brez gesel"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Show log file"
-msgstr "Pokaži dnevniško datoteko"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Open event log"
-msgstr "Odpri dnevnik dogodkov"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Test Pages"
-msgstr "Testne strani"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Print Windows test page"
-msgstr "Natisni Windows testno stran"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Do you really want to restore the default settings? The current settings "
-"will be lost."
-msgstr ""
-"Ali res želite obnoviti privzete nastavitve? Trenutne nastavitve bodo "
-"izgubljene."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "No log file"
-msgstr "Ni dnevniške datoteke"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "There is currently no log file available."
-msgstr "Trenutno ni nobene dnevniške datoteke."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore Default Settings"
-msgstr "Obnovi privzete nastavitve"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "PDFCreator Test Page"
-msgstr "PDFCreator testna stran"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert Test Page and Open Directory"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #, fuzzy
-msgid ""
-"Convert a test page with the current profile and open the saving directory"
-msgstr ""
-"Ustvarite testno stran s trenutnim profilom. Če bo potrebno, boste pred tem "
-"morali shraniti nastavitve."
+#| msgid "Output Format"
+msgid "Output format"
+msgstr "Izhodni format"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid ""
-"Convert a test page with the current profile. You will be asked to save the "
-"settings if required."
-msgstr ""
-"Ustvarite testno stran s trenutnim profilom. Če bo potrebno, boste pred tem "
-"morali shraniti nastavitve."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "More information"
-msgstr "Več informacij"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "No"
-msgstr "Ne"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Retry"
-msgstr "Ponovi"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Profile"
-msgstr "Profil"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Queue"
-msgstr "Čakalna vrsta"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Click here for more information on tokens"
-msgstr "Kliknite za več informacij o spremenljivkah"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 #, fuzzy
-msgid "The usage of user tokens requires the user token action to be enabled"
-msgstr "Najmanj ena od datotek za e-poštno prilogo ni na voljo."
+#| msgid "General Settings"
+msgid "General settings"
+msgstr "Splošne nastavitve"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Add Token"
-msgstr "Dodaj spremenljivko"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Page Orientation:"
+msgid "Page orientation:"
+msgstr "Orientacija strani:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Color Model:"
+msgid "Color model:"
+msgstr "Barvni model:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+#| msgid "Viewer Settings"
+msgid "Viewer settings"
+msgstr "Privzet prikaz v pregledovalniku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Page view:"
+msgstr "Prikaz strani:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Document view:"
+msgstr "Prikaz dokumenta:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Viewer opens on page:"
+msgstr "Dokument se odpre na strani:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Image compression:"
+msgstr "Stiskanje slik:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Factor:"
+msgstr "Faktor:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#, fuzzy
+msgid "Resample images to (DPI):"
+msgstr "Prevzorči slike na"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Advanced:"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Save validation report"
+msgstr "Shrani poročilo o veljavnosti"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "The rgb color mode is not supported for PDF/X"
+msgstr "PDF/X ne podpira RGB barvnega načina"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Use new Ghostscript PDF interpreter\n"
+"(uncheck if the new version causes issues)"
+msgstr ""
+"Uporabi nov Ghostscript PDF prevajalnik\n"
+"(pustite prazno, če nova različica povzroča težave)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Colors:"
+msgstr "Barve:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Quality (%):"
+msgstr "Kakovost (%):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Resolution (DPI):"
+msgstr "Ločljivost (DPI):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"As the text format is very limited in what can be displayed, there are many "
+"ways to create a TXT file from a printed document. You can choose between "
+"four different strategies:"
+msgstr ""
+"Ker je besedilni format oblikovno zelo omejen, obstaja več načinov izdelave "
+"TXT datoteke iz natisnjenega dokumenta. Izbirate lahko med štirimi "
+"različnimi načini:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"XML-escaped Unicode along with information regarding the format of the text"
+msgstr "Unicode z XML informacijami o oblikovanju besedila"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Same XML output format as above, but attempt processing similar to MuPDF"
+msgstr ""
+"Enak XML izhodni format kot zgoraj, vendar obdelava podobna kot pri MuPDF"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
+"original text layout"
+msgstr ""
+"Unicode (UCS2) besedilo z BOM znakom (byte order mark), ki približno posnema "
+"postavitev besedila v izvirniku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "UTF-8 text which approximates the original text layout"
+msgstr "UTF-8 besedilo, ki približno posnema postavitev besedila v izvirniku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Add New Profile"
+msgid "Add new profile"
+msgstr "Dodaj nov profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "New Profile"
+msgid "New profile"
+msgstr "Nov profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter profile name:"
+msgstr "Vnesite ime profila:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter new profile name:"
+msgstr "Vnesite novo ime profila:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The entered profile name is invalid or does already exist."
+msgstr "Ime profila ni veljavno ali pa že obstaja."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Profile:"
+msgstr "Profil:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
+msgid "Rename"
+msgstr "Preimenuj"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Rename Profile"
+msgid "Rename profile"
+msgstr "Preimenuj profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#, fuzzy
+#| msgid "Remove Profile"
+msgid "Remove profile"
+msgstr "Odstrani profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Are you sure, you want to remove this profile?"
+msgstr "Ali res želite odstraniti ta profil?"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The profile is mapped to the following printer:"
+msgid_plural "The profile is mapped to the following printers:"
+msgstr[0] "Ta profil je dodeljen naslednjemu tiskalniku:"
+msgstr[1] "Ta profil je dodeljen naslednjima tiskalnikoma:"
+msgstr[2] "Ta profil je dodeljen naslednjim tiskalnikom:"
+msgstr[3] "Ta profil je dodeljen naslednjim tiskalnikom:"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "This printer will be mapped to the default profile."
+msgid_plural "These printers will be mapped to the default profile."
+msgstr[0] "Ta tiskalnik bo dodeljen privzetemu profilu."
+msgstr[1] "Tiskalnika bosta dodeljena privzetemu profilu."
+msgstr[2] "Ti tiskalniki bodo dodeljeni privzetemu profilu."
+msgstr[3] "Ti tiskalniki bodo dodeljeni privzetemu profilu."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
@@ -1785,7 +2032,9 @@ msgstr "Ime datoteke:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-msgid "Target Directory:"
+#, fuzzy
+#| msgid "Target Directory:"
+msgid "Target directory:"
 msgstr "Ciljna mapa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
@@ -1841,16 +2090,6 @@ msgstr "Več informacij"
 msgid "Non-pdf auto-merge"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Output Format"
-msgstr "Izhodni format"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Colors:"
-msgstr "Barve:"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Resolution:"
 msgstr "Ločljivost:"
@@ -1858,163 +2097,6 @@ msgstr "Ločljivost:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Compression:"
 msgstr "Stiskanje:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Metadata"
-msgstr "Metapodatki"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Subject:"
-msgstr "Zadeva:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Keywords:"
-msgstr "Ključne besede:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Preparation"
-msgstr "Priprava"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Modify"
-msgstr "Spremeni"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-#, fuzzy
-msgid "Send/Open"
-msgstr "Odpri"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-msgid "Choose an Action"
-msgstr "Izberi opravilo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "General Settings"
-msgstr "Splošne nastavitve"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page Orientation:"
-msgstr "Orientacija strani:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Color Model:"
-msgstr "Barvni model:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer Settings"
-msgstr "Privzet prikaz v pregledovalniku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page view:"
-msgstr "Prikaz strani:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Document view:"
-msgstr "Prikaz dokumenta:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer opens on page:"
-msgstr "Dokument se odpre na strani:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Image compression:"
-msgstr "Stiskanje slik:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Factor:"
-msgstr "Faktor:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#, fuzzy
-msgid "Resample images to (DPI):"
-msgstr "Prevzorči slike na"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Advanced:"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Save validation report"
-msgstr "Shrani poročilo o veljavnosti"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "The rgb color mode is not supported for PDF/X"
-msgstr "PDF/X ne podpira RGB barvnega načina"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Use new Ghostscript PDF interpreter\n"
-"(uncheck if the new version causes issues)"
-msgstr ""
-"Uporabi nov Ghostscript PDF prevajalnik\n"
-"(pustite prazno, če nova različica povzroča težave)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Quality (%):"
-msgstr "Kakovost (%):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Resolution (DPI):"
-msgstr "Ločljivost (DPI):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"As the text format is very limited in what can be displayed, there are many "
-"ways to create a TXT file from a printed document. You can choose between "
-"four different strategies:"
-msgstr ""
-"Ker je besedilni format oblikovno zelo omejen, obstaja več načinov izdelave "
-"TXT datoteke iz natisnjenega dokumenta. Izbirate lahko med štirimi "
-"različnimi načini:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"XML-escaped Unicode along with information regarding the format of the text"
-msgstr "Unicode z XML informacijami o oblikovanju besedila"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Same XML output format as above, but attempt processing similar to MuPDF"
-msgstr ""
-"Enak XML izhodni format kot zgoraj, vendar obdelava podobna kot pri MuPDF"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
-"original text layout"
-msgstr ""
-"Unicode (UCS2) besedilo z BOM znakom (byte order mark), ki približno posnema "
-"postavitev besedila v izvirniku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "UTF-8 text which approximates the original text layout"
-msgstr "UTF-8 besedilo, ki približno posnema postavitev besedila v izvirniku"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Close"
-msgstr "Zapri"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Back"
-msgstr "Nazaj"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Modify Settings:"
-msgstr "Spremeni nastavitve:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-msgid "The selected output format does not support metadata"
-msgstr "Izbran izhodni format ne podpira metapodatkov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid "Shows a window to select the filename, output format etc."
@@ -2056,6 +2138,12 @@ msgid ""
 msgstr ""
 "Če ni omogočeno nobeno opravilo za pošiljanje, bodo datoteke začasno "
 "shranjene samo v začasni mapi"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+#, fuzzy
+#| msgid "Call Preview:"
+msgid "Show preview"
+msgstr "Predogled klica:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 #, fuzzy
@@ -2116,63 +2204,27 @@ msgid ""
 "able to save files to any directory the service has write permission."
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Add New Profile"
-msgstr "Dodaj nov profil"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Close"
+msgstr "Zapri"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "New Profile"
-msgstr "Nov profil"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Back"
+msgstr "Nazaj"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter profile name:"
-msgstr "Vnesite ime profila:"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+#, fuzzy
+#| msgid "Modify Settings:"
+msgid "Modify settings:"
+msgstr "Spremeni nastavitve:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter new profile name:"
-msgstr "Vnesite novo ime profila:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The entered profile name is invalid or does already exist."
-msgstr "Ime profila ni veljavno ali pa že obstaja."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Profile:"
-msgstr "Profil:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
-msgid "Rename"
-msgstr "Preimenuj"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Rename Profile"
-msgstr "Preimenuj profil"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Remove Profile"
-msgstr "Odstrani profil"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Are you sure, you want to remove this profile?"
-msgstr "Ali res želite odstraniti ta profil?"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The profile is mapped to the following printer:"
-msgid_plural "The profile is mapped to the following printers:"
-msgstr[0] "Ta profil je dodeljen naslednjemu tiskalniku:"
-msgstr[1] "Ta profil je dodeljen naslednjima tiskalnikoma:"
-msgstr[2] "Ta profil je dodeljen naslednjim tiskalnikom:"
-msgstr[3] "Ta profil je dodeljen naslednjim tiskalnikom:"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "This printer will be mapped to the default profile."
-msgid_plural "These printers will be mapped to the default profile."
-msgstr[0] "Ta tiskalnik bo dodeljen privzetemu profilu."
-msgstr[1] "Tiskalnika bosta dodeljena privzetemu profilu."
-msgstr[2] "Ti tiskalniki bodo dodeljeni privzetemu profilu."
-msgstr[3] "Ti tiskalniki bodo dodeljeni privzetemu profilu."
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Actions"
+msgstr "Opravila"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Add action"
@@ -2182,40 +2234,6 @@ msgstr "Dodaj opravilo"
 msgid "Add actions to modify, send or prepare your documents"
 msgstr ""
 "Za pripravo, pošiljanje ali spreminjanje vaših dokumentov dodajte opravila"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print document"
-msgstr "Natisni dokument"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Duplex printing (if support by the printer)"
-msgstr "Obojestranski tisk (če ga tiskalnik omogoča)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Select printer:"
-msgstr "Izberi tiskalnik:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Fit to the page size of the printer"
-msgstr "Prilagodi na tiskalnikovo velikost strani"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print"
-msgstr "Natisni"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Prints the document to a physical printer."
-msgstr "Dokument natisne s fizičnim tiskalnikom."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid ""
-"The selected printer is mapped to PDFCreator. Please consider using the "
-"forwarding action. It doesn't require additional printing, is quicker and "
-"less error prone."
-msgstr ""
-"Izbrani tiskalnik je dodeljen PDFCreator-ju. Premislite o uporabi "
-"posredovalnega opravila, ki ne potrebuje dodatnega tiskanja, je hitrejše in "
-"manj dovzetno za napake."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2227,25 +2245,62 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+msgid "Directory:"
+msgstr "Mapa:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
 #, fuzzy
-msgid "This feature is already enabled for the selected profile"
-msgstr "Izbrani izhodni format ne podpira te funkcije."
+msgid "Selected account:"
+msgstr "Izberite HTTP račun:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr "Ne zamenjaj datotek (v primeru enakih imen jih zaporedno oštevilči)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid "Open upload in browser"
+msgstr "Datoteko odpri v pregledovalniku."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#, fuzzy
+msgid "SharePoint"
+msgstr "Različica"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload documents to your SharePoint"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2287,53 +2342,25 @@ msgstr "Izbrani izhodni format ne podpira te funkcije."
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Directory:"
-msgstr "Mapa:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Sites:"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Drives:"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 #, fuzzy
-msgid "Selected Account:"
-msgstr "Izberite HTTP račun:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr "Ne zamenjaj datotek (v primeru enakih imen jih zaporedno oštevilči)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Show link at the end of interactive workflow"
-msgstr ""
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid "Open upload in browser"
-msgstr "Datoteko odpri v pregledovalniku."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#, fuzzy
-msgid "Sharepoint"
-msgstr "Različica"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Upload a file to your OneDrive"
-msgstr ""
+msgid "This feature is already enabled for the selected profile"
+msgstr "Izbrani izhodni format ne podpira te funkcije."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2363,25 +2390,26 @@ msgid "Select program"
 msgstr "Izberi program"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Additional Program Parameters:"
+#, fuzzy
+#| msgid "Additional Program Parameters:"
+msgid "Additional program parameters:"
 msgstr "Dodatni programski parametri:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Call Preview:"
+#, fuzzy
+#| msgid "Call Preview:"
+msgid "Call preview:"
 msgstr "Predogled klica:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Program File:"
+#, fuzzy
+#| msgid "Program File:"
+msgid "Program file:"
 msgstr "Datoteka programa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Wait until the program has ended"
 msgstr "Počakaj, da se program zaključi"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-#, fuzzy
-msgid "Run Program"
-msgstr "Zaženi program"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid ""
@@ -2392,8 +2420,44 @@ msgstr ""
 "Zažene program ali skript, ki po pretvorbi dokument še dodatno obdela. "
 "PDFCreator sam zažene zunanji program in pošlje parametre."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print document"
+msgstr "Natisni dokument"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Duplex printing (if support by the printer)"
+msgstr "Obojestranski tisk (če ga tiskalnik omogoča)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Select printer:"
+msgstr "Izberi tiskalnik:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Fit to the page size of the printer"
+msgstr "Prilagodi na tiskalnikovo velikost strani"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print"
+msgstr "Natisni"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Prints the document to a physical printer."
+msgstr "Dokument natisne s fizičnim tiskalnikom."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid ""
+"The selected printer is mapped to PDFCreator. Please consider using the "
+"forwarding action. It doesn't require additional printing, is quicker and "
+"less error prone."
+msgstr ""
+"Izbrani tiskalnik je dodeljen PDFCreator-ju. Premislite o uporabi "
+"posredovalnega opravila, ki ne potrebuje dodatnega tiskanja, je hitrejše in "
+"manj dovzetno za napake."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-msgid "Open File"
+#, fuzzy
+#| msgid "Open File"
+msgid "Open file"
 msgstr "Odpri datoteko"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
@@ -2434,7 +2498,9 @@ msgid "Add file"
 msgstr "Dodaj datoteko"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
-msgid "Select File:"
+#, fuzzy
+#| msgid "Select File:"
+msgid "Select file:"
 msgstr "Izberi datoteko:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
@@ -2442,7 +2508,9 @@ msgid "Apply"
 msgstr "Uveljavi"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Extract User Tokens"
+#, fuzzy
+#| msgid "Extract User Tokens"
+msgid "Extract user tokens"
 msgstr "Izvleci poljubne spremenljivke"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2481,7 +2549,9 @@ msgstr ""
 "privzeta vrednost."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Select Separator:"
+#, fuzzy
+#| msgid "Select Separator:"
+msgid "Select separator:"
 msgstr "Izberite ločitveni znak:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2489,7 +2559,9 @@ msgid "More on user tokens"
 msgstr "Več o poljubnih spremenljivkah"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "User Token"
+#, fuzzy
+#| msgid "User Token"
+msgid "User token"
 msgstr "Poljubna spremenljivka"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2501,7 +2573,9 @@ msgstr ""
 "PDFCreator podpira."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-msgid "Forward to Profile"
+#, fuzzy
+#| msgid "Forward to Profile"
+msgid "Forward to profile"
 msgstr "Posreduj drugemu profilu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
@@ -2523,11 +2597,15 @@ msgid "CS-Script"
 msgstr "CS-Script"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Check Script"
+#, fuzzy
+#| msgid "Check Script"
+msgid "Check script"
 msgstr "Preveri skript"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "CS-Script File:"
+#, fuzzy
+#| msgid "CS-Script File:"
+msgid "CS-Script file:"
 msgstr "CS-Script datoteka:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2543,11 +2621,19 @@ msgid "Loading CS-Script was successful."
 msgstr "Nalaganje CS-Skripta je bilo uspešno."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Open CS-Scripts Folder"
+#, fuzzy
+#| msgid "Open CS-Scripts Folder"
+msgid "Open CS-Scripts folder"
 msgstr "Odpri CS-Script mapo"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Reload Script List"
+msgid "Enable debugging."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+#, fuzzy
+#| msgid "Reload Script List"
+msgid "Reload script list"
 msgstr "Ponovno naloži seznam skriptov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2621,7 +2707,9 @@ msgid "Format:"
 msgstr "Format:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-msgid "Page Numbers"
+#, fuzzy
+#| msgid "Page Numbers"
+msgid "Page numbers"
 msgstr "Številke strani"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
@@ -2633,7 +2721,9 @@ msgid "Select watermark file"
 msgstr "Izberi datoteko z vodnim žigom"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-msgid "Watermark File (Only PDF):"
+#, fuzzy
+#| msgid "Watermark File (Only PDF):"
+msgid "Watermark file (only PDF):"
 msgstr "Datoteka z vodnim žigom (samo PDF):"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
@@ -2673,11 +2763,15 @@ msgid "Stamp"
 msgstr "Žig"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Show Font as outline"
+#, fuzzy
+#| msgid "Show Font as outline"
+msgid "Show font as outline"
 msgstr "Oriši pisavo"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Font Color:"
+#, fuzzy
+#| msgid "Font Color:"
+msgid "Font color:"
 msgstr "Barva pisave:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
@@ -2685,11 +2779,15 @@ msgid "Font:"
 msgstr "Pisava:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Outline Width:"
+#, fuzzy
+#| msgid "Outline Width:"
+msgid "Outline width:"
 msgstr "širina orisa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Stamp Text:"
+#, fuzzy
+#| msgid "Stamp Text:"
+msgid "Stamp text:"
 msgstr "Besedilo žiga:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
@@ -2700,78 +2798,15 @@ msgstr "Izbrana pisava ni podprta. Izberite drugo."
 msgid "Places a stamp text on the document."
 msgstr "Na dokument odtisne žig z besedilom."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover"
-msgstr "Naslovnica"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Inserts one or more pages at the beginning of the document."
-msgstr "Vstavi eno ali več strani na začetku dokumenta."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Add cover"
-msgstr "Dodaj naslovnico"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Select cover file"
-msgstr "Izberi datoteko z naslovnico"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover files (PDF):"
-msgstr "Datoteke z naslovnico (PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid ""
-"Warning: The following documents are PDF 2.0 files and can't be added to "
-"other documents during the conversion:"
-msgstr ""
-"Opozorilo: Naslednji dokumenti so datoteke PDF 2.0, zato med pretvorbo ne "
-"morejo biti dodani drugim dokumentom:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background"
-msgstr "Ozadje"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Adds a background to the document."
-msgstr "V dokumentu doda ozadje."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Select background file"
-msgstr "Izberi datoteko z ozadjem"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background File (Only PDF):"
-msgstr "Datoteka z ozadjem (samo PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Add attachment"
-msgstr "Dodaj prilogo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Select attachment file"
-msgstr "Izberi datoteko za prilogo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment files (PDF):"
-msgstr "Datoteke za prilogo (PDF):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment"
-msgstr "Priloga"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Appends one or more pages at the end of the document."
-msgstr "Doda eno ali več strani na koncu dokumenta."
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Position and size"
 msgstr "Pozicija in velikost"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Certificate File:"
+#, fuzzy
+#| msgid "Certificate File:"
+msgid "Certificate file:"
 msgstr "Datoteka digitalnega potrdila:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -2845,13 +2880,14 @@ msgstr "Dovoli večkratno podpisovanje"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
-msgid "Display Signature:"
+msgid "Display signature:"
 msgstr "Prikazno ime:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "No display"
 msgstr ""
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 #, fuzzy
 msgid "Text"
@@ -2863,11 +2899,13 @@ msgid "Image"
 msgstr "Datoteke s sliko"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Image and Text"
+msgid "Image and text"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Select Time Server:"
+#, fuzzy
+#| msgid "Select Time Server:"
+msgid "Select time server:"
 msgstr "Izberite časovni strežnik:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2875,11 +2913,15 @@ msgid "Display signature in document"
 msgstr "Podpis pokaži v dokumentu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Signature Image:"
+#, fuzzy
+#| msgid "Signature Image:"
+msgid "Signature image:"
 msgstr "Slika podpisa:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Draw Custom Signature"
+#, fuzzy
+#| msgid "Draw Custom Signature"
+msgid "Draw custom signature"
 msgstr "Nariši poljuben podpis"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2931,43 +2973,6 @@ msgstr "Ponastavi"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Brush"
 msgstr "Poteza"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Owner password (for editing):"
-msgstr "Lastniško geslo (za urejanje):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-#, fuzzy
-msgid "Note: An owner password is required to set the user password."
-msgstr "Za določitev uporabniških gesel je potrebno lastniško geslo."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid ""
-"Leave password empty to get a request during the print job (password will "
-"not be saved)."
-msgstr ""
-"Če gesla ne želite shraniti, polje pustite prazno. O njem boste povprašani "
-"pred vsako izdelavo PDF dokumenta."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Skip"
-msgstr "Preskoči"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Encryption Passwords"
-msgstr "Šifrirna gesla"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "User password (for opening):"
-msgstr "Uporabniško geslo (za odpiranje):"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Password strength:"
-msgstr "Kakovost gesla:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 msgid "Require a password to open the PDF document"
@@ -3049,16 +3054,132 @@ msgstr ""
 "PDF zaščiti z geslom in določi, katera pooblastila prejme uporabnik. "
 "Podpisovanje in šifriranje se vedno izvede nazadnje."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Owner password (for editing):"
+msgstr "Lastniško geslo (za urejanje):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+#, fuzzy
+msgid "Note: An owner password is required to set the user password."
+msgstr "Za določitev uporabniških gesel je potrebno lastniško geslo."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid ""
+"Leave password empty to get a request during the print job (password will "
+"not be saved)."
+msgstr ""
+"Če gesla ne želite shraniti, polje pustite prazno. O njem boste povprašani "
+"pred vsako izdelavo PDF dokumenta."
+
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Skip"
+msgstr "Preskoči"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+#, fuzzy
+#| msgid "Encryption Passwords"
+msgid "Encryption passwords"
+msgstr "Šifrirna gesla"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "User password (for opening):"
+msgstr "Uporabniško geslo (za odpiranje):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Password strength:"
+msgstr "Kakovost gesla:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover"
+msgstr "Naslovnica"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Inserts one or more pages at the beginning of the document."
+msgstr "Vstavi eno ali več strani na začetku dokumenta."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Add cover"
+msgstr "Dodaj naslovnico"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Select cover file"
+msgstr "Izberi datoteko z naslovnico"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover files (PDF):"
+msgstr "Datoteke z naslovnico (PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid ""
+"Warning: The following documents are PDF 2.0 files and can't be added to "
+"other documents during the conversion:"
+msgstr ""
+"Opozorilo: Naslednji dokumenti so datoteke PDF 2.0, zato med pretvorbo ne "
+"morejo biti dodani drugim dokumentom:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Background"
+msgstr "Ozadje"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Adds a background to the document."
+msgstr "V dokumentu doda ozadje."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Select background file"
+msgstr "Izberi datoteko z ozadjem"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+#, fuzzy
+#| msgid "Background File (Only PDF):"
+msgid "Background file (only PDF):"
+msgstr "Datoteka z ozadjem (samo PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Add attachment"
+msgstr "Dodaj prilogo"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Select attachment file"
+msgstr "Izberi datoteko za prilogo"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment files (PDF):"
+msgstr "Datoteke za prilogo (PDF):"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment"
+msgstr "Priloga"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Appends one or more pages at the end of the document."
+msgstr "Doda eno ali več strani na koncu dokumenta."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Upload"
+#, fuzzy
+#| msgid "FTP Upload"
+msgid "FTP upload"
 msgstr "FTP prenos"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Account:"
+#, fuzzy
+#| msgid "FTP Account:"
+msgid "FTP account:"
 msgstr "FTP račun:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Server Password:"
+#, fuzzy
+#| msgid "FTP Server Password:"
+msgid "FTP server password:"
 msgstr "Geslo FTP strežnika:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
@@ -3091,47 +3212,22 @@ msgid "_Remove"
 msgstr "_Odstrani"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Upload"
+#, fuzzy
+#| msgid "HTTP Upload"
+msgid "HTTP upload"
 msgstr "HTTP prenos"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Account:"
+#, fuzzy
+#| msgid "HTTP Account:"
+msgid "HTTP account:"
 msgstr "HTTP račun:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Server Password:"
-msgstr "Geslo HTTP strežnika:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-msgid "Security"
-msgstr "Varnost"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #, fuzzy
-msgid "Set Certificate Password"
-msgstr "Nastavi geslo digitalnega potrdila"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-msgid "Certificate _Password:"
-msgstr "Geslo _digitalnega potrdila:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Mail"
-msgstr "SMTP e-pošta"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Account:"
-msgstr "SMTP račun:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Server Password:"
-msgstr "Geslo SMTP strežnika:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
-msgid "Converting..."
-msgstr "Pretvarjanje..."
+#| msgid "HTTP Server Password:"
+msgid "HTTP server password:"
+msgstr "Geslo HTTP strežnika:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 #, fuzzy
@@ -3196,10 +3292,122 @@ msgid "Remove ads"
 msgstr "Odstrani na koncu"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#, fuzzy
 msgid ""
-"Certain features are not supported by the selected output format and will be "
-"skipped automatically. Please check your profile settings."
+"Certain functions are not supported by the output format and will not be "
+"executed. Please check your profile."
+msgstr "Izbrani izhodni format ne podpira te funkcije."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
+msgid "Converting..."
+msgstr "Pretvarjanje..."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+msgid "Security"
+msgstr "Varnost"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+#, fuzzy
+#| msgid "Set certificate password"
+msgid "Set Certificate password"
+msgstr "Nastavi geslo digitalnega potrdila"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+#, fuzzy
+#| msgid "Certificate _Password:"
+msgid "Certificate password:"
+msgstr "Geslo _digitalnega potrdila:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#, fuzzy
+#| msgid "SMTP Mail"
+msgid "SMTP mail"
+msgstr "SMTP e-pošta"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#, fuzzy
+#| msgid "SMTP Account:"
+msgid "SMTP account:"
+msgstr "SMTP račun:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#, fuzzy
+#| msgid "SMTP Server Password:"
+msgid "SMTP server password:"
+msgstr "Geslo SMTP strežnika:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with PDF Architect"
+msgstr "Odpri s programom PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Quick Actions"
+msgstr "Hitra opravila"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with default viewer"
+msgstr "Odpri s privzetim pregledovalnikom"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open folder"
+msgstr "Odpri mapo"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Send by email"
+msgstr "Pošlji z e-pošto"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Print with PDF Architect"
+msgstr "Natisni s programom PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open"
+msgstr "Odpri"
+
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "Attach to:"
+msgstr "Priloga"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Total file size:"
+msgstr "Celotna velikost datoteke:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "DropBox:"
+msgstr "Dropbox"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "Don't show Quick Actions until the next update"
+msgstr "Ne kaži hitrih opravil do naslednje posodobitve"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "Copy the full path to clipboard"
+msgstr "Povezavo za deljenje kopiraj v odložišče"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "OneDrive private link"
+msgstr "Različica"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "OneDrive share link"
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#, fuzzy
+msgid "Sharepoint share link"
+msgstr "Različica"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
 msgid "After converting {0} file, we have a recommendation for you:"
@@ -3245,56 +3453,68 @@ msgstr "Ne, hvala"
 msgid "More Information"
 msgstr "Več informacij"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Quick Actions"
-msgstr "Hitra opravila"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Send by email"
-msgstr "Pošlji z e-pošto"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open"
-msgstr "Odpri"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #, fuzzy
-msgid "Attach to:"
-msgstr "Priloga"
+msgid "Email address:"
+msgstr "E-poštni naslov:"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Total file size:"
-msgstr "Celotna velikost datoteke:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-msgid "DropBox:"
-msgstr "Dropbox"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-msgid "Don't show Quick Actions until the next update"
-msgstr "Ne kaži hitrih opravil do naslednje posodobitve"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-msgid "Copy the full path to clipboard"
-msgstr "Povezavo za deljenje kopiraj v odložišče"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-#, fuzzy
-msgid "OneDrive private link"
-msgstr "Različica"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "OneDrive share link"
+#. Header for bullet points like 'receive helpful guides'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt " ...receive helpful guides"
+msgid "Enter your email to:"
 msgstr ""
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Get exclusive offers and expert tips"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Receive helpful guides and best practices"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Join 1,000,000+ users improving their PDF experience"
+msgstr ""
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Help ensure PDFCreator Free stays free for everyone"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "Make the most of PDFCreator Free"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "I agree to receive marketing and promotional communications."
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #, fuzzy
-msgid "Sharepoint share link"
-msgstr "Različica"
+#| msgid "Activation failed"
+msgid "Submission failed"
+msgstr "Aktivacija ni uspela"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid ""
+"Error submission failed (most likely due to a network issue), please try "
+"again."
+msgstr ""
+
+#. Text before clickable 'Privacy policy'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "... Privacy policy"
+msgid "The information you provide will be handled in accordance with our"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 #, fuzzy
@@ -3303,7 +3523,7 @@ msgstr "Vnesite ime profila:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 #, fuzzy
-msgid "Edit Profile"
+msgid "Edit profile"
 msgstr "Urejanje PDF datotek"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3320,7 +3540,7 @@ msgstr "Nazadnje uporabljen profil"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
 #, fuzzy
-msgid "Primary Printer"
+msgid "Primary printer"
 msgstr "Glavni tiskalnik"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3328,7 +3548,9 @@ msgid "Rename printer"
 msgstr "Preimenuj tiskalnik"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
-msgid "Manage Printers"
+#, fuzzy
+#| msgid "Manage Printers"
+msgid "Manage printers"
 msgstr "Upravljanje tiskalnikov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -3365,6 +3587,110 @@ msgstr "Neveljavne nastavitve"
 msgid "Invalid credentials for '{0}'. Please try retyping your password."
 msgstr ""
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "More information"
+msgstr "Več informacij"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "No"
+msgstr "Ne"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Retry"
+msgstr "Ponovi"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Discard"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Profile"
+msgstr "Profil"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Queue"
+msgstr "Čakalna vrsta"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Click here for more information on tokens"
+msgstr "Kliknite za več informacij o spremenljivkah"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+#, fuzzy
+msgid "The usage of user tokens requires the user token action to be enabled"
+msgstr "Najmanj ena od datotek za e-poštno prilogo ni na voljo."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Add Token"
+msgstr "Dodaj spremenljivko"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Print to '{0}' to get started!"
+msgstr "Tiskalnik '{0}' je pripravljen, da začnete!"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Choose a file to convert"
+msgstr "Izberite datoteko za pretvorbo"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "The history is empty"
+msgstr "Ni zgodovine"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Clear History"
+msgid "Clear history"
+msgstr "Počisti zgodovino"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Refresh History"
+msgid "Refresh history"
+msgstr "Osveži zgodovino"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Enable History"
+msgid "Enable history"
+msgstr "Omogoči zgodovino"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Disable history"
+msgstr "Onemogoči zgodovino"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "... or simply drop files here!"
+msgstr "... ali pa datoteke povlecite sem!"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Files recently created by PDFCreator:"
+msgstr "Nedavno ustvarjene datoteke s PDFCreator-jem:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Remove from history"
+msgstr "Odstrani iz zgodovine"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+#| msgid "Document Info"
+msgid "Document info"
+msgstr "Podatki o dokumentu"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+msgid "Delete file"
+msgstr "Izbriši datoteko"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#, fuzzy
+msgid "Open with Email Client"
+msgstr "Odpri z e-poštnim odjemalcem"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "History is disabled"
+msgstr "Zgodovina je onemogočena"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 #, fuzzy
 msgid "Successfully shared"
@@ -3393,6 +3719,71 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for letting us know how we can improve."
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Download PDF Architect now"
+msgstr "Prenesite program PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "More on PDF Architect"
+msgstr "Več o programu PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Install PDF Architect now"
+msgstr "Namestite program PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Launch PDF Architect"
+msgstr "Odpri program PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "You already have PDF Architect on your computer"
+msgstr "PDF Architect je že nameščen na vašem računalniku"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Our full-featured PDF Editor"
+msgstr "Naš vsestranski PDF urejevalnik"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+#, fuzzy
+msgid "Split files"
+msgstr "Vse datoteke"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Other powerful PDF Architect features:"
+msgstr "Ostale zmogljive funkcije:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Edit PDF files"
+msgstr "Urejanje PDF datotek"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Convert PDF files"
+msgstr "Pretvarjanje v druge formate"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Review and Annotate"
+msgstr "Pregledovanje in opombe"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Secure and Protect"
+msgstr "Zaščita in podpisovanje"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Insert page elements"
+msgstr "Vstavljanje elementov strani"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Create custom forms"
+msgstr "Ustvarjanje obrazcev po meri"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Optical character recognition (OCR)"
+msgstr "Optično prepoznavanje znakov (OCR)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Send for e-signature"
+msgstr "Podpisovanje na daljavo"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3435,7 +3826,9 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Manage Accounts"
+#, fuzzy
+#| msgid "Manage Accounts"
+msgid "Manage accounts"
 msgstr "Upravljanje računov"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3462,7 +3855,7 @@ msgstr "Dodaj FTP račun"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-msgid "FTP Account"
+msgid "FTP account"
 msgstr "FTP račun:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3475,7 +3868,9 @@ msgstr "FTP račun:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Test FTP Account"
+#, fuzzy
+#| msgid "Test FTP Account"
+msgid "Test FTP account"
 msgstr "Preizkusi FTP račun"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3554,7 +3949,9 @@ msgstr "Dropbox račun"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "HTTP Account"
+#, fuzzy
+#| msgid "HTTP Account"
+msgid "HTTP account"
 msgstr "HTTP račun"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3634,7 +4031,9 @@ msgstr "Dropbox račun"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Add Time Server account"
+#, fuzzy
+#| msgid "Add Time Server account"
+msgid "Add time server account"
 msgstr "Dodaj račun časovnega strežnika"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3647,7 +4046,9 @@ msgstr "Dodaj račun časovnega strežnika"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Time Server Account"
+#, fuzzy
+#| msgid "Time Server Account"
+msgid "Time server account"
 msgstr "Račun časovnega strežnika"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3701,7 +4102,7 @@ msgstr "Datoteka s ključem zahteva geslo"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-msgid "Request Permissions"
+msgid "Request permissions"
 msgstr "Različica"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3727,8 +4128,10 @@ msgstr "Strežnik:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "User Name:"
-msgstr "Uporabniško ime:"
+#, fuzzy
+#| msgid "User name"
+msgid "User name:"
+msgstr "Uporabniško ime"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3787,8 +4190,10 @@ msgstr "Časovna omejitev v sekundah:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Sending Mode:"
-msgstr ""
+#, fuzzy
+#| msgid "Search mode:"
+msgid "Sending mode:"
+msgstr "Dejanje:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -4001,20 +4406,6 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#, fuzzy
-msgid "SharePoint"
-msgstr "Različica"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Outlook Web Access"
 msgstr ""
 
@@ -4029,45 +4420,8 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 #, fuzzy
-msgid "send directly"
+msgid "Send directly"
 msgstr "Odpri mapo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "HTTP"
-msgstr "HTTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Select HTTP Account:"
-msgstr "Izberite HTTP račun:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Edit HTTP Account"
-msgstr "Uredi HTTP račun"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Remove HTTP Account"
-msgstr "Odstrani HTTP račun"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "URL:"
-msgstr "URL:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Basic Authentication"
-msgstr "Osnovna overitev"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "The HTTP action will be disabled for this profile."
-msgid_plural "The HTTP action will be disabled for this profiles."
-msgstr[0] "HTTP opravilo bo za ta profil onemogočeno."
-msgstr[1] "HTTP opravilo bo za te profile onemogočeno."
-msgstr[2] "HTTP opravilo bo za te profile onemogočeno."
-msgstr[3] "HTTP opravilo bo za te profile onemogočeno."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Uploads the document to an HTTP server."
-msgstr "Dokument prenese na HTTP strežnik."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Authenticate with Dropbox"
@@ -4112,7 +4466,9 @@ msgid "Show share link at the end of interactive workflow."
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-msgid "Please select Dropbox Account:"
+#, fuzzy
+#| msgid "Please select Dropbox Account:"
+msgid "Please select Dropbox account:"
 msgstr "Izberite Dropbox uporabniški račun:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -4154,6 +4510,101 @@ msgstr ""
 msgid "You can now close this window."
 msgstr "To okno lahko zdaj zaprete."
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Please select a FTP account:"
+msgstr "Izberite FTP račun:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Upload with FTP"
+msgstr "Naloži prek FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Remove FTP account"
+msgstr "Odstrani FTP račun"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#, fuzzy
+#| msgid "Edit FTP Account"
+msgid "Edit FTP account"
+msgstr "Uredi FTP račun"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "FTP"
+msgstr "FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Uploads the document with FTP."
+msgstr "Naloži dokument prek FTP."
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "The FTP action will be disabled for this profile."
+msgid_plural "The FTP action will be disabled for this profiles."
+msgstr[0] "FTP opravilo bo za ta profil onemogočeno."
+msgstr[1] "FTP opravilo bo za te profile onemogočeno."
+msgstr[2] "FTP opravilo bo za te profile onemogočeno."
+msgstr[3] "FTP opravilo bo za te profile onemogočeno."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer not found"
+msgstr "Pregledovalnik ni bil najden"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer was not found, please check your settings."
+msgstr "Pregledovalnik ni bil najden, preverite vaše nastavitve."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via FTP"
+msgstr "{0} prek FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via SFTP"
+msgstr "{0} prek SFTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "HTTP"
+msgstr "HTTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Select HTTP Account:"
+msgid "Select HTTP account:"
+msgstr "Izberite HTTP račun:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Edit HTTP Account"
+msgid "Edit HTTP account"
+msgstr "Uredi HTTP račun"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Remove HTTP Account"
+msgid "Remove HTTP account"
+msgstr "Odstrani HTTP račun"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "URL:"
+msgstr "URL:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#, fuzzy
+#| msgid "Basic Authentication"
+msgid "Basic authentication"
+msgstr "Osnovna overitev"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "The HTTP action will be disabled for this profile."
+msgid_plural "The HTTP action will be disabled for this profiles."
+msgstr[0] "HTTP opravilo bo za ta profil onemogočeno."
+msgstr[1] "HTTP opravilo bo za te profile onemogočeno."
+msgstr[2] "HTTP opravilo bo za te profile onemogočeno."
+msgstr[3] "HTTP opravilo bo za te profile onemogočeno."
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Uploads the document to an HTTP server."
+msgstr "Dokument prenese na HTTP strežnik."
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Email (SMTP)"
 msgstr "E-pošta (SMTP)"
@@ -4164,7 +4615,9 @@ msgstr "Dokument pošlje po e-pošti brez posegov uporabnika, z uporabo SMTP."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit SMTP Account"
+#, fuzzy
+#| msgid "Edit SMTP Account"
+msgid "Edit SMTP account"
 msgstr "Uredi SMTP račun"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4174,18 +4627,13 @@ msgstr "Odstrani SMTP račun"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Email Address:"
-msgstr "E-poštni naslov:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Port:"
 msgstr "Vrata:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "SSL"
-msgstr "SSL"
+msgid "SSL/TLS"
+msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4210,14 +4658,7 @@ msgstr "Datoteka dokumenta"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#, fuzzy
-msgid "Add Attachment"
-msgstr "Dodaj prilogo"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit Subject And Content"
+msgid "Edit subject and content"
 msgstr ""
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4228,7 +4669,9 @@ msgstr "Preizkusna e-pošta je bila uspešno poslana naslednjim prejemnikom:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Set SMTP Server Password"
+#, fuzzy
+#| msgid "Set SMTP Server Password"
+msgid "Set SMTP server password"
 msgstr "Nastavi geslo SMTP strežnika"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4296,7 +4739,7 @@ msgstr "Dodatne e-poštne priloge:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #, fuzzy
-msgid "Select Email Attachment File"
+msgid "Select email attachment file"
 msgstr "Izberi prilogo za e-pošto"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4306,18 +4749,30 @@ msgstr "Preveri e-poštni odjemalec"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender"
+#, fuzzy
+msgid "Open email in installed email client"
+msgstr "Odpri z e-poštnim odjemalcem"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid "Specify Sender"
+msgid "Specify sender"
 msgstr "Določitev Pošiljatelja"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender:"
+#, fuzzy
+#| msgid "Specify Sender:"
+msgid "Specify sender:"
 msgstr "Določite Pošiljatelja:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "On Behalf Of:"
-msgstr "Po pooblastilu od:"
+#, fuzzy
+#| msgid "on behalf of"
+msgid "On behalf of:"
+msgstr "po pooblastilu od"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4326,25 +4781,39 @@ msgstr "po pooblastilu od"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#, fuzzy
+#| msgid ""
+#| "If set it will be used as From and the address from the account will be "
+#| "set as Sender"
 msgid ""
-"If set it will be used as From and the address from the account will be set "
-"as Sender"
+"If set it will be used as from and the address from the account will be set "
+"as sender"
 msgstr ""
 "Če je nastavljeno, bo uporabljeno v polju 'Od' in naslov računa bo "
 "nastavljen kot Pošiljatelj"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Display Name:"
+#, fuzzy
+#| msgid "Display Name:"
+msgid "Display name:"
 msgstr "Prikazno ime:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Reply To:"
+#, fuzzy
+#| msgid "Reply To:"
+msgid "Reply to:"
 msgstr "Odgovor za:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "Email (OWA)"
+msgid "Email via Outlook Web"
+msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#, fuzzy
+#| msgid "Email (OWA)"
+msgid "Email (Outlook Web)"
 msgstr "E-pošta (SMTP)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
@@ -4387,11 +4856,15 @@ msgstr ""
 "prilogo."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Edit Time Server Account"
+#, fuzzy
+#| msgid "Edit Time Server Account"
+msgid "Edit time server account"
 msgstr "Uredi račun časovnega strežnika"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Remove Time Server Account"
+#, fuzzy
+#| msgid "Remove Time Server Account"
+msgid "Remove time server account"
 msgstr "Odstrani račun časovnega strežnika"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -4403,56 +4876,10 @@ msgstr[2] "Podpisovanje bo za te profile onemogočeno."
 msgstr[3] "Podpisovanje bo za te profile onemogočeno."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Secured Time Server"
+#, fuzzy
+#| msgid "Secured Time Server"
+msgid "Secured time server"
 msgstr "Varni časovni strežnik"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Please select a FTP account:"
-msgstr "Izberite FTP račun:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Upload with FTP"
-msgstr "Naloži prek FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Remove FTP account"
-msgstr "Odstrani FTP račun"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Edit FTP Account"
-msgstr "Uredi FTP račun"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "FTP"
-msgstr "FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Uploads the document with FTP."
-msgstr "Naloži dokument prek FTP."
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "The FTP action will be disabled for this profile."
-msgid_plural "The FTP action will be disabled for this profiles."
-msgstr[0] "FTP opravilo bo za ta profil onemogočeno."
-msgstr[1] "FTP opravilo bo za te profile onemogočeno."
-msgstr[2] "FTP opravilo bo za te profile onemogočeno."
-msgstr[3] "FTP opravilo bo za te profile onemogočeno."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer not found"
-msgstr "Pregledovalnik ni bil najden"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer was not found, please check your settings."
-msgstr "Pregledovalnik ni bil najden, preverite vaše nastavitve."
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via FTP"
-msgstr "{0} prek FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via SFTP"
-msgstr "{0} prek SFTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Microsoft"
@@ -4518,6 +4945,12 @@ msgstr "Datoteka z zasebnim ključem:"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
 msgstr ""
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#, fuzzy
+#| msgid "Uploads the document to an HTTP server."
+msgid "Upload documents to your OneDrive"
+msgstr "Dokument prenese na HTTP strežnik."
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4640,6 +5073,12 @@ msgid "You have unsaved changes."
 msgstr "Vaše spremembe niso shranjene."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
+#, fuzzy
+#| msgid "Do you want to proceed anyway?"
+msgid "How do you want to proceed?"
+msgstr "Ali želite vseeno nadaljevati?"
+
+#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "You have invalid settings."
 msgstr "Nekaj vaših nastavitev je neveljavnih."
 
@@ -4665,8 +5104,8 @@ msgid "To proceed you need to save your current settings."
 msgstr "Za nadaljevanje morate shraniti vaše trenutne nastavitve."
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
-msgid "Choose 'No' to revert the changes."
-msgstr "Izberite 'Ne' za razveljavitev sprememb."
+msgid "Default Viewer"
+msgstr "Privzeti pregledovalnik"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Settings are Loading"
@@ -4682,13 +5121,15 @@ msgid "Do you want to close the application anyway?"
 msgstr "Ali želite kljub temu shraniti?"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
-msgid "User Tokens"
+#, fuzzy
+#| msgid "User Tokens"
+msgid "User tokens"
 msgstr "Poljubne spremenljivke"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 #, fuzzy
 msgid ""
-"User Tokens allow to predefine information like the email address, subject, "
+"User tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
@@ -4800,68 +5241,6 @@ msgstr ""
 #, fuzzy
 msgid "Error while adding attachment to selected Outlook item:"
 msgstr "Napaka pri dodajanju priloge v dokument."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"You do not have any PDFCreator printers installed. Most likely there was a "
-"problem during the setup or the installation has been altered afterwards.\n"
-"Do you want to fix this by reinstalling the PDFCreator printers?\n"
-"\n"
-"Note: You might be asked to grant admin privileges while fixing the problem."
-msgstr ""
-"Noben PDFCreator tiskalnik ni nameščen. Verjetno je prišlo do težav med "
-"namestitvijo ali do sprememb po namestitvi.\n"
-"Ali želite ponovno namestiti PDFCreator tiskalnike?\n"
-"\n"
-"Opomba: Morda boste med postopkom povprašani po skrbniških pravicah."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your printers. Please contact your "
-"administrator or the support to assist you in with this problem."
-msgstr ""
-"Vaših tiskalnikov ni bilo mogoče popraviti. Za pomoč se obrnite na vašega "
-"skrbnika ali podporno osebje."
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "No printers installed"
-msgstr "Ni nameščenih tiskalnikov"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "RepairTool not found"
-msgstr "Orodje za popravilo ni najdeno"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
-msgid ""
-"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
-msgstr ""
-"Manjka pomembna programska datoteka ('{0}'). Ponovno namestite PDFCreator!"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "Access Denied"
-msgstr "Dostop zavrnjen"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"The temporary path where PDFCreator stores the print jobs can't be accessed. "
-"This is a configuration problem on your machine and needs to be fixed. Do "
-"you want PDFCreator to attempt repairing it?\n"
-"Your spool folder is: {0}"
-msgstr ""
-"Mesto, kamor PDFCreator začasno shranjuje tiskalniške posle, je "
-"nedosegljivo. Treba je odpraviti težavo z nastavitvami vašega računalnika. "
-"Ali naj PDFCreator poskusi s popravilom?\n"
-"Vaša mapa za tisk je: {0}"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your spool folder. Please contact your "
-"administrator or the support to assist you in changing the permissions of "
-"the path '{0}'."
-msgstr ""
-"Mape za tisk ni bilo mogoče popraviti. Obrnite se na skrbnika ali podporno "
-"osebje za spremembo dovoljenj te poti: '{0}'."
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 msgid "INI files (*.ini)|*.ini"
@@ -4993,6 +5372,12 @@ msgstr ""
 msgid "Operation failed. You probably do not have sufficient permissions."
 msgstr "Dejanje ni uspelo. Verjetno nimate potrebnih dovoljenj."
 
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
+msgid ""
+"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
+msgstr ""
+"Manjka pomembna programska datoteka ('{0}'). Ponovno namestite PDFCreator!"
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.Update.RestartApplicationInteractionTranslation
 msgid "Update PDFCreator"
 msgstr "Posodobi PDFCreator"
@@ -5039,12 +5424,14 @@ msgstr ""
 "o uporabi programa."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#, fuzzy
 msgid "Start PDFCreator Server Service"
-msgstr ""
+msgstr "Trenutno je že v teku instanca PDFCreator Strežnika!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
+#, fuzzy
 msgid "Stop PDFCreator Server Service"
-msgstr ""
+msgstr "Trenutno je že v teku instanca PDFCreator Strežnika!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 #, fuzzy
@@ -5053,15 +5440,6 @@ msgstr "V zadnjih 24 urah je prišlo do napak. Preverite dnevnik dogodkov."
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
 msgid "Observation mode - restart as an administrator for full access."
-msgstr ""
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-#, fuzzy
-msgid "Store failed print jobs"
-msgstr "Izbriši tiskalniški posel"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-msgid "Store files of failed print jobs in selected directory"
 msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
@@ -5092,6 +5470,15 @@ msgstr "Število niti:"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.MultiThreadingTranslation
 msgid "Recommended Number of Threads:"
 msgstr "Priporočeno število niti:"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+#, fuzzy
+msgid "Store failed print jobs"
+msgstr "Izbriši tiskalniški posel"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store files of failed print jobs in selected directory"
+msgstr ""
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Queue:"
@@ -5130,9 +5517,21 @@ msgid "PDFCreator Server is running"
 msgstr "Trenutno je že v teku instanca PDFCreator Strežnika!"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Enable History"
+msgstr "Omogoči zgodovino"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Disable History"
+msgstr "Onemogoči zgodovino"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 #, fuzzy
 msgid "Refresh History (F5)"
 msgstr "Osveži zgodovino"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Clear History"
+msgstr "Počisti zgodovino"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Successful:"
@@ -5168,12 +5567,6 @@ msgstr "Rezultat"
 msgid "Status"
 msgstr "Status"
 
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Author"
-msgstr "Avtor"
-
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Format"
 msgstr "Format"
@@ -5182,10 +5575,6 @@ msgstr "Format"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Computer Name"
 msgstr "Ime računalnika"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Date"
-msgstr "Datum"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Elapsed Time"
@@ -5344,11 +5733,15 @@ msgid "<Default Profile>"
 msgstr "<Privzeti profil>"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Compression (small file)"
+#, fuzzy
+#| msgid "High Compression (small file)"
+msgid "High compression (small file)"
 msgstr "Močno stiskanje (majhna datoteka)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Quality (large file)"
+#, fuzzy
+#| msgid "High Quality (large file)"
+msgid "High quality (large file)"
 msgstr "Visoka kakovost (velika datoteka)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
@@ -5387,117 +5780,6 @@ msgid ""
 "Please reactivate your Internal License Server activation on the {0}"
 msgstr ""
 
-#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "Vaša licenca poteče čez {0} dan."
-msgstr[1] "Vaša licenca poteče čez {0} dni."
-msgstr[2] "Vaša licenca poteče čez {0} dni."
-msgstr[3] "Vaša licenca poteče čez {0} dni."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"There was an error with a component licensed by pdfforge.\n"
-"Please reinstall PDFCreator. (Error {0})"
-msgstr ""
-"Prišlo je do napake na komponenti z licenco pdfforge.\n"
-"Znova namestite PDFCreator. (Napaka {0})"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" is invalid or has expired. Please check your "
-"license, otherwise PDFCreator will shutdown.\n"
-"Do you want to check your license now?"
-msgstr ""
-"Vaša licenca za \"{0}\" je neveljavna ali pa je potekla. Preverite vašo "
-"licenco, sicer se bo PDFCreator zaprl.\n"
-"Ali želite vašo licenco preveriti zdaj?"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licenca za \"{0}\" je potekla.\n"
-"PDFCreator se bo zaprl."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"Please contact your administrator.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licenca za \"{0}\" je potekla.\n"
-"Obrnite se na vašega skrbnika.\n"
-"PDFCreator se bo zaprl."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your trial has expired on {0}.\n"
-"PDFCreator will shut down.\n"
-"\n"
-"Please contact: licensing@pdfforge.org"
-msgstr ""
-"Vaša preizkusna doba je potekla {0}.\n"
-"PDFCreator se bo zaprl.\n"
-"\n"
-"Kontakt: licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-msgid ""
-"A license key for {0} could not be found. Please provide your license key, "
-"otherwise PDFCreator will shutdown. \n"
-"Do you want to activate your license now?"
-msgstr ""
-"Vaša licenca za \"{0}\" je neveljavna ali pa je potekla. Preverite vašo "
-"licenco, sicer se bo PDFCreator zaprl.\n"
-"Ali želite vašo licenco preveriti zdaj?"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-#, fuzzy
-msgid ""
-"A license key could not be found.\n"
-"PDFCreator will shut down."
-msgstr ""
-"Vaša licenca za \"{0}\" je potekla.\n"
-"PDFCreator se bo zaprl."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Please use \"PDFCreator Terminal Server\" for use on computers with "
-"installed Terminal Services.\n"
-"\n"
-"Please visit our website for more information or contact us directly: "
-"licensing@pdfforge.org"
-msgstr ""
-"Prosimo, da na računalnikih z nameščenimi Terminalskimi storitvami "
-"uporabljate \"PDFCreator Terminal Server\".\n"
-"\n"
-"Za več informacij obiščite našo spletno stran ali nam pišite: "
-"licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"Can't find a supported Ghostscript installation.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"Ustrezne Ghostscript namestitve ni bilo mogoče najti.\n"
-"\n"
-"Program se bo zaprl."
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"The Windows spooler service is not running. Please start the spooler first.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"Windows storitev za tiskanje v ozadju (spooler) se ne izvaja. Najprej "
-"zaženite to storitev.\n"
-"\n"
-"Program se bo zaprl."
-
 #: pdfforge.PDFCreator.UI.Notifications.NotificationTranslation
 msgid "PDFCreator has successfully converted '{0}'."
 msgstr ""
@@ -5515,45 +5797,6 @@ msgstr ""
 #, fuzzy
 msgid "Error while converting"
 msgstr "Napaka pri tiskanju dokumenta."
-
-#. pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "and {0} more file/directory"
-msgid_plural "and {0} more files/directories"
-msgstr[0] "in še {0} datoteka/mapa"
-msgstr[1] "in še {0} datoteki/mapi"
-msgstr[2] "in še {0} datoteke/mape"
-msgstr[3] "in še {0} datotek/map"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Convert with PDFCreator"
-msgstr "&Pretvori s PDFCreator-jem"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Convert &Here"
-msgstr "Pretvori &tukaj"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Merge"
-msgstr "&Združi"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Hint"
-msgstr "Namig"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"Couldn't find PDFCreator in your system. Please check if you have installed "
-"it."
-msgstr ""
-"Programa PDFCreator ni bilo mogoče najti. Preverite, če ste ga namestili."
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"At least one of the selected items is not convertible! For more information "
-"about the unprintable files, see the list below."
-msgstr ""
-"Vsaj ene od izbranih datotek ni mogoče pretvoriti. Več informacij o "
-"nenatisljivih datotekah najdete na spodnjem seznamu."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.StandbySetting
 msgid "No standby"
@@ -5707,21 +5950,16 @@ msgstr ""
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid ""
-"The path to the signature image file has to be an absolute path, e.g. 'C:"
-"\\Images\\signature.png'"
+"The path to the signature image file has to be a valid absolute path, e.g. "
+"'C:\\Images\\signature.png'"
 msgstr ""
-"Pot do datoteke s podpisom mora biti absolutna pot, npr. 'C:\\Images"
-"\\signature.png"
+"Pot do datoteke s podpisom mora biti absolutna pot, npr. 'C:"
+"\\Images\\signature.png"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid "The path to the signature image file is too long."
 msgstr "Pot do datoteke s podpisom je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The path to the signature image file contains illegal characters."
-msgstr "Pot do datoteke s podpisom vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -5804,11 +6042,6 @@ msgstr "Datoteka z naslovnico ni določena."
 #, fuzzy
 msgid "The program file is unavailable."
 msgstr "Trenutno ni nobene dnevniške datoteke."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The program file path contains illegal characters."
-msgstr "Datoteka skripta vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6122,11 +6355,6 @@ msgstr "Ena od poti do naslovnice je predolga."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "One of the cover file paths contains illegal characters."
-msgstr "Ena od poti do naslovnice vsebuje nedovoljene znake."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid ""
 "Unable to add one of the cover files. The PDF format versions are not "
 "compatible."
@@ -6176,11 +6404,6 @@ msgstr "Ena od poti do priloge ni veljavna absolutna pot."
 #, fuzzy
 msgid "One of the attachment file paths is too long."
 msgstr "Ena od poti do priloge je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "One of the attachment file paths contains illegal characters."
-msgstr "Ena od poti do priloge vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6362,32 +6585,26 @@ msgstr "Pot do ciljne mape je predolga."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The target directory contains illegal characters."
-msgstr "Ciljna mapa vsebuje nedovoljene znake."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid ""
 "User tokens in target directory require the user token action to be enabled."
 msgstr "Najmanj ena od datotek za e-poštno prilogo ni na voljo."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid ""
+#| "The path to the background file has to be an absolute path, e.g. 'C:"
+#| "\\documents\\background.pdf'"
 msgid ""
-"The path to the background file has to be an absolute path, e.g. 'C:"
+"The path to the background file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\background.pdf'"
 msgstr ""
-"Pot do datoteke z ozadjem mora biti absolutna pot, npr. 'C:\\documents"
-"\\background.pdf"
+"Pot do datoteke z ozadjem mora biti absolutna pot, npr. 'C:"
+"\\documents\\background.pdf"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid "The background file path is too long."
 msgstr "Pot do ozadja je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The background file contains illegal characters."
-msgstr "Pot do ozadja vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6398,11 +6615,6 @@ msgstr "Pot do digitalnega potrdila ni veljavna absolutna pot."
 #, fuzzy
 msgid "The certificate file path is too long."
 msgstr "Pot do digitalnega potrdila je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The certificate file path contains illegal characters."
-msgstr "Pot do digitalnega potrdila vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6418,22 +6630,14 @@ msgstr "Pot do FTP mape ni veljavna FTP pot."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid "The FTP key file path is an invalid path."
-msgstr "Pot do datoteke s FTP ključem ni veljavna."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path to the FTP key file has to be an absolute path."
+#| msgid "The path to the FTP key file has to be an absolute path."
+msgid "The path to the FTP key file has to be a valid absolute path."
 msgstr "Pot ni veljavna. Vnesite veljavno absolutno pot."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid "The FTP key file path is too long."
 msgstr "Pot do datoteke s FTP ključem je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
-msgid "The FTP key file path contains illegal characters."
-msgstr "Pot do datoteke s FTP ključem vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6508,28 +6712,19 @@ msgstr "Pot ni veljavna. Vnesite veljavno absolutno pot."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
-msgid ""
-"The file path is not valid or empty. Please enter a valid path.\n"
-"The file path must not contain any of the following characters: \n"
-" \\ / : * ? \\< >"
-msgstr ""
-"Pot do datoteke ni veljavna ali pa manjka. Vnesite veljavno pot.\n"
-"Pot do datoteke ne sme vsebovati naslednjih znakov:\n"
-" \\ / : * ? \\< >"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-#, fuzzy
 msgid "The file path is not set."
 msgstr "Pot do datoteke s FTP ključem je predolga."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No CS-script file is specified."
+#, fuzzy
+#| msgid "No CS-script file is specified."
+msgid "No CS-Script file is specified."
 msgstr "CS-script datoteka ni določena."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
 msgid ""
-"The CS-script file does not exist in the program data directory 'CS-Scripts' "
+"The CS-Script file does not exist in the program data directory 'CS-Scripts' "
 "folder."
 msgstr "Datoteke CS-skripta ni v 'CS-Scripts' podmapi programske mape."
 
@@ -6581,20 +6776,20 @@ msgid "The watermark file is no PDF file."
 msgstr "Datoteka z vodnim žigom ni v PDF formatu."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
+#, fuzzy
+#| msgid ""
+#| "The path to the watermark file has to be an absolute path, e.g. 'C:"
+#| "\\documents\\watermark.pdf'"
 msgid ""
-"The path to the watermark file has to be an absolute path, e.g. 'C:"
+"The path to the watermark file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\watermark.pdf'"
 msgstr ""
-"Pot do datoteke z vodnim žigom mora biti absolutna pot, npr. 'C:\\documents"
-"\\watermark.pdf'"
+"Pot do datoteke z vodnim žigom mora biti absolutna pot, npr. 'C:"
+"\\documents\\watermark.pdf'"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The watermark file path is too long."
 msgstr "Pot do datoteke z vodnim žigom je predolga."
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The watermark file path contains illegal characters."
-msgstr "Pot do vodnega žiga vsebuje nedovoljene znake."
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 #, fuzzy
@@ -6846,62 +7041,6 @@ msgstr "Najmanj ena od datotek za e-poštno prilogo ni na voljo."
 msgid "The output document has no pages. The conversion is aborted."
 msgstr ""
 
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Auto detect (the client's default setting)"
-msgstr "Samodejno zaznaj (privzeta nastavitev odjemalca)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "HTML (only for Microsoft Outlook)"
-msgstr "HTML (samo za Microsoft Outlook)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Text (only for Microsoft Outlook)"
-msgstr "Besedilo (samo za Microsoft Outlook)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "FTP - File Transfer Protocol"
-msgstr "FTP - File Transfer Protocol"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "SFTP - SSH File Transfer Protocol"
-msgstr "SFTP - SSH File Transfer Protocol"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Right"
-msgstr "Desno spodaj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Left"
-msgstr "Levo spodaj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Center"
-msgstr "Sredina spodaj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Right"
-msgstr "Desno zgoraj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Left"
-msgstr "Levo zgoraj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Center"
-msgstr "Sredina zgoraj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Auto-Detect"
-msgstr "samodejno zaznaj"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Portrait"
-msgstr "pokončno"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Landscape"
-msgstr "ležeče"
-
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.BackgroundRepetition
 msgid "No repetition"
 msgstr "Brez ponovitev"
@@ -7002,10 +7141,32 @@ msgstr "obračanje prek dolgega roba"
 msgid "Short edge turn"
 msgstr "obračanje prek kratkega roba"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Auto detect (the client's default setting)"
+msgstr "Samodejno zaznaj (privzeta nastavitev odjemalca)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "HTML (only for Microsoft Outlook)"
+msgstr "HTML (samo za Microsoft Outlook)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Text (only for Microsoft Outlook)"
+msgstr "Besedilo (samo za Microsoft Outlook)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "FTP - File Transfer Protocol"
+msgstr "FTP - File Transfer Protocol"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "SFTP - SSH File Transfer Protocol"
+msgstr "SFTP - SSH File Transfer Protocol"
+
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "16 Million Colors (24 Bit)"
+#, fuzzy
+#| msgid "16 Million Colors (24 Bit)"
+msgid "16 million colors (24 Bit)"
 msgstr "16 milijonov barv (24 Bit)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
@@ -7013,6 +7174,98 @@ msgstr "16 milijonov barv (24 Bit)"
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
 msgid "Grayscale (8 Bit)"
 msgstr "sivinsko (8 Bit)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF"
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-1b file"
+msgid "PDF/A-1b"
+msgstr "PDF/A-1b datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-2b file"
+msgid "PDF/A-2b"
+msgstr "PDF/A-2b datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/A-3b file"
+msgid "PDF/A-3b"
+msgstr "PDF/A-3b datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "PDF/X file"
+msgid "PDF/X"
+msgstr "PDF/X datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "JPEG file"
+msgid "JPEG"
+msgstr "JPEG datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PNG"
+msgstr ""
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+#, fuzzy
+#| msgid "TIFF file"
+msgid "TIFF"
+msgstr "TIFF datoteka"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Right"
+msgid "Bottom right"
+msgstr "Desno spodaj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Left"
+msgid "Bottom left"
+msgstr "Levo spodaj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Bottom Center"
+msgid "Bottom center"
+msgstr "Sredina spodaj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Right"
+msgid "Top right"
+msgstr "Desno zgoraj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Left"
+msgid "Top left"
+msgstr "Levo zgoraj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+#, fuzzy
+#| msgid "Top Center"
+msgid "Top center"
+msgstr "Sredina zgoraj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Auto-Detect"
+msgstr "samodejno zaznaj"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Portrait"
+msgstr "pokončno"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Landscape"
+msgstr "ležeče"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageSize
 msgid "A4"
@@ -7051,24 +7304,28 @@ msgid "Floating double page view (odd pages right)"
 msgstr "dve strani zvezno (liha na desni)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Million Colors with Transparency (32 Bit)"
+#, fuzzy
+#| msgid "16 Million Colors with Transparency (32 Bit)"
+msgid "16 million colors with transparency (32 Bit)"
 msgstr "16 milijonov barv s prosojnostjo (32 Bit)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "256 Colors (8 Bit)"
+#, fuzzy
+#| msgid "256 Colors (8 Bit)"
+msgid "256 colors (8 Bit)"
 msgstr "256 barv (8 Bit)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Color (4 Bit)"
+#, fuzzy
+#| msgid "16 Color (4 Bit)"
+msgid "16 colors (4 Bit)"
 msgstr "16 barv (4 Bit)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "Black & White (2 Bit)"
+#, fuzzy
+#| msgid "Black & White (2 Bit)"
+msgid "Black & white (2 Bit)"
 msgstr "črno-belo (2 Bit)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
-msgid "Default printer"
-msgstr "Privzeti tiskalnik"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 msgid "Select printer before printing"
@@ -7079,31 +7336,45 @@ msgid "Select printer ->"
 msgstr "Izberi tiskalnik ->"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "First Page"
+#, fuzzy
+#| msgid "First Page"
+msgid "First page"
 msgstr "prva stran"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Last Page"
+#, fuzzy
+#| msgid "Last Page"
+msgid "Last page"
 msgstr "zadnja stran"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Custom Page"
+#, fuzzy
+#| msgid "Custom Page"
+msgid "Custom page"
 msgstr "stran po meri"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "4096 Colors (12 Bit)"
+#, fuzzy
+#| msgid "4096 Colors (12 Bit)"
+msgid "4096 colors (12 Bit)"
 msgstr "4096 barv (12 Bit)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G3 Fax)"
+#, fuzzy
+#| msgid "Black & White (2 Bit G3 Fax)"
+msgid "Black & white (2 Bit G3 Fax)"
 msgstr "črno-belo (2 Bit G3 faks)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G4 Fax)"
+#, fuzzy
+#| msgid "Black & White (2 Bit G4 Fax)"
+msgid "Black & white (2 Bit G4 Fax)"
 msgstr "črno-belo (2 Bit G4 faks)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit LZW)"
+#, fuzzy
+#| msgid "Black & White (2 Bit LZW)"
+msgid "Black & white (2 Bit LZW)"
 msgstr "črno-belo (2 Bit LZW)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UnitOfMeasurement
@@ -7294,9 +7565,6 @@ msgstr "Onemogoči statistiko o uporabi"
 msgid "Activate to completely disable the anonymous usage statistics."
 msgstr "Vklopite, če želite povsem onemogočiti anonimno statistiko uporabe."
 
-msgid "Disable history"
-msgstr "Onemogoči zgodovino"
-
 msgid "Activate to disable the job history."
 msgstr "Vklopite, če želite onemogočiti zgodovino tiskanja."
 
@@ -7345,8 +7613,9 @@ msgid "Load shared profiles"
 msgstr "Naloži skupne profile"
 
 msgid ""
-"Activate to load profiles from ini file in \"%ProgramData%\\pdfforge"
-"\\PDFCreator\". This is activated by default and must be explicitly disabled."
+"Activate to load profiles from ini file in \"%ProgramData%"
+"\\pdfforge\\PDFCreator\". This is activated by default and must be "
+"explicitly disabled."
 msgstr ""
 "Vklopite, če želite profile naložiti iz INI datoteke, shranjene v "
 "\"%ProgramData%\\pdfforge\\PDFCreator\". Privzeto je ta možnost vklopljena, "
@@ -7361,9 +7630,6 @@ msgstr ""
 #, fuzzy
 msgid "Activate to hide feedback form"
 msgstr "Vklopite, če želite skriti nasvete na domači strani"
-
-msgid "Albanian"
-msgstr ""
 
 msgid "Catalan"
 msgstr "katalonščina"
@@ -7437,6 +7703,279 @@ msgstr "Nastavi stopnjo beleženja:"
 
 msgid "Allow users to define additional profiles"
 msgstr "Uporabnikom dovoli ustvarjanje dodatnih profilov"
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your printers. Please contact your "
+#~ "administrator or the support to assist you in with this problem."
+#~ msgstr ""
+#~ "Vaših tiskalnikov ni bilo mogoče popraviti. Za pomoč se obrnite na vašega "
+#~ "skrbnika ali podporno osebje."
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your spool folder. Please contact your "
+#~ "administrator or the support to assist you in changing the permissions of "
+#~ "the path '{0}'."
+#~ msgstr ""
+#~ "Mape za tisk ni bilo mogoče popraviti. Obrnite se na skrbnika ali "
+#~ "podporno osebje za spremembo dovoljenj te poti: '{0}'."
+
+#~ msgid ""
+#~ "There was an error with a component licensed by pdfforge.\n"
+#~ "Please reinstall PDFCreator. (Error {0})"
+#~ msgstr ""
+#~ "Prišlo je do napake na komponenti z licenco pdfforge.\n"
+#~ "Znova namestite PDFCreator. (Napaka {0})"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" is invalid or has expired. Please check your "
+#~ "license, otherwise PDFCreator will shutdown.\n"
+#~ "Do you want to check your license now?"
+#~ msgstr ""
+#~ "Vaša licenca za \"{0}\" je neveljavna ali pa je potekla. Preverite vašo "
+#~ "licenco, sicer se bo PDFCreator zaprl.\n"
+#~ "Ali želite vašo licenco preveriti zdaj?"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licenca za \"{0}\" je potekla.\n"
+#~ "PDFCreator se bo zaprl."
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "Please contact your administrator.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licenca za \"{0}\" je potekla.\n"
+#~ "Obrnite se na vašega skrbnika.\n"
+#~ "PDFCreator se bo zaprl."
+
+#~ msgid ""
+#~ "Your trial has expired on {0}.\n"
+#~ "PDFCreator will shut down.\n"
+#~ "\n"
+#~ "Please contact: licensing@pdfforge.org"
+#~ msgstr ""
+#~ "Vaša preizkusna doba je potekla {0}.\n"
+#~ "PDFCreator se bo zaprl.\n"
+#~ "\n"
+#~ "Kontakt: licensing@pdfforge.org"
+
+#, fuzzy
+#~ msgid ""
+#~ "A license key for {0} could not be found. Please provide your license "
+#~ "key, otherwise PDFCreator will shutdown. \n"
+#~ "Do you want to activate your license now?"
+#~ msgstr ""
+#~ "Vaša licenca za \"{0}\" je neveljavna ali pa je potekla. Preverite vašo "
+#~ "licenco, sicer se bo PDFCreator zaprl.\n"
+#~ "Ali želite vašo licenco preveriti zdaj?"
+
+#, fuzzy
+#~ msgid ""
+#~ "A license key could not be found.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "Vaša licenca za \"{0}\" je potekla.\n"
+#~ "PDFCreator se bo zaprl."
+
+#~ msgid ""
+#~ "Please use \"PDFCreator Terminal Server\" for use on computers with "
+#~ "installed Terminal Services.\n"
+#~ "\n"
+#~ "Please visit our website for more information or contact us directly: "
+#~ "licensing@pdfforge.org"
+#~ msgstr ""
+#~ "Prosimo, da na računalnikih z nameščenimi Terminalskimi storitvami "
+#~ "uporabljate \"PDFCreator Terminal Server\".\n"
+#~ "\n"
+#~ "Za več informacij obiščite našo spletno stran ali nam pišite: "
+#~ "licensing@pdfforge.org"
+
+#~ msgid ""
+#~ "Can't find a supported Ghostscript installation.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "Ustrezne Ghostscript namestitve ni bilo mogoče najti.\n"
+#~ "\n"
+#~ "Program se bo zaprl."
+
+#~ msgid ""
+#~ "The Windows spooler service is not running. Please start the spooler "
+#~ "first.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "Windows storitev za tiskanje v ozadju (spooler) se ne izvaja. Najprej "
+#~ "zaženite to storitev.\n"
+#~ "\n"
+#~ "Program se bo zaprl."
+
+#, fuzzy
+#~| msgid "Danish"
+#~ msgid "Spanish"
+#~ msgstr "danščina"
+
+#~ msgid ""
+#~ "You do not have any PDFCreator printers installed. Most likely there was "
+#~ "a problem during the setup or the installation has been altered "
+#~ "afterwards.\n"
+#~ "Do you want to fix this by reinstalling the PDFCreator printers?\n"
+#~ "\n"
+#~ "Note: You might be asked to grant admin privileges while fixing the "
+#~ "problem."
+#~ msgstr ""
+#~ "Noben PDFCreator tiskalnik ni nameščen. Verjetno je prišlo do težav med "
+#~ "namestitvijo ali do sprememb po namestitvi.\n"
+#~ "Ali želite ponovno namestiti PDFCreator tiskalnike?\n"
+#~ "\n"
+#~ "Opomba: Morda boste med postopkom povprašani po skrbniških pravicah."
+
+#~ msgid "No printers installed"
+#~ msgstr "Ni nameščenih tiskalnikov"
+
+#~ msgid "RepairTool not found"
+#~ msgstr "Orodje za popravilo ni najdeno"
+
+#~ msgid "Access Denied"
+#~ msgstr "Dostop zavrnjen"
+
+#~ msgid ""
+#~ "The temporary path where PDFCreator stores the print jobs can't be "
+#~ "accessed. This is a configuration problem on your machine and needs to be "
+#~ "fixed. Do you want PDFCreator to attempt repairing it?\n"
+#~ "Your spool folder is: {0}"
+#~ msgstr ""
+#~ "Mesto, kamor PDFCreator začasno shranjuje tiskalniške posle, je "
+#~ "nedosegljivo. Treba je odpraviti težavo z nastavitvami vašega "
+#~ "računalnika. Ali naj PDFCreator poskusi s popravilom?\n"
+#~ "Vaša mapa za tisk je: {0}"
+
+#~ msgid "Printer:"
+#~ msgstr "Tiskalnik:"
+
+#~ msgid "SSL"
+#~ msgstr "SSL"
+
+#, fuzzy
+#~ msgid "Sharepoint"
+#~ msgstr "Različica"
+
+#~ msgid "Read More"
+#~ msgstr "Preberi več"
+
+#~ msgid "Default Printer"
+#~ msgstr "Privzeti tiskalnik"
+
+#~ msgid "Usage Statistics"
+#~ msgstr "Statistika o uporabi"
+
+#, fuzzy
+#~ msgid "Run Program"
+#~ msgstr "Zaženi program"
+
+#, fuzzy
+#~ msgid "Set Certificate Password"
+#~ msgstr "Nastavi geslo digitalnega potrdila"
+
+#~ msgid "User Name:"
+#~ msgstr "Uporabniško ime:"
+
+#~ msgid "Email Address:"
+#~ msgstr "E-poštni naslov:"
+
+#, fuzzy
+#~ msgid "Add Attachment"
+#~ msgstr "Dodaj prilogo"
+
+#~ msgid "On Behalf Of:"
+#~ msgstr "Po pooblastilu od:"
+
+#~ msgid "Choose 'No' to revert the changes."
+#~ msgstr "Izberite 'Ne' za razveljavitev sprememb."
+
+#~ msgid "and {0} more file/directory"
+#~ msgid_plural "and {0} more files/directories"
+#~ msgstr[0] "in še {0} datoteka/mapa"
+#~ msgstr[1] "in še {0} datoteki/mapi"
+#~ msgstr[2] "in še {0} datoteke/mape"
+#~ msgstr[3] "in še {0} datotek/map"
+
+#~ msgid "&Convert with PDFCreator"
+#~ msgstr "&Pretvori s PDFCreator-jem"
+
+#~ msgid "Convert &Here"
+#~ msgstr "Pretvori &tukaj"
+
+#~ msgid "&Merge"
+#~ msgstr "&Združi"
+
+#~ msgid "Hint"
+#~ msgstr "Namig"
+
+#~ msgid ""
+#~ "Couldn't find PDFCreator in your system. Please check if you have "
+#~ "installed it."
+#~ msgstr ""
+#~ "Programa PDFCreator ni bilo mogoče najti. Preverite, če ste ga namestili."
+
+#~ msgid ""
+#~ "At least one of the selected items is not convertible! For more "
+#~ "information about the unprintable files, see the list below."
+#~ msgstr ""
+#~ "Vsaj ene od izbranih datotek ni mogoče pretvoriti. Več informacij o "
+#~ "nenatisljivih datotekah najdete na spodnjem seznamu."
+
+#, fuzzy
+#~ msgid "The path to the signature image file contains illegal characters."
+#~ msgstr "Pot do datoteke s podpisom vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "The program file path contains illegal characters."
+#~ msgstr "Datoteka skripta vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "One of the cover file paths contains illegal characters."
+#~ msgstr "Ena od poti do naslovnice vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "One of the attachment file paths contains illegal characters."
+#~ msgstr "Ena od poti do priloge vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "The target directory contains illegal characters."
+#~ msgstr "Ciljna mapa vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "The background file contains illegal characters."
+#~ msgstr "Pot do ozadja vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "The certificate file path contains illegal characters."
+#~ msgstr "Pot do digitalnega potrdila vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid "The FTP key file path is an invalid path."
+#~ msgstr "Pot do datoteke s FTP ključem ni veljavna."
+
+#, fuzzy
+#~ msgid "The FTP key file path contains illegal characters."
+#~ msgstr "Pot do datoteke s FTP ključem vsebuje nedovoljene znake."
+
+#, fuzzy
+#~ msgid ""
+#~ "The file path is not valid or empty. Please enter a valid path.\n"
+#~ "The file path must not contain any of the following characters: \n"
+#~ " \\ / : * ? \\< >"
+#~ msgstr ""
+#~ "Pot do datoteke ni veljavna ali pa manjka. Vnesite veljavno pot.\n"
+#~ "Pot do datoteke ne sme vsebovati naslednjih znakov:\n"
+#~ " \\ / : * ? \\< >"
+
+#~ msgid "The watermark file path contains illegal characters."
+#~ msgstr "Pot do vodnega žiga vsebuje nedovoljene znake."
 
 #~ msgid "Manage license"
 #~ msgstr "Upravljanje licence"

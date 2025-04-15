@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: Chinese (Traditional) (PDFCreator)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2024-10-27 09:40+0000\n"
+"PO-Revision-Date: 2025-03-28 04:22+0000\n"
 "Last-Translator: Norman Chu <norman704@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://translate.pdfforge.org/"
-"projects/pdfcreator/messages/zh_Hant/>\n"
+"Language-Team: Chinese (Traditional Han script) <https://translate.pdfforge."
+"org/projects/pdfcreator/messages/zh_Hant/>\n"
 "Language: zh-HANT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.11.2\n"
+"X-Generator: Weblate 5.9.1\n"
 
 #. FileConversionAssistantTranslation
 msgid "Do you want to convert the {0} selected file?"
@@ -30,6 +30,7 @@ msgstr "設定檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Printer"
 msgstr "印表機"
@@ -66,8 +67,9 @@ msgid "Help us improve {0} by sending anonymous application usage statistics."
 msgstr "允許傳送匿名的應用軟體使用統計以幫助我們改進 {0}。"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreatorServer.UI.Presentation.MainServerShellTranslation
-msgid "Read More"
+msgid "Read more"
 msgstr "閱讀更多"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
@@ -117,7 +119,6 @@ msgid_plural "Your trial license will expire in {0} days."
 msgstr[0] "您的試用授權將在 {0} 天內到期。"
 
 #: pdfforge.PDFCreator.UI.Presentation.MainShellTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Your trial license expires today."
 msgstr "您的試用授權今天到期。"
 
@@ -140,13 +141,11 @@ msgstr "選取的路徑過長。請選擇一個有效的路徑。"
 msgid "Invalid settings"
 msgstr "無效的設定值"
 
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Workflow.InteractiveProfileCheckerTranslation
 #: pdfforge.PDFCreator.UI.Presentation.WorkflowQuery.InteractiveWorkflowTranslation
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
 msgid "Error"
 msgstr "錯誤"
 
@@ -252,7 +251,6 @@ msgstr "合併"
 msgid "Reorder and Merge Print Jobs"
 msgstr "重新排序和合併列印作業"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Document Info"
 msgstr "文件資訊"
@@ -270,29 +268,33 @@ msgstr "頁次："
 msgid "Files:"
 msgstr "檔案："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Title:"
-msgstr "標題："
+msgid "Preview"
+msgstr "預覽"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Author:"
-msgstr "作者："
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Title"
+msgstr "標題"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "Printer:"
-msgstr "印表機："
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Date"
+msgstr "日期"
+
+#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
+#: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Author"
+msgstr "作者"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
-msgid "ID:"
-msgstr "ID："
+msgid "ID"
+msgstr "ID"
 
 #: pdfforge.PDFCreator.UI.Presentation.Windows.ManagePrintJobsWindowTranslation
 msgid "Hint: You can drag the print jobs to reorder them"
@@ -361,10 +363,7 @@ msgstr "預覽和列印任何 PDF"
 msgid "Create PDF files"
 msgstr "建立 PDF 檔案"
 
-#: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
-msgid "Read more"
-msgstr "閱讀更多"
-
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.RecommendPdfArchitectWindowTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.UpdateManagerTranslation
 msgid "Install"
@@ -527,7 +526,13 @@ msgstr "您的離線啟動已過期。請立即重新啟動您的許可證，以
 msgid ""
 "Your Internal License Server activation has expired. Please reactivate your "
 "license immediately to avoid application blocking."
-msgstr "您的內部授權伺服器啟動已過期。請立即重新啟動授權，以避免應用程式被封鎖。"
+msgstr ""
+"您的內部授權伺服器啟動已過期。請立即重新啟動授權，以避免應用程式被封鎖。"
+
+#. pdfforge.PDFCreator.UI.Presentation.Windows.TrialExpiredTranslation
+msgid "Your license will expire in {0} day."
+msgid_plural "Your license will expire in {0} days."
+msgstr[0] "您的授權將在 {0} 天內到期。"
 
 #: pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
@@ -684,13 +689,12 @@ msgstr "分享您的回饋"
 msgid "Describe your feedback"
 msgstr "描述您的回饋"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Email"
 msgstr "電子郵件"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Email address"
 msgstr "電子郵件信箱"
@@ -719,6 +723,7 @@ msgstr "我想分享正面的回饋"
 msgid "I would like to suggest a feature"
 msgstr "我想推薦一個功能"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.Windows.Feedback.FeedbackWindowTranslation
 msgid "Send"
@@ -781,27 +786,146 @@ msgstr "檔案："
 msgid "An error occured while attempting to submit your feedback"
 msgstr "嘗試提交回饋時發生錯誤"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
-msgid "Send us feedback"
-msgstr "向我們發送回饋"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "PDFCreator Professional Required"
+msgstr "需要 PDFCreator 專業版"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "BUSINESS FEATURE"
-msgstr "BUSINESS 版功能"
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "PDFCreator Terminal Server Required"
+msgstr "需要 PDFCreator 終端伺服器"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Upgrade your plan to start using PDFCreator for your business!"
+msgstr "升級您的計劃以開始使用 PDFCreator 來開展您的業務！"
+
+#. Text before clickable 'request a quote.'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+#, fuzzy
+#| msgctxt " ...request a quote."
+#| msgid ""
+#| "Switch to PDFCreator {0} for access to more features, broader security "
+#| "capabilities and priority support - ideal for businesses and teams! "
+#| "Upgrade effortlessly and keep your workflow running smoothly or"
+msgctxt " ...request a quote."
 msgid ""
-"You need PDFCreator Professional for this feature. Click here for more "
-"information."
-msgstr "您需要 PDFCreator 專業版才有此項功能。點此獲取更多資訊。"
+"Switch to PDFCreator {0} for access to more features, broader security "
+"capabilities and priority support - required for businesses and teams! "
+"Upgrade effortlessly and keep your workflow running smoothly or"
+msgstr ""
+"切換到 PDFCreator {0} 以獲得更多功能、更廣泛的安全功能和優先支援 - 非常適合企"
+"業和團隊！輕鬆升級並保持您的工作流程順利運作或"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
-msgid "Unlock the business features with PDFCreator Professional!"
-msgstr "採用 PDFCreator 專業版以解鎖進階功能！"
+#. Clickable action after 'Keep your workflow running smoothly or'
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgctxt "Keep your workflow running smoothly or..."
+msgid "request a quote."
+msgstr "請求報價。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Wondering what this means for your current workflows and business?"
+msgstr "想知道這對您目前的工作流程和業務意味著什麼？"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Read more."
+msgstr "閱讀更多。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Start your free 30-day trial!"
+msgstr "開始 30 天免費試用！"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Buy a License"
+msgstr "購買授權"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Already purchased PDFCreator {0}?"
+msgstr "已購買 PDFCreator {0}？"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Request Trial"
+msgstr "申請試用"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "*Please provide a valid email address."
+msgstr "*請提供有效的電子郵件地址。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download"
+msgstr "下載"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Downloading..."
+msgstr "下載中..."
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "The new setup failed to launch, please try again."
+msgstr "新安裝啟動失敗，請重試。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup launch failed"
+msgstr "安裝程式啟動失敗"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Setup download failed (most likely due to a network issue), please try again."
+msgstr "安裝程式下載失敗（很可能是由於網路問題），請重試。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download failed"
+msgstr "下載失敗"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Setup download was cancelled."
+msgstr "安裝程式下載已取消。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Download cancelled"
+msgstr "下載已取消"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Once you have a license or trial key, download and install PDFCreator {0} "
+"here."
+msgstr "取得授權或試用金鑰後，請在此下載並安裝 PDFCreator {0}。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
 msgid "License Agreement"
 msgstr "授權合約"
+
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Privacy Policy"
+msgstr "隱私政策"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed due to a network issue, please try again."
+msgstr "由於網路問題試用請求失敗，請重試。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request failed because the email address is already being used for a "
+"trial."
+msgstr "試用請求失敗，因為該電子郵件地址已用過於試用。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Trial request failed"
+msgstr "試用請求失敗"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid ""
+"Trial request sent. You will receive an email with your trial license key "
+"momentarily."
+msgstr "已發送試用請求。您將立即收到一封包含試用授權金鑰的電子郵件。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Helper.Translation.RequestHelperTranslation
+#: pdfforge.PDFCreator.UI.Presentation.Windows.BlockedInEnvironment.BlockedInEnvironmentTranslation
+msgid "Request successful"
+msgstr "申請成功"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.AboutViewTranslation
 msgid "User Guide"
@@ -823,149 +947,23 @@ msgstr "(論壇)"
 msgid "Feedback"
 msgstr "回饋"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Print to '{0}' to get started!"
-msgstr "列印到 '{0}' 開始吧！"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "BUSINESS FEATURE"
+msgstr "BUSINESS 版功能"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Choose a file to convert"
-msgstr "選擇一個要轉換檔案"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid ""
+"You need PDFCreator Professional for this feature. Click here for more "
+"information."
+msgstr "您需要 PDFCreator 專業版才有此項功能。點此獲取更多資訊。"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "The history is empty"
-msgstr "空的歷史紀錄"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.BusinessFeatureTranslation
+msgid "Unlock the business features with PDFCreator Professional!"
+msgstr "採用 PDFCreator 專業版以解鎖進階功能！"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Clear History"
-msgstr "清空歷史紀錄"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Refresh History"
-msgstr "重整歷史紀錄"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Enable History"
-msgstr "啟用歷史紀錄"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Disable History"
-msgstr "停用歷史紀錄"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "... or simply drop files here!"
-msgstr "... 或者直接拖曳檔案至此！"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Files recently created by PDFCreator:"
-msgstr "最近 PDFCreator 建立的檔案:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Remove from history"
-msgstr "從歷史紀錄移除"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Actions"
-msgstr "動作"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Delete file"
-msgstr "刪除檔案"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with default viewer"
-msgstr "使用預設瀏覽器開啟"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open folder"
-msgstr "開啟資料夾"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Print with PDF Architect"
-msgstr "使用 PDF Architect 列印"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
-msgid "Open with PDF Architect"
-msgstr "使用 PDF Architect 開啟"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "Open with Email Client"
-msgstr "用電子郵件用戶端開啟"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
-msgid "History is disabled"
-msgstr "歷史紀錄已停用"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Download PDF Architect now"
-msgstr "馬上下載 PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "More on PDF Architect"
-msgstr "更多關於 PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Install PDF Architect now"
-msgstr "現在就安裝 PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Launch PDF Architect"
-msgstr "啟用 PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "You already have PDF Architect on your computer"
-msgstr "您電腦裡已經安裝 PDF Architect"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Our full-featured PDF Editor"
-msgstr "我們全功能的 PDF 編輯器"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Split files"
-msgstr "分割檔案"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Other powerful PDF Architect features:"
-msgstr "其它 PDF Architect 強大功能："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Edit PDF files"
-msgstr "編輯 PDF 檔案"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Convert PDF files"
-msgstr "轉換 PDF 檔案"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Review and Annotate"
-msgstr "評論和註釋"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Secure and Protect"
-msgstr "安控和保護"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Insert page elements"
-msgstr "插入頁面元件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Create custom forms"
-msgstr "建立客製化表單"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Optical character recognition (OCR)"
-msgstr "光學文字辨識 (OCR)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
-msgid "Send for e-signature"
-msgstr "傳送電子簽章"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.FeedbackButtonTranslation
+msgid "Send us feedback"
+msgstr "向我們發送回饋"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Debug"
@@ -974,13 +972,6 @@ msgstr "除錯"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "General"
 msgstr "一般"
-
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Title"
-msgstr "標題"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.ApplicationSettingsViewTranslation
 msgid "Viewer"
@@ -1017,11 +1008,11 @@ msgid "Cancel"
 msgstr "取消"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Edit Title Replacement"
+msgid "Edit title replacement"
 msgstr "編輯標題替換"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Remove All"
+msgid "Remove all"
 msgstr "全部移除"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1090,7 +1081,7 @@ msgid "Add title replacement"
 msgstr "新增標題替換"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
-msgid "Title Replacements"
+msgid "Title replacements"
 msgstr "替換標題"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.TitleReplacementSettings.TitleReplacementsTranslation
@@ -1133,49 +1124,22 @@ msgstr "移除"
 msgid "RegEx"
 msgstr "正規表示式(RegEx)"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid ""
-"Wrong license key syntax.\n"
-"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
-"Valid characters are: A-Z, 0-9 and the dash."
-msgstr ""
-"錯誤授權金鑰語法。\n"
-"它必須如 '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'。\n"
-"合法字元為：A-Z, 0-9 及 -。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Please enter your license key:"
-msgstr "請輸入你的授權金鑰："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Copy the offline activation string:"
-msgstr "複製離線啟用字串："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "_Ok"
-msgstr "確定"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Paste the response code here:"
-msgstr "在此貼上回覆碼："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Request an activation code on our website:"
-msgstr "在我們網站上申請一個啟用碼："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
-msgid "Offline activation"
-msgstr "離線啟用"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
+msgid "Save"
+msgstr "存檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Last activation:"
@@ -1206,6 +1170,11 @@ msgid "Enter license key"
 msgstr "輸入授權金鑰"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Please enter your license key:"
+msgstr "請輸入你的授權金鑰："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Expires:"
 msgstr "到期："
 
@@ -1228,6 +1197,11 @@ msgstr "電腦 ID："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Manage licenses"
 msgstr "授權管理"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Offline activation"
+msgstr "離線啟用"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Online activation"
@@ -1254,6 +1228,12 @@ msgid "Store license for all users was successful."
 msgstr "儲存授權給所有使用者已成功。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
+msgid ""
+"It's not possible to use offline activation because PDFCreator is configured "
+"to use the internal license server."
+msgstr "無法使用離線啟動，因為 PDFCreator 設定為使用內部授權伺服器。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.LicenseSettingsTranslation
 msgid "Remind me later"
 msgstr "稍後提醒"
 
@@ -1261,21 +1241,39 @@ msgstr "稍後提醒"
 msgid "View License"
 msgstr "檢視授權"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.Shared.SettingControlsTranslation
-msgid "Save"
-msgstr "存檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid ""
+"Wrong license key syntax.\n"
+"It must look like '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'.\n"
+"Valid characters are: A-Z, 0-9 and the dash."
+msgstr ""
+"錯誤授權金鑰語法。\n"
+"它必須如 '12345-67890-ABCDE-EFGHI-JKLMNO-PRSTU'。\n"
+"合法字元為：A-Z, 0-9 及 -。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Copy the offline activation string:"
+msgstr "複製離線啟用字串："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Dialogs.InputBoxWindowTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PasswordButtonControlTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "_Ok"
+msgstr "確定"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Paste the response code here:"
+msgstr "在此貼上回覆碼："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.License.OfflineActivationViewModelTranslation
+msgid "Request an activation code on our website:"
+msgstr "在我們網站上申請一個啟用碼："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Ask"
@@ -1299,8 +1297,9 @@ msgstr "允許 PDFCreator 暫時更換預設印表機"
 msgid "Check now"
 msgstr "馬上檢查"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Default Printer"
+msgid "Default printer"
 msgstr "預設印表機"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1312,8 +1311,8 @@ msgid "Language"
 msgstr "語系"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Explorer Context Menu Integration"
-msgstr "整合至檔案總管之右鍵選單"
+msgid "Explorer context menu integration"
+msgstr "整合至檔案總管右鍵選單"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid ""
@@ -1375,11 +1374,11 @@ msgid "Install Update"
 msgstr "安裝更新"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage Statistics"
+msgid "Usage statistics"
 msgstr "使用統計"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Send Usage Statistics"
+msgid "Send usage statistics"
 msgstr "傳送使用統計"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1398,12 +1397,13 @@ msgstr "伺服器統計範例："
 msgid "Read our privacy policy here:"
 msgstr "在此閱讀我們的隱私政策："
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
 msgid "Privacy policy"
 msgstr "隱私政策"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Configure Home Screen"
+msgid "Configure home screen"
 msgstr "設置首頁畫面"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1431,11 +1431,7 @@ msgid "If you want to know more you can take a look at our manual:"
 msgstr "如果您想了解更多資訊，可參考我們的手冊："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "Usage statistics"
-msgstr "使用統計"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
-msgid "PDFCreator Standby"
+msgid "PDFCreator standby"
 msgstr "PDFCreator 待機"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.GeneralSettingsTranslation
@@ -1465,8 +1461,8 @@ msgstr ""
 "您要下載新版本嗎？"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
-msgid "Direct Image Conversion Settings"
-msgstr "直接圖像轉換設定"
+msgid "Direct image conversion settings"
+msgstr "設定直接圖像轉換"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DirectConversion.DirectConversionTranslation
 msgid "Select page size:"
@@ -1476,21 +1472,20 @@ msgstr "選取頁面尺寸："
 msgid "Select page orientation:"
 msgstr "選擇頁面方向："
 
-#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Default Viewer"
-msgstr "預設瀏覽器"
+msgid "Default viewer"
+msgstr "預設瀏覽工具"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
 msgid "Executable files"
 msgstr "執行檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Executable Path:"
+msgid "Executable path:"
 msgstr "執行路徑："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
-msgid "Additional Parameters:"
+msgid "Additional parameters:"
 msgstr "額外參數："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DefaultViewerSettings.DefaultViewerTranslation
@@ -1500,6 +1495,117 @@ msgid ""
 msgstr ""
 "你可設定客製程式來瀏覽所產生的檔案。如果你沒有作任何設定將使用 Windows 預設程"
 "式。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Clear log file"
+msgstr "清除日誌檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Restore"
+msgstr "還原"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Default settings"
+msgstr "初始設定值"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Export settings"
+msgstr "匯出設定值"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load settings from file"
+msgstr "從檔案讀入設定值"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load specific profiles from file"
+msgstr "從檔案載入特定的設定檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Load specific queues from file"
+msgstr "從檔案載入特定佇列"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Log file cleared"
+msgstr "日誌檔已清除"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Logging"
+msgstr "日誌"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Logging level:"
+msgstr "日誌層別："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert PDFCreator test page"
+msgstr "轉換 PDFCreator 測試頁"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings to file"
+msgstr "儲存設定值至檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Save settings without passwords"
+msgstr "無需密碼即可儲存設定"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Hint: We recommend to save your settings without passwords when sharing "
+"settings with our support"
+msgstr "提示：在與我們的支援人員共享設定時，我們建議以無密碼的方式保存您的設定"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Show log file"
+msgstr "顯示日誌檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Open event log"
+msgstr "開啟事件紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Test pages"
+msgstr "測試頁"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Print Windows test page"
+msgstr "列印 Windows 測試頁"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Do you really want to restore the default settings? The current settings "
+"will be lost."
+msgstr "是否要還原為初始設定值？目前設定值將遺失。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "No log file"
+msgstr "無日誌檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "There is currently no log file available."
+msgstr "目前尚無日誌檔。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Restore default settings"
+msgstr "還原為初始設定值"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "PDFCreator test page"
+msgstr "PDFCreator 測試頁"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid "Convert test page and open directory"
+msgstr "轉換測試頁並開啟目錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Convert a test page with the current profile and open the saving directory"
+msgstr "以目前設定值轉換測試頁並開啟儲存的目錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+msgid ""
+"Convert a test page with the current profile. You will be asked to save the "
+"settings if required."
+msgstr "以目前設定值轉換測試頁。如果需要會要求您儲存設定。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.LoadSpecificProfileTranslation
 msgid "Load Profiles"
@@ -1533,149 +1639,218 @@ msgstr "PDFCreator 設定檔"
 msgid "Add to settings"
 msgstr "新增至設定"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Clear log file"
-msgstr "清除日誌檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Preparation"
+msgstr "準備"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore"
-msgstr "還原"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Modify"
+msgstr "修改"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Default Settings"
-msgstr "初始設定值"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Send/Open"
+msgstr "傳送/開啟"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Export Settings"
-msgstr "匯出設定值"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
+msgid "Choose an action"
+msgstr "選取一個動作"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load settings from file"
-msgstr "從檔案讀入設定值"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Metadata"
+msgstr "後設資料"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load specific profiles from file"
-msgstr "從檔案載入特定的設定檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Title:"
+msgstr "標題："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Load specific queues from file"
-msgstr "從檔案載入特定佇列"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Author:"
+msgstr "作者："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Log file cleared"
-msgstr "日誌檔已清除"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Subject:"
+msgstr "主旨："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging"
-msgstr "日誌"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Keywords:"
+msgstr "關鍵字："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Logging Level:"
-msgstr "日誌層別："
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
+msgid "The selected output format does not support metadata"
+msgstr "所選取的輸出格式不支援元數據"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert PDFCreator test page"
-msgstr "轉換 PDFCreator 測試頁"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Output format"
+msgstr "輸出格式"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings to file"
-msgstr "儲存設定值至檔案"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "General settings"
+msgstr "一般設定"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Save settings without passwords"
-msgstr "無需密碼即可儲存設定"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Page orientation:"
+msgstr "頁面方向："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Color model:"
+msgstr "色彩模式："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Viewer settings"
+msgstr "瀏覽工具設定"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Page view:"
+msgstr "頁面顯示："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Document view:"
+msgstr "文件顯示："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Viewer opens on page:"
+msgstr "瀏覽器開啟頁次:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Image compression:"
+msgstr "影像壓縮："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Factor:"
+msgstr "因素："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Resample images to (DPI):"
+msgstr "圖片重新取樣 (DPI)為："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Advanced:"
+msgstr "進階："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Save validation report"
+msgstr "儲存驗證報告"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "The rgb color mode is not supported for PDF/X"
+msgstr "PDF/X 不支持 rgb 色彩模式"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid ""
-"Hint: We recommend to save your settings without passwords when sharing "
-"settings with our support"
-msgstr "提示：在與我們的支援人員共享設定時，我們建議以無密碼的方式保存您的設定"
+"Use new Ghostscript PDF interpreter\n"
+"(uncheck if the new version causes issues)"
+msgstr ""
+"使用新的 Ghostscript PDF 解譯器\n"
+"（取消勾選若新版本會導致問題）"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Show log file"
-msgstr "顯示日誌檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
+msgid "Colors:"
+msgstr "顏色："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Open event log"
-msgstr "開啟事件紀錄"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Quality (%):"
+msgstr "品質 (%)："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Test Pages"
-msgstr "測試頁"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "Resolution (DPI):"
+msgstr "解析度 (DPI)："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Print Windows test page"
-msgstr "列印 Windows 測試頁"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid ""
-"Do you really want to restore the default settings? The current settings "
-"will be lost."
-msgstr "是否要還原為初始設定值？目前設定值將遺失。"
+"As the text format is very limited in what can be displayed, there are many "
+"ways to create a TXT file from a printed document. You can choose between "
+"four different strategies:"
+msgstr ""
+"由於文字格式在可顯示的內容上非常有限，因此有許多方式可以從列印文件來建立 TXT "
+"檔案。您可以選擇四種不同的策略："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "No log file"
-msgstr "無日誌檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "There is currently no log file available."
-msgstr "目前尚無日誌檔。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Restore Default Settings"
-msgstr "還原為初始設定值"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "PDFCreator Test Page"
-msgstr "PDFCreator 測試頁"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
-msgid "Convert Test Page and Open Directory"
-msgstr "轉換測試頁並開啟目錄"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid ""
-"Convert a test page with the current profile and open the saving directory"
-msgstr "以目前設定值轉換測試頁並開啟儲存的目錄"
+"XML-escaped Unicode along with information regarding the format of the text"
+msgstr "XML 逸出轉義的 Unicode 以及有關文字格式的訊息"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.DebugSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
 msgid ""
-"Convert a test page with the current profile. You will be asked to save the "
-"settings if required."
-msgstr "以目前設定值轉換測試頁。如果需要會要求您儲存設定。"
+"Same XML output format as above, but attempt processing similar to MuPDF"
+msgstr "與上述相同的 XML 輸出格式，但是嘗試類似於 MuPDF 的處理"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "More information"
-msgstr "更多資訊"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid ""
+"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
+"original text layout"
+msgstr "與原始文字版面近似的位元組順序記號（BOM）的 Unicode（UCS2）文字"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "No"
-msgstr "否"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
+msgid "UTF-8 text which approximates the original text layout"
+msgstr "近似於原始文字版面的 UTF-8 文字"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Retry"
-msgstr "重試"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Add new profile"
+msgstr "加入新設定檔"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-msgid "Profile"
-msgstr "設定檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "New profile"
+msgstr "新設定檔"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Queue"
-msgstr "佇列"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter profile name:"
+msgstr "請輸入設定檔名稱："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Click here for more information on tokens"
-msgstr "點此獲取更多關於標記的資訊"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Please enter new profile name:"
+msgstr "請輸入新設定檔名稱："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "The usage of user tokens requires the user token action to be enabled"
-msgstr "運用使用者標記需要開啟使用者標記操作"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The entered profile name is invalid or does already exist."
+msgstr "輸入的設定檔名稱為無效或已經存在。"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
-msgid "Add Token"
-msgstr "新增標記"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Profile:"
+msgstr "設定檔："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
+msgid "Rename"
+msgstr "重新命名"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Rename profile"
+msgstr "重新命名設定檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Remove profile"
+msgstr "移除設定檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "Are you sure, you want to remove this profile?"
+msgstr "確定嗎，您要刪除此設定檔？"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "The profile is mapped to the following printer:"
+msgid_plural "The profile is mapped to the following printers:"
+msgstr[0] "此設定檔對應至下列印表機："
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
+msgid "This printer will be mapped to the default profile."
+msgid_plural "These printers will be mapped to the default profile."
+msgstr[0] "這些印表機將對應至此設定檔。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
@@ -1698,7 +1873,7 @@ msgstr "檔案名稱："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
-msgid "Target Directory:"
+msgid "Target directory:"
 msgstr "目標目錄："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
@@ -1751,16 +1926,6 @@ msgstr "在動作前先合併"
 msgid "Non-pdf auto-merge"
 msgstr "非pdf自動合併"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Output Format"
-msgstr "輸出格式"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Colors:"
-msgstr "顏色："
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Resolution:"
 msgstr "解析度："
@@ -1768,157 +1933,6 @@ msgstr "解析度："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
 msgid "Compression:"
 msgstr "壓縮："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Metadata"
-msgstr "後設資料"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Subject:"
-msgstr "主旨："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveOutputFormatMetadataTranslation
-msgid "Keywords:"
-msgstr "關鍵字："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Preparation"
-msgstr "準備"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Modify"
-msgstr "修改"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
-msgid "Send/Open"
-msgstr "傳送/開啟"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.AddActionOverlayViewTranslation
-msgid "Choose an Action"
-msgstr "選取一個動作"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "General Settings"
-msgstr "一般設定"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page Orientation:"
-msgstr "頁面方向："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Color Model:"
-msgstr "色彩模式："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer Settings"
-msgstr "瀏覽器設定"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Page view:"
-msgstr "頁面顯示："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Document view:"
-msgstr "文件顯示："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Viewer opens on page:"
-msgstr "瀏覽器開啟頁次:"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Image compression:"
-msgstr "影像壓縮："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Factor:"
-msgstr "因素："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Resample images to (DPI):"
-msgstr "圖片重新取樣 (DPI)為："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Advanced:"
-msgstr "進階："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Save validation report"
-msgstr "儲存驗證報告"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "The rgb color mode is not supported for PDF/X"
-msgstr "PDF/X 不支持 rgb 色彩模式"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Use new Ghostscript PDF interpreter\n"
-"(uncheck if the new version causes issues)"
-msgstr ""
-"使用新的 Ghostscript PDF 解譯器\n"
-"（取消勾選若新版本會導致問題）"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Quality (%):"
-msgstr "品質 (%)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "Resolution (DPI):"
-msgstr "解析度 (DPI)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"As the text format is very limited in what can be displayed, there are many "
-"ways to create a TXT file from a printed document. You can choose between "
-"four different strategies:"
-msgstr ""
-"由於文字格式在可顯示的內容上非常有限，因此有許多方式可以從列印文件來建立 TXT "
-"檔案。您可以選擇四種不同的策略："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"XML-escaped Unicode along with information regarding the format of the text"
-msgstr "XML 逸出轉義的 Unicode 以及有關文字格式的訊息"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Same XML output format as above, but attempt processing similar to MuPDF"
-msgstr "與上述相同的 XML 輸出格式，但是嘗試類似於 MuPDF 的處理"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid ""
-"Unicode (UCS2) text with byte order mark (BOM) which approximates the "
-"original text layout"
-msgstr "與原始文字版面近似的位元組順序記號（BOM）的 Unicode（UCS2）文字"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.OutputFormatTranslation
-msgid "UTF-8 text which approximates the original text layout"
-msgstr "近似於原始文字版面的 UTF-8 文字"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Close"
-msgstr "關閉"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Back"
-msgstr "返回"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
-msgid "Modify Settings:"
-msgstr "修改設定："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.MetadataTabTranslation
-msgid "The selected output format does not support metadata"
-msgstr "所選取的輸出格式不支援元數據"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid "Shows a window to select the filename, output format etc."
@@ -1955,6 +1969,10 @@ msgid ""
 "Saving files temporarily without any enabled send action, will only store "
 "files in a temporary folder"
 msgstr "如果不啟用任何發送動作，檔案只會存放於暫時資料夾中"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
+msgid "Show preview"
+msgstr "顯示預覽"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SaveViewTranslation
 msgid ""
@@ -2010,57 +2028,25 @@ msgstr ""
 "請注意：通過在目的目錄中使用者標記，用戶可以將文件保存到服務具有寫入權限的任"
 "何目錄中。"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Add New Profile"
-msgstr "加入新設定檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Close"
+msgstr "關閉"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "New Profile"
-msgstr "新設定檔"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Back"
+msgstr "返回"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter profile name:"
-msgstr "請輸入設定檔名稱："
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditorOverlayViewTranslation
+msgid "Modify settings:"
+msgstr "修改設定："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Please enter new profile name:"
-msgstr "請輸入新設定檔名稱："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The entered profile name is invalid or does already exist."
-msgstr "輸入的設定檔名稱為無效或已經存在。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Profile:"
-msgstr "設定檔："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
-msgid "Rename"
-msgstr "重新命名"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Rename Profile"
-msgstr "重新命名設定檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Remove Profile"
-msgstr "移除設定檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "Are you sure, you want to remove this profile?"
-msgstr "確定嗎，您要刪除此設定檔？"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "The profile is mapped to the following printer:"
-msgid_plural "The profile is mapped to the following printers:"
-msgstr[0] "此設定檔對應至下列印表機："
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ProfileMangementTranslation
-msgid "This printer will be mapped to the default profile."
-msgid_plural "These printers will be mapped to the default profile."
-msgstr[0] "這些印表機將對應至此設定檔。"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
+msgid "Actions"
+msgstr "動作"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Add action"
@@ -2069,39 +2055,6 @@ msgstr "新增動作"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.WorkflowEditorTranslation
 msgid "Add actions to modify, send or prepare your documents"
 msgstr "新增動作以修改，發送或準備您的文件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print document"
-msgstr "列印文件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Duplex printing (if support by the printer)"
-msgstr "雙工列印 (如果印表機支援)"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Select printer:"
-msgstr "選擇印表機："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Fit to the page size of the printer"
-msgstr "調整為符合打印機的頁面大小"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Print"
-msgstr "列印"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid "Prints the document to a physical printer."
-msgstr "列印文件至實體印表機。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-msgid ""
-"The selected printer is mapped to PDFCreator. Please consider using the "
-"forwarding action. It doesn't require additional printing, is quicker and "
-"less error prone."
-msgstr ""
-"所選取印表機已映射到 PDFCreator。 請考慮使用轉發操作。 它不需要額外的列印，速"
-"度更快，更不容易出錯。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2113,24 +2066,58 @@ msgstr ""
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
-msgid "This feature is already enabled for the selected profile"
-msgstr "此功能已經為所選的設定啟用"
+msgid "Directory:"
+msgstr "目錄："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Sites:"
+msgstr "網站："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Drives:"
+msgstr "磁碟："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Selected account:"
+msgstr "選取帳戶："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid ""
+"Don't overwrite files (add an incrementing number in case a file already "
+"exists)"
+msgstr "不要覆蓋檔案（如果檔案已存在，則添加一個遞增的數字）"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Show link at the end of interactive workflow"
+msgstr "在互動式工作流程結束時顯示連結"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Open upload in browser"
+msgstr "以瀏覽器開啟上傳"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "SharePoint"
+msgstr "SharePoint"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
+msgid "Upload documents to your SharePoint"
+msgstr "上傳文件至您的 SharePoint"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2171,49 +2158,24 @@ msgstr "所選擇的輸出格式不支援此項功能"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Directory:"
-msgstr "目錄："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Sites:"
-msgstr "網站："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Drives:"
-msgstr "磁碟："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Selected Account:"
-msgstr "選取帳戶："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid ""
-"Don't overwrite files (add an incrementing number in case a file already "
-"exists)"
-msgstr "不要覆蓋檔案（如果檔案已存在，則添加一個遞增的數字）"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Show link at the end of interactive workflow"
-msgstr "在互動式工作流程結束時顯示連結"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Open upload in browser"
-msgstr "以瀏覽器開啟上傳"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Sharepoint"
-msgstr "Sharepoint"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint.SharepointTranslation
-msgid "Upload a file to your OneDrive"
-msgstr "將檔案上傳到您的 OneDrive"
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
+msgid "This feature is already enabled for the selected profile"
+msgstr "此功能已經為所選的設定啟用"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -2242,24 +2204,20 @@ msgid "Select program"
 msgstr "選取程式"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Additional Program Parameters:"
+msgid "Additional program parameters:"
 msgstr "額外程式參數："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Call Preview:"
-msgstr "呼叫預覽："
+msgid "Call preview:"
+msgstr "通話預覽："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Program File:"
+msgid "Program file:"
 msgstr "程式檔："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid "Wait until the program has ended"
 msgstr "等到程式執行完畢"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
-msgid "Run Program"
-msgstr "執行程式"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.RunProgram.ScriptTranslation
 msgid ""
@@ -2270,8 +2228,41 @@ msgstr ""
 "在轉換後接著呼叫程式或腳本來處理文件檔。 PDFCreator自動呼叫指定的程式，並以所"
 "建立的文件檔當作參數傳輸。"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print document"
+msgstr "列印文件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Duplex printing (if support by the printer)"
+msgstr "雙工列印 (如果印表機支援)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Select printer:"
+msgstr "選擇印表機："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Fit to the page size of the printer"
+msgstr "調整為符合打印機的頁面大小"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Print"
+msgstr "列印"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid "Prints the document to a physical printer."
+msgstr "列印文件至實體印表機。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Print.PrintTabTranslation
+msgid ""
+"The selected printer is mapped to PDFCreator. Please consider using the "
+"forwarding action. It doesn't require additional printing, is quicker and "
+"less error prone."
+msgstr ""
+"所選取印表機已映射到 PDFCreator。 請考慮使用轉發操作。 它不需要額外的列印，速"
+"度更快，更不容易出錯。"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
-msgid "Open File"
+msgid "Open file"
 msgstr "開啟檔案"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OpenFile.OpenViewerActionTranslation
@@ -2308,7 +2299,7 @@ msgid "Add file"
 msgstr "新增檔案"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
-msgid "Select File:"
+msgid "Select file:"
 msgstr "選取檔案："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles.SelectFileTranslation
@@ -2316,7 +2307,7 @@ msgid "Apply"
 msgstr "應用"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Extract User Tokens"
+msgid "Extract user tokens"
 msgstr "擷取使用者標記"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2350,7 +2341,7 @@ msgid ""
 msgstr "如果未在文件中定義使用者標記，則會使用預設值。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "Select Separator:"
+msgid "Select separator:"
 msgstr "選擇分隔符號："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2358,7 +2349,7 @@ msgid "More on user tokens"
 msgstr "更多有關使用者標記"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
-msgid "User Token"
+msgid "User token"
 msgstr "使用者標記"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.UserToken.UserTokenTranslation
@@ -2368,7 +2359,7 @@ msgid ""
 msgstr "從原始文件檔中擷取值，並在 PDFCreator 支援的任何位置使用它們。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
-msgid "Forward to Profile"
+msgid "Forward to profile"
 msgstr "轉發到設定檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.ForwardToOtherProfile.ForwardToFurtherProfileTranslation
@@ -2388,11 +2379,11 @@ msgid "CS-Script"
 msgstr "CS-Script"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Check Script"
+msgid "Check script"
 msgstr "檢查腳本"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "CS-Script File:"
+msgid "CS-Script file:"
 msgstr "CS-Script 檔："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2408,11 +2399,15 @@ msgid "Loading CS-Script was successful."
 msgstr "已成功讀入 CS-Script。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Open CS-Scripts Folder"
+msgid "Open CS-Scripts folder"
 msgstr "開啟 CS-Scripts 資料夾"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
-msgid "Reload Script List"
+msgid "Enable debugging."
+msgstr "啟用除錯。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
+msgid "Reload script list"
 msgstr "重新載入Script清單"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.PreparationActions.CsScript.CsScriptTranslation
@@ -2485,7 +2480,7 @@ msgid "Format:"
 msgstr "格式："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
-msgid "Page Numbers"
+msgid "Page numbers"
 msgstr "頁碼"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.PageNumbersTranslation
@@ -2497,7 +2492,7 @@ msgid "Select watermark file"
 msgstr "選取浮水印檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.WatermarkTranslation
-msgid "Watermark File (Only PDF):"
+msgid "Watermark file (only PDF):"
 msgstr "浮水印檔 (僅PDF)："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
@@ -2536,23 +2531,23 @@ msgid "Stamp"
 msgstr "蓋章"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Show Font as outline"
+msgid "Show font as outline"
 msgstr "字型以外框顯示"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Font Color:"
-msgstr "字型顏色:"
+msgid "Font color:"
+msgstr "字型顏色："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
 msgid "Font:"
 msgstr "字型："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Outline Width:"
+msgid "Outline width:"
 msgstr "大綱寬度："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
-msgid "Stamp Text:"
+msgid "Stamp text:"
 msgstr "蓋章文字："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Stamp.DocumentTabTranslation
@@ -2563,76 +2558,13 @@ msgstr "不支援選取的字型。請選擇另一個字型。"
 msgid "Places a stamp text on the document."
 msgstr "在文件中放入一段蓋章文字。"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover"
-msgstr "封面"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Inserts one or more pages at the beginning of the document."
-msgstr "在文件開頭插入一頁或多頁。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Add cover"
-msgstr "新增封面"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Select cover file"
-msgstr "選取封面檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid "Cover files (PDF):"
-msgstr "封面檔 (PDF)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
-msgid ""
-"Warning: The following documents are PDF 2.0 files and can't be added to "
-"other documents during the conversion:"
-msgstr "警告：下列文件為 PDF 2.0檔案，不能在轉換過程中添加到其他文件檔中："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background"
-msgstr "背景"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Adds a background to the document."
-msgstr "在文件上加入背景。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Select background file"
-msgstr "選取背景檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
-msgid "Background File (Only PDF):"
-msgstr "背景檔 (僅PDF)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Add attachment"
-msgstr "加入附件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Select attachment file"
-msgstr "選取附件檔"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment files (PDF):"
-msgstr "附件檔 (PDF)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Attachment"
-msgstr "附件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
-msgid "Appends one or more pages at the end of the document."
-msgstr "在文件末尾附加一頁或多頁。"
-
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Position and size"
 msgstr "位置和大小"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Certificate File:"
+msgid "Certificate file:"
 msgstr "憑證檔："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -2703,13 +2635,14 @@ msgid "Allow multiple signing"
 msgstr "允許多重簽章"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Display Signature:"
+msgid "Display signature:"
 msgstr "顯示簽章:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "No display"
 msgstr "不顯示"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Text"
 msgstr "文字"
@@ -2719,11 +2652,11 @@ msgid "Image"
 msgstr "圖片"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Image and Text"
+msgid "Image and text"
 msgstr "圖片和文字"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Select Time Server:"
+msgid "Select time server:"
 msgstr "選取時間伺服器："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2731,11 +2664,11 @@ msgid "Display signature in document"
 msgstr "在文件顯示簽章"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Signature Image:"
-msgstr "簽名影像："
+msgid "Signature image:"
+msgstr "簽名圖像："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
-msgid "Draw Custom Signature"
+msgid "Draw custom signature"
 msgstr "繪製自訂簽名"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
@@ -2786,40 +2719,6 @@ msgstr "重設"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature.SignatureTranslation
 msgid "Brush"
 msgstr "筆刷"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Owner password (for editing):"
-msgstr "擁有者密碼 (編輯用)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Note: An owner password is required to set the user password."
-msgstr "註：需要擁有者密碼才能設定此用戶密碼。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid ""
-"Leave password empty to get a request during the print job (password will "
-"not be saved)."
-msgstr "將密碼留空白以在打印作業時取得請求（密碼將不會儲存）。"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Skip"
-msgstr "跳過"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Encryption Passwords"
-msgstr "密碼加密"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "User password (for opening):"
-msgstr "使用者密碼 (開啟用)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
-msgid "Password strength:"
-msgstr "密碼強度："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionActionViewTranslation
 msgid "Require a password to open the PDF document"
@@ -2899,16 +2798,117 @@ msgid ""
 "receives. Signature and Encryption are always processed last."
 msgstr "保全的PDF檔以密碼並設定用戶的授權選擇。簽章和加密都是最後處理。"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Owner password (for editing):"
+msgstr "擁有者密碼 (編輯用)："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Note: An owner password is required to set the user password."
+msgstr "註：需要擁有者密碼才能設定此用戶密碼。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.Password.PasswordOverlayTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid ""
+"Leave password empty to get a request during the print job (password will "
+"not be saved)."
+msgstr "將密碼留空白以在打印作業時取得請求（密碼將不會儲存）。"
+
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Skip"
+msgstr "跳過"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Encryption passwords"
+msgstr "密碼加密"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "User password (for opening):"
+msgstr "使用者密碼 (開啟用)："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption.EncryptionPasswordsOverlayTranslation
+msgid "Password strength:"
+msgstr "密碼強度："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover"
+msgstr "封面"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Inserts one or more pages at the beginning of the document."
+msgstr "在文件開頭插入一頁或多頁。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Add cover"
+msgstr "新增封面"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Select cover file"
+msgstr "選取封面檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid "Cover files (PDF):"
+msgstr "封面檔 (PDF)："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Cover.CoverSettingsTranslation
+msgid ""
+"Warning: The following documents are PDF 2.0 files and can't be added to "
+"other documents during the conversion:"
+msgstr "警告：下列文件為 PDF 2.0檔案，不能在轉換過程中添加到其他文件檔中："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Background"
+msgstr "背景"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Adds a background to the document."
+msgstr "在文件上加入背景。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Select background file"
+msgstr "選取背景檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Background.BackgroundSettingsAndActionTranslation
+msgid "Background file (only PDF):"
+msgstr "背景檔 (僅PDF)："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Add attachment"
+msgstr "加入附件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Select attachment file"
+msgstr "選取附件檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment files (PDF):"
+msgstr "附件檔 (PDF)："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Attachment"
+msgstr "附件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Attachment.AttachmentSettingsAndActionTranslation
+msgid "Appends one or more pages at the end of the document."
+msgstr "在文件末尾附加一頁或多頁。"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Upload"
+msgid "FTP upload"
 msgstr "FTP 上傳"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Account:"
+msgid "FTP account:"
 msgstr "FTP 帳戶："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
-msgid "FTP Server Password:"
+msgid "FTP server password:"
 msgstr "FTP 伺服器密碼："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.FtpPasswordStepTranslation
@@ -2940,46 +2940,16 @@ msgid "_Remove"
 msgstr "移除(_R)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Upload"
+msgid "HTTP upload"
 msgstr "HTTP 上傳"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Account:"
+msgid "HTTP account:"
 msgstr "HTTP 帳戶："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.HttpPasswordStepTranslation
-msgid "HTTP Server Password:"
+msgid "HTTP server password:"
 msgstr "HTTP 伺服器密碼："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
-msgid "Security"
-msgstr "安控"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-msgid "Set Certificate Password"
-msgstr "設定憑證密碼"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
-msgid "Certificate _Password:"
-msgstr "憑證密碼(_P)："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Mail"
-msgstr "SMTP 郵件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Account:"
-msgstr "SMTP 帳戶："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
-msgid "SMTP Server Password:"
-msgstr "SMTP 伺服器密碼："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
-msgid "Converting..."
-msgstr "轉換中..."
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgctxt "PrintJobWindowButton"
@@ -3039,54 +3009,67 @@ msgstr "移除廣告"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.PrintJobViewTranslation
 msgid ""
-"Certain features are not supported by the selected output format and will be "
-"skipped automatically. Please check your profile settings."
-msgstr "某些功能不受所選輸出格式支援，將自動跳過。請檢查您的檔案設定。"
+"Certain functions are not supported by the output format and will not be "
+"executed. Please check your profile."
+msgstr "某些功能不支援此輸出格式，將不會執行。請檢查您的檔案設定。"
 
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "After converting {0} file, we have a recommendation for you:"
-msgid_plural "After converting {0} files, we have a recommendation for you:"
-msgstr[0] "轉換 {0} 個文件後，我們為您提供了一個建議："
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProgressViewTranslation
+msgid "Converting..."
+msgstr "轉換中..."
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Higher encryption (256 Bit AES)"
-msgstr "高階加密（256位元 AES）"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SecurityPasswordsStepTranslation
+msgid "Security"
+msgstr "安控"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Includes HotFolder"
-msgstr "包括 HotFolder"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+msgid "Set Certificate password"
+msgstr "設定憑證密碼"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Extract settings with user tokens"
-msgstr "以使用者標記設定擷取"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SignaturePasswordStepTranslation
+msgid "Certificate password:"
+msgstr "憑證密碼："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Automatic saving with tray notification"
-msgstr "自動存檔時工作列通知"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+msgid "SMTP mail"
+msgstr "SMTP 郵件"
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Priority support"
-msgstr "優先支援"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+msgid "SMTP account:"
+msgstr "SMTP 帳戶："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "Admin friendly"
-msgstr "管理員友善"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.SmtpPasswordStepTranslation
+msgid "SMTP server password:"
+msgstr "SMTP 伺服器密碼："
 
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "No, thanks"
-msgstr "不用，多謝"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
-msgid "More Information"
-msgstr "更多資訊"
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with PDF Architect"
+msgstr "使用 PDF Architect 開啟"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Quick Actions"
 msgstr "快捷動作"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open with default viewer"
+msgstr "使用預設瀏覽器開啟"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Open folder"
+msgstr "開啟資料夾"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Send by email"
 msgstr "發送電子郵件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
+msgid "Print with PDF Architect"
+msgstr "使用 PDF Architect 列印"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionStep.QuickActionTranslation
 msgid "Open"
@@ -3125,12 +3108,109 @@ msgstr "OneDrive 分享連結"
 msgid "Sharepoint share link"
 msgstr "Sharepoint 分享連結"
 
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "After converting {0} file, we have a recommendation for you:"
+msgid_plural "After converting {0} files, we have a recommendation for you:"
+msgstr[0] "轉換 {0} 個文件後，我們為您提供了一個建議："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Higher encryption (256 Bit AES)"
+msgstr "高階加密（256位元 AES）"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Includes HotFolder"
+msgstr "包括 HotFolder"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Extract settings with user tokens"
+msgstr "以使用者標記設定擷取"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Automatic saving with tray notification"
+msgstr "自動存檔時工作列通知"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Priority support"
+msgstr "優先支援"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "Admin friendly"
+msgstr "管理員友善"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "No, thanks"
+msgstr "不用，多謝"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.ProfessionalHintStep.ProfessionalHintStepTranslation
+msgid "More Information"
+msgstr "更多資訊"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "Email address:"
+msgstr "電子郵件信箱："
+
+#. Header for bullet points like 'receive helpful guides'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt " ...receive helpful guides"
+msgid "Enter your email to:"
+msgstr "輸入您的電子郵件至："
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Get exclusive offers and expert tips"
+msgstr "獲取獨家優惠和專家提示"
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Receive helpful guides and best practices"
+msgstr "獲得有用的指南和最佳實踐"
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Join 1,000,000+ users improving their PDF experience"
+msgstr "與 1,000,000 多名用戶一起改善他們的 PDF 體驗"
+
+#. Bullet point for the header 'Enter your email to:'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "Enter your email to: "
+msgid "Help ensure PDFCreator Free stays free for everyone"
+msgstr "幫助確保 PDFCreator Free 對所有人免費"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "Make the most of PDFCreator Free"
+msgstr "充分利用 PDFCreator Free"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "I agree to receive marketing and promotional communications."
+msgstr "我同意接收行銷和促銷訊息。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid "Submission failed"
+msgstr "提交失敗"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgid ""
+"Error submission failed (most likely due to a network issue), please try "
+"again."
+msgstr "提交失敗錯誤（很可能是由於網路問題），請重試。"
+
+#. Text before clickable 'Privacy policy'
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepTranslation
+msgctxt "... Privacy policy"
+msgid "The information you provide will be handled in accordance with our"
+msgstr "您提供的資訊將按照我們的規定進行處理"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
 msgid "Please select a profile:"
 msgstr "請選取設定檔："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.EditPrinterProfileTranslatable
-msgid "Edit Profile"
+msgid "Edit profile"
 msgstr "編輯設定黨"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3146,7 +3226,7 @@ msgid "Last used profile"
 msgstr "最近使用的設定檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
-msgid "Primary Printer"
+msgid "Primary printer"
 msgstr "主要印表機"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
@@ -3154,7 +3234,7 @@ msgid "Rename printer"
 msgstr "印表機更名"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Printer.PrinterViewTranslation
-msgid "Manage Printers"
+msgid "Manage printers"
 msgstr "印表機管理"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Overlay.OverwriteOrAppendTranslation
@@ -3190,6 +3270,99 @@ msgstr "無效的憑證"
 msgid "Invalid credentials for '{0}'. Please try retyping your password."
 msgstr "無效的憑證 '{0}'。請嘗試重新輸入您的密碼。"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "More information"
+msgstr "更多資訊"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "No"
+msgstr "否"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Retry"
+msgstr "重試"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Discard"
+msgstr "放棄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+msgid "Profile"
+msgstr "設定檔"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.MessageViewTranslation
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Queue"
+msgstr "佇列"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Click here for more information on tokens"
+msgstr "點此獲取更多關於標記的資訊"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "The usage of user tokens requires the user token action to be enabled"
+msgstr "運用使用者標記需要開啟使用者標記操作"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Misc.TokenHintPanelTranslation
+msgid "Add Token"
+msgstr "新增標記"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Print to '{0}' to get started!"
+msgstr "列印到 '{0}' 開始吧！"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Choose a file to convert"
+msgstr "選擇一個要轉換檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "The history is empty"
+msgstr "空的歷史紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Clear history"
+msgstr "清空歷史紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Refresh history"
+msgstr "重新歷史紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Enable history"
+msgstr "啟用歷史紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Disable history"
+msgstr "停用歷史紀錄"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "... or simply drop files here!"
+msgstr "... 或者直接拖曳檔案至此！"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Files recently created by PDFCreator:"
+msgstr "最近 PDFCreator 建立的檔案:"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Remove from history"
+msgstr "從歷史紀錄移除"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Document info"
+msgstr "文件資訊"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Delete file"
+msgstr "刪除檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "Open with Email Client"
+msgstr "用電子郵件用戶端開啟"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Home.HomeViewTranslation
+msgid "History is disabled"
+msgstr "歷史紀錄已停用"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Successfully shared"
 msgstr "成功分享"
@@ -3217,6 +3390,70 @@ msgstr "感謝您抽空分享您的想法。"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback.FeedbackSentTranslation
 msgid "Thank you for letting us know how we can improve."
 msgstr "感謝您讓我們知道如何改進。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Download PDF Architect now"
+msgstr "馬上下載 PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "More on PDF Architect"
+msgstr "更多關於 PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Install PDF Architect now"
+msgstr "現在就安裝 PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Launch PDF Architect"
+msgstr "啟用 PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "You already have PDF Architect on your computer"
+msgstr "您電腦裡已經安裝 PDF Architect"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Our full-featured PDF Editor"
+msgstr "我們全功能的 PDF 編輯器"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Split files"
+msgstr "分割檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Other powerful PDF Architect features:"
+msgstr "其它 PDF Architect 強大功能："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Edit PDF files"
+msgstr "編輯 PDF 檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Convert PDF files"
+msgstr "轉換 PDF 檔案"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Review and Annotate"
+msgstr "評論和註釋"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Secure and Protect"
+msgstr "安控和保護"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Insert page elements"
+msgstr "插入頁面元件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Create custom forms"
+msgstr "建立客製化表單"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Optical character recognition (OCR)"
+msgstr "光學文字辨識 (OCR)"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Architect.ArchitectViewTranslation
+msgid "Send for e-signature"
+msgstr "傳送電子簽章"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3256,7 +3493,7 @@ msgstr "管理您的憑據以執行相應的操作。所有設定檔都可以使
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Manage Accounts"
+msgid "Manage accounts"
 msgstr "帳戶管理"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3282,7 +3519,7 @@ msgstr "加入 FTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "FTP Account"
+msgid "FTP account"
 msgstr "FTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3295,7 +3532,7 @@ msgstr "FTP 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Test FTP Account"
+msgid "Test FTP account"
 msgstr "測試 FTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3373,7 +3610,7 @@ msgstr "微軟帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "HTTP Account"
+msgid "HTTP account"
 msgstr "HTTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3451,7 +3688,7 @@ msgstr "Dropbox 帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Add Time Server account"
+msgid "Add time server account"
 msgstr "加入時間伺服器帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3464,7 +3701,7 @@ msgstr "加入時間伺服器帳戶"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Time Server Account"
+msgid "Time server account"
 msgstr "時間伺服器帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3517,7 +3754,7 @@ msgstr "金鑰檔需要密碼"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Request Permissions"
+msgid "Request permissions"
 msgstr "請求權限"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3543,8 +3780,8 @@ msgstr "伺服器："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "User Name:"
-msgstr "使用者名稱:"
+msgid "User name:"
+msgstr "使用者名稱："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3600,7 +3837,7 @@ msgstr "時限以秒計："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Sending Mode:"
+msgid "Sending mode:"
 msgstr "傳送模式："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
@@ -3808,19 +4045,6 @@ msgstr "OneDrive"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "SharePoint"
-msgstr "SharePoint"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountsTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
 msgid "Outlook Web Access"
 msgstr "Outlook 網頁造訪"
 
@@ -3834,42 +4058,8 @@ msgstr "Outlook 網頁造訪"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "send directly"
+msgid "Send directly"
 msgstr "直接發送"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "HTTP"
-msgstr "HTTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Select HTTP Account:"
-msgstr "選取 HTTP 帳戶："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Edit HTTP Account"
-msgstr "編輯 HTTP 帳戶"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Remove HTTP Account"
-msgstr "移除 HTTP 帳戶"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "URL:"
-msgstr "網址："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Basic Authentication"
-msgstr "基本驗證"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "The HTTP action will be disabled for this profile."
-msgid_plural "The HTTP action will be disabled for this profiles."
-msgstr[0] "此設定檔會停用 HTTP 操作。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
-msgid "Uploads the document to an HTTP server."
-msgstr "上傳檔案至 HTTP 伺服器。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
 msgid "Authenticate with Dropbox"
@@ -3908,7 +4098,7 @@ msgid "Show share link at the end of interactive workflow."
 msgstr "在互動式工作流程結束時顯示共享連結。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
-msgid "Please select Dropbox Account:"
+msgid "Please select Dropbox account:"
 msgstr "請選取 Dropbox 帳戶："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.DropboxTranslation
@@ -3945,6 +4135,85 @@ msgstr "感謝授予存取權限。請返回 PDFCreator。"
 msgid "You can now close this window."
 msgstr "您現在可以關閉此視窗。"
 
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Please select a FTP account:"
+msgstr "請選取 FTP 帳戶："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Upload with FTP"
+msgstr "透過 FTP 上傳"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Remove FTP account"
+msgstr "移除 FTP 帳戶"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Edit FTP account"
+msgstr "編輯 FTP 帳戶"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "FTP"
+msgstr "FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Uploads the document with FTP."
+msgstr "透過 FTP 上傳文件。"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "The FTP action will be disabled for this profile."
+msgid_plural "The FTP action will be disabled for this profiles."
+msgstr[0] "此設定檔會停用 FTP 操作。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer not found"
+msgstr "找不到瀏覽器"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "Viewer was not found, please check your settings."
+msgstr "找不到瀏覽器，請檢查您的設定值。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via FTP"
+msgstr "{0} 透過 FTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
+msgid "{0} via SFTP"
+msgstr "{0} 透過 SFTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "HTTP"
+msgstr "HTTP"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Select HTTP account:"
+msgstr "選取 HTTP 帳戶："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Edit HTTP account"
+msgstr "編輯 HTTP 帳戶"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Remove HTTP account"
+msgstr "移除 HTTP 帳戶"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
+msgid "URL:"
+msgstr "網址："
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Basic authentication"
+msgstr "基本驗證"
+
+#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "The HTTP action will be disabled for this profile."
+msgid_plural "The HTTP action will be disabled for this profiles."
+msgstr[0] "此設定檔會停用 HTTP 操作。"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.HttpTranslation
+msgid "Uploads the document to an HTTP server."
+msgstr "上傳檔案至 HTTP 伺服器。"
+
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Email (SMTP)"
 msgstr "電子郵件 (SMTP)"
@@ -3955,7 +4224,7 @@ msgstr "透過SMTP將文件檔發送電子郵件，而不需與用戶互動。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit SMTP Account"
+msgid "Edit SMTP account"
 msgstr "編輯 SMTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -3965,18 +4234,13 @@ msgstr "移除 SMTP 帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Email Address:"
-msgstr "電子郵件信箱："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid "Port:"
 msgstr "連接埠:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "SSL"
-msgstr "SSL"
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
@@ -4001,13 +4265,7 @@ msgstr "文件檔"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Add Attachment"
-msgstr "加入附件"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Edit Subject And Content"
+msgid "Edit subject and content"
 msgstr "編輯主題和內容"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4017,7 +4275,7 @@ msgstr "測試電子郵件已成功寄至下列收件人："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Set SMTP Server Password"
+msgid "Set SMTP server password"
 msgstr "設定 SMTP 伺服器密碼"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4083,7 +4341,7 @@ msgstr "額外電子郵件附件："
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Select Email Attachment File"
+msgid "Select email attachment file"
 msgstr "選取電子郵件附件檔"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4093,17 +4351,22 @@ msgstr "檢查電子郵件用戶端"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender"
+msgid "Open email in installed email client"
+msgstr "從已安裝的電子郵件用戶端中開啟電子郵件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
+msgid "Specify sender"
 msgstr "指定發信者"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Specify Sender:"
+msgid "Specify sender:"
 msgstr "指定發信者："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "On Behalf Of:"
+msgid "On behalf of:"
 msgstr "謹代表："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
@@ -4114,23 +4377,27 @@ msgstr "謹代表"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
 msgid ""
-"If set it will be used as From and the address from the account will be set "
-"as Sender"
+"If set it will be used as from and the address from the account will be set "
+"as sender"
 msgstr "如果設定，它將當作發信者，帳戶中的地址將設為發信者"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Display Name:"
+msgid "Display name:"
 msgstr "顯示名稱:"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.MailTranslation
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpMailTranslation
-msgid "Reply To:"
+msgid "Reply to:"
 msgstr "回覆："
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
-msgid "Email (OWA)"
-msgstr "電子郵件 (OWA)"
+msgid "Email via Outlook Web"
+msgstr "透過 Outlook Web 傳送電子郵件"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
+msgid "Email (Outlook Web)"
+msgstr "電子郵件 (Outlook Web)"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.OutlookWebTranslation
 msgid ""
@@ -4167,11 +4434,11 @@ msgid ""
 msgstr "使用預設的電子郵件客戶端開啓，並以轉換後的文件作為附件。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Edit Time Server Account"
+msgid "Edit time server account"
 msgstr "編輯時間伺服器帳戶"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Remove Time Server Account"
+msgid "Remove time server account"
 msgstr "移除時間伺服器帳戶"
 
 #. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
@@ -4180,53 +4447,8 @@ msgid_plural "Signing will be disabled for this profiles."
 msgstr[0] "此設定檔會停用簽章。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.TimeServerTranslation
-msgid "Secured Time Server"
+msgid "Secured time server"
 msgstr "保全的時間伺服器"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Please select a FTP account:"
-msgstr "請選取 FTP 帳戶："
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Upload with FTP"
-msgstr "透過 FTP 上傳"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Remove FTP account"
-msgstr "移除 FTP 帳戶"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Edit FTP Account"
-msgstr "編輯 FTP 帳戶"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "FTP"
-msgstr "FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Uploads the document with FTP."
-msgstr "透過 FTP 上傳文件。"
-
-#. pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "The FTP action will be disabled for this profile."
-msgid_plural "The FTP action will be disabled for this profiles."
-msgstr[0] "此設定檔會停用 FTP 操作。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer not found"
-msgstr "找不到瀏覽器"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "Viewer was not found, please check your settings."
-msgstr "找不到瀏覽器，請檢查您的設定值。"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via FTP"
-msgstr "{0} 透過 FTP"
-
-#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.FtpActionTranslation
-msgid "{0} via SFTP"
-msgstr "{0} 透過 SFTP"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.MicrosoftTranslation
 msgid "Microsoft"
@@ -4281,6 +4503,10 @@ msgstr "私人連結"
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
 msgid "Share link (anyone with the link has access to it)"
 msgstr "分享連結（知道該連結的任何人都可以訪問它）"
+
+#: pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft.OneDriveTranslation
+msgid "Upload documents to your OneDrive"
+msgstr "將文件上傳到您的 OneDrive"
 
 #: pdfforge.PDFCreator.UI.Presentation.Styles.Gpo.GpoTranslation
 msgid "Set by Administrator"
@@ -4377,6 +4603,10 @@ msgid "You have unsaved changes."
 msgstr "有尚未儲存的設定。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
+msgid "How do you want to proceed?"
+msgstr "您想如何進行？"
+
+#: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "You have invalid settings."
 msgstr "有無效的設定值。"
 
@@ -4402,8 +4632,8 @@ msgid "To proceed you need to save your current settings."
 msgstr "需先儲存目前設定以繼續。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
-msgid "Choose 'No' to revert the changes."
-msgstr "選擇 '否' 以還原變更。"
+msgid "Default Viewer"
+msgstr "預設瀏覽器"
 
 #: pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands.EvaluateSettingsAndNotifyUserTranslation
 msgid "Settings are Loading"
@@ -4418,12 +4648,12 @@ msgid "Do you want to close the application anyway?"
 msgstr "您仍要關閉該應用程式嗎？"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
-msgid "User Tokens"
+msgid "User tokens"
 msgstr "使用者標記"
 
 #: pdfforge.PDFCreator.UI.Presentation.Banner.FrequentTipsTranslation
 msgid ""
-"User Tokens allow to predefine information like the email address, subject, "
+"User tokens allow to predefine information like the email address, subject, "
 "and text directly in the document without having to manually open PDFCreator "
 "settings for each conversion."
 msgstr ""
@@ -4527,65 +4757,6 @@ msgstr "找不到所選取的 Outlook 項目："
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.AttachToOutlookItemTranslation
 msgid "Error while adding attachment to selected Outlook item:"
 msgstr "加入附件至 Outlook 項目時生錯誤："
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"You do not have any PDFCreator printers installed. Most likely there was a "
-"problem during the setup or the installation has been altered afterwards.\n"
-"Do you want to fix this by reinstalling the PDFCreator printers?\n"
-"\n"
-"Note: You might be asked to grant admin privileges while fixing the problem."
-msgstr ""
-"您並未安裝任何 PDFCreator 印表機。此問題極有可能是設定或安裝時修改所導致。\n"
-"是否重新安裝 PDFCreator 印表機來修正此問題？\n"
-"\n"
-"註：可能會詢問管理員權限以修正此問題。"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your printers. Please contact your "
-"administrator or the support to assist you in with this problem."
-msgstr ""
-"PDFCreator 無法修復所安裝的印表機。請聯絡您的系統管理員或產品支援協助解決這個"
-"問題。"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "No printers installed"
-msgstr "尚未安裝印表機"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "RepairTool not found"
-msgstr "找不到 RepairTool"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
-msgid ""
-"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
-msgstr "有一個重要的 PDFCreator 遺失檔案 ('{0}')。請重新安裝 PDFCreator！"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid "Access Denied"
-msgstr "拒絕存取"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"The temporary path where PDFCreator stores the print jobs can't be accessed. "
-"This is a configuration problem on your machine and needs to be fixed. Do "
-"you want PDFCreator to attempt repairing it?\n"
-"Your spool folder is: {0}"
-msgstr ""
-"PDFCreator 存放列印作業的暫存路徑無法存取。此為您電腦的設定問題必須修正。是否"
-"由 PDFCreator 嘗試修正它？\n"
-"您的緩衝目錄為：{0}"
-
-#: pdfforge.PDFCreator.UI.Presentation.Assistants.ApplicationTranslation
-msgid ""
-"PDFCreator was not able to repair your spool folder. Please contact your "
-"administrator or the support to assist you in changing the permissions of "
-"the path '{0}'."
-msgstr ""
-"PDFCreator 無法修復緩衝目錄。請聯繫系統管理員或技術人員以協助你取得變更緩衝目"
-"錄路徑 '{0}' 的權限。"
 
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.LoadSettingsTranslation
 msgid "INI files (*.ini)|*.ini"
@@ -4703,6 +4874,11 @@ msgstr ""
 msgid "Operation failed. You probably do not have sufficient permissions."
 msgstr "操作失敗。您可能沒有足夠的權限。"
 
+#: pdfforge.PDFCreator.UI.Presentation.Assistants.UacAssistantTranslation
+msgid ""
+"An important PDFCreator file is missing ('{0}'). Please reinstall PDFCreator!"
+msgstr "有一個重要的 PDFCreator 遺失檔案 ('{0}')。請重新安裝 PDFCreator！"
+
 #: pdfforge.PDFCreator.UI.Presentation.Assistants.Update.RestartApplicationInteractionTranslation
 msgid "Update PDFCreator"
 msgstr "更新 PDFCreator"
@@ -4762,14 +4938,6 @@ msgstr "有發生錯誤。 請檢視錯誤標籤頁。"
 msgid "Observation mode - restart as an administrator for full access."
 msgstr "觀察模式 - 以管理員身分重新啟動以獲得完全存取權限。"
 
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-msgid "Store failed print jobs"
-msgstr "儲存失敗的列印作業"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
-msgid "Store files of failed print jobs in selected directory"
-msgstr "儲存失敗的列印作業文件在選定的目錄中"
-
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.ForwardToFurtherQueueTranslation
 msgid "Forward to Queue"
 msgstr "轉發到佇列"
@@ -4796,6 +4964,14 @@ msgstr "執行緒數："
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.MultiThreadingTranslation
 msgid "Recommended Number of Threads:"
 msgstr "建議的執行緒數："
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store failed print jobs"
+msgstr "儲存失敗的列印作業"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.Settings.StoreFailedJobTranslation
+msgid "Store files of failed print jobs in selected directory"
+msgstr "儲存失敗的列印作業文件在選定的目錄中"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.Queues.QueueSettingsTranslation
 msgid "Queue:"
@@ -4826,8 +5002,20 @@ msgid "PDFCreator Server is running"
 msgstr "PDFCreator伺服器已在運行"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Enable History"
+msgstr "啟用歷史紀錄"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Disable History"
+msgstr "停用歷史紀錄"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Refresh History (F5)"
 msgstr "重整歷史紀錄 (F5)"
+
+#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
+msgid "Clear History"
+msgstr "清空歷史紀錄"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Successful:"
@@ -4860,12 +5048,6 @@ msgstr "結果"
 msgid "Status"
 msgstr "狀態"
 
-#: pdfforge.PDFCreator.Conversion.Settings.TableColumns
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.GroupingColumn
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Author"
-msgstr "作者"
-
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Format"
 msgstr "格式"
@@ -4874,10 +5056,6 @@ msgstr "格式"
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Computer Name"
 msgstr "電腦名稱"
-
-#: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
-msgid "Date"
-msgstr "日期"
 
 #: pdfforge.PDFCreatorServer.UI.Presentation.Views.History.JobHistoryTranslation
 msgid "Elapsed Time"
@@ -5030,11 +5208,11 @@ msgid "<Default Profile>"
 msgstr "<預設設定檔>"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Compression (small file)"
+msgid "High compression (small file)"
 msgstr "高壓縮比 (較小檔案)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
-msgid "High Quality (large file)"
+msgid "High quality (large file)"
 msgstr "高品質 (較大檔案)"
 
 #: pdfforge.PDFCreator.Core.Services.Translation.ProfileNameByGuidTranslation
@@ -5077,107 +5255,6 @@ msgstr ""
 "您的授權有效。\n"
 "請在 {0} 上重新啟用您的內部授權伺服器"
 
-#. pdfforge.PDFCreator.Core.Services.LicenseStatusHelper.LicenseStatusTranslation
-msgid "Your license will expire in {0} day."
-msgid_plural "Your license will expire in {0} days."
-msgstr[0] "您的授權將在 {0} 天內到期。"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"There was an error with a component licensed by pdfforge.\n"
-"Please reinstall PDFCreator. (Error {0})"
-msgstr ""
-"有個 pdfforge 授權元件發生錯誤。\n"
-"請重新安裝 PDFCreator。(錯誤 {0})"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" is invalid or has expired. Please check your "
-"license, otherwise PDFCreator will shutdown.\n"
-"Do you want to check your license now?"
-msgstr ""
-"您的授權 \"{0}\" 是無效或已過期。請檢核您的授權，否則 PDFCreator 即將關閉，\n"
-"是否現在檢核您的授權？"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"PDFCreator will shut down."
-msgstr ""
-"您的授權 \"{0}\" 已過期。\n"
-"PDFCreator 即將關閉。"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your license for \"{0}\" has expired.\n"
-"Please contact your administrator.\n"
-"PDFCreator will shut down."
-msgstr ""
-"您的授群 \"{0}\" 已過期。\n"
-"請聯繫您的系統管理員。\n"
-"PDFCreator 即將關閉。"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Your trial has expired on {0}.\n"
-"PDFCreator will shut down.\n"
-"\n"
-"Please contact: licensing@pdfforge.org"
-msgstr ""
-"您的試用版到期日為 {0}。\n"
-"PDFCreator 即將關閉。\n"
-"\n"
-"請聯繫：licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"A license key for {0} could not be found. Please provide your license key, "
-"otherwise PDFCreator will shutdown. \n"
-"Do you want to activate your license now?"
-msgstr ""
-"找不到 {0} 的授權金鑰。請提供您的授權金鑰，否則 PDFCreator 將關閉。\n"
-"是否現在啟動您的授權？"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"A license key could not be found.\n"
-"PDFCreator will shut down."
-msgstr ""
-"找不到授權金鑰。\n"
-"PDFCreator 即將關閉。"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.ProgramTranslation
-msgid ""
-"Please use \"PDFCreator Terminal Server\" for use on computers with "
-"installed Terminal Services.\n"
-"\n"
-"Please visit our website for more information or contact us directly: "
-"licensing@pdfforge.org"
-msgstr ""
-"請在已安裝終端服務的電腦上使用 \"PDFCreator Terminal Server\"。\n"
-"\n"
-"請造訪我們的網站取得更多訊息或直接聯絡：licensing@pdfforge.org"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"Can't find a supported Ghostscript installation.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"找不到支援 Ghostscript 的安裝。\n"
-"\n"
-"程式即將結束。"
-
-#: pdfforge.PDFCreator.Core.Startup.Translations.StartupTranslation
-msgid ""
-"The Windows spooler service is not running. Please start the spooler first.\n"
-"\n"
-"Program exiting now."
-msgstr ""
-"Windows spooler 服務並未執行。請先啟用 spooler 服務。\n"
-"\n"
-"程式即將結束。"
-
 #: pdfforge.PDFCreator.UI.Notifications.NotificationTranslation
 msgid "PDFCreator has successfully converted '{0}'."
 msgstr "PDFCreator 已成功轉換 '{0}'."
@@ -5193,41 +5270,6 @@ msgstr "檔案已成功轉換"
 #: pdfforge.PDFCreator.UI.Notifications.NotificationTranslation
 msgid "Error while converting"
 msgstr "轉換時發生錯誤"
-
-#. pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "and {0} more file/directory"
-msgid_plural "and {0} more files/directories"
-msgstr[0] "還有 {0} 個檔案/目錄"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Convert with PDFCreator"
-msgstr "以PDFCreator轉換"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Convert &Here"
-msgstr "在此轉換(&H)"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "&Merge"
-msgstr "合併"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid "Hint"
-msgstr "提示"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"Couldn't find PDFCreator in your system. Please check if you have installed "
-"it."
-msgstr "在您的系統中找不到 PDFCreator。請檢查是否已安裝。"
-
-#: pdfforge.PDFCreatorShell.ContextMenuTranslation
-msgid ""
-"At least one of the selected items is not convertible! For more information "
-"about the unprintable files, see the list below."
-msgstr ""
-"所選取項目中至少有一項不可轉換！有關無法列印文件的更多資訊，請參見下面的列"
-"表。"
 
 #: pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General.StandbySetting
 msgid "No standby"
@@ -5365,17 +5407,13 @@ msgstr ""
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"The path to the signature image file has to be an absolute path, e.g. 'C:"
-"\\Images\\signature.png'"
-msgstr "簽名影像檔的路徑必須是絕對路徑，如 'C:\\Images\\signature.png'"
+"The path to the signature image file has to be a valid absolute path, e.g. "
+"'C:\\Images\\signature.png'"
+msgstr "簽名影像檔的路徑必須是一個絕對路徑，如 'C:\\Images\\signature.png'"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The path to the signature image file is too long."
 msgstr "簽名影像檔的路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path to the signature image file contains illegal characters."
-msgstr "簽名影像檔的路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The signature image file is unavailable."
@@ -5446,10 +5484,6 @@ msgstr "未指定程式檔。"
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The program file is unavailable."
 msgstr "程式檔不可用。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The program file path contains illegal characters."
-msgstr "程式檔路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The program file path is an invalid absolute path."
@@ -5724,10 +5758,6 @@ msgid "One of the cover file paths is too long."
 msgstr "有一個封面檔的路徑太長。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "One of the cover file paths contains illegal characters."
-msgstr "有一個封面檔的路徑含有不合法字元。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "Unable to add one of the cover files. The PDF format versions are not "
 "compatible."
@@ -5768,10 +5798,6 @@ msgstr "有一個附加檔路徑為無效的絕對路徑。"
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "One of the attachment file paths is too long."
 msgstr "有一個附加檔的路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "One of the attachment file paths contains illegal characters."
-msgstr "有一個附加檔路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5932,27 +5958,19 @@ msgid "The target directory is too long."
 msgstr "目的目錄的路徑太長。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The target directory contains illegal characters."
-msgstr "目的目錄含有不合法字元。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
 "User tokens in target directory require the user token action to be enabled."
 msgstr "目標目錄中的使用者標記需要開啟使用者標記操作。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"The path to the background file has to be an absolute path, e.g. 'C:"
+"The path to the background file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\background.pdf'"
-msgstr "背景檔的路徑必須是絕對路徑，例如 'C:\\documents\\background.pdf'"
+msgstr "背景檔的路徑必須是一個絕對路徑，例如 'C:\\documents\\background.pdf'"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The background file path is too long."
 msgstr "背景檔的路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The background file contains illegal characters."
-msgstr "背景檔路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The certificate file path is invalid absolute path."
@@ -5961,10 +5979,6 @@ msgstr "憑證檔路徑為無效的絕對路徑。"
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The certificate file path is too long."
 msgstr "憑證檔的路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The certificate file path contains illegal characters."
-msgstr "憑證檔路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
@@ -5977,20 +5991,12 @@ msgid "The FTP directory is an invalid FTP path."
 msgstr "FTP 目錄是無效的 FTP 路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The FTP key file path is an invalid path."
-msgstr "FTP金鑰檔路徑是無效的路徑。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The path to the FTP key file has to be an absolute path."
-msgstr "FTP 金鑰檔的路徑必須是絕對路徑。"
+msgid "The path to the FTP key file has to be a valid absolute path."
+msgstr "FTP 金鑰檔的路徑必須是個絕對路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The FTP key file path is too long."
 msgstr "FTP金鑰檔的路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The FTP key file path contains illegal characters."
-msgstr "FTP金鑰檔的路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The FTP key file is unavailable."
@@ -6050,26 +6056,16 @@ msgid "The file path is not valid. Please enter a valid absolute path."
 msgstr "無效的檔案路徑。請輸入一個有效的絕對路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid ""
-"The file path is not valid or empty. Please enter a valid path.\n"
-"The file path must not contain any of the following characters: \n"
-" \\ / : * ? \\< >"
-msgstr ""
-"檔案路徑為無效或空的。請輸入一個有效路徑。\n"
-"檔案路徑不可含有下列字元：\n"
-" \\ / : * ? \\< >"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The file path is not set."
 msgstr "未設定檔案路徑。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "No CS-script file is specified."
+msgid "No CS-Script file is specified."
 msgstr "未指定 CS-script 檔。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"The CS-script file does not exist in the program data directory 'CS-Scripts' "
+"The CS-Script file does not exist in the program data directory 'CS-Scripts' "
 "folder."
 msgstr "CS-script 檔案不存在於程式目錄 'CS-Scripts' 資料夾裡。"
 
@@ -6121,17 +6117,13 @@ msgstr "此浮水印檔不是PDF檔。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid ""
-"The path to the watermark file has to be an absolute path, e.g. 'C:"
+"The path to the watermark file has to be a valid absolute path, e.g. 'C:"
 "\\documents\\watermark.pdf'"
-msgstr "浮水印檔的路徑必須是絕對路徑，例如 'C:\\documents\\watermark.pdf'"
+msgstr "浮水印檔的路徑必須是一個絕對路徑，例如 'C:\\documents\\watermark.pdf'"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The watermark file path is too long."
 msgstr "浮水印檔路徑太長。"
-
-#: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
-msgid "The watermark file path contains illegal characters."
-msgstr "浮水印檔路徑含有不合法字元。"
 
 #: pdfforge.PDFCreator.Conversion.Jobs.ErrorCode
 msgid "The watermark file is unavailable."
@@ -6369,62 +6361,6 @@ msgstr "元資料關鍵字中的使用者標記需要開啟使用者標記操作
 msgid "The output document has no pages. The conversion is aborted."
 msgstr "輸出文檔沒有頁面。轉換被中止。"
 
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Auto detect (the client's default setting)"
-msgstr "自動偵測(用戶預設)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "HTML (only for Microsoft Outlook)"
-msgstr "HTML（僅適用於 Microsoft Outlook）"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
-msgid "Text (only for Microsoft Outlook)"
-msgstr "文字（僅適用於 Microsoft Outlook）"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "FTP - File Transfer Protocol"
-msgstr "FTP - 檔案傳輸協定"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
-msgid "SFTP - SSH File Transfer Protocol"
-msgstr "SFTP - SSH 檔案傳輸協定"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Right"
-msgstr "底部靠右"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Left"
-msgstr "底部靠左"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Bottom Center"
-msgstr "底部居中"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Right"
-msgstr "頂部靠右"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Left"
-msgstr "頂部靠左"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
-msgid "Top Center"
-msgstr "頂部居中"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Auto-Detect"
-msgstr "自動偵測"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Portrait"
-msgstr "直式"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
-msgid "Landscape"
-msgstr "橫式"
-
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.BackgroundRepetition
 msgid "No repetition"
 msgstr "沒有重複"
@@ -6525,10 +6461,30 @@ msgstr "長邊翻轉"
 msgid "Short edge turn"
 msgstr "短邊翻轉"
 
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Auto detect (the client's default setting)"
+msgstr "自動偵測(用戶預設)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "HTML (only for Microsoft Outlook)"
+msgstr "HTML（僅適用於 Microsoft Outlook）"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting
+msgid "Text (only for Microsoft Outlook)"
+msgstr "文字（僅適用於 Microsoft Outlook）"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "FTP - File Transfer Protocol"
+msgstr "FTP - 檔案傳輸協定"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType
+msgid "SFTP - SSH File Transfer Protocol"
+msgstr "SFTP - SSH 檔案傳輸協定"
+
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "16 Million Colors (24 Bit)"
+msgid "16 million colors (24 Bit)"
 msgstr "16百萬色 (24位元)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor
@@ -6536,6 +6492,74 @@ msgstr "16百萬色 (24位元)"
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
 msgid "Grayscale (8 Bit)"
 msgstr "灰階 (8位元)"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF"
+msgstr "PDF"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF/A-1b"
+msgstr "PDF/A-1b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF/A-2b"
+msgstr "PDF/A-2b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF/A-3b"
+msgstr "PDF/A-3b"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PDF/X"
+msgstr "PDF/X"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "JPEG"
+msgstr "JPEG"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "PNG"
+msgstr "PNG"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat
+msgid "TIFF"
+msgstr "TIFF"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Bottom right"
+msgstr "右下角"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Bottom left"
+msgstr "左下角"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Bottom center"
+msgstr "底部中間"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Top right"
+msgstr "右上角"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Top left"
+msgstr "左上角"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition
+msgid "Top center"
+msgstr "頂部中間"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Auto-Detect"
+msgstr "自動偵測"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Portrait"
+msgstr "直式"
+
+#: pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation
+msgid "Landscape"
+msgstr "橫式"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PageSize
 msgid "A4"
@@ -6574,24 +6598,20 @@ msgid "Floating double page view (odd pages right)"
 msgstr "浮動雙頁顯示 (奇數頁居右)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Million Colors with Transparency (32 Bit)"
+msgid "16 million colors with transparency (32 Bit)"
 msgstr "16百萬色具透明度 (32位元)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "256 Colors (8 Bit)"
+msgid "256 colors (8 Bit)"
 msgstr "256色 (8 位元)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "16 Color (4 Bit)"
+msgid "16 colors (4 Bit)"
 msgstr "16色 (4位元)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor
-msgid "Black & White (2 Bit)"
+msgid "Black & white (2 Bit)"
 msgstr "黑白 (2 位元)"
-
-#: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
-msgid "Default printer"
-msgstr "預設印表機"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter
 msgid "Select printer before printing"
@@ -6602,31 +6622,31 @@ msgid "Select printer ->"
 msgstr "選取印表機 ->"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "First Page"
-msgstr "第一頁"
+msgid "First page"
+msgstr "首頁"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Last Page"
-msgstr "最末頁"
+msgid "Last page"
+msgstr "末頁"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage
-msgid "Custom Page"
+msgid "Custom page"
 msgstr "自訂頁"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "4096 Colors (12 Bit)"
+msgid "4096 colors (12 Bit)"
 msgstr "4096色 (12 位元)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G3 Fax)"
+msgid "Black & white (2 Bit G3 Fax)"
 msgstr "黑白 (2 位元 G3 傳真)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit G4 Fax)"
+msgid "Black & white (2 Bit G4 Fax)"
 msgstr "黑白 (2 位元 G4 傳真)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor
-msgid "Black & White (2 Bit LZW)"
+msgid "Black & white (2 Bit LZW)"
 msgstr "黑白 (2 位元 LZW)"
 
 #: pdfforge.PDFCreator.Conversion.Settings.Enums.UnitOfMeasurement
@@ -6801,9 +6821,6 @@ msgstr "停用使用統計"
 msgid "Activate to completely disable the anonymous usage statistics."
 msgstr "啟動以完全地停用匿名的使用統計。"
 
-msgid "Disable history"
-msgstr "停用歷史紀錄"
-
 msgid "Activate to disable the job history."
 msgstr "啟動以停用作業的歷史紀錄。"
 
@@ -6851,8 +6868,9 @@ msgid "Load shared profiles"
 msgstr "讀入分享的設定檔"
 
 msgid ""
-"Activate to load profiles from ini file in \"%ProgramData%\\pdfforge"
-"\\PDFCreator\". This is activated by default and must be explicitly disabled."
+"Activate to load profiles from ini file in \"%ProgramData%"
+"\\pdfforge\\PDFCreator\". This is activated by default and must be "
+"explicitly disabled."
 msgstr ""
 "啟動以自 \"%ProgramData%\\pdfforge\\PDFCreator\" 中的 ini 檔案讀入設定檔。預"
 "設為啟用狀態，必須手動改為停用。"
@@ -6865,9 +6883,6 @@ msgstr "隱藏回饋表單"
 
 msgid "Activate to hide feedback form"
 msgstr "啟動以隱藏反饋表單"
-
-msgid "Albanian"
-msgstr "阿爾巴尼亞"
 
 msgid "Catalan"
 msgstr "加泰羅尼亞"
@@ -6940,6 +6955,257 @@ msgstr "設定日誌層級："
 
 msgid "Allow users to define additional profiles"
 msgstr "允許用戶定義額外的設定"
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your printers. Please contact your "
+#~ "administrator or the support to assist you in with this problem."
+#~ msgstr ""
+#~ "PDFCreator 無法修復所安裝的印表機。請聯絡您的系統管理員或產品支援協助解決"
+#~ "這個問題。"
+
+#~ msgid ""
+#~ "PDFCreator was not able to repair your spool folder. Please contact your "
+#~ "administrator or the support to assist you in changing the permissions of "
+#~ "the path '{0}'."
+#~ msgstr ""
+#~ "PDFCreator 無法修復緩衝目錄。請聯繫系統管理員或技術人員以協助你取得變更緩"
+#~ "衝目錄路徑 '{0}' 的權限。"
+
+#~ msgid ""
+#~ "There was an error with a component licensed by pdfforge.\n"
+#~ "Please reinstall PDFCreator. (Error {0})"
+#~ msgstr ""
+#~ "有個 pdfforge 授權元件發生錯誤。\n"
+#~ "請重新安裝 PDFCreator。(錯誤 {0})"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" is invalid or has expired. Please check your "
+#~ "license, otherwise PDFCreator will shutdown.\n"
+#~ "Do you want to check your license now?"
+#~ msgstr ""
+#~ "您的授權 \"{0}\" 是無效或已過期。請檢核您的授權，否則 PDFCreator 即將關"
+#~ "閉，\n"
+#~ "是否現在檢核您的授權？"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "您的授權 \"{0}\" 已過期。\n"
+#~ "PDFCreator 即將關閉。"
+
+#~ msgid ""
+#~ "Your license for \"{0}\" has expired.\n"
+#~ "Please contact your administrator.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "您的授群 \"{0}\" 已過期。\n"
+#~ "請聯繫您的系統管理員。\n"
+#~ "PDFCreator 即將關閉。"
+
+#~ msgid ""
+#~ "Your trial has expired on {0}.\n"
+#~ "PDFCreator will shut down.\n"
+#~ "\n"
+#~ "Please contact: licensing@pdfforge.org"
+#~ msgstr ""
+#~ "您的試用版到期日為 {0}。\n"
+#~ "PDFCreator 即將關閉。\n"
+#~ "\n"
+#~ "請聯繫：licensing@pdfforge.org"
+
+#~ msgid ""
+#~ "A license key for {0} could not be found. Please provide your license "
+#~ "key, otherwise PDFCreator will shutdown. \n"
+#~ "Do you want to activate your license now?"
+#~ msgstr ""
+#~ "找不到 {0} 的授權金鑰。請提供您的授權金鑰，否則 PDFCreator 將關閉。\n"
+#~ "是否現在啟動您的授權？"
+
+#~ msgid ""
+#~ "A license key could not be found.\n"
+#~ "PDFCreator will shut down."
+#~ msgstr ""
+#~ "找不到授權金鑰。\n"
+#~ "PDFCreator 即將關閉。"
+
+#~ msgid ""
+#~ "Please use \"PDFCreator Terminal Server\" for use on computers with "
+#~ "installed Terminal Services.\n"
+#~ "\n"
+#~ "Please visit our website for more information or contact us directly: "
+#~ "licensing@pdfforge.org"
+#~ msgstr ""
+#~ "請在已安裝終端服務的電腦上使用 \"PDFCreator Terminal Server\"。\n"
+#~ "\n"
+#~ "請造訪我們的網站取得更多訊息或直接聯絡：licensing@pdfforge.org"
+
+#~ msgid ""
+#~ "Can't find a supported Ghostscript installation.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "找不到支援 Ghostscript 的安裝。\n"
+#~ "\n"
+#~ "程式即將結束。"
+
+#~ msgid ""
+#~ "The Windows spooler service is not running. Please start the spooler "
+#~ "first.\n"
+#~ "\n"
+#~ "Program exiting now."
+#~ msgstr ""
+#~ "Windows spooler 服務並未執行。請先啟用 spooler 服務。\n"
+#~ "\n"
+#~ "程式即將結束。"
+
+#, fuzzy
+#~| msgid "Danish"
+#~ msgid "Spanish"
+#~ msgstr "丹麥"
+
+#~ msgid ""
+#~ "You do not have any PDFCreator printers installed. Most likely there was "
+#~ "a problem during the setup or the installation has been altered "
+#~ "afterwards.\n"
+#~ "Do you want to fix this by reinstalling the PDFCreator printers?\n"
+#~ "\n"
+#~ "Note: You might be asked to grant admin privileges while fixing the "
+#~ "problem."
+#~ msgstr ""
+#~ "您並未安裝任何 PDFCreator 印表機。此問題極有可能是設定或安裝時修改所導"
+#~ "致。\n"
+#~ "是否重新安裝 PDFCreator 印表機來修正此問題？\n"
+#~ "\n"
+#~ "註：可能會詢問管理員權限以修正此問題。"
+
+#~ msgid "No printers installed"
+#~ msgstr "尚未安裝印表機"
+
+#~ msgid "RepairTool not found"
+#~ msgstr "找不到 RepairTool"
+
+#~ msgid "Access Denied"
+#~ msgstr "拒絕存取"
+
+#~ msgid ""
+#~ "The temporary path where PDFCreator stores the print jobs can't be "
+#~ "accessed. This is a configuration problem on your machine and needs to be "
+#~ "fixed. Do you want PDFCreator to attempt repairing it?\n"
+#~ "Your spool folder is: {0}"
+#~ msgstr ""
+#~ "PDFCreator 存放列印作業的暫存路徑無法存取。此為您電腦的設定問題必須修正。"
+#~ "是否由 PDFCreator 嘗試修正它？\n"
+#~ "您的緩衝目錄為：{0}"
+
+#~ msgid "Albanian"
+#~ msgstr "阿爾巴尼亞"
+
+#~ msgid "Printer:"
+#~ msgstr "印表機："
+
+#~ msgid "SSL"
+#~ msgstr "SSL"
+
+#~ msgid "Sharepoint"
+#~ msgstr "Sharepoint"
+
+#~ msgid "Read More"
+#~ msgstr "閱讀更多"
+
+#~ msgid "Default Printer"
+#~ msgstr "預設印表機"
+
+#~ msgid "Usage Statistics"
+#~ msgstr "使用統計"
+
+#~ msgid "Run Program"
+#~ msgstr "執行程式"
+
+#~ msgid "Set Certificate Password"
+#~ msgstr "設定憑證密碼"
+
+#~ msgid "User Name:"
+#~ msgstr "使用者名稱:"
+
+#~ msgid "Email Address:"
+#~ msgstr "電子郵件信箱："
+
+#~ msgid "Add Attachment"
+#~ msgstr "加入附件"
+
+#~ msgid "On Behalf Of:"
+#~ msgstr "謹代表："
+
+#~ msgid "Choose 'No' to revert the changes."
+#~ msgstr "選擇 '否' 以還原變更。"
+
+#~ msgid "and {0} more file/directory"
+#~ msgid_plural "and {0} more files/directories"
+#~ msgstr[0] "還有 {0} 個檔案/目錄"
+
+#~ msgid "&Convert with PDFCreator"
+#~ msgstr "以PDFCreator轉換"
+
+#~ msgid "Convert &Here"
+#~ msgstr "在此轉換(&H)"
+
+#~ msgid "&Merge"
+#~ msgstr "合併"
+
+#~ msgid "Hint"
+#~ msgstr "提示"
+
+#~ msgid ""
+#~ "Couldn't find PDFCreator in your system. Please check if you have "
+#~ "installed it."
+#~ msgstr "在您的系統中找不到 PDFCreator。請檢查是否已安裝。"
+
+#~ msgid ""
+#~ "At least one of the selected items is not convertible! For more "
+#~ "information about the unprintable files, see the list below."
+#~ msgstr ""
+#~ "所選取項目中至少有一項不可轉換！有關無法列印文件的更多資訊，請參見下面的列"
+#~ "表。"
+
+#~ msgid "The path to the signature image file contains illegal characters."
+#~ msgstr "簽名影像檔的路徑含有不合法字元。"
+
+#~ msgid "The program file path contains illegal characters."
+#~ msgstr "程式檔路徑含有不合法字元。"
+
+#~ msgid "One of the cover file paths contains illegal characters."
+#~ msgstr "有一個封面檔的路徑含有不合法字元。"
+
+#~ msgid "One of the attachment file paths contains illegal characters."
+#~ msgstr "有一個附加檔路徑含有不合法字元。"
+
+#~ msgid "The target directory contains illegal characters."
+#~ msgstr "目的目錄含有不合法字元。"
+
+#~ msgid "The background file contains illegal characters."
+#~ msgstr "背景檔路徑含有不合法字元。"
+
+#~ msgid "The certificate file path contains illegal characters."
+#~ msgstr "憑證檔路徑含有不合法字元。"
+
+#~ msgid "The FTP key file path is an invalid path."
+#~ msgstr "FTP金鑰檔路徑是無效的路徑。"
+
+#~ msgid "The FTP key file path contains illegal characters."
+#~ msgstr "FTP金鑰檔的路徑含有不合法字元。"
+
+#~ msgid ""
+#~ "The file path is not valid or empty. Please enter a valid path.\n"
+#~ "The file path must not contain any of the following characters: \n"
+#~ " \\ / : * ? \\< >"
+#~ msgstr ""
+#~ "檔案路徑為無效或空的。請輸入一個有效路徑。\n"
+#~ "檔案路徑不可含有下列字元：\n"
+#~ " \\ / : * ? \\< >"
+
+#~ msgid "The watermark file path contains illegal characters."
+#~ msgstr "浮水印檔路徑含有不合法字元。"
 
 #~ msgid "Manage license"
 #~ msgstr "授權管理"

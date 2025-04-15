@@ -40,10 +40,17 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
         public bool Smtp { get; set; }
         public bool SmtpSendOnBehalfOf { get; set; }
         public bool SmtpReplyTo { get; set; }
+        public bool MailWebAccess { get; set; }
+        public bool MailWebAccessSendMailAutomatically { get; set; }
         public bool Script { get; set; }
         public bool Print { get; set; }
         public bool Ftp { get; set; }
         public bool Http { get; set; }
+        public bool OneDrive { get; set; }
+        public bool OneDriveShareLink { get; set; }
+        public bool SharePoint { get; set; }
+        public bool SharePointShareLink { get; set; }
+
         public bool Dropbox { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
-using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.UpdateHint;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Workflow.Steps
 {

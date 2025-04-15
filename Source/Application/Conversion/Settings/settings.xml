@@ -29,7 +29,7 @@
           <comment />
           <classarray name="DropboxAccount" propertyName="DropboxAccounts" readonly="False" classtype="Class">
             <comment />
-            <value name="AccessToken" type="password" defaultvalue="">
+            <value name="AccessToken" datatype="password" defaultvalue="">
               <comment />
             </value>
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -38,13 +38,13 @@
             <value name="AccountInfo" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
             </value>
-            <value name="RefreshToken" type="password" defaultvalue="">
+            <value name="RefreshToken" datatype="password" defaultvalue="">
               <comment>Token to refresh the login token</comment>
             </value>
           </classarray>
           <classarray name="MicrosoftAccount" propertyName="MicrosoftAccounts" readonly="False" classtype="Class">
 	          <comment />
-	          <value name="AccessToken" type="password" defaultvalue="">
+	          <value name="AccessToken" datatype="password" defaultvalue="">
 		          <comment />
 	          </value>
 	          <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -56,10 +56,13 @@
 	          <value name="PermissionScopes" type="value" datatype="String" enumname="" defaultvalue="">
 		          <comment />
 	          </value>
+	          <value name="Actions" type="value" datatype="String" enumname="" defaultvalue="">
+		          <comment />
+	          </value>
 	          <value name="ExpirationDate" type="value" datatype="long" enumname="" defaultvalue="">
 		          <comment />
 	          </value>
-	          <value name="MicrosoftJson" type="password" defaultvalue="">
+	          <value name="MicrosoftJson" datatype="password" defaultvalue="">
 		          <comment>Json Containing all info including refresh token</comment>
 	          </value>
           </classarray>
@@ -68,16 +71,16 @@
             <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment />
             </value>
-            <value name="AuthenticationType" type="value" datatype="Enum" enumname="AuthenticationType" defaultvalue="AuthenticationType.NormalAuthentication" islist="False">
+            <value name="AuthenticationType" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.AuthenticationType" defaultvalue="NormalAuthentication" islist="False">
               <comment>Normal authentication or with key file.</comment>
             </value>
-            <value name="FtpConnectionType" type="value" datatype="Enum" enumname="FtpConnectionType" defaultvalue="FtpConnectionType.Ftp" islist="False">
+            <value name="FtpConnectionType" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.FtpConnectionType" defaultvalue="Ftp" islist="False">
               <comment>The connection type used for the FTP action.</comment>
             </value>
             <value name="KeyFileRequiresPass" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>True if key file requires a password.</comment>
             </value>
-            <value name="Password" type="password" defaultvalue="">
+            <value name="Password" datatype="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
             </value>
             <value name="PrivateKeyFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -98,10 +101,10 @@
             <value name="IsBasicAuthentication" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
               <comment>If true, basic authentication with user-.name and password is used</comment>
             </value>
-            <value name="Password" type="password" defaultvalue="">
+            <value name="Password" datatype="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
             </value>
-            <value name="SendMode" type="value" datatype="Enum" enumname="HttpSendMode" defaultvalue="HttpSendMode.HttpPost" islist="False">
+            <value name="SendMode" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.HttpSendMode" defaultvalue="HttpPost" islist="False">
               <comment />
             </value>
             <value name="Timeout" type="value" datatype="Int" enumname="" defaultvalue="60" islist="False">
@@ -122,7 +125,7 @@
             <value name="Address" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment>Email address that is displayed as sender</comment>
             </value>
-            <value name="Password" type="password" defaultvalue="">
+            <value name="Password" datatype="password" defaultvalue="">
               <comment>Password that is used to authenticate at the server</comment>
             </value>
             <value name="Port" type="value" datatype="Int" enumname="" defaultvalue="587" islist="False">
@@ -146,7 +149,7 @@
             <value name="IsSecured" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>Set to true, if the time server needs authentication</comment>
             </value>
-            <value name="Password" type="password" defaultvalue="">
+            <value name="Password" datatype="password" defaultvalue="">
               <comment>Password for the time server</comment>
             </value>
             <value name="Url" type="value" datatype="String" enumname="" defaultvalue="https://freetsa.org/tsr" islist="False">
@@ -162,7 +165,7 @@
           <value name="Capacity" type="value" datatype="Int" enumname="" defaultvalue="30" islist="False">
             <comment>Max number of jobs tracked in history</comment>
           </value>
-          <value name="Column" type="value" datatype="Enum" enumname="TableColumns" defaultvalue="TableColumns.Author" islist="False">
+          <value name="Column" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.TableColumns" defaultvalue="Author" islist="False">
             <comment>Selected column in search options</comment>
           </value>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
@@ -195,7 +198,7 @@
           <value name="Replace" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment />
           </value>
-          <value name="ReplacementType" type="value" datatype="Enum" enumname="ReplacementType" defaultvalue="ReplacementType.Replace" islist="False">
+          <value name="ReplacementType" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.ReplacementType" defaultvalue="Replace" islist="False">
             <comment />
           </value>
           <value name="Search" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -220,28 +223,28 @@
         <value name="Language" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
           <comment />
         </value>
-        <value name="LicenseExpirationReminder" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
+        <value name="LicenseExpirationReminder" type="value" datatype="DateTime" enumname="" defaultvalue="System.DateTime.Now" islist="False">
           <comment>Remind that license will expire soon</comment>
         </value>
-        <value name="LoggingLevel" type="value" datatype="Enum" enumname="LoggingLevel" defaultvalue="LoggingLevel.Error" islist="False">
+        <value name="LoggingLevel" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.LoggingLevel" defaultvalue="Error" islist="False">
           <comment />
         </value>
-        <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="DateTime.Now" islist="False">
+        <value name="NextUpdate" type="value" datatype="DateTime" enumname="" defaultvalue="System.DateTime.Now" islist="False">
           <comment />
         </value>
-        <value name="PageOrientation" type="value" datatype="Enum" enumname="PageOrientation" defaultvalue="PageOrientation.Automatic" islist="False">
+        <value name="PageOrientation" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation" defaultvalue="Automatic" islist="False">
           <comment>Sets page orientation.</comment>
         </value>
-        <value name="PageSize" type="value" datatype="Enum" enumname="PageSize" defaultvalue="PageSize.Automatic" islist="False">
+        <value name="PageSize" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PageSize" defaultvalue="Automatic" islist="False">
           <comment>et the page size.</comment>
         </value>
         <value name="SharedSettingsFilename" type="value" datatype="String" enumname="" defaultvalue="settings" islist="False">
           <comment>Set the filename of the shared settings file. The default is 'settings.ini'.</comment>
         </value>
-        <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
+        <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.UnitOfMeasurement" defaultvalue="Centimeter" islist="False">
           <comment>Defines the unit of measurement for the signature position.</comment>
         </value>
-        <value name="UpdateInterval" type="value" datatype="Enum" enumname="UpdateInterval" defaultvalue="UpdateInterval.Weekly" islist="False">
+        <value name="UpdateInterval" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.UpdateInterval" defaultvalue="Weekly" islist="False">
           <comment />
         </value>
       </class>
@@ -261,7 +264,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment />
           </value>
-          <value name="ExistingFileBehaviour" type="value" datatype="Enum" enumname="AutoSaveExistingFileBehaviour" defaultvalue="AutoSaveExistingFileBehaviour.EnsureUniqueFilenames" islist="False">
+          <value name="ExistingFileBehaviour" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.AutoSaveExistingFileBehaviour" defaultvalue="EnsureUniqueFilenames" islist="False">
             <comment>Defines the behaviour if a file already exists e.g. overwrite, merge or ensure unique filename</comment>
           </value>
         </class>
@@ -279,7 +282,7 @@
           <value name="Opacity" type="value" datatype="Int" enumname="" defaultvalue="100" islist="False">
             <comment>Opacity for background in percent</comment>
           </value>
-          <value name="Repetition" type="value" datatype="Enum" enumname="BackgroundRepetition" defaultvalue="BackgroundRepetition.RepeatLastPage" islist="False">
+          <value name="Repetition" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.BackgroundRepetition" defaultvalue="RepeatLastPage" islist="False">
             <comment>Defines the way the background document is repeated.</comment>
           </value>
         </class>
@@ -300,6 +303,9 @@
           <value name="ScriptFilename" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
             <comment>Filename of the custom script in application directory 'Cs-Scripts' folder</comment>
           </value>
+			<value name="EnableDebugging" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+		      <comment>Attaches the debugger to the executed methods in the custom script.</comment>
+			</value>
         </class>
         <class name="DropboxSettings" propertyName="DropboxSettings" readonly="False" classtype="Class">
           <comment>Dropbox settings for currently logged user</comment>
@@ -346,6 +352,47 @@
 				<comment />
 			</value>
 		</class>
+
+		  <class name="Preview" propertyName="Preview" readonly="False" classtype="Class">
+			  <comment>Enables preview for interactive conversion(s)</comment>
+			  <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
+				  <comment />
+			  </value>
+		  </class>
+		  
+        <class name="SharepointSettings" propertyName="SharepointSettings" readonly="False" classtype="Class">
+	        <comment>Sharepoint settings for the current user</comment>
+	        <value name="AccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+		        <comment>ID of the linked account</comment>
+	        </value>
+	        <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
+		        <comment />
+	        </value>
+	        <value name="CreateShareLink" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+		        <comment />
+	        </value>
+	        <value name="CreateTokenShareLink" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+		        <comment>If true, creates a link that can be used to share the file uploaded via mail or other send action afterward</comment>
+	        </value>
+			<value name="SiteId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+				<comment>SiteId for the sharepoint site</comment>
+			</value>
+			<value name="DriveId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
+				<comment>DriveId, location for the drive</comment>
+			</value>
+	        <value name="OpenUploadedFile" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+		        <comment>If true, opens the file after the upload to Sharepoint</comment>
+	        </value>
+	        <value name="EnsureUniqueFilenames" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
+		        <comment>If true, files with the same name will not be overwritten on the server. A counter will be appended instead (i.e. document_2.pdf)</comment>
+	        </value>
+	        <value name="SharedFolder" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
+		        <comment />
+	        </value>
+	        <value name="ShowShareLink" type="value" datatype="bool" enumname="" defaultvalue="false" islist="False">
+		        <comment />
+	        </value>
+        </class>
         <class name="EmailClientSettings" propertyName="EmailClientSettings" readonly="False" classtype="Class">
           <comment>Opens the default email client with the converted document as attachment</comment>
           <value name="AddSignature" type="value" datatype="Bool" enumname="" defaultvalue="true" islist="False">
@@ -360,7 +407,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Enables the EmailClient action</comment>
           </value>
-          <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Auto" islist="False">
+          <value name="Format" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting" defaultvalue="Auto" islist="False">
             <comment>Set the email body format</comment>
           </value>
           <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -393,7 +440,7 @@
 		  <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
 			  <comment>Enables the EmailClient action</comment>
 		  </value>
-		  <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Auto" islist="False">
+		  <value name="Format" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting" defaultvalue="Auto" islist="False">
 			  <comment>Set the email body format</comment>
 		  </value>
 		  <value name="Recipients" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -435,7 +482,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If true, this action will be executed</comment>
           </value>
-          <value name="Format" type="value" datatype="Enum" enumname="EmailFormatSetting" defaultvalue="EmailFormatSetting.Text" islist="False">
+          <value name="Format" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.EmailFormatSetting" defaultvalue="Text" islist="False">
             <comment>Set the email body format</comment>
           </value>
           <value name="OnBehalfOf" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
@@ -498,7 +545,7 @@
         </class>
         <class name="JpegSettings" propertyName="JpegSettings" readonly="False" classtype="Class">
           <comment>Settings for the JPEG output format</comment>
-          <value name="Color" type="value" datatype="Enum" enumname="JpegColor" defaultvalue="JpegColor.Color24Bit" islist="False">
+          <value name="Color" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.JpegColor" defaultvalue="Color24Bit" islist="False">
             <comment>Number of colors.</comment>
           </value>
           <value name="Dpi" type="value" datatype="Int" enumname="" defaultvalue="150" islist="False">
@@ -549,10 +596,10 @@
           <value name="HorizontalOffset" type="value" datatype="Float" enumname="" defaultvalue="72" islist="False">
             <comment>The horizontalOffset offset from the page border of the page numbers in points.</comment>
           </value>
-          <value name="Position" type="value" datatype="Enum" enumname="PageNumberPosition" defaultvalue="PageNumberPosition.BottomRight" islist="False">
+          <value name="Position" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PageNumberPosition" defaultvalue="BottomRight" islist="False">
             <comment>Where to put the page numbers.</comment>
           </value>
-          <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="UnitOfMeasurement" defaultvalue="UnitOfMeasurement.Centimeter" islist="False">
+          <value name="UnitOfMeasurement" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.UnitOfMeasurement" defaultvalue="Centimeter" islist="False">
             <comment>Defines the unit of measurement for the page number position.</comment>
           </value>
           <value name="UseRomanNumerals" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -566,7 +613,7 @@
           <comment>Settings for the PDF output format</comment>
           <class name="CompressColorAndGray" propertyName="CompressColorAndGray" readonly="False" classtype="Class">
             <comment>Compression settings for color and greyscale images</comment>
-            <value name="Compression" type="value" datatype="Enum" enumname="CompressionColorAndGray" defaultvalue="CompressionColorAndGray.Automatic" islist="False">
+            <value name="Compression" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionColorAndGray" defaultvalue="Automatic" islist="False">
               <comment>Settings for the compression method.</comment>
             </value>
             <value name="Dpi" type="value" datatype="Int" enumname="" defaultvalue="300" islist="False">
@@ -584,7 +631,7 @@
           </class>
           <class name="CompressMonochrome" propertyName="CompressMonochrome" readonly="False" classtype="Class">
             <comment>Compression settings for monochrome images</comment>
-            <value name="Compression" type="value" datatype="Enum" enumname="CompressionMonochrome" defaultvalue="CompressionMonochrome.CcittFaxEncoding" islist="False">
+            <value name="Compression" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.CompressionMonochrome" defaultvalue="CcittFaxEncoding" islist="False">
               <comment>Settings for the compression method.</comment>
             </value>
             <value name="Dpi" type="value" datatype="Int" enumname="" defaultvalue="1200" islist="False">
@@ -623,10 +670,10 @@
             <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>If true, the PDF file will be password protected</comment>
             </value>
-            <value name="EncryptionLevel" type="value" datatype="Enum" enumname="EncryptionLevel" defaultvalue="EncryptionLevel.Aes256Bit" islist="False">
+            <value name="EncryptionLevel" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.EncryptionLevel" defaultvalue="Aes256Bit" islist="False">
               <comment>Defines the encryption level.</comment>
             </value>
-            <value name="OwnerPassword" type="password" defaultvalue="">
+            <value name="OwnerPassword" datatype="password" defaultvalue="">
               <comment>Password that can be used to modify the document</comment>
             </value>
             <value name="RequireUserPassword" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -635,7 +682,7 @@
             <value name="RestrictPrintingToLowQuality" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
               <comment>If true, only printing in low resolution will be supported</comment>
             </value>
-            <value name="UserPassword" type="password" defaultvalue="">
+            <value name="UserPassword" datatype="password" defaultvalue="">
               <comment>Password that must be used to open the document (if set)</comment>
             </value>
           </class>
@@ -650,7 +697,7 @@
             <value name="CertificateFile" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment>Path to the certificate</comment>
             </value>
-            <value name="DisplaySignature" type="value" datatype="Enum" enumname="DisplaySignature" defaultvalue="DisplaySignature.NoDisplay" islist="False">
+            <value name="DisplaySignature" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.DisplaySignature" defaultvalue="NoDisplay" islist="False">
               <comment>Defines the display level of the signature in the document.</comment>
             </value>
             <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -695,20 +742,20 @@
             <value name="SignatureCustomPage" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
               <comment>If the signature page is set to custom, this property defines the page where the signature will be displayed</comment>
             </value>
-            <value name="SignaturePage" type="value" datatype="Enum" enumname="SignaturePage" defaultvalue="SignaturePage.FirstPage" islist="False">
+            <value name="SignaturePage" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.SignaturePage" defaultvalue="FirstPage" islist="False">
               <comment>Defines the page on which the signature will be displayed.</comment>
             </value>
-            <value name="SignaturePassword" type="password" defaultvalue="">
+            <value name="SignaturePassword" datatype="password" defaultvalue="">
               <comment>Password for the certificate file</comment>
             </value>
             <value name="TimeServerAccountId" type="value" datatype="String" enumname="" defaultvalue="" islist="False">
               <comment>ID of the linked account for the timeserver</comment>
             </value>
           </class>
-          <value name="ColorModel" type="value" datatype="Enum" enumname="ColorModel" defaultvalue="ColorModel.Rgb" islist="False">
+          <value name="ColorModel" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.ColorModel" defaultvalue="Rgb" islist="False">
             <comment>Color model of the PDF (does not apply to images).</comment>
           </value>
-          <value name="DocumentView" type="value" datatype="Enum" enumname="DocumentView" defaultvalue="DocumentView.NoOutLineNoThumbnailImages" islist="False">
+          <value name="DocumentView" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.DocumentView" defaultvalue="NoOutLineNoThumbnailImages" islist="False">
             <comment>Defines which controls will be opened in the reader.</comment>
           </value>
           <value name="EnablePdfAValidation" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -717,10 +764,10 @@
           <value name="NoFonts" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>If enabled, no fonts will be embedded into the output.</comment>
           </value>
-          <value name="PageOrientation" type="value" datatype="Enum" enumname="PageOrientation" defaultvalue="PageOrientation.Automatic" islist="False">
+          <value name="PageOrientation" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PageOrientation" defaultvalue="Automatic" islist="False">
             <comment>Define how pages are automatically rotated.</comment>
           </value>
-          <value name="PageView" type="value" datatype="Enum" enumname="PageView" defaultvalue="PageView.OnePage" islist="False">
+          <value name="PageView" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PageView" defaultvalue="OnePage" islist="False">
             <comment>Defines how the document will be opened in the reader.</comment>
           </value>
           <value name="ViewerStartsOnPage" type="value" datatype="Int" enumname="" defaultvalue="1" islist="False">
@@ -729,7 +776,7 @@
         </class>
         <class name="PngSettings" propertyName="PngSettings" readonly="False" classtype="Class">
           <comment>Settings for the PNG output format</comment>
-          <value name="Color" type="value" datatype="Enum" enumname="PngColor" defaultvalue="PngColor.Color24Bit" islist="False">
+          <value name="Color" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.PngColor" defaultvalue="Color24Bit" islist="False">
             <comment>Number of colors.</comment>
           </value>
           <value name="Dpi" type="value" datatype="Int" enumname="" defaultvalue="150" islist="False">
@@ -738,7 +785,7 @@
         </class>
         <class name="Printing" propertyName="Printing" readonly="False" classtype="Class">
           <comment>Print the document to a physical printer</comment>
-          <value name="Duplex" type="value" datatype="Enum" enumname="DuplexPrint" defaultvalue="DuplexPrint.Disable" islist="False">
+          <value name="Duplex" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.DuplexPrint" defaultvalue="Disable" islist="False">
             <comment>Defines the duplex printing mode.</comment>
           </value>
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -750,7 +797,7 @@
           <value name="PrinterName" type="value" datatype="String" enumname="" defaultvalue="PDFCreator" islist="False">
             <comment>Name of the printer that will be used, if SelectedPrinter is set.</comment>
           </value>
-          <value name="SelectPrinter" type="value" datatype="Enum" enumname="SelectPrinter" defaultvalue="SelectPrinter.ShowDialog" islist="False">
+          <value name="SelectPrinter" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.SelectPrinter" defaultvalue="ShowDialog" islist="False">
             <comment>Method to select the printer.</comment>
           </value>
         </class>
@@ -819,7 +866,7 @@
         </class>
         <class name="TiffSettings" propertyName="TiffSettings" readonly="False" classtype="Class">
           <comment>Settings for the TIFF output format</comment>
-          <value name="Color" type="value" datatype="Enum" enumname="TiffColor" defaultvalue="TiffColor.Color24Bit" islist="False">
+          <value name="Color" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.TiffColor" defaultvalue="Color24Bit" islist="False">
             <comment>Number of colors.</comment>
           </value>
           <value name="Dpi" type="value" datatype="Int" enumname="" defaultvalue="150" islist="False">
@@ -831,7 +878,7 @@
           <value name="Enabled" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
             <comment>Activate parsing ps files for user tokens (Only available in the PDFCreator business editions)</comment>
           </value>
-          <value name="Separator" type="value" datatype="Enum" enumname="UserTokenSeparator" defaultvalue="UserTokenSeparator.SquareBrackets" islist="False">
+          <value name="Separator" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.UserTokenSeparator" defaultvalue="SquareBrackets" islist="False">
             <comment>UserToken separator in the document</comment>
           </value>
         </class>
@@ -849,7 +896,7 @@
           <value name="Opacity" type="value" datatype="Int" enumname="" defaultvalue="50" islist="False">
             <comment>Opacity for watermark in percent</comment>
           </value>
-          <value name="Repetition" type="value" datatype="Enum" enumname="BackgroundRepetition" defaultvalue="BackgroundRepetition.RepeatLastPage" islist="False">
+          <value name="Repetition" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.BackgroundRepetition" defaultvalue="RepeatLastPage" islist="False">
             <comment>Defines the way the watermark document is repeated</comment>
           </value>
         </class>
@@ -871,7 +918,7 @@
         <value name="Name" type="value" datatype="String" enumname="" defaultvalue="NewProfile" islist="False">
           <comment>Name of the profile</comment>
         </value>
-        <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
+        <value name="OutputFormat" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat" defaultvalue="Pdf" islist="False">
           <comment>Default format for this print job.</comment>
         </value>
         <value name="SaveFileTemporary" type="value" datatype="Bool" enumname="" defaultvalue="false" islist="False">
@@ -940,7 +987,7 @@
         <value name="IsActive" type="value" datatype="Bool" enumname="" defaultvalue="" islist="False">
           <comment />
         </value>
-        <value name="OutputFormat" type="value" datatype="Enum" enumname="OutputFormat" defaultvalue="OutputFormat.Pdf" islist="False">
+        <value name="OutputFormat" type="value" datatype="Enum" enumname="pdfforge.PDFCreator.Conversion.Settings.Enums.OutputFormat" defaultvalue="Pdf" islist="False">
           <comment />
         </value>
         <value name="Parameters" type="value" datatype="String" enumname="" defaultvalue="" islist="False">

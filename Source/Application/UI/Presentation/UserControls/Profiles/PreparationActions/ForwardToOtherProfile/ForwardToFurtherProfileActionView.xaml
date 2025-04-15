@@ -33,7 +33,7 @@
             </StackPanel>
             
         </HeaderedContentControl.Header>
-        <StackPanel>
+        <StackPanel IsEnabled="{Binding CurrentProfile.ForwardToFurtherProfile.Enabled}">
             <Label Content="{Binding Translation.SelectProfile}" />
             <styles:ProfilesComboBox Margin="0 10 0 0"
                                         MinWidth="400"

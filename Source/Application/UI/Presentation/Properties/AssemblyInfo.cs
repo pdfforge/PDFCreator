@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows;
 
 // General Information about an assembly is controlled through the following
@@ -13,7 +14,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
+[assembly: SupportedOSPlatform("windows")]
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
@@ -47,5 +48,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("4.2.0.0")]
-[assembly: AssemblyVersion("5.3.3.0")]
-[assembly: AssemblyFileVersion("5.3.3.0")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]

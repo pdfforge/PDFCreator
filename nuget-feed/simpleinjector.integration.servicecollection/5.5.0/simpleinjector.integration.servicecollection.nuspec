@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>SimpleInjector.Integration.ServiceCollection</id>
+    <version>5.5.0</version>
+    <authors>Simple Injector Contributors</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>simpleinjector.png</icon>
+    <projectUrl>https://simpleinjector.org/servicecollection</projectUrl>
+    <description>Integrates Simple Injector with applications that require the use of IServiceCollection for registration of framework components.</description>
+    <tags>simpleinjector dependency-injection DI ASP.NET Core IServiceCollection</tags>
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="6.0.16" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.3" exclude="Build,Analyzers" />
+        <dependency id="SimpleInjector" version="5.4.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0">
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="7.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="7.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="7.0.5" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="7.0.0" exclude="Build,Analyzers" />
+        <dependency id="SimpleInjector" version="5.4.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Localization.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.1" exclude="Build,Analyzers" />
+        <dependency id="SimpleInjector" version="5.4.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

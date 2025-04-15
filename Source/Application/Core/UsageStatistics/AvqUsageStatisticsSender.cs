@@ -40,8 +40,9 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
 
             try
             {
-                var uri = new Uri(Urls.AvqUsageStatisticsStagingEndpointUrl);
+                var uri = new Uri(Urls.AvqUsageStatisticsEndpointUrl);
                 var key = Data.Decrypt(Resources.AvqTrackingKey);
+
                 var json = _usageStatisticsJsonSerializer.Serialize(usageMetric);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 

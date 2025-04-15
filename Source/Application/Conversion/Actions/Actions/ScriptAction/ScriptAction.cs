@@ -182,17 +182,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions
             var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(profile.Scripting.ScriptFile);
             switch (pathUtilStatus)
             {
-                case PathUtilStatus.InvalidRootedPath:
+                case PathUtilStatus.InvalidPath:
                     return new ActionResult(ErrorCode.RunProgram_InvalidRootedPath);
 
                 case PathUtilStatus.PathTooLongEx:
                     return new ActionResult(ErrorCode.RunProgram_PathTooLong);
-
-                case PathUtilStatus.NotSupportedEx:
-                    return new ActionResult(ErrorCode.RunProgram_InvalidRootedPath);
-
-                case PathUtilStatus.ArgumentEx:
-                    return new ActionResult(ErrorCode.RunProgram_IllegalCharacters);
             }
 
             //Skip check for network path

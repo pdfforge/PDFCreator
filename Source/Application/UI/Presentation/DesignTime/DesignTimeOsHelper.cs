@@ -2,7 +2,7 @@
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {
-    internal class DesignTimeOsHelper : IOsHelper
+    public class DesignTimeOsHelper : IOsHelper
     {
         public bool Is64BitProcess { get; } = false;
         public bool Is64BitOperatingSystem { get; } = false;

@@ -55,6 +55,8 @@ namespace pdfforge.PDFCreator.Core.UsageStatistics
         public bool OneDrive { get; set; }
         public bool OneDriveShareLink { get; set; }
         public bool Dropbox { get; set; }
+        public bool Sharepoint { get; set; }
+        public bool SharepointShareLink { get; set; }
 
         //GPOs
         public bool DisableApplicationSettings { get; set; }

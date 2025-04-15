@@ -28,7 +28,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         private Conversion.Settings.Accounts Accounts => _accountsProvider?.Settings;
         private readonly ICurrentSettings<Conversion.Settings.Accounts> _accountsProvider;
         private readonly ICommandLocator _commandLocator;
-        private readonly EditionHelper _editionHelper;
 
         public Visibility ShowAddAccountsHint
         {
@@ -55,8 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             ICommandLocator commandLocator,
             ITranslationUpdater translationUpdater,
             IDispatcher dispatcher,
-            IGpoSettings gpoSettings,
-            EditionHelper editionHelper)
+            IGpoSettings gpoSettings)
             : base(translationUpdater)
         {
             _currentSettingsProvider = currentSettingsProvider;
@@ -64,7 +62,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
             _gpoSettings = gpoSettings;
             _accountsProvider = accountProvider;
             _commandLocator = commandLocator;
-            _editionHelper = editionHelper;
             ConflateAllAccounts();
 
             FtpAccountAddCommand = _commandLocator.GetCommand<FtpAccountAddCommand>();
@@ -102,18 +99,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
                 Command = SmtpAccountAddCommand,
                 Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Mail, Width = 25 }
             });
-            if (!_editionHelper.IsServer)
+            
+            AddAccountMenuItems.Add(new MenuItem
             {
-                if (_accountsProvider?.Settings?.MicrosoftAccounts?.Count == 0)
-                {
-                    AddAccountMenuItems.Add(new MenuItem
-                    {
-                        Header = Translation.AddMicrosoftAccount,
-                        Command = MicrosoftAccountEditCommand,
-                        Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.Mail, Width = 25 }
-                    });
-                }
-            }
+                Header = Translation.AddMicrosoftAccount,
+                Command = MicrosoftAccountEditCommand,
+                Icon = new PackIconMaterialDesign { Kind = PackIconMaterialDesignKind.AccountBox, Width = 25 }
+            });
 
             AddAccountMenuItems.Add(new MenuItem
             {
@@ -170,8 +162,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts
         {
             base.OnTranslationChanged();
             RaisePropertyChanged(nameof(AddAccountMenuItems));
-            if (_editionHelper != null)
-                UpdateMenuItemList();
+            UpdateMenuItemList();
         }
 
         private void CurrentSettingsProviderOnSettingsChanged(object sender, EventArgs eventArgs)

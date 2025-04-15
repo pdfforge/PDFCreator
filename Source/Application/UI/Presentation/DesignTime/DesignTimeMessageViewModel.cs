@@ -1,7 +1,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Core.Services.Translation;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Misc;

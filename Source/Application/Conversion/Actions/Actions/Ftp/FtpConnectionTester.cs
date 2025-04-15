@@ -1,9 +1,9 @@
 ﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
-using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
@@ -76,17 +76,11 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
                 var pathUtilStatus = _pathUtil.IsValidRootedPathWithResponse(ftpAccount.PrivateKeyFile);
                 switch (pathUtilStatus)
                 {
-                    case PathUtilStatus.InvalidRootedPath:
+                    case PathUtilStatus.InvalidPath:
                         return new ActionResult(ErrorCode.Ftp_KeyFilePath_InvalidRootedPath);
 
                     case PathUtilStatus.PathTooLongEx:
                         return new ActionResult(ErrorCode.Ftp_KeyFilePath_PathTooLong);
-
-                    case PathUtilStatus.NotSupportedEx:
-                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_InvalidRootedPath);
-
-                    case PathUtilStatus.ArgumentEx:
-                        return new ActionResult(ErrorCode.Ftp_KeyFilePath_IllegalCharacters);
                 }
 
                 if (ignoreMissingPassword && ftpAccount.PrivateKeyFile.StartsWith(@"\\"))

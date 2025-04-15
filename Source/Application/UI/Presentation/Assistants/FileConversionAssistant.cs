@@ -4,11 +4,11 @@ using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Core.Controller;
 using pdfforge.PDFCreator.Core.DirectConversion;
 using pdfforge.PDFCreator.Core.Printing.Printing;
-using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Linq;
+using pdfforge.PDFCreator.UI.Interactions;
+using pdfforge.PDFCreator.Utilities.Messages;
 using SystemInterface.IO;
 using Translatable;
 

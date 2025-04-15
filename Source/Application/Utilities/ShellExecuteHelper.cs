@@ -37,7 +37,7 @@ namespace pdfforge.PDFCreator.Utilities
                 if (process == null)
                     return ShellExecuteResult.Failed;
 
-                process.WaitForExit(100000);
+                process.WaitForExit(30000);
 
                 return process.ExitCode == 0
                     ? ShellExecuteResult.Success : ShellExecuteResult.Failed;

@@ -14,7 +14,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 new DispatcherWrapper(), new DesignTimeTranslationUpdater(),
                 new DesignTimeApplicationNameProvider(),
                 new DesignTimeVersionHelper(),
-                new DesignTimeCommandLocator())
+                new DesignTimeCommandLocator(),
+                new DesignTimePreviewManager())
         {
         }
     }

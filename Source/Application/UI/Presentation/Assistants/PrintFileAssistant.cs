@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using pdfforge.PDFCreator.Utilities.Messages;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants

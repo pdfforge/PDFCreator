@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.UI.Presentation.Workflow.Steps;
 using pdfforge.PDFCreator.Utilities;
 using Prism.Regions;
 using System.Collections.Generic;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Workflow
 {
@@ -49,22 +50,23 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         }
     }
 
-    public class InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep : InteractiveWorkflowManagerFactory
+    public class InteractiveWorkflowManagerFactoryWithConditionalHintSteps : InteractiveWorkflowManagerFactory
     {
         private readonly IWorkflowNavigationHelper _workflowNavigationHelper;
-        private readonly IProfessionalHintHelper _professionalHintHelper;
+        private readonly IConditionalHintManager _conditionalHintManager;
 
-        public InteractiveWorkflowManagerFactoryWithProfessionalHintHintStep(IWorkflowNavigationHelper workflowNavigationHelper, IProfessionalHintHelper professionalHintHelper, ISignaturePasswordCheck signaturePasswordCheck, IUpdateHelper updateHelper)
+        public InteractiveWorkflowManagerFactoryWithConditionalHintSteps(IWorkflowNavigationHelper workflowNavigationHelper, IConditionalHintManager conditionalHintManager, ISignaturePasswordCheck signaturePasswordCheck, IUpdateHelper updateHelper)
             : base(workflowNavigationHelper, signaturePasswordCheck, updateHelper)
         {
             _workflowNavigationHelper = workflowNavigationHelper;
-            _professionalHintHelper = professionalHintHelper;
+            _conditionalHintManager = conditionalHintManager;
         }
 
         public override InteractiveWorkflowManager CreateInteractiveWorkflowManager(IRegionManager regionManager, ICurrentSettingsProvider currentSettingsProvider)
         {
             base.CreateInteractiveWorkflowManager(regionManager, currentSettingsProvider);
-            WorkflowSteps.Add(new ProfessionalHintStep(_professionalHintHelper));
+            WorkflowSteps.Add(new ProfessionalHintStep(_conditionalHintManager));
+            WorkflowSteps.Add(new EmailCollectionHintStep(_conditionalHintManager));
 
             return new InteractiveWorkflowManager(_workflowNavigationHelper, regionManager, WorkflowSteps, ErrorStep);
         }

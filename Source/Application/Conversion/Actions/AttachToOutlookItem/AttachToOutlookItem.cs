@@ -142,7 +142,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.AttachToOutlookItem
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return AttachToOutlookItemResult.NoOutlook;
             }

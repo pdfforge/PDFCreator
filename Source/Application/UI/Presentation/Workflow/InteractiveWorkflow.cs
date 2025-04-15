@@ -20,13 +20,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
         private readonly ILastSaveDirectoryHelper _lastSaveDirectoryHelper;
         private readonly IDirectoryHelper _directoryHelper;
         private readonly IInteractiveProfileChecker _interactiveProfileChecker;
+        private readonly IPreviewManager _previewManager;
         private readonly ITargetFilePathComposer _targetFilePathComposer;
 
         public InteractiveWorkflow(IShellManager shellManager, ITargetFilePathComposer targetFilePathComposer, IJobDataUpdater jobDataUpdater,
                                    ISettingsProvider settingsProvider, ICommandLocator commandLocator, ILastSaveDirectoryHelper lastSaveDirectoryHelper,
                                    IDirectoryHelper directoryHelper, IInteractiveProfileChecker interactiveProfileChecker,
-                                   IJobEventsManager jobEventsManager
-            )
+                                   IJobEventsManager jobEventsManager, IPreviewManager previewManager)
         {
             _shellManager = shellManager;
             _settingsProvider = settingsProvider;
@@ -34,6 +34,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             _lastSaveDirectoryHelper = lastSaveDirectoryHelper;
             _directoryHelper = directoryHelper;
             _interactiveProfileChecker = interactiveProfileChecker;
+            _previewManager = previewManager;
             _targetFilePathComposer = targetFilePathComposer;
 
             JobDataUpdater = jobDataUpdater;
@@ -78,6 +79,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Workflow
             finally
             {
                 _directoryHelper.DeleteCreatedDirectories();
+                _previewManager.AbortAndCleanUpPreview(job.JobInfo.SourceFiles);
             }
         }
     }

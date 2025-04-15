@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>SSH.NET</id>
+    <version>2024.1.0</version>
+    <title>SSH.NET</title>
+    <authors>Renci</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>SS-NET-icon-h500.png</icon>
+    <readme>README.md</readme>
+    <description>SSH.NET is a Secure Shell (SSH) library for .NET, optimized for parallelism.</description>
+    <releaseNotes>https://github.com/sshnet/SSH.NET/releases/tag/2024.1.0</releaseNotes>
+    <copyright>Copyright © Renci 2010-2024</copyright>
+    <tags>ssh scp sftp</tags>
+    <repository type="git" url="https://github.com/sshnet/SSH.NET.git" commit="a5531521952b2814ef5ee11361e078ea3d92eb08" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="Microsoft.Bcl.AsyncInterfaces" version="1.0.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net6.0" />
+      <group targetFramework="net7.0" />
+      <group targetFramework="net8.0" />
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Bcl.AsyncInterfaces" version="1.0.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1" />
+    </dependencies>
+  </metadata>
+</package>

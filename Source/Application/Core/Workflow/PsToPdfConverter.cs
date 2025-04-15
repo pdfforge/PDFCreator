@@ -1,65 +1,80 @@
 ﻿using pdfforge.PDFCreator.Conversion.ConverterInterface;
-using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Utilities.IO;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow
 {
     public interface IPsToPdfConverter
     {
-        void ConvertJobInfoSourceFilesToPdf(Job job);
+        Task ConvertSourceFileToPdf(SourceFileInfo sourceFileInfo);
+        void CleanUpTaskMappings(IList<SourceFileInfo> sourceFileInfos);
     }
 
     public class PsToPdfConverter : IPsToPdfConverter
     {
-        private readonly ITempFolderProvider _tempFolderProvider;
         private readonly IConverter _converter;
-        private readonly IJobCleanUp _jobCleanUp;
+        private readonly IJobCleaner _jobCleaner;
         private readonly IFile _file;
         private readonly IDirectory _directory;
         private readonly IUniqueFilenameFactory _uniqueFilenameFactory;
 
-        public PsToPdfConverter(ITempFolderProvider tempFolderProvider, IConverterFactory converterFactory, IJobCleanUp jobCleanUp, IFile file, IDirectory directory, IUniqueFilenameFactory uniqueFilenameFactory)
+        private readonly Dictionary<string, Task<string>> _fileTaskMapping = new();
+
+        public PsToPdfConverter(IConverterFactory converterFactory, IJobCleaner jobCleaner, IFile file, IDirectory directory, IUniqueFilenameFactory uniqueFilenameFactory)
         {
-            _tempFolderProvider = tempFolderProvider;
-            _jobCleanUp = jobCleanUp;
+            _jobCleaner = jobCleaner;
             _file = file;
             _directory = directory;
             _uniqueFilenameFactory = uniqueFilenameFactory;
             _converter = converterFactory.GetConverter(JobType.PsJob);
         }
 
-        // TODO FOR FUTURE: Check if it's possible to refactor in a way where you only pass source files rather than the whole job.
-        public void ConvertJobInfoSourceFilesToPdf(Job job)
+        public async Task ConvertSourceFileToPdf(SourceFileInfo sfi)
         {
-            foreach (var sourceFileInfo in job.JobInfo.SourceFiles)
+            var key = GetFileTaskMappingKey(sfi.Filename);
+            if (_fileTaskMapping.TryGetValue(key, out var psToPdfTask))
             {
-                var sfiExtension = PathSafe.GetExtension(sourceFileInfo.Filename);
-                if (sfiExtension == ".pdf")
-                    continue;
-
-                if (job.IntermediateFolder == null)
-                    job.IntermediateFolder = _tempFolderProvider.CreatePrefixTempFolder("intermediate");
-
-                var psFile = sourceFileInfo.Filename;
-                var jobTempFolder = _tempFolderProvider.CreatePrefixTempFolder("Job");
-                var pdfFile = ConvertPsToPdf(psFile, jobTempFolder, job.IntermediateFolder);
-
-                sourceFileInfo.Filename = pdfFile;
-
-                foreach (var fileInfo in job.JobInfo.SourceFiles.Where(sfi => sfi.Filename == psFile))
-                {
-                    fileInfo.Filename = pdfFile;
-                }
+                sfi.Filename = await psToPdfTask;
+            }
+            else
+            {
+                _fileTaskMapping[key] = Task.Run(() => ConvertPsToPdf(sfi.Filename));
+                sfi.Filename = await _fileTaskMapping[key];
             }
         }
 
-        private string ConvertPsToPdf(string psFilePath, string tempFolder, string intermediateFolder)
+        public void CleanUpTaskMappings(IList<SourceFileInfo> sourceFileInfos)
+        {
+            foreach (var sfi in sourceFileInfos)
+            {
+                var key = GetFileTaskMappingKey(sfi.Filename);
+                _fileTaskMapping.Remove(key);
+            }
+        }
+
+        private string ConvertPsToPdf(string sfiFilename)
+        {
+            var sfiExtension = PathSafe.GetExtension(sfiFilename);
+            if (sfiExtension == ".pdf")
+                return sfiFilename;
+
+            var sfiFolder = PathSafe.GetDirectoryName(sfiFilename);
+            var intermediateFolder = PathSafe.Combine(sfiFolder, "intermediate");
+            _directory.CreateDirectory(intermediateFolder);
+            var jobTempFolder = PathSafe.Combine(sfiFolder, "temp");
+            _directory.CreateDirectory(jobTempFolder);
+
+            var pdfFile = DoConvertPsToPdf(sfiFilename, jobTempFolder, intermediateFolder);
+
+            return pdfFile;
+        }
+
+        private string DoConvertPsToPdf(string psFilePath, string tempFolder, string intermediateFolder)
         {
             var job = BuildJobForPsFile(psFilePath, tempFolder, intermediateFolder);
             _converter.CreateIntermediatePdf(job);
@@ -103,13 +118,18 @@ namespace pdfforge.PDFCreator.Core.Workflow
         {
             try
             {
-                _jobCleanUp.DoCleanUp(job.JobTempFolder, job.JobInfo.SourceFiles, job.JobInfo.InfFile);
+                _jobCleaner.DoCleanUp(job.JobTempFolder, job.JobInfo.SourceFiles, job.JobInfo.InfFile);
                 _directory.Delete(job.IntermediateFolder, true);
             }
             catch
             {
                 // ignore
             }
+        }
+
+        private string GetFileTaskMappingKey(string sfiFilename)
+        {
+            return PathSafe.ChangeExtension(sfiFilename, "key");
         }
     }
 }

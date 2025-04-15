@@ -27,28 +27,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.Windows
             AccessKeyHelper.SetAccessKeys(sender);
         }
 
-        private void ListBoxItem_MouseLeave_ShowFirstItemsDocumentInfo(object sender, MouseEventArgs e)
-        {
-            if (sender is ListBoxItem)
-            {
-                if (DataContext is ManagePrintJobsViewModel viewModel)
-                {
-                    viewModel.SetDisplayedJobInfoToFirst();
-                }
-            }
-        }
-
-        private void ListBoxItem_MouseEnter_ShowCurrentItemsDocumentInfo(object sender, MouseEventArgs e)
-        {
-            if (sender is ListBoxItem item)
-            {
-                if (DataContext is ManagePrintJobsViewModel viewModel)
-                {
-                    viewModel.DisplayedJobInfo = item.DataContext as JobInfo;
-                }
-            }
-        }
-
         private bool IsAncestorOfTypeButton(object obj)
         {
             var element = obj as DependencyObject;

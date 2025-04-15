@@ -97,13 +97,16 @@
 
         <!-- Temporary Save -->
         <CheckBox Margin="0 20 0 0"
-                  IsChecked="{Binding TemporarySaveFiles}">
-            <TextBlock TextWrapping="Wrap">
-                <Run Text="{Binding Translation.SaveOnlyTemporary, Mode=OneWay}" />
-                <LineBreak />
-                <Run Text="{Binding Translation.TemporarySaveFilesHint, Mode=OneWay}" />
-            </TextBlock>
-        </CheckBox>
+                  IsChecked="{Binding TemporarySaveFiles}"
+                  ToolTip="{Binding Translation.TemporarySaveFilesHint}"
+                  Content="{Binding Translation.SaveOnlyTemporary}"/>
+
+        <!-- Preview -->
+        <StackPanel Visibility="{Binding AutoSaveEnabled, Converter={StaticResource CollapsedIfTrueConverter}}"
+                    Margin="0 20 0 0">
+            <CheckBox Content="{Binding Translation.ShowPreview}"
+                      IsChecked="{Binding CurrentProfile.Preview.Enabled}"/>
+        </StackPanel>
 
         <!-- Existing File Behaviour -->
         <StackPanel Margin="0 20 0 0"

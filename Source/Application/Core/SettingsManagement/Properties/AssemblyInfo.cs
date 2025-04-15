@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -14,6 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright Avanquest pdfforge GmbH 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: SupportedOSPlatform("windows")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -36,7 +38,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("4.2.0.0")]
 
-[assembly: AssemblyVersion("5.3.3.0")]
-[assembly: AssemblyFileVersion("5.3.3.0")]
-[assembly: InternalsVisibleTo("GpoAdapter.UnitTest, PublicKey=0024000004800000940000000602000000240000525341310004000001000100554ff0e05fdb5808997280e49562b43303728f1e2d46dbb8ec66dfb046e74a1a8e0d1d54c71b617cacd93ef2508fe6a3c7bc2934f9bbd2e9b52eec94e470f1cd3a8673400a1fbe59c4ab8541cc3cbf253c8b2136463eefe039a08008ec152ffdc6f80cf1047c63ee9fa2dfe5dfb5f137da12a77cf9ace5ec7b2bca5dd24f68bd")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: InternalsVisibleTo("GpoAdapter.UnitTest")]
 

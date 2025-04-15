@@ -9,9 +9,11 @@
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:local="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:userControls="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls"
              mc:Ignorable="d"
              Width="Auto" MinWidth="500"
-             Height="Auto"
+             Height="Auto" MinHeight="420"
              d:DataContext="{d:DesignInstance local:DesignTimeMicrosoftAccountViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="Accounts">
     <UserControl.Resources>
@@ -22,78 +24,94 @@
                 <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolToVisibilityConverter x:Key="CollapsedIfFalseConverter" TrueValue="Visible" FalseValue="Collapsed"/>
-            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converter:BoolNegationConverter x:Key="BoolNegationConverter"/>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel Margin="20">
-        <StackPanel DockPanel.Dock="Top">
-            <StackPanel Visibility="{Binding AccountExists, Converter={StaticResource CollapsedIfFalseConverter}, UpdateSourceTrigger=PropertyChanged}">
-                <Label Content="{Binding Translation.AccountLabel}" />
-                <TextBlock Margin="0 10 0 0" 
-                           IsHitTestVisible="False"
-                           Text="{Binding Account.AccountInfo}"/>
-            </StackPanel>
-            
-            <Label Content="{Binding Translation.SelectPermissions}"
-                   Visibility="{Binding AccountExists, Converter={StaticResource CollapsedIfTrueConverter}, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource RegularLabel}"/>
+        <StackPanel DockPanel.Dock="Top" 
+                    Margin="0 0 0 10" 
+                    Visibility="{Binding AccountExists, Converter={StaticResource CollapsedIfFalseConverter}, UpdateSourceTrigger=PropertyChanged}">
+            <Label Content="{Binding Translation.AccountLabel}" />
+            <TextBlock Margin="0 10 0 0" 
+                       IsHitTestVisible="False"
+                       Text="{Binding Account.AccountInfo}"/>
+        </StackPanel>
 
-            <Label Margin="0 10 0 0" 
-                   Content="{Binding Translation.PermissionsExpired}"
-                   Visibility="{Binding PermissionsExpired, Converter={StaticResource CollapsedIfFalseConverter}, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource RegularLabel}"
-                   Foreground="{StaticResource WarningBrush}" />
-
-            <Grid Margin="0 20 0 0">
+        <Grid DockPanel.Dock="Top" Margin="0 10 0 0">
                 <Grid.RowDefinitions>
-                    <!--Label-->
                     <RowDefinition Height="Auto"/>
-                    <!--Margin -->
-                    <RowDefinition Height="10" />
-                    <!--Permission-->
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*" MinHeight="170" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <!--Mail-->
+                    <!--Actions-->
                     <ColumnDefinition Width="*"/>
                     <!-- Margin -->
                     <ColumnDefinition Width="20"/>
-                    <!--OneDrive-->
+                    <!--List-->
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <Label Grid.Row="0" Grid.Column="0"
-                       Content="{Binding Translation.MailPermissionsLabel}"
-                       Style="{StaticResource RegularLabel}"/>
-                <Label Grid.Row="0" Grid.Column="2"
-                       Content="{Binding Translation.OneDrivePermissionsLabel}"
-                       Style="{StaticResource RegularLabel}"/>
-                
-                <!--Mail permissions-->
-                <StackPanel Grid.Row="2" Grid.Column="0"
-                            Orientation="Vertical">
-                    <CheckBox IsChecked="{Binding HasMailReadWritePermission}"
-                              Content="{Binding Translation.MailReadWrite}"
-                              Height="25"/>
+
+                <Label Grid.Row="0" Grid.Column="0"  
+                       Content="{Binding Translation.SelectAction}"
+                       Style="{StaticResource RegularLabel}" />
+
+                <StackPanel Grid.Row="2" Grid.Column="0">
+                    <CheckBox IsChecked="{Binding HasOWA}"
+                              Content="{Binding Translation.OWATitle}"
+                              Height="25" />
+
                     <CheckBox Margin="30 10 0 0"
-                              IsEnabled="{Binding HasMailReadWritePermission}"
-                              IsChecked="{Binding HasMailSendPermission}"
-                              Content="{Binding Translation.MailSend}"
+                              IsChecked="{Binding HasOWASend}"
+                              Content="{Binding Translation.OWASendTitle}"
+                              IsEnabled="{Binding HasOWA}"
                               Height="25"/>
-                </StackPanel>
 
-                <!--OneDrive permissions-->
-                <StackPanel Grid.Row="2" Grid.Column="2">
-                    <CheckBox IsChecked="{Binding HasFilesReadWritePermission}"
-                              Content="{Binding Translation.FilesReadWrite}"
+                    <CheckBox Margin="0 10 0 0"
+                              IsChecked="{Binding HasOneDrive}"
+                              Content="{Binding Translation.OneDriveTitle}"
                               Height="25"/>
-                </StackPanel>
 
+                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                    <CheckBox IsEnabled="{Binding IsSharePointSupported}" 
+                              IsChecked="{Binding HasSharepoint}"
+                              Content="{Binding Translation.SharepointTitle}"
+                              Height="25"/>
+                        <userControls:BusinessFeatureBadge Edition="AllLicensed" Margin="10 0 0 0" />
+
+                </StackPanel>
+            </StackPanel>
+
+                <Label Grid.Row="0" Grid.Column="2"
+                       Content="{Binding Translation.NeededPermission}"
+                       Style="{StaticResource RegularLabel}"/>
+
+                <ListBox Grid.Row="2" Grid.Column="2"
+                         ItemsSource="{Binding RequiredPermissions}"
+                         IsHitTestVisible="False"
+                         Margin="-5 -5 0 0" 
+                         Padding="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type system:String}">
+                            <TextBlock Margin="0 10 0 0"
+                                       Height="25"
+                                       VerticalAlignment="Center" Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
-        </StackPanel>
 
-        <DockPanel Margin="0 20 0 0">
-            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+        <Label DockPanel.Dock="Top" Margin="0 10 0 0"
+               Content="{Binding Translation.PermissionsExpired}"
+               Visibility="{Binding PermissionsExpired, Converter={StaticResource CollapsedIfFalseConverter}, UpdateSourceTrigger=PropertyChanged}"
+               Style="{StaticResource RegularLabel}"
+               Foreground="{StaticResource WarningBrush}" />
+
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="0 20 0 0">
+            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Bottom">
+                
                 <Label DockPanel.Dock="Top"
                        Style="{StaticResource LightLabel}"
                        Content="{Binding Translation.AccountLogInHint}" />
@@ -106,12 +124,11 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Right"
                     Margin="20 0 0 0"
+                    IsEnabled="{Binding HasPermissionSelected}"
                     Style="{StaticResource AffirmativeButton}"
                     Command="{Binding RequestPermissionCommand}"
-                    CommandParameter="{Binding MicrosoftAccountPermissionsPayload}">
-                <TextBlock IsHitTestVisible="False" 
-                       Foreground="White"
-                       Text="{Binding Translation.RequestPermissions}" />
+                    CommandParameter="{Binding MicrosoftAccountPermissionsPayload}"
+                    Content="{Binding RequestOrSaveButtonText}">
             </Button>
         </DockPanel>
     </DockPanel>

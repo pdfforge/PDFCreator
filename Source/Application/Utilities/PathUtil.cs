@@ -18,8 +18,6 @@ namespace pdfforge.PDFCreator.Utilities
 
         bool DirectoryIsEmpty(string path);
 
-        bool CheckWritability(string directory);
-
         bool IsValidRootedPath(string path);
 
         PathUtilStatus IsValidRootedPathWithResponse(string path);
@@ -92,24 +90,6 @@ namespace pdfforge.PDFCreator.Utilities
             return CheckAndShortenTooLongPath(filePath, MAX_PATH);
         }
 
-        /// <summary>
-        ///     Check if directory is writable.
-        /// </summary>
-        /// <param name="directory">Directory string or full file path</param>
-        /// <returns>true if directory is writeable</returns>
-        public bool CheckWritability(string directory)
-        {
-            directory = _path.GetFullPath(directory);
-
-            var permissionSet = new PermissionSet(PermissionState.None);
-
-            var fileIoPermission = new FileIOPermission(FileIOPermissionAccess.Write, directory);
-
-            permissionSet.AddPermission(fileIoPermission);
-
-            return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
-        }
-
         public bool DirectoryIsEmpty(string path)
         {
             return !_directory.EnumerateFileSystemEntries(path).Any();
@@ -132,38 +112,33 @@ namespace pdfforge.PDFCreator.Utilities
                 return PathUtilStatus.PathWasNullOrEmpty;
 
             if (path.Length < 3)
-                return PathUtilStatus.InvalidRootedPath;
+                return PathUtilStatus.InvalidPath;
 
             if (((path.IndexOf(":", StringComparison.Ordinal) != 1) || (path.IndexOf("\\", StringComparison.Ordinal) != 2)) && !path.StartsWith(@"\\"))
-                return PathUtilStatus.InvalidRootedPath;
+                return PathUtilStatus.InvalidPath;
 
             if (path.Length > MAX_PATH)
                 return PathUtilStatus.PathTooLongEx;
 
-            try
-            {
-                var fi = new FileInfo(path);
-            }
-            catch (ArgumentException)
-            {
-                return PathUtilStatus.ArgumentEx;
-            }
-            catch (NotSupportedException)
-            {
-                return PathUtilStatus.NotSupportedEx;
-            }
-            catch (PathTooLongException)
-            {
-                return PathUtilStatus.PathTooLongEx;
-            }
+            var invalidPathChars = Path.GetInvalidPathChars();
+            if (path.Any(character => invalidPathChars.Contains(character)))
+                return PathUtilStatus.InvalidPath;
+            
+            var invalidFileNameChars = Path.GetInvalidFileNameChars();
+            var name = PathSafe.GetFileName(path);
+            if(name.Any(character => invalidFileNameChars.Contains(character)))
+                return PathUtilStatus.InvalidPath;
 
             if (!path.StartsWith(@"\\"))
             {
+                if (path.LastIndexOf(':') != 1)
+                    return PathUtilStatus.InvalidPath;
+
                 var driveLetter = char.ToUpperInvariant(path[0]);
                 if (driveLetter >= 'A' && driveLetter <= 'Z')
                     return PathUtilStatus.Success;
 
-                return PathUtilStatus.InvalidRootedPath;
+                return PathUtilStatus.InvalidPath;
             }
 
             return PathUtilStatus.Success;
@@ -205,9 +180,7 @@ namespace pdfforge.PDFCreator.Utilities
     {
         Success,
         PathWasNullOrEmpty,
-        InvalidRootedPath,
-        ArgumentEx,
+        InvalidPath,
         PathTooLongEx,
-        NotSupportedEx,
     }
 }

@@ -1,6 +1,4 @@
-﻿using NLog;
-using pdfforge.PDFCreator.Conversion.Actions.Actions.Mail;
-using pdfforge.PDFCreator.Conversion.Settings;
+﻿using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Services.Macros;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
@@ -8,7 +6,6 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.Microsoft;
-using Logger = NLog.Logger;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {
@@ -16,14 +13,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
     {
         private readonly IInteractionRequest _interactionRequest;
         private MicrosoftAccount _currentAccount;
+        
 
         public MicrosoftAccountEditCommand(
             IInteractionRequest interactionRequest,
-            IGraphManager graphManager,
-            ICurrentSettings<Accounts> accountsProvider,
-            ITranslationUpdater translationUpdater
-
-        )
+            ITranslationUpdater translationUpdater)
             : base(translationUpdater)
         {
             _interactionRequest = interactionRequest;
@@ -43,12 +37,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 _currentAccount = new MicrosoftAccount();
                 title = Translation.AddMicrosoftAccount;
             }
-                
-
-            var interaction = new MicrosoftAccountInteraction(_currentAccount.Copy(), title);
+            
+            var interaction = new MicrosoftAccountInteraction(_currentAccount, title);
             _interactionRequest.Raise(interaction, UpdateMicrosoftAccountsCallback);
-
-            IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }
 
 
@@ -59,7 +50,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Commands
                 IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Cancel));
                 return;
             }
-
+            
             interaction.MicrosoftAccount.CopyTo(_currentAccount);
             IsDone?.Invoke(this, new MacroCommandIsDoneEventArgs(ResponseStatus.Success));
         }

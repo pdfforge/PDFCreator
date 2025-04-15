@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep.EmailCollectionHintStepView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance designTime:DesignTimeEmailCollectionStepHintViewModel, IsDesignTimeCreatable=True}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Styles/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="../../../Styles/Labels.xaml"/>
+                <ResourceDictionary Source="../../../Styles/Buttons/DefaultButtons.xaml"/>
+                <ResourceDictionary Source="../../../Styles/Icons/EmailCollectionIcons.xaml"/>
+                <ResourceDictionary Source="../../../Styles/Hyperlink.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+            <converter:StringIsNullOrWhiteSpaceConverter x:Key="VisibleIfStringIsEmptyConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible" />
+            <converter:BoolToVisibilityConverter x:Key="VisibleIfTrueConverter" TrueValue="Visible" FalseValue="Collapsed" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!-- Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Image -->
+            <RowDefinition Height="*"/>
+            <!-- Bullet points -->
+            <RowDefinition Height="Auto"/>
+            <!-- Email input -->
+            <RowDefinition Height="Auto"/>
+            <!-- Space for the checkbox and buttons to be in the bottom-->
+            <RowDefinition Height="*" MaxHeight="80" />
+            <!-- Bottom section -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Label Grid.Row="0" HorizontalAlignment="Center"
+               Style="{StaticResource LargeLabel}">
+            <TextBlock TextWrapping="Wrap"
+                      FontSize="22"
+                      TextAlignment="Center"
+                      Text="{Binding Translation.EmailCollectionTopText}"
+                      Foreground="{StaticResource DefaultTextColorBrush}"/>
+        </Label>
+
+        <!-- Image (it's normal size and will shrink if bullet-points have a lot of text, that's why it looks so tiny in the design viewer) -->
+        <Image Grid.Row="1"
+               Margin="0 10 0 0"
+               Source="../../../Styles/Images/email_collection_visual.png"/>
+
+        <!-- Bullet Points -->
+        <Grid Grid.Row="2" Margin="0 10 0 0">
+            <Grid.Resources>
+                <Style TargetType="ContentControl">
+                    <Setter Property="Width" Value="24"/>
+                    <Setter Property="Height" Value="24" />
+                    <Setter Property="Foreground" Value="{StaticResource EmailCollectionBulletPointIcon}" />
+                </Style>
+
+                <Style x:Key="BulletPointLabelStyle" TargetType="Label">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="5,0,0,0"/>
+                </Style>
+
+                <Style x:Key="BulletPointTextStyle" TargetType="TextBlock">
+                    <Setter Property="FontFamily" Value="Inter"/>
+                    <Setter Property="FontWeight" Value="Normal"/>
+                    <Setter Property="FontSize" Value="17"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="Foreground" Value="{StaticResource DefaultTextColorBrush}" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Translation.BulletPointHeaderText}"
+                       Style="{StaticResource BulletPointTextStyle}"
+                       FontWeight="Medium"
+                       Margin="0 0 0 8"/>
+
+            <DockPanel Grid.Row="1" Margin="0,0,0,5" FlowDirection="LeftToRight">
+                <ContentControl Content="{StaticResource LampIcon}"/>
+                <Label Style="{StaticResource BulletPointLabelStyle}">
+                    <TextBlock Text="{Binding Path=Translation.BulletPointOneText}"
+                             Style="{StaticResource BulletPointTextStyle}"/>
+                </Label>
+            </DockPanel>
+
+            <DockPanel Grid.Row="2" Margin="0,0,0,5" FlowDirection="LeftToRight">
+                <ContentControl Content="{StaticResource QuestionMarkIcon}"/>
+                <Label Style="{StaticResource BulletPointLabelStyle}">
+                    <TextBlock Text="{Binding Path=Translation.BulletPointTwoText}"
+                             Style="{StaticResource BulletPointTextStyle}"/>
+                </Label>
+            </DockPanel>
+
+            <DockPanel Grid.Row="3" Margin="0,0,0,5" FlowDirection="LeftToRight">
+                <ContentControl Content="{StaticResource CommunityIcon}"/>
+                <Label Style="{StaticResource BulletPointLabelStyle}">
+                    <TextBlock Text="{Binding Path=Translation.BulletPointThreeText}"
+                             Style="{StaticResource BulletPointTextStyle}"/>
+                </Label>
+            </DockPanel>
+
+            <DockPanel Grid.Row="4" Margin="0,0,0,0" FlowDirection="LeftToRight">
+                <ContentControl Content="{StaticResource HeartIcon}"/>
+                <Label Style="{StaticResource BulletPointLabelStyle}">
+                    <TextBlock Text="{Binding Path=Translation.BulletPointFourText}"
+                             Style="{StaticResource BulletPointTextStyle}"/>
+                </Label>
+            </DockPanel>
+        </Grid>
+
+        <!-- Email Input Section -->
+        <Grid Grid.Row="3" Margin="0 30 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="14"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="{Binding Translation.EmailAddressLabel}"/>
+
+            <Grid Grid.Row="1" Margin="0,8,0,8">
+                <TextBox
+                    VerticalAlignment="Center"
+                    Background="{StaticResource AccentGrey}"
+                    Text="{Binding EmailAddress, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="{StaticResource DefaultTextColorBrush}"
+                    Name="EmailTextBox"/>
+                <TextBlock
+                    Margin="6,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Translation.EmailPlaceholder}"
+                    Foreground="{StaticResource PlaceholderTextColorBrush}"
+                    IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding EmailAddress, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Collapsed">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding EmailAddress, Converter={StaticResource VisibleIfStringIsEmptyConverter}}" Value="Visible">
+                                    <Setter Property="TextBlock.Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=EmailTextBox}" Value="True">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            <Label Grid.Row="2"
+                   Content="{Binding Translation.InvalidEmailErrorMessage}"
+                   Foreground="Red"
+                   FontSize="10"
+                   Visibility="{Binding IsEmailInvalid, Converter={StaticResource BoolToVisibility}}"/>
+        </Grid>
+
+        <!-- Bottom Section -->
+        <Grid Grid.Row="5"
+              VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- Marketing and Privacy Policy Section -->
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Column="0"
+                  Background="{StaticResource AccentGrey}"
+                  IsChecked="{Binding MarketingConsent, Mode=TwoWay}"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Translation.AgreeToReceiveMarketingText}"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           Margin="5,0,0,0"/>
+            </Grid>
+            <TextBlock Grid.Row="1"
+                           TextWrapping="Wrap">
+                    <Run Text="{Binding Translation.PrivacyPolicyText, Mode=OneWay}" />
+                    <Hyperlink NavigateUri="{Binding PrivacyPolicyUrl}"
+                              Command="{Binding OpenPrivacyPolicyCommand}"
+                              Style="{StaticResource DefaultHyperLink}">
+                        <Run Text="{Binding Translation.PrivacyPolicyLinkText, Mode=OneWay}"/>
+                    </Hyperlink>
+            </TextBlock>
+
+            <!-- Buttons -->
+            <Grid Grid.Row="2" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Style="{StaticResource SkipForNowButton}"
+                        IsCancel="True"
+                        Command="{Binding SkipEmailStepCommand}"
+                        Content="{Binding Translation.SkipButtonContent, Mode=OneWay}"/>
+
+                <Button x:Name="SendButton"
+                        Grid.Column="2"
+                        Style="{StaticResource EmailSendButton}"
+                        Command="{Binding SendEmailInformationCommand}">
+                    <Grid>
+                        <TextBlock Text="{Binding Translation.SendButtonContent}"
+                                 Visibility="{Binding IsSending, Converter={StaticResource CollapsedIfTrueConverter}}"
+                                 Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                        <controls:ProgressRing HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding IsSending, Converter={StaticResource VisibleIfTrueConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"/>
+                    </Grid>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

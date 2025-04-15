@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace pdfforge.PDFCreator.Conversion.Ghostscript
@@ -40,6 +39,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             // Redirect the output stream of the child process.
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
             p.StartInfo.FileName = GhostscriptVersion.ExePath;
             p.StartInfo.CreateNoWindow = true;
 
@@ -48,7 +48,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
 
             p.StartInfo.Arguments = $"@\"{parameterFile}\"";
 
-            var gsThread = new Thread(() => RunAndReadStdOut(p));
+            var gsThread = new Thread(() => RunAndReadStdOutAndError(p));
             gsThread.Start();
 
             if (!gsThread.Join(Timeout))
@@ -96,7 +96,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             return escapedParams;
         }
 
-        private void RunAndReadStdOut(Process p)
+        private void RunAndReadStdOutAndError(Process p)
         {
             p.Start();
             // Do not wait for the child process to exit before
@@ -104,25 +104,31 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript
             // p.WaitForExit();
             // Read the output stream first and then wait.
 
-            var sbout = new StringBuilder();
+            p.OutputDataReceived += OutputDataReceivedHandler;
+            p.ErrorDataReceived += ErrorDataReceivedHandler;
 
-            while (!p.StandardOutput.EndOfStream)
-            {
-                var c = (char)p.StandardOutput.Read();
-                sbout.Append(c);
-
-                if ((c == ']') || (c == '\n'))
-                {
-                    RaiseOutputEvent(sbout.ToString());
-
-                    sbout.Length = 0;
-                }
-            }
-
-            if (sbout.Length > 0)
-                RaiseOutputEvent(sbout.ToString());
-
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
             p.WaitForExit();
+
+            p.OutputDataReceived -= OutputDataReceivedHandler;
+            p.ErrorDataReceived -= ErrorDataReceivedHandler;
+        }
+
+        private void OutputDataReceivedHandler(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+                RaiseOutputEvent(e.Data);
+        }
+
+        private void ErrorDataReceivedHandler(object sender, DataReceivedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Data) && e.Data.Contains("Dereference"))
+            {
+                _logger.Error("We detected Ghostscript hanging on a specific error (error while dereferencing an object). Stopping the process...");
+                if(sender is Process process)
+                    process.Kill();
+            }
         }
 
         private void RaiseOutputEvent(string message)

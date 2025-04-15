@@ -59,7 +59,6 @@ using pdfforge.PDFCreator.Core.Workflow.ComposeTargetFilePath;
 using pdfforge.PDFCreator.Core.Workflow.Exceptions;
 using pdfforge.PDFCreator.Core.Workflow.Output;
 using pdfforge.PDFCreator.Core.Workflow.Queries;
-using pdfforge.PDFCreator.Setup.Shared.Helper;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Presentation;
 using pdfforge.PDFCreator.UI.Presentation.Assistants;
@@ -70,7 +69,6 @@ using pdfforge.PDFCreator.UI.Presentation.Commands.EvaluateSettingsCommands;
 using pdfforge.PDFCreator.UI.Presentation.Commands.ProfileCommands;
 using pdfforge.PDFCreator.UI.Presentation.Controls;
 using pdfforge.PDFCreator.UI.Presentation.Converter;
-using pdfforge.PDFCreator.UI.Presentation.Customization;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.ActionHelper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Font;
@@ -148,17 +146,24 @@ using pdfforge.UsageStatistics;
 using Prism.Regions;
 using SimpleInjector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using pdfforge.PDFCreator.Conversion.Actions.Actions.OneDrive;
+using pdfforge.PDFCreator.Conversion.Actions.Actions.Sharepoint;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OneDrive;
+using Microsoft.Extensions.DependencyInjection;
+using pdfforge.PDFCreator.Core.Services.Download;
+using pdfforge.PDFCreator.Core.Services.EnvironmentDetection;
+using pdfforge.PDFCreator.Core.SettingsManagement.Customization;
 using SystemInterface;
 using SystemInterface.Diagnostics;
 using SystemInterface.IO;
@@ -180,13 +185,25 @@ using PrintJobShell = pdfforge.PDFCreator.UI.Presentation.PrintJobShell;
 using ProcessStarter = pdfforge.PDFCreator.Utilities.Process.ProcessStarter;
 using RegistryWrap = SystemWrapper.Microsoft.Win32.RegistryWrap;
 using SmtpAccountView = pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews.SmtpAccountView;
-using WebClientDownloader = pdfforge.PDFCreator.Core.Services.Download.WebClientDownloader;
 using WebLinkLauncher = pdfforge.PDFCreator.Utilities.Web.WebLinkLauncher;
 using WorkflowEditorTestPageUserControl = pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings.WorkflowEditorTestPageUserControl;
 using pdfforge.PDFCreator.UI.Interactions.Feedback;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Feedback;
+using pdfforge.PDFCreator.UI.Presentation.Helper.License;
+using pdfforge.PDFCreator.UI.Presentation.Messages;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Feedback;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.EmailCollectionHintStep;
+using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.Sharepoint;
 using pdfforge.PDFCreator.UI.Presentation.Windows.Feedback;
+using Prism.Events;
+using pdfforge.LicenseValidator.Tools.Machine;
+using pdfforge.PDFCreator.Core.Services.Licensing;
+using pdfforge.PDFCreator.Utilities.License;
+using pdfforge.PDFCreator.Utilities.Messages;
+using pdfforge.PDFCreator.Utilities.Messages.ErrorMessages;
+using pdfforge.PDFCreator.Utilities.Spool;
+using pdfforge.PDFCreator.Utilities.Trial;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.Editions.EditionBase
 {
@@ -226,7 +243,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<ICommandLocator>(() => new CommandLocator(container));
 
             container.Register<IWorkflowFactory>(() => _workflowFactory);
-
+            
             container.Register<IOutputFileMover, AutosaveOutputFileMover>();
 
             container.Register<ISplitDocumentFilePathHelper, SplitDocumentFilePathHelper>();
@@ -253,7 +270,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IActionManager, ActionManager>();
 
-            container.Register<ICommandLineUtil, CommandLineUtil>();
+            container.RegisterSingleton<ICommandLineUtil, CommandLineUtil>();
             container.Register<IPrinterWrapper, PrinterWrapper>();
             container.Register<IJobPrinter, GhostScriptPrinter>();
             container.Register<ICanvasToFileHelper, CanvasToFileHelper>();
@@ -265,14 +282,15 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IMergeBeforeActionsHelper, MergeBeforeActionsHelper>();
             container.Register<IJobRunner, JobRunner>();
             container.Register<IActionExecutor, ActionExecutor>();
-            container.Register<IConverterFactory, ConverterFactory>();
-            container.Register<IPsConverterFactory, GhostscriptConverterFactory>();
+            container.RegisterSingleton<IConverterFactory, ConverterFactory>();
+            container.RegisterSingleton<IPsConverterFactory, GhostscriptConverterFactory>();
 
             container.RegisterSingleton<IUpdateDownloader, UpdateDownloader>();
 
             container.RegisterSingleton<IFileCacheFactory, FileCacheFactory>();
-            container.RegisterSingleton<IDownloader, WebClientDownloader>();
+            container.RegisterSingleton<IDownloader, HttpClientDownloader>();
 
+            container.RegisterSingleton<IJobCleaner, JobCleaner>();
             container.Register<IJobCleanUp, JobCleanUp>();
 
             container.RegisterSingleton<ISystemPrinterProvider, SystemPrinterProvider>();
@@ -287,7 +305,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ITestPageCreator, TestPageCreator>();
             container.Register<ITestPageHelper, TestPageHelper>();
             container.RegisterSingleton<IPdfArchitectCheck, PdfArchitectCheck>();
-            container.Register<IGhostscriptDiscovery, GhostscriptDiscovery>();
+            container.RegisterSingleton<IGhostscriptDiscovery, GhostscriptDiscovery>();
             container.Register<ProfileRemoveCommand>();
             container.Register<ProfileRenameCommand>();
             container.Register<IPrintTestPageAsyncCommand, PrintTestPageAsyncCommand>();
@@ -297,12 +315,15 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<IDirectory, DirectoryWrap>();
             container.RegisterSingleton<IProcess, ProcessWrap>();
             container.RegisterSingleton<IPath, PathWrap>();
+            container.RegisterSingleton<IGuid, GuidWrap>();
             container.RegisterSingleton<IPathUtil, PathUtil>();
             container.RegisterSingleton<IFileVersionInfoHelper, FileVersionInfoHelper>();
             container.RegisterSingleton<IEnvironment, EnvironmentWrap>();
             container.RegisterSingleton<IDirectoryAccessControl, DirectoryAccessControl>();
             container.RegisterSingleton<IDirectoryHelper, DirectoryHelper>();
             container.RegisterSingleton<IReadableFileSizeFormatter, ReadableReadableFileSizeFormatter>();
+            container.RegisterSingleton<ILicenseHelper, LicenseHelper>();
+            container.RegisterSingleton<IMessageHelper, MessageHelper>();
 
             container.RegisterSingleton<IProcessStarter, ProcessStarter>();
 
@@ -317,15 +338,19 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<ITokenButtonFunctionProvider, TokenButtonFunctionProvider>();
 
             container.RegisterSingleton<IJobInfoQueueManager, JobInfoQueueManager>();
+            container.RegisterSingleton<IJobInfoToProfileMapper, JobInfoToProfileMapper>();
             container.Register<IJobInfoQueue, JobInfoQueue>(Lifestyle.Singleton);
             container.Register<IThreadManager, ThreadManager>(Lifestyle.Singleton);
             container.Register<IPipeServerManager, PipeServerManager>(Lifestyle.Singleton);
+            container.RegisterSingleton<IApplicationCloser, ApplicationCloser>();
             container.RegisterSingleton<IPipeMessageHandler, NewPipeJobHandler>();
+            container.Register<DragAndDropStart>();
 
             container.RegisterSingleton<IVersionHelper>(() => new VersionHelper(GetType().Assembly));
 
             container.Register<IKernel32Wrapper, Kernel32Wrapper>();
             container.Register<ITerminalServerDetection, TerminalServerDetection>();
+            container.Register<IDomainDetector, DomainDetector>();
 
             container.Register<IRepairSpoolFolderAssistant, RepairSpoolFolderAssistant>();
             container.Register<ISpoolFolderAccess, SpoolFolderAccess>();
@@ -339,7 +364,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<ISignaturePasswordCheck, SignaturePasswordCheckCached>();
 
             container.Register<IWelcomeSettingsHelper, WelcomeSettingsHelper>();
-
+            
             container.Register<IEmailClientFactory, EmailClientFactory>();
             container.Register<IProfileChecker, ProfileChecker>();
             container.Register<IDefaultViewerCheck, DefaultViewerCheck>();
@@ -364,6 +389,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterSingleton<ICancellationTokenSourceFactory, CancellationTokenSourceFactory>();
             container.Register<IMaybePipedApplicationStarter, MaybePipedApplicationStarter>();
             container.Register<ITokenReplacerFactory, TokenReplacerFactory>();
+            container.RegisterSingleton<IPsToPdfConverter, PsToPdfConverter>();
+            container.RegisterSingleton<IPdfToPreviewConverter, PdfToPreviewConverter>();
+            container.RegisterSingleton<IPreviewManager, PreviewManager>();
+            container.RegisterSingleton<IPreviewPreLoadHelper, PreviewPreLoadHelper>();
 
             container.RegisterSingleton<ISettingsChanged, SettingsChanged>();
 
@@ -374,7 +403,6 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterInitializer<PDFCreatorDefaultSettingsBuilder>(x =>
             {
                 x.WithEmailSignature = EditionHelper.IsFreeEdition;
-                x.EncryptionLevel = EditionHelper.EncryptionLevel;
             });
 
             container.RegisterSingleton<ISettingsBackup, SettingsBackup>();
@@ -440,7 +468,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IJobFolderBuilder, JobFolderBuilder>();
             container.Register<IJobInfoDuplicator, JobInfoDuplicator>();
             container.Register<ISourceFileInfoDuplicator, SourceFileInfoDuplicator>();
-            container.Register<IUniqueFilenameFactory, UniqueFilenameFactory>();
+            container.RegisterSingleton<IUniqueFilenameFactory, UniqueFilenameFactory>();
             container.Register<IUniqueDirectory, UniqueDirectory>();
             container.Register<IDeleteTempFolderCommand, DeleteTempFolderCommand>();
 
@@ -458,7 +486,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
             container.Register<IFeedbackSender, AhaFeedbackSender>();
 
+            container.Register<IMachineId>(() => new MachineIdV2Generator());
+
             RegisterTranslationUpdater(container);
+            RegisterExitCodeHandler(container);
             RegisterSettingsLoader(container);
             RegisterCurrentSettingsProvider(container);
             RegisterFolderProvider(container);
@@ -475,8 +506,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             RegisterInteractiveWorkflowManagerFactory(container);
             RegisterPdfProcessor(container);
             RegisterUserTokenExtractor(container);
-            RegisterProfessionalHintHelper(container);
+            RegisterConditionalHintManager(container);
             RegisterNotificationService(container);
+            RegisterBlockedInEnvironmentHelpers(container);
             RegisterAllTypedSettingsProvider(container);
             RegisterBannerManagerWrapper(container, BannerProductName);
             RegisterWebLinkLauncher(container);
@@ -518,6 +550,29 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             {
                 typeof(UsageStatisticsEventsHandler)
             });
+        }
+
+        private void RegisterExitCodeHandler(Container container)
+        {
+            var exitMessageTypes = new List<Type>
+            {
+            };
+
+            container.Collection.Register<IExitMessageHandler>(exitMessageTypes, Lifestyle.Singleton);
+            container.RegisterSingleton<IExitMessageHelper, ExitMessageHelper>();
+        }
+
+        public void ConfigureServiceCollection(Container container)
+        {
+            new ServiceCollection()
+                .AddHttpClient()
+                .AddSimpleInjector(container, options =>
+                {
+                    options.AutoCrossWireFrameworkComponents = false;
+                    options.CrossWire<IHttpClientFactory>();
+                })
+                .BuildServiceProvider(validateScopes: true)
+                .UseSimpleInjector(container);
         }
 
         private void RegisterTranslationUpdater(Container container)
@@ -748,9 +803,9 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.Register<IMailSignatureHelper, MailSignatureHelperLicensed>();
         }
 
-        protected virtual void RegisterProfessionalHintHelper(Container container)
+        protected virtual void RegisterConditionalHintManager(Container container)
         {
-            container.Register<IProfessionalHintHelper, ProfessionalHintHelperDisabled>();
+            container.Register<IConditionalHintManager, ConditionalHintManagerDisabled>();
         }
 
         protected virtual ViewCustomization BuildCustomization()
@@ -821,6 +876,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(MailWebAction),
                 typeof(SmtpMailAction),
                 typeof(DropboxAction),
+                typeof(SharepointAction),
                 typeof(OneDriveAction),
                 typeof(FtpAction),
                 typeof(HttpAction),
@@ -850,7 +906,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
 
                 // send action
                 typeof(PresenterActionFacade<EmailClientActionView, EMailClientActionViewModel>),
-                typeof(PresenterActionFacade<EmailWebActionView, MailWebActionViewModel>),
+                typeof(PresenterActionFacade<MailWebActionView, MailWebActionViewModel>),
                 typeof(PresenterActionFacade<SmtpActionView, SmtpActionViewModel>),
                 typeof(PresenterActionFacade<OpenViewerActionView, OpenViewerActionViewModel>),
                 typeof(PresenterActionFacade<ScriptActionView, ScriptActionViewModel>),
@@ -858,6 +914,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
                 typeof(PresenterActionFacade<FTPActionView, FtpActionViewModel>),
                 typeof(PresenterActionFacade<HttpActionView, HttpActionViewModel>),
                 typeof(PresenterActionFacade<OneDriveActionView, OneDriveActionViewModel>),
+                typeof(PresenterActionFacade<SharepointActionView, SharepointActionViewModel>),
                 typeof(PresenterActionFacade<DropboxActionView, DropboxActionViewModel>)
             };
 
@@ -985,6 +1042,10 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
         {
         }
 
+        protected virtual void RegisterBlockedInEnvironmentHelpers(Container container)
+        {
+        }
+
         public virtual void RegisterEditionDependentRegions(IRegionManager regionManager)
         {
         }
@@ -1013,6 +1074,7 @@ namespace pdfforge.PDFCreator.Editions.EditionBase
             container.RegisterTypeForNavigation<HttpPasswordStepView>();
             container.RegisterTypeForNavigation<SignaturePasswordStepView>();
             container.RegisterTypeForNavigation<ProfessionalHintStepView>();
+            container.RegisterTypeForNavigation<EmailCollectionHintStepView>();
             container.RegisterTypeForNavigation<ProgressView>();
             container.RegisterTypeForNavigation<ErrorView>();
             container.RegisterTypeForNavigation<DropboxShareLinkStepView>();

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>NLog.WindowsEventLog</id>
+    <version>5.3.3</version>
+    <title>NLog.WindowsEventLog for .NET Standard</title>
+    <authors>Jarek Kowalski,Kim Christensen,Julian Verdurmen</authors>
+    <license type="expression">BSD-3-Clause</license>
+    <licenseUrl>https://licenses.nuget.org/BSD-3-Clause</licenseUrl>
+    <icon>N.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://nlog-project.org/</projectUrl>
+    <description>NLog.WindowsEventLog provides access to the EventLog-target for NetStandard</description>
+    <releaseNotes>Docs:
+      https://github.com/nlog/NLog/wiki/EventLog-target</releaseNotes>
+    <copyright>Copyright (c) 2004-2024 NLog Project - https://nlog-project.org/</copyright>
+    <tags>NLog EventLog logging log</tags>
+    <repository type="git" url="https://github.com/NLog/NLog.git" commit="341c753ad4dce4dd476dcf0bc3ff2cfd9db76493" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="NLog" version="5.3.3" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.EventLog" version="4.5.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

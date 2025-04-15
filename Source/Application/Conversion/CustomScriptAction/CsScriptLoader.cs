@@ -1,8 +1,9 @@
-﻿using CSScriptLibrary;
-using NLog;
+﻿using NLog;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Utilities;
 using System;
+using CSScripting;
+using CSScriptLib;
 using SystemInterface.IO;
 
 namespace pdfforge.CustomScriptAction
@@ -31,13 +32,14 @@ namespace pdfforge.CustomScriptAction
 
         public LoadScriptResult ReLoadScriptWithValidation(string scriptFile)
         {
-            CSScript.CacheEnabled = false;
-            var result = LoadScriptWithValidation(scriptFile);
-            CSScript.CacheEnabled = true;
+            var result = LoadScriptWithValidationInternal(scriptFile, false);
             return result;
         }
 
-        public LoadScriptResult LoadScriptWithValidation(string scriptFilename)
+
+        public LoadScriptResult LoadScriptWithValidation(string scriptFilename, bool enableDebugging = false) => LoadScriptWithValidationInternal(scriptFilename, enableDebugging: enableDebugging);
+
+        private LoadScriptResult LoadScriptWithValidationInternal(string scriptFilename, bool withCaching = true, bool enableDebugging = false)
         {
             var actionResult = new ActionResult();
 
@@ -55,15 +57,19 @@ namespace pdfforge.CustomScriptAction
                 return new LoadScriptResult(actionResult, null, "");
             }
 
-            return LoadScript(scriptFile);
+            return LoadScript(scriptFile, withCaching, enableDebugging);
         }
 
-        private LoadScriptResult LoadScript(string scriptFile)
+        private LoadScriptResult LoadScript(string scriptFile, bool withCaching = true, bool enableDebugging = false)
         {
             var time = DateTime.Now;
             try
             {
-                var script = CSScript.CodeDomEvaluator.LoadFile<IPDFCreatorScript>(scriptFile);
+                    var script = CSScript.RoslynEvaluator.With(config =>
+                    {
+                        config.IsCachingEnabled = !enableDebugging && withCaching;
+                        config.DebugBuild = enableDebugging;
+                    }).LoadFile<IPDFCreatorScript>(scriptFile);
                 if (script == null)
                     return new LoadScriptResult(new ActionResult(ErrorCode.CustomScript_ErrorDuringCompilation), null, "");
 
@@ -76,6 +82,7 @@ namespace pdfforge.CustomScriptAction
             {
                 return new LoadScriptResult(new ActionResult(ErrorCode.CustomScript_ErrorDuringCompilation), null, exception.Message);
             }
+            return null;
         }
     }
 }

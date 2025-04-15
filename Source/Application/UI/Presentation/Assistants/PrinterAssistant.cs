@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using pdfforge.PDFCreator.Utilities;
 using System.Drawing.Printing;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants
 {

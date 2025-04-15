@@ -32,6 +32,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private readonly ISettingsProvider _settingsProvider;
         private readonly IJobHistoryActiveRecord _jobHistoryActiveRecord;
         private readonly IJobInfoDuplicator _jobInfoDuplicator;
+        private readonly IPreviewManager _previewManager;
+        private readonly IJobInfoToProfileMapper _jobInfoToProfileMapper;
 
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IManagePrintJobExceptionHandler _managePrintJobExceptionHandler;
@@ -41,8 +43,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
         private bool _managePrintJobs;
         private ISynchronizedThread _processingThread;
 
-        public JobInfoQueueManager(IManagePrintJobExceptionHandler managePrintJobExceptionHandler, IThreadManager threadManager, IWorkflowFactory workflowFactory,
-            IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, IJobHistoryActiveRecord jobHistoryActiveRecord, IJobInfoDuplicator jobInfoDuplicator)
+        public JobInfoQueueManager(IManagePrintJobExceptionHandler managePrintJobExceptionHandler, IThreadManager threadManager, 
+            IWorkflowFactory workflowFactory, IJobInfoQueue jobInfoQueue, IJobBuilder jobBuilder, ISettingsProvider settingsProvider, 
+            IJobHistoryActiveRecord jobHistoryActiveRecord, IJobInfoDuplicator jobInfoDuplicator, IPreviewManager previewManager,
+            IJobInfoToProfileMapper jobInfoToProfileMapper, IPreviewPreLoadHelper preLoadHelper)
         {
             _managePrintJobExceptionHandler = managePrintJobExceptionHandler;
             _threadManager = threadManager;
@@ -52,8 +56,10 @@ namespace pdfforge.PDFCreator.Core.Workflow
             _settingsProvider = settingsProvider;
             _jobHistoryActiveRecord = jobHistoryActiveRecord;
             _jobInfoDuplicator = jobInfoDuplicator;
-
+            _previewManager = previewManager;
+            _jobInfoToProfileMapper = jobInfoToProfileMapper;
             _jobInfoQueue.OnNewJobInfo += JobInfoQueue_OnNewJobInfo;
+            _jobInfoQueue.OnNewJobInfo += (sender, args) =>  preLoadHelper.PreLoadPreview(args.JobInfo);
         }
 
         public bool AutoStartProcessing { get; set; } = true;
@@ -174,8 +180,9 @@ namespace pdfforge.PDFCreator.Core.Workflow
             var job = _jobBuilder.BuildJobFromJobInfo(jobInfo, _settingsProvider.Settings);
 
             var mode = DetermineMode(job);
-            var workflow = _workflowFactory.CreateWorkflow(mode);
 
+            var workflow = _workflowFactory.CreateWorkflow(mode);
+            
             _logger.Trace("Running workflow");
             var workflowResult = workflow.RunWorkflow(job);
 
@@ -198,8 +205,8 @@ namespace pdfforge.PDFCreator.Core.Workflow
                 }
                 else
                 {
-                    _logger.Error("The job '{0}' terminated at step {1} and did not end successfully.",
-                        job.JobInfo.Metadata.Title, workflowResult.State);
+                    _logger.Error("The job '{0}' was terminated. It resulted in {1} and did not end successfully.",
+                        job.JobInfo.Metadata.PrintJobName, workflowResult.ActionResult);
                 }
             }
             else

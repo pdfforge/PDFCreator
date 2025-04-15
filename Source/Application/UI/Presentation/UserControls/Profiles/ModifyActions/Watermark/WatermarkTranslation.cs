@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
         public string PDFFiles { get; private set; } = "PDF files";
         public string SelectWatermarkFile { get; private set; } = "Select watermark file";
 
-        public string WatermarkFileLabel { get; private set; } = "Watermark File (Only PDF):";
+        public string WatermarkFileLabel { get; private set; } = "Watermark file (only PDF):";
         public string RepetitionLabel { get; private set; } = "Repetition:";
         public string OpacityLabel { get; private set; } = "Opacity:";
         public string FitToPage { get; private set; } = "Fit to page";

@@ -1,4 +1,6 @@
-﻿using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+﻿using pdfforge.PDFCreator.Conversion.Jobs;
+using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
+using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Workflow.Exceptions
 {
@@ -11,16 +13,24 @@ namespace pdfforge.PDFCreator.Core.Workflow.Exceptions
             _notificationService = notificationService;
         }
 
-        public virtual void HandleFailedJob(Job job)
+        public virtual void HandleFailedJob(Job job, ErrorCode? errorCode)
         {
-            if (job.Profile.AutoSave.Enabled)
-            {
-                var documentName = job.JobInfo.Metadata.Title;
-                var currentProfile = job.Profile;
+            if (!job.Profile.AutoSave.Enabled)
+                return;
+            var documentName = GetDocumentName(job);
+            var currentProfile = job.Profile;
 
-                if (currentProfile.ShowAllNotifications || currentProfile.ShowOnlyErrorNotifications)
-                    _notificationService?.ShowErrorNotification(documentName);
-            }
+            if (currentProfile.ShowAllNotifications || currentProfile.ShowOnlyErrorNotifications)
+                _notificationService?.ShowErrorNotification(documentName, errorCode);
+        }
+
+        private static string GetDocumentName(Job job)
+        {
+            var documentName = job.JobInfo.Metadata.Title;
+            if (string.IsNullOrEmpty(documentName))
+                documentName = PathSafe.GetFileName(job.JobInfo.OriginalFilePath);
+            
+            return documentName;
         }
     }
 }

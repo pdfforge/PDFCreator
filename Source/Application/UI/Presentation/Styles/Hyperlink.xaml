@@ -23,4 +23,17 @@
         <Setter Property="TextDecorations" Value="" />
         <Setter Property="Foreground" Value="{StaticResource HyperlinkBrush}" />
     </Style>
+
+    <Style x:Key="SetupLikeHyperLink" TargetType="Hyperlink">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{StaticResource DefaultTextColorBrush}" />
+        <Setter Property="TextDecorations" Value="Underline"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ChromeBrush}" />
+                <Setter Property="TextDecorations" Value="{x:Null}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

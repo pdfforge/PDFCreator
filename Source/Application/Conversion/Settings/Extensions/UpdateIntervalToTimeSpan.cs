@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Settings.Extensions

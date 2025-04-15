@@ -12,6 +12,7 @@ namespace pdfforge.PDFCreator.Utilities
         string CalculateFileMd5(string filepath);
 
         bool VerifyFileMd5(string filepath, string expectedMd5);
+        public string GetSha256Hash(string toHash);
     }
 
     public class HashUtil : IHashUtil
@@ -23,12 +24,12 @@ namespace pdfforge.PDFCreator.Utilities
         /// <returns>hashed text</returns>
         public string GetSha1Hash(string text)
         {
-            var SHA1 = new SHA1CryptoServiceProvider();
+            var hashAlgorithm = SHA1.Create();
 
             string result = null;
 
             var arrayData = Encoding.ASCII.GetBytes(text);
-            var arrayResult = SHA1.ComputeHash(arrayData);
+            var arrayResult = hashAlgorithm.ComputeHash(arrayData);
 
             for (var i = 0; i < arrayResult.Length; i++)
             {
@@ -46,7 +47,7 @@ namespace pdfforge.PDFCreator.Utilities
             var fileCheck = File.OpenRead(filepath);
 
             // calculate MD5-Hash from Byte-Array
-            MD5 hashAlgorithm = new MD5CryptoServiceProvider();
+            var hashAlgorithm = MD5.Create();
             var md5Hash = hashAlgorithm.ComputeHash(fileCheck);
             fileCheck.Close();
 
@@ -58,6 +59,13 @@ namespace pdfforge.PDFCreator.Utilities
         {
             var md5 = CalculateFileMd5(filepath);
             return md5 == expectedMd5.ToLowerInvariant();
+        }
+
+        public string GetSha256Hash(string toHash)
+        {
+            using var sha256 = SHA256.Create();
+            var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(toHash));
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
     }
 }

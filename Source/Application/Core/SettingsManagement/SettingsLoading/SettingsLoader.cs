@@ -63,8 +63,15 @@ namespace pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading
 
                 if (_gpoSettings.LoadSharedAppSettings)
                 {
+                    //Preserve current printer mappings before it gets overwritten
+                    var currentPrinterMapping = new PrinterMapping[settings.ApplicationSettings.PrinterMappings.Count];
+                    settings.ApplicationSettings.PrinterMappings.CopyTo(currentPrinterMapping, 0);
+
                     settings.ApplicationSettings = tempSettings.ApplicationSettings;
                     settings.CreatorAppSettings = tempSettings.CreatorAppSettings;
+
+                    if (!_gpoSettings.DisablePrinterTab)
+                        settings.ApplicationSettings.PrinterMappings = new ObservableCollection<PrinterMapping>(currentPrinterMapping);
                 }
 
                 if (_gpoSettings.LoadSharedProfiles)

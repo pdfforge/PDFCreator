@@ -10,7 +10,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
     {
         void TakeSettingsSnapshot();
 
-        bool HaveChanged();
+        bool HaveChanged(bool ignoreAccounts = false);
     }
 
     public class SettingsChanged : ISettingsChanged
@@ -43,9 +43,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.Helper
             _currentSettingsSnapshot = _settingsProvider.Settings.Copy();
         }
 
-        public bool HaveChanged()
+        public bool HaveChanged(bool ignoreAccounts = false)
         {
             var storedSettings = _settingsProvider.Settings;
+            if (ignoreAccounts)
+                _currentSettingsSnapshot.ApplicationSettings.Accounts.ReplaceWith(storedSettings.ApplicationSettings.Accounts);
 
             if (string.IsNullOrWhiteSpace(_gpoSettings?.Language))
                 if (_currentSettingsSnapshot.ApplicationSettings.Language != _languageProvider.CurrentLanguage.Iso2)

@@ -1,0 +1,57 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../ColorDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="TriangleSwitchCheckBox" TargetType="CheckBox">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource TriangleSwitchCheckBoxBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource TriangleSwitchCheckBoxDisabledBrush }" />
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel FlowDirection="LeftToRight"
+                               HorizontalAlignment="Left"
+                               Cursor="Hand"
+                               Background="Transparent">
+                        <ContentPresenter Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=CheckBox}}" />
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
+                        <ContentControl Margin="5 0 0 0">
+                            <ContentControl.Style>
+                                    <Style TargetType="ContentControl">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                <Setter Property="LayoutTransform">
+                                                    <Setter.Value>
+                                                        <RotateTransform Angle="180" CenterX="0.5" CenterY="0.5" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                            </ContentControl.Style>
+                            <Polygon Points="0,0 10,0 5,5"
+                                     StrokeThickness="2"
+                                     Fill="{TemplateBinding Foreground}"
+                                     VerticalAlignment="Center" />
+                        </ContentControl>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

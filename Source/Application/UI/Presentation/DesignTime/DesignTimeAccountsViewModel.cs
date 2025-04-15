@@ -9,7 +9,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
     public class DesignTimeAccountsViewModel : AccountsViewModel
     {
         public DesignTimeAccountsViewModel() :
-            base(new CurrentSettingsProvider(new DefaultSettingsProvider()), null, new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), new DispatcherWrapper(), null, new DesignTimeEditionHelper())
+            base(new CurrentSettingsProvider(new DefaultSettingsProvider()), null, new DesignTimeCommandLocator(), new DesignTimeTranslationUpdater(), new DispatcherWrapper(), null)
         {
             AllAccounts.Add(new SmtpAccount { UserName = "UserName", Server = "SMTP.Server.org" });
             AllAccounts.Add(new DropboxAccount { AccountInfo = "Dropbox Account for UserName" });

@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using pdfforge.PDFCreator.Utilities;
 using IInteractionRequest = pdfforge.Obsidian.Trigger.IInteractionRequest;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Signature

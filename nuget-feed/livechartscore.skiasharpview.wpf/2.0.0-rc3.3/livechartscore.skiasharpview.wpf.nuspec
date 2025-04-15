@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>LiveChartsCore.SkiaSharpView.WPF</id>
+    <version>2.0.0-rc3.3</version>
+    <authors>BetoRodriguez</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>icon.png</icon>
+    <description>Simple, flexible, interactive and powerful data visualization for WPF.</description>
+    <repository type="git" url="https://github.com/beto-rodriguez/LiveCharts2" commit="733defab6828082d5d334846fe2e3eabe06df185" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="LiveChartsCore.SkiaSharpView" version="2.0.0-rc3.3" exclude="Build,Analyzers" />
+        <dependency id="SkiaSharp.Views.WPF" version="2.88.8" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="LiveChartsCore.SkiaSharpView" version="2.0.0-rc3.3" exclude="Build,Analyzers" />
+        <dependency id="SkiaSharp.Views.WPF" version="2.88.8" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+      <group targetFramework=".NETFramework4.6.2" />
+    </frameworkReferences>
+  </metadata>
+</package>

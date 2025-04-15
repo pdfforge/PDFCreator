@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using System;
+using System.Diagnostics;
 
 namespace pdfforge.CustomScriptAction
 {
@@ -26,7 +27,7 @@ namespace pdfforge.CustomScriptAction
         {
             var scriptFilename = job.Profile.CustomScript.ScriptFilename;
 
-            var loadScriptResult = _customScriptLoader.LoadScriptWithValidation(scriptFilename);
+            var loadScriptResult = _customScriptLoader.LoadScriptWithValidation(scriptFilename, job.Profile.CustomScript.EnableDebugging);
             if (!loadScriptResult.Result)
             {
                 _logger.Error($"Exception during compilation of CustomScript: {loadScriptResult.ExceptionMessage}");
@@ -61,7 +62,7 @@ namespace pdfforge.CustomScriptAction
         {
             var scriptFilename = job.Profile.CustomScript.ScriptFilename;
 
-            var loadScriptResult = _customScriptLoader.LoadScriptWithValidation(scriptFilename);
+            var loadScriptResult = _customScriptLoader.LoadScriptWithValidation(scriptFilename, job.Profile.CustomScript.EnableDebugging);
             if (!loadScriptResult.Result)
             {
                 _logger.Error($"Exception during compilation of CustomScript: {loadScriptResult.ExceptionMessage}");

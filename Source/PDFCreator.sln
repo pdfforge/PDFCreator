@@ -1,117 +1,123 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobs", "Application\Conversion\Jobs\Jobs.csproj", "{18354054-45F6-4F51-8730-D05643A400A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobs", "Application\Conversion\Jobs\Jobs.csproj", "{18354054-45F6-4F51-8730-D05643A400A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Application\Utilities\Utilities.csproj", "{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Application\Utilities\Utilities.csproj", "{EA29538B-89A5-4FB3-AE0F-5E2370E852F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupHelper", "Setup\SetupHelper\SetupHelper.csproj", "{4BBD6F42-9111-4452-A2C1-9E02F65592D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SetupHelper", "Setup\SetupHelper\SetupHelper.csproj", "{4BBD6F42-9111-4452-A2C1-9E02F65592D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Application\Conversion\Settings\Settings.csproj", "{94936199-C9C7-4A5F-A58E-6123158E84F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings", "Application\Conversion\Settings\Settings.csproj", "{94936199-C9C7-4A5F-A58E-6123158E84F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorReport", "Application\ErrorReport\ErrorReport.csproj", "{80E33436-0D97-4653-8EDB-ECF03F7CA06A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorReport", "Application\ErrorReport\ErrorReport.csproj", "{80E33436-0D97-4653-8EDB-ECF03F7CA06A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{B289F8E8-E009-4270-ACDD-A18934F87019}"
 	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
 		..\.gitlab-ci.yml = ..\.gitlab-ci.yml
 		..\build.fsx = ..\build.fsx
-		..\buildAll.fsx = ..\buildAll.fsx
-		..\configs.fsx = ..\configs.fsx
-		..\CreateLicense.fsx = ..\CreateLicense.fsx
-		..\languageFileHelper.fsx = ..\languageFileHelper.fsx
 		..\paket.dependencies = ..\paket.dependencies
 		..\paket.lock = ..\paket.lock
-		..\ResourceHackerHelper.fsx = ..\ResourceHackerHelper.fsx
-		..\upload.fsx = ..\upload.fsx
-		..\WeblateHelper.fsx = ..\WeblateHelper.fsx
+		..\build-scripts\SigningHelper.fsx = ..\build-scripts\SigningHelper.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{045FAED8-C500-49E8-AD0E-81ABF5EC6AB7}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editions", "Editions", "{5D4483CE-EB52-47FF-84D3-6B9BE987E7DE}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conversion", "Conversion", "{CC1DB869-E02A-4545-AE84-B64BFDB0B008}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFCreator", "Application\Editions\PDFCreator\PDFCreator.csproj", "{DF164150-D813-496F-B1B9-DEF0B0F79F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFCreator", "Application\Editions\PDFCreator\PDFCreator.csproj", "{DF164150-D813-496F-B1B9-DEF0B0F79F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow", "Application\Core\Workflow\Workflow.csproj", "{E4F2F7AA-5A58-44A4-905D-09536CB81EA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow", "Application\Core\Workflow\Workflow.csproj", "{E4F2F7AA-5A58-44A4-905D-09536CB81EA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Application\Core\Services\Services.csproj", "{C6058628-42B2-4CF6-A4BE-622AD45F6E42}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COM", "Application\UI\COM\COM.csproj", "{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Application\Core\Services\Services.csproj", "{C6058628-42B2-4CF6-A4BE-622AD45F6E42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{B3663EDB-F947-48CD-8B9F-79FA71E3804D}"
 	ProjectSection(SolutionItems) = preProject
 		Languages\English.ini = Languages\English.ini
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Startup", "Application\Startup\Startup\Startup.csproj", "{3157C130-EA8A-45EB-92DB-8615BD66B5C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Startup", "Application\Startup\Startup\Startup.csproj", "{3157C130-EA8A-45EB-92DB-8615BD66B5C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{A97C7679-B987-4DDA-93F9-699B3F373737}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactions", "Application\UI\Interactions\Interactions.csproj", "{9FA4DA88-81E9-4FF9-8521-70102762415B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interactions", "Application\UI\Interactions\Interactions.csproj", "{9FA4DA88-81E9-4FF9-8521-70102762415B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsManagement", "Application\Core\SettingsManagement\SettingsManagement.csproj", "{9B31D8CD-4E32-4925-B696-7D1CF02F0142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingsManagement", "Application\Core\SettingsManagement\SettingsManagement.csproj", "{9B31D8CD-4E32-4925-B696-7D1CF02F0142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupInterface", "Application\Startup\StartupInterface\StartupInterface.csproj", "{1A092466-45AC-4FA5-BC67-25071F20CD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupInterface", "Application\Startup\StartupInterface\StartupInterface.csproj", "{1A092466-45AC-4FA5-BC67-25071F20CD59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9233C7A6-709E-4041-8B8F-FBC4E3FF0711}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printing", "Application\Core\Printing\Printing.csproj", "{FD68EB7E-2AE8-4C8E-BA9C-71F9AD98E33E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printing", "Application\Core\Printing\Printing.csproj", "{FD68EB7E-2AE8-4C8E-BA9C-71F9AD98E33E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectConversion", "Application\Core\DirectConversion\DirectConversion.csproj", "{2D918F3C-5403-4346-98CF-FB53A5D09951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirectConversion", "Application\Core\DirectConversion\DirectConversion.csproj", "{2D918F3C-5403-4346-98CF-FB53A5D09951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communication", "Application\Core\Communication\Communication.csproj", "{256D5F6E-90A4-49E0-A4BA-1AA7284F1481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communication", "Application\Core\Communication\Communication.csproj", "{256D5F6E-90A4-49E0-A4BA-1AA7284F1481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Application\Core\Controller\Controller.csproj", "{BE1A6F7D-6439-4361-8E96-DF90B4BFE000}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Application\Core\Controller\Controller.csproj", "{BE1A6F7D-6439-4361-8E96-DF90B4BFE000}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{6CA631A0-23CE-48E5-8923-C2E1BC17C907}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Startup", "Startup", "{4783EDCD-C0C4-4477-82D2-415F1C13A6BC}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Processing", "Processing", "{5BDF15DD-DD51-4C25-868E-CE37DF9D804A}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITextProcessing", "Application\Conversion\Processing\ITextProcessing\ITextProcessing.csproj", "{4915636E-76E6-45CC-8150-E5E31BA4375D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITextProcessing", "Application\Conversion\Processing\ITextProcessing\ITextProcessing.csproj", "{4915636E-76E6-45CC-8150-E5E31BA4375D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfProcessingInterface", "Application\Conversion\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj", "{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfProcessingInterface", "Application\Conversion\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj", "{F7126398-BB4F-49AF-AD90-0F23D2EDDCFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ghostscript", "Application\Conversion\Ghostscript\Ghostscript.csproj", "{F8F1B3E5-22D4-47FF-998C-AB3C9BD54FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghostscript", "Application\Conversion\Ghostscript\Ghostscript.csproj", "{F8F1B3E5-22D4-47FF-998C-AB3C9BD54FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConverterInterface", "Application\Conversion\ConverterInterface\ConverterInterface.csproj", "{2856C862-70EC-42CB-9BD4-A889BD6EC1F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConverterInterface", "Application\Conversion\ConverterInterface\ConverterInterface.csproj", "{2856C862-70EC-42CB-9BD4-A889BD6EC1F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actions", "Application\Conversion\Actions\Actions.csproj", "{1DBB980A-80ED-4263-BC5D-B90377466E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actions", "Application\Conversion\Actions\Actions.csproj", "{1DBB980A-80ED-4263-BC5D-B90377466E14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionsInterface", "Application\Conversion\ActionsInterface\ActionsInterface.csproj", "{8DE100B3-17E1-46E3-830B-5E0B072483CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionsInterface", "Application\Conversion\ActionsInterface\ActionsInterface.csproj", "{8DE100B3-17E1-46E3-830B-5E0B072483CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComImplementation", "Application\Core\ComImplementation\ComImplementation.csproj", "{9D52AC1C-294B-484C-85BD-FF2798FB3616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EditionBase", "Application\Editions\EditionBase\EditionBase.csproj", "{3844380D-458D-4C8E-A453-AC7DA6BAEE49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditionBase", "Application\Editions\EditionBase\EditionBase.csproj", "{3844380D-458D-4C8E-A453-AC7DA6BAEE49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dropbox", "Application\Conversion\Dropbox\Dropbox.csproj", "{39E9D8C6-7E30-47DA-9FBD-250E1515C762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dropbox", "Application\Conversion\Dropbox\Dropbox.csproj", "{39E9D8C6-7E30-47DA-9FBD-250E1515C762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Application\UI\Presentation\Presentation.csproj", "{CF5FF5FD-39AD-472D-ABC3-44D4E7909E68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Application\UI\Presentation\Presentation.csproj", "{CF5FF5FD-39AD-472D-ABC3-44D4E7909E68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComWrapper", "Application\Ui\ComWrapper\ComWrapper.csproj", "{33141A90-DEDC-4F9C-9C7B-C3C99DD9E20B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComWrapper", "Application\Ui\ComWrapper\ComWrapper.csproj", "{33141A90-DEDC-4F9C-9C7B-C3C99DD9E20B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrismHelper", "Application\UI\PrismHelper\PrismHelper.csproj", "{F4B19FCA-ACEE-4228-B37E-4A46316C791D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismHelper", "Application\UI\PrismHelper\PrismHelper.csproj", "{F4B19FCA-ACEE-4228-B37E-4A46316C791D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomScriptAction", "Application\Conversion\CustomScriptAction\CustomScriptAction.csproj", "{4C6CFA7F-C3AF-4419-8CD0-62B39E55BA11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomScriptAction", "Application\Conversion\CustomScriptAction\CustomScriptAction.csproj", "{4C6CFA7F-C3AF-4419-8CD0-62B39E55BA11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsageStatistics", "Application\Core\UsageStatistics\UsageStatistics.csproj", "{298FE9D1-10AC-4D58-8E05-9C5027B4BE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageStatistics", "Application\Core\UsageStatistics\UsageStatistics.csproj", "{298FE9D1-10AC-4D58-8E05-9C5027B4BE6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLocator", "Application\Core\ServiceLocator\ServiceLocator.csproj", "{4B9272BE-2F52-48CD-93D9-8880F509B304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLocator", "Application\Core\ServiceLocator\ServiceLocator.csproj", "{4B9272BE-2F52-48CD-93D9-8880F509B304}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssFeed", "Application\UI\RssFeed\RssFeed.csproj", "{332B17D7-E291-4472-8899-2C8C5846DE87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeed", "Application\UI\RssFeed\RssFeed.csproj", "{332B17D7-E291-4472-8899-2C8C5846DE87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobInfoQueue", "Application\Core\JobInfoQueue\JobInfoQueue.csproj", "{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobInfoQueue", "Application\Core\JobInfoQueue\JobInfoQueue.csproj", "{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFCreator.CLI", "Application\UI\PDFCreator.CLI\PDFCreator.CLI.csproj", "{92F6FE84-0DC0-4CF5-BF7C-FCD35DA3C884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFCreator.CLI", "Application\UI\PDFCreator.CLI\PDFCreator.CLI.csproj", "{92F6FE84-0DC0-4CF5-BF7C-FCD35DA3C884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationSample", "Application\UI\PresentationSample\PresentationSample.csproj", "{E7410B4A-1DB2-45F4-8D7F-F49995CE6590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationSample", "Application\UI\PresentationSample\PresentationSample.csproj", "{E7410B4A-1DB2-45F4-8D7F-F49995CE6590}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsManagementInterface", "Application\Core\SettingsManagementInterface\SettingsManagementInterface.csproj", "{ADC9937F-3EE4-4782-87A7-3450F769EB58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SettingsManagementInterface", "Application\Core\SettingsManagementInterface\SettingsManagementInterface.csproj", "{ADC9937F-3EE4-4782-87A7-3450F769EB58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GongSolutions.WPF.DragDrop", "Application\UI\GongSolutions.WPF.DragDrop\GongSolutions.WPF.DragDrop.csproj", "{5472EC0C-E7B8-42E7-8717-D274EF0F452F}"
 EndProject
@@ -153,10 +159,6 @@ Global
 		{C6058628-42B2-4CF6-A4BE-622AD45F6E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6058628-42B2-4CF6-A4BE-622AD45F6E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6058628-42B2-4CF6-A4BE-622AD45F6E42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3157C130-EA8A-45EB-92DB-8615BD66B5C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3157C130-EA8A-45EB-92DB-8615BD66B5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3157C130-EA8A-45EB-92DB-8615BD66B5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -213,10 +215,6 @@ Global
 		{8DE100B3-17E1-46E3-830B-5E0B072483CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DE100B3-17E1-46E3-830B-5E0B072483CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DE100B3-17E1-46E3-830B-5E0B072483CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D52AC1C-294B-484C-85BD-FF2798FB3616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D52AC1C-294B-484C-85BD-FF2798FB3616}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D52AC1C-294B-484C-85BD-FF2798FB3616}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D52AC1C-294B-484C-85BD-FF2798FB3616}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3844380D-458D-4C8E-A453-AC7DA6BAEE49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3844380D-458D-4C8E-A453-AC7DA6BAEE49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3844380D-458D-4C8E-A453-AC7DA6BAEE49}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -288,7 +286,6 @@ Global
 		{DF164150-D813-496F-B1B9-DEF0B0F79F72} = {5D4483CE-EB52-47FF-84D3-6B9BE987E7DE}
 		{E4F2F7AA-5A58-44A4-905D-09536CB81EA1} = {9233C7A6-709E-4041-8B8F-FBC4E3FF0711}
 		{C6058628-42B2-4CF6-A4BE-622AD45F6E42} = {9233C7A6-709E-4041-8B8F-FBC4E3FF0711}
-		{E9FA7815-7A2F-473C-9E2D-CA91758E8C4A} = {A97C7679-B987-4DDA-93F9-699B3F373737}
 		{3157C130-EA8A-45EB-92DB-8615BD66B5C5} = {4783EDCD-C0C4-4477-82D2-415F1C13A6BC}
 		{A97C7679-B987-4DDA-93F9-699B3F373737} = {045FAED8-C500-49E8-AD0E-81ABF5EC6AB7}
 		{9FA4DA88-81E9-4FF9-8521-70102762415B} = {A97C7679-B987-4DDA-93F9-699B3F373737}
@@ -307,7 +304,6 @@ Global
 		{2856C862-70EC-42CB-9BD4-A889BD6EC1F7} = {CC1DB869-E02A-4545-AE84-B64BFDB0B008}
 		{1DBB980A-80ED-4263-BC5D-B90377466E14} = {CC1DB869-E02A-4545-AE84-B64BFDB0B008}
 		{8DE100B3-17E1-46E3-830B-5E0B072483CA} = {CC1DB869-E02A-4545-AE84-B64BFDB0B008}
-		{9D52AC1C-294B-484C-85BD-FF2798FB3616} = {9233C7A6-709E-4041-8B8F-FBC4E3FF0711}
 		{3844380D-458D-4C8E-A453-AC7DA6BAEE49} = {5D4483CE-EB52-47FF-84D3-6B9BE987E7DE}
 		{39E9D8C6-7E30-47DA-9FBD-250E1515C762} = {CC1DB869-E02A-4545-AE84-B64BFDB0B008}
 		{CF5FF5FD-39AD-472D-ABC3-44D4E7909E68} = {A97C7679-B987-4DDA-93F9-699B3F373737}

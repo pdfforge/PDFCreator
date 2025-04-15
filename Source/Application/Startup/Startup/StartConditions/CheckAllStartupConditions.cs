@@ -1,22 +1,20 @@
 ﻿using NLog;
-using pdfforge.Obsidian;
 using pdfforge.PDFCreator.Core.StartupInterface;
-using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using System.Collections.Generic;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.Core.Startup.StartConditions
 {
     public class CheckAllStartupConditions : ICheckAllStartupConditions
     {
-        private readonly IInteractionInvoker _interactionInvoker;
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IEnumerable<IStartupCondition> _startupConditions;
+        private readonly IMessageHelper _messageHelper;
 
-        public CheckAllStartupConditions(IList<IStartupCondition> startupConditions, IInteractionInvoker interactionInvoker)
+        public CheckAllStartupConditions(IList<IStartupCondition> startupConditions, IMessageHelper messageHelper)
         {
             _startupConditions = startupConditions;
-            _interactionInvoker = interactionInvoker;
+            _messageHelper = messageHelper;
         }
 
         public void CheckAll()
@@ -31,7 +29,9 @@ namespace pdfforge.PDFCreator.Core.Startup.StartConditions
                     continue;
 
                 if (result.ShowMessage)
-                    _interactionInvoker.Invoke(new MessageInteraction(result.Message, "PDFCreator", MessageOptions.Ok, MessageIcon.Error));
+                {
+                    _messageHelper.ShowMessage(result.Message, "PDFCreator", MessageOptions.Ok, MessageIcon.Error);
+                }
 
                 if (!string.IsNullOrWhiteSpace(result.Message))
                     _logger.Error(result.Message);

@@ -4,6 +4,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Core.Printing.Port;
 using pdfforge.PDFCreator.Core.SettingsManagement.Helper;
 using System;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.Printing

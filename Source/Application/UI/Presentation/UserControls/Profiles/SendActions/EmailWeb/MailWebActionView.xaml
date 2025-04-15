@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.EmailWeb.EmailWebActionView"
+﻿<UserControl x:Class="pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.EmailWeb.MailWebActionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,6 +8,7 @@
              xmlns:help="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Help"
              xmlns:selectFiles="clr-namespace:pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SelectFiles"
              xmlns:converter="clr-namespace:pdfforge.PDFCreator.UI.Presentation.Converter"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance designTime:DesignTimeMailWebActionViewModel, IsDesignTimeCreatable=True}"
              help:HelpProvider.HelpTopic="OpenEmailWeb">
@@ -15,19 +16,64 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../../../Styles/Labels.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Combobox.xaml" />
+                <ResourceDictionary Source="../../../../Styles/Gpo/GpoStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converter:BoolNegationConverter x:Key="BoolNegationConverter"/>
+            <converter:EqualsNullConverter x:Key="CollapsedIfNotNullConverter" EqualValue="Visible" NotEqualValue="Collapsed"/>
+            <converter:EqualsNullConverter x:Key="FalseIfNullConverter" EqualValue="false" NotEqualValue="true"/>
+            <converter:BoolToVisibilityConverter x:Key="CollapsedIfTrueConverter" TrueValue="Collapsed" FalseValue="Visible"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <HeaderedContentControl Header="{Binding Translation.Email}"
                             Style="{StaticResource BorderlessHeaderPanel}">
         <StackPanel>
+            <!-- Select account -->
+            <StackPanel Margin="0 0 0 0">
+                <Label Content="{Binding Translation.SelectMicrosoftAccount}" />
+                <DockPanel Margin="0 10 0 0">
+                    <StackPanel Style="{StaticResource GpoToolTipStyle}"
+                                IsEnabled="{Binding EditAccountsIsDisabled, Converter={StaticResource BoolNegationConverter}}" Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button DockPanel.Dock="Right" Margin="10 0 0 0"
+                                IsEnabled="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource FalseIfNullConverter}}"
+                                Command="{Binding EditMicrosoftAccountCommand}"
+                                CommandParameter="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem}"
+                                Width="33" Padding="5">
+                            <iconPacks:PackIconMaterialDesign Kind="Build" />
+                        </Button>
+                        <Button DockPanel.Dock="Right"
+                                Margin="10 0 0 0"
+                                Command="{Binding AddMicrosoftAccountCommand}"
+                                Width="33" Padding="5">
+                            <iconPacks:PackIconMaterialDesign Kind="Add" IsHitTestVisible="False"/>
+                        </Button>
+                    </StackPanel> 
+                    <Grid>
+                        <ComboBox Name="MicrosoftAccountsComboBox"
+                                  DisplayMemberPath="AccountInfo" SelectedValuePath="AccountId"
+                                  SelectedValue="{Binding CurrentProfile.EmailWebSettings.AccountId}"
+                                  ItemsSource="{Binding MicrosoftAccounts, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True"
+                                  Style="{StaticResource DisabledEmptyComboboxStyle}" />
 
-            <TextBlock Text="{Binding Translation.MultipleRecipientsHintText}"
-                       TextWrapping="Wrap" TextAlignment="Right" />
+                        <Label Margin="10 0 0 0" VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Content="{Binding Translation.SelectOrAddAccount}"
+                               Visibility="{Binding ElementName=MicrosoftAccountsComboBox, Path=SelectedItem, Converter={StaticResource CollapsedIfNotNullConverter}, NotifyOnSourceUpdated=True}" />
+                    </Grid>
+                </DockPanel>
+            </StackPanel>
 
-            <Label Margin="0 20 0 0"
-                   Content="{Binding Translation.RecipientsToText}" />
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Right" 
+                           Margin="0 20 0 0"
+                           Text="{Binding Translation.MultipleRecipientsHintText}"
+                           TextWrapping="Wrap" TextAlignment="Right" />
+
+                <Label DockPanel.Dock="Left" 
+                       Margin="0 20 0 0"
+                       Content="{Binding Translation.RecipientsToText}" />
+            </DockPanel>
+            
 
             <controls:TokenControl Margin="0 10 0 0"
                                    DataContext="{Binding RecipientsTokenViewModel}" />
@@ -57,6 +103,7 @@
                     IsChecked="{Binding SendingOptionNothing}"/>
 
                 <RadioButton 
+                    Visibility="{Binding IsServer, Converter={StaticResource CollapsedIfTrueConverter}}"
                     GroupName="SendingOptions" 
                     IsChecked="{Binding CurrentProfile.EmailWebSettings.ShowDraft}"
                     Content="{Binding Translation.ShowDraft}"/>

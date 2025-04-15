@@ -6,17 +6,17 @@ namespace pdfforge.PDFCreator.Conversion.Settings.Enums
     [Translatable]
     public enum PageNumberPosition
     {
-        [Translation("Bottom Right")]
+        [Translation("Bottom right")]
         BottomRight,
-        [Translation("Bottom Left")]
+        [Translation("Bottom left")]
         BottomLeft,
-        [Translation("Bottom Center")]
+        [Translation("Bottom center")]
         BottomCenter,
-        [Translation("Top Right")]
+        [Translation("Top right")]
         TopRight,
-        [Translation("Top Left")]
+        [Translation("Top left")]
         TopLeft,
-        [Translation("Top Center")]
+        [Translation("Top center")]
         TopCenter,
     }
 

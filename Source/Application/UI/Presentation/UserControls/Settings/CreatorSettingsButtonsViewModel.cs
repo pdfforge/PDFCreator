@@ -10,6 +10,7 @@ using pdfforge.PDFCreator.UI.Presentation.Events;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
+using pdfforge.PDFCreator.Utilities;
 using Prism.Events;
 using Prism.Regions;
 

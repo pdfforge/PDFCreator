@@ -5,13 +5,13 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Core.Printing.Printer;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Utilities.Messages;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Assistants

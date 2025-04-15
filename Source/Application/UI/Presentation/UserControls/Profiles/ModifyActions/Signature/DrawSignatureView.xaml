@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:designTime="clr-namespace:pdfforge.PDFCreator.UI.Presentation.DesignTime"
+             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              mc:Ignorable="d"
              Loaded="OnLoaded"
              Width="{Binding SignatureWidth}"
@@ -37,7 +38,7 @@
                         <StackPanel Orientation="Horizontal"  Margin="0 2">
                             <Rectangle Width="40" Height="{Binding}">
                                 <Rectangle.Fill>
-                                    <SolidColorBrush Color="{Binding DataContext.BrushColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    <SolidColorBrush Color="{Binding DataContext.BrushColor, RelativeSource={RelativeSource AncestorType=UserControl}}" options:Freeze="true"/>
                                 </Rectangle.Fill>
                             </Rectangle>
                             <TextBlock Text="{Binding}" Margin="10 0 0 0" />
@@ -50,7 +51,7 @@
                     Margin="10 0 0 0"
                     Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
                 <Button.Background>
-                    <SolidColorBrush Color="{Binding DataContext.BrushColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <SolidColorBrush Color="{Binding DataContext.BrushColor, RelativeSource={RelativeSource AncestorType=UserControl}}" options:Freeze="true"/>
                 </Button.Background>
             </Button>
         </StackPanel>

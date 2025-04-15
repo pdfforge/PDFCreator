@@ -53,8 +53,8 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
             BuildTokenReplacerWithoutOutputfiles(job);
 
             var outputFilenames = job.OutputFiles.Select(outputFile => _pathWrap.GetFileName(outputFile)).ToList();
-            _tokenReplacer.AddListToken("OutputFilenames", outputFilenames);
-            _tokenReplacer.AddStringToken("OutputFilePath", _pathWrap.GetFullPath(job.OutputFiles.First()));
+            _tokenReplacer.AddListToken(TokenNames.OutputFilenames, outputFilenames);
+            _tokenReplacer.AddStringToken(TokenNames.OutputFilePath, _pathWrap.GetFullPath(job.OutputFiles.First()));
 
             return _tokenReplacer;
         }
@@ -62,15 +62,15 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
         public TokenReplacer BuildTokenReplacerWithoutOutputfiles(Job job)
         {
             BuildTokenReplacerFromJobInfo(job.JobInfo);
-            _tokenReplacer.AddNumberToken("NumberOfPages", job.NumberOfPages);
-            _tokenReplacer.AddNumberToken("NumberOfCopies", job.NumberOfCopies);
+            _tokenReplacer.AddNumberToken(TokenNames.NumberOfPages, job.NumberOfPages);
+            _tokenReplacer.AddNumberToken(TokenNames.NumberOfCopies, job.NumberOfCopies);
 
             return _tokenReplacer;
         }
 
         private void AddDateToken()
         {
-            _tokenReplacer.AddDateToken("DateTime", _dateTimeProvider.Now());
+            _tokenReplacer.AddDateToken(TokenNames.DateTime, _dateTimeProvider.Now());
         }
 
         private void AddEnvironmentTokens()
@@ -86,31 +86,31 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
 
         private void AddSourceFileTokens(SourceFileInfo sourceFileInfo)
         {
-            _tokenReplacer.AddStringToken("ClientComputer", sourceFileInfo.ClientComputer);
-            _tokenReplacer.AddNumberToken("Counter", sourceFileInfo.JobCounter);
-            _tokenReplacer.AddNumberToken("JobId", sourceFileInfo.JobId);
-            _tokenReplacer.AddStringToken("PrinterName", sourceFileInfo.PrinterName);
-            _tokenReplacer.AddNumberToken("SessionId", sourceFileInfo.SessionId);
+            _tokenReplacer.AddStringToken(TokenNames.ClientComputer, sourceFileInfo.ClientComputer);
+            _tokenReplacer.AddNumberToken(TokenNames.Counter, sourceFileInfo.JobCounter);
+            _tokenReplacer.AddNumberToken(TokenNames.JobId, sourceFileInfo.JobId);
+            _tokenReplacer.AddStringToken(TokenNames.PrinterName, sourceFileInfo.PrinterName);
+            _tokenReplacer.AddNumberToken(TokenNames.SessionId, sourceFileInfo.SessionId);
         }
 
         private void AddMetaDataTokens(Metadata metadata)
         {
-            _tokenReplacer.AddStringToken("PrintJobAuthor", metadata.PrintJobAuthor);
-            _tokenReplacer.AddStringToken("PrintJobName", metadata.PrintJobName);
+            _tokenReplacer.AddStringToken(TokenNames.PrintJobAuthor, metadata.PrintJobAuthor);
+            _tokenReplacer.AddStringToken(TokenNames.PrintJobName, metadata.PrintJobName);
 
             var subject = _tokenReplacer.ReplaceTokens(metadata.Subject);
-            _tokenReplacer.AddStringToken("Subject", subject);
+            _tokenReplacer.AddStringToken(TokenNames.Subject, subject);
 
             var keywords = _tokenReplacer.ReplaceTokens(metadata.Keywords);
-            _tokenReplacer.AddStringToken("Keywords", keywords);
+            _tokenReplacer.AddStringToken(TokenNames.Keywords, keywords);
 
             // Author and title token have to be created last,
             // as they can contain other tokens that might need replacing
             var author = _tokenReplacer.ReplaceTokens(metadata.Author);
-            _tokenReplacer.AddStringToken("Author", author);
+            _tokenReplacer.AddStringToken(TokenNames.Author, author);
 
             var title = _tokenReplacer.ReplaceTokens(metadata.Title);
-            _tokenReplacer.AddStringToken("Title", title);
+            _tokenReplacer.AddStringToken(TokenNames.Title, title);
         }
 
         private void AddTokensFromOriginalFilePath(SourceFileInfo sfi, Metadata metadata, JobInfo.JobInfo jobInfo)
@@ -129,9 +129,9 @@ namespace pdfforge.PDFCreator.Conversion.Jobs
                 originalDirectory = PathSafe.GetDirectoryName(sfi.DocumentTitle);
             }
 
-            _tokenReplacer.AddStringToken("InputFilename", originalFileName);
-            _tokenReplacer.AddStringToken("InputDirectory", originalDirectory);
-            _tokenReplacer.AddStringToken("InputFilePath", originalDirectory);
+            _tokenReplacer.AddStringToken(TokenNames.InputFilename, originalFileName);
+            _tokenReplacer.AddStringToken(TokenNames.InputDirectory, originalDirectory);
+            _tokenReplacer.AddStringToken(TokenNames.InputFilePath, originalDirectory);
         }
 
         private void AddUserTokens(IList<SourceFileInfo> sourceFileInfos)

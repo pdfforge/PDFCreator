@@ -51,7 +51,54 @@
                            Content="{Binding Translation.OpacityLabel}" />
                 <Slider  Grid.Row="0" Grid.Column="2" Margin="0 5"
                              Value="{Binding CurrentProfile.Watermark.Opacity}" Minimum="0" Maximum="100"
-                              VerticalAlignment="Center" LargeChange="10" />
+                              VerticalAlignment="Center" LargeChange="10">
+                    <Slider.Style>
+                        <Style TargetType="{x:Type Slider}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Slider}">
+                                        <Grid VerticalAlignment="Center">
+                                            <Border x:Name="borderBackground" Margin="6,0" Height="4" Background="{StaticResource SliderScrollbarNonSelectedArea}" />
+                                            <Canvas Margin="0,-4,0,0" VerticalAlignment="Center">
+                                                <Border x:Name="PART_SelectionRange" HorizontalAlignment="Left" Height="4" Background="{TemplateBinding Foreground}" />
+                                            </Canvas>
+                                            <Track x:Name="PART_Track">
+                                                <Track.Thumb>
+                                                    <Thumb Width="10" Height="20">
+                                                        <Thumb.Template>
+                                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                                <Border>
+                                                                    <Border.Style>
+                                                                        <Style TargetType="{x:Type Border}">
+                                                                            <Setter Property="Background" Value="{StaticResource SliderScrollbarThumb}"/>
+                                                                            <Setter Property="BorderBrush" Value="{StaticResource SliderScrollbarThumbBorder}"/>
+                                                                            <Setter Property="BorderThickness" Value="1"/>
+                                                                            <Setter Property="CornerRadius" Value="2"/>
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                    <Setter Property="Background" Value="{StaticResource SliderScrollbarThumbHoverOn}"/>
+                                                                                </Trigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Border.Style>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Thumb.Template>
+                                                    </Thumb>
+                                                </Track.Thumb>
+                                            </Track>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="IsSelectionRangeEnabled" Value="True" />
+                            <Setter Property="SelectionStart" Value="{Binding Minimum, RelativeSource={RelativeSource Self}}" />
+                            <Setter Property="SelectionEnd" Value="{Binding Value, RelativeSource={RelativeSource Self}}" />
+                            <Setter Property="Foreground" Value="{StaticResource SliderScrollbarSelectedArea}" />
+                        </Style>
+
+                    </Slider.Style>
+                </Slider>
                 <Label Grid.Row="0" Grid.Column="3">
                     <TextBlock TextAlignment="Right" Width="30">
                             <Run Text="{Binding CurrentProfile.Watermark.Opacity}" /><Run Text="%" />

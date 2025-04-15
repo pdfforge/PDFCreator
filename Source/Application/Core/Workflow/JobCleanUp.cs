@@ -15,11 +15,41 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
     public class JobCleanUp : IJobCleanUp
     {
-        private readonly IDirectory _directory;
-        private readonly IFile _file;
+        private readonly IJobCleaner _jobCleaner;
+        private readonly IPreviewManager _previewManager;
+        private readonly IPsToPdfConverter _psToPdfConverter;
+
+        public JobCleanUp(IJobCleaner jobCleaner, IPreviewManager previewManager, IPsToPdfConverter psToPdfConverter)
+        {
+            _jobCleaner = jobCleaner;
+            _previewManager = previewManager;
+            _psToPdfConverter = psToPdfConverter;
+        }
+
+        public void DoCleanUp(string jobTempFolder, IList<SourceFileInfo> sourceFileInfos, string infFile)
+        {
+            _previewManager.AbortAndCleanUpPreview(sourceFileInfos);
+            _psToPdfConverter.CleanUpTaskMappings(sourceFileInfos);
+            _jobCleaner.DoCleanUp(jobTempFolder, sourceFileInfos, infFile);
+        }
+    }
+
+    /*
+     * JobCleaner to solve circular dependency between JobCleanup -> PreviewManager -> PsToPdfConverter -> JobCleanUp 
+    */
+    public interface IJobCleaner
+    {
+        void DoCleanUp(string jobTempFolder, IList<SourceFileInfo> sourceFileInfos, string infFile);
+    }
+
+    public class JobCleaner : IJobCleaner
+    {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public JobCleanUp(IDirectory directory, IFile file)
+        private readonly IDirectory _directory;
+        private readonly IFile _file;
+
+        public JobCleaner(IDirectory directory, IFile file)
         {
             _directory = directory;
             _file = file;
@@ -50,15 +80,15 @@ namespace pdfforge.PDFCreator.Core.Workflow
 
         private void DeleteSourceFiles(IList<SourceFileInfo> sourceFileInfos)
         {
-            foreach (var file in sourceFileInfos)
+            foreach (var sfi in sourceFileInfos)
             {
-                if (!_file.Exists(file.Filename))
+                if (!_file.Exists(sfi.Filename))
                     continue;
 
                 try
                 {
-                    DeleteFile(file.Filename);
-                    var folder = Path.GetDirectoryName(file.Filename);
+                    DeleteFile(sfi.Filename);
+                    var folder = Path.GetDirectoryName(sfi.Filename);
                     DeleteFolderIfEmptyAndNotSpool(folder);
                 }
                 catch (Exception ex)

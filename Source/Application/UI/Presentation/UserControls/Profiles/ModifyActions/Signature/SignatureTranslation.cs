@@ -6,7 +6,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
     public class SignatureTranslation : ActionTranslationBase
     {
         public string SignatureLocationAndSize { get; private set; } = "Position and size";
-        public string CertificateFileLabel { get; private set; } = "Certificate File:";
+        public string CertificateFileLabel { get; private set; } = "Certificate file:";
         public string PasswordLabel { get; private set; } = "Password:";
         public string IncorrectPassword { get; private set; } = "The entered password is not valid for this certificate";
         public string FitTextToSignatureSize { get; private set; } = "Fit text to signature size";
@@ -20,15 +20,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyAction
         public string ContactLabel { get; private set; } = "Contact:";
         public string LocationLabel { get; private set; } = "Location:";
         public string AllowMultiSigningCheckBox { get; private set; } = "Allow multiple signing";
-        public string DisplayLevelLabel { get; private set; } = "Display Signature:";
+        public string DisplayLevelLabel { get; private set; } = "Display signature:";
         public string NoDisplayLabel { get; private set; } = "No display";
         public string DisplayTextLabel { get; private set; } = "Text";
         public string DisplayImageLabel { get; private set; } = "Image";
-        public string DisplayImageAndTextLabel { get; private set; } = "Image and Text";
-        public string SelectTimeServerLabel { get; private set; } = "Select Time Server:";
+        public string DisplayImageAndTextLabel { get; private set; } = "Image and text";
+        public string SelectTimeServerLabel { get; private set; } = "Select time server:";
         public string DisplaySignatureCheckBox { get; private set; } = "Display signature in document";
-        public string SignatureImageFileLabel { get; private set; } = "Signature Image:";
-        public string DrawCustomSignatureLabel { get; private set; } = "Draw Custom Signature";
+        public string SignatureImageFileLabel { get; private set; } = "Signature image:";
+        public string DrawCustomSignatureLabel { get; private set; } = "Draw custom signature";
         public string UnitOfMeasurementLabel { get; private set; } = "Unit of measurement:";
         public string FromLeftLabel { get; private set; } = "From left:";
         public string WidthLabel { get; private set; } = "Width:";

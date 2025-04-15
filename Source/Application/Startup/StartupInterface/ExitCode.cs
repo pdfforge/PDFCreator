@@ -31,6 +31,8 @@
         InvalidPdfToolsPdf2PdfLicense = 82,
         InvalidPdfToolboxLicense = 83,
         InvalidPdfToolsFourHeightsLicense = 84,
-        InvalidPdfAValidatorLicense = 85
+        InvalidPdfAValidatorLicense = 85,
+        BlockedInDomain = 90,
+        BlockedInEnterpriseMultiSession = 91
     }
 }

@@ -1,7 +1,6 @@
 ﻿using pdfforge.Obsidian;
 using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs;
-using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Conversion.Jobs.JobInfo;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.Conversion.Settings;
@@ -58,12 +57,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private readonly IJobInfoQueue _jobInfoQueue;
 
         public ICampaignHelper CampaignHelper { get; private set; }
+        public IPreviewManager PreviewManager { get; }
 
         public string TrialExtendLink => CampaignHelper.GetTrialExtendLink(ExtendLicenseFallbackUrl);
 
         private string ExtendLicenseFallbackUrl => Urls.GetExtendLicenseFallbackUrl(_applicationNameProvider.EditionName);
 
-        public bool SaveFileTemporaryIsEnabled => SelectedProfile?.SaveFileTemporary ?? false;
+        public bool SaveFileTemporaryIsEnabled => SelectedProfileWrapper?.ConversionProfile?.SaveFileTemporary ?? false;
 
         public PrintJobViewModel(
             ISettingsProvider settingsProvider,
@@ -83,7 +83,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             IInteractionRequest interactionRequest,
             ICampaignHelper campaignHelper,
             IProfileChecker profileChecker,
-            ITempFolderProvider tempFolderProvider,
+            IPreviewManager previewManager,
             ApplicationNameProvider applicationNameProvider)
             : base(translationUpdater)
         {
@@ -103,8 +103,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _profileChecker = profileChecker;
             _changeJobCheckAndProceedCommandBuilder.Init(() => Job, CallFinishInteraction, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
             
-
             CampaignHelper = campaignHelper;
+            PreviewManager = previewManager;
             SetOutputFormatCommand = new DelegateCommand(SetOutputFormatExecute);
 
             browseFileCommandBuilder.Init(() => Job, UpdateUiForJobOutputFileTemplate, () => _lastConfirmedFilePath, s => _lastConfirmedFilePath = s);
@@ -188,7 +188,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void DisableSaveFileTemporaryExecute(object obj)
         {
-            SelectedProfile.SaveFileTemporary = false;
+            SelectedProfileWrapper.ConversionProfile.SaveFileTemporary = false;
             OutputFolder = Job.Profile.TargetDirectory;
             RaisePropertyChanged(nameof(SaveFileTemporaryIsEnabled));
         }
@@ -221,7 +221,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
                 Job.Profile = p;
                 InitCombobox();
-                UpdateAfterEditing(null);
             });
 
             if (commandsLocator != null)
@@ -244,26 +243,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _selectedProfileProvider.SelectedProfile = _profilesProvider.Settings.First(profile => profile.Guid == Job.Profile.Guid);
 
             ProfilesWrapper = null;
-        }
-
-        private void UpdateAfterEditing(object obj)
-        {
-            _dispatcher.BeginInvoke(() =>
-            {
-                if (SelectedProfile == null)
-                    return;
-
-                ProfilesWrapper = _settingsProvider.Settings?.ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
-
-                SelectedProfileWrapper = ProfilesWrapper?.FirstOrDefault(x => x.ConversionProfile.Guid == SelectedProfile.Guid)
-                                         ?? ProfilesWrapper?.FirstOrDefault();
-
-                Job.CurrentSettings.Accounts = _settingsProvider?.Settings?.ApplicationSettings.Accounts.Copy();
-
-                // Important: RaisePropertyChanged for ProfilesWrapper must be called at the end.
-                // Otherwise, the UI will update the binding source and overwrite the selected profile.
-                RaisePropertyChanged(nameof(ProfilesWrapper));
-            });
         }
 
         private void SetOutputFormatExecute(object parameter)
@@ -306,7 +285,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         public Task ExecuteWorkflowStep(Job job)
         {
-            SetNewJob(job);
+            Job = job;
             return _taskCompletionSource.Task;
         }
 
@@ -318,6 +297,8 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void CancelExecute(object obj)
         {
+            PreviewManager.AbortAndCleanUpPreview(JobInfo.SourceFiles);
+
             // This needs to be called before the exceptions are thrown
             FinishInteraction();
             throw new AbortWorkflowException("User cancelled in the PrintJobView");
@@ -325,6 +306,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void CancelAllExecute(object obj)
         {
+            foreach (var jobInfo in _jobInfoQueue.JobInfos)
+                PreviewManager.AbortAndCleanUpPreview(jobInfo.SourceFiles);
+            
             _jobInfoQueue.Clear();
             CancelExecute(obj);
         }
@@ -339,7 +323,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         private async Task MergeAllExecuteAsync(object arg)
         {
             await Task.Run(MergeAllExecute);
-
             UpdateNumberOfPrintJobsHint(_jobInfoQueue.JobInfos.Count);
         }
 
@@ -353,12 +336,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
                 var job = (JobInfo)jobObject;
                 if (job.JobType != first.JobType)
                     continue;
-
                 _jobInfoManager.Merge(first, job);
                 _jobInfoQueue.Remove(job, false);
                 _jobInfoManager.DeleteInf(job);
             }
 
+            JobInfo = first;
             _jobInfoManager.SaveToInfFile(first);
 
             return true;
@@ -369,12 +352,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             _taskCompletionSource.SetResult(null);
         }
 
-        public void SetNewJob(Job job)
-        {
-            if (job != null)
-                Job = job;
-        }
-
         private Job _job;
 
         public Job Job
@@ -382,9 +359,28 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             get { return _job; }
             private set
             {
+                if (value == null)
+                    return;
+                
                 _job = value;
                 RaisePropertyChanged();
-                SelectedProfile = _job.Profile;
+                JobInfo = _job.JobInfo;
+            }
+        }
+
+        //Had to be separated to update preview
+        private JobInfo _jobInfo;
+        public JobInfo JobInfo
+        {
+            get { return _jobInfo;}
+            set
+            {
+                if (value == null)
+                    return;
+                //Copy to have new instance for RaisePropertyChanged
+                var copy = new JobInfo { SourceFiles = value.SourceFiles };
+                _jobInfo = copy;
+                RaisePropertyChanged();
             }
         }
 
@@ -395,25 +391,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             RaisePropertyChanged(nameof(OutputFolder));
         }
 
-        public ConversionProfile SelectedProfile
-        {
-            get { return Job?.Profile; }
-            set
-            {
-                if (Job == null)
-                    return;
-                Job.Profile = value.Copy();
-                _dispatcher.InvokeAsync(async () => await UpdateProfileData());
-                RaisePropertyChanged();
-            }
-        }
-
         public async Task SetSelectedProfileAsync(ConversionProfile profile)
         {
             IsUpdatingProfile = true;
             RaisePropertyChanged(nameof(IsUpdatingProfile));
 
-            Job.Profile = profile.Copy();
+            Job.Profile = profile;
             await UpdateProfileData();
 
             IsUpdatingProfile = false;
@@ -424,8 +407,11 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         {
             await _jobDataUpdater.UpdateTokensAndMetadataAsync(Job);
 
-            RaisePropertyChanged(nameof(SelectedProfile));
-            Job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(Job);
+            JobInfo = Job.JobInfo; //Trigger JobInfo Update for Preview 
+
+            //Keep current output directory if Profile.TargetDirectory is empty 
+            if (!string.IsNullOrEmpty(Job.Profile.TargetDirectory) && !string.IsNullOrEmpty(Job.OutputFileTemplate))
+                Job.OutputFileTemplate = _targetFilePathComposer.ComposeTargetFilePath(Job);
             OutputFilename = EnsureValidExtensionInFilename(OutputFilename, OutputFormat);
             UpdateUiForJobOutputFileTemplate();
 
@@ -467,9 +453,12 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
             {
                 if (value == null)
                     return;
+                if (value == _selectedProfileWrapper)
+                    return;
 
                 _dispatcher.InvokeAsync(async () => await SetSelectedProfileAsync(value.ConversionProfile));
                 _selectedProfileWrapper = value;
+
                 AreActionsRestricted = _profileChecker.DoesProfileContainRestrictedActions(value.ConversionProfile);
                 RaisePropertyChanged(nameof(SelectedProfileWrapper));
             }
@@ -553,12 +542,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 
         private void InitCombobox()
         {
-            if (SelectedProfile == null)
-                return;
+            ProfilesWrapper = _settingsProvider.Settings?.ConversionProfiles.Select(x => new ConversionProfileWrapper(x.Copy())).ToObservableCollection();
 
-            ProfilesWrapper = _settingsProvider.Settings?.ConversionProfiles.Select(x => new ConversionProfileWrapper(x)).ToObservableCollection();
-
-            SelectedProfileWrapper = ProfilesWrapper.FirstOrDefault(x => x.ConversionProfile.Guid == SelectedProfile.Guid)
+            SelectedProfileWrapper = ProfilesWrapper.FirstOrDefault(x => x.ConversionProfile.Guid == Job.Profile.Guid)
                                   ?? ProfilesWrapper.FirstOrDefault();
 
             // Important: RaisePropertyChanged for ProfilesWrapper must be called at the end.

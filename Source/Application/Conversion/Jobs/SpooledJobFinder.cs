@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Conversion.Jobs

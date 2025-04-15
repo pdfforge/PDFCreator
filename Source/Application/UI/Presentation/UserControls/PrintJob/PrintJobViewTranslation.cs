@@ -1,9 +1,12 @@
-﻿using Translatable;
+﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
+using Translatable;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
 {
     public class PrintJobViewTranslation : ITranslatable
     {
+        public EnumTranslation<OutputFormat>[] OutputFormatValues { get; private set; } = EnumTranslation<OutputFormat>.CreateDefaultEnumTranslation();
+
         private IPluralBuilder PluralBuilder { get; set; } = new DefaultPluralBuilder();
         public string AuthorLabel { get; private set; } = "Author:";
 
@@ -41,7 +44,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob
         public string DirectoryLabel { get; private set; } = "Directory:";
         public string SaveTempOnlyIsEnabled { get; private set; } = "You have selected to save files only temporarily. If you want to set the target directory click here.";
         public string RemoveAds { get; private set; } = "Remove ads";
-        public string RestrictedActionWarning { get; private set; } = "Certain features are not supported by the selected output format and will be skipped automatically. Please check your profile settings.";
+        public string RestrictedActionWarning { get; private set; } = "Certain functions are not supported by the output format and will not be executed. Please check your profile.";
         public string TrialExtendingLicenseInfo { get; private set; } = "Click here to extend your license.";
 
         protected string[] TrialExpiringInfo { get; private set; } = { "Your trial license will expire in {0} day.", "Your trial license will expire in {0} days." };

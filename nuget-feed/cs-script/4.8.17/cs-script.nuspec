@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>CS-Script</id>
+    <version>4.8.17</version>
+    <authors>Oleg Shilo</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>css_logo.png</icon>
+    <projectUrl>https://github.com/oleg-shilo/cs-script</projectUrl>
+    <description>CS-Script engine Class Library for .NET 5 (and higher)</description>
+    <releaseNotes>---
+
+## Changes
+
+### CLI
+- #378: Bump Request -&gt; Microsoft.CodeAnalysis.CSharp.Scripting 4.10.0
+
+
+### CSScriptLib
+- #378: Bump Request -&gt; Microsoft.CodeAnalysis.CSharp.Scripting 4.10.0</releaseNotes>
+    <copyright>(C) 2018-2023 Oleg Shilo</copyright>
+    <tags>C#, scripting, script, dynamic, .NET. .NET Core</tags>
+    <repository type="Git" url="https://github.com/oleg-shilo/cs-script.git" commit="7fbf7bca3603c03a8e4b9c39911ff9cdb305853c" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="4.10.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="4.10.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyModel" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

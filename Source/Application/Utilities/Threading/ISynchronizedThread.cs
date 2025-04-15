@@ -61,6 +61,6 @@ namespace pdfforge.PDFCreator.Utilities.Threading
         /// <summary>
         ///     Aborts the thread
         /// </summary>
-        void Abort();
+        void Interrupt();
     }
 }

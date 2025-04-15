@@ -2,6 +2,7 @@
 using pdfforge.PDFCreator.Conversion.Jobs.FolderProvider;
 using pdfforge.PDFCreator.Utilities.IO;
 using System;
+using pdfforge.PDFCreator.Utilities.Spool;
 
 namespace pdfforge.PDFCreator.Core.Services
 {

@@ -52,7 +52,7 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
         if (!actionResult)
             return actionResult;
 
-        var account = job.Accounts.GetMicrosoftAccount(job.Profile);
+        var account = job.Accounts.GetOneDriveAccount(job.Profile);
         var createShareLink = job.Profile.OneDriveSettings.CreateShareLink;
         var ensureUniqueFilenames = job.Profile.OneDriveSettings.EnsureUniqueFilenames;
         var authenticationResult = _graphManager.GetAccessToken(account).GetAwaiter().GetResult();
@@ -269,7 +269,7 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
     {
         var result = new ActionResult();
 
-        var account = settings.Accounts.GetMicrosoftAccount(profile);
+        var account = settings.Accounts.GetOneDriveAccount(profile);
         if (account == null)
         {
             result.Add(ErrorCode.Microsoft_Account_Missing);
@@ -278,7 +278,7 @@ public class OneDriveAction : ActionBase<OneDriveSettings>, IPostConversionActio
 
         if (!account.HasPermissions(MicrosoftAccountPermission.FilesReadWrite))
             result.Add(ErrorCode.OneDrive_MissingPermissions);
-        else if (account.GetExpirationDateTime() < DateTime.Now)
+        else if (account.HasExpiredPermissions(DateTime.Now))
             result.Add(ErrorCode.Microsoft_Account_Expired);
 
         if (checkLevel == CheckLevel.EditingProfile)

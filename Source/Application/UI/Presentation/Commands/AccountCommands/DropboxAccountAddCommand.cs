@@ -9,6 +9,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
 using pdfforge.PDFCreator.UI.Presentation.ViewModelBases;
 using System;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Commands
 {

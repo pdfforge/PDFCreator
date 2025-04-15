@@ -1,9 +1,9 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using System.Globalization;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Messages;
 using SystemInterface.IO;
 using Translatable;
 

@@ -118,10 +118,7 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
                     FileWrap.WriteAllBytes(iccFile, GhostscriptResources.ISOcoated_v2_grey1c_bas);
                     break;
             }
-
-            parameters.Add("-sOutputICCProfile=" + Path.GetFileName(iccFile));
-            // the "\\"at the end is needed by ghostscript and must be present
-            parameters.Add("-sICCProfilesDir=" + Path.GetDirectoryName(iccFile) + "\\");
+            parameters.Add("-sOutputICCProfile=" + iccFile);
 
             //Set in pdf-X example, but is not documented in the distiller parameters
 
@@ -239,8 +236,8 @@ namespace pdfforge.PDFCreator.Conversion.Ghostscript.OutputDevices
 
                 case CompressionColorAndGray.Automatic:
                 default:
-                    parameters.Add("-dAutoFilterColorImages=false");
-                    parameters.Add("-dAutoFilterGrayImages=false");
+                    parameters.Add("-dAutoFilterColorImages=true");
+                    parameters.Add("-dAutoFilterGrayImages=true");
                     parameters.Add("-dEncodeColorImages=true");
                     parameters.Add("-dEncodeGrayImages=true");
                     parameters.Add("-dColorImageFilter=/DCTEncode");

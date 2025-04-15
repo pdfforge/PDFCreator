@@ -3,6 +3,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.UI.Presentation.Banner;
 using pdfforge.PDFCreator.UI.Presentation.Helper;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
 {

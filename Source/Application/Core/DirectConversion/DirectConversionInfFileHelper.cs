@@ -5,6 +5,7 @@ using pdfforge.PDFCreator.Conversion.Jobs.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using pdfforge.PDFCreator.Utilities.Spool;
 using SystemInterface.IO;
 
 namespace pdfforge.PDFCreator.Core.DirectConversion

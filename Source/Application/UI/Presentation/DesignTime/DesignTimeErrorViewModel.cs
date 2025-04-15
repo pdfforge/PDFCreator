@@ -1,4 +1,4 @@
-﻿using pdfforge.PDFCreator.UI.Interactions.Enums;
+﻿using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob;
 using Translatable;

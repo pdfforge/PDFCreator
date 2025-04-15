@@ -1,5 +1,5 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.Assistants;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
 {

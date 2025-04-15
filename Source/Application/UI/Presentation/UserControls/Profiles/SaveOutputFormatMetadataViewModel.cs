@@ -14,6 +14,7 @@ using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.WorkflowEditor.C
 using Prism.Events;
 using System.ComponentModel;
 using System.Windows.Input;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {

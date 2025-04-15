@@ -13,7 +13,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using pdfforge.Obsidian.Trigger;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
 {
@@ -81,6 +81,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                 case MessageOptions.YesCancel:
                     Interaction.Response = MessageResponse.Yes;
                     break;
+
+                case MessageOptions.SaveDiscardBack:
+                    Interaction.Response = MessageResponse.Save;
+                    break;
             }
             FinishInteraction();
         }
@@ -91,6 +95,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
             {
                 case MessageOptions.YesNoCancel:
                     Interaction.Response = MessageResponse.No;
+                    break;
+
+                case MessageOptions.SaveDiscardBack:
+                    Interaction.Response = MessageResponse.Discard;
                     break;
             }
             FinishInteraction();
@@ -113,15 +121,26 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                 case MessageOptions.YesNoUac:
                     Interaction.Response = MessageResponse.No;
                     break;
+
+                case MessageOptions.SaveDiscardBack:
+                    Interaction.Response = MessageResponse.Back;
+                    break;
             }
             FinishInteraction();
         }
 
         private bool MiddleButtonCanExecute(object obj)
         {
-            return Interaction?.Buttons == MessageOptions.YesNoCancel;
-        }
+            if (Interaction?.Buttons == MessageOptions.YesNoCancel)
+            {
+                return Interaction?.Buttons == MessageOptions.YesNoCancel;
+            }
+            else
+            {
+                return Interaction?.Buttons == MessageOptions.SaveDiscardBack;
+            }
 
+        }
         private bool RightButtonCanExecute(object obj)
         {
             return Interaction?.Buttons != MessageOptions.Ok;
@@ -230,6 +249,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
                 case MessageOptions.YesCancel:
                     LeftButtonContent = Translation.Yes;
                     RightButtonContent = Translation.Cancel;
+                    break;
+
+                case MessageOptions.SaveDiscardBack:
+                    LeftButtonContent = Translation.Save;
+                    RightButtonContent = Translation.Back;
+                    MiddleButtonContent = Translation.Discard;
+
                     break;
 
                 default:

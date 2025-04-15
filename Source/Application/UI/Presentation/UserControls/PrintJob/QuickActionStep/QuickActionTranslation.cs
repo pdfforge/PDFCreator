@@ -23,5 +23,6 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.PrintJob.QuickActionS
         public string CopyToClipboard { get; private set; } = "Copy the full path to clipboard";
         public string OneDrivePrivateLink { get; private set; } = "OneDrive private link";
         public string OneDriveShareLink { get; private set; } = "OneDrive share link";
+        public string SharepointPrivateLink { get; private set; } = "Sharepoint share link";
     }
 }

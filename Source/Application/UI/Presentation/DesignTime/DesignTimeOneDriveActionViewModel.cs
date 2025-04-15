@@ -1,4 +1,5 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
+﻿using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
+using pdfforge.PDFCreator.UI.Presentation.DesignTime.Helper;
 using pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.SendActions.OneDrive;
 
 namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
@@ -13,6 +14,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.DesignTime
                 new DesignTimeDispatcher(),
                 new DesignTimeDefaultSettingsBuilder(),
                 new DesignTimeActionOrderHelper(),
-                new DesignTimeTokenViewModelFactory()){}
+                new DesignTimeTokenViewModelFactory(),
+                new GpoSettingsDefaults(),
+                new DesignTimeCommandLocator(),
+                new DesignTimeEditionHelper()){}
     }
 }

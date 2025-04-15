@@ -1,5 +1,6 @@
 ﻿using pdfforge.PDFCreator.Conversion.Settings.Enums;
 using System;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles.ModifyActions.Encryption
 {

@@ -13,6 +13,8 @@
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Background" Value="{StaticResource DefaultCheckBoxBackgroundBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource DefaultCheckBoxBorderBrush}" />
         <Setter Property="Padding" Value="10 0 0 0" />
         <Setter Property="Height" Value="20" />
         <Setter Property="Template">
@@ -74,12 +76,28 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="CheckMarkContentControl" Property="Foreground" Value="{StaticResource DefaultCheckBoxDisabledCheckMarkBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CheckMarkContentControl" Property="Opacity" Value="0.2" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=DataGridRow}}" Value="True">
+                            <Setter TargetName="CheckMarkContentControl" Property="Opacity" Value="0.2" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=MenuItem}}" Value="True">
+                            <Setter TargetName="CheckMarkContentControl" Property="Opacity" Value="0.2" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" Value="True">
+                            <Setter TargetName="CheckMarkContentControl" Property="Opacity" Value="0.2" />
+                        </DataTrigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="CheckMarkContentControl" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="CheckMarkContentControl" Property="Foreground" Value="{StaticResource DefaultCheckBoxDisabledCheckMarkBrush}" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
                         </Trigger>
+                        
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

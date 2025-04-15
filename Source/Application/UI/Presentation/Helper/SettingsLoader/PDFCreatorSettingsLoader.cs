@@ -10,6 +10,7 @@ using pdfforge.PDFCreator.Core.SettingsManagement.SettingsLoading;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
 using System.Globalization;
 using System.Linq;
+using pdfforge.PDFCreator.Utilities;
 
 namespace pdfforge.PDFCreator.UI.Presentation.Helper
 {

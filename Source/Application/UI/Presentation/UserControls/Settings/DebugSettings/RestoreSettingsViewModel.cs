@@ -5,8 +5,8 @@ using pdfforge.PDFCreator.Conversion.Settings;
 using pdfforge.PDFCreator.Conversion.Settings.GroupPolicies;
 using pdfforge.PDFCreator.Core.SettingsManagement.DefaultSettings;
 using pdfforge.PDFCreator.Core.SettingsManagementInterface;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
-using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 
 namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.DebugSettings

@@ -7,6 +7,7 @@ using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;
 using System.Windows.Data;
 using NLog;
 using pdfforge.Obsidian;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Interactions.Feedback;

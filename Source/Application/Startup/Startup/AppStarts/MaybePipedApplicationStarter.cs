@@ -7,10 +7,10 @@ using pdfforge.PDFCreator.Core.Services.JobHistory;
 using pdfforge.PDFCreator.Core.SettingsManagement;
 using pdfforge.PDFCreator.Core.StartupInterface;
 using pdfforge.PDFCreator.Core.Workflow;
-using pdfforge.PDFCreator.UI.Presentation.Assistants;
 using pdfforge.PDFCreator.Utilities.Threading;
 using System;
 using System.Threading.Tasks;
+using pdfforge.PDFCreator.Utilities.Update;
 
 namespace pdfforge.PDFCreator.Core.Startup.AppStarts
 {

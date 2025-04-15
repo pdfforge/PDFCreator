@@ -10,6 +10,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Misc
         public string Ok { get; private set; } = "Ok";
         public string Retry { get; private set; } = "Retry";
         public string Yes { get; private set; } = "Yes";
+        public string Save { get; private set; } = "Save";
+        public string Discard { get; private set; } = "Discard";
+        public string Back { get; private set; } = "Back";
 
         public string Profile { get; private set; } = "Profile";
         public string Queue { get; private set; } = "Queue";

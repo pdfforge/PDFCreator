@@ -1,33 +1,57 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace pdfforge.PDFCreator.Core.Services.Download
 {
     public interface IDownloader
     {
-        Task<Stream> OpenReadTaskAsync(string url);
-
-        Task<string> DownloadStringTaskAsync(string url);
+        Task<string> GetStringAsync(string url, CancellationToken cancellationToken = default);
+        Task DownloadFileAsync(string url, string targetFile, CancellationToken cancellationToken, Action<int> progressAction = null);
     }
 
-    public class WebClientDownloader : IDownloader
+    public class HttpClientDownloader : IDownloader
     {
-        private readonly WebClient _webClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public WebClientDownloader()
+        public HttpClientDownloader(IHttpClientFactory httpClientFactory)
         {
-            _webClient = new WebClient();
+            _httpClientFactory = httpClientFactory;
         }
 
-        public Task<Stream> OpenReadTaskAsync(string url)
+        public async Task<string> GetStringAsync(string url, CancellationToken cancellationToken = default)
         {
-            return _webClient.OpenReadTaskAsync(url);
+            using var httpClient = _httpClientFactory.CreateClient();
+            return await httpClient.GetStringAsync(url, cancellationToken);
         }
 
-        public Task<string> DownloadStringTaskAsync(string url)
+        public async Task DownloadFileAsync(string url, string targetFile, CancellationToken cancellationToken, Action<int> progressAction = null)
         {
-            return _webClient.DownloadStringTaskAsync(url);
+            using var client = _httpClientFactory.CreateClient();
+            using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+
+            await using var fileStream = new FileStream(targetFile, FileMode.Create, FileAccess.Write, FileShare.None);
+            await using var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+
+            var buffer = new byte[8192]; // standard buffer size for file downloading to balance memory usage and performance.
+            var totalBytesRead = 0L;
+            int bytesRead;
+
+            while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
+            {
+                await fileStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                totalBytesRead += bytesRead;
+
+                if (totalBytes != -1) // handle unknown content length
+                {
+                    var progressPercentage = (int)((totalBytesRead * 100) / totalBytes);
+                    progressAction?.Invoke(progressPercentage);
+                }
+            }
         }
     }
 }

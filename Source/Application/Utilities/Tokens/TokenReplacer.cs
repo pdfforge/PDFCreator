@@ -206,7 +206,7 @@ namespace pdfforge.PDFCreator.Utilities.Tokens
         }
 
         /// <summary>
-        ///     Comfort function to add a string token
+        ///     Comfort function to add a string token 
         /// </summary>
         /// <param name="name">name of the token (without brackets)</param>
         /// <param name="value">the value that will be inserted</param>

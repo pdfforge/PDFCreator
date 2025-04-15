@@ -1,4 +1,4 @@
-﻿namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
+﻿namespace pdfforge.PDFCreator.Conversion.Settings.Enums
 {
     public enum AuthenticationType
     {

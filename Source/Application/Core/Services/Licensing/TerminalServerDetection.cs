@@ -1,6 +1,6 @@
 ﻿using pdfforge.PDFCreator.Utilities.WindowsApi;
 
-namespace pdfforge.PDFCreator.Setup.Shared.Helper
+namespace pdfforge.PDFCreator.Core.Services.Licensing
 {
     public enum TerminalServerMode
     {

@@ -168,10 +168,10 @@ namespace pdfforge.PDFCreator.Conversion.Processing.ITextProcessing
 
             if (!_fontPathHelper.TryGetFontPath(signing.FontFile, out var fontPath))
                 throw new ProcessingException("Error during font path detection.", ErrorCode.Signature_FontNotFound);
-            var font = PdfFontFactory.CreateFont(fontPath, PdfName.WinAnsiEncoding.GetValue(), true);
+            var font = PdfFontFactory.CreateFont(fontPath, PdfName.WinAnsiEncoding.GetValue(), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
             appearance.SetLayer2Font(font);
 
-            var color = new DeviceRgb(signing.FontColor);
+            var color = new DeviceRgb(signing.FontColor.R, signing.FontColor.G, signing.FontColor.B);
             appearance.SetLayer2FontColor(color);
 
             if (!signing.FitTextToSignatureSize)

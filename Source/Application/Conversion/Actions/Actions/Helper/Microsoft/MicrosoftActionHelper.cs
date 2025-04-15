@@ -23,9 +23,14 @@ public class MicrosoftActionHelper
         _httpClient = new HttpClient();
     }
 
+    public void SetupHttpClient(HttpClient httpClient,string accessToken)
+    {
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+    }
+
     public async Task<FileUploadResult> UploadFile(string uploadSessionUrl,string filePath, string accessToken, bool needsUploadSessionMessages = false)
     {
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        SetupHttpClient(_httpClient, accessToken);
 
         var file = File.OpenRead(filePath);
         try

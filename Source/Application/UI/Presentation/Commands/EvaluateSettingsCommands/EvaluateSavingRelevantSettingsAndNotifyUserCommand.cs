@@ -1,5 +1,6 @@
 ﻿using pdfforge.Obsidian.Trigger;
 using pdfforge.PDFCreator.Core.Services.Macros;
+using pdfforge.PDFCreator.Utilities.Messages;
 using pdfforge.PDFCreator.UI.Interactions;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
 using pdfforge.PDFCreator.UI.Presentation.Helper.Translation;

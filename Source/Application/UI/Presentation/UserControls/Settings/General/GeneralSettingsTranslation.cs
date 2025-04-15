@@ -12,10 +12,10 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string AddToContextMenuText { get; private set; } = "Added to context menu";
         public string ChangeDefaultPrinterLabelText { get; private set; } = "Allow PDFCreator to temporarily change the default printer";
         public string CheckUpdateButtonContent { get; private set; } = "Check now";
-        public string DefaultPrinterControlHeader { get; private set; } = "Default Printer";
+        public string DefaultPrinterControlHeader { get; private set; } = "Default printer";
         public string DownloadLatestVersionText { get; private set; } = "Download the latest version at:";
         public string LanguageControlHeader { get; private set; } = "Language";
-        public string MenuIntegrationControlHeader { get; private set; } = "Explorer Context Menu Integration";
+        public string MenuIntegrationControlHeader { get; private set; } = "Explorer context menu integration";
         public string NeverUpdateWarningText { get; private set; } = "Please note that you won't receive any notifications about available updates!";
         public string RemoveFromContextMenuText { get; private set; } = "Removed from context menu (Maybe you need to restart your computer)";
         public string RemoveMenuIntegrationText { get; private set; } = "Remove";
@@ -33,15 +33,15 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string SkipVersion { get; private set; } = "Skip version";
         public string Install { get; private set; } = "Install Update";
 
-        public string UsageStatisticsHeader { get; private set; } = "Usage Statistics";
-        public string EnableUsageStatistics { get; private set; } = "Send Usage Statistics";
+        public string UsageStatisticsHeader { get; private set; } = "Usage statistics";
+        public string EnableUsageStatistics { get; private set; } = "Send usage statistics";
         public string ShowSampleStatistics { get; private set; } = "Show sample statistics";
         public string JobStatisticsExample { get; private set; } = "Job statistics example:";
         public string ServiceStatisticsExample { get; private set; } = "Service statistics example:";
         public string PrivacyPolicy { get; private set; } = "Read our privacy policy here:";
         public string PrivacyPolicyLink { get; private set; } = "Privacy policy";
 
-        public string ConfigureHomeScreen { get; private set; } = "Configure Home Screen";
+        public string ConfigureHomeScreen { get; private set; } = "Configure home screen";
         public string EnableRssFeed { get; private set; } = "Activate RSS news feed";
         public string EnableTips { get; private set; } = "Show tips";
 
@@ -54,7 +54,7 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Settings.General
         public string UsageStatisticsManualLinkText { get; private set; } = "If you want to know more you can take a look at our manual:";
         public string UsageStatisticsLink { get; private set; } = "Usage statistics";
 
-        public string HotStandbyHeader { get; private set; } = "PDFCreator Standby";
+        public string HotStandbyHeader { get; private set; } = "PDFCreator standby";
         public string HotStandbyDuration { get; private set; } = "Standby duration";
         public string HotStandbyExplanation { get; private set; } = "PDFCreator uses the standby to accelerate printing and using PDFCreator. After closing PDFCreator, the application will keep running for the configured time with a low footprint. This significantly accelerates further conversions.";
         public string HotStandbyMinutes { get; private set; } = "minutes";

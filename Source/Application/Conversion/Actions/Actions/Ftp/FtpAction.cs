@@ -62,7 +62,7 @@ namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
 
             if (!isRunningJob && TokenIdentifier.ContainsTokens(profile.Ftp.Directory))
                 return actionResult;
-            
+
             if (!ValidName.IsValidFtpPath(profile.Ftp.Directory))
                 actionResult.Add(ErrorCode.Ftp_Directory_InvalidFtpPath);
 

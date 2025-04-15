@@ -1,6 +1,7 @@
 ﻿using pdfforge.Obsidian.Interaction;
 using pdfforge.PDFCreator.Conversion.Jobs;
 using pdfforge.PDFCreator.UI.Interactions.Enums;
+using pdfforge.PDFCreator.Utilities.Messages;
 
 namespace pdfforge.PDFCreator.UI.Interactions
 {

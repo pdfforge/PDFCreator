@@ -6,8 +6,9 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews
 {
     public class DesignTimeMicrosoftAccountViewModel:MicrosoftAccountViewModel
     {
-        public DesignTimeMicrosoftAccountViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCommandLocator(), null)
+        public DesignTimeMicrosoftAccountViewModel() : base(new DesignTimeTranslationUpdater(), new DesignTimeCommandLocator(), null, new DesignTimeEditionHelper())
         {
         }
+
     }
 }

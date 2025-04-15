@@ -5,13 +5,13 @@ namespace pdfforge.PDFCreator.UI.Presentation.UserControls.Profiles
 {
     public class OutputFormatTranslation : ITranslatable
     {
-        public string OutputFormat { get; private set; } = "Output Format";
+        public string OutputFormat { get; private set; } = "Output format";
 
         /*Pdf*/
-        public string GeneralSettings { get; private set; } = "General Settings";
-        public string PageOrientationLabel { get; private set; } = "Page Orientation:";
-        public string ColorModelLabel { get; private set; } = "Color Model:";
-        public string ViewerSettings { get; private set; } = "Viewer Settings";
+        public string GeneralSettings { get; private set; } = "General settings";
+        public string PageOrientationLabel { get; private set; } = "Page orientation:";
+        public string ColorModelLabel { get; private set; } = "Color model:";
+        public string ViewerSettings { get; private set; } = "Viewer settings";
         public string PageViewLabel { get; private set; } = "Page view:";
         public string DocumentViewLabel { get; private set; } = "Document view:";
         public string ViewerStartsOnPageLabel { get; private set; } = "Viewer opens on page:";

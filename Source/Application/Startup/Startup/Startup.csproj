@@ -1,369 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3157C130-EA8A-45EB-92DB-8615BD66B5C5}</ProjectGuid>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pdfforge.PDFCreator.Core.Startup</RootNamespace>
     <AssemblyName>PDFCreator.Startup</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>pdfforge.snk</AssemblyOriginatorKeyFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);DEVELOPMENT_MODE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <ProjectReference Include="..\..\Conversion\Ghostscript\Ghostscript.csproj" />
+    <ProjectReference Include="..\..\Conversion\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj" />
+    <ProjectReference Include="..\..\Core\Communication\Communication.csproj" />
+    <ProjectReference Include="..\..\Core\Controller\Controller.csproj" />
+    <ProjectReference Include="..\..\Core\DirectConversion\DirectConversion.csproj" />
+    <ProjectReference Include="..\..\Core\JobInfoQueue\JobInfoQueue.csproj" />
+    <ProjectReference Include="..\..\Core\Printing\Printing.csproj" />
+    <ProjectReference Include="..\..\Core\SettingsManagementInterface\SettingsManagementInterface.csproj" />
+    <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj" />
+    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj" />
+    <ProjectReference Include="..\..\Core\Services\Services.csproj" />
+    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj" />
+    <ProjectReference Include="..\..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\StartupInterface\StartupInterface.csproj" />
+    <ProjectReference Include="..\..\UI\Interactions\Interactions.csproj" />
+    <ProjectReference Include="..\..\Core\Workflow\Workflow.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppStartFactory.cs" />
-    <Compile Include="AppStarts\AppStartBase.cs" />
-    <Compile Include="AppStarts\DragAndDropStart.cs" />
-    <Compile Include="AppStarts\MainWindowStart.cs" />
-    <Compile Include="AppStarts\MaybePipedApplicationStarter.cs" />
-    <Compile Include="AppStarts\MaybePipedStart.cs" />
-    <Compile Include="AppStarts\MergeAppStart.cs" />
-    <Compile Include="AppStarts\NewPrintJobStart.cs" />
-    <Compile Include="AppStarts\PrintFileStart.cs" />
-    <Compile Include="IAppStartResolver.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartConditions\CheckAllStartupConditions.cs" />
-    <Compile Include="StartConditions\GhostscriptCondition.cs" />
-    <Compile Include="StartConditions\PrinterInstalledCondition.cs" />
-    <Compile Include="StartConditions\SpoolerRunningCondition.cs" />
-    <Compile Include="StartConditions\CheckSpoolFolderCondition.cs" />
-    <Compile Include="StartConditions\SpoolFolderAccess.cs" />
-    <Compile Include="StartConditions\TerminalServerNotAllowedCondition.cs" />
-    <Compile Include="StaticPropertiesHack.cs" />
-    <Compile Include="Translations\ProgramTranslation.cs" />
-    <Compile Include="Translations\StartupTranslation.cs" />
+    <Compile Remove="AppStarts\NewDirectConversionStart.cs" />
+    <Compile Remove="WindowLauncher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="paket.references" />
-    <None Include="pdfforge.snk" />
+    <PackageReference Include="DataStorage">
+      <Version>3.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="LicenseValidator.Interface">
+      <Version>2.5.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>7.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.Targets">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Win32.Registry">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="NLog">
+      <Version>5.4</Version>
+    </PackageReference>
+    <PackageReference Include="Optional.StrongNamed">
+      <Version>3.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections">
+      <Version>4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.EventLog">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime">
+      <Version>4.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.AccessControl">
+      <Version>6.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Permissions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceProcess.ServiceController">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Extensions">
+      <Version>8.0</Version>
+    </PackageReference>
+    <PackageReference Include="SystemInterface">
+      <Version>9.9.0</Version>
+    </PackageReference>
+    <PackageReference Include="SystemWrapper">
+      <Version>9.9.0</Version>
+    </PackageReference>
+    <PackageReference Include="Translatable">
+      <Version>0.3.13</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Conversion\Ghostscript\Ghostscript.csproj">
-      <Project>{f8f1b3e5-22d4-47ff-998c-ab3c9bd54fa2}</Project>
-      <Name>Ghostscript</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Processing\PdfProcessingInterface\PdfProcessingInterface.csproj">
-      <Project>{f7126398-bb4f-49af-ad90-0f23d2eddcfe}</Project>
-      <Name>PdfProcessingInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Communication\Communication.csproj">
-      <Project>{256d5f6e-90a4-49e0-a4ba-1aa7284f1481}</Project>
-      <Name>Communication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Controller\Controller.csproj">
-      <Project>{be1a6f7d-6439-4361-8e96-df90b4bfe000}</Project>
-      <Name>Controller</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\DirectConversion\DirectConversion.csproj">
-      <Project>{2d918f3c-5403-4346-98cf-fb53a5d09951}</Project>
-      <Name>DirectConversion</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\JobInfoQueue\JobInfoQueue.csproj">
-      <Project>{4F2DBE95-389E-4FE0-BFAC-C00A8DEF87BC}</Project>
-      <Name>JobInfoQueue</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Printing\Printing.csproj">
-      <Project>{fd68eb7e-2ae8-4c8e-ba9c-71f9ad98e33e}</Project>
-      <Name>Printing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\SettingsManagementInterface\SettingsManagementInterface.csproj">
-      <Project>{ADC9937F-3EE4-4782-87A7-3450F769EB58}</Project>
-      <Name>SettingsManagementInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\SettingsManagement\SettingsManagement.csproj">
-      <Project>{9b31d8cd-4e32-4925-b696-7d1cf02f0142}</Project>
-      <Name>SettingsManagement</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Jobs\Jobs.csproj">
-      <Project>{18354054-45f6-4f51-8730-d05643a400a3}</Project>
-      <Name>Jobs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Services\Services.csproj">
-      <Project>{c6058628-42b2-4cf6-a4be-622ad45f6e42}</Project>
-      <Name>Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Conversion\Settings\Settings.csproj">
-      <Project>{94936199-c9c7-4a5f-a58e-6123158e84f3}</Project>
-      <Name>Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Presentation\Presentation.csproj">
-      <Project>{cf5ff5fd-39ad-472d-abc3-44d4e7909e68}</Project>
-      <Name>Presentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
-      <Project>{ea29538b-89a5-4fb3-ae0f-5e2370e852f8}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StartupInterface\StartupInterface.csproj">
-      <Project>{1a092466-45ac-4fa5-bc67-25071f20cd59}</Project>
-      <Name>StartupInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\UI\Interactions\Interactions.csproj">
-      <Project>{9fa4da88-81e9-4ff9-8521-70102762415b}</Project>
-      <Name>Interactions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Workflow\Workflow.csproj">
-      <Project>{e4f2f7aa-5a58-44a4-905d-09536cb81ea1}</Project>
-      <Name>Workflow</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="CommonServiceLocator">
-          <HintPath>..\..\..\..\packages\CommonServiceLocator\lib\net47\CommonServiceLocator.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="DataStorage">
-          <HintPath>..\..\..\..\packages\DataStorage\lib\DataStorage.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="LicenseValidator.Interface">
-          <HintPath>..\..\..\..\packages\LicenseValidator.Interface\lib\netstandard2.0\LicenseValidator.Interface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="MahApps.Metro">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\MahApps.Metro.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Windows.Interactivity">
-          <HintPath>..\..\..\..\packages\MahApps.Metro\lib\net45\System.Windows.Interactivity.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="MahApps.Metro.SimpleChildWindow">
-          <HintPath>..\..\..\..\packages\MahApps.Metro.SimpleChildWindow\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="mscorlib">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="Microsoft.Win32.Registry">
-          <HintPath>..\..\..\..\packages\Microsoft.Win32.Registry\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Configuration">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.IO.Compression">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Xml">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="NLog">
-          <HintPath>..\..\..\..\packages\NLog\lib\net46\NLog.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Obsidian">
-          <HintPath>..\..\..\..\packages\Obsidian\lib\Obsidian.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Optional">
-          <HintPath>..\..\..\..\packages\Optional.StrongNamed\lib\net461\Optional.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.AccessControl">
-          <HintPath>..\..\..\..\packages\System.Security.AccessControl\lib\net461\System.Security.AccessControl.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Data">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Data.OracleClient">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Drawing">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Net">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Transactions">
-          <Paket>True</Paket>
-        </Reference>
-        <Reference Include="System.Security.Permissions">
-          <HintPath>..\..\..\..\packages\System.Security.Permissions\lib\net461\System.Security.Permissions.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="System.Security.Principal.Windows">
-          <HintPath>..\..\..\..\packages\System.Security.Principal.Windows\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemInterface">
-          <HintPath>..\..\..\..\packages\SystemInterface\lib\netstandard2.0\SystemInterface.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="SystemWrapper">
-          <HintPath>..\..\..\..\packages\SystemWrapper\lib\netstandard2.0\SystemWrapper.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.7.2'">
-      <ItemGroup>
-        <Reference Include="Translatable">
-          <HintPath>..\..\..\..\packages\Translatable\lib\net40\Translatable.dll</HintPath>
-          <Private>True</Private>
-          <Paket>True</Paket>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
 </Project>

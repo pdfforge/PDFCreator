@@ -1,8 +1,8 @@
-﻿using pdfforge.PDFCreator.UI.Presentation.UserControls.Accounts.AccountViews;
-using Renci.SshNet;
+﻿using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using pdfforge.PDFCreator.Conversion.Settings.Enums;
 
 namespace pdfforge.PDFCreator.Conversion.Actions.Actions.Ftp
 {
